@@ -38,10 +38,6 @@ const dark = {
     backgroundColor: '#222',
     border: 0,
   },
-  Panel: {
-    borderWidth: 2,
-    backgroundColor: '#000'
-  },
   Heading: caps,
   Button: {
     color: '#00d9f7',

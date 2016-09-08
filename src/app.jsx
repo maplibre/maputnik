@@ -16,7 +16,7 @@ export class WorkspaceDrawer extends React.Component {
 			editor = <LayerEditor layers={this.props.mapStyle.layers}/>
 		}
 
-		return <Container style={{
+		return <div style={{
 			zIndex: 100,
 			position: "fixed",
 			height: "100%",
@@ -27,7 +27,7 @@ export class WorkspaceDrawer extends React.Component {
 			backgroundColor: theme.colors.gray}
 		} >
 			{editor}
-		</Container>
+		</div>
 	}
 }
 
