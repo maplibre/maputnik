@@ -1,17 +1,16 @@
 import React from 'react';
-
-import { Menu, NavItem, Tooltip, Container, Block, Fixed } from 'rebass'
-import theme from './theme.jsx';
-import {MdSettings, MdPalette, MdLayers, MdSave, MdFolderOpen} from 'react-icons/lib/md';
-import { Button, Text } from 'rebass';
 import FileReaderInput from 'react-file-reader-input';
+
+import { Button, Text } from 'rebass';
+import { Menu, NavItem, Tooltip, Container, Block, Fixed } from 'rebass'
+import {MdSettings, MdPalette, MdLayers, MdSave, MdFolderOpen} from 'react-icons/lib/md';
+
+import theme from './theme.js';
 
 export class Toolbar extends React.Component {
 	constructor(props) {
 		super(props);
-		this.state = {
-			styleFile: null
-		};
+		this.onUpload = this.onUpload.bind(this);
 	}
 
 	onUpload(_, files) {
@@ -20,10 +19,11 @@ export class Toolbar extends React.Component {
     reader.readAsText(file, "UTF-8");
     reader.onload = e => {
 			const style = JSON.parse(e.target.result);
-			console.log(style);
+			this.props.onStyleUpload(style);
 		}
     reader.onerror = e => console.log(e.target);
 	}
+
 	render() {
 		return <Container style={{
 			zIndex: 100,

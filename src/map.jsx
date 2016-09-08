@@ -1,21 +1,18 @@
-import React from 'react';
-import MapboxGl from 'mapbox-gl';
+import React from 'react'
+import ReactMapboxGl from "react-mapbox-gl"
 
 export class Map extends React.Component {
 	constructor(props) {
-			super(props);
-	}
-
-	componentDidMount() {
-		MapboxGl.accessToken = "pk.eyJ1IjoibW9yZ2Vua2FmZmVlIiwiYSI6IjIzcmN0NlkifQ.0LRTNgCc-envt9d5MzR75w";
-		const map = new MapboxGl.Map({
-			container: this.container,
-			style: "mapbox://styles/morgenkaffee/cirqasdb8003dh1ntbo6dkvs6"
-		});
+			super(props)
 	}
 
 	render() {
-		return <div ref={x => this.container = x} style={{zIndex: 15}}></div>
+		if (this.props.mapStyle) {
+			return <ReactMapboxGl
+				style={this.props.mapStyle}
+				accessToken="pk.eyJ1IjoibW9yZ2Vua2FmZmVlIiwiYSI6IjIzcmN0NlkifQ.0LRTNgCc-envt9d5MzR75w"/>
+	}
+		return <div />
 	}
 }
 

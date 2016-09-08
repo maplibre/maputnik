@@ -1,27 +1,27 @@
 import React from 'react';
 
-export class StyleCommand {
-	do(map) {
-		throw new TypeError("Do not implemented");
+// A wrapper around Mapbox GL style
+export class Style {
+	constructor() {
+		this.styleHistory = [];
+		this.renderers = [];
 	}
-	undo(map) {
-		throw new TypeError("Undo not implemented");
-	}
-}
 
-export class StyleEditor {
-	constructor(map, style) {
-		this.map = map;
-		this.style = style;
-		this.history = [];
+	load(style) {
+		this.currentStyle = style;
+	}
+
+	onRender(cb) {
+		this.renderers.push(cb);
+	}
+
+	update(style) {
+		this.styleHistory.push(this.currentStyle);
+		this.currentStyle = style;
+		this.renderers.forEach(r => r(this.currentStyle))
 	}
 
 	layers() {
-		return this.style.layers;
-	}
-
-	execute(command) {
-		this.history.push(command);
-		command.do(this.map);
+		return this.currentStyle.layers;
 	}
 }

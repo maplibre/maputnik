@@ -1,14 +1,21 @@
-import {Workspace} from './workspace.jsx';
-import {Map} from './map.jsx';
-import {Toolbar} from './toolbar.jsx';
-import React from 'react';
-import styles from './layout.scss';
+import React from 'react'
+
 import { Drawer, Container, Block, Fixed } from 'rebass'
+import {Map} from './map.jsx'
+import {Toolbar} from './toolbar.jsx'
 import { LayerEditor } from './layers.jsx'
-import theme from './theme.jsx'
+
+import theme from './theme.js'
+import layout from './layout.scss'
 
 export class WorkspaceDrawer extends React.Component {
 	render() {
+		let editor = null
+
+		if(this.props.mapStyle) {
+			editor = <LayerEditor layers={this.props.mapStyle.layers}/>
+		}
+
 		return <Container style={{
 			zIndex: 100,
 			position: "fixed",
@@ -19,8 +26,8 @@ export class WorkspaceDrawer extends React.Component {
 			bottom: "0",
 			backgroundColor: theme.colors.gray}
 		} >
-			<LayerEditor />
-		</Container>;
+			{editor}
+		</Container>
 	}
 }
 
@@ -29,6 +36,18 @@ export default class App extends React.Component {
     rebass: React.PropTypes.object,
 		reactIconBase: React.PropTypes.object
   }
+
+	constructor(props) {
+		super(props)
+		this.updateStyle = this.updateStyle.bind(this);
+		this.state = {
+			mapStyle: null
+		}
+	}
+
+	updateStyle(newStyle) {
+		this.setState({ mapStyle: newStyle })
+	}
 
   getChildContext () {
     return {
@@ -40,14 +59,13 @@ export default class App extends React.Component {
 	}
 
   render() {
-    return (
-		<div>
-			  <Toolbar />
-				<WorkspaceDrawer />
-				<div className={styles.layoutMap}>
-					<Map />
-				</div>
-      </div>
-    )
+		console.log(this.state.mapStyle)
+    return <div>
+			<Toolbar onStyleUpload={this.updateStyle} />
+			<WorkspaceDrawer mapStyle={this.state.mapStyle} />
+			<div className={layout.map}>
+				<Map mapStyle={this.state.mapStyle} />
+			</div>
+		</div>
   }
 }
