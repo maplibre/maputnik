@@ -1,0 +1,18 @@
+.button {
+	text-align: center;
+	display: inline-block;
+	margin: 0px;
+	padding: 10px;
+	position: relative;
+	border: none;
+	cursor: pointer;
+	border-radius: 3px;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+	font-family: 'Open Sans Bold', sans-serif;
+	line-height: 20px;
+	font-size: 12px;
+
+	color: #fff;
+	background-color: rgba(255,255,255,0.10);
+}

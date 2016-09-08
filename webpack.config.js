@@ -25,6 +25,18 @@ loaders.push({
 	]
 });
 
+// Mapbox GL
+loaders.push({
+	test: /\.json$/,
+  loader: 'json-loader'
+});
+
+loaders.push({
+	 test: /\.js$/,
+   include: path.resolve('node_modules/mapbox-gl-shaders/index.js'),
+   loader: 'transform/cacheable?brfs'
+});
+
 // local css modules
 loaders.push({
 	test: /[\/\\]src[\/\\].*\.css/,
@@ -49,7 +61,12 @@ module.exports = {
 		extensions: ['', '.js', '.jsx']
 	},
 	module: {
-		loaders
+		loaders,
+		postLoaders: [{
+            include: /node_modules\/mapbox-gl-shaders/,
+            loader: 'transform',
+            query: 'brfs'
+        }]
 	},
 	devServer: {
 		contentBase: "./public",

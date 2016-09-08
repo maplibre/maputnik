@@ -1,15 +1,38 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
-import styles from './index.scss';
+import {Workspace} from './workspace.jsx';
+import {Map} from './map.jsx';
+import {Toolbar} from './toolbar.jsx';
 import React from 'react';
+import styles from './layout.scss';
+import { Drawer, Container, Block, Fixed } from 'rebass'
+import { LayerEditor } from './layers.jsx'
+import theme from './theme.jsx'
 
 export default class App extends React.Component {
+  static childContextTypes = {
+    rebass: React.PropTypes.object,
+		reactIconBase: React.PropTypes.object
+  }
+
+  getChildContext () {
+    return {
+			rebass: theme,
+			reactIconBase: {
+        size: 20,
+      }
+		}
+	}
+
   render() {
     return (
-      <div>
-        <h1>It Works!</h1>
-        <p>This React project just works including <span className={styles.blueBg}>module</span> local styles.</p>
-        <p>Global bootstrap css import works too as you can see on the following button.</p>
-        <p><a className="btn btn-primary btn-lg">Enjoy!</a></p>
+		<div>
+			  <Toolbar />
+			  <Drawer style={{backgroundColor: theme.colors.gray, marginLeft: 60}} open={true} position="left">
+					<LayerEditor />
+        </Drawer>
+				<div className={styles.layoutMap}>
+					<Map />
+				</div>
       </div>
     )
   }
