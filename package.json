@@ -1,7 +1,7 @@
 {
-  "name": "react-webpack-babel",
-  "version": "0.0.3",
-  "description": "React Webpack Babel Starter Kit",
+  "name": "mapolo",
+  "version": "0.0.1",
+  "description": "A MapboxGL visual style editor",
   "main": "''",
   "scripts": {
     "build": "webpack --config webpack.production.config.js --progress --profile --colors",
@@ -10,11 +10,11 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/alicoding/react-webpack-babel"
+    "url": "https://github.com/lukasmartinelli/mapolo"
   },
-  "author": "Ali Al Dallal",
+  "author": "Lukas Martinelli",
   "license": "MIT",
-  "homepage": "https://github.com/alicoding/react-webpack-babel#readme",
+  "homepage": "https://github.com/lukasmartinelli/mapolo#readme",
   "dependencies": {
     "node-sass": "^3.9.2",
     "react": "15.3.0",
