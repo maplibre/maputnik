@@ -7,6 +7,23 @@ import { Drawer, Container, Block, Fixed } from 'rebass'
 import { LayerEditor } from './layers.jsx'
 import theme from './theme.jsx'
 
+export class WorkspaceDrawer extends React.Component {
+	render() {
+		return <Container style={{
+			zIndex: 100,
+			position: "fixed",
+			height: "100%",
+			left: "60",
+			width: 300,
+			top: "0",
+			bottom: "0",
+			backgroundColor: theme.colors.gray}
+		} >
+			<LayerEditor />
+		</Container>;
+	}
+}
+
 export default class App extends React.Component {
   static childContextTypes = {
     rebass: React.PropTypes.object,
@@ -26,9 +43,7 @@ export default class App extends React.Component {
     return (
 		<div>
 			  <Toolbar />
-			  <Drawer style={{backgroundColor: theme.colors.gray, marginLeft: 60}} open={true} position="left">
-					<LayerEditor />
-        </Drawer>
+				<WorkspaceDrawer />
 				<div className={styles.layoutMap}>
 					<Map />
 				</div>
