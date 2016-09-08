@@ -1,4 +1,3 @@
-import 'bootstrap/dist/css/bootstrap.min.css';
 import {Workspace} from './workspace.jsx';
 import {Map} from './map.jsx';
 import {Toolbar} from './toolbar.jsx';

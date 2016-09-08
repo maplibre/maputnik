@@ -19,6 +19,7 @@
     "node-sass": "^3.9.2",
     "react": "15.3.0",
     "react-dom": "15.3.0",
+    "react-file-reader-input": "^1.1.0",
     "react-geomicons": "^2.0.5",
     "react-icons": "^2.2.1",
     "react-map-gl": "^1.4.2",
