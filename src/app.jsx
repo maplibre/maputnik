@@ -4,17 +4,21 @@ import { Drawer, Container, Block, Fixed } from 'rebass'
 import {Map} from './map.jsx'
 import {Toolbar} from './toolbar.jsx'
 import { LayerEditor } from './layers.jsx'
+import { StyleManager } from './style.js'
 
 import theme from './theme.js'
 import layout from './layout.scss'
-import 'react-virtualized/styles.css';
+import 'react-virtualized/styles.css'
 
 export class WorkspaceDrawer extends React.Component {
+	static propTypes = {
+    styleManager: React.PropTypes.object.isRequired
+  }
+
 	render() {
 		let editor = null
-
-		if(this.props.mapStyle) {
-			editor = <LayerEditor layers={this.props.mapStyle.layers}/>
+		if(this.props.styleManager.mapStyle) {
+			editor = <LayerEditor styleManager={this.props.styleManager}/>
 		}
 
 		return <div style={{
@@ -40,14 +44,13 @@ export default class App extends React.Component {
 
 	constructor(props) {
 		super(props)
-		this.updateStyle = this.updateStyle.bind(this);
 		this.state = {
-			mapStyle: null
+			styleManager: new StyleManager(),
 		}
 	}
 
-	updateStyle(newStyle) {
-		this.setState({ mapStyle: newStyle })
+	onStyleUpload(newStyle) {
+		this.setState({ styleManager: new StyleManager(newStyle) })
 	}
 
   getChildContext () {
@@ -60,12 +63,11 @@ export default class App extends React.Component {
 	}
 
   render() {
-		console.log(this.state.mapStyle)
     return <div style={{ fontFamily: theme.fontFamily, color: theme.color }}>
-			<Toolbar onStyleUpload={this.updateStyle} />
-			<WorkspaceDrawer mapStyle={this.state.mapStyle} />
+			<Toolbar onStyleUpload={this.onStyleUpload.bind(this)} />
+			<WorkspaceDrawer styleManager={this.state.styleManager}/>
 			<div className={layout.map}>
-				<Map mapStyle={this.state.mapStyle} />
+				<Map styleManager={this.state.styleManager} />
 			</div>
 		</div>
   }

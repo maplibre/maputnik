@@ -1,27 +1,31 @@
 import React from 'react';
 
-// A wrapper around Mapbox GL style
-export class Style {
-	constructor() {
-		this.styleHistory = [];
-		this.renderers = [];
+// A wrapper around Mapbox GL style to publish
+// and subscribe to map changes
+export class StyleManager {
+	constructor(mapStyle) {
+		this.commandHistory = [];
+		this.subscribers = [];
+		this.mapStyle = mapStyle;
 	}
 
-	load(style) {
-		this.currentStyle = style;
+	onStyleChange(cb) {
+		this.subscribers.push(cb);
 	}
 
-	onRender(cb) {
-		this.renderers.push(cb);
+	changeStyle(command) {
+		this.commandHistory.push(command)
+		this.subscribers.forEach(f => f(command))
+		console.log(command)
 	}
 
-	update(style) {
-		this.styleHistory.push(this.currentStyle);
-		this.currentStyle = style;
-		this.renderers.forEach(r => r(this.currentStyle))
+	layer(layerId) {
+		console.log(this.mapStyle)
+		return this.mapStyle.layers[layerId]
 	}
 
 	layers() {
-		return this.currentStyle.layers;
+		if(this.mapStyle) return this.mapStyle.layers
+		return []
 	}
 }
