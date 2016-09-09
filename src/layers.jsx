@@ -14,7 +14,12 @@ export class FillLayer extends React.Component {
   }
 
 	onPaintChanged(property, e) {
-		this.props.onPaintChanged(property, e.target.value)
+		let value = e.target.value
+		if (property == "fill-opacity") {
+			value = parseFloat(value)
+		}
+
+		this.props.onPaintChanged(property, value)
 	}
 
 	render() {
@@ -26,6 +31,29 @@ export class FillLayer extends React.Component {
 			<Input name="fill-translate-anchor" label="Fill translate anchor" onChange={this.onPaintChanged.bind(this, "fill-translate-anchor")} value={paint["fill-translate-anchor"]} />
 			<Checkbox name="fill-antialias" label="Antialias" onChange={this.onPaintChanged.bind(this, "fill-antialias")} checked={paint["fill-antialias"]} />
 			<Input name="fill-opacity" label="Opacity" onChange={this.onPaintChanged.bind(this, "fill-opacity")} value={paint["fill-opacity"]} />
+		</div>
+	}
+}
+
+export class BackgroundLayer extends React.Component {
+	static propTypes = {
+    layer: React.PropTypes.object.isRequired,
+    onPaintChanged: React.PropTypes.func.isRequired
+  }
+
+	onPaintChanged(property, e) {
+		let value = e.target.value
+		if (property == "background-opacity" && !isNaN(parseFloat(value))) {
+			value = parseFloat(value)
+		}
+		this.props.onPaintChanged(property, value)
+	}
+
+	render() {
+		const paint = this.props.layer.paint
+		return <div>
+			<Input name="background-color" label="Background color" onChange={this.onPaintChanged.bind(this, "background-color")} value={paint["background-color"]} />
+			<Input name="background-opacity" label="Background opacity" onChange={this.onPaintChanged.bind(this, "background-opacity")} value={paint["background-opacity"]} />
 		</div>
 	}
 }
@@ -97,6 +125,10 @@ export class LayerPanel extends React.Component {
 	layerFromType(type) {
 		if (type === "fill") {
 			return <FillLayer layer={this.state.layer} onPaintChanged={this.onPaintChanged.bind(this)} />
+		}
+
+		if (type === "background") {
+			return <BackgroundLayer layer={this.state.layer} onPaintChanged={this.onPaintChanged.bind(this)} />
 		}
 
 		if (type === "line") {
