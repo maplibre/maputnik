@@ -6,6 +6,7 @@ import {MdVisibility, MdArrowDropDown, MdArrowDropUp, MdAddToPhotos, MdDelete, M
 import Collapse from 'react-collapse'
 import theme from './theme.js'
 import scrollbars from './scrollbars.scss'
+import _ from 'lodash'
 
 export class FillLayer extends React.Component {
 	static propTypes = {
@@ -104,13 +105,13 @@ export class LayerPanel extends React.Component {
 	}
 
 	onPaintChanged(property, newValue) {
-		const layer = this.props.layer
+		const layer = _.cloneDeep(this.props.layer)
 		layer.paint[property] = newValue;
 		this.props.onLayerChanged(layer)
 	}
 
 	onLayoutChanged(property, newValue) {
-		const layer = this.props.layer
+		const layer = _.cloneDeep(this.props.layer)
 		layer.layout[property] = newValue;
 		this.props.onLayerChanged(layer)
 	}
@@ -192,7 +193,7 @@ export class LayerPanel extends React.Component {
 
 export class LayerEditor extends React.Component {
 	static propTypes = {
-    layers: React.PropTypes.array.isRequired,
+		layers: React.PropTypes.array.isRequired,
     onLayersChanged: React.PropTypes.func.isRequired
   }
 
@@ -201,28 +202,30 @@ export class LayerEditor extends React.Component {
 	}
 
 	onLayerDestroyed(deletedLayer) {
+		//TODO: That's just horrible...
 		let deleteIdx = -1
+
 		for (let i = 0; i < this.props.layers.length; i++) {
-				if(this.props.layers[i].id == deletedLayer.id) {
-					deleteIdx = i
-				}
+			if(this.props.layers[i].id == deletedLayer.id) {
+				deleteIdx = i
+			}
 		}
 
-		const remainingLayers = this.props.layers
-		const removedLayers = remainingLayers.splice(deleteIdx, 1)
+		const remainingLayers = this.props.layers.slice(0)
+		remainingLayers.splice(deleteIdx, 0)
 		this.props.onLayersChanged(remainingLayers)
 	}
 
 	onLayerChanged(changedLayer) {
-		let changedIdx = -1
+		//TODO: That's just horrible...
+		let changeIdx = -1
 		for (let i = 0; i < this.props.layers.length; i++) {
-				if(this.props.layers[i].id == changedLayer.id) {
-					changedIdx = i
-				}
+			if(this.props.layers[i].id == changedLayer.id) {
+				changeIdx = i
+			}
 		}
-
-		const changedLayers = this.props.layers
-		changedLayers[changedIdx] = changedLayer
+		const changedLayers = _.cloneDeep(this.props.layers)
+		changedLayers[changeIdx] = changedLayer
 		this.props.onLayersChanged(changedLayers)
 	}
 

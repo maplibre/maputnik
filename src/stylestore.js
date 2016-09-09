@@ -94,6 +94,7 @@ export class StyleStore {
 			mapStyle.created = new Date()
 		}
 		mapStyle.layers = colorizeLayers(mapStyle.layers)
+
 		this.backup(mapStyle)
 		this.currentStyle = mapStyle
 	}
