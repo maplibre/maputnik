@@ -1,5 +1,6 @@
 import React from 'react'
 import { LayerEditor } from './layers.jsx'
+import { SettingsEditor } from './settings.jsx'
 import theme from './theme.js'
 
 /** The workspace drawer contains the editor components depending on the context
@@ -15,6 +16,10 @@ export class WorkspaceDrawer extends React.Component {
 
 		if(this.props.workContext === "layers" && this.props.styleManager.mapStyle) {
 			workspaceContent = <LayerEditor styleManager={this.props.styleManager}/>
+		}
+
+		if(this.props.workContext === "settings" && this.props.styleManager.mapStyle) {
+			workspaceContent = <SettingsEditor styleManager={this.props.styleManager}/>
 		}
 
 		return <div style={{

@@ -1,5 +1,5 @@
 import React from 'react'
-
+import randomColor from 'randomcolor'
 import { Block, ButtonCircle, Heading, Checkbox, Slider, Switch, Input, Panel, PanelHeader, Toolbar, NavItem, Tooltip, Container, Space} from 'rebass'
 import { Button, Text } from 'rebass'
 import {MdArrowDropDown, MdArrowDropUp, MdAddToPhotos, MdDelete, MdVisibilityOff} from 'react-icons/lib/md';
@@ -146,13 +146,14 @@ export class LayerPanel extends React.Component {
 				padding: theme.scale[0],
 				borderBottom: 1,
 				borderTop: 1,
-				borderLeft: 0,
+				borderLeft: 2,
 				borderRight: 0,
 				borderStyle: "solid",
 				borderColor: theme.borderColor,
+				borderLeftColor: this.state.layer.metadata["mapolo:color"],
 			}}>
 			<Toolbar onClick={this.toggleLayer.bind(this)}>
-				<NavItem>
+				<NavItem style={{fontWeight: 400}}>
 					#{this.state.layer.id}
 				</NavItem>
 				<Space auto x={1} />
@@ -164,7 +165,7 @@ export class LayerPanel extends React.Component {
 				</NavItem>
 			</Toolbar>
 			<Collapse isOpened={this.state.isOpened}>
-				<div style={{padding: theme.scale[2], paddingRight: 0}}>
+				<div style={{padding: theme.scale[2], paddingRight: 0, backgroundColor: theme.colors.black}}>
 				{this.layerFromType(this.state.layer.type)}
 				</div>
 			</Collapse>
@@ -186,7 +187,7 @@ export class LayerEditor extends React.Component {
 		return <div>
 			<Toolbar style={{marginRight: 20}}>
 				<NavItem>
-					Layers
+					<Heading>Layers</Heading>
 				</NavItem>
 				<Space auto x={1} />
 				<Button>

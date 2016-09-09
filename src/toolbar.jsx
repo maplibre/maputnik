@@ -49,7 +49,6 @@ export class Toolbar extends React.Component {
 			</Block>
 		}
 
-		console.log(this.state)
 		return <Container style={{
 			zIndex: 100,
 			position: "fixed",

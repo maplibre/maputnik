@@ -1,6 +1,6 @@
 import React from 'react'
 import theme from './theme.js'
-import { Container, Input, Toolbar, NavItem, Space } from 'rebass'
+import { Heading, Container, Input, Toolbar, NavItem, Space } from 'rebass'
 
 /** Edit global settings within a style such as the name */
 export class SettingsEditor extends React.Component {
@@ -26,9 +26,8 @@ export class SettingsEditor extends React.Component {
 		return <div>
 			<Toolbar style={{marginRight: 20}}>
 				<NavItem>
-					Settings
+					<Heading>Settings</Heading>
 				</NavItem>
-				<Space auto x={1} />
 			</Toolbar>
 			<Container>
 				<Input

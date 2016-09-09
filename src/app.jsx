@@ -57,7 +57,7 @@ export default class App extends React.Component {
 	}
 
   render() {
-    return <div style={{ fontFamily: theme.fontFamily, color: theme.color }}>
+    return <div style={{ fontFamily: theme.fontFamily, color: theme.color, fontWeight: 300 }}>
 			<Toolbar
 					onStyleUpload={this.onStyleUpload.bind(this)}
 					onStyleDownload={this.onStyleDownload.bind(this)}

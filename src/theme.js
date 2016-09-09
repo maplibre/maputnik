@@ -41,7 +41,7 @@ const border = {
 const dark = {
   name: 'Dark',
   color: colors.white,
-	fontFamily: 'Open Sans Bold, sans-serif',
+	fontFamily: 'Roboto, sans-serif',
   scale,
 	fontSizes,
   colors,
@@ -83,7 +83,11 @@ const dark = {
 		fontWeight: 400,
 		minHeight: scale[3]
 	},
+	Label: {
+		fontWeight: 300,
+	},
 	Input: {
+		fontWeight: 300,
 		fontSize: fontSizes[5],
 	},
 }
