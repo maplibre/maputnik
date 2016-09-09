@@ -1,7 +1,8 @@
 import React from 'react'
 
-import { Heading, Checkbox, Slider, Switch, Input, Panel, PanelHeader, Toolbar, NavItem, Tooltip, Container, Space} from 'rebass'
+import { Block, ButtonCircle, Heading, Checkbox, Slider, Switch, Input, Panel, PanelHeader, Toolbar, NavItem, Tooltip, Container, Space} from 'rebass'
 import { Button, Text } from 'rebass'
+import {MdArrowDropDown, MdArrowDropUp, MdAddToPhotos, MdDelete, MdVisibilityOff} from 'react-icons/lib/md';
 import Collapse from 'react-collapse'
 import theme from './theme.js'
 import scrollbars from './scrollbars.scss'
@@ -9,9 +10,15 @@ import scrollbars from './scrollbars.scss'
 export class FillLayer extends React.Component {
 	render() {
 		return <div>
-			<Checkbox name="fill-antialias" label="Antialias" checked={this.props.paint["fill-antialias"]} />
-			<Input name="fill-opacity" label="Opacity" defaultValue={this.props.paint["fill-opacity"]} />
+			<Input name="fill-color" label="Fill color" onChange={this.props.changePaint} value={this.props.paint["fill-color"]} />
+			<Input name="fill-outline-color" label="Fill outline color" onChange={this.props.changePaint} value={this.props.paint["fill-outline-color"]} />
+			<Input name="fill-translate" label="Fill translate" onChange={this.props.changePaint} value={this.props.paint["fill-translate"]} />
+			<Input name="fill-translate-anchor" label="Fill translate anchor" onChange={this.props.changePaint} value={this.props.paint["fill-translate-anchor"]} />
+			<Checkbox name="fill-antialias" label="Antialias" onChange={this.props.changePaint} checked={this.props.paint["fill-antialias"]} />
+			<Input name="fill-opacity" label="Opacity" onChange={this.props.changePaint} value={this.props.paint["fill-opacity"]} />
 		</div>
+
+
 	}
 }
 
@@ -28,11 +35,24 @@ export class SymbolLayer extends React.Component {
 }
 
 export class LayerPanel extends React.Component {
+  static childContextTypes = {
+		reactIconBase: React.PropTypes.object
+  }
+
 	constructor(props) {
 		super(props);
 		this.toggleLayer = this.toggleLayer.bind(this);
 		this.state = {
 			isOpened: false
+		}
+	}
+
+  getChildContext () {
+    return {
+			reactIconBase: {
+        size: theme.fontSizes[4],
+				color: theme.colors.lowgray,
+      }
 		}
 	}
 
@@ -48,14 +68,33 @@ export class LayerPanel extends React.Component {
 			layer = <SymbolLayer />
 		}
 
-		return <Panel>
-			<PanelHeader onClick={this.toggleLayer} theme="default">
-				#{this.props.layer.id}
-			</PanelHeader>
+		return <div style={{
+				padding: theme.scale[0],
+				borderBottom: 1,
+				borderTop: 1,
+				borderLeft: 0,
+				borderRight: 0,
+				borderStyle: "solid",
+				borderColor: theme.borderColor,
+			}}>
+			<Toolbar onClick={this.toggleLayer}>
+				<NavItem>
+					#{this.props.layer.id}
+				</NavItem>
+				<Space auto x={1} />
+				<NavItem>
+					<MdVisibilityOff />
+				</NavItem>
+				<NavItem>
+					<MdDelete />
+				</NavItem>
+			</Toolbar>
 			<Collapse isOpened={this.state.isOpened}>
+				<div style={{padding: theme.scale[2], paddingRight: 0}}>
 				{layer}
+				</div>
 			</Collapse>
-		</Panel>
+		</div>
 	}
 }
 
@@ -65,7 +104,17 @@ export class LayerEditor extends React.Component {
 			return <LayerPanel key={layer.id} layer={layer} />
 		});
 		return <div>
-			<Heading level={2}>Layers</Heading>
+			<Toolbar style={{marginRight: 20}}>
+				<NavItem>
+					Layers
+				</NavItem>
+				<Space auto x={1} />
+				<Button>
+					<MdAddToPhotos />
+					Add Layer
+				</Button>
+			</Toolbar>
+
 			<div className={scrollbars.darkScrollbar} style={{
 				overflowY: "scroll",
 				bottom:0,

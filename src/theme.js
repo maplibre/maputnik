@@ -7,6 +7,7 @@ const baseColors = {
 	black: '#242424',
 	gray: '#313131',
 	midgray: '#778',
+	lowgray: '#dcdcdc',
 	white: '#fff',
 	blue: '#00d9f7',
 	green: '#0f8',
@@ -29,7 +30,7 @@ const colors = {
 	...themeColors
 }
 
-const scale = [3, 5, 10, 20, 40]
+const scale = [3, 5, 10, 30, 40]
 const fontSizes = [28, 24, 20, 16, 14, 12, 10]
 
 const border = {
@@ -47,7 +48,7 @@ const dark = {
   inverted: colors.midGray,
 	...border,
 
-	Panel: {
+	Block: {
     backgroundColor: colors.gray,
 		...border,
 		borderLeft: 0,
@@ -75,6 +76,15 @@ const dark = {
   },
 	Header: {
 		fontWeight: 400,
+	},
+	ButtonCircle : {
+	},
+	Toolbar: {
+		fontWeight: 400,
+		minHeight: scale[3]
+	},
+	Input: {
+		fontSize: fontSizes[5],
 	},
 }
 
