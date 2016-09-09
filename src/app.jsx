@@ -60,7 +60,7 @@ export default class App extends React.Component {
 
   render() {
 		console.log(this.state.mapStyle)
-    return <div>
+    return <div style={{ fontFamily: theme.fontFamily, color: theme.color }}>
 			<Toolbar onStyleUpload={this.updateStyle} />
 			<WorkspaceDrawer mapStyle={this.state.mapStyle} />
 			<div className={layout.map}>

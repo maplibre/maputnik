@@ -1,7 +1,6 @@
 import React from 'react'
-import ScrollArea from 'react-scrollbar'
 
-import { Checkbox, Slider, Switch, Input, Panel, PanelHeader, Toolbar, NavItem, Tooltip, Container, Space} from 'rebass'
+import { Heading, Checkbox, Slider, Switch, Input, Panel, PanelHeader, Toolbar, NavItem, Tooltip, Container, Space} from 'rebass'
 import { Button, Text } from 'rebass'
 import Collapse from 'react-collapse'
 
@@ -50,7 +49,9 @@ export class LayerPanel extends React.Component {
 		}
 
 		return <Panel>
-			<PanelHeader onClick={this.toggleLayer} inverted theme="default">{this.props.layer.id}</PanelHeader>
+			<PanelHeader onClick={this.toggleLayer} theme="default">
+				#{this.props.layer.id}
+			</PanelHeader>
 			<Collapse isOpened={this.state.isOpened}>
 				{layer}
 			</Collapse>
@@ -64,10 +65,8 @@ export class LayerEditor extends React.Component {
 			return <LayerPanel key={layer.id} layer={layer} />
 		});
 		return <div>
-			<Toolbar>
-				<NavItem is="a"> Toolbar </NavItem>
-			</Toolbar>
-			<ScrollArea speed={0.8} horizontal={false}>{layerPanels}</ScrollArea>
+			<Heading level={2}>Layers</Heading>
+			{layerPanels}
 		</div>
 	}
 }

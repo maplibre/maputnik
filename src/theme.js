@@ -3,54 +3,66 @@ const caps = {
   letterSpacing: '.2em'
 }
 
+const baseColors = {
+	black: '#242424',
+	gray: '#313131',
+	midgray: '#778',
+	white: '#fff',
+	blue: '#00d9f7',
+	green: '#0f8',
+	orange: '#fb3',
+	red: '#f04',
+}
+
+const themeColors = {
+	primary: baseColors.gray,
+	secondary: baseColors.midgray,
+	default: baseColors.gray,
+	info: baseColors.blue,
+	success: baseColors.green,
+	warning: baseColors.orange,
+	error: baseColors.red
+}
+
+const colors = {
+	...baseColors,
+	...themeColors
+}
+
+const scale = [3, 5, 10, 20, 40]
+const fontSizes = [28, 24, 20, 16, 14, 12, 10]
+
+const border = {
+  borderColor: colors.black,
+  borderRadius: 0,
+}
+
 const dark = {
   name: 'Dark',
-  color: '#eee',
-  fontFamily: '-apple-system, BlinkMacSystemFont, sans-serif',
-  backgroundColor: '#111',
-  borderRadius: 5,
-  borderColor: `rgba(255, 255, 255, ${1/16})`,
+  color: colors.white,
+	fontFamily: 'Roboto, sans-serif',
+  scale,
+	fontSizes,
+  colors,
+  inverted: colors.midGray,
+	...border,
 
-  colors: {
-		black: '#242424',
-		gray: '#313131',
-		white: '#fff',
-    blue: '#00d9f7',
-    info: '#00d9f7',
-    green: '#0f8',
-    success: '#0f8',
-    orange: '#fb3',
-    warning: '#fb3',
-    primary: '#778',
-    midgray: '#778',
-    gray: '#333339',
-    secondary: '#333339',
-    red: '#f04',
-    error: '#f04'
-  },
-  inverted: '#222',
-
-  scale: [
-    3, 5, 10, 20, 40
-  ],
-
-  Card: {
-    backgroundColor: '#222',
-    border: 0,
-  },
-  Heading: caps,
+	Panel: {
+    backgroundColor: colors.gray,
+		...border,
+		borderLeft: 0,
+		borderRight: 0,
+		marginBottom: 0,
+	},
+	PanelHeader: {
+		marginRight: -10,
+		fontSize: fontSizes[4],
+		fontWeight: 400,
+		color: colors.white,
+	},
   Button: {
     color: '#00d9f7',
   },
-  ButtonOutline: {
-    color: '#00d9f7',
-  },
-  Toolbar: {
-    minHeight: 64,
-    color: '#00d9f7',
-    backgroundColor: "rgba(0, 0, 0, 0.8)"
-  },
-  Label: { opacity: 5/8 },
   Menu: {
     color: '#00d9f7',
     backgroundColor: '#000'
@@ -59,12 +71,9 @@ const dark = {
     color: '#111',
     opacity: 15/16
   },
-  Text: {
-    opacity: 7/8
-  },
-  Footer: {
-    opacity: 1/2
-  }
+	Header: {
+		fontWeight: 400,
+	},
 }
 
 export default dark
