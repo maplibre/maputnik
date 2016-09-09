@@ -3,8 +3,8 @@ import React from 'react'
 import { Heading, Checkbox, Slider, Switch, Input, Panel, PanelHeader, Toolbar, NavItem, Tooltip, Container, Space} from 'rebass'
 import { Button, Text } from 'rebass'
 import Collapse from 'react-collapse'
-
 import theme from './theme.js'
+import scrollbars from './scrollbars.scss'
 
 export class FillLayer extends React.Component {
 	render() {
@@ -66,7 +66,16 @@ export class LayerEditor extends React.Component {
 		});
 		return <div>
 			<Heading level={2}>Layers</Heading>
+			<div className={scrollbars.darkScrollbar} style={{
+				overflowY: "scroll",
+				bottom:0,
+				left:0,
+				right:0,
+				top:40,
+				position: "absolute",
+			}}>
 			{layerPanels}
+			</div>
 		</div>
 	}
 }

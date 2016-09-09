@@ -7,6 +7,7 @@ import { LayerEditor } from './layers.jsx'
 
 import theme from './theme.js'
 import layout from './layout.scss'
+import 'react-virtualized/styles.css';
 
 export class WorkspaceDrawer extends React.Component {
 	render() {
@@ -19,13 +20,13 @@ export class WorkspaceDrawer extends React.Component {
 		return <div style={{
 			zIndex: 100,
 			position: "fixed",
-			height: "100%",
-			left: "60",
+			left: 60,
 			width: 300,
-			top: "0",
-			bottom: "0",
+			top: 0,
+			bottom: 0,
+			overflow: "hidden",
 			backgroundColor: theme.colors.gray}
-		} >
+		}>
 			{editor}
 		</div>
 	}

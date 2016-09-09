@@ -40,7 +40,7 @@ const border = {
 const dark = {
   name: 'Dark',
   color: colors.white,
-	fontFamily: 'Roboto, sans-serif',
+	fontFamily: 'Open Sans Bold, sans-serif',
   scale,
 	fontSizes,
   colors,
@@ -53,10 +53,12 @@ const dark = {
 		borderLeft: 0,
 		borderRight: 0,
 		marginBottom: 0,
+		paddingBottom: 0,
 	},
 	PanelHeader: {
 		marginRight: -10,
-		fontSize: fontSizes[4],
+		marginBottom: 0,
+		fontSize: fontSizes[5],
 		fontWeight: 400,
 		color: colors.white,
 	},
