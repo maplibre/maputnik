@@ -79,7 +79,8 @@ export class NoLayer extends React.Component {
 export class LayerPanel extends React.Component {
 	static propTypes = {
     layer: React.PropTypes.object.isRequired,
-    styleManager: React.PropTypes.object.isRequired
+    styleManager: React.PropTypes.object.isRequired,
+    destroyLayer: React.PropTypes.func.isRequired,
   }
 
   static childContextTypes = {
@@ -184,7 +185,7 @@ export class LayerPanel extends React.Component {
 				<NavItem onClick={this.toggleVisibility.bind(this)}>
 				  {visibleIcon}
 				</NavItem>
-				<NavItem>
+				<NavItem onClick={(e) => this.props.destroyLayer(this.state.layer.id)}>
 					<MdDelete />
 				</NavItem>
 			</Toolbar>
@@ -202,10 +203,22 @@ export class LayerEditor extends React.Component {
     styleManager: React.PropTypes.object.isRequired
   }
 
+	destroyLayer(layerId) {
+		this.props.styleManager.changeStyle({
+			command: 'removeLayer',
+			args: [layerId]
+		})
+	}
+
 	render() {
 		const layers = this.props.styleManager.layers()
 		const layerPanels = layers.map(layer => {
-			return <LayerPanel key={layer.id} layer={layer} styleManager={this.props.styleManager} />
+			return <LayerPanel
+				key={layer.id}
+				layer={layer}
+				destroyLayer={this.destroyLayer.bind(this)}
+				styleManager={this.props.styleManager}
+			/>
 		});
 
 		return <div>
@@ -214,10 +227,6 @@ export class LayerEditor extends React.Component {
 					<Heading>Layers</Heading>
 				</NavItem>
 				<Space auto x={1} />
-				<Button>
-					<MdAddToPhotos />
-					Add Layer
-				</Button>
 			</Toolbar>
 
 			<div className={scrollbars.darkScrollbar} style={{
