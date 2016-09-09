@@ -10,7 +10,9 @@ import theme from './theme.js';
 export class Toolbar extends React.Component {
 	static propTypes = {
     onStyleUpload: React.PropTypes.func.isRequired,
-    onStyleDownload: React.PropTypes.func.isRequired
+    onStyleDownload: React.PropTypes.func.isRequired,
+    onOpenSettings: React.PropTypes.func,
+    onOpenLayers: React.PropTypes.func,
   }
 
 	constructor(props) {
@@ -68,9 +70,16 @@ export class Toolbar extends React.Component {
 			</Block>
 			{downloadButton}
 			<Block>
-				<Button big={true}>
+				<Button big={true} onClick={this.props.onOpenLayers}>
 					<Tooltip inverted rounded title="Layers">
 						<MdLayers />
+          </Tooltip>
+				</Button>
+			</Block>
+			<Block>
+				<Button big={true} onClick={this.props.onOpenSettings}>
+					<Tooltip inverted rounded title="Settings">
+						<MdSettings />
           </Tooltip>
 				</Button>
 			</Block>

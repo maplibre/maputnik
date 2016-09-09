@@ -4,38 +4,12 @@ import {saveAs} from 'file-saver'
 import { Drawer, Container, Block, Fixed } from 'rebass'
 import {Map} from './map.jsx'
 import {Toolbar} from './toolbar.jsx'
-import { LayerEditor } from './layers.jsx'
 import { StyleManager } from './style.js'
+import { WorkspaceDrawer } from './workspace.jsx'
 
 import theme from './theme.js'
 import layout from './layout.scss'
 import 'react-virtualized/styles.css'
-
-export class WorkspaceDrawer extends React.Component {
-	static propTypes = {
-    styleManager: React.PropTypes.object.isRequired
-  }
-
-	render() {
-		let editor = null
-		if(this.props.styleManager.mapStyle) {
-			editor = <LayerEditor styleManager={this.props.styleManager}/>
-		}
-
-		return <div style={{
-			zIndex: 100,
-			position: "fixed",
-			left: 60,
-			width: 300,
-			top: 0,
-			bottom: 0,
-			overflow: "hidden",
-			backgroundColor: theme.colors.gray}
-		}>
-			{editor}
-		</div>
-	}
-}
 
 export default class App extends React.Component {
   static childContextTypes = {
@@ -47,6 +21,7 @@ export default class App extends React.Component {
 		super(props)
 		this.state = {
 			styleManager: new StyleManager(),
+			workContext: "layers",
 		}
 	}
 
@@ -60,7 +35,19 @@ export default class App extends React.Component {
 		this.setState({ styleManager: new StyleManager(newStyle) })
 	}
 
-  getChildContext () {
+	onOpenSettings() {
+		this.setState({
+			workContext: "settings",
+		})
+	}
+
+	onOpenLayers() {
+		this.setState({
+			workContext: "layers",
+		})
+	}
+
+  getChildContext() {
     return {
 			rebass: theme,
 			reactIconBase: {
@@ -71,8 +58,13 @@ export default class App extends React.Component {
 
   render() {
     return <div style={{ fontFamily: theme.fontFamily, color: theme.color }}>
-			<Toolbar onStyleUpload={this.onStyleUpload.bind(this)} onStyleDownload={this.onStyleDownload.bind(this)} />
-			<WorkspaceDrawer styleManager={this.state.styleManager}/>
+			<Toolbar
+					onStyleUpload={this.onStyleUpload.bind(this)}
+					onStyleDownload={this.onStyleDownload.bind(this)}
+					onOpenSettings={this.onOpenSettings.bind(this)}
+					onOpenLayers={this.onOpenLayers.bind(this)}
+			/>
+			<WorkspaceDrawer workContext={this.state.workContext} styleManager={this.state.styleManager}/>
 			<div className={layout.map}>
 				<Map styleManager={this.state.styleManager} />
 			</div>
