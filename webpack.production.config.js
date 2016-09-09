@@ -58,7 +58,7 @@ module.exports = {
 		}),
 		new HtmlWebpackPlugin({
 			template: './src/template.html',
-			title: 'Webpack App'
+			title: 'Mapolo'
 		}),
 		new webpack.optimize.DedupePlugin()
 	]

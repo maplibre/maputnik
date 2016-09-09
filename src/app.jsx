@@ -5,6 +5,7 @@ import { Drawer, Container, Block, Fixed } from 'rebass'
 import {Map} from './map.jsx'
 import {Toolbar} from './toolbar.jsx'
 import { StyleManager } from './style.js'
+import { StyleStore } from './stylestore.js'
 import { WorkspaceDrawer } from './workspace.jsx'
 
 import theme from './theme.js'
@@ -20,40 +21,38 @@ export default class App extends React.Component {
 	constructor(props) {
 		super(props)
 		this.state = {
-			styleManager: new StyleManager(),
+			styleStore: new StyleStore(),
 			workContext: "layers",
 		}
-	}
-
-	onStyleDownload() {
-		const mapStyle = this.state.styleManager.exportStyle()
-		const blob = new Blob([mapStyle], {type: "application/json;charset=utf-8"});
-		saveAs(blob, "glstyle.json");
-	}
-
-	onStyleUpload(newStyle) {
-		this.setState({ styleManager: new StyleManager(newStyle) })
-	}
-
-	onOpenSettings() {
-		this.setState({
-			workContext: "settings",
-		})
-	}
-
-	onOpenLayers() {
-		this.setState({
-			workContext: "layers",
-		})
 	}
 
   getChildContext() {
     return {
 			rebass: theme,
-			reactIconBase: {
-        size: 20,
-      }
+			reactIconBase: { size: 20 }
 		}
+	}
+
+	onStyleDownload() {
+		const mapStyle =  JSON.stringify(this.state.styleStore.currentStyle, null, 4)
+		const blob = new Blob([mapStyle], {type: "application/json;charset=utf-8"});
+		saveAs(blob, mapStyle.id + ".json");
+	}
+
+	onStyleUpload(newStyle) {
+		this.setState({ styleStore: new StyleStore(newStyle) })
+	}
+
+	onStyleChanged(newStyle) {
+		this.setState({ styleStore: new StyleStore(newStyle) })
+	}
+
+	onOpenSettings() {
+		this.setState({ workContext: "settings", })
+	}
+
+	onOpenLayers() {
+		this.setState({ workContext: "layers", })
 	}
 
   render() {
@@ -64,9 +63,13 @@ export default class App extends React.Component {
 					onOpenSettings={this.onOpenSettings.bind(this)}
 					onOpenLayers={this.onOpenLayers.bind(this)}
 			/>
-			<WorkspaceDrawer workContext={this.state.workContext} styleManager={this.state.styleManager}/>
+			<WorkspaceDrawer
+				onStyleChanged={this.onStyleChanged.bind(this)}
+				workContext={this.state.workContext}
+				mapStyle={this.state.styleStore.currentStyle}
+			/>
 			<div className={layout.map}>
-				<Map styleManager={this.state.styleManager} />
+				<Map mapStyle={this.state.styleStore.currentStyle} />
 			</div>
 		</div>
   }

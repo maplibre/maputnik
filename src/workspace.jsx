@@ -3,23 +3,36 @@ import { LayerEditor } from './layers.jsx'
 import { SettingsEditor } from './settings.jsx'
 import theme from './theme.js'
 
-/** The workspace drawer contains the editor components depending on the context
- * chosen in the toolbar. */
+/** The workspace drawer contains the editor components depending on the edit
+ * context chosen in the toolbar. It holds the state of the layers.*/
 export class WorkspaceDrawer extends React.Component {
 	static propTypes = {
+		mapStyle: React.PropTypes.object.isRequired,
+		onStyleChanged: React.PropTypes.func.isRequired,
     workContext: React.PropTypes.oneOf(['layers', 'settings']).isRequired,
-    styleManager: React.PropTypes.object.isRequired
   }
+
+	onLayersChanged(layers) {
+		const changedStyle = this.props.mapStyle
+		changedStyle.layers = layers
+		this.props.onStyleChanged(changedStyle)
+	}
 
 	render() {
 		let workspaceContent = null
 
-		if(this.props.workContext === "layers" && this.props.styleManager.mapStyle) {
-			workspaceContent = <LayerEditor styleManager={this.props.styleManager}/>
+		if(this.props.workContext === "layers") {
+			workspaceContent = <LayerEditor
+				onLayersChanged={this.onLayersChanged.bind(this)}
+				layers={this.props.mapStyle.layers}
+			/>
 		}
 
-		if(this.props.workContext === "settings" && this.props.styleManager.mapStyle) {
-			workspaceContent = <SettingsEditor styleManager={this.props.styleManager}/>
+		if(this.props.workContext === "settings") {
+			workspaceContent = <SettingsEditor
+				onStyleChanged={this.props.onStyleChanged}
+				mapStyle={this.props.mapStyle}
+			/>
 		}
 
 		return <div style={{

@@ -79,8 +79,8 @@ export class NoLayer extends React.Component {
 export class LayerPanel extends React.Component {
 	static propTypes = {
     layer: React.PropTypes.object.isRequired,
-    styleManager: React.PropTypes.object.isRequired,
-    destroyLayer: React.PropTypes.func.isRequired,
+    onLayerChanged: React.PropTypes.func.isRequired,
+    onLayerDestroyed: React.PropTypes.func.isRequired,
   }
 
   static childContextTypes = {
@@ -91,10 +91,6 @@ export class LayerPanel extends React.Component {
 		super(props);
 		this.state = {
 			isOpened: false,
-			//TODO: Is that bad practice?
-			//however I want to keep the layer state local herere
-			//otherwise the style always would, propagate around?
-			layer: this.props.layer
 		}
 	}
 
@@ -108,25 +104,15 @@ export class LayerPanel extends React.Component {
 	}
 
 	onPaintChanged(property, newValue) {
-		let layer = this.state.layer
+		const layer = this.props.layer
 		layer.paint[property] = newValue;
-
-		this.props.styleManager.changeStyle({
-			command: 'setPaintProperty',
-			args: [layer.id, property, newValue]
-		})
-
-		this.setState({ layer });
+		this.props.onLayerChanged(layer)
 	}
 
 	onLayoutChanged(property, newValue) {
-		let layer = this.state.layer
+		const layer = this.props.layer
 		layer.layout[property] = newValue;
-		this.props.styleManager.changeStyle({
-			command: 'setLayoutProperty',
-			args: [layer.id, property, newValue]
-		})
-		this.setState({ layer });
+		this.props.onLayerChanged(layer)
 	}
 
 	toggleLayer() {
@@ -135,11 +121,17 @@ export class LayerPanel extends React.Component {
 
 	layerFromType(type) {
 		if (type === "fill") {
-			return <FillLayer layer={this.state.layer} onPaintChanged={this.onPaintChanged.bind(this)} />
+			return <FillLayer
+				layer={this.props.layer}
+				onPaintChanged={this.onPaintChanged.bind(this)}
+			/>
 		}
 
 		if (type === "background") {
-			return <BackgroundLayer layer={this.state.layer} onPaintChanged={this.onPaintChanged.bind(this)} />
+			return <BackgroundLayer
+				layer={this.props.layer}
+				onPaintChanged={this.onPaintChanged.bind(this)}
+			/>
 		}
 
 		if (type === "line") {
@@ -149,12 +141,12 @@ export class LayerPanel extends React.Component {
 		if (type === "symbol") {
 			return <SymbolLayer />
 		}
+
 		return <NoLayer />
 	}
 
 	toggleVisibility() {
-		console.log(this.state.layer)
-		if(this.state.layer.layout.visibility === 'none') {
+		if(this.props.layer.layout.visibility === 'none') {
 			this.onLayoutChanged('visibility', 'visible')
 		} else {
 			this.onLayoutChanged('visibility', 'none')
@@ -163,7 +155,7 @@ export class LayerPanel extends React.Component {
 
 	render() {
 		let visibleIcon = <MdVisibilityOff />
-		if(this.state.layer.layout && this.state.layer.layout.visibility === 'none') {
+		if(this.props.layer.layout && this.props.layer.layout.visibility === 'none') {
 			visibleIcon = <MdVisibility />
 		}
 
@@ -175,23 +167,23 @@ export class LayerPanel extends React.Component {
 				borderRight: 0,
 				borderStyle: "solid",
 				borderColor: theme.borderColor,
-				borderLeftColor: this.state.layer.metadata["mapolo:color"],
+				borderLeftColor: this.props.layer.metadata["mapolo:color"],
 			}}>
 			<Toolbar onClick={this.toggleLayer.bind(this)}>
 				<NavItem style={{fontWeight: 400}}>
-					#{this.state.layer.id}
+					#{this.props.layer.id}
 				</NavItem>
 				<Space auto x={1} />
 				<NavItem onClick={this.toggleVisibility.bind(this)}>
 				  {visibleIcon}
 				</NavItem>
-				<NavItem onClick={(e) => this.props.destroyLayer(this.state.layer.id)}>
+				<NavItem onClick={(e) => this.props.onLayerDestroyed(this.props.layer)}>
 					<MdDelete />
 				</NavItem>
 			</Toolbar>
 			<Collapse isOpened={this.state.isOpened}>
 				<div style={{padding: theme.scale[2], paddingRight: 0, backgroundColor: theme.colors.black}}>
-				{this.layerFromType(this.state.layer.type)}
+				{this.layerFromType(this.props.layer.type)}
 				</div>
 			</Collapse>
 		</div>
@@ -200,24 +192,47 @@ export class LayerPanel extends React.Component {
 
 export class LayerEditor extends React.Component {
 	static propTypes = {
-    styleManager: React.PropTypes.object.isRequired
+    layers: React.PropTypes.array.isRequired,
+    onLayersChanged: React.PropTypes.func.isRequired
   }
 
-	destroyLayer(layerId) {
-		this.props.styleManager.changeStyle({
-			command: 'removeLayer',
-			args: [layerId]
-		})
+	constructor(props) {
+		super(props)
+	}
+
+	onLayerDestroyed(deletedLayer) {
+		let deleteIdx = -1
+		for (let i = 0; i < this.props.layers.length; i++) {
+				if(this.props.layers[i].id == deletedLayer.id) {
+					deleteIdx = i
+				}
+		}
+
+		const remainingLayers = this.props.layers
+		const removedLayers = remainingLayers.splice(deleteIdx, 1)
+		this.props.onLayersChanged(remainingLayers)
+	}
+
+	onLayerChanged(changedLayer) {
+		let changedIdx = -1
+		for (let i = 0; i < this.props.layers.length; i++) {
+				if(this.props.layers[i].id == changedLayer.id) {
+					changedIdx = i
+				}
+		}
+
+		const changedLayers = this.props.layers
+		changedLayers[changedIdx] = changedLayer
+		this.props.onLayersChanged(changedLayers)
 	}
 
 	render() {
-		const layers = this.props.styleManager.layers()
-		const layerPanels = layers.map(layer => {
+		const layerPanels = this.props.layers.map(layer => {
 			return <LayerPanel
 				key={layer.id}
 				layer={layer}
-				destroyLayer={this.destroyLayer.bind(this)}
-				styleManager={this.props.styleManager}
+				onLayerDestroyed={this.onLayerDestroyed.bind(this)}
+				onLayerChanged={this.onLayerChanged.bind(this)}
 			/>
 		});
 

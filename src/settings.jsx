@@ -5,7 +5,7 @@ import { Heading, Container, Input, Toolbar, NavItem, Space } from 'rebass'
 /** Edit global settings within a style such as the name */
 export class SettingsEditor extends React.Component {
 	static propTypes = {
-    styleManager: React.PropTypes.object.isRequired
+    mapStyle: React.PropTypes.object.isRequired
   }
 
 	constructor(props) {
