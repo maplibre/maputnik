@@ -19,6 +19,10 @@ export class StyleManager {
 		console.log(command)
 	}
 
+	exportStyle() {
+		return JSON.stringify(this.mapStyle, null, 4)
+	}
+
 	layer(layerId) {
 		console.log(this.mapStyle)
 		return this.mapStyle.layers[layerId]

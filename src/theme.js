@@ -10,7 +10,7 @@ const baseColors = {
 	lowgray: '#dcdcdc',
 	white: '#fff',
 	blue: '#00d9f7',
-	green: '#0f8',
+	green: '#B4C7AD',
 	orange: '#fb3',
 	red: '#f04',
 }

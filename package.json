@@ -16,6 +16,7 @@
   "license": "MIT",
   "homepage": "https://github.com/lukasmartinelli/mapolo#readme",
   "dependencies": {
+    "file-saver": "^1.3.2",
     "mapbox-gl": "^0.23.0",
     "mapbox-gl-style-spec": "^8.8.0",
     "node-sass": "^3.9.2",

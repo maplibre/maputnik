@@ -1,4 +1,5 @@
 import React from 'react'
+import {saveAs} from 'file-saver'
 
 import { Drawer, Container, Block, Fixed } from 'rebass'
 import {Map} from './map.jsx'
@@ -49,6 +50,12 @@ export default class App extends React.Component {
 		}
 	}
 
+	onStyleDownload() {
+		const mapStyle = this.state.styleManager.exportStyle()
+		const blob = new Blob([mapStyle], {type: "application/json;charset=utf-8"});
+		saveAs(blob, "glstyle.json");
+	}
+
 	onStyleUpload(newStyle) {
 		this.setState({ styleManager: new StyleManager(newStyle) })
 	}
@@ -64,7 +71,7 @@ export default class App extends React.Component {
 
   render() {
     return <div style={{ fontFamily: theme.fontFamily, color: theme.color }}>
-			<Toolbar onStyleUpload={this.onStyleUpload.bind(this)} />
+			<Toolbar onStyleUpload={this.onStyleUpload.bind(this)} onStyleDownload={this.onStyleDownload.bind(this)} />
 			<WorkspaceDrawer styleManager={this.state.styleManager}/>
 			<div className={layout.map}>
 				<Map styleManager={this.state.styleManager} />

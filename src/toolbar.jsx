@@ -3,14 +3,22 @@ import FileReaderInput from 'react-file-reader-input';
 
 import { Button, Text } from 'rebass';
 import { Menu, NavItem, Tooltip, Container, Block, Fixed } from 'rebass'
-import {MdSettings, MdPalette, MdLayers, MdSave, MdFolderOpen} from 'react-icons/lib/md';
+import { MdFileDownload, MdFileUpload, MdSettings, MdPalette, MdLayers, MdSave, MdFolderOpen} from 'react-icons/lib/md';
 
 import theme from './theme.js';
 
 export class Toolbar extends React.Component {
+	static propTypes = {
+    onStyleUpload: React.PropTypes.func.isRequired,
+    onStyleDownload: React.PropTypes.func.isRequired
+  }
+
 	constructor(props) {
 		super(props);
 		this.onUpload = this.onUpload.bind(this);
+		this.state = {
+			styleUploaded: false
+		}
 	}
 
 	onUpload(_, files) {
@@ -20,11 +28,26 @@ export class Toolbar extends React.Component {
     reader.onload = e => {
 			const style = JSON.parse(e.target.result);
 			this.props.onStyleUpload(style);
+			this.setState({
+				styleUploaded: true
+			})
 		}
     reader.onerror = e => console.log(e.target);
 	}
 
 	render() {
+		let downloadButton = null
+		if(this.state.styleUploaded) {
+			downloadButton = <Block>
+				<Button onClick={this.props.onStyleDownload} big={true}>
+					<Tooltip inverted rounded title="Download style">
+						<MdFileDownload />
+					</Tooltip>
+				</Button>
+			</Block>
+		}
+
+		console.log(this.state)
 		return <Container style={{
 			zIndex: 100,
 			position: "fixed",
@@ -36,28 +59,20 @@ export class Toolbar extends React.Component {
 		}>
 			<Block>
 				  <FileReaderInput onChange={this.onUpload}>
-					<Button big={true}>
-						<Tooltip inverted rounded title="Save">
-							<MdSave />
+					<Button big={true} theme={this.state.styleUploaded ? "default" : "success"}>
+						<Tooltip inverted rounded title="Upload style">
+						  <MdFileUpload />
 						</Tooltip>
 					</Button>
 					</FileReaderInput>
 			</Block>
-			<Block>
-				<Button big={true}><MdFolderOpen /></Button>
-			</Block>
+			{downloadButton}
 			<Block>
 				<Button big={true}>
 					<Tooltip inverted rounded title="Layers">
 						<MdLayers />
           </Tooltip>
 				</Button>
-			</Block>
-			<Block>
-				<Button big={true}><MdPalette /></Button>
-			</Block>
-			<Block>
-				<Button big={true}><MdSettings /></Button>
 			</Block>
 		</Container>
 	}
