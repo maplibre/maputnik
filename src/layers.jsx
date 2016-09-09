@@ -2,7 +2,7 @@ import React from 'react'
 import randomColor from 'randomcolor'
 import { Block, ButtonCircle, Heading, Checkbox, Slider, Switch, Input, Panel, PanelHeader, Toolbar, NavItem, Tooltip, Container, Space} from 'rebass'
 import { Button, Text } from 'rebass'
-import {MdArrowDropDown, MdArrowDropUp, MdAddToPhotos, MdDelete, MdVisibilityOff} from 'react-icons/lib/md';
+import {MdVisibility, MdArrowDropDown, MdArrowDropUp, MdAddToPhotos, MdDelete, MdVisibilityOff} from 'react-icons/lib/md';
 import Collapse from 'react-collapse'
 import theme from './theme.js'
 import scrollbars from './scrollbars.scss'
@@ -118,6 +118,16 @@ export class LayerPanel extends React.Component {
 		this.setState({ layer });
 	}
 
+	onLayoutChanged(property, newValue) {
+		let layer = this.state.layer
+		layer.layout[property] = newValue;
+		this.props.styleManager.changeStyle({
+			command: 'setLayoutProperty',
+			args: [layer.id, property, newValue]
+		})
+		this.setState({ layer });
+	}
+
 	toggleLayer() {
 		this.setState({isOpened: !this.state.isOpened})
 	}
@@ -141,7 +151,21 @@ export class LayerPanel extends React.Component {
 		return <NoLayer />
 	}
 
+	toggleVisibility() {
+		console.log(this.state.layer)
+		if(this.state.layer.layout.visibility === 'none') {
+			this.onLayoutChanged('visibility', 'visible')
+		} else {
+			this.onLayoutChanged('visibility', 'none')
+		}
+	}
+
 	render() {
+		let visibleIcon = <MdVisibilityOff />
+		if(this.state.layer.layout && this.state.layer.layout.visibility === 'none') {
+			visibleIcon = <MdVisibility />
+		}
+
 		return <div style={{
 				padding: theme.scale[0],
 				borderBottom: 1,
@@ -157,8 +181,8 @@ export class LayerPanel extends React.Component {
 					#{this.state.layer.id}
 				</NavItem>
 				<Space auto x={1} />
-				<NavItem>
-					<MdVisibilityOff />
+				<NavItem onClick={this.toggleVisibility.bind(this)}>
+				  {visibleIcon}
 				</NavItem>
 				<NavItem>
 					<MdDelete />
