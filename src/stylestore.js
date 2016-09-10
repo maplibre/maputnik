@@ -7,13 +7,37 @@ const storageKeys = {
 	accessToken: [storagePrefix, 'access_token'].join('')
 }
 
-const emptyStyle = {
+// Empty style is always used if no style could be restored or fetched
+const emptyStyle = ensureOptionalStyleProps(Immutable.fromJS({
 		version: 8,
 		sources: {},
 		layers: [],
+}))
+
+const defaultStyleUrl = "https://raw.githubusercontent.com/osm2vectortiles/mapbox-gl-styles/master/styles/basic-v9-cdn.json"
+
+// Fetch a default style via URL and return it or a fallback style via callback
+export function loadDefaultStyle(cb) {
+	var request = new XMLHttpRequest();
+	request.open('GET', defaultStyleUrl, true);
+
+	request.onload = () => {
+		if (request.status >= 200 && request.status < 400) {
+			cb(Immutable.fromJS(JSON.parse(request.responseText)))
+		} else {
+			cb(emptyStyle)
+		}
+	};
+
+	request.onerror = function() {
+			console.log('Could not fetch default style')
+			cb(emptyStyle)
+	};
+
+	request.send();
 }
 
-	// Return style ids and dates of all styles stored in local storage
+// Return style ids and dates of all styles stored in local storage
 function loadStoredStyles() {
 	const styles = []
 	for (let i = 0; i < localStorage.length; i++) {
@@ -78,9 +102,7 @@ export class StyleStore {
 
 	// Find the last edited style
 	latestStyle() {
-		if(this.mapStyles.length == 0) {
-			return ensureOptionalStyleProps(Immutable.fromJS(emptyStyle))
-		}
+		if(this.mapStyles.length == 0) return emptyStyle
 		const styleId = window.localStorage.getItem(storageKeys.latest)
 		const styleItem = window.localStorage.getItem(styleKey(styleId))
 		return Immutable.fromJS(JSON.parse(styleItem))

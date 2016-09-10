@@ -5,7 +5,7 @@ import { Drawer, Container, Block, Fixed } from 'rebass'
 import {Map} from './map.jsx'
 import {Toolbar} from './toolbar.jsx'
 import { StyleManager } from './style.js'
-import { SettingsStore, StyleStore } from './stylestore.js'
+import { loadDefaultStyle, SettingsStore, StyleStore } from './stylestore.js'
 import { WorkspaceDrawer } from './workspace.jsx'
 
 import theme from './theme.js'
@@ -25,6 +25,10 @@ export default class App extends React.Component {
 			workContext: "layers",
 			currentStyle: this.styleStore.latestStyle(),
 		}
+
+		loadDefaultStyle(mapStyle => {
+			this.onStyleUpload(mapStyle)
+		})
 	}
 
 	getChildContext() {
@@ -35,10 +39,10 @@ export default class App extends React.Component {
 	}
 
 	onStyleDownload() {
-		this.styleStore.save(newStyle)
 		const mapStyle = JSON.stringify(this.state.currentStyle.toJS(), null, 4)
 		const blob = new Blob([mapStyle], {type: "application/json;charset=utf-8"});
 		saveAs(blob, mapStyle.id + ".json");
+		this.onStyleSave(mapStyle)
 	}
 
 	onStyleUpload(newStyle) {
