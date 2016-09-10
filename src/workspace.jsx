@@ -1,5 +1,5 @@
 import React from 'react'
-import { LayerEditor } from './layers.jsx'
+import { LayerList } from './layers/list.jsx'
 import { SettingsEditor } from './settings.jsx'
 import theme from './theme.js'
 
@@ -21,7 +21,7 @@ export class WorkspaceDrawer extends React.Component {
 		let workspaceContent = null
 
 		if(this.props.workContext === "layers") {
-			workspaceContent = <LayerEditor
+			workspaceContent = <LayerList
 				onLayersChanged={this.onLayersChanged.bind(this)}
 				layers={this.props.mapStyle.get('layers')}
 			/>

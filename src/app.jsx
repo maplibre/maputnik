@@ -10,7 +10,6 @@ import { WorkspaceDrawer } from './workspace.jsx'
 
 import theme from './theme.js'
 import layout from './layout.scss'
-import 'react-virtualized/styles.css'
 
 export default class App extends React.Component {
   static childContextTypes = {
