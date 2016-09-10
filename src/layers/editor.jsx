@@ -1,6 +1,8 @@
 import React from 'react'
+import Immutable from 'immutable'
 import { Toolbar, NavItem, Space} from 'rebass'
 import Collapse from 'react-collapse'
+
 import theme from '../theme.js'
 import FillLayer from './fill.jsx'
 import LineLayer from './line.jsx'
@@ -46,12 +48,24 @@ export class LayerEditor extends React.Component {
 	}
 
 	onPaintChanged(property, newValue) {
-		const changedLayer = this.props.layer.setIn(['paint', property], newValue)
+		let layer = this.props.layer
+		//TODO: by using immutable records we can avoid this checking if object exists
+		if(!layer.has('paint')) {
+			layer = layer.set('paint', Immutable.Map())
+		}
+
+		const changedLayer = layer.setIn(['paint', property], newValue)
 		this.props.onLayerChanged(changedLayer)
 	}
 
 	onLayoutChanged(property, newValue) {
-		const changedLayer = this.props.layer.setIn(['layout', property], newValue)
+		let layer = this.props.layer
+		//TODO: by using immutable records we can avoid this checking if object exists
+		if(!layer.has('layout')) {
+			layer = layer.set('layout', Immutable.Map())
+		}
+
+		const changedLayer = layer.setIn(['layout', property], newValue)
 		this.props.onLayerChanged(changedLayer)
 	}
 
@@ -86,7 +100,7 @@ export class LayerEditor extends React.Component {
 	}
 
 	toggleVisibility() {
-		if(this.props.layer.layout.visibility === 'none') {
+		if(this.props.layer.has('layout') && this.props.layer.getIn(['layout', 'visibility']) === 'none') {
 			this.onLayoutChanged('visibility', 'visible')
 		} else {
 			this.onLayoutChanged('visibility', 'none')
@@ -95,7 +109,7 @@ export class LayerEditor extends React.Component {
 
 	render() {
 		let visibleIcon = <MdVisibilityOff />
-		if(this.props.layer.layout && this.props.layer.layout.visibility === 'none') {
+		if(this.props.layer.has('layout') && this.props.layer.getIn(['layout', 'visibility']) === 'none') {
 			visibleIcon = <MdVisibility />
 		}
 

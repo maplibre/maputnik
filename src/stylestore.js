@@ -72,10 +72,10 @@ function styleKey(styleId) {
 
 // Ensure a style has a unique id and a created date
 function ensureOptionalStyleProps(mapStyle) {
-		if(!('id' in mapStyle)) {
+		if(!mapStyle.has('id')) {
 			mapStyle = mapStyle.set('id', Math.random().toString(36).substr(2, 9))
 		}
-		if(!("created" in mapStyle)) {
+		if(!mapStyle.has('created')) {
 			mapStyle = mapStyle.set('created', new Date())
 		}
 		return mapStyle
