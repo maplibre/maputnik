@@ -1,6 +1,6 @@
 const caps = {
-  textTransform: 'uppercase',
-  letterSpacing: '.2em'
+	textTransform: 'uppercase',
+	letterSpacing: '.2em'
 }
 
 const baseColors = {
@@ -34,22 +34,22 @@ const scale = [3, 5, 10, 30, 40]
 const fontSizes = [28, 24, 20, 16, 14, 12, 10]
 
 const border = {
-  borderColor: colors.black,
-  borderRadius: 0,
+	borderColor: colors.black,
+	borderRadius: 0,
 }
 
 const dark = {
-  name: 'Dark',
-  color: colors.white,
+	name: 'Dark',
+	color: colors.white,
 	fontFamily: 'Roboto, sans-serif',
-  scale,
+	scale,
 	fontSizes,
-  colors,
-  inverted: colors.midGray,
+	colors,
+	inverted: colors.midGray,
 	...border,
 
 	Block: {
-    backgroundColor: colors.gray,
+		backgroundColor: colors.gray,
 		...border,
 		borderLeft: 0,
 		borderRight: 0,
@@ -63,17 +63,17 @@ const dark = {
 		fontWeight: 400,
 		color: colors.white,
 	},
-  Button: {
-    color: '#00d9f7',
-  },
-  Menu: {
-    color: '#00d9f7',
-    backgroundColor: '#000'
-  },
-  Message: {
-    color: '#111',
-    opacity: 15/16
-  },
+	Button: {
+		color: '#00d9f7',
+	},
+	Menu: {
+		color: '#00d9f7',
+		backgroundColor: '#000'
+	},
+	Message: {
+		color: '#111',
+		opacity: 15/16
+	},
 	Header: {
 		fontWeight: 400,
 	},

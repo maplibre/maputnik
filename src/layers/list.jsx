@@ -8,8 +8,8 @@ import scrollbars from '../scrollbars.scss'
 export class LayerList extends React.Component {
 	static propTypes = {
 		layers: React.PropTypes.instanceOf(Immutable.List),
-    onLayersChanged: React.PropTypes.func.isRequired
-  }
+		onLayersChanged: React.PropTypes.func.isRequired
+	}
 
 	constructor(props) {
 		super(props)

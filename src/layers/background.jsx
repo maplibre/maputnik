@@ -3,9 +3,9 @@ import { Input } from 'rebass'
 
 export default class BackgroundLayer extends React.Component {
 	static propTypes = {
-    layer: React.PropTypes.object.isRequired,
-    onPaintChanged: React.PropTypes.func.isRequired
-  }
+		layer: React.PropTypes.object.isRequired,
+		onPaintChanged: React.PropTypes.func.isRequired
+	}
 
 	onPaintChanged(property, e) {
 		let value = e.target.value

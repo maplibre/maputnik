@@ -6,8 +6,8 @@ import Immutable from 'immutable'
 
 export class Map extends React.Component {
 	static propTypes = {
-    mapStyle: React.PropTypes.instanceOf(Immutable.Map).isRequired,
-  }
+		mapStyle: React.PropTypes.instanceOf(Immutable.Map).isRequired,
+	}
 
 	componentWillReceiveProps(nextProps) {
 		// If the id has changed a new style has been uplaoded and
@@ -31,9 +31,9 @@ export class Map extends React.Component {
 		}
 	}
 
-  shouldComponentUpdate(nextProps, nextState) {
-    return nextProps.mapStyle !== this.props.mapStyle
-  }
+	shouldComponentUpdate(nextProps, nextState) {
+		return nextProps.mapStyle !== this.props.mapStyle
+	}
 
 	componentDidMount() {
 		//TODO: Read MapboxGL token from settings
@@ -44,9 +44,9 @@ export class Map extends React.Component {
 			style: this.props.mapStyle.toJS(),
 		});
 
-    map.on("style.load", (...args) => {
-      this.setState({ map });
-    });
+		map.on("style.load", (...args) => {
+			this.setState({ map });
+		});
 	}
 
 	render() {

@@ -20,14 +20,14 @@ class UnsupportedLayer extends React.Component {
 /** Layer editor supporting multiple types of layers. */
 export class LayerEditor extends React.Component {
 	static propTypes = {
-    layer: React.PropTypes.object.isRequired,
-    onLayerChanged: React.PropTypes.func.isRequired,
-    onLayerDestroyed: React.PropTypes.func.isRequired,
-  }
+		layer: React.PropTypes.object.isRequired,
+		onLayerChanged: React.PropTypes.func.isRequired,
+		onLayerDestroyed: React.PropTypes.func.isRequired,
+	}
 
-  static childContextTypes = {
+	static childContextTypes = {
 		reactIconBase: React.PropTypes.object
-  }
+	}
 
 	constructor(props) {
 		super(props);
@@ -36,12 +36,12 @@ export class LayerEditor extends React.Component {
 		}
 	}
 
-  getChildContext () {
-    return {
+	getChildContext () {
+		return {
 			reactIconBase: {
-        size: theme.fontSizes[4],
+				size: theme.fontSizes[4],
 				color: theme.colors.lowgray,
-      }
+			}
 		}
 	}
 
@@ -115,7 +115,7 @@ export class LayerEditor extends React.Component {
 				</NavItem>
 				<Space auto x={1} />
 				<NavItem onClick={this.toggleVisibility.bind(this)}>
-				  {visibleIcon}
+					{visibleIcon}
 				</NavItem>
 				<NavItem onClick={(e) => this.props.onLayerDestroyed(this.props.layer)}>
 					<MdDelete />

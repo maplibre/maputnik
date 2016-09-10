@@ -14,25 +14,30 @@ import theme from './theme.js';
 
 export class Toolbar extends React.Component {
 	static propTypes = {
-    onStyleUpload: React.PropTypes.func.isRequired,
-    onStyleDownload: React.PropTypes.func.isRequired,
-    onStyleSave: React.PropTypes.func,
-    onOpenSettings: React.PropTypes.func,
-    onOpenLayers: React.PropTypes.func,
+		// A new style has been uploaded
+		onStyleUpload: React.PropTypes.func.isRequired,
+		// Current style is requested for download
+		onStyleDownload: React.PropTypes.func.isRequired,
+		// Style is explicitely saved to local cache
+		onStyleSave: React.PropTypes.func,
+		// Open settings drawer
+		onOpenSettings: React.PropTypes.func,
+		// Open layers drawer
+		onOpenLayers: React.PropTypes.func,
 		// Whether a style is available for download or saving
 		// A style with no layers should not be available
-    styleAvailable: React.PropTypes.bool,
-  }
+		styleAvailable: React.PropTypes.bool,
+	}
 
 	onUpload(_, files) {
 		const [e, file] = files[0];
 		const reader = new FileReader();
-    reader.readAsText(file, "UTF-8");
-    reader.onload = e => {
+		reader.readAsText(file, "UTF-8");
+		reader.onload = e => {
 			const style = JSON.parse(e.target.result);
 			this.props.onStyleUpload(style);
 		}
-    reader.onerror = e => console.log(e.target);
+		reader.onerror = e => console.log(e.target);
 	}
 
 	saveButton() {
@@ -72,13 +77,13 @@ export class Toolbar extends React.Component {
 			backgroundColor: theme.colors.black }
 		}>
 			<Block>
-				  <FileReaderInput onChange={this.onUpload.bind(this)}>
+				<FileReaderInput onChange={this.onUpload.bind(this)}>
 					<Button big={true} theme={this.props.styleAvailable ? "default" : "success"}>
 						<Tooltip inverted rounded title="Upload style">
-						  <MdFileUpload />
+							<MdFileUpload />
 						</Tooltip>
 					</Button>
-					</FileReaderInput>
+				</FileReaderInput>
 			</Block>
 			{this.downloadButton()}
 			{this.saveButton()}
@@ -86,14 +91,14 @@ export class Toolbar extends React.Component {
 				<Button big={true} onClick={this.props.onOpenLayers}>
 					<Tooltip inverted rounded title="Layers">
 						<MdLayers />
-          </Tooltip>
+					</Tooltip>
 				</Button>
 			</Block>
 			<Block>
 				<Button big={true} onClick={this.props.onOpenSettings}>
 					<Tooltip inverted rounded title="Settings">
 						<MdSettings />
-          </Tooltip>
+					</Tooltip>
 				</Button>
 			</Block>
 		</Container>

@@ -12,10 +12,10 @@ import theme from './theme.js'
 import layout from './layout.scss'
 
 export default class App extends React.Component {
-  static childContextTypes = {
-    rebass: React.PropTypes.object,
+	static childContextTypes = {
+		rebass: React.PropTypes.object,
 		reactIconBase: React.PropTypes.object
-  }
+	}
 
 	constructor(props) {
 		super(props)
@@ -26,8 +26,8 @@ export default class App extends React.Component {
 		}
 	}
 
-  getChildContext() {
-    return {
+	getChildContext() {
+		return {
 			rebass: theme,
 			reactIconBase: { size: 20 }
 		}
@@ -35,7 +35,7 @@ export default class App extends React.Component {
 
 	onStyleDownload() {
 		this.styleStore.save(newStyle)
-		const mapStyle =  JSON.stringify(this.state.currentStyle.toJS(), null, 4)
+		const mapStyle = JSON.stringify(this.state.currentStyle.toJS(), null, 4)
 		const blob = new Blob([mapStyle], {type: "application/json;charset=utf-8"});
 		saveAs(blob, mapStyle.id + ".json");
 	}
@@ -56,15 +56,15 @@ export default class App extends React.Component {
 	}
 
 	onOpenSettings() {
-		this.setState({ workContext: "settings", })
+		this.setState({ workContext: "settings" })
 	}
 
 	onOpenLayers() {
 		this.setState({ workContext: "layers", })
 	}
 
-  render() {
-    return <div style={{ fontFamily: theme.fontFamily, color: theme.color, fontWeight: 300 }}>
+	render() {
+		return <div style={{ fontFamily: theme.fontFamily, color: theme.color, fontWeight: 300 }}>
 			<Toolbar
 					styleAvailable={this.state.currentStyle.get('layers').size > 0}
 					onStyleSave={this.onStyleSave.bind(this)}
@@ -82,5 +82,5 @@ export default class App extends React.Component {
 				<Map mapStyle={this.state.currentStyle} />
 			</div>
 		</div>
-  }
+	}
 }

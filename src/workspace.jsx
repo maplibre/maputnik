@@ -9,8 +9,8 @@ export class WorkspaceDrawer extends React.Component {
 	static propTypes = {
 		mapStyle: React.PropTypes.object.isRequired,
 		onStyleChanged: React.PropTypes.func.isRequired,
-    workContext: React.PropTypes.oneOf(['layers', 'settings']).isRequired,
-  }
+		workContext: React.PropTypes.oneOf(['layers', 'settings']).isRequired,
+	}
 
 	onLayersChanged(changedLayers) {
 		const changedStyle = this.props.mapStyle.set('layers', changedLayers)

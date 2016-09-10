@@ -6,9 +6,9 @@ import Immutable from 'immutable'
 /** Edit global settings within a style such as the name */
 export class SettingsEditor extends React.Component {
 	static propTypes = {
-    mapStyle: React.PropTypes.instanceOf(Immutable.Map).isRequired,
-    onStyleChanged: React.PropTypes.func.isRequired
-  }
+		mapStyle: React.PropTypes.instanceOf(Immutable.Map).isRequired,
+		onStyleChanged: React.PropTypes.func.isRequired
+	}
 
 	onChange(property, e) {
 		const changedStyle = this.props.mapStyle.set(property, e.target.value)
