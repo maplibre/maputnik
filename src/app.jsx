@@ -66,6 +66,7 @@ export default class App extends React.Component {
   render() {
     return <div style={{ fontFamily: theme.fontFamily, color: theme.color, fontWeight: 300 }}>
 			<Toolbar
+					styleAvailable={this.state.currentStyle.get('layers').size > 0}
 					onStyleSave={this.onStyleSave.bind(this)}
 					onStyleUpload={this.onStyleUpload.bind(this)}
 					onStyleDownload={this.onStyleDownload.bind(this)}

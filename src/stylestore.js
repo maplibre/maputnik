@@ -11,7 +11,7 @@ const storage = {
 const emptyStyle = {
 		version: 8,
 		sources: {},
-		layers: []
+		layers: [],
 }
 
 	// Return style ids and dates of all styles stored in local storage
