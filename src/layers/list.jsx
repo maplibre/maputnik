@@ -17,18 +17,18 @@ export class LayerList extends React.Component {
 
 	onLayerDestroyed(deletedLayer) {
 		//TODO: That's just horrible...
+		// Can we use a immutable ordered map to look up and guarantee order
+		// at the same time?
 		let deleteIdx = -1
-
-		for (let i = 0; i < this.props.layers.length; i++) {
-			if(this.props.layers[i].id == deletedLayer.id) {
+		for (let entry of this.props.layers.entries()) {
+			let [i, layer] = entry
+			if(layer.get('id') == deletedLayer.get('id')) {
 				deleteIdx = i
 				break
 			}
 		}
 
-		const remainingLayers = this.props.layers.slice(0)
-		remainingLayers.splice(deleteIdx, 0)
-		this.props.onLayersChanged(remainingLayers)
+		this.props.onLayersChanged(this.props.layers.delete(deleteIdx))
 	}
 
 	onLayerChanged(changedLayer) {
