@@ -7,6 +7,7 @@ import Collapse from 'react-collapse'
 import theme from './theme.js'
 import scrollbars from './scrollbars.scss'
 import _ from 'lodash'
+import Immutable from 'immutable'
 
 export class FillLayer extends React.Component {
 	static propTypes = {
@@ -24,14 +25,14 @@ export class FillLayer extends React.Component {
 	}
 
 	render() {
-		const paint = this.props.layer.paint
+		const paint = this.props.layer.get('paint')
 		return <div>
-			<Input name="fill-color" label="Fill color" onChange={this.onPaintChanged.bind(this, "fill-color")} value={paint["fill-color"]} />
-			<Input name="fill-outline-color" label="Fill outline color" onChange={this.onPaintChanged.bind(this, "fill-outline-color")} value={paint["fill-outline-color"]} />
-			<Input name="fill-translate" label="Fill translate" onChange={this.onPaintChanged.bind(this, "fill-translate")} value={paint["fill-translate"]} />
-			<Input name="fill-translate-anchor" label="Fill translate anchor" onChange={this.onPaintChanged.bind(this, "fill-translate-anchor")} value={paint["fill-translate-anchor"]} />
-			<Checkbox name="fill-antialias" label="Antialias" onChange={this.onPaintChanged.bind(this, "fill-antialias")} checked={paint["fill-antialias"]} />
-			<Input name="fill-opacity" label="Opacity" onChange={this.onPaintChanged.bind(this, "fill-opacity")} value={paint["fill-opacity"]} />
+			<Input name="fill-color" label="Fill color" onChange={this.onPaintChanged.bind(this, "fill-color")} value={paint.get("fill-color")} />
+			<Input name="fill-outline-color" label="Fill outline color" onChange={this.onPaintChanged.bind(this, "fill-outline-color")} value={paint.get("fill-outline-color")} />
+			<Input name="fill-translate" label="Fill translate" onChange={this.onPaintChanged.bind(this, "fill-translate")} value={paint.get("fill-translate")} />
+			<Input name="fill-translate-anchor" label="Fill translate anchor" onChange={this.onPaintChanged.bind(this, "fill-translate-anchor")} value={paint.get("fill-translate-anchor")} />
+			<Checkbox name="fill-antialias" label="Antialias" onChange={this.onPaintChanged.bind(this, "fill-antialias")} checked={paint.get("fill-antialias")} />
+			<Input name="fill-opacity" label="Opacity" onChange={this.onPaintChanged.bind(this, "fill-opacity")} value={paint.get("fill-opacity")} />
 		</div>
 	}
 }
@@ -51,10 +52,10 @@ export class BackgroundLayer extends React.Component {
 	}
 
 	render() {
-		const paint = this.props.layer.paint
+		const paint = this.props.layer.get('paint')
 		return <div>
-			<Input name="background-color" label="Background color" onChange={this.onPaintChanged.bind(this, "background-color")} value={paint["background-color"]} />
-			<Input name="background-opacity" label="Background opacity" onChange={this.onPaintChanged.bind(this, "background-opacity")} value={paint["background-opacity"]} />
+			<Input name="background-color" label="Background color" onChange={this.onPaintChanged.bind(this, "background-color")} value={paint.get("background-color")} />
+			<Input name="background-opacity" label="Background opacity" onChange={this.onPaintChanged.bind(this, "background-opacity")} value={paint.get("background-opacity")} />
 		</div>
 	}
 }
@@ -105,15 +106,13 @@ export class LayerPanel extends React.Component {
 	}
 
 	onPaintChanged(property, newValue) {
-		const layer = _.cloneDeep(this.props.layer)
-		layer.paint[property] = newValue;
-		this.props.onLayerChanged(layer)
+		const changedLayer = this.props.layer.setIn(['paint', property], newValue)
+		this.props.onLayerChanged(changedLayer)
 	}
 
 	onLayoutChanged(property, newValue) {
-		const layer = _.cloneDeep(this.props.layer)
-		layer.layout[property] = newValue;
-		this.props.onLayerChanged(layer)
+		const changedLayer = this.props.layer.setIn(['layout', property], newValue)
+		this.props.onLayerChanged(changedLayer)
 	}
 
 	toggleLayer() {
@@ -168,11 +167,11 @@ export class LayerPanel extends React.Component {
 				borderRight: 0,
 				borderStyle: "solid",
 				borderColor: theme.borderColor,
-				borderLeftColor: this.props.layer.metadata["mapolo:color"],
+				borderLeftColor: this.props.layer.getIn(['metadata', 'mapolo:color'])
 			}}>
 			<Toolbar onClick={this.toggleLayer.bind(this)}>
 				<NavItem style={{fontWeight: 400}}>
-					#{this.props.layer.id}
+					#{this.props.layer.get('id')}
 				</NavItem>
 				<Space auto x={1} />
 				<NavItem onClick={this.toggleVisibility.bind(this)}>
@@ -184,7 +183,7 @@ export class LayerPanel extends React.Component {
 			</Toolbar>
 			<Collapse isOpened={this.state.isOpened}>
 				<div style={{padding: theme.scale[2], paddingRight: 0, backgroundColor: theme.colors.black}}>
-				{this.layerFromType(this.props.layer.type)}
+				{this.layerFromType(this.props.layer.get('type'))}
 				</div>
 			</Collapse>
 		</div>
@@ -193,7 +192,7 @@ export class LayerPanel extends React.Component {
 
 export class LayerEditor extends React.Component {
 	static propTypes = {
-		layers: React.PropTypes.array.isRequired,
+		layers: React.PropTypes.instanceOf(Immutable.List),
     onLayersChanged: React.PropTypes.func.isRequired
   }
 
@@ -208,6 +207,7 @@ export class LayerEditor extends React.Component {
 		for (let i = 0; i < this.props.layers.length; i++) {
 			if(this.props.layers[i].id == deletedLayer.id) {
 				deleteIdx = i
+				break
 			}
 		}
 
@@ -219,25 +219,29 @@ export class LayerEditor extends React.Component {
 	onLayerChanged(changedLayer) {
 		//TODO: That's just horrible...
 		let changeIdx = -1
-		for (let i = 0; i < this.props.layers.length; i++) {
-			if(this.props.layers[i].id == changedLayer.id) {
+		for (let entry of this.props.layers.entries()) {
+			let [i, layer] = entry
+			if(layer.get('id') == changedLayer.get('id')) {
 				changeIdx = i
+				break
 			}
 		}
-		const changedLayers = _.cloneDeep(this.props.layers)
-		changedLayers[changeIdx] = changedLayer
+
+		const changedLayers = this.props.layers.set(changeIdx, changedLayer)
 		this.props.onLayersChanged(changedLayers)
 	}
 
 	render() {
-		const layerPanels = this.props.layers.map(layer => {
-			return <LayerPanel
-				key={layer.id}
+		var layerPanels = []
+
+		for(let layer of this.props.layers) {
+			layerPanels.push(<LayerPanel
+				key={layer.get('id')}
 				layer={layer}
 				onLayerDestroyed={this.onLayerDestroyed.bind(this)}
 				onLayerChanged={this.onLayerChanged.bind(this)}
-			/>
-		});
+			/>)
+		}
 
 		return <div>
 			<Toolbar style={{marginRight: 20}}>

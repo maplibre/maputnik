@@ -12,9 +12,8 @@ export class WorkspaceDrawer extends React.Component {
     workContext: React.PropTypes.oneOf(['layers', 'settings']).isRequired,
   }
 
-	onLayersChanged(layers) {
-		const changedStyle = this.props.mapStyle
-		changedStyle.layers = layers
+	onLayersChanged(changedLayers) {
+		const changedStyle = this.props.mapStyle.set('layers', changedLayers)
 		this.props.onStyleChanged(changedStyle)
 	}
 
@@ -24,7 +23,7 @@ export class WorkspaceDrawer extends React.Component {
 		if(this.props.workContext === "layers") {
 			workspaceContent = <LayerEditor
 				onLayersChanged={this.onLayersChanged.bind(this)}
-				layers={this.props.mapStyle.layers}
+				layers={this.props.mapStyle.get('layers')}
 			/>
 		}
 

@@ -11,7 +11,7 @@ export class Map extends React.Component {
 	componentWillReceiveProps(nextProps) {
 		const map = this.state.map
 		if(map) {
-			const changes = diffStyles(this.props.mapStyle, nextProps.mapStyle)
+			const changes = diffStyles(this.props.mapStyle.toJS(), nextProps.mapStyle.toJS())
 			changes.forEach(change => {
 				map[change.command].apply(map, change.args);
 			});
@@ -26,7 +26,7 @@ export class Map extends React.Component {
 		MapboxGl.accessToken = "pk.eyJ1IjoibW9yZ2Vua2FmZmVlIiwiYSI6IjIzcmN0NlkifQ.0LRTNgCc-envt9d5MzR75w";
 		const map = new MapboxGl.Map({
 			container: this.container,
-			style: this.props.mapStyle,
+			style: this.props.mapStyle.toJS(),
 		});
 
     map.on("style.load", (...args) => {

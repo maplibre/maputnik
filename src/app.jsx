@@ -20,9 +20,10 @@ export default class App extends React.Component {
 
 	constructor(props) {
 		super(props)
+		this.styleStore = new StyleStore()
 		this.state = {
-			styleStore: new StyleStore(),
 			workContext: "layers",
+			currentStyle: this.styleStore.latestStyle(),
 		}
 	}
 
@@ -34,17 +35,19 @@ export default class App extends React.Component {
 	}
 
 	onStyleDownload() {
-		const mapStyle =  JSON.stringify(this.state.styleStore.currentStyle, null, 4)
+		this.styleStore.save(newStyle)
+		const mapStyle =  JSON.stringify(this.state.currentStyle.toJS(), null, 4)
 		const blob = new Blob([mapStyle], {type: "application/json;charset=utf-8"});
 		saveAs(blob, mapStyle.id + ".json");
 	}
 
 	onStyleUpload(newStyle) {
-		this.setState({ styleStore: new StyleStore(newStyle) })
+		const savedStyle = this.styleStore.save(newStyle)
+		this.setState({ currentStyle: savedStyle })
 	}
 
 	onStyleChanged(newStyle) {
-		this.setState({ styleStore: new StyleStore(newStyle) })
+		this.setState({ currentStyle: newStyle })
 	}
 
 	onOpenSettings() {
@@ -66,10 +69,10 @@ export default class App extends React.Component {
 			<WorkspaceDrawer
 				onStyleChanged={this.onStyleChanged.bind(this)}
 				workContext={this.state.workContext}
-				mapStyle={this.state.styleStore.currentStyle}
+				mapStyle={this.state.currentStyle}
 			/>
 			<div className={layout.map}>
-				<Map mapStyle={this.state.styleStore.currentStyle} />
+				<Map mapStyle={this.state.currentStyle} />
 			</div>
 		</div>
   }
