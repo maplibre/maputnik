@@ -45,6 +45,12 @@ export default class App extends React.Component {
 		this.setState({ currentStyle: savedStyle })
 	}
 
+	onStyleSave() {
+		const snapshotStyle = this.state.currentStyle.set('modified', new Date().toJSON())
+		const savedStyle = this.styleStore.save(snapshotStyle)
+		this.setState({ currentStyle: savedStyle })
+	}
+
 	onStyleChanged(newStyle) {
 		this.setState({ currentStyle: newStyle })
 	}
@@ -60,6 +66,7 @@ export default class App extends React.Component {
   render() {
     return <div style={{ fontFamily: theme.fontFamily, color: theme.color, fontWeight: 300 }}>
 			<Toolbar
+					onStyleSave={this.onStyleSave.bind(this)}
 					onStyleUpload={this.onStyleUpload.bind(this)}
 					onStyleDownload={this.onStyleDownload.bind(this)}
 					onOpenSettings={this.onOpenSettings.bind(this)}

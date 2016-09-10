@@ -69,7 +69,7 @@ export class StyleStore {
 	// Find the last edited style
 	latestStyle() {
 		if(this.mapStyles.length == 0) {
-			return Immutable.fromJS(emptyStyle)
+			return ensureOptionalStyleProps(Immutable.fromJS(emptyStyle))
 		}
 		const styleId = window.localStorage.getItem(storage.keys.latest)
 		const styleItem = window.localStorage.getItem(styleKey(styleId))

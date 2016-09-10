@@ -1,12 +1,15 @@
 import React from 'react'
 import { Toolbar, NavItem, Space} from 'rebass'
-import { MdVisibility, MdDelete, MdVisibilityOff } from 'react-icons/lib/md';
 import Collapse from 'react-collapse'
 import theme from '../theme.js'
 import FillLayer from './fill.jsx'
 import LineLayer from './line.jsx'
 import SymbolLayer from './line.jsx'
 import BackgroundLayer from './background.jsx'
+
+import MdVisibility from 'react-icons/lib/md/visibility'
+import MdVisibilityOff from 'react-icons/lib/md/visibility-off'
+import MdDelete from 'react-icons/lib/md/delete'
 
 class UnsupportedLayer extends React.Component {
 	render() {
