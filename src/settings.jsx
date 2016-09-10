@@ -7,7 +7,9 @@ import Immutable from 'immutable'
 export class SettingsEditor extends React.Component {
 	static propTypes = {
 		mapStyle: React.PropTypes.instanceOf(Immutable.Map).isRequired,
-		onStyleChanged: React.PropTypes.func.isRequired
+		onStyleChanged: React.PropTypes.func.isRequired,
+		accessToken: React.PropTypes.string,
+		onAccessTokenChanged: React.PropTypes.func
 	}
 
 	onChange(property, e) {
@@ -23,6 +25,12 @@ export class SettingsEditor extends React.Component {
 				</NavItem>
 			</Toolbar>
 			<Container>
+				<Input
+					name="access-token"
+					label="Mapbox GL access token"
+					value={this.props.accessToken}
+					onChange={e => this.props.onAccessTokenChanged(e.target.value)}
+				/>
 				<Input
 					name="name"
 					label="Name"

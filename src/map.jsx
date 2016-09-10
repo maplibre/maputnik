@@ -7,13 +7,17 @@ import Immutable from 'immutable'
 export class Map extends React.Component {
 	static propTypes = {
 		mapStyle: React.PropTypes.instanceOf(Immutable.Map).isRequired,
+		accessToken: React.PropTypes.string,
 	}
 
 	componentWillReceiveProps(nextProps) {
+		const tokenChanged = nextProps.accessToken !== MapboxGl.accessToken
+
 		// If the id has changed a new style has been uplaoded and
 		// it is safer to do a full new render
 		const mapIdChanged = this.props.mapStyle.get('id') !== nextProps.mapStyle.get('id')
-		if(mapIdChanged) {
+
+		if(mapIdChanged || tokenChanged) {
 			this.state.map.setStyle(nextProps.mapStyle.toJS())
 			return
 		}
@@ -36,8 +40,7 @@ export class Map extends React.Component {
 	}
 
 	componentDidMount() {
-		//TODO: Read MapboxGL token from settings
-		MapboxGl.accessToken = "pk.eyJ1IjoibW9yZ2Vua2FmZmVlIiwiYSI6IjIzcmN0NlkifQ.0LRTNgCc-envt9d5MzR75w";
+		MapboxGl.accessToken = this.props.accessToken
 
 		const map = new MapboxGl.Map({
 			container: this.container,

@@ -10,6 +10,8 @@ export class WorkspaceDrawer extends React.Component {
 		mapStyle: React.PropTypes.object.isRequired,
 		onStyleChanged: React.PropTypes.func.isRequired,
 		workContext: React.PropTypes.oneOf(['layers', 'settings']).isRequired,
+		accessToken: React.PropTypes.string,
+		onAccessTokenChanged: React.PropTypes.func,
 	}
 
 	onLayersChanged(changedLayers) {
@@ -31,6 +33,8 @@ export class WorkspaceDrawer extends React.Component {
 			workspaceContent = <SettingsEditor
 				onStyleChanged={this.props.onStyleChanged}
 				mapStyle={this.props.mapStyle}
+				accessToken={this.props.accessToken}
+				onAccessTokenChanged={this.props.onAccessTokenChanged}
 			/>
 		}
 

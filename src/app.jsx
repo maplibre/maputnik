@@ -5,7 +5,7 @@ import { Drawer, Container, Block, Fixed } from 'rebass'
 import {Map} from './map.jsx'
 import {Toolbar} from './toolbar.jsx'
 import { StyleManager } from './style.js'
-import { StyleStore } from './stylestore.js'
+import { SettingsStore, StyleStore } from './stylestore.js'
 import { WorkspaceDrawer } from './workspace.jsx'
 
 import theme from './theme.js'
@@ -19,7 +19,9 @@ export default class App extends React.Component {
 	constructor(props) {
 		super(props)
 		this.styleStore = new StyleStore()
+		this.settingsStore = new SettingsStore()
 		this.state = {
+			accessToken: this.settingsStore.accessToken,
 			workContext: "layers",
 			currentStyle: this.styleStore.latestStyle(),
 		}
@@ -62,6 +64,11 @@ export default class App extends React.Component {
 		this.setState({ workContext: "layers", })
 	}
 
+	onAccessTokenChanged(newToken) {
+		this.settingsStore.accessToken = newToken
+		this.setState({ accessToken: newToken })
+	}
+
 	render() {
 		return <div style={{ fontFamily: theme.fontFamily, color: theme.color, fontWeight: 300 }}>
 			<Toolbar
@@ -76,8 +83,13 @@ export default class App extends React.Component {
 				onStyleChanged={this.onStyleChanged.bind(this)}
 				workContext={this.state.workContext}
 				mapStyle={this.state.currentStyle}
+				accessToken={this.state.accessToken}
+				onAccessTokenChanged={this.onAccessTokenChanged.bind(this)}
 			/>
-			<Map mapStyle={this.state.currentStyle} />
+			<Map
+				mapStyle={this.state.currentStyle}
+				accessToken={this.state.accessToken}
+			/>
 		</div>
 	}
 }

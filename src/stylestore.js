@@ -1,11 +1,10 @@
 import { colorizeLayers } from './style.js'
 import Immutable from 'immutable'
 
-const storage = {
-	prefix: 'mapolo',
-	keys: {
-		latest: 'mapolo:latest_style'
-	}
+const storagePrefix = "mapolo"
+const storageKeys = {
+	latest: [storagePrefix, 'latest_style'].join(''),
+	accessToken: [storagePrefix, 'access_token'].join('')
 }
 
 const emptyStyle = {
@@ -28,7 +27,7 @@ function loadStoredStyles() {
 
 function isStyleKey(key) {
 	const parts = key.split(":")
-	return parts.length == 2 && parts[0] === storage.prefix
+	return parts.length == 2 && parts[0] === storagePrefix
 }
 
 // Load style id from key
@@ -44,7 +43,7 @@ function fromKey(key) {
 
 // Calculate key that identifies the style with a version
 function styleKey(styleId) {
-	return [storage.prefix, styleId].join(":")
+	return [storagePrefix, styleId].join(":")
 }
 
 // Ensure a style has a unique id and a created date
@@ -56,6 +55,17 @@ function ensureOptionalStyleProps(mapStyle) {
 			mapStyle = mapStyle.set('created', new Date())
 		}
 		return mapStyle
+}
+
+// Store style independent settings
+export class SettingsStore {
+	get accessToken() {
+		const token = window.localStorage.getItem(storageKeys.accessToken)
+		return token ? token : ""
+	}
+	set accessToken(val) {
+		window.localStorage.setItem(storageKeys.accessToken, val)
+	}
 }
 
 // Manages many possible styles that are stored in the local storage
@@ -71,7 +81,7 @@ export class StyleStore {
 		if(this.mapStyles.length == 0) {
 			return ensureOptionalStyleProps(Immutable.fromJS(emptyStyle))
 		}
-		const styleId = window.localStorage.getItem(storage.keys.latest)
+		const styleId = window.localStorage.getItem(storageKeys.latest)
 		const styleItem = window.localStorage.getItem(styleKey(styleId))
 		return Immutable.fromJS(JSON.parse(styleItem))
 	}
@@ -84,7 +94,7 @@ export class StyleStore {
 		mapStyle = ensureOptionalStyleProps(mapStyle)
 		const key = styleKey(mapStyle.get('id'))
 		window.localStorage.setItem(key, JSON.stringify(mapStyle.toJS()))
-		window.localStorage.setItem(storage.keys.latest, mapStyle.get('id'))
+		window.localStorage.setItem(storageKeys.latest, mapStyle.get('id'))
 		return mapStyle
 	}
 }
