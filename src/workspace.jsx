@@ -1,7 +1,7 @@
 import React from 'react'
 import { LayerList } from './layers/list.jsx'
 import { SettingsEditor } from './settings.jsx'
-import theme from './theme.js'
+import { colors, fullHeight } from './theme.js'
 
 /** The workspace drawer contains the editor components depending on the edit
  * context chosen in the toolbar. It holds the state of the layers.*/
@@ -35,14 +35,12 @@ export class WorkspaceDrawer extends React.Component {
 		}
 
 		return <div style={{
+			...fullHeight,
 			zIndex: 100,
-			position: "fixed",
 			left: 60,
 			width: 300,
-			top: 0,
-			bottom: 0,
 			overflow: "hidden",
-			backgroundColor: theme.colors.gray}
+			backgroundColor: colors.gray}
 		}>
 			{workspaceContent}
 		</div>

@@ -32,7 +32,7 @@ const themeColors = {
 	error: baseColors.red
 }
 
-const colors = {
+export const colors = {
 	...baseColors,
 	...themeColors
 }

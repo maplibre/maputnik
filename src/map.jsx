@@ -1,6 +1,6 @@
 import React from 'react'
 import MapboxGl from 'mapbox-gl';
-//import diffStyles from 'mapbox-gl-style-spec/lib/diff'
+import diffStyles from 'mapbox-gl-style-spec/lib/diff'
 import { fullHeight } from './theme.js'
 import Immutable from 'immutable'
 
@@ -50,11 +50,11 @@ export class Map extends React.Component {
 	}
 
 	render() {
-			return <div style={{
-				...fullHeight,
-				width: "100%",
-			}}>
-				<div ref={x => this.container = x}></div>
-			</div>
+			return <div
+				ref={x => this.container = x}
+				style={{
+					...fullHeight,
+					width: "100%",
+				}}></div>
 	}
 }

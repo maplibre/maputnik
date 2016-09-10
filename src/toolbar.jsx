@@ -10,6 +10,7 @@ import MdSettings from 'react-icons/lib/md/settings'
 import MdLayers from 'react-icons/lib/md/layers'
 import MdSave from 'react-icons/lib/md/save'
 
+import { fullHeight } from './theme.js'
 import theme from './theme.js';
 
 export class Toolbar extends React.Component {
@@ -68,12 +69,10 @@ export class Toolbar extends React.Component {
 
 	render() {
 		return <Container style={{
+			...fullHeight,
 			zIndex: 100,
-			position: "fixed",
-			height: "100%",
-			left: "0",
-			top: "0",
-			bottom: "0",
+			left: 0,
+			top: 0,
 			backgroundColor: theme.colors.black }
 		}>
 			<Block>
