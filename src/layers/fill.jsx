@@ -1,10 +1,11 @@
 import React from 'react'
+import Immutable from 'immutable'
 import { Checkbox, Input } from 'rebass'
 import PureRenderMixin from 'react-addons-pure-render-mixin';
 
 export default class FillLayer extends React.Component {
 	static propTypes = {
-    layer: React.PropTypes.object.isRequired,
+		layer: React.PropTypes.instanceOf(Immutable.Map).isRequired,
     onPaintChanged: React.PropTypes.func.isRequired
   }
 

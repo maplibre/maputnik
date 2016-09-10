@@ -91,11 +91,15 @@ export class LayerEditor extends React.Component {
 		}
 
 		if (type === "line") {
-			return <LineLayer />
+			return <LineLayer
+				layer={this.props.layer}
+			/>
 		}
 
 		if (type === "symbol") {
-			return <SymbolLayer />
+			return <SymbolLayer
+				layer={this.props.layer}
+			/>
 		}
 
 		return <UnsupportedLayer />
