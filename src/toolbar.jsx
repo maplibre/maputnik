@@ -9,6 +9,8 @@ import MdFileUpload from 'react-icons/lib/md/file-upload'
 import MdSettings from 'react-icons/lib/md/settings'
 import MdLayers from 'react-icons/lib/md/layers'
 import MdSave from 'react-icons/lib/md/save'
+import MdMap from 'react-icons/lib/md/map'
+
 
 import { GlStyle } from './style.js'
 import { fullHeight } from './theme.js'
@@ -24,6 +26,8 @@ export class Toolbar extends React.Component {
 		onStyleSave: React.PropTypes.func,
 		// Open settings drawer
 		onOpenSettings: React.PropTypes.func,
+		// Open sources drawer
+		onOpenSources: React.PropTypes.func,
 		// Open layers drawer
 		onOpenLayers: React.PropTypes.func,
 		// Whether a style is available for download or saving
@@ -91,6 +95,13 @@ export class Toolbar extends React.Component {
 				<Button big={true} onClick={this.props.onOpenLayers}>
 					<Tooltip inverted rounded title="Layers">
 						<MdLayers />
+					</Tooltip>
+				</Button>
+			</Block>
+			<Block>
+				<Button big={true} onClick={this.props.onOpenSources}>
+					<Tooltip inverted rounded title="Sources">
+						<MdMap />
 					</Tooltip>
 				</Button>
 			</Block>

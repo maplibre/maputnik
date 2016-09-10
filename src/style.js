@@ -26,7 +26,7 @@ function fromJSON(jsonStyle) {
 		if(key === "layers") {
 			return [key, Immutable.OrderedMap(val.map(l => [l.id, Immutable.fromJS(l)]))]
 		} else if(key === "sources" || key === "metadata" || key === "transition") {
-			return [key, Immutable.Map(val)]
+			return [key, Immutable.fromJS(val)]
 		} else {
 			return [key, val]
 		}

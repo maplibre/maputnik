@@ -2,7 +2,7 @@ import React from 'react'
 import {saveAs} from 'file-saver'
 
 import { Drawer, Container, Block, Fixed } from 'rebass'
-import {Map} from './map.jsx'
+import { Map } from './map.jsx'
 import {Toolbar} from './toolbar.jsx'
 import { StyleManager } from './style.js'
 import { loadDefaultStyle, SettingsStore, StyleStore } from './stylestore.js'
@@ -67,6 +67,10 @@ export default class App extends React.Component {
 		this.setState({ workContext: "layers", })
 	}
 
+	onOpenSources() {
+		this.setState({ workContext: "sources", })
+	}
+
 	onAccessTokenChanged(newToken) {
 		this.settingsStore.accessToken = newToken
 		this.setState({ accessToken: newToken })
@@ -81,6 +85,7 @@ export default class App extends React.Component {
 					onStyleDownload={this.onStyleDownload.bind(this)}
 					onOpenSettings={this.onOpenSettings.bind(this)}
 					onOpenLayers={this.onOpenLayers.bind(this)}
+					onOpenSources={this.onOpenSources.bind(this)}
 			/>
 			<WorkspaceDrawer
 				onStyleChanged={this.onStyleChanged.bind(this)}

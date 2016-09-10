@@ -1,5 +1,6 @@
 import React from 'react'
 import { LayerList } from './layers/list.jsx'
+import { SourceList } from './sources/list.jsx'
 import { SettingsEditor } from './settings.jsx'
 import { colors, fullHeight } from './theme.js'
 
@@ -9,7 +10,7 @@ export class WorkspaceDrawer extends React.Component {
 	static propTypes = {
 		mapStyle: React.PropTypes.object.isRequired,
 		onStyleChanged: React.PropTypes.func.isRequired,
-		workContext: React.PropTypes.oneOf(['layers', 'settings']).isRequired,
+		workContext: React.PropTypes.oneOf(['layers', 'settings', 'sources']).isRequired,
 		accessToken: React.PropTypes.string,
 		onAccessTokenChanged: React.PropTypes.func,
 	}
@@ -21,6 +22,12 @@ export class WorkspaceDrawer extends React.Component {
 
 	render() {
 		let workspaceContent = null
+
+		if(this.props.workContext === "sources") {
+			workspaceContent = <SourceList
+				sources={this.props.mapStyle.get('sources')}
+			/>
+		}
 
 		if(this.props.workContext === "layers") {
 			workspaceContent = <LayerList
