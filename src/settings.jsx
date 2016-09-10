@@ -1,25 +1,18 @@
 import React from 'react'
 import theme from './theme.js'
 import { Heading, Container, Input, Toolbar, NavItem, Space } from 'rebass'
+import Immutable from 'immutable'
 
 /** Edit global settings within a style such as the name */
 export class SettingsEditor extends React.Component {
 	static propTypes = {
-    mapStyle: React.PropTypes.object.isRequired
+    mapStyle: React.PropTypes.instanceOf(Immutable.Map).isRequired,
+    onStyleChanged: React.PropTypes.func.isRequired
   }
 
-	constructor(props) {
-		super(props)
-		this.state = {
-			settings: this.props.styleManager.settings()
-		}
-	}
-
 	onChange(property, e) {
-		let settings = this.state.settings
-		settings[property] = e.target.value
-		this.props.styleManager[property] = settings[property]
-		this.setState(settings)
+		const changedStyle = this.props.mapStyle.set(property, e.target.value)
+		this.props.onStyleChanged(changedStyle)
 	}
 
 	render() {
@@ -33,25 +26,25 @@ export class SettingsEditor extends React.Component {
 				<Input
 					name="name"
 					label="Name"
-					value={this.state.settings.name}
+					value={this.props.mapStyle.get('name')}
 					onChange={this.onChange.bind(this, "name")}
 				/>
 				<Input
 					name="owner"
 					label="Owner"
-					value={this.state.settings.owner}
+					value={this.props.mapStyle.get('owner')}
 					onChange={this.onChange.bind(this, "owner")}
 				/>
 				<Input
 					name="sprite"
 					label="Sprite URL"
-					value={this.state.settings.sprite}
+					value={this.props.mapStyle.get('sprite')}
 					onChange={this.onChange.bind(this, "sprite")}
 				/>
 				<Input
 					name="glyphs"
 					label="Glyphs URL"
-					value={this.state.settings.glyphs}
+					value={this.props.mapStyle.get('glyphs')}
 					onChange={this.onChange.bind(this, "glyphs")}
 				/>
 			</Container>
