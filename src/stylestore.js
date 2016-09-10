@@ -1,5 +1,6 @@
 import { colorizeLayers } from './style.js'
 import Immutable from 'immutable'
+import style from './style.js'
 
 const storagePrefix = "mapolo"
 const storageKeys = {
@@ -8,47 +9,32 @@ const storageKeys = {
 }
 
 // Empty style is always used if no style could be restored or fetched
-const emptyStyle = ensureOptionalStyleProps(makeStyleImmutable({
+const emptyStyle = style.fromJSON({
 		version: 8,
 		sources: {},
 		layers: [],
-}))
+})
 
 const defaultStyleUrl = "https://raw.githubusercontent.com/osm2vectortiles/mapbox-gl-styles/master/styles/basic-v9-cdn.json"
-
-// TODO: Stop converting around so much.. we should make a module containing the immutable style stuff
-export function styleToJS(mapStyle) {
-	const jsonStyle = mapStyle.toJS()
-	jsonStyle.layers = mapStyle.get('layers').toIndexedSeq().toJS()
-	return jsonStyle
-}
-
-function makeStyleImmutable(mapStyle) {
-  if(mapStyle instanceof Immutable.Map) return mapStyle
-	const style = Immutable.fromJS(mapStyle)
-	const orderdLayers = Immutable.OrderedMap(mapStyle.layers.map(l => [l.id, Immutable.fromJS(l)]))
-	return style.set('layers', orderdLayers)
-}
-
 // Fetch a default style via URL and return it or a fallback style via callback
 export function loadDefaultStyle(cb) {
-	var request = new XMLHttpRequest();
-	request.open('GET', defaultStyleUrl, true);
+	var request = new XMLHttpRequest()
+	request.open('GET', defaultStyleUrl, true)
 
 	request.onload = () => {
 		if (request.status >= 200 && request.status < 400) {
-			cb(makeStyleImmutable(JSON.parse(request.responseText)))
+			cb(style.fromJSON(request.responseText))
 		} else {
 			cb(emptyStyle)
 		}
-	};
+	}
 
 	request.onerror = function() {
 			console.log('Could not fetch default style')
 			cb(emptyStyle)
-	};
+	}
 
-	request.send();
+	request.send()
 }
 
 // Return style ids and dates of all styles stored in local storage
@@ -84,17 +70,6 @@ function styleKey(styleId) {
 	return [storagePrefix, styleId].join(":")
 }
 
-// Ensure a style has a unique id and a created date
-function ensureOptionalStyleProps(mapStyle) {
-		if(!mapStyle.has('id')) {
-			mapStyle = mapStyle.set('id', Math.random().toString(36).substr(2, 9))
-		}
-		if(!mapStyle.has('created')) {
-			mapStyle = mapStyle.set('created', new Date())
-		}
-		return mapStyle
-}
-
 // Store style independent settings
 export class SettingsStore {
 	get accessToken() {
@@ -120,18 +95,14 @@ export class StyleStore {
 		const styleId = window.localStorage.getItem(storageKeys.latest)
 		const styleItem = window.localStorage.getItem(styleKey(styleId))
 
-		if(styleItem) return makeStyleImmutable(JSON.parse(styleItem))
-		return memptyStyle
+		if(styleItem) return style.fromJSON(styleItem)
+		return emptyStyle
 	}
 
 	// Save current style replacing previous version
 	save(mapStyle) {
-		if(!(mapStyle instanceof Immutable.Map)) {
-			mapStyle = makeStyleImmutable(mapStyle)
-		}
-		mapStyle = ensureOptionalStyleProps(mapStyle)
 		const key = styleKey(mapStyle.get('id'))
-		window.localStorage.setItem(key, JSON.stringify(styleToJS(mapStyle)))
+		window.localStorage.setItem(key, JSON.stringify(style.toJSON(mapStyle)))
 		window.localStorage.setItem(storageKeys.latest, mapStyle.get('id'))
 		return mapStyle
 	}

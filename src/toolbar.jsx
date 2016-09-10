@@ -10,6 +10,7 @@ import MdSettings from 'react-icons/lib/md/settings'
 import MdLayers from 'react-icons/lib/md/layers'
 import MdSave from 'react-icons/lib/md/save'
 
+import { GlStyle } from './style.js'
 import { fullHeight } from './theme.js'
 import theme from './theme.js';
 
@@ -36,7 +37,7 @@ export class Toolbar extends React.Component {
 		reader.readAsText(file, "UTF-8");
 		reader.onload = e => {
 			const style = JSON.parse(e.target.result);
-			this.props.onStyleUpload(style);
+			this.props.onStyleUpload(GlStyle.fromJSON(style));
 		}
 		reader.onerror = e => console.log(e.target);
 	}

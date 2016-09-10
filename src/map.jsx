@@ -1,8 +1,7 @@
 import React from 'react'
 import MapboxGl from 'mapbox-gl';
-import diffStyles from 'mapbox-gl-style-spec/lib/diff'
 import { fullHeight } from './theme.js'
-import { styleToJS } from './stylestore.js'
+import style from './style.js'
 import Immutable from 'immutable'
 
 export class Map extends React.Component {
@@ -16,27 +15,24 @@ export class Map extends React.Component {
 
 		// If the id has changed a new style has been uplaoded and
 		// it is safer to do a full new render
+		// TODO: might already be handled in diff algorithm?
 		const mapIdChanged = this.props.mapStyle.get('id') !== nextProps.mapStyle.get('id')
 
 		if(mapIdChanged || tokenChanged) {
-			this.state.map.setStyle(styleToJS(nextProps.mapStyle))
+			this.state.map.setStyle(style.toJSON(nextProps.mapStyle))
 			return
 		}
 
 		// TODO: If there is no map yet we need to apply the changes later?
-		// How to deal with that?
 		if(this.state.map) {
-			//TODO: Write own diff algo that operates on immutable collections
-			// Should be able to improve performance since we can only compare
-			// by reference
-			const changes = diffStyles(styleToJS(this.props.mapStyle), styleToJS(nextProps.mapStyle))
-			changes.forEach(change => {
+			style.diffStyles(this.props.mapStyle, nextProps.mapStyle).forEach(change => {
 				this.state.map[change.command].apply(this.state.map, change.args);
 			});
 		}
 	}
 
 	shouldComponentUpdate(nextProps, nextState) {
+		//TODO: If we enable this React mixin for immutable comparison we can remove this?
 		return nextProps.mapStyle !== this.props.mapStyle
 	}
 
@@ -45,7 +41,7 @@ export class Map extends React.Component {
 
 		const map = new MapboxGl.Map({
 			container: this.container,
-			style: styleToJS(this.props.mapStyle),
+			style: style.toJSON(this.props.mapStyle),
 		});
 
 		map.on("style.load", (...args) => {

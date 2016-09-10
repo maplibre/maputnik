@@ -39,10 +39,10 @@ export default class App extends React.Component {
 	}
 
 	onStyleDownload() {
-		const mapStyle = JSON.stringify(this.state.currentStyle.toJS(), null, 4)
+		const mapStyle = JSON.stringify(this.state.currentStyle.toJSON(), null, 4)
 		const blob = new Blob([mapStyle], {type: "application/json;charset=utf-8"});
 		saveAs(blob, mapStyle.id + ".json");
-		this.onStyleSave(mapStyle)
+		this.onStyleSave()
 	}
 
 	onStyleUpload(newStyle) {
@@ -52,8 +52,7 @@ export default class App extends React.Component {
 
 	onStyleSave() {
 		const snapshotStyle = this.state.currentStyle.set('modified', new Date().toJSON())
-		const savedStyle = this.styleStore.save(snapshotStyle)
-		this.setState({ currentStyle: savedStyle })
+		this.setState({ currentStyle: snapshotStyle })
 	}
 
 	onStyleChanged(newStyle) {
