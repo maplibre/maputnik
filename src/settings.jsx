@@ -2,6 +2,7 @@ import React from 'react'
 import theme from './theme.js'
 import { Heading, Container, Input, Toolbar, NavItem, Space } from 'rebass'
 import Immutable from 'immutable'
+import PureRenderMixin from 'react-addons-pure-render-mixin';
 
 /** Edit global settings within a style such as the name */
 export class SettingsEditor extends React.Component {
@@ -10,6 +11,11 @@ export class SettingsEditor extends React.Component {
 		onStyleChanged: React.PropTypes.func.isRequired,
 		accessToken: React.PropTypes.string,
 		onAccessTokenChanged: React.PropTypes.func
+	}
+
+	constructor(props) {
+		super(props);
+		this.shouldComponentUpdate = PureRenderMixin.shouldComponentUpdate.bind(this);
 	}
 
 	onChange(property, e) {

@@ -12,6 +12,7 @@ import BackgroundLayer from './background.jsx'
 import MdVisibility from 'react-icons/lib/md/visibility'
 import MdVisibilityOff from 'react-icons/lib/md/visibility-off'
 import MdDelete from 'react-icons/lib/md/delete'
+import PureRenderMixin from 'react-addons-pure-render-mixin';
 
 class UnsupportedLayer extends React.Component {
 	render() {
@@ -33,6 +34,7 @@ export class LayerEditor extends React.Component {
 
 	constructor(props) {
 		super(props);
+		this.shouldComponentUpdate = PureRenderMixin.shouldComponentUpdate.bind(this);
 		this.state = {
 			isOpened: false,
 		}

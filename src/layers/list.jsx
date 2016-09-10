@@ -3,6 +3,7 @@ import Immutable from 'immutable'
 import { Heading, Toolbar, NavItem, Space} from 'rebass'
 import { LayerEditor } from './editor.jsx'
 import scrollbars from '../scrollbars.scss'
+import PureRenderMixin from 'react-addons-pure-render-mixin';
 
 // List of collapsible layer editors
 export class LayerList extends React.Component {
@@ -13,6 +14,7 @@ export class LayerList extends React.Component {
 
 	constructor(props) {
 		super(props)
+		this.shouldComponentUpdate = PureRenderMixin.shouldComponentUpdate.bind(this);
 	}
 
 	onLayerDestroyed(deletedLayer) {

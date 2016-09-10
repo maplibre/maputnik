@@ -1,11 +1,17 @@
 import React from 'react'
 import { Checkbox, Input } from 'rebass'
+import PureRenderMixin from 'react-addons-pure-render-mixin';
 
 export default class FillLayer extends React.Component {
 	static propTypes = {
     layer: React.PropTypes.object.isRequired,
     onPaintChanged: React.PropTypes.func.isRequired
   }
+
+	constructor(props) {
+		super(props);
+		this.shouldComponentUpdate = PureRenderMixin.shouldComponentUpdate.bind(this);
+	}
 
 	onPaintChanged(property, e) {
 		let value = e.target.value
