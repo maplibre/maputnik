@@ -24,19 +24,6 @@ loaders.push({
 		'sass'
 	]
 });
-
-// Mapbox GL
-loaders.push({
-	test: /\.json$/,
-  loader: 'json-loader'
-});
-
-loaders.push({
-	 test: /\.js$/,
-   include: path.resolve('node_modules/mapbox-gl-shaders/index.js'),
-   loader: 'transform/cacheable?brfs'
-});
-
 // local css modules
 loaders.push({
 	test: /[\/\\]src[\/\\].*\.css/,
@@ -61,17 +48,20 @@ module.exports = {
 		alias: {
 			'webworkify': 'webworkify-webpack',
 			// TODO: otherwise I get a max call stack error in browser?
-			'mapbox-gl': path.resolve('./node_modules/mapbox-gl/dist/mapbox-gl.js')
+			// 'mapbox-gl': path.resolve('./node_modules/mapbox-gl/dist/mapbox-gl.js')
 		},
 		extensions: ['', '.js', '.jsx']
 	},
 	module: {
 		loaders,
 		postLoaders: [{
-            include: /node_modules\/mapbox-gl-shaders/,
-            loader: 'transform',
-            query: 'brfs'
-        }]
+			include: /node_modules\/mapbox-gl-shaders/,
+			loader: 'transform',
+			query: 'brfs'
+		}]
+	},
+	node: {
+		fs: "empty"
 	},
 	devServer: {
 		contentBase: "./public",

@@ -32,10 +32,24 @@ module.exports = {
 		filename: '[chunkhash].js'
 	},
 	resolve: {
+		alias: {
+			'webworkify': 'webworkify-webpack',
+		},
 		extensions: ['', '.js', '.jsx']
 	},
 	module: {
 		loaders
+	},
+	module: {
+		loaders,
+		postLoaders: [{
+			include: /node_modules\/mapbox-gl-shaders/,
+			loader: 'transform',
+			query: 'brfs'
+		}]
+	},
+	node: {
+		fs: "empty"
 	},
 	plugins: [
 		new WebpackCleanupPlugin(),

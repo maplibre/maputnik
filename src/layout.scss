@@ -1,12 +1,8 @@
-@mixin full-height {
+.map {
     position: fixed;
     top: 0;
     bottom: 0;
 	height: 100%;
-}
-
-.map {
-    @include full-height;
     width: 100%;
 
     & > div {

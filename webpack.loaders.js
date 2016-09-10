@@ -47,5 +47,14 @@ module.exports = [
 		test: /\.png/,
 		exclude: /(node_modules|bower_components)/,
 		loader: "url-loader?limit=10000&mimetype=image/png"
+	},
+	{
+		test: /\.json$/,
+		loader: 'json-loader'
+	},
+	{
+		 test: /\.js$/,
+		 include: '/node_modules/mapbox-gl-shaders/index.js',
+		 loader: 'transform/cacheable?brfs'
 	}
 ];

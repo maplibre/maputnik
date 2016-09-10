@@ -9,7 +9,6 @@ import { StyleStore } from './stylestore.js'
 import { WorkspaceDrawer } from './workspace.jsx'
 
 import theme from './theme.js'
-import layout from './layout.scss'
 
 export default class App extends React.Component {
 	static childContextTypes = {
@@ -78,9 +77,7 @@ export default class App extends React.Component {
 				workContext={this.state.workContext}
 				mapStyle={this.state.currentStyle}
 			/>
-			<div className={layout.map}>
-				<Map mapStyle={this.state.currentStyle} />
-			</div>
+			<Map mapStyle={this.state.currentStyle} />
 		</div>
 	}
 }

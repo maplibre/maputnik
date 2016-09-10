@@ -3,6 +3,13 @@ const caps = {
 	letterSpacing: '.2em'
 }
 
+export const fullHeight = {
+	position: "fixed",
+	top: 0,
+	bottom: 0,
+	height: "100%",
+}
+
 const baseColors = {
 	black: '#242424',
 	gray: '#313131',

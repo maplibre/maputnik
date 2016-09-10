@@ -91,6 +91,6 @@
     "webpack": "1.13.2",
     "webpack-cleanup-plugin": "^0.3.0",
     "webpack-dev-server": "1.15.1",
-    "webworkify-webpack": "^1.1.7"
+    "webworkify-webpack": "^1.1.3"
   }
 }
