@@ -7,7 +7,7 @@ import scrollbars from '../scrollbars.scss'
 // List of collapsible layer editors
 export class LayerList extends React.Component {
 	static propTypes = {
-		layers: React.PropTypes.instanceOf(Immutable.List),
+		layers: React.PropTypes.instanceOf(Immutable.OrderedMap),
 		onLayersChanged: React.PropTypes.func.isRequired
 	}
 
@@ -16,47 +16,25 @@ export class LayerList extends React.Component {
 	}
 
 	onLayerDestroyed(deletedLayer) {
-		//TODO: That's just horrible...
-		// Can we use a immutable ordered map to look up and guarantee order
-		// at the same time?
-		let deleteIdx = -1
-		for (let entry of this.props.layers.entries()) {
-			let [i, layer] = entry
-			if(layer.get('id') == deletedLayer.get('id')) {
-				deleteIdx = i
-				break
-			}
-		}
-
-		this.props.onLayersChanged(this.props.layers.delete(deleteIdx))
+		const remainingLayers = this.props.layers.delete(deletedLayer.get('id'))
+		this.props.onLayersChanged(remainingLayers)
 	}
 
-	onLayerChanged(changedLayer) {
-		//TODO: That's just horrible...
-		let changeIdx = -1
-		for (let entry of this.props.layers.entries()) {
-			let [i, layer] = entry
-			if(layer.get('id') == changedLayer.get('id')) {
-				changeIdx = i
-				break
-			}
-		}
-
-		const changedLayers = this.props.layers.set(changeIdx, changedLayer)
+	onLayerChanged(layer) {
+		const changedLayers = this.props.layers.set(layer.get('id'), layer)
 		this.props.onLayersChanged(changedLayers)
 	}
 
 	render() {
 		var layerPanels = []
-
-		for(let layer of this.props.layers) {
-			layerPanels.push(<LayerEditor
+		layerPanels = this.props.layers.map(layer => {
+			return <LayerEditor
 				key={layer.get('id')}
 				layer={layer}
 				onLayerDestroyed={this.onLayerDestroyed.bind(this)}
 				onLayerChanged={this.onLayerChanged.bind(this)}
-			/>)
-		}
+			/>
+		}).toIndexedSeq()
 
 		return <div>
 			<Toolbar style={{marginRight: 20}}>

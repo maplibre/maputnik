@@ -2,6 +2,7 @@ import React from 'react'
 import MapboxGl from 'mapbox-gl';
 import diffStyles from 'mapbox-gl-style-spec/lib/diff'
 import { fullHeight } from './theme.js'
+import { styleToJS } from './stylestore.js'
 import Immutable from 'immutable'
 
 export class Map extends React.Component {
@@ -18,7 +19,7 @@ export class Map extends React.Component {
 		const mapIdChanged = this.props.mapStyle.get('id') !== nextProps.mapStyle.get('id')
 
 		if(mapIdChanged || tokenChanged) {
-			this.state.map.setStyle(nextProps.mapStyle.toJS())
+			this.state.map.setStyle(styleToJS(nextProps.mapStyle))
 			return
 		}
 
@@ -28,7 +29,7 @@ export class Map extends React.Component {
 			//TODO: Write own diff algo that operates on immutable collections
 			// Should be able to improve performance since we can only compare
 			// by reference
-			const changes = diffStyles(this.props.mapStyle.toJS(), nextProps.mapStyle.toJS())
+			const changes = diffStyles(styleToJS(this.props.mapStyle), styleToJS(nextProps.mapStyle))
 			changes.forEach(change => {
 				this.state.map[change.command].apply(this.state.map, change.args);
 			});
@@ -44,7 +45,7 @@ export class Map extends React.Component {
 
 		const map = new MapboxGl.Map({
 			container: this.container,
-			style: this.props.mapStyle.toJS(),
+			style: styleToJS(this.props.mapStyle),
 		});
 
 		map.on("style.load", (...args) => {

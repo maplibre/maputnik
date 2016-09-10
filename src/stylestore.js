@@ -8,13 +8,27 @@ const storageKeys = {
 }
 
 // Empty style is always used if no style could be restored or fetched
-const emptyStyle = ensureOptionalStyleProps(Immutable.fromJS({
+const emptyStyle = ensureOptionalStyleProps(makeStyleImmutable({
 		version: 8,
 		sources: {},
 		layers: [],
 }))
 
 const defaultStyleUrl = "https://raw.githubusercontent.com/osm2vectortiles/mapbox-gl-styles/master/styles/basic-v9-cdn.json"
+
+// TODO: Stop converting around so much.. we should make a module containing the immutable style stuff
+export function styleToJS(mapStyle) {
+	const jsonStyle = mapStyle.toJS()
+	jsonStyle.layers = mapStyle.get('layers').toIndexedSeq().toJS()
+	return jsonStyle
+}
+
+function makeStyleImmutable(mapStyle) {
+  if(mapStyle instanceof Immutable.Map) return mapStyle
+	const style = Immutable.fromJS(mapStyle)
+	const orderdLayers = Immutable.OrderedMap(mapStyle.layers.map(l => [l.id, Immutable.fromJS(l)]))
+	return style.set('layers', orderdLayers)
+}
 
 // Fetch a default style via URL and return it or a fallback style via callback
 export function loadDefaultStyle(cb) {
@@ -23,7 +37,7 @@ export function loadDefaultStyle(cb) {
 
 	request.onload = () => {
 		if (request.status >= 200 && request.status < 400) {
-			cb(Immutable.fromJS(JSON.parse(request.responseText)))
+			cb(makeStyleImmutable(JSON.parse(request.responseText)))
 		} else {
 			cb(emptyStyle)
 		}
@@ -102,20 +116,22 @@ export class StyleStore {
 
 	// Find the last edited style
 	latestStyle() {
-		if(this.mapStyles.length == 0) return emptyStyle
+		if(this.mapStyles.length === 0) return emptyStyle
 		const styleId = window.localStorage.getItem(storageKeys.latest)
 		const styleItem = window.localStorage.getItem(styleKey(styleId))
-		return Immutable.fromJS(JSON.parse(styleItem))
+
+		if(styleItem) return makeStyleImmutable(JSON.parse(styleItem))
+		return memptyStyle
 	}
 
 	// Save current style replacing previous version
 	save(mapStyle) {
 		if(!(mapStyle instanceof Immutable.Map)) {
-			mapStyle = Immutable.fromJS(mapStyle)
+			mapStyle = makeStyleImmutable(mapStyle)
 		}
 		mapStyle = ensureOptionalStyleProps(mapStyle)
 		const key = styleKey(mapStyle.get('id'))
-		window.localStorage.setItem(key, JSON.stringify(mapStyle.toJS()))
+		window.localStorage.setItem(key, JSON.stringify(styleToJS(mapStyle)))
 		window.localStorage.setItem(storageKeys.latest, mapStyle.get('id'))
 		return mapStyle
 	}
