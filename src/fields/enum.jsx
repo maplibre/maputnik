@@ -3,6 +3,7 @@ import { Select, Input } from 'rebass'
 
 class EnumField extends React.Component {
 	static propTypes = {
+    onChange: React.PropTypes.func.isRequired,
 		name: React.PropTypes.string.isRequired,
     value: React.PropTypes.string,
     allowedValues: React.PropTypes.array.isRequired,
@@ -13,7 +14,12 @@ class EnumField extends React.Component {
 		const options = this.props.allowedValues.map(val => {
 			return {children: val, value: val}
 		})
-		return <Select name={this.props.name} options={options} label={this.props.name} />
+		return <Select
+			onChange={this.props.onChange}
+			name={this.props.name}
+			options={options}
+			label={this.props.name}
+		/>
 	}
 }
 

@@ -15,8 +15,7 @@ export default class BackgroundLayer extends React.Component {
 		this.shouldComponentUpdate = PureRenderMixin.shouldComponentUpdate.bind(this);
 	}
 
-	onPaintChanged(property, e) {
-		let value = e.target.value
+	onPaintChanged(property, value) {
 		if (property == "background-opacity" && !isNaN(parseFloat(value))) {
 			value = parseFloat(value)
 		}
@@ -25,8 +24,17 @@ export default class BackgroundLayer extends React.Component {
 
 	render() {
 		return <div>
-			<PropertyGroup layerType="background" groupType="layout" properties={this.props.layer.get('layout', Immutable.Map())}/>
-			<PropertyGroup layerType="background" groupType="paint" properties={this.props.layer.get('paint', Immutable.Map())}/>
+			<PropertyGroup
+				layerType="background"
+				groupType="layout"
+				properties={this.props.layer.get('layout', Immutable.Map())}
+			/>
+			<PropertyGroup
+				onChange={this.props.onPaintChanged.bind(this)}
+				layerType="background"
+				groupType="paint"
+				properties={this.props.layer.get('paint', Immutable.Map())}
+			/>
 		</div>
 	}
 }

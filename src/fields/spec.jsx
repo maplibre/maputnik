@@ -8,6 +8,7 @@ import StringField from './string'
 
 class SpecField extends React.Component {
 	static propTypes = {
+    onChange: React.PropTypes.func.isRequired,
     fieldName: React.PropTypes.string.isRequired,
     fieldSpec: React.PropTypes.object.isRequired,
 		value: React.PropTypes.oneOfType([
@@ -17,10 +18,15 @@ class SpecField extends React.Component {
     ]).isRequired,
   }
 
+	onValueChanged(property, e) {
+		return this.props.onChange(property, e.target.value)
+	}
+
 	render() {
 		switch(this.props.fieldSpec.type) {
 			case 'number': return (
 				<NumberField
+					onChange={this.onValueChanged.bind(this, this.props.fieldName)}
 					value={this.props.value}
 					name={this.props.fieldName}
 					default={this.props.fieldSpec.default}
@@ -32,6 +38,7 @@ class SpecField extends React.Component {
 			)
 			case 'enum': return (
 				<EnumField
+					onChange={this.onValueChanged.bind(this, this.props.fieldName)}
 					value={this.props.value}
 					name={this.props.fieldName}
 					allowedValues={this.props.fieldSpec.values}
@@ -40,6 +47,7 @@ class SpecField extends React.Component {
 			)
 			case 'string': return (
 				<StringField
+					onChange={this.onValueChanged.bind(this, this.props.fieldName)}
 					value={this.props.value}
 					name={this.props.fieldName}
 					doc={this.props.fieldSpec.doc}
@@ -47,6 +55,7 @@ class SpecField extends React.Component {
 			)
 			case 'color': return (
 				<ColorField
+					onChange={this.onValueChanged.bind(this, this.props.fieldName)}
 					value={this.props.value}
 					name={this.props.fieldName}
 					doc={this.props.fieldSpec.doc}
@@ -59,6 +68,7 @@ class SpecField extends React.Component {
 
 export class PropertyGroup extends React.Component {
 	static propTypes = {
+    onChange: React.PropTypes.func.isRequired,
 		properties: React.PropTypes.instanceOf(Immutable.Map).isRequired,
 		layerType: React.PropTypes.oneOf(['fill', 'background', 'line']).isRequired,
 		groupType: React.PropTypes.oneOf(['paint', 'layout']).isRequired,
@@ -70,6 +80,7 @@ export class PropertyGroup extends React.Component {
 			const fieldSpec = layerTypeSpec[propName]
 			const propValue = this.props.properties.get(propName)
 			return <SpecField
+				onChange={this.props.onChange}
 				key={propName}
 				value={propValue}
 				fieldName={propName}

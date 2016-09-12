@@ -26,8 +26,17 @@ export default class FillLayer extends React.Component {
 
 	render() {
 		return <div>
-			<PropertyGroup layerType="fill" groupType="layout" properties={this.props.layer.get('layout', Immutable.Map())}/>
-			<PropertyGroup layerType="fill" groupType="paint" properties={this.props.layer.get('paint', Immutable.Map())}/>
+			<PropertyGroup
+				layerType="fill"
+				groupType="layout"
+				properties={this.props.layer.get('layout', Immutable.Map())}
+			/>
+			<PropertyGroup
+				onChange={this.props.onPaintChanged.bind(this)}
+				layerType="fill"
+				groupType="paint"
+				properties={this.props.layer.get('paint', Immutable.Map())}
+			/>
 		</div>
 	}
 }
