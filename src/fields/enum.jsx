@@ -4,7 +4,7 @@ import { Select, Input } from 'rebass'
 class EnumField extends React.Component {
 	static propTypes = {
 		name: React.PropTypes.string.isRequired,
-    value: React.PropTypes.string.isRequired,
+    value: React.PropTypes.string,
     allowedValues: React.PropTypes.array.isRequired,
     doc: React.PropTypes.string,
   }
