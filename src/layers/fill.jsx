@@ -1,6 +1,7 @@
 import React from 'react'
 import Immutable from 'immutable'
 import { Checkbox, Input } from 'rebass'
+import { PropertyGroup } from '../fields/spec'
 import PureRenderMixin from 'react-addons-pure-render-mixin';
 
 export default class FillLayer extends React.Component {
@@ -24,14 +25,9 @@ export default class FillLayer extends React.Component {
 	}
 
 	render() {
-		const paint = this.props.layer.get('paint')
 		return <div>
-			<Input name="fill-color" label="Fill color" onChange={this.onPaintChanged.bind(this, "fill-color")} value={paint.get("fill-color")} />
-			<Input name="fill-outline-color" label="Fill outline color" onChange={this.onPaintChanged.bind(this, "fill-outline-color")} value={paint.get("fill-outline-color")} />
-			<Input name="fill-translate" label="Fill translate" onChange={this.onPaintChanged.bind(this, "fill-translate")} value={paint.get("fill-translate")} />
-			<Input name="fill-translate-anchor" label="Fill translate anchor" onChange={this.onPaintChanged.bind(this, "fill-translate-anchor")} value={paint.get("fill-translate-anchor")} />
-			<Checkbox name="fill-antialias" label="Antialias" onChange={this.onPaintChanged.bind(this, "fill-antialias")} checked={paint.get("fill-antialias")} />
-			<Input name="fill-opacity" label="Opacity" onChange={this.onPaintChanged.bind(this, "fill-opacity")} value={paint.get("fill-opacity")} />
+			<PropertyGroup layerType="fill" groupType="layout" properties={this.props.layer.get('layout', Immutable.Map())}/>
+			<PropertyGroup layerType="fill" groupType="paint" properties={this.props.layer.get('paint', Immutable.Map())}/>
 		</div>
 	}
 }

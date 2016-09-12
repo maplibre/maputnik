@@ -1,7 +1,6 @@
 import React from 'react'
 import Immutable from 'immutable'
-import spec from 'mapbox-gl-style-spec/reference/latest.min.js'
-import EnumField from '../fields/enum.jsx'
+import { PropertyGroup } from '../fields/spec'
 
 export default class LineLayer extends React.Component {
 	static propTypes = {
@@ -9,31 +8,9 @@ export default class LineLayer extends React.Component {
   }
 
 	render() {
-		const enumFieldFromType = (key, field) => {
-				if(field.type === 'enum') {
-					return <EnumField
-						key={key}
-						name={key}
-						values={field.values}
-						value={this.props.layer.getIn(['layout', key], field.default)}
-						doc={field.doc}/>
-				}
-		}
-
-		const layoutLineFields = () => {
-			const type = spec["layout_line"]
-			return Object.keys(type).map(key => {
-				return enumFieldFromType(key, type[key])
-			})
-		}
-
-		const paintLineFields = () => {
-			const type = spec["paint_line"]
-			return Object.keys(type).map(key => {
-				return enumFieldFromType(key, type[key])
-			})
-		}
-
-		return <div>{layoutLineFields()}{paintLineFields()}</div>
+		return <div>
+			<PropertyGroup layerType="line" groupType="layout" properties={this.props.layer.get('layout', Immutable.Map())}/>
+			<PropertyGroup layerType="line" groupType="paint" properties={this.props.layer.get('paint', Immutable.Map())}/>
+		</div>
 	}
 }

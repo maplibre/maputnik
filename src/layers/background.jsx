@@ -1,10 +1,12 @@
 import React from 'react'
+import Immutable from 'immutable'
 import { Input } from 'rebass'
+import { PropertyGroup } from '../fields/spec'
 import PureRenderMixin from 'react-addons-pure-render-mixin';
 
 export default class BackgroundLayer extends React.Component {
 	static propTypes = {
-		layer: React.PropTypes.object.isRequired,
+		layer: React.PropTypes.instanceOf(Immutable.Map).isRequired,
 		onPaintChanged: React.PropTypes.func.isRequired
 	}
 
@@ -22,10 +24,9 @@ export default class BackgroundLayer extends React.Component {
 	}
 
 	render() {
-		const paint = this.props.layer.get('paint')
 		return <div>
-			<Input name="background-color" label="Background color" onChange={this.onPaintChanged.bind(this, "background-color")} value={paint.get("background-color")} />
-			<Input name="background-opacity" label="Background opacity" onChange={this.onPaintChanged.bind(this, "background-opacity")} value={paint.get("background-opacity")} />
+			<PropertyGroup layerType="background" groupType="layout" properties={this.props.layer.get('layout', Immutable.Map())}/>
+			<PropertyGroup layerType="background" groupType="paint" properties={this.props.layer.get('paint', Immutable.Map())}/>
 		</div>
 	}
 }
