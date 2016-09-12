@@ -4,6 +4,7 @@ import GlSpec from 'mapbox-gl-style-spec/reference/latest.min.js'
 import NumberField from './number'
 import EnumField from './enum'
 import ColorField from './color'
+import StringField from './string'
 
 class SpecField extends React.Component {
 	static propTypes = {
@@ -34,6 +35,13 @@ class SpecField extends React.Component {
 					value={this.props.value}
 					name={this.props.fieldName}
 					allowedValues={this.props.fieldSpec.values}
+					doc={this.props.fieldSpec.doc}
+				/>
+			)
+			case 'string': return (
+				<StringField
+					value={this.props.value}
+					name={this.props.fieldName}
 					doc={this.props.fieldSpec.doc}
 				/>
 			)

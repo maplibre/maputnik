@@ -1,8 +1,8 @@
 import React from 'react'
-import { Select, Input } from 'rebass'
+import { Input } from 'rebass'
 
 /*** Number fields with support for min, max and units and documentation*/
-class ColorField extends React.Component {
+class StringField extends React.Component {
 static propTypes = {
 		name: React.PropTypes.string.isRequired,
     value: React.PropTypes.number,
@@ -19,4 +19,4 @@ static propTypes = {
 	}
 }
 
-export default ColorField
+export default StringField
