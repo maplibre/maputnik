@@ -11,9 +11,13 @@ static propTypes = {
     doc: React.PropTypes.string,
   }
 
+	onChange(e) {
+		return this.props.onChange(e.target.value)
+	}
+
 	render() {
 		return <Input
-			onChange={this.props.onChange}
+			onChange={this.onChange.bind(this)}
 			label={this.props.name}
 			name={this.props.name}
 			value={this.props.value}

@@ -18,8 +18,8 @@ class SpecField extends React.Component {
     ]).isRequired,
   }
 
-	onValueChanged(property, e) {
-		return this.props.onChange(property, e.target.value)
+	onValueChanged(property, value) {
+		return this.props.onChange(property, value)
 	}
 
 	render() {

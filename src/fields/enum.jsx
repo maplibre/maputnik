@@ -10,12 +10,16 @@ class EnumField extends React.Component {
     doc: React.PropTypes.string,
   }
 
+	onChange(e) {
+		return this.props.onChange(e.target.value)
+	}
+
 	render() {
 		const options = this.props.allowedValues.map(val => {
 			return {children: val, value: val}
 		})
 		return <Select
-			onChange={this.props.onChange}
+			onChange={this.onChange.bind(this)}
 			name={this.props.name}
 			options={options}
 			label={this.props.name}

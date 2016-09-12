@@ -14,9 +14,14 @@ class NumberField extends React.Component {
     doc: React.PropTypes.string,
   }
 
+	onChange(e) {
+		return this.props.onChange(parseFloat(e.target.value))
+	}
+
 	render() {
-		return <Input type="number"
-			onChange={this.props.onChange}
+		return <Input
+			type="number"
+			onChange={this.onChange.bind(this)}
 			label={this.props.name}
 			name={this.props.name}
 			message={this.props.doc}
