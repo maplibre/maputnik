@@ -1,5 +1,6 @@
 import React from 'react'
-import { Select, Input } from 'rebass'
+import { Label, Input } from 'rebass'
+import {inputBase} from '../theme'
 
 /*** Number fields with support for min, max and units and documentation*/
 class ColorField extends React.Component {
@@ -16,12 +17,16 @@ static propTypes = {
 	}
 
 	render() {
-		return <Input
-			onChange={this.onChange.bind(this)}
-			label={this.props.name}
-			name={this.props.name}
-			value={this.props.value}
-		/>
+		return <div>
+			<Label htmlFor={this.props.name} children={this.props.name} />
+			<input
+				style={inputBase}
+				name={this.props.name}
+				placeholder={this.props.default}
+				value={this.props.value}
+				onChange={this.onChange.bind(this)}
+			/>
+		</div>
 	}
 }
 

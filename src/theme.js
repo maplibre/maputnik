@@ -37,6 +37,16 @@ export const colors = {
 	...themeColors
 }
 
+export const inputBase = {
+		display: 'block',
+		border: '1px solid rgb(36, 36, 36)',
+		height: 30,
+		width: '100%',
+		paddingLeft: 5,
+		paddingRight: 5,
+		backgroundColor: colors.gray,
+}
+
 const scale = [3, 5, 10, 30, 40]
 const fontSizes = [28, 24, 20, 16, 14, 12, 10]
 

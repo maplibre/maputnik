@@ -28,7 +28,7 @@ export class SourceList extends React.Component {
 		return <div>
 			<Toolbar style={{marginRight: 20}}>
 				<NavItem>
-					<Heading>Layers</Heading>
+					<Heading>Sources</Heading>
 				</NavItem>
 				<Space auto x={1} />
 			</Toolbar>
