@@ -7,7 +7,8 @@ import PureRenderMixin from 'react-addons-pure-render-mixin';
 export default class BackgroundLayer extends React.Component {
 	static propTypes = {
 		layer: React.PropTypes.instanceOf(Immutable.Map).isRequired,
-		onPaintChanged: React.PropTypes.func.isRequired
+		onPaintChanged: React.PropTypes.func.isRequired,
+    onLayoutChanged: React.PropTypes.func.isRequired,
 	}
 
 	constructor(props) {
@@ -15,16 +16,10 @@ export default class BackgroundLayer extends React.Component {
 		this.shouldComponentUpdate = PureRenderMixin.shouldComponentUpdate.bind(this);
 	}
 
-	onPaintChanged(property, value) {
-		if (property == "background-opacity" && !isNaN(parseFloat(value))) {
-			value = parseFloat(value)
-		}
-		this.props.onPaintChanged(property, value)
-	}
-
 	render() {
 		return <div>
 			<PropertyGroup
+				onChange={this.props.onLayoutChanged.bind(this)}
 				layerType="background"
 				groupType="layout"
 				properties={this.props.layer.get('layout', Immutable.Map())}

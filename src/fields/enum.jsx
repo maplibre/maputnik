@@ -1,5 +1,6 @@
 import React from 'react'
 import { Select, Input } from 'rebass'
+import inputStyle from './input.js'
 
 class EnumField extends React.Component {
 	static propTypes = {
@@ -16,14 +17,19 @@ class EnumField extends React.Component {
 
 	render() {
 		const options = this.props.allowedValues.map(val => {
-			return {children: val, value: val}
+			return <option key={val} value={val}>{val}</option>
 		})
-		return <Select
-			onChange={this.onChange.bind(this)}
-			name={this.props.name}
-			options={options}
-			label={this.props.name}
-		/>
+
+		return <div style={inputStyle.property}>
+			<label style={inputStyle.label}>{this.props.name}</label>
+			<select
+				style={inputStyle.select}
+				value={this.props.value}
+				onChange={this.onChange.bind(this)}
+			>
+				{options}
+			</select>
+		</div>
 	}
 }
 

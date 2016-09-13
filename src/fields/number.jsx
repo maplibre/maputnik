@@ -1,6 +1,6 @@
 import React from 'react'
 import { Label, Input } from 'rebass'
-import {inputBase} from '../theme'
+import inputStyle from './input.js'
 
 /*** Number fields with support for min, max and units and documentation*/
 class NumberField extends React.Component {
@@ -20,10 +20,10 @@ class NumberField extends React.Component {
 	}
 
 	render() {
-		return <div>
-			<Label htmlFor={this.props.name} children={this.props.name} />
+		return <div style={inputStyle.property}>
+			<label style={inputStyle.label}>{this.props.name}</label>
 			<input
-				style={inputBase}
+				style={inputStyle.input}
 				type="number"
 				name={this.props.name}
 				placeholder={this.props.default}

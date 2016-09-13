@@ -1,13 +1,13 @@
 import React from 'react'
 import { Label, Input } from 'rebass'
-import {inputBase} from '../theme'
+import inputStyle from './input.js'
 
 /*** Number fields with support for min, max and units and documentation*/
 class ColorField extends React.Component {
 static propTypes = {
     onChange: React.PropTypes.func.isRequired,
 		name: React.PropTypes.string.isRequired,
-    value: React.PropTypes.number,
+    value: React.PropTypes.string,
     default: React.PropTypes.number,
     doc: React.PropTypes.string,
   }
@@ -17,10 +17,10 @@ static propTypes = {
 	}
 
 	render() {
-		return <div>
-			<Label htmlFor={this.props.name} children={this.props.name} />
+		return <div style={inputStyle.property}>
+			<label style={inputStyle.label}>{this.props.name}</label>
 			<input
-				style={inputBase}
+				style={inputStyle.input}
 				name={this.props.name}
 				placeholder={this.props.default}
 				value={this.props.value}

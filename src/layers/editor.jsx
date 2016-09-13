@@ -80,6 +80,7 @@ export class LayerEditor extends React.Component {
 			return <FillLayer
 				layer={this.props.layer}
 				onPaintChanged={this.onPaintChanged.bind(this)}
+				onLayoutChanged={this.onLayoutChanged.bind(this)}
 			/>
 		}
 
@@ -87,18 +88,23 @@ export class LayerEditor extends React.Component {
 			return <BackgroundLayer
 				layer={this.props.layer}
 				onPaintChanged={this.onPaintChanged.bind(this)}
+				onLayoutChanged={this.onLayoutChanged.bind(this)}
 			/>
 		}
 
 		if (type === "line") {
 			return <LineLayer
 				layer={this.props.layer}
+				onPaintChanged={this.onPaintChanged.bind(this)}
+				onLayoutChanged={this.onLayoutChanged.bind(this)}
 			/>
 		}
 
 		if (type === "symbol") {
 			return <SymbolLayer
 				layer={this.props.layer}
+				onPaintChanged={this.onPaintChanged.bind(this)}
+				onLayoutChanged={this.onLayoutChanged.bind(this)}
 			/>
 		}
 
