@@ -12,7 +12,7 @@ import MdSave from 'react-icons/lib/md/save'
 import MdMap from 'react-icons/lib/md/map'
 
 
-import { GlStyle } from './style.js'
+import style from './style.js'
 import { fullHeight } from './theme.js'
 import theme from './theme.js';
 
@@ -40,8 +40,7 @@ export class Toolbar extends React.Component {
 		const reader = new FileReader();
 		reader.readAsText(file, "UTF-8");
 		reader.onload = e => {
-			const style = JSON.parse(e.target.result);
-			this.props.onStyleUpload(GlStyle.fromJSON(style));
+			this.props.onStyleUpload(style.fromJSON(JSON.parse(e.target.result)));
 		}
 		reader.onerror = e => console.log(e.target);
 	}
