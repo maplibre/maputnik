@@ -70,7 +70,7 @@ export class PropertyGroup extends React.Component {
 	static propTypes = {
     onChange: React.PropTypes.func.isRequired,
 		properties: React.PropTypes.instanceOf(Immutable.Map).isRequired,
-		layerType: React.PropTypes.oneOf(['fill', 'background', 'line']).isRequired,
+		layerType: React.PropTypes.oneOf(['fill', 'background', 'line', 'symbol']).isRequired,
 		groupType: React.PropTypes.oneOf(['paint', 'layout']).isRequired,
   }
 
