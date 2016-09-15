@@ -24,9 +24,26 @@ loaders.push({
 });
 
 module.exports = {
-	entry: [
-		'./src/index.jsx'
-	],
+	entry: {
+		app: './src/index.jsx',
+		vendor: [
+				'file-saver',
+				'immutable',
+				'mapbox-gl',
+				//TODO: Cannot resolve migrations file?
+				//"mapbox-gl-style-spec",
+				"randomcolor",
+				'react',
+				"react-collapse",
+				"react-dom",
+				"react-file-reader-input",
+				"react-height",
+				//TODO: Icons raise multi vendor errors?
+				//"react-icons",
+				"react-motion",
+				"rebass",
+		]
+	},
 	output: {
 		path: path.join(__dirname, 'public'),
 		filename: '[chunkhash].js'
@@ -52,6 +69,7 @@ module.exports = {
 		fs: "empty"
 	},
 	plugins: [
+		new webpack.optimize.CommonsChunkPlugin('vendor', 'vendor.bundle.js'),
 		new WebpackCleanupPlugin(),
 		new webpack.DefinePlugin({
 			'process.env': {
