@@ -22,7 +22,7 @@ render() {
 				style={inputStyle.input}
 				name={this.props.name}
 				placeholder={this.props.default}
-				value={this.props.value}
+				value={this.props.value ? this.props.value : ""}
 				onChange={this.onChange.bind(this)}
 			/>
 		</div>

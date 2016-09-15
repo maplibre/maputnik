@@ -26,6 +26,7 @@ export class Map extends React.Component {
 		// TODO: If there is no map yet we need to apply the changes later?
 		if(this.state.map) {
 			style.diffStyles(this.props.mapStyle, nextProps.mapStyle).forEach(change => {
+				console.log(change.command, ...change.args)
 				this.state.map[change.command].apply(this.state.map, change.args);
 			});
 		}
