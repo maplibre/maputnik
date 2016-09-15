@@ -1,6 +1,11 @@
 import React from 'react'
 import Immutable from 'immutable'
-import { Input, Toolbar, NavItem, Space} from 'rebass'
+
+import Input from 'rebass/dist/Input'
+import Toolbar from 'rebass/dist/Toolbar'
+import NavItem from 'rebass/dist/NavItem'
+import Space from 'rebass/dist/Space'
+
 import Collapse from 'react-collapse'
 import PureRenderMixin from 'react-addons-pure-render-mixin';
 

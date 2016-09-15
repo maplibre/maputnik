@@ -1,5 +1,4 @@
 import React from 'react'
-import { Select, Input } from 'rebass'
 import inputStyle from './input.js'
 
 class EnumField extends React.Component {

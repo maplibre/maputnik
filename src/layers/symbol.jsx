@@ -1,4 +1,7 @@
 import React from 'react'
+import Immutable from 'immutable'
+import PureRenderMixin from 'react-addons-pure-render-mixin';
+import { PropertyGroup } from '../fields/spec'
 
 export default class SymbolLayer extends React.Component {
 	static propTypes = {

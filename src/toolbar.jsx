@@ -1,8 +1,14 @@
 import React from 'react';
 import FileReaderInput from 'react-file-reader-input';
 
-import { Button, Text } from 'rebass';
-import { Menu, NavItem, Tooltip, Container, Block, Fixed } from 'rebass'
+import Button from 'rebass/dist/Button'
+import Text from 'rebass/dist/Text'
+import Menu from 'rebass/dist/Menu'
+import NavItem from 'rebass/dist/NavItem'
+import Tooltip from 'rebass/dist/Tooltip'
+import Container from 'rebass/dist/Container'
+import Block from 'rebass/dist/Block'
+import Fixed from 'rebass/dist/Fixed'
 
 import MdFileDownload from 'react-icons/lib/md/file-download'
 import MdFileUpload from 'react-icons/lib/md/file-upload'
@@ -10,7 +16,6 @@ import MdSettings from 'react-icons/lib/md/settings'
 import MdLayers from 'react-icons/lib/md/layers'
 import MdSave from 'react-icons/lib/md/save'
 import MdMap from 'react-icons/lib/md/map'
-
 
 import style from './style.js'
 import { fullHeight } from './theme.js'

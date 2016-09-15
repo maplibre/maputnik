@@ -1,5 +1,4 @@
 import React from 'react'
-import { Label, Input } from 'rebass'
 import inputStyle from './input.js'
 
 /*** Number fields with support for min, max and units and documentation*/

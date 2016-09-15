@@ -1,6 +1,13 @@
 import React from 'react'
 import theme from './theme.js'
-import { Heading, Container, Input, Toolbar, NavItem, Space } from 'rebass'
+
+import Heading from 'rebass/dist/Heading'
+import Container from 'rebass/dist/Container'
+import Input from 'rebass/dist/Input'
+import Toolbar from 'rebass/dist/Toolbar'
+import NavItem from 'rebass/dist/NavItem'
+import Space from 'rebass/dist/Space'
+
 import Immutable from 'immutable'
 import PureRenderMixin from 'react-addons-pure-render-mixin';
 

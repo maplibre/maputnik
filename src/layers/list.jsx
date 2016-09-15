@@ -1,6 +1,11 @@
 import React from 'react'
 import Immutable from 'immutable'
-import { Heading, Toolbar, NavItem, Space} from 'rebass'
+
+import Heading from 'rebass/dist/Heading'
+import Toolbar from 'rebass/dist/Toolbar'
+import NavItem from 'rebass/dist/NavItem'
+import Space from 'rebass/dist/Space'
+
 import { LayerEditor } from './editor.jsx'
 import scrollbars from '../scrollbars.scss'
 import PureRenderMixin from 'react-addons-pure-render-mixin';

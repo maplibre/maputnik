@@ -1,7 +1,11 @@
 import React from 'react'
 import {saveAs} from 'file-saver'
 
-import { Drawer, Container, Block, Fixed } from 'rebass'
+import Drawer from 'rebass/dist/Drawer'
+import Container from 'rebass/dist/Container'
+import Block from 'rebass/dist/Block'
+import Fixed from 'rebass/dist/Fixed'
+
 import { Map } from './map.jsx'
 import {Toolbar} from './toolbar.jsx'
 import { StyleManager } from './style.js'
