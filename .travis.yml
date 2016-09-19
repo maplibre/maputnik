@@ -1,0 +1,10 @@
+language: node_js
+node_js:
+  - "6"
+  - "6.1"
+before_script:
+  - npm install -g eslint eslint-plugin-react
+install:
+  - npm install
+script:
+  - npm run build
