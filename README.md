@@ -1,9 +1,11 @@
 # Mapital
 
-<img width="200" align="right" alt="Mapital" src="mapolo.png" />
+<img width="200" align="right" alt="Mapital" src="mapital.png" />
 
 A free and open visual editor for the [Mapbox GL styles](https://www.mapbox.com/mapbox-gl-style-spec/)
 targeted at developers and map designers. Creating your own custom map is easy with **Mapital**.
+
+*Mapital is an early prototype and is under development*.
 
 ## Reasons for building a Mapbox GL Style Editor
 
@@ -65,3 +67,11 @@ npm install --save-dev eslint eslint-plugin-react
 # run linter
 npm run lint
 ```
+
+## LICENSE
+
+Mapital is [licensed under MIT](LICENSE) and is Copyright (c) Lukas Martinelli and contributors.
+
+**Disclaimer** This project is *not affiliated* with Mapbox or Mapbox Studio. It is a free independent style editor for the
+open source technology in the Mapbox GL ecosystem.
+As contributor please take extra care of not violating any Mapbox trademarks. Do not get inspired by Mapbox Studio and make our own decisions for a good style editor in order to avoid future [copyright problems like in OSM2VectorTiles](https://github.com/osm2vectortiles/osm2vectortiles/issues/387).
