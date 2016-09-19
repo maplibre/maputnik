@@ -1,4 +1,4 @@
-# Mapital ![License](https://img.shields.io/badge/license-MIT-blue.svg)
+# Mapital [![Build Status](https://travis-ci.org/mapital/editor.svg?branch=master)](https://travis-ci.org/mapital/editor) ![License](https://img.shields.io/badge/license-MIT-blue.svg)
 
 <img width="200" align="right" alt="Mapital" src="mapital.png" />
 
