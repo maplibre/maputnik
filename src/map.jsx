@@ -3,6 +3,7 @@ import MapboxGl from 'mapbox-gl';
 import { fullHeight } from './theme.js'
 import style from './style.js'
 import Immutable from 'immutable'
+import validateColor from 'mapbox-gl-style-spec/lib/validate/validate_color'
 
 export class Map extends React.Component {
 	static propTypes = {
@@ -26,6 +27,15 @@ export class Map extends React.Component {
 		// TODO: If there is no map yet we need to apply the changes later?
 		if(this.state.map) {
 			style.diffStyles(this.props.mapStyle, nextProps.mapStyle).forEach(change => {
+
+				//TODO: Invalid outline color can cause map to freeze?
+				if(change.command === "setPaintProperty" && change.args[1] === "fill-outline-color" ) {
+					const value = change.args[2]
+					if(validateColor({value}).length > 0) {
+						return
+					}
+				}
+
 				console.log(change.command, ...change.args)
 				this.state.map[change.command].apply(this.state.map, change.args);
 			});

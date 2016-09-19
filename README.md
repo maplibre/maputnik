@@ -1,9 +1,9 @@
-# Mapolo
+# Mapital
 
-<img width="200" align="right" alt="Mapolo" src="mapolo.png" />
+<img width="200" align="right" alt="Mapital" src="mapolo.png" />
 
 A free and open visual editor for the [Mapbox GL styles](https://www.mapbox.com/mapbox-gl-style-spec/)
-targeted at developers and map designers. Creating your own custom map is easy with **Mapolo**.
+targeted at developers and map designers. Creating your own custom map is easy with **Mapital**.
 
 ## Reasons for building a Mapbox GL Style Editor
 
@@ -40,7 +40,7 @@ This is why I think we should rally behind and build our own style editor for th
 
 ## Develop
 
-Mapolo is written in ES6 and is using [React](https://github.com/facebook/react), [Immutable.js](https://facebook.github.io/immutable-js/) and [Mapbox GL JS](https://www.mapbox.com/mapbox-gl-js/api/).
+Mapital is written in ES6 and is using [React](https://github.com/facebook/react), [Immutable.js](https://facebook.github.io/immutable-js/) and [Mapbox GL JS](https://www.mapbox.com/mapbox-gl-js/api/).
 
 Install the deps, start the dev server and open the web browser on `http://localhost:8888/`.
 

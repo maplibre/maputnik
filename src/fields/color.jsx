@@ -12,7 +12,8 @@ static propTypes = {
   }
 
 	onChange(e) {
-		return this.props.onChange(e.target.value)
+		const value = e.target.value
+		return this.props.onChange(value === "" ? null: value)
 	}
 
 	render() {
@@ -22,7 +23,7 @@ static propTypes = {
 				style={inputStyle.input}
 				name={this.props.name}
 				placeholder={this.props.default}
-				value={this.props.value}
+				value={this.props.value ? this.props.value : ""}
 				onChange={this.onChange.bind(this)}
 			/>
 		</div>

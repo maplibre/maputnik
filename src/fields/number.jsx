@@ -15,7 +15,12 @@ class NumberField extends React.Component {
   }
 
 	onChange(e) {
-		return this.props.onChange(parseFloat(e.target.value))
+		const value = parseFloat(e.target.value)
+		/*TODO: we can do range validation already here?
+		if(this.props.min && value < this.props.min) return
+		if(this.props.max && value > this.props.max) return
+		*/
+		this.props.onChange(value)
 	}
 
 	render() {

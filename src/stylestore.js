@@ -2,7 +2,7 @@ import { colorizeLayers } from './style.js'
 import Immutable from 'immutable'
 import style from './style.js'
 
-const storagePrefix = "mapolo"
+const storagePrefix = "mapital"
 const storageKeys = {
 	latest: [storagePrefix, 'latest_style'].join(''),
 	accessToken: [storagePrefix, 'access_token'].join('')

@@ -12,7 +12,8 @@ static propTypes = {
   }
 
 	onChange(e) {
-		return this.props.onChange(e.target.value)
+		const value = e.target.value
+		return this.props.onChange(value === "" ? null: value)
 	}
 
 render() {
