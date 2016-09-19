@@ -2,6 +2,7 @@ import React from 'react'
 import { LayerList } from './layers/list.jsx'
 import { SourceList } from './sources/list.jsx'
 import { SettingsEditor } from './settings.jsx'
+import { About } from './about.jsx'
 import { colors, fullHeight } from './theme.js'
 
 /** The workspace drawer contains the editor components depending on the edit
@@ -43,6 +44,10 @@ export class WorkspaceDrawer extends React.Component {
 				accessToken={this.props.accessToken}
 				onAccessTokenChanged={this.props.onAccessTokenChanged}
 			/>
+		}
+
+		if(this.props.workContext === "about") {
+			workspaceContent = <About />
 		}
 
 		return <div style={{

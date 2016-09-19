@@ -67,6 +67,10 @@ export default class App extends React.Component {
 		this.setState({ workContext: "settings" })
 	}
 
+	onOpenAbout() {
+		this.setState({ workContext: "about" })
+	}
+
 	onOpenLayers() {
 		this.setState({ workContext: "layers", })
 	}
@@ -88,6 +92,7 @@ export default class App extends React.Component {
 					onStyleUpload={this.onStyleUpload.bind(this)}
 					onStyleDownload={this.onStyleDownload.bind(this)}
 					onOpenSettings={this.onOpenSettings.bind(this)}
+					onOpenAbout={this.onOpenAbout.bind(this)}
 					onOpenLayers={this.onOpenLayers.bind(this)}
 					onOpenSources={this.onOpenSources.bind(this)}
 			/>

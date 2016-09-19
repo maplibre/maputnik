@@ -13,6 +13,7 @@ import Fixed from 'rebass/dist/Fixed'
 import MdFileDownload from 'react-icons/lib/md/file-download'
 import MdFileUpload from 'react-icons/lib/md/file-upload'
 import MdSettings from 'react-icons/lib/md/settings'
+import MdInfo from 'react-icons/lib/md/info'
 import MdLayers from 'react-icons/lib/md/layers'
 import MdSave from 'react-icons/lib/md/save'
 import MdMap from 'react-icons/lib/md/map'
@@ -31,6 +32,8 @@ export class Toolbar extends React.Component {
 		onStyleSave: React.PropTypes.func,
 		// Open settings drawer
 		onOpenSettings: React.PropTypes.func,
+		// Open about page
+		onOpenAbout: React.PropTypes.func,
 		// Open sources drawer
 		onOpenSources: React.PropTypes.func,
 		// Open layers drawer
@@ -113,6 +116,13 @@ export class Toolbar extends React.Component {
 				<Button big={true} onClick={this.props.onOpenSettings}>
 					<Tooltip inverted rounded title="Settings">
 						<MdSettings />
+					</Tooltip>
+				</Button>
+			</Block>
+			<Block>
+				<Button big={true} onClick={this.props.onOpenAbout}>
+					<Tooltip inverted rounded title="About">
+						<MdInfo />
 					</Tooltip>
 				</Button>
 			</Block>
