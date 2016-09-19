@@ -7,6 +7,8 @@ targeted at developers and map designers. Creating your own custom map is easy w
 
 *Mapital is an early prototype and is under development*.
 
+![Demo showing interactive feedback](demo.gif)
+
 ## Reasons for building a Mapbox GL Style Editor
 
 Mapbox GL is one of the biggest innovations the GIS world and is the first cross platform framework to display maps on the [browser](https://github.com/mapbox/mapbox-gl-js), [mobile applications and the desktop](https://github.com/mapbox/mapbox-gl-native). Maps are styled using a JSON style document with properties described in the [Mapbox GL style specification](https://www.mapbox.com/mapbox-gl-style-spec/). The style specification is adopted in more and more clients such as Open Layers 3 and therefore the **missing piece in the puzzle is a style editor that is easy to use, free and open source!**
@@ -31,6 +33,7 @@ This is why I think we should rally behind and build our own style editor for th
 
 **Roadmap**
 
+- [ ] Layer editing history (it is a mess right now)
 - [ ] Add new layers
 - [ ] Support all layer types
 - [ ] Choose sources
