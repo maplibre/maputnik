@@ -1,4 +1,4 @@
-# Mapital
+# Mapital ![License](https://img.shields.io/badge/license-MIT-blue.svg)
 
 <img width="200" align="right" alt="Mapital" src="mapital.png" />
 
@@ -72,6 +72,6 @@ npm run lint
 
 Mapital is [licensed under MIT](LICENSE) and is Copyright (c) Lukas Martinelli and contributors.
 
-**Disclaimer** This project is *not affiliated* with Mapbox or Mapbox Studio. It is a free independent style editor for the
+**Disclaimer** This project is not affiliated with Mapbox or Mapbox Studio. It is a free independent style editor for the
 open source technology in the Mapbox GL ecosystem.
-As contributor please take extra care of not violating any Mapbox trademarks. Do not get inspired by Mapbox Studio and make our own decisions for a good style editor in order to avoid future [copyright problems like in OSM2VectorTiles](https://github.com/osm2vectortiles/osm2vectortiles/issues/387).
+As contributor please take extra care of not violating any Mapbox trademarks. Do not get inspired by Mapbox Studio and make your own decisions for a good style editor in order to avoid future [copyright problems like in OSM2VectorTiles](https://github.com/osm2vectortiles/osm2vectortiles/issues/387).
