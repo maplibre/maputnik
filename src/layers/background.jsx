@@ -4,6 +4,7 @@ import Input from 'rebass/dist/Input'
 import { PropertyGroup } from '../fields/spec'
 import PureRenderMixin from 'react-addons-pure-render-mixin';
 
+//TODO: All layers contain a lot of redundancy
 export default class BackgroundLayer extends React.Component {
 	static propTypes = {
 		layer: React.PropTypes.instanceOf(Immutable.Map).isRequired,

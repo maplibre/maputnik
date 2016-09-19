@@ -3,6 +3,7 @@ import Immutable from 'immutable'
 import PureRenderMixin from 'react-addons-pure-render-mixin';
 import { PropertyGroup } from '../fields/spec'
 
+//TODO: All layers contain a lot of redundancy
 export default class SymbolLayer extends React.Component {
 	static propTypes = {
 		layer: React.PropTypes.instanceOf(Immutable.Map).isRequired,

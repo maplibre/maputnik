@@ -3,6 +3,7 @@ import Immutable from 'immutable'
 import { PropertyGroup } from '../fields/spec'
 import PureRenderMixin from 'react-addons-pure-render-mixin';
 
+//TODO: All layers contain a lot of redundancy
 export default class LineLayer extends React.Component {
 	static propTypes = {
 		layer: React.PropTypes.instanceOf(Immutable.Map).isRequired,
