@@ -46,7 +46,7 @@ module.exports = {
 	},
 	output: {
 		path: path.join(__dirname, 'public'),
-		filename: '[chunkhash].js'
+		filename: '[chunkhash].app.js'
 	},
 	resolve: {
 		alias: {
@@ -69,7 +69,7 @@ module.exports = {
 		fs: "empty"
 	},
 	plugins: [
-		new webpack.optimize.CommonsChunkPlugin('vendor', 'vendor.bundle.js'),
+		new webpack.optimize.CommonsChunkPlugin('vendor', '[chunkhash].vendor.js'),
 		new WebpackCleanupPlugin(),
 		new webpack.DefinePlugin({
 			'process.env': {
@@ -90,7 +90,7 @@ module.exports = {
 		}),
 		new HtmlWebpackPlugin({
 			template: './src/template.html',
-			title: 'Mapolo'
+			title: 'Mapital'
 		}),
 		new webpack.optimize.DedupePlugin()
 	]
