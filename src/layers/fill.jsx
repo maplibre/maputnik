@@ -1,6 +1,5 @@
 import React from 'react'
 import Immutable from 'immutable'
-import { Checkbox, Input } from 'rebass'
 import { PropertyGroup } from '../fields/spec'
 import PureRenderMixin from 'react-addons-pure-render-mixin';
 
