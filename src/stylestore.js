@@ -3,6 +3,7 @@ import Immutable from 'immutable'
 import style from './style.js'
 
 const storagePrefix = "maputnik"
+const stylePrefix = 'style'
 const storageKeys = {
 	latest: [storagePrefix, 'latest_style'].join(':'),
 	accessToken: [storagePrefix, 'access_token'].join(':')
@@ -40,8 +41,8 @@ export function loadDefaultStyle(cb) {
 // Return style ids and dates of all styles stored in local storage
 function loadStoredStyles() {
 	const styles = []
-	for (let i = 0; i < localStorage.length; i++) {
-			const key = localStorage.key(i)
+	for (let i = 0; i < window.localStorage.length; i++) {
+			const key = window.localStorage.key(i)
 			if(isStyleKey(key)) {
 				styles.push(fromKey(key))
 			}
@@ -51,7 +52,7 @@ function loadStoredStyles() {
 
 function isStyleKey(key) {
 	const parts = key.split(":")
-	return parts.length == 2 && parts[0] === storagePrefix
+	return parts.length == 3 && parts[0] === storagePrefix && parts[1] === stylePrefix
 }
 
 // Load style id from key
@@ -61,13 +62,13 @@ function fromKey(key) {
 	}
 
 	const parts = key.split(":")
-	const styleId = parts[1]
+	const styleId = parts[2]
 	return styleId
 }
 
 // Calculate key that identifies the style with a version
 function styleKey(styleId) {
-	return [storagePrefix, styleId].join(":")
+	return [storagePrefix, stylePrefix, styleId].join(":")
 }
 
 // Store style independent settings
@@ -101,6 +102,7 @@ export class StyleStore {
 
 	// Save current style replacing previous version
 	save(mapStyle) {
+		mapStyle = style.ensureMetadataExists(mapStyle)
 		const key = styleKey(mapStyle.get('id'))
 		window.localStorage.setItem(key, JSON.stringify(style.toJSON(mapStyle)))
 		window.localStorage.setItem(storageKeys.latest, mapStyle.get('id'))

@@ -13,15 +13,7 @@ function fromJSON(jsonStyle) {
 		jsonStyle = JSON.parse(jsonStyle)
 	}
 
-	if(!('id' in jsonStyle)) {
-		jsonStyle.id = Math.random().toString(36).substr(2, 9)
-	}
-
-	if(!('created' in jsonStyle)) {
-		jsonStyle.created = new Date().toJSON()
-	}
-
-	return new Immutable.Map(Object.keys(jsonStyle).map(key => {
+	return Immutable.Map(Object.keys(jsonStyle).map(key => {
 		const val = jsonStyle[key]
 		if(key === "layers") {
 			return [key, Immutable.OrderedMap(val.map(l => [l.id, Immutable.fromJS(l)]))]
@@ -31,6 +23,21 @@ function fromJSON(jsonStyle) {
 			return [key, val]
 		}
 	}))
+}
+
+function ensureHasId(style) {
+	if(style.has('id')) return style
+	console.log('has no id', style.toJS())
+	return style.set('id', Math.random().toString(36).substr(2, 9))
+}
+
+function ensureHasTimestamp(style) {
+	if(style.has('id')) return style
+	return style.set('created', new Date().toJSON())
+}
+
+function ensureMetadataExists(style) {
+	return ensureHasId(ensureHasTimestamp(style))
 }
 
 // Compare style with other style and return changes
@@ -74,4 +81,5 @@ export default {
 	toJSON,
 	fromJSON,
 	diffStyles,
+	ensureMetadataExists,
 }
