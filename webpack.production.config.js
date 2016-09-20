@@ -93,9 +93,6 @@ module.exports = {
 			template: './src/template.html',
 			title: 'Maputnik'
 		}),
-		//TODO: If the DedupePlugin errors happen
-		// I guess this has todo that i use the Mapbox GL spec
-		// at severall places from different locations?
-		//new webpack.optimize.DedupePlugin()
+		new webpack.optimize.DedupePlugin()
 	]
 };
