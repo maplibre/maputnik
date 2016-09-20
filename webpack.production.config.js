@@ -69,6 +69,7 @@ module.exports = {
 		fs: "empty"
 	},
 	plugins: [
+		new webpack.NoErrorsPlugin(),
 		new webpack.optimize.CommonsChunkPlugin('vendor', '[chunkhash].vendor.js'),
 		new WebpackCleanupPlugin(),
 		new webpack.DefinePlugin({
@@ -92,6 +93,9 @@ module.exports = {
 			template: './src/template.html',
 			title: 'Maputnik'
 		}),
-		new webpack.optimize.DedupePlugin()
+		//TODO: If the DedupePlugin errors happen
+		// I guess this has todo that i use the Mapbox GL spec
+		// at severall places from different locations?
+		//new webpack.optimize.DedupePlugin()
 	]
 };
