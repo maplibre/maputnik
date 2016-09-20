@@ -21,7 +21,6 @@
     "immutable": "^3.8.1",
     "mapbox-gl": "^0.24.0",
     "mapbox-gl-style-spec": "mapbox/mapbox-gl-style-spec#83b1a3e5837d785af582efd5ed1a212f2df6a4ae",
-    "node-sass": "^3.9.2",
     "randomcolor": "^0.4.4",
     "react": "^15.3.0",
     "react-addons-pure-render-mixin": "15.3.1",
@@ -31,8 +30,7 @@
     "react-height": "^2.1.1",
     "react-icons": "^2.2.1",
     "react-motion": "^0.4.4",
-    "rebass": "^0.3.1",
-    "sass-loader": "^4.0.1"
+    "rebass": "^0.3.1"
   },
   "babel": {
     "presets": [
@@ -70,6 +68,8 @@
     }
   },
   "devDependencies": {
+    "sass-loader": "^4.0.1",
+    "node-sass": "^3.9.2",
     "babel-core": "6.14.0",
     "babel-eslint": "^6.1.2",
     "babel-loader": "6.2.4",
