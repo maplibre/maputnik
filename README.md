@@ -1,11 +1,11 @@
-# Mapital [![Build Status](https://travis-ci.org/mapital/editor.svg?branch=master)](https://travis-ci.org/mapital/editor) ![License](https://img.shields.io/badge/license-MIT-blue.svg)
+# Maputnik [![Build Status](https://travis-ci.org/maputnik/editor.svg?branch=master)](https://travis-ci.org/maputnik/editor) ![License](https://img.shields.io/badge/license-MIT-blue.svg)
 
-<img width="200" align="right" alt="Mapital" src="mapital.png" />
+<img width="200" align="right" alt="Maputnik" src="maputnik.png" />
 
 A free and open visual editor for the [Mapbox GL styles](https://www.mapbox.com/mapbox-gl-style-spec/)
-targeted at developers and map designers. Creating your own custom map is easy with **Mapital**.
+targeted at developers and map designers. Creating your own custom map is easy with **Maputnik**.
 
-*Mapital is an early prototype and is under development*.
+*Maputnik is an early prototype and is under development*.
 
 ## Reasons for building a Mapbox GL Style Editor
 
@@ -45,7 +45,7 @@ This is why I think we should rally behind and build our own style editor for th
 
 ## Develop
 
-Mapital is written in ES6 and is using [React](https://github.com/facebook/react), [Immutable.js](https://facebook.github.io/immutable-js/) and [Mapbox GL JS](https://www.mapbox.com/mapbox-gl-js/api/).
+Maputnik is written in ES6 and is using [React](https://github.com/facebook/react), [Immutable.js](https://facebook.github.io/immutable-js/) and [Mapbox GL JS](https://www.mapbox.com/mapbox-gl-js/api/).
 
 Install the deps, start the dev server and open the web browser on `http://localhost:8888/`.
 
@@ -73,7 +73,7 @@ npm run lint
 
 ## License
 
-Mapital is [licensed under MIT](LICENSE) and is Copyright (c) Lukas Martinelli and contributors.
+Maputnik is [licensed under MIT](LICENSE) and is Copyright (c) Lukas Martinelli and contributors.
 
 **Disclaimer** This project is not affiliated with Mapbox or Mapbox Studio. It is a free independent style editor for the
 open source technology in the Mapbox GL ecosystem.

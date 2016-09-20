@@ -90,7 +90,7 @@ module.exports = {
 		}),
 		new HtmlWebpackPlugin({
 			template: './src/template.html',
-			title: 'Mapital'
+			title: 'Maputnik'
 		}),
 		new webpack.optimize.DedupePlugin()
 	]

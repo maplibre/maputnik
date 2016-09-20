@@ -62,8 +62,8 @@ export function colorizeLayers(layers) {
 		if(!layer.metadata) {
 			layer.metadata = {}
 		}
-		if(!"mapital:color" in layer.metadata) {
-			layer.metadata["mapital:color"] = randomColor()
+		if(!"maputnik:color" in layer.metadata) {
+			layer.metadata["maputnik:color"] = randomColor()
 		}
 	  return layer
 	})

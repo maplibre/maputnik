@@ -136,7 +136,7 @@ export class LayerEditor extends React.Component {
 				borderRight: 0,
 				borderStyle: "solid",
 				borderColor: theme.borderColor,
-				borderLeftColor: this.props.layer.getIn(['metadata', 'mapital:color'])
+				borderLeftColor: this.props.layer.getIn(['metadata', 'maputnik:color'])
 			}}>
 			<Toolbar onClick={this.toggleLayer.bind(this)}>
 				<NavItem style={{fontWeight: 400}}>

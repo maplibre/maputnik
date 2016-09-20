@@ -28,12 +28,12 @@ export class About extends React.Component {
 				</NavItem>
 			</Toolbar>
 			<Container>
-				<h3>Mapital – Visual Map Editor for Mapbox GL</h3>
+				<h3>Maputnik – Visual Map Editor for Mapbox GL</h3>
 			  <p>
-					A free and open visual editor for the Mapbox GL styles targeted at developers and map designers. Creating your own custom map is easy with Mapital.
+					A free and open visual editor for the Mapbox GL styles targeted at developers and map designers. Creating your own custom map is easy with Maputnik.
 				</p>
 				<p>
-				  The source code is openly licensed and available on <a href="https://github.com/mapital/editor">github</a>.
+				  The source code is openly licensed and available on <a href="https://github.com/maputnik/editor">GitHub</a>.
 				</p>
 			</Container>
     </div>

@@ -2,10 +2,10 @@ import { colorizeLayers } from './style.js'
 import Immutable from 'immutable'
 import style from './style.js'
 
-const storagePrefix = "mapital"
+const storagePrefix = "maputnik"
 const storageKeys = {
-	latest: [storagePrefix, 'latest_style'].join(''),
-	accessToken: [storagePrefix, 'access_token'].join('')
+	latest: [storagePrefix, 'latest_style'].join(':'),
+	accessToken: [storagePrefix, 'access_token'].join(':')
 }
 
 // Empty style is always used if no style could be restored or fetched
