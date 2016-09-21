@@ -5,7 +5,7 @@ targeted at developers and map designers. Creating your own custom map is easy w
 
 [**Please support this project on Kickstarter**](https://www.kickstarter.com/projects/174808720/maputnik-visual-map-editor-for-mapbox-gl).
 
-[Support this project on Kickstarter](![Kickstarter Campaign Video](kickstarter.png))
+[![Support this project and watch the Kickstarter campaign video](kickstarter.png)](https://www.kickstarter.com/projects/174808720/maputnik-visual-map-editor-for-mapbox-gl)
 
 ## Reasons for building a Mapbox GL Style Editor
 
