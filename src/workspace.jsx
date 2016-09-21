@@ -22,11 +22,17 @@ export class WorkspaceDrawer extends React.Component {
 		this.props.onStyleChanged(changedStyle)
 	}
 
+	onSourcesChanged(changedSources) {
+		const changedStyle = this.props.mapStyle.set('sources', changedSources)
+		this.props.onStyleChanged(changedStyle)
+	}
+
 	render() {
 		let workspaceContent = null
 
 		if(this.props.workContext === "sources") {
 			workspaceContent = <SourceList
+				onSourcesChanged={this.onSourcesChanged.bind(this)}
 				sources={this.props.mapStyle.get('sources')}
 			/>
 		}

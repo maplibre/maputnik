@@ -21,6 +21,7 @@ class UnsupportedSource extends React.Component {
 class VectorSource extends React.Component {
 	static propTypes = {
 		source: React.PropTypes.instanceOf(Immutable.Map).isRequired,
+		onSourceChanged: React.PropTypes.func.isRequired,
   }
 
 	constructor(props) {
@@ -30,7 +31,11 @@ class VectorSource extends React.Component {
 
 	render() {
 		return <div>
-			<Input name="url" label="TileJSON url" value={this.props.source.get("url")} />
+			<Input
+				onChange={e => this.props.onSourceChanged(this.props.source.set('url', e.target.value))}
+				name="url" label="TileJSON url"
+				value={this.props.source.get("url")}
+				/>
 			<Input name="minzoom" label="Minimum zoom level" value={this.props.source.get("minzoom")} />
 			<Input name="maxzoom" label="Maximum zoom level" value={this.props.source.get("maxzoom")} />
 		</div>
@@ -41,6 +46,7 @@ export class SourceEditor extends React.Component {
 	static propTypes = {
 		sourceId: React.PropTypes.string.isRequired,
 		source: React.PropTypes.instanceOf(Immutable.Map).isRequired,
+		onSourceChanged: React.PropTypes.func.isRequired,
 	}
 
 	constructor(props) {
@@ -58,6 +64,7 @@ export class SourceEditor extends React.Component {
 	sourceFromType(type) {
 		if (type === "vector") {
 			return <VectorSource
+				onSourceChanged={s => this.props.onSourceChanged(this.props.sourceId, s)}
 				source={this.props.source}
 			/>
 		}

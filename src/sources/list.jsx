@@ -14,11 +14,17 @@ import PureRenderMixin from 'react-addons-pure-render-mixin';
 export class SourceList extends React.Component {
 	static propTypes = {
 		sources: React.PropTypes.instanceOf(Immutable.Map).isRequired,
+		onSourcesChanged: React.PropTypes.func.isRequired,
 	}
 
 	constructor(props) {
 		super(props)
 		this.shouldComponentUpdate = PureRenderMixin.shouldComponentUpdate.bind(this);
+	}
+
+	onSourceChanged(sourceId, changedSource) {
+		const changedSources = this.props.sources.set(sourceId, changedSource)
+		this.props.onSourcesChanged(changedSources)
 	}
 
 	render() {
@@ -27,6 +33,7 @@ export class SourceList extends React.Component {
 				key={sourceId}
 				sourceId={sourceId}
 				source={source}
+				onSourceChanged={this.onSourceChanged.bind(this)}
 			/>
 		}).toIndexedSeq()
 
