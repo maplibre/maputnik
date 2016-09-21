@@ -8,7 +8,7 @@ import Fixed from 'rebass/dist/Fixed'
 
 import { Map } from './map.jsx'
 import {Toolbar} from './toolbar.jsx'
-import { StyleManager } from './style.js'
+import style from './style.js'
 import { loadDefaultStyle, SettingsStore, StyleStore } from './stylestore.js'
 import { WorkspaceDrawer } from './workspace.jsx'
 
@@ -47,8 +47,8 @@ export default class App extends React.Component {
 	}
 
 	onStyleDownload() {
-		const mapStyle = JSON.stringify(this.state.currentStyle.toJSON(), null, 4)
-		const blob = new Blob([mapStyle], {type: "application/json;charset=utf-8"});
+		const mapStyle = style.toJSON(this.state.currentStyle)
+		const blob = new Blob([JSON.stringify(mapStyle, null, 4)], {type: "application/json;charset=utf-8"});
 		saveAs(blob, mapStyle.id + ".json");
 		this.onStyleSave()
 	}
@@ -116,3 +116,4 @@ export default class App extends React.Component {
 		</div>
 	}
 }
+
