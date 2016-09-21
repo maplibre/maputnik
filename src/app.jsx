@@ -29,10 +29,9 @@ export default class App extends React.Component {
 			workContext: "layers",
 			currentStyle: this.styleStore.latestStyle(),
 		}
-
-		loadDefaultStyle(mapStyle => {
-			this.onStyleUpload(mapStyle)
-		})
+		if(this.state.currentStyle.get('layers').size === 0) {
+			loadDefaultStyle(mapStyle => this.onStyleUpload(mapStyle))
+		}
 	}
 
 	getChildContext() {
@@ -57,6 +56,7 @@ export default class App extends React.Component {
 	onStyleSave() {
 		const snapshotStyle = this.state.currentStyle.set('modified', new Date().toJSON())
 		this.setState({ currentStyle: snapshotStyle })
+		this.styleStore.save(snapshotStyle)
 	}
 
 	onStyleChanged(newStyle) {

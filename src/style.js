@@ -27,7 +27,6 @@ function fromJSON(jsonStyle) {
 
 function ensureHasId(style) {
 	if(style.has('id')) return style
-	console.log('has no id', style.toJS())
 	return style.set('id', Math.random().toString(36).substr(2, 9))
 }
 

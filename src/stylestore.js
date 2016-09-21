@@ -10,21 +10,22 @@ const storageKeys = {
 }
 
 // Empty style is always used if no style could be restored or fetched
-const emptyStyle = style.fromJSON({
+const emptyStyle = style.ensureMetadataExists(style.fromJSON({
 		version: 8,
 		sources: {},
 		layers: [],
-})
+}))
 
 const defaultStyleUrl = "https://raw.githubusercontent.com/osm2vectortiles/mapbox-gl-styles/master/styles/basic-v9-cdn.json"
 // Fetch a default style via URL and return it or a fallback style via callback
 export function loadDefaultStyle(cb) {
+	console.log('Load default style')
 	var request = new XMLHttpRequest()
 	request.open('GET', defaultStyleUrl, true)
 
 	request.onload = () => {
 		if (request.status >= 200 && request.status < 400) {
-			cb(style.fromJSON(request.responseText))
+			cb(style.ensureMetadataExists(style.fromJSON(request.responseText)))
 		} else {
 			cb(emptyStyle)
 		}
@@ -102,7 +103,6 @@ export class StyleStore {
 
 	// Save current style replacing previous version
 	save(mapStyle) {
-		mapStyle = style.ensureMetadataExists(mapStyle)
 		const key = styleKey(mapStyle.get('id'))
 		window.localStorage.setItem(key, JSON.stringify(style.toJSON(mapStyle)))
 		window.localStorage.setItem(storageKeys.latest, mapStyle.get('id'))

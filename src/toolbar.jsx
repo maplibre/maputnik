@@ -48,7 +48,9 @@ export class Toolbar extends React.Component {
 		const reader = new FileReader();
 		reader.readAsText(file, "UTF-8");
 		reader.onload = e => {
-			this.props.onStyleUpload(style.fromJSON(JSON.parse(e.target.result)));
+			let mapStyle = style.fromJSON(JSON.parse(e.target.result))
+			mapStyle = style.ensureMetadataExists(mapStyle)
+			this.props.onStyleUpload(mapStyle);
 		}
 		reader.onerror = e => console.log(e.target);
 	}
