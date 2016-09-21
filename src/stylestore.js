@@ -91,6 +91,16 @@ export class StyleStore {
 		this.mapStyles = loadStoredStyles()
 	}
 
+	// Delete entire style history
+	purge() {
+		for (let i = 0; i < window.localStorage.length; i++) {
+				const key = window.localStorage.key(i)
+				if(key.startsWith(storagePrefix)) {
+					window.localStorage.removeItem(key)
+				}
+		}
+	}
+
 	// Find the last edited style
 	latestStyle() {
 		if(this.mapStyles.length === 0) return emptyStyle

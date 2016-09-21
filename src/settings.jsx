@@ -7,6 +7,7 @@ import Input from 'rebass/dist/Input'
 import Toolbar from 'rebass/dist/Toolbar'
 import NavItem from 'rebass/dist/NavItem'
 import Space from 'rebass/dist/Space'
+import Button from 'rebass/dist/Button'
 
 import Immutable from 'immutable'
 import PureRenderMixin from 'react-addons-pure-render-mixin';
@@ -17,7 +18,8 @@ export class SettingsEditor extends React.Component {
 		mapStyle: React.PropTypes.instanceOf(Immutable.Map).isRequired,
 		onStyleChanged: React.PropTypes.func.isRequired,
 		accessToken: React.PropTypes.string,
-		onAccessTokenChanged: React.PropTypes.func
+		onAccessTokenChanged: React.PropTypes.func,
+		onReset: React.PropTypes.func
 	}
 
 	constructor(props) {
@@ -68,6 +70,9 @@ export class SettingsEditor extends React.Component {
 					value={this.props.mapStyle.get('glyphs')}
 					onChange={this.onChange.bind(this, "glyphs")}
 				/>
+				<Button
+					onClick={this.props.onReset}
+				>Reset style</Button>
 			</Container>
 		</div>
 	}

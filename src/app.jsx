@@ -34,6 +34,11 @@ export default class App extends React.Component {
 		}
 	}
 
+	onReset() {
+		this.styleStore.purge()
+		loadDefaultStyle(mapStyle => this.onStyleUpload(mapStyle))
+	}
+
 	getChildContext() {
 		return {
 			rebass: theme,
@@ -98,6 +103,7 @@ export default class App extends React.Component {
 			/>
 			<WorkspaceDrawer
 				onStyleChanged={this.onStyleChanged.bind(this)}
+				onReset={this.onReset.bind(this)}
 				workContext={this.state.workContext}
 				mapStyle={this.state.currentStyle}
 				accessToken={this.state.accessToken}
