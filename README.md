@@ -5,7 +5,9 @@
 A free and open visual editor for the [Mapbox GL styles](https://www.mapbox.com/mapbox-gl-style-spec/)
 targeted at developers and map designers. Creating your own custom map is easy with **Maputnik**.
 
-*Maputnik is an early prototype and is under development*.
+[**Please support this project on Kickstarter**](https://www.kickstarter.com/projects/174808720/maputnik-visual-map-editor-for-mapbox-gl).
+
+[Support this project on Kickstarter](![Kickstarter Campaign Video](kickstarter.png))
 
 ## Reasons for building a Mapbox GL Style Editor
 
@@ -19,6 +21,7 @@ The big problem is that Mapbox Studio is not open source and you have to upload 
 essentially are locked in the Mapbox ecosystem. By reusing existing proprietary base styles you legally tie your style for use with Mapbox services. It is difficult to use other data source like [OSM2VectorTiles](osm2vectortiles.org), [Mapzen](https://mapzen.com/projects/vector-tiles/) or [Kartotherian](https://github.com/kartotherian/kartotherian) or even your own custom vector tile sources.
 
 This is why I think we should rally behind and build our own style editor for the Mapbox GL style specification!
+[Help me get the funding together](https://www.kickstarter.com/projects/174808720/maputnik-visual-map-editor-for-mapbox-gl) to take time of work and make this happen!
 
 ## Features
 
