@@ -16,7 +16,7 @@ As of today Mapbox GL styles are usually designed within the cloud based [Mapbox
 which is a great example how a style editor should look like.
 
 The big problem is that Mapbox Studio is not open source and you have to upload your data sources to external servers and
-essentially are locked in the Mapbox ecosystem. By reusing existing proprietary base styles you legally tie your style for use with Mapbox services. It is difficult to use other data source like [OSM2VectorTiles](osm2vectortiles.org), [Mapzen](https://mapzen.com/projects/vector-tiles/) or [Kartotherian](https://github.com/kartotherian/kartotherian) or even your own custom vector tile sources.
+essentially are locked in the Mapbox ecosystem. By reusing existing proprietary base styles you legally tie your style for use with Mapbox services. It is difficult to use other data source like [OSM2VectorTiles](http://osm2vectortiles.org), [Mapzen](https://mapzen.com/projects/vector-tiles/) or [Kartotherian](https://github.com/kartotherian/kartotherian) or even your own custom vector tile sources.
 
 This is why I think we should rally behind and build our own style editor for the Mapbox GL style specification!
 [Help me get the funding together](https://www.kickstarter.com/projects/174808720/maputnik-visual-map-editor-for-mapbox-gl) to take time of work and make this happen!
