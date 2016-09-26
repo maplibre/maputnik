@@ -87,14 +87,14 @@ This project would not be possible without commercial and individual sponsors.
 <a href="https://www.klokantech.com/">
   <img alt="Klokan Technologies" style="display:inline" src="sponsors/klokantech.png" />
 </a>
-<a href="https://www.klokantech.com/">
+<a href="https://www.dreipol.ch/">
   <img alt="Dreipol" style="display:inline" src="sponsors/dreipol.png" />
 </a>
 <br/>
 
 ### Individuals
 
-- [ ] *Add individuals after campaign ends*
+- [ ] *Add individuals after campaign ends via CSV export*
 
 ## License
 
