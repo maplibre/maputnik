@@ -76,21 +76,25 @@ npm run lint
 
 This project would not be possible without commercial and individual sponsors.
 
-**Gold**
+### Gold
 
-![Terranodo](sponsors/terranodo.png)
+[![Terranodo](sponsors/terranodo.png)](http://terranodo.io/)
 
-![Wemap](sponsors/wemap.jpg)
+[![Wemap](sponsors/wemap.jpg)](https://getwemap.com/)
 
-**Silver**
+### Silver
 
-![Klokan Technologies](sponsors/klokantech.png)
+<a href="https://www.klokantech.com/">
+  <img alt="Klokan Technologies" style="display:inline" src="sponsors/klokantech.png" />
+</a>
+<a href="https://www.klokantech.com/">
+  <img alt="Dreipol" style="display:inline" src="sponsors/dreipol.png" />
+</a>
+<br/>
 
-![Dreipol](sponsors/dreipol.png)
+### Individuals
 
-**Individuals**
-
-*Add individuals after campaign ends*
+- [ ] *Add individuals after campaign ends*
 
 ## License
 
