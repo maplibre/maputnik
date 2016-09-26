@@ -72,6 +72,26 @@ npm install --save-dev eslint eslint-plugin-react
 npm run lint
 ```
 
+## Sponsors
+
+This project would not be possible without commercial and individual sponsors.
+
+**Gold**
+
+![Terranodo](sponsors/terranodo.png)
+
+![Wemap](sponsors/wemap.jpg)
+
+**Silver**
+
+![Klokan Technologies](sponsors/klokantech.png)
+
+![Dreipol](sponsors/dreipol.png)
+
+**Individuals**
+
+*Add individuals after campaign ends*
+
 ## License
 
 Maputnik is [licensed under MIT](LICENSE) and is Copyright (c) Lukas Martinelli and contributors.
