@@ -22,3 +22,9 @@ _testmain.go
 *.exe
 *.test
 *.prof
+
+# Bindata
+bindata_assetfs.go
+
+# Built binary
+maputnik

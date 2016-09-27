@@ -1,26 +1,21 @@
-# desktop
-A Golang based cross platform executable for integrating Maputnik locally
+# Maputnik Desktop
 
+A Golang based cross platform executable for integrating Maputnik locally.
 
 ### Build
 
-First you need a app bundle distribution of Maptunik and copy over `public`
-to the `gui` folder in this project.
+Clone the repository recursively since the Maputnik editor is embedded
+as submodule.
 
 ```
-npm run dist
+git clone --recursive git@github.com:maputnik/desktop.git
 ```
 
-Package the the `gui` as binary assets.
+Run `make` to build the app distribution bundle and create the `maputnik` binary
+embedding the editor.
 
 ```
-go get github.com/elazarl/go-bindata-assetfs/...
-go-bindata-assetfs gui/...
+make
 ```
 
-Install the go package.
-
-```
-go install
-```
-
+You should now find the `maputnik` binary in your directory.
