@@ -1,8 +1,10 @@
 package main
 
 import (
+	"fmt"
 	"net/http"
 	"os"
+	"path/filepath"
 
 	"github.com/gorilla/handlers"
 	"github.com/gorilla/mux"
@@ -31,26 +33,28 @@ func main() {
 
 		router := mux.NewRouter().StrictSlash(true)
 
-		// Register websocket to notify we clients about file changes
 		filename := c.String("file")
-
 		if filename != "" {
-			/*
-				router.Path("/files").Methods("GET").HandlerFunc(listFiles)
-				router.Path("/files/{filename}").Methods("PUT").HandlerFunc(saveFile)
-			*/
+			fmt.Printf("%s is accessible via Maputnik\n", filename)
+			// Allow access to reading and writing file on the local system
+			path, _ := filepath.Abs(filename)
+			accessor := StyleFileAccessor(path)
+			router.Path("/files").Methods("GET").HandlerFunc(accessor.ListFiles)
+			router.Path("/files/{filename}").Methods("GET").HandlerFunc(accessor.ReadFile)
+			router.Path("/files/{filename}").Methods("PUT").HandlerFunc(accessor.SaveFile)
 
+			// Register websocket to notify we clients about file changes
 			if c.Bool("watch") {
 				router.Path("/ws").HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 					filewatch.ServeWebsocketFileWatcher(filename, w, r)
 				})
 			}
-
 		}
 
 		router.PathPrefix("/").Handler(http.StripPrefix("/", gui))
-
 		loggedRouter := handlers.LoggingHandler(os.Stdout, router)
+
+		fmt.Println("Exposing Maputnik on http://localhost:8000")
 		return http.ListenAndServe(":8000", loggedRouter)
 	}
 

@@ -4,7 +4,7 @@ BINARY=maputnik
 
 all: $(BINARY)
 
-$(BINARY): $(SOURCES)
+$(BINARY): $(SOURCES) bindata_assetfs.go
 	go build -o ${BINARY}
 
 editor/node_modules:
@@ -14,8 +14,8 @@ editor/public: editor/node_modules
 	cd editor && npm run build
 
 bindata_assetfs.go: editor/public
-	go-bindata-assetfs editor/public/
+	go-bindata-assetfs --prefix "editor/" editor/public
 
 .PHONY: clean
 clean:
-	rm -rf editor/public && rm -rf maputnik
+	rm -rf editor/public && rm -f bindata_assetfs.go && rm -f maputnik
