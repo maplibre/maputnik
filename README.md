@@ -78,9 +78,9 @@ This project would not be possible without commercial and individual sponsors.
 
 ### Gold
 
-[![Terranodo](sponsors/terranodo.png)](http://terranodo.io/)
-
 [![Wemap](sponsors/wemap.jpg)](https://getwemap.com/)
+
+[![Terranodo](sponsors/terranodo.png)](http://terranodo.io/)
 
 ### Silver
 
