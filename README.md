@@ -94,7 +94,62 @@ This project would not be possible without commercial and individual sponsors.
 
 ### Individuals
 
-- [ ] *Add individuals after campaign ends via CSV export*
+**Influential Stakeholder**
+
+- Alan McConchie
+- Odi
+- Mats Norén
+- Uli [geOps](http://geops.ch/)
+- Helge Fahrnberger
+ Kirusanth Poopalasingam
+ 
+**Stakeholder**
+
+- Brian Flood
+- Vasile Coțovanu
+- Andreas Kalkbrenner
+- Christian Mäder
+- Gregor Wassmann
+- Lee Armstrong
+- Rafel
+- Jon Burgess
+- Lukas Lehmann
+- Joachim Ungar
+- Alois Ackermann
+- Zsolt Ero
+- Jordan Meek
+
+**Supporter**
+
+- Sina Martinelli
+- Nicholas Doiron
+- Neil Cawse
+- Urs42
+- Benedikt Groß
+- Manuel Roth
+- Janko Mihelić
+- Moritz Stefaner
+- Sebastian Ahoi
+- Juerg Uhlmann
+- Tom Wider
+- Nadia Panchaud
+- Oliver Snowden
+- Stephan Heuel
+- Tobin Bradley
+- Adrian Herzog
+- Antti Lehto
+- Pascal Mages
+- Marc Gehling
+- Imre Samu
+- Lauri K.
+- Visahavel Parthasarathy
+- Christophe Waterlot-Buisine
+- Max Galka
+- ubahnverleih
+- Wouter van Dam
+- Jakob Lobensteiner
+- Samuel Kurath
+- Brian Bancroft
 
 ## License
 
