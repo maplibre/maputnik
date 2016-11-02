@@ -1,4 +1,4 @@
-# Maputnik Desktop
+# Maputnik Desktop [![Build Status](https://travis-ci.org/maputnik/desktop.svg?branch=master)](https://travis-ci.org/maputnik/desktop)
 
 A Golang based cross platform executable for integrating Maputnik locally.
 The idea is to package up the JavaScript and CSS bundle produced by [maputnik/editor](https://github.com/maputnik/desktop)

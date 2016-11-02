@@ -1,4 +1,4 @@
 [submodule "editor"]
-	path = editor
-	url = git@github.com:maputnik/editor.git
+    path = editor
+    url =  https://github.com/maputnik/editor.git
 	branch = master
