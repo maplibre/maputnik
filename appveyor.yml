@@ -20,6 +20,8 @@ install:
 - go get github.com/gorilla/mux
 - go get github.com/gorilla/websocket
 - go get github.com/urfave/cli
+- go get github.com/elazarl/go-bindata-assetfs/...
+- go get github.com/jteeuwen/go-bindata/...
 
 # to run your custom scripts instead of automatic MSBuild
 build_script:

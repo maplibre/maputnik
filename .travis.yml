@@ -1,8 +1,13 @@
+os:
+- linux
+- osx
 language: go
 install:
 - go get github.com/gorilla/handlers
 - go get github.com/gorilla/mux
 - go get github.com/gorilla/websocket
 - go get github.com/urfave/cli
+- go get github.com/elazarl/go-bindata-assetfs/...
+- go get github.com/jteeuwen/go-bindata/...
 test:
 - make
