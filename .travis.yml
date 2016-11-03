@@ -3,7 +3,7 @@ os:
   - linux
   - osx
 node_js:
-  - "6"
+  - "5.11"
   - "6.1"
 before_script:
   - npm install -g eslint eslint-plugin-react
