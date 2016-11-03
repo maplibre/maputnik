@@ -31,11 +31,20 @@ maputnik --watch --file basic-v9.json
 
 ### Build
 
-Clone the repository recursively since the Maputnik editor is embedded
-as submodule.
+Clone the repository **recursively** since the Maputnik editor is embedded
+as submodule. Make sure you clone it into the correct directory `$GOPATH/src/github.com/maputnik`.
 
 ```
 git clone --recursive git@github.com:maputnik/desktop.git
+```
+
+Install the 3rd party dependencies.
+
+```
+go get github.com/gorilla/handlers
+go get github.com/gorilla/mux
+go get github.com/gorilla/websocket
+go get github.com/urfave/cli
 ```
 
 Run `make` to build the app distribution bundle and create the `maputnik` binary
