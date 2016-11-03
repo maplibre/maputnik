@@ -25,7 +25,7 @@ install:
 build_script:
 - go vet ./...
 - gofmt -s -l .
-- make
+- mingw32-make.exe
 
 # to disable automatic tests
 test: off
