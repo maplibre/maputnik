@@ -55,9 +55,6 @@ module.exports = {
 		extensions: ['', '.js', '.jsx']
 	},
 	module: {
-		loaders
-	},
-	module: {
 		loaders,
 		postLoaders: [{
 			include: /node_modules\/mapbox-gl-shaders/,
