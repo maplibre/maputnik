@@ -1,8 +1,10 @@
 # Maputnik Desktop [![Build Status](https://travis-ci.org/maputnik/desktop.svg?branch=master)](https://travis-ci.org/maputnik/desktop)
 
 A Golang based cross platform executable for integrating Maputnik locally.
-The idea is to package up the JavaScript and CSS bundle produced by [maputnik/editor](https://github.com/maputnik/desktop)
-and embed it in the server program.
+This binary packages up the JavaScript and CSS bundle produced by [maputnik/editor](https://github.com/maputnik/desktop)
+and embeds it in the program for easy distribution. It also allows
+exposing a local style file and work on it both in Maputnik and with your favorite
+editor.
 
 ### Usage
 
@@ -28,6 +30,17 @@ use Maputnik.
 ```
 maputnik --watch --file basic-v9.json
 ```
+
+### API
+
+`maputnik` exposes the configured styles via a HTTP API.
+
+| Method                          | Description
+|---------------------------------|---------------------------------------
+| `GET /files`                    | List all configured style files
+| `GET /files/{filename}`         | Get contents of a single style file
+| `PUT GET /files/{filename}`     | Update contents of a style file
+| `WEBSOCKET /ws`                 | Listen to change events for the configured style files
 
 ### Build
 
