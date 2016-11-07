@@ -1,4 +1,4 @@
-# Maputnik [![Build Status](https://travis-ci.org/maputnik/editor.svg?branch=master)](https://travis-ci.org/maputnik/editor) ![License](https://img.shields.io/badge/license-MIT-blue.svg)
+# Maputnik ![Build Status](https://api.travis-ci.org/repositories/maputnik/editor.png?branch=master) ![License](https://img.shields.io/badge/license-MIT-blue.svg)
 
 A free and open visual editor for the [Mapbox GL styles](https://www.mapbox.com/mapbox-gl-style-spec/)
 targeted at developers and map designers. Creating your own custom map is easy with **Maputnik**.
@@ -102,7 +102,7 @@ This project would not be possible without commercial and individual sponsors.
 - Uli [geOps](http://geops.ch/)
 - Helge Fahrnberger
  Kirusanth Poopalasingam
- 
+
 **Stakeholder**
 
 - Brian Flood
