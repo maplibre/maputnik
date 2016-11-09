@@ -72,6 +72,26 @@ npm install --save-dev eslint eslint-plugin-react
 npm run lint
 ```
 
+## Docker
+
+Build the docker image
+
+```
+docker build -t maputnik/editor .
+```
+
+Start a docker container using the image
+
+```
+docker run --name maputnik -p 8888:8888 -d maputnik/editor
+```
+
+Stop the container
+
+```
+docker stop maputnik
+```
+
 ## Sponsors
 
 This project would not be possible without commercial and individual sponsors.
@@ -102,7 +122,7 @@ This project would not be possible without commercial and individual sponsors.
 - Uli [geOps](http://geops.ch/)
 - Helge Fahrnberger
  Kirusanth Poopalasingam
- 
+
 **Stakeholder**
 
 - Brian Flood
