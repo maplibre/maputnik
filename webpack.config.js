@@ -34,6 +34,7 @@ loaders.push({
 });
 
 module.exports = {
+	target: 'web',
 	entry: [
 		`webpack-dev-server/client?http://${HOST}:${PORT}`,
 		`webpack/hot/only-dev-server`,
