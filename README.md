@@ -1,4 +1,4 @@
-# Maputnik [![Build Status](https://travis-ci.org/maputnik/editor.svg?branch=master)](https://travis-ci.org/maputnik/editor) ![License](https://img.shields.io/badge/license-MIT-blue.svg)
+# Maputnik [![Build Status](https://travis-ci.org/maputnik/editor.svg?branch=master)](https://travis-ci.org/maputnik/editor) [![Windows Build Status](https://ci.appveyor.com/api/projects/status/anelbgv6jdb3qnh9/branch/master?svg=true)](https://ci.appveyor.com/project/lukasmartinelli/editor) [![License](https://img.shields.io/badge/license-MIT-blue.svg)](https://tldrlegal.com/license/mit-license)
 
 A free and open visual editor for the [Mapbox GL styles](https://www.mapbox.com/mapbox-gl-style-spec/)
 targeted at developers and map designers. Creating your own custom map is easy with **Maputnik**.
@@ -47,6 +47,11 @@ This is why I think we should rally behind and build our own style editor for th
 ## Develop
 
 Maputnik is written in ES6 and is using [React](https://github.com/facebook/react), [Immutable.js](https://facebook.github.io/immutable-js/) and [Mapbox GL JS](https://www.mapbox.com/mapbox-gl-js/api/).
+
+We ensure building and developing Maputnik works with
+
+- Linux, OSX and Windows
+- Node 5.11
 
 Install the deps, start the dev server and open the web browser on `http://localhost:8888/`.
 
