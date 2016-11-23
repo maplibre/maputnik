@@ -13,6 +13,7 @@ import { loadDefaultStyle, SettingsStore, StyleStore } from './stylestore.js'
 import { WorkspaceDrawer } from './workspace.jsx'
 
 import theme from './theme.js'
+import './index.scss'
 
 export default class App extends React.Component {
 	static childContextTypes = {

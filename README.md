@@ -51,7 +51,7 @@ Maputnik is written in ES6 and is using [React](https://github.com/facebook/reac
 We ensure building and developing Maputnik works with
 
 - Linux, OSX and Windows
-- Node 5.11
+- Node >4
 
 Install the deps, start the dev server and open the web browser on `http://localhost:8888/`.
 

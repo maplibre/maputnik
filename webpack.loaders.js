@@ -14,19 +14,8 @@ module.exports = [
 		}
 	},
 	{
-		test: /\.eot(\?v=\d+\.\d+\.\d+)?$/,
-		exclude: /(node_modules|bower_components)/,
-		loader: "file"
-	},
-	{
-		test: /\.(woff|woff2)$/,
-		exclude: /(node_modules|bower_components)/,
-		loader: "url?prefix=font/&limit=5000"
-	},
-	{
-		test: /\.ttf(\?v=\d+\.\d+\.\d+)?$/,
-		exclude: /(node_modules|bower_components)/,
-		loader: "url?limit=10000&mimetype=application/octet-stream"
+		test: /\.(eot|svg|ttf|woff|woff2)$/,
+		loader: 'file?name=fonts/[name].[ext]'
 	},
 	{
 		test: /\.svg(\?v=\d+\.\d+\.\d+)?$/,
