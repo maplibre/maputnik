@@ -6,7 +6,5 @@ install:
 build_script:
   - npm run build
 test_script:
-  - node --version
-  - npm --version
   - npm run lint
   - npm test
