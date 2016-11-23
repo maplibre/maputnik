@@ -2,9 +2,14 @@ var webpackConfig = require('./webpack.config.js');
 
 // Karma configuration
 module.exports = function(config) {
+  var browsers = ['Chrome'];
+  if (process.env.TRAVIS) {
+    browsers = ['Firefox'];
+  }
+
   config.set({
-		browsers: [ 'Chrome' ], //run in Chrome
-		frameworks: [ 'mocha' ], //use the mocha test framework
+		browsers: browsers,
+		frameworks: ['mocha'],
     // ... normal karma configuration
     files: [
       // all files ending in "_test"
