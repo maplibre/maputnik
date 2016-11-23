@@ -3,6 +3,7 @@ os:
   - linux
   - osx
 node_js:
+  - "4.6"
   - "5.11"
   - "6.1"
 before_install:
