@@ -1,4 +1,6 @@
 language: node_js
+addons:
+  firefox: latest
 os:
   - linux
   - osx
