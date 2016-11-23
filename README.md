@@ -5,7 +5,7 @@ targeted at developers and map designers. Creating your own custom map is easy w
 
 [**Please support this project on Kickstarter**](https://www.kickstarter.com/projects/174808720/maputnik-visual-map-editor-for-mapbox-gl).
 
-[![Support this project and watch the Kickstarter campaign video](kickstarter.png)](https://www.kickstarter.com/projects/174808720/maputnik-visual-map-editor-for-mapbox-gl)
+[![Support this project and watch the Kickstarter campaign video](media/kickstarter.png)](https://www.kickstarter.com/projects/174808720/maputnik-visual-map-editor-for-mapbox-gl)
 
 ## Reasons for building a Mapbox GL Style Editor
 
@@ -30,7 +30,7 @@ This is why I think we should rally behind and build our own style editor for th
 - [x] No vendor lock-in, no proprietary base styles
 - [x] Easy to deploy as single HTML file
 
-![Demo showing interactive feedback](demo.gif)
+![Demo showing interactive feedback](media/demo.gif)
 
 **Roadmap**
 
@@ -103,17 +103,17 @@ This project would not be possible without commercial and individual sponsors.
 
 ### Gold
 
-[![Wemap](sponsors/wemap.jpg)](https://getwemap.com/)
+[![Wemap](media/sponsors/wemap.jpg)](https://getwemap.com/)
 
-[![Terranodo](sponsors/terranodo.png)](http://terranodo.io/)
+[![Terranodo](media/sponsors/terranodo.png)](http://terranodo.io/)
 
 ### Silver
 
 <a href="https://www.klokantech.com/">
-  <img alt="Klokan Technologies" style="display:inline" src="sponsors/klokantech.png" />
+  <img alt="Klokan Technologies" style="display:inline" src="media/sponsors/klokantech.png" />
 </a>
 <a href="https://www.dreipol.ch/">
-  <img alt="Dreipol" style="display:inline" src="sponsors/dreipol.png" />
+  <img alt="Dreipol" style="display:inline" src="media/sponsors/dreipol.png" />
 </a>
 <br/>
 
