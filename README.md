@@ -79,14 +79,7 @@ npm run lint
 
 ## Docker
 
-Build the docker image
-
-```
-docker build -t maputnik/editor .
-```
-
-Start a docker container using the image
-
+Start a container using the official Docker image.
 ```
 docker run --name maputnik -p 8888:8888 -d maputnik/editor
 ```
