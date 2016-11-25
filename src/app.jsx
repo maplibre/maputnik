@@ -6,7 +6,8 @@ import Container from 'rebass/dist/Container'
 import Block from 'rebass/dist/Block'
 import Fixed from 'rebass/dist/Fixed'
 
-import { MapboxGlMap, OpenLayer3Map } from './map.jsx'
+import { MapboxGlMap } from './gl.jsx'
+import { OpenLayers3Map } from './ol3.jsx'
 import {Toolbar} from './toolbar.jsx'
 import style from './style.js'
 import { loadDefaultStyle, SettingsStore, StyleStore } from './stylestore.js'
@@ -110,7 +111,7 @@ export default class App extends React.Component {
 				accessToken={this.state.accessToken}
 				onAccessTokenChanged={this.onAccessTokenChanged.bind(this)}
 			/>
-			<OpenLayer3Map
+			<OpenLayers3Map
 				mapStyle={this.state.currentStyle}
 				accessToken={this.state.accessToken}
 			/>
