@@ -53,9 +53,10 @@ func main() {
 
 		router.PathPrefix("/").Handler(http.StripPrefix("/", gui))
 		loggedRouter := handlers.LoggingHandler(os.Stdout, router)
+		corsRouter := handlers.CORS(handlers.AllowedHeaders([]string{"Content-Type"}), handlers.AllowedMethods([]string{"GET", "PUT"}), handlers.AllowedOrigins([]string{"*"}), handlers.AllowCredentials())(loggedRouter)
 
 		fmt.Println("Exposing Maputnik on http://localhost:8000")
-		return http.ListenAndServe(":8000", loggedRouter)
+		return http.ListenAndServe(":8000", corsRouter)
 	}
 
 	app.Run(os.Args)
