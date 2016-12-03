@@ -39,9 +39,9 @@ func main() {
 			// Allow access to reading and writing file on the local system
 			path, _ := filepath.Abs(filename)
 			accessor := StyleFileAccessor(path)
-			router.Path("/files").Methods("GET").HandlerFunc(accessor.ListFiles)
-			router.Path("/files/{filename}").Methods("GET").HandlerFunc(accessor.ReadFile)
-			router.Path("/files/{filename}").Methods("PUT").HandlerFunc(accessor.SaveFile)
+			router.Path("/styles").Methods("GET").HandlerFunc(accessor.ListFiles)
+			router.Path("/styles/{styleId}").Methods("GET").HandlerFunc(accessor.ReadFile)
+			router.Path("/styles/{styleId}").Methods("PUT").HandlerFunc(accessor.SaveFile)
 
 			// Register websocket to notify we clients about file changes
 			if c.Bool("watch") {
