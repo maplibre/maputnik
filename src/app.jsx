@@ -9,7 +9,8 @@ import Fixed from 'rebass/dist/Fixed'
 import { Map } from './map.jsx'
 import {Toolbar} from './toolbar.jsx'
 import style from './style.js'
-import { loadDefaultStyle, SettingsStore, StyleStore } from './stylestore.js'
+import { loadDefaultStyle, SettingsStore } from './stylestore.js'
+import { emptyStyle, ApiStyleStore } from './apistore.js'
 import { WorkspaceDrawer } from './workspace.jsx'
 
 import theme from './theme.js'
@@ -23,16 +24,22 @@ export default class App extends React.Component {
 
 	constructor(props) {
 		super(props)
-		this.styleStore = new StyleStore()
+		this.styleStore = new ApiStyleStore()
 		this.settingsStore = new SettingsStore()
 		this.state = {
 			accessToken: this.settingsStore.accessToken,
 			workContext: "layers",
-			currentStyle: this.styleStore.latestStyle(),
+      currentStyle: emptyStyle
 		}
+
+    this.styleStore.latestStyle(mapStyle => {
+      this.onStyleUpload(mapStyle)
+    })
+    /*
 		if(this.state.currentStyle.get('layers').size === 0) {
 			loadDefaultStyle(mapStyle => this.onStyleUpload(mapStyle))
 		}
+    */
 	}
 
 	onReset() {
@@ -62,6 +69,7 @@ export default class App extends React.Component {
 	onStyleSave() {
 		const snapshotStyle = this.state.currentStyle.set('modified', new Date().toJSON())
 		this.setState({ currentStyle: snapshotStyle })
+    console.log('Save')
 		this.styleStore.save(snapshotStyle)
 	}
 

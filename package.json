@@ -32,7 +32,8 @@
     "react-height": "^2.1.1",
     "react-icons": "^2.2.1",
     "react-motion": "^0.4.4",
-    "rebass": "^0.3.1"
+    "rebass": "^0.3.1",
+    "request": "^2.79.0"
   },
   "babel": {
     "presets": [
