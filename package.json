@@ -8,7 +8,7 @@
     "build": "webpack --config webpack.production.config.js --progress --profile --colors",
     "test": "karma start --single-run",
     "test-watch": "karma start",
-    "start": "webpack-dev-server --progress --profile --colors",
+    "start": "webpack-dev-server --progress --profile --colors --watch-poll",
     "lint": "eslint --ext js --ext jsx {src,test}"
   },
   "repository": {
