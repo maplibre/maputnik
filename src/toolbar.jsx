@@ -132,15 +132,9 @@ export class Toolbar extends React.Component {
         </Button>
       </InlineBlock>
       <InlineBlock>
-        <Button big={true} onClick={this.props.onOpenSettings}>
-          <MdFontDownload />
-          Fonts
-        </Button>
-      </InlineBlock>
-      <InlineBlock>
-        <Button big={true} onClick={this.props.onOpenSettings}>
-          <MdInsertEmoticon/>
-          Icons
+        <Button big={true} onClick={this.toggleSettings.bind(this)}>
+          <MdSettings />
+          Style Settings
         </Button>
       </InlineBlock>
       <InlineBlock>
