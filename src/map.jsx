@@ -12,14 +12,15 @@ export class Map extends React.Component {
 	}
 
 	componentWillReceiveProps(nextProps) {
-		const tokenChanged = nextProps.accessToken !== MapboxGl.accessToken
+		const hasTokenChanged = nextProps.accessToken !== MapboxGl.accessToken
+    MapboxGl.accessToken = nextProps.accessToken
 
 		// If the id has changed a new style has been uplaoded and
 		// it is safer to do a full new render
 		// TODO: might already be handled in diff algorithm?
 		const mapIdChanged = this.props.mapStyle.get('id') !== nextProps.mapStyle.get('id')
 
-		if(mapIdChanged || tokenChanged) {
+		if(mapIdChanged || hasTokenChanged) {
 			this.state.map.setStyle(style.toJSON(nextProps.mapStyle))
 			return
 		}
