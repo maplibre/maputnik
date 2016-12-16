@@ -32,17 +32,19 @@ export class OpenLayers3Map extends Map {
 
 
   componentDidMount() {
-    const styleFunc = olms.getStyleFunction(style.toJSON(this.props.mapStyle), 'mapbox', this.resolutions)
+    const jsonStyle = style.toJSON(this.props.mapStyle)
+    const styleFunc = olms.getStyleFunction(jsonStyle, 'mapbox', this.resolutions)
     this.layer.setStyle(styleFunc)
 
     const map = new ol.Map({
     target: this.container,
       layers: [this.layer],
       view: new ol.View({
-        center: [949282, 6002552],
-        zoom: 4
+        center: jsonStyle.center,
+        zoom: jsonStyle.zoom,
       })
     })
+    map.addControl(new ol.control.Zoom());
     this.setState({ map });
   }
 }
