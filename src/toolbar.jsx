@@ -46,8 +46,6 @@ export class Toolbar extends React.Component {
     onOpenAbout: React.PropTypes.func,
     // Open sources drawer
     onOpenSources: React.PropTypes.func,
-    // Open layers drawer
-    onOpenLayers: React.PropTypes.func,
     // Whether a style is available for download or saving
     // A style with no layers should not be available
     styleAvailable: React.PropTypes.bool,

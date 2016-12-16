@@ -78,19 +78,18 @@ export default class App extends React.Component {
   }
 
   onOpenSettings() {
-    this.setState({ workContext: "settings" })
+    //TODO: open settings modal
+    //this.setState({ workContext: "settings" })
   }
 
   onOpenAbout() {
-    this.setState({ workContext: "about" })
-  }
-
-  onOpenLayers() {
-    this.setState({ workContext: "layers", })
+    //TODO: open about modal
+    //this.setState({ workContext: "about" })
   }
 
   onOpenSources() {
-    this.setState({ workContext: "sources", })
+    //TODO: open sources modal
+    //this.setState({ workContext: "sources", })
   }
 
   onAccessTokenChanged(newToken) {
@@ -107,7 +106,6 @@ export default class App extends React.Component {
           onStyleDownload={this.onStyleDownload.bind(this)}
           onOpenSettings={this.onOpenSettings.bind(this)}
           onOpenAbout={this.onOpenAbout.bind(this)}
-          onOpenLayers={this.onOpenLayers.bind(this)}
           onOpenSources={this.onOpenSources.bind(this)}
       />
       <WorkspaceDrawer
