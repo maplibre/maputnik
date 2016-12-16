@@ -100,6 +100,7 @@ export default class App extends React.Component {
   }
 
   render() {
+    const renderer = this.state.currentStyle.getIn(['metadata', 'maputnik:renderer'], 'mbgljs')
     const mapProps = {
       mapStyle: this.state.currentStyle,
       accessToken: this.state.accessToken,
@@ -120,8 +121,8 @@ export default class App extends React.Component {
         accessToken={this.state.accessToken}
         onAccessTokenChanged={this.onAccessTokenChanged.bind(this)}
       />
-      {this.state.mapRenderer == 'ol3' && <OpenLayers3Map {...mapProps} />}
-      {this.state.mapRenderer == 'gl' && <MapboxGlMap {...mapProps} />}
+      {renderer == 'ol3' && <OpenLayers3Map {...mapProps} />}
+      {renderer == 'mbgljs' && <MapboxGlMap {...mapProps} />}
     </div>
   }
 }

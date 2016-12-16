@@ -1,6 +1,7 @@
 import React from 'react'
 import Immutable from 'immutable'
 
+import Select from 'rebass/dist/Select'
 import Overlay from 'rebass/dist/Overlay'
 import Panel from 'rebass/dist/Panel'
 import PanelHeader from 'rebass/dist/PanelHeader'
@@ -26,6 +27,11 @@ class SettingsModal extends React.Component {
 
   onChange(property, e) {
     const changedStyle = this.props.mapStyle.set(property, e.target.value)
+    this.props.onStyleChanged(changedStyle)
+  }
+
+  onRendererChange(e) {
+    const changedStyle = this.props.mapStyle.setIn(['metadata', 'maputnik:renderer'], e.target.value)
     this.props.onStyleChanged(changedStyle)
   }
 
@@ -61,6 +67,18 @@ class SettingsModal extends React.Component {
           label="Glyphs URL"
           value={this.props.mapStyle.get('glyphs')}
           onChange={this.onChange.bind(this, "glyphs")}
+        />
+        <Input
+          name="glyphs"
+          label="Glyphs URL"
+          value={this.props.mapStyle.get('glyphs')}
+          onChange={this.onChange.bind(this, "glyphs")}
+        />
+        <Select
+          label="Style Renderer"
+          name="renderer"
+          onChange={this.onRendererChange.bind(this)}
+          options={[{children: 'Mapbox GL JS', value: 'mbgljs'}, {children: 'Open Layers 3', value: 'ol3'}]}
         />
 
         <PanelFooter>
