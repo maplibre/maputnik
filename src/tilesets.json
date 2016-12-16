@@ -1,0 +1,9 @@
+[
+  {
+    "id": "mapbox-streets",
+    "type": "vector",
+    "url": "mapbox://mapbox.mapbox-streets-v7",
+    "title": "Mapbox Streets",
+    "description": "Mapbox Streets provides a vector tileset for complex general-purpose maps."
+  }
+]

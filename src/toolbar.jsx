@@ -26,6 +26,7 @@ import MdHelpOutline from 'react-icons/lib/md/help-outline'
 import MdFindInPage from 'react-icons/lib/md/find-in-page'
 
 import SettingsModal from './modals/settings.jsx'
+import TilesetsModal from './modals/tilesets.jsx'
 import style from './style.js'
 import { fullHeight } from './theme.js'
 import theme from './theme.js';
@@ -50,6 +51,7 @@ export class Toolbar extends React.Component {
     super(props)
     this.state = {
       openSettingsModal: false,
+      openTilesetsModal: false,
     }
   }
 
@@ -93,6 +95,10 @@ export class Toolbar extends React.Component {
     this.setState({openSettingsModal: !this.state.openSettingsModal})
   }
 
+  toggleTilesets() {
+    this.setState({openTilesetsModal: !this.state.openTilesetsModal})
+  }
+
   render() {
     return <div style={{
       position: "fixed",
@@ -107,6 +113,12 @@ export class Toolbar extends React.Component {
         mapStyle={this.props.mapStyle}
         onStyleChanged={this.props.onStyleChanged}
         open={this.state.openSettingsModal}
+        toggle={() => this.toggleSettings.bind(this)}
+      />
+      <TilesetsModal
+        mapStyle={this.props.mapStyle}
+        onStyleChanged={this.props.onStyleChanged}
+        open={this.state.openTilesetsModal}
         toggle={() => this.toggleSettings.bind(this)}
       />
       <InlineBlock>
@@ -126,7 +138,7 @@ export class Toolbar extends React.Component {
       {this.downloadButton()}
       {this.saveButton()}
       <InlineBlock>
-        <Button big={true} onClick={this.props.onOpenSettings}>
+        <Button big={true} onClick={this.toggleTilesets.bind(this)}>
           <MdLayers />
           Tilesets
         </Button>
