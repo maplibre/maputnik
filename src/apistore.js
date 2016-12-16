@@ -1,14 +1,13 @@
 import request from 'request'
 import style from './style.js'
 
-// Empty style is always used if no style could be restored or fetched
-export const emptyStyle = style.ensureMetadataExists(style.fromJSON({
-		version: 8,
-		sources: {},
-		layers: [],
-}))
-
 export class ApiStyleStore {
+  supported(cb) {
+    request('http://localhost:8000/styles', (error, response, body) => {
+      cb(error === undefined)
+    })
+  }
+
   latestStyle(cb) {
     if(this.latestStyleId) {
       request('http://localhost:8000/styles/' + this.latestStyleId, (error, response, body) => {
