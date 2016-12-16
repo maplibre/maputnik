@@ -39,7 +39,8 @@ export default class App extends React.Component {
     this.state = {
       accessToken: this.settingsStore.accessToken,
       workContext: "layers",
-      currentStyle: style.emptyStyle
+      currentStyle: style.emptyStyle,
+      mapRenderer: 'gl',
     }
   }
 
@@ -99,6 +100,10 @@ export default class App extends React.Component {
   }
 
   render() {
+    const mapProps = {
+      mapStyle: this.state.currentStyle,
+      accessToken: this.state.accessToken,
+    }
     return <div style={{ fontFamily: theme.fontFamily, color: theme.color, fontWeight: 300 }}>
       <Toolbar
           styleAvailable={this.state.currentStyle.get('layers').size > 0}
@@ -117,10 +122,8 @@ export default class App extends React.Component {
         accessToken={this.state.accessToken}
         onAccessTokenChanged={this.onAccessTokenChanged.bind(this)}
       />
-      <OpenLayers3Map
-        mapStyle={this.state.currentStyle}
-        accessToken={this.state.accessToken}
-      />
+      {this.state.mapRenderer == 'ol3' && <OpenLayers3Map {...mapProps} />}
+      {this.state.mapRenderer == 'gl' && <MapboxGlMap {...mapProps} />}
     </div>
   }
 }
