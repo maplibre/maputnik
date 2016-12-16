@@ -106,13 +106,11 @@ export default class App extends React.Component {
     }
     return <div style={{ fontFamily: theme.fontFamily, color: theme.color, fontWeight: 300 }}>
       <Toolbar
-          styleAvailable={this.state.currentStyle.get('layers').size > 0}
+          mapStyle={this.state.currentStyle}
+          onStyleChanged={this.onStyleChanged.bind(this)}
           onStyleSave={this.onStyleSave.bind(this)}
           onStyleUpload={this.onStyleUpload.bind(this)}
           onStyleDownload={this.onStyleDownload.bind(this)}
-          onOpenSettings={this.onOpenSettings.bind(this)}
-          onOpenAbout={this.onOpenAbout.bind(this)}
-          onOpenSources={this.onOpenSources.bind(this)}
       />
       <WorkspaceDrawer
         onStyleChanged={this.onStyleChanged.bind(this)}

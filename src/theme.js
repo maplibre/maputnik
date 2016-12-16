@@ -80,6 +80,9 @@ const dark = {
     fontWeight: 400,
     color: colors.white,
   },
+  Panel: {
+    backgroundColor: colors.gray,
+  },
   Button: {
     color: '#00d9f7',
   },

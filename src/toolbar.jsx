@@ -1,4 +1,5 @@
 import React from 'react';
+import Immutable from 'immutable'
 import FileReaderInput from 'react-file-reader-input';
 
 import Button from 'rebass/dist/Button'
@@ -24,6 +25,7 @@ import MdFontDownload from 'react-icons/lib/md/font-download'
 import MdHelpOutline from 'react-icons/lib/md/help-outline'
 import MdFindInPage from 'react-icons/lib/md/find-in-page'
 
+import SettingsModal from './modals/settings.jsx'
 import style from './style.js'
 import { fullHeight } from './theme.js'
 import theme from './theme.js';
@@ -34,21 +36,21 @@ const InlineBlock = props => <div style={{display: "inline-block", ...props.styl
 
 export class Toolbar extends React.Component {
   static propTypes = {
+    mapStyle: React.PropTypes.instanceOf(Immutable.Map).isRequired,
+    onStyleChanged: React.PropTypes.func.isRequired,
     // A new style has been uploaded
     onStyleUpload: React.PropTypes.func.isRequired,
     // Current style is requested for download
     onStyleDownload: React.PropTypes.func.isRequired,
     // Style is explicitely saved to local cache
     onStyleSave: React.PropTypes.func,
-    // Open settings drawer
-    onOpenSettings: React.PropTypes.func,
-    // Open about page
-    onOpenAbout: React.PropTypes.func,
-    // Open sources drawer
-    onOpenSources: React.PropTypes.func,
-    // Whether a style is available for download or saving
-    // A style with no layers should not be available
-    styleAvailable: React.PropTypes.bool,
+  }
+
+  constructor(props) {
+    super(props)
+    this.state = {
+      openSettingsModal: false,
+    }
   }
 
   onUpload(_, files) {
@@ -64,7 +66,7 @@ export class Toolbar extends React.Component {
   }
 
   saveButton() {
-    if(this.props.styleAvailable) {
+    if(this.props.mapStyle.get('layers').size > 0) {
       return <InlineBlock>
         <Button onClick={this.props.onStyleSave} big={true}>
           <MdSave />
@@ -87,8 +89,11 @@ export class Toolbar extends React.Component {
     return null
   }
 
-  render() {
+  toggleSettings() {
+    this.setState({openSettingsModal: !this.state.openSettingsModal})
+  }
 
+  render() {
     return <div style={{
       position: "fixed",
       height: 50,
@@ -98,6 +103,12 @@ export class Toolbar extends React.Component {
       top: 0,
       backgroundColor: theme.colors.black
     }}>
+      <SettingsModal
+        mapStyle={this.props.mapStyle}
+        onStyleChanged={this.props.onStyleChanged}
+        open={this.state.openSettingsModal}
+        toggle={() => this.toggleSettings.bind(this)}
+      />
       <InlineBlock>
           <Button style={{width: 300, textAlign: 'left'}}>
             <img src="https://github.com/maputnik/editor/raw/master/media/maputnik.png" alt="Maputnik" style={{width: 40, height: 40, paddingRight: 5, verticalAlign: 'middle'}}/>
@@ -133,7 +144,7 @@ export class Toolbar extends React.Component {
         </Button>
       </InlineBlock>
       <InlineBlock>
-        <Button big={true} onClick={this.props.onOpenSettings}>
+        <Button big={true} onClick={this.toggleSettings.bind(this)}>
           <MdFindInPage />
           Inspect
         </Button>
