@@ -60,6 +60,14 @@ class ZoomSpecField extends React.Component {
   }
 }
 
+function labelFromFieldName(fieldName) {
+  let label = fieldName.split('-').slice(1).join(' ')
+  if(label.length > 0) {
+    label = label.charAt(0).toUpperCase() + label.slice(1);
+  }
+  return label
+}
+
 /** Display any field from the Mapbox GL style spec and
  * choose the correct field component based on the @{fieldSpec}
  * to display @{value}. */
@@ -77,12 +85,13 @@ class SpecField extends React.Component {
   }
 
   render() {
+    const label = labelFromFieldName(this.props.fieldName)
     switch(this.props.fieldSpec.type) {
       case 'number': return (
         <NumberField
           onChange={this.onValueChanged.bind(this, this.props.fieldName)}
           value={this.props.value}
-          name={this.props.fieldName}
+          name={label}
           default={this.props.fieldSpec.default}
           min={this.props.fieldSpec.min}
           max={this.props.fieldSpec.max}
@@ -94,7 +103,7 @@ class SpecField extends React.Component {
         <EnumField
           onChange={this.onValueChanged.bind(this, this.props.fieldName)}
           value={this.props.value}
-          name={this.props.fieldName}
+          name={label}
           allowedValues={this.props.fieldSpec.values}
           doc={this.props.fieldSpec.doc}
         />
@@ -103,7 +112,7 @@ class SpecField extends React.Component {
         <StringField
           onChange={this.onValueChanged.bind(this, this.props.fieldName)}
           value={this.props.value}
-          name={this.props.fieldName}
+          name={label}
           doc={this.props.fieldSpec.doc}
         />
       )
@@ -111,7 +120,7 @@ class SpecField extends React.Component {
         <ColorField
           onChange={this.onValueChanged.bind(this, this.props.fieldName)}
           value={this.props.value}
-          name={this.props.fieldName}
+          name={label}
           doc={this.props.fieldSpec.doc}
         />
       )
@@ -130,7 +139,7 @@ export class PropertyGroup extends React.Component {
 
   render() {
     const layerTypeSpec = GlSpec[this.props.groupType + "_" + this.props.layerType]
-    const specFields = Object.keys(layerTypeSpec).map(propName => {
+    const specFields = Object.keys(layerTypeSpec).filter(propName => propName !== 'visibility').map(propName => {
       const fieldSpec = layerTypeSpec[propName]
       const propValue = this.props.properties.get(propName)
       return <ZoomSpecField
