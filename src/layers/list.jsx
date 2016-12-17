@@ -9,12 +9,18 @@ import Space from 'rebass/dist/Space'
 import { LayerEditor } from './editor.jsx'
 import scrollbars from '../scrollbars.scss'
 import PureRenderMixin from 'react-addons-pure-render-mixin';
+import theme from '../theme.js'
 
 // List of collapsible layer editors
 export class LayerList extends React.Component {
   static propTypes = {
     layers: React.PropTypes.instanceOf(Immutable.OrderedMap),
-    onLayersChanged: React.PropTypes.func.isRequired
+    onLayersChanged: React.PropTypes.func.isRequired,
+    onLayerSelected: React.PropTypes.func,
+  }
+
+  static defaultProps = {
+    onLayerSelected: () => {},
   }
 
   constructor(props) {
@@ -35,12 +41,23 @@ export class LayerList extends React.Component {
   render() {
     var layerPanels = []
     layerPanels = this.props.layers.map(layer => {
-      return <LayerEditor
-        key={layer.get('id')}
-        layer={layer}
-        onLayerDestroyed={this.onLayerDestroyed.bind(this)}
-        onLayerChanged={this.onLayerChanged.bind(this)}
-      />
+      const layerId = layer.get('id')
+      return <div key={layerId} style={{
+          padding: theme.scale[0],
+          borderBottom: 1,
+          borderTop: 1,
+          borderLeft: 2,
+          borderRight: 0,
+          borderStyle: "solid",
+          borderColor: theme.borderColor
+      }}>
+        <Toolbar onClick={() => this.props.onLayerSelected(layerId)}>
+          <NavItem style={{fontWeight: 400}}>
+            #{layerId}
+          </NavItem>
+          <Space auto x={1} />
+        </Toolbar>
+      </div>
     }).toIndexedSeq()
 
     return <div>

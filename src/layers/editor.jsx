@@ -43,9 +43,6 @@ export class LayerEditor extends React.Component {
   constructor(props) {
     super(props);
     this.shouldComponentUpdate = PureRenderMixin.shouldComponentUpdate.bind(this);
-    this.state = {
-      isOpened: false,
-    }
   }
 
   getChildContext () {
@@ -77,10 +74,6 @@ export class LayerEditor extends React.Component {
 
     const changedLayer = layer.setIn(['layout', property], newValue)
     this.props.onLayerChanged(changedLayer)
-  }
-
-  toggleLayer() {
-    this.setState({isOpened: !this.state.isOpened})
   }
 
   layerFromType(type) {
@@ -143,7 +136,7 @@ export class LayerEditor extends React.Component {
         borderColor: theme.borderColor,
         borderLeftColor: this.props.layer.getIn(['metadata', 'maputnik:color'])
       }}>
-      <Toolbar onClick={this.toggleLayer.bind(this)}>
+      <Toolbar>
         <NavItem style={{fontWeight: 400}}>
           #{this.props.layer.get('id')}
         </NavItem>
@@ -155,11 +148,9 @@ export class LayerEditor extends React.Component {
           <MdDelete />
         </NavItem>
       </Toolbar>
-      <Collapse isOpened={this.state.isOpened}>
-        <div style={{padding: theme.scale[2], paddingRight: 0, backgroundColor: theme.colors.black}}>
-        {this.layerFromType(this.props.layer.get('type'))}
-        </div>
-      </Collapse>
+      <div style={{padding: theme.scale[2], paddingRight: 0, backgroundColor: theme.colors.black}}>
+      {this.layerFromType(this.props.layer.get('type'))}
+      </div>
     </div>
   }
 }

@@ -41,6 +41,7 @@ export default class App extends React.Component {
     this.state = {
       accessToken: this.settingsStore.accessToken,
       mapStyle: style.emptyStyle,
+      selectedLayer: null,
     }
   }
 
@@ -102,9 +103,13 @@ export default class App extends React.Component {
     }
   }
 
+  onLayerSelected(layerId) {
+    this.setState({
+      selectedLayer: this.state.mapStyle.getIn(['layers', layerId],null)
+    })
+  }
+
   render() {
-    const layers = this.state.mapStyle.get('layers').keySeq()
-    console.log(layers.size)
     return <div style={{ fontFamily: theme.fontFamily, color: theme.color, fontWeight: 300 }}>
       <Toolbar
         mapStyle={this.state.mapStyle}
@@ -124,6 +129,7 @@ export default class App extends React.Component {
       }}>
         <LayerList
           onLayersChanged={this.onLayersChanged.bind(this)}
+          onLayerSelected={this.onLayerSelected.bind(this)}
           layers={this.state.mapStyle.get('layers')}
         />
       </div>
@@ -136,7 +142,7 @@ export default class App extends React.Component {
         overflow: "hidden",
         backgroundColor: colors.gray}
       }>
-      {layers.size > 0 && <LayerEditor layer={this.state.mapStyle.get('layers').get(layers.get(0))} />}
+      {this.state.selectedLayer && <LayerEditor layer={this.state.selectedLayer} />}
       </div>
       {this.mapRenderer()}
     </div>
