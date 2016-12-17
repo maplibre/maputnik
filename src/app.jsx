@@ -41,7 +41,7 @@ export default class App extends React.Component {
     this.state = {
       accessToken: this.settingsStore.accessToken,
       mapStyle: style.emptyStyle,
-      selectedLayer: null,
+      selectedLayerId: null,
     }
   }
 
@@ -91,9 +91,10 @@ export default class App extends React.Component {
   }
 
   onLayerChanged(layer) {
-    console.log(layer)
-    const changedStyle = this.state.mapStyle.setIn('layers', layer.get('id'), layer)
-    this.onStyleChanged(changedStyle)
+    console.log('layer changed', layer)
+    const layers = this.state.mapStyle.get('layers')
+    const changedLayers = layers.set(layer.get('id'), layer)
+    this.onLayersChanged(changedLayers)
   }
 
   onLayerChanged(layer) {
@@ -115,12 +116,11 @@ export default class App extends React.Component {
   }
 
   onLayerSelected(layerId) {
-    this.setState({
-      selectedLayer: this.state.mapStyle.getIn(['layers', layerId],null)
-    })
+    this.setState({ selectedLayerId: layerId })
   }
 
   render() {
+    const selectedLayer = this.state.mapStyle.getIn(['layers', this.state.selectedLayerId], null)
     return <div style={{ fontFamily: theme.fontFamily, color: theme.color, fontWeight: 300 }}>
       <Toolbar
         mapStyle={this.state.mapStyle}
@@ -156,7 +156,7 @@ export default class App extends React.Component {
         width: 300,
         backgroundColor: colors.gray}
       }>
-      {this.state.selectedLayer && <LayerEditor layer={this.state.selectedLayer} onLayerChanged={this.onLayerChanged.bind(this)} />}
+      {selectedLayer && <LayerEditor layer={selectedLayer} onLayerChanged={this.onLayerChanged.bind(this)} />}
       </div>
       {this.mapRenderer()}
     </div>
