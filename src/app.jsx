@@ -8,13 +8,14 @@ import Fixed from 'rebass/dist/Fixed'
 
 import { MapboxGlMap } from './gl.jsx'
 import { OpenLayers3Map } from './ol3.jsx'
+import { LayerList } from './layers/list.jsx'
 import {Toolbar} from './toolbar.jsx'
 import style from './style.js'
 import { loadDefaultStyle, SettingsStore, StyleStore } from './stylestore.js'
 import { ApiStyleStore } from './apistore.js'
-import { WorkspaceDrawer } from './workspace.jsx'
 
 import theme from './theme.js'
+import { colors, fullHeight } from './theme.js'
 import './index.scss'
 
 export default class App extends React.Component {
@@ -99,30 +100,48 @@ export default class App extends React.Component {
     this.setState({ accessToken: newToken })
   }
 
-  render() {
-    const renderer = this.state.currentStyle.getIn(['metadata', 'maputnik:renderer'], 'mbgljs')
+  onLayersChanged(changedLayers) {
+    const changedStyle = this.props.mapStyle.set('layers', changedLayers)
+    this.props.onStyleChanged(changedStyle)
+  }
+
+  mapRenderer() {
     const mapProps = {
       mapStyle: this.state.currentStyle,
       accessToken: this.state.accessToken,
     }
+    const renderer = this.state.currentStyle.getIn(['metadata', 'maputnik:renderer'], 'mbgljs')
+    if(renderer === 'ol3') {
+      return  <OpenLayers3Map {...mapProps} />
+    } else {
+      return  <MapboxGlMap {...mapProps} />
+    }
+  }
+
+  render() {
     return <div style={{ fontFamily: theme.fontFamily, color: theme.color, fontWeight: 300 }}>
       <Toolbar
-          mapStyle={this.state.currentStyle}
-          onStyleChanged={this.onStyleChanged.bind(this)}
-          onStyleSave={this.onStyleSave.bind(this)}
-          onStyleUpload={this.onStyleUpload.bind(this)}
-          onStyleDownload={this.onStyleDownload.bind(this)}
-      />
-      <WorkspaceDrawer
-        onStyleChanged={this.onStyleChanged.bind(this)}
-        onReset={this.onReset.bind(this)}
-        workContext={this.state.workContext}
         mapStyle={this.state.currentStyle}
-        accessToken={this.state.accessToken}
-        onAccessTokenChanged={this.onAccessTokenChanged.bind(this)}
+        onStyleChanged={this.onStyleChanged.bind(this)}
+        onStyleSave={this.onStyleSave.bind(this)}
+        onStyleUpload={this.onStyleUpload.bind(this)}
+        onStyleDownload={this.onStyleDownload.bind(this)}
       />
-      {renderer == 'ol3' && <OpenLayers3Map {...mapProps} />}
-      {renderer == 'mbgljs' && <MapboxGlMap {...mapProps} />}
+      <div style={{
+        ...fullHeight,
+        top: 50,
+        left: 0,
+        zIndex: 100,
+        width: 300,
+        overflow: "hidden",
+        backgroundColor: colors.gray
+      }}>
+        <LayerList
+          onLayersChanged={this.onLayersChanged.bind(this)}
+          layers={this.state.currentStyle.get('layers')}
+        />
+      </div>
+      {this.mapRenderer()}
     </div>
   }
 }
