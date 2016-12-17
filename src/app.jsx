@@ -86,8 +86,8 @@ export default class App extends React.Component {
   }
 
   onLayersChanged(changedLayers) {
-    const changedStyle = this.props.mapStyle.set('layers', changedLayers)
-    this.props.onStyleChanged(changedStyle)
+    const changedStyle = this.state.mapStyle.set('layers', changedLayers)
+    this.onStyleChanged(changedStyle)
   }
 
   mapRenderer() {

@@ -35,6 +35,7 @@
     "react-height": "^2.1.1",
     "react-icons": "^2.2.1",
     "react-motion": "^0.4.4",
+    "react-sortable-hoc": "^0.4.5",
     "rebass": "^0.3.1",
     "request": "^2.79.0"
   },

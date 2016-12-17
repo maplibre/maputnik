@@ -12,14 +12,18 @@ import scrollbars from '../scrollbars.scss'
 import PureRenderMixin from 'react-addons-pure-render-mixin';
 import theme from '../theme.js'
 
-// List of collapsible layer editors
-export class LayerList extends React.Component {
-  static propTypes = {
-    layers: React.PropTypes.instanceOf(Immutable.OrderedMap),
-    onLayersChanged: React.PropTypes.func.isRequired,
-    onLayerSelected: React.PropTypes.func,
-  }
+import {SortableContainer, SortableHandle, arrayMove} from 'react-sortable-hoc';
 
+const layerListPropTypes = {
+  layers: React.PropTypes.instanceOf(Immutable.OrderedMap),
+  onLayersChanged: React.PropTypes.func.isRequired,
+  onLayerSelected: React.PropTypes.func,
+}
+
+// List of collapsible layer editors
+@SortableContainer
+class LayerListContainer extends React.Component {
+  static propTypes = {...layerListPropTypes}
   static defaultProps = {
     onLayerSelected: () => {},
   }
@@ -40,26 +44,55 @@ export class LayerList extends React.Component {
   }
 
   render() {
-    const layerPanels = this.props.layers.map(layer => {
+    const layerPanels = this.props.layers.toIndexedSeq().map((layer, index) => {
       const layerId = layer.get('id')
       return <LayerListItem
+        index={index}
         key={layerId}
         layerId={layerId}
         onLayerSelected={this.props.onLayerSelected}
       />
-    }).toIndexedSeq()
-
-    return <div>
-      <div className={scrollbars.darkScrollbar} style={{
+    })
+    return <ul className={scrollbars.darkScrollbar} style={{
         overflowY: "scroll",
         bottom:0,
         left:0,
         right:0,
         top:1,
         position: "absolute",
+        padding: theme.scale[2],
       }}>
       {layerPanels}
-      </div>
-    </div>
+    </ul>
+  }
+}
+
+export class LayerList extends React.Component {
+  static propTypes = {...layerListPropTypes}
+
+  constructor(props) {
+    super(props)
+    this.shouldComponentUpdate = PureRenderMixin.shouldComponentUpdate.bind(this);
+  }
+
+  onSortEnd(move) {
+    const { oldIndex, newIndex } = move
+    if(oldIndex === newIndex) return
+
+    //TODO: Implement this more performant for immutable collections
+    // instead of converting back and forth
+    let layers = this.props.layers.toArray()
+    layers = arrayMove(layers, oldIndex, newIndex)
+    layers = Immutable.OrderedMap(layers.map(l => [l.get('id'), l]))
+
+    this.props.onLayersChanged(layers)
+  }
+
+  render() {
+    return <LayerListContainer
+      {...this.props}
+      onSortEnd={this.onSortEnd.bind(this)}
+      useDragHandle={true}
+    />
   }
 }
