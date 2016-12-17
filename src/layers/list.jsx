@@ -8,9 +8,9 @@ import Space from 'rebass/dist/Space'
 
 import { LayerEditor } from './editor.jsx'
 import LayerListItem from './listitem.jsx'
-import scrollbars from '../scrollbars.scss'
 import PureRenderMixin from 'react-addons-pure-render-mixin';
 import theme from '../theme.js'
+import ScrollContainer from '../scrollcontainer.jsx'
 
 import {SortableContainer, SortableHandle, arrayMove} from 'react-sortable-hoc';
 
@@ -53,17 +53,11 @@ class LayerListContainer extends React.Component {
         onLayerSelected={this.props.onLayerSelected}
       />
     })
-    return <ul className={scrollbars.darkScrollbar} style={{
-        overflowY: "scroll",
-        bottom:0,
-        left:0,
-        right:0,
-        top:1,
-        position: "absolute",
-        padding: theme.scale[2],
-      }}>
-      {layerPanels}
-    </ul>
+    return <ScrollContainer>
+      <ul style={{ padding: theme.scale[2] }}>
+        {layerPanels}
+      </ul>
+    </ScrollContainer>
   }
 }
 

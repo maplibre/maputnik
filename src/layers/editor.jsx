@@ -17,6 +17,8 @@ import MdVisibilityOff from 'react-icons/lib/md/visibility-off'
 import MdDelete from 'react-icons/lib/md/delete'
 import PureRenderMixin from 'react-addons-pure-render-mixin';
 
+import ScrollContainer from '../scrollcontainer.jsx'
+
 class UnsupportedLayer extends React.Component {
   render() {
     return <div></div>
@@ -141,9 +143,11 @@ export class LayerEditor extends React.Component {
           <MdDelete />
         </NavItem>
       </Toolbar>
-      <div style={{padding: theme.scale[2], paddingRight: 0, backgroundColor: theme.colors.black}}>
-      {this.layerFromType(this.props.layer.get('type'))}
-      </div>
+      <ScrollContainer>
+        <div style={{padding: theme.scale[2], paddingRight: 0, backgroundColor: theme.colors.black}}>
+        {this.layerFromType(this.props.layer.get('type'))}
+        </div>
+      </ScrollContainer>
     </div>
   }
 }
