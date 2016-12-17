@@ -59,6 +59,7 @@ export class LayerEditor extends React.Component {
   onPaintChanged(property, newValue) {
     let layer = this.props.layer
     //TODO: by using immutable records we can avoid this checking if object exists
+    //
     if(!layer.has('paint')) {
       layer = layer.set('paint', Immutable.Map())
     }
@@ -143,11 +144,9 @@ export class LayerEditor extends React.Component {
           <MdDelete />
         </NavItem>
       </Toolbar>
-      <ScrollContainer>
         <div style={{padding: theme.scale[2], paddingRight: 0, backgroundColor: theme.colors.black}}>
         {this.layerFromType(this.props.layer.get('type'))}
         </div>
-      </ScrollContainer>
     </div>
   }
 }

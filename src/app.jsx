@@ -90,6 +90,17 @@ export default class App extends React.Component {
     this.onStyleChanged(changedStyle)
   }
 
+  onLayerChanged(layer) {
+    console.log(layer)
+    const changedStyle = this.state.mapStyle.setIn('layers', layer.get('id'), layer)
+    this.onStyleChanged(changedStyle)
+  }
+
+  onLayerChanged(layer) {
+    const changedStyle = this.state.mapStyle.setIn(['layers', layer.get('id')], layer)
+    this.onStyleChanged(changedStyle)
+  }
+
   mapRenderer() {
     const mapProps = {
       mapStyle: this.state.mapStyle,
@@ -119,7 +130,9 @@ export default class App extends React.Component {
         onStyleDownload={this.onStyleDownload.bind(this)}
       />
       <div style={{
-        ...fullHeight,
+        position: 'absolute',
+        bottom: 0,
+        height: "100%",
         top: 50,
         left: 0,
         zIndex: 100,
@@ -134,15 +147,16 @@ export default class App extends React.Component {
         />
       </div>
       <div style={{
-        ...fullHeight,
+        position: 'absolute',
+        bottom: 0,
+        height: "100%",
         top: 50,
         left: 180,
         zIndex: 100,
         width: 300,
-        overflow: "hidden",
         backgroundColor: colors.gray}
       }>
-      {this.state.selectedLayer && <LayerEditor layer={this.state.selectedLayer} />}
+      {this.state.selectedLayer && <LayerEditor layer={this.state.selectedLayer} onLayerChanged={this.onLayerChanged.bind(this)} />}
       </div>
       {this.mapRenderer()}
     </div>

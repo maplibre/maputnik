@@ -36,10 +36,8 @@ class ZoomSpecField extends React.Component {
   render() {
     if(isZoomField(this.props.value)) {
       const zoomFields = this.props.value.get('stops').map(stop => {
-        console.log(stop)
         const zoomLevel = stop.get(0)
         const value = stop.get(1)
-        console.log(zoomLevel, value)
 
         return <div key={zoomLevel}>
           <b><span style={inputStyle.label}>Zoom Level {zoomLevel}</span></b>
