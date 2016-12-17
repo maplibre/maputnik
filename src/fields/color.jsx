@@ -10,7 +10,7 @@ function formatColor(color) {
 
 /*** Number fields with support for min, max and units and documentation*/
 class ColorField extends React.Component {
-static propTypes = {
+  static propTypes = {
     onChange: React.PropTypes.func.isRequired,
     name: React.PropTypes.string.isRequired,
     value: React.PropTypes.string,
@@ -18,20 +18,43 @@ static propTypes = {
     doc: React.PropTypes.string,
   }
 
-  render() {
-    return <div style={{...inputStyle.property, position: 'relative'}}>
-      <div style={{
-        position: 'absolute',
-        left: 200
-      }}>
-        <ChromePicker
-          color={getColor(this.props.value)}
-          onChange={c => this.props.onChange(formatColor(c))}
-        />
-      </div>
+  constructor(props) {
+    super(props)
+    this.state = {
+      pickerOpened: false
+    }
+  }
 
+  togglePicker() {
+    this.setState({ pickerOpened: !this.state.pickerOpened })
+  }
+
+  render() {
+    const picker = <div style={{
+        position: 'absolute',
+        left: 287
+      }}>
+      <ChromePicker
+        color={getColor(this.props.value)}
+        onChange={c => this.props.onChange(formatColor(c))}
+      />
+      <div
+        onClick={this.togglePicker.bind(this)}
+        style={{
+          zIndex: -1,
+          position: 'fixed',
+          top: '0px',
+          right: '0px',
+          bottom: '0px',
+          left: '0px',
+        }} />
+    </div>
+
+    return <div style={{...inputStyle.property, position: 'relative'}}>
+      {this.state.pickerOpened && picker}
       <label style={inputStyle.label}>{this.props.name}</label>
       <input
+        onClick={this.togglePicker.bind(this)}
         style={inputStyle.input}
         name={this.props.name}
         placeholder={this.props.default}
