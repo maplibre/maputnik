@@ -17,7 +17,7 @@ import { ApiStyleStore } from './apistore.js'
 
 import theme from './theme.js'
 import { colors, fullHeight } from './theme.js'
-import './index.scss'
+import './index.css'
 
 export default class App extends React.Component {
   static childContextTypes = {

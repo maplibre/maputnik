@@ -1,7 +1,7 @@
 import React from 'react'
 import inputStyle from './input.js'
 import { getColor } from 'react-colorpickr/dist/colorfunc'
-import ChromePicker from '../chromepicker.jsx'
+import ChromePicker from 'react-color/lib/components/chrome/Chrome'
 
 function formatColor(color) {
   const rgb = color.rgb
