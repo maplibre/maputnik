@@ -1,13 +1,11 @@
 import React from 'react'
 import inputStyle from './input.js'
-import ColorPicker from 'react-colorpickr'
-import 'react-colorpickr/dist/colorpickr.css'
+import { getColor } from 'react-colorpickr/dist/colorfunc'
+import { ChromePicker } from 'react-color';
 
 function formatColor(color) {
-  if(color.a !== 1) {
-    return `rgba(${color.r}, ${color.g}, ${color.b}, ${color.a})`
-  }
-  return `rgb(${color.r}, ${color.g}, ${color.b})`
+  const rgb = color.rgb
+  return `rgba(${rgb.r}, ${rgb.g}, ${rgb.b}, ${rgb.a})`
 }
 
 /*** Number fields with support for min, max and units and documentation*/
@@ -26,8 +24,8 @@ static propTypes = {
         position: 'absolute',
         left: 200
       }}>
-        <ColorPicker
-          value={this.props.value}
+        <ChromePicker
+          color={getColor(this.props.value)}
           onChange={c => this.props.onChange(formatColor(c))}
         />
       </div>
