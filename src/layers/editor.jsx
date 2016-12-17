@@ -18,144 +18,149 @@ import MdDelete from 'react-icons/lib/md/delete'
 import PureRenderMixin from 'react-addons-pure-render-mixin';
 
 class UnsupportedLayer extends React.Component {
-	render() {
-		return <div></div>
-	}
+  render() {
+    return <div></div>
+  }
 }
 
 /** Layer editor supporting multiple types of layers. */
 export class LayerEditor extends React.Component {
-	static propTypes = {
-		layer: React.PropTypes.object.isRequired,
-		onLayerChanged: React.PropTypes.func.isRequired,
-		onLayerDestroyed: React.PropTypes.func.isRequired,
-	}
+  static propTypes = {
+    layer: React.PropTypes.object.isRequired,
+    onLayerChanged: React.PropTypes.func,
+    onLayerDestroyed: React.PropTypes.func,
+  }
 
-	static childContextTypes = {
-		reactIconBase: React.PropTypes.object
-	}
+  static defaultProps = {
+    onLayerChanged: () => {},
+    onLayerDestroyed: () => {},
+  }
 
-	constructor(props) {
-		super(props);
-		this.shouldComponentUpdate = PureRenderMixin.shouldComponentUpdate.bind(this);
-		this.state = {
-			isOpened: false,
-		}
-	}
+  static childContextTypes = {
+    reactIconBase: React.PropTypes.object
+  }
 
-	getChildContext () {
-		return {
-			reactIconBase: {
-				size: theme.fontSizes[4],
-				color: theme.colors.lowgray,
-			}
-		}
-	}
+  constructor(props) {
+    super(props);
+    this.shouldComponentUpdate = PureRenderMixin.shouldComponentUpdate.bind(this);
+    this.state = {
+      isOpened: false,
+    }
+  }
 
-	onPaintChanged(property, newValue) {
-		let layer = this.props.layer
-		//TODO: by using immutable records we can avoid this checking if object exists
-		if(!layer.has('paint')) {
-			layer = layer.set('paint', Immutable.Map())
-		}
+  getChildContext () {
+    return {
+      reactIconBase: {
+        size: theme.fontSizes[4],
+        color: theme.colors.lowgray,
+      }
+    }
+  }
 
-		const changedLayer = layer.setIn(['paint', property], newValue)
-		this.props.onLayerChanged(changedLayer)
-	}
+  onPaintChanged(property, newValue) {
+    let layer = this.props.layer
+    //TODO: by using immutable records we can avoid this checking if object exists
+    if(!layer.has('paint')) {
+      layer = layer.set('paint', Immutable.Map())
+    }
 
-	onLayoutChanged(property, newValue) {
-		let layer = this.props.layer
-		//TODO: by using immutable records we can avoid this checking if object exists
-		if(!layer.has('layout')) {
-			layer = layer.set('layout', Immutable.Map())
-		}
+    const changedLayer = layer.setIn(['paint', property], newValue)
+    this.props.onLayerChanged(changedLayer)
+  }
 
-		const changedLayer = layer.setIn(['layout', property], newValue)
-		this.props.onLayerChanged(changedLayer)
-	}
+  onLayoutChanged(property, newValue) {
+    let layer = this.props.layer
+    //TODO: by using immutable records we can avoid this checking if object exists
+    if(!layer.has('layout')) {
+      layer = layer.set('layout', Immutable.Map())
+    }
 
-	toggleLayer() {
-		this.setState({isOpened: !this.state.isOpened})
-	}
+    const changedLayer = layer.setIn(['layout', property], newValue)
+    this.props.onLayerChanged(changedLayer)
+  }
 
-	layerFromType(type) {
-		if (type === "fill") {
-			return <FillLayer
-				layer={this.props.layer}
-				onPaintChanged={this.onPaintChanged.bind(this)}
-				onLayoutChanged={this.onLayoutChanged.bind(this)}
-			/>
-		}
+  toggleLayer() {
+    this.setState({isOpened: !this.state.isOpened})
+  }
 
-		if (type === "background") {
-			return <BackgroundLayer
-				layer={this.props.layer}
-				onPaintChanged={this.onPaintChanged.bind(this)}
-				onLayoutChanged={this.onLayoutChanged.bind(this)}
-			/>
-		}
+  layerFromType(type) {
+    if (type === "fill") {
+      return <FillLayer
+        layer={this.props.layer}
+        onPaintChanged={this.onPaintChanged.bind(this)}
+        onLayoutChanged={this.onLayoutChanged.bind(this)}
+      />
+    }
 
-		if (type === "line") {
-			return <LineLayer
-				layer={this.props.layer}
-				onPaintChanged={this.onPaintChanged.bind(this)}
-				onLayoutChanged={this.onLayoutChanged.bind(this)}
-			/>
-		}
+    if (type === "background") {
+      return <BackgroundLayer
+        layer={this.props.layer}
+        onPaintChanged={this.onPaintChanged.bind(this)}
+        onLayoutChanged={this.onLayoutChanged.bind(this)}
+      />
+    }
 
-		if (type === "symbol") {
-			return <SymbolLayer
-				layer={this.props.layer}
-				onPaintChanged={this.onPaintChanged.bind(this)}
-				onLayoutChanged={this.onLayoutChanged.bind(this)}
-			/>
-		}
+    if (type === "line") {
+      return <LineLayer
+        layer={this.props.layer}
+        onPaintChanged={this.onPaintChanged.bind(this)}
+        onLayoutChanged={this.onLayoutChanged.bind(this)}
+      />
+    }
 
-		return <UnsupportedLayer />
-	}
+    if (type === "symbol") {
+      return <SymbolLayer
+        layer={this.props.layer}
+        onPaintChanged={this.onPaintChanged.bind(this)}
+        onLayoutChanged={this.onLayoutChanged.bind(this)}
+      />
+    }
 
-	toggleVisibility() {
-		if(this.props.layer.has('layout') && this.props.layer.getIn(['layout', 'visibility']) === 'none') {
-			this.onLayoutChanged('visibility', 'visible')
-		} else {
-			this.onLayoutChanged('visibility', 'none')
-		}
-	}
+    return <UnsupportedLayer />
+  }
 
-	render() {
-		let visibleIcon = <MdVisibilityOff />
-		if(this.props.layer.has('layout') && this.props.layer.getIn(['layout', 'visibility']) === 'none') {
-			visibleIcon = <MdVisibility />
-		}
+  toggleVisibility() {
+    if(this.props.layer.has('layout') && this.props.layer.getIn(['layout', 'visibility']) === 'none') {
+      this.onLayoutChanged('visibility', 'visible')
+    } else {
+      this.onLayoutChanged('visibility', 'none')
+    }
+  }
 
-		return <div style={{
-				padding: theme.scale[0],
-				borderBottom: 1,
-				borderTop: 1,
-				borderLeft: 2,
-				borderRight: 0,
-				borderStyle: "solid",
-				borderColor: theme.borderColor,
-				borderLeftColor: this.props.layer.getIn(['metadata', 'maputnik:color'])
-			}}>
-			<Toolbar onClick={this.toggleLayer.bind(this)}>
-				<NavItem style={{fontWeight: 400}}>
-					#{this.props.layer.get('id')}
-				</NavItem>
-				<Space auto x={1} />
-				<NavItem onClick={this.toggleVisibility.bind(this)}>
-					{visibleIcon}
-				</NavItem>
-				<NavItem onClick={(e) => this.props.onLayerDestroyed(this.props.layer)}>
-					<MdDelete />
-				</NavItem>
-			</Toolbar>
-			<Collapse isOpened={this.state.isOpened}>
-				<div style={{padding: theme.scale[2], paddingRight: 0, backgroundColor: theme.colors.black}}>
-				{this.layerFromType(this.props.layer.get('type'))}
-				</div>
-			</Collapse>
-		</div>
-	}
+  render() {
+    let visibleIcon = <MdVisibilityOff />
+    if(this.props.layer.has('layout') && this.props.layer.getIn(['layout', 'visibility']) === 'none') {
+      visibleIcon = <MdVisibility />
+    }
+
+    return <div style={{
+        padding: theme.scale[0],
+        borderBottom: 1,
+        borderTop: 1,
+        borderLeft: 2,
+        borderRight: 0,
+        borderStyle: "solid",
+        borderColor: theme.borderColor,
+        borderLeftColor: this.props.layer.getIn(['metadata', 'maputnik:color'])
+      }}>
+      <Toolbar onClick={this.toggleLayer.bind(this)}>
+        <NavItem style={{fontWeight: 400}}>
+          #{this.props.layer.get('id')}
+        </NavItem>
+        <Space auto x={1} />
+        <NavItem onClick={this.toggleVisibility.bind(this)}>
+          {visibleIcon}
+        </NavItem>
+        <NavItem onClick={(e) => this.props.onLayerDestroyed(this.props.layer)}>
+          <MdDelete />
+        </NavItem>
+      </Toolbar>
+      <Collapse isOpened={this.state.isOpened}>
+        <div style={{padding: theme.scale[2], paddingRight: 0, backgroundColor: theme.colors.black}}>
+        {this.layerFromType(this.props.layer.get('type'))}
+        </div>
+      </Collapse>
+    </div>
+  }
 }
 

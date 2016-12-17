@@ -9,6 +9,7 @@ import Fixed from 'rebass/dist/Fixed'
 import { MapboxGlMap } from './gl.jsx'
 import { OpenLayers3Map } from './ol3.jsx'
 import { LayerList } from './layers/list.jsx'
+import { LayerEditor } from './layers/editor.jsx'
 import {Toolbar} from './toolbar.jsx'
 import style from './style.js'
 import { loadDefaultStyle, SettingsStore, StyleStore } from './stylestore.js'
@@ -39,9 +40,7 @@ export default class App extends React.Component {
     this.settingsStore = new SettingsStore()
     this.state = {
       accessToken: this.settingsStore.accessToken,
-      workContext: "layers",
-      currentStyle: style.emptyStyle,
-      mapRenderer: 'gl',
+      mapStyle: style.emptyStyle,
     }
   }
 
@@ -58,7 +57,7 @@ export default class App extends React.Component {
   }
 
   onStyleDownload() {
-    const mapStyle = style.toJSON(this.state.currentStyle)
+    const mapStyle = style.toJSON(this.state.mapStyle)
     const blob = new Blob([JSON.stringify(mapStyle, null, 4)], {type: "application/json;charset=utf-8"});
     saveAs(blob, mapStyle.id + ".json");
     this.onStyleSave()
@@ -66,33 +65,18 @@ export default class App extends React.Component {
 
   onStyleUpload(newStyle) {
     const savedStyle = this.styleStore.save(newStyle)
-    this.setState({ currentStyle: savedStyle })
+    this.setState({ mapStyle: savedStyle })
   }
 
   onStyleSave() {
-    const snapshotStyle = this.state.currentStyle.set('modified', new Date().toJSON())
-    this.setState({ currentStyle: snapshotStyle })
+    const snapshotStyle = this.state.mapStyle.set('modified', new Date().toJSON())
+    this.setState({ mapStyle: snapshotStyle })
     console.log('Save')
     this.styleStore.save(snapshotStyle)
   }
 
   onStyleChanged(newStyle) {
-    this.setState({ currentStyle: newStyle })
-  }
-
-  onOpenSettings() {
-    //TODO: open settings modal
-    //this.setState({ workContext: "settings" })
-  }
-
-  onOpenAbout() {
-    //TODO: open about modal
-    //this.setState({ workContext: "about" })
-  }
-
-  onOpenSources() {
-    //TODO: open sources modal
-    //this.setState({ workContext: "sources", })
+    this.setState({ mapStyle: newStyle })
   }
 
   onAccessTokenChanged(newToken) {
@@ -107,10 +91,10 @@ export default class App extends React.Component {
 
   mapRenderer() {
     const mapProps = {
-      mapStyle: this.state.currentStyle,
+      mapStyle: this.state.mapStyle,
       accessToken: this.state.accessToken,
     }
-    const renderer = this.state.currentStyle.getIn(['metadata', 'maputnik:renderer'], 'mbgljs')
+    const renderer = this.state.mapStyle.getIn(['metadata', 'maputnik:renderer'], 'mbgljs')
     if(renderer === 'ol3') {
       return  <OpenLayers3Map {...mapProps} />
     } else {
@@ -119,9 +103,11 @@ export default class App extends React.Component {
   }
 
   render() {
+    const layers = this.state.mapStyle.get('layers').keySeq()
+    console.log(layers.size)
     return <div style={{ fontFamily: theme.fontFamily, color: theme.color, fontWeight: 300 }}>
       <Toolbar
-        mapStyle={this.state.currentStyle}
+        mapStyle={this.state.mapStyle}
         onStyleChanged={this.onStyleChanged.bind(this)}
         onStyleSave={this.onStyleSave.bind(this)}
         onStyleUpload={this.onStyleUpload.bind(this)}
@@ -132,14 +118,25 @@ export default class App extends React.Component {
         top: 50,
         left: 0,
         zIndex: 100,
-        width: 300,
+        width: 200,
         overflow: "hidden",
         backgroundColor: colors.gray
       }}>
         <LayerList
           onLayersChanged={this.onLayersChanged.bind(this)}
-          layers={this.state.currentStyle.get('layers')}
+          layers={this.state.mapStyle.get('layers')}
         />
+      </div>
+      <div style={{
+        ...fullHeight,
+        top: 50,
+        left: 200,
+        zIndex: 100,
+        width: 300,
+        overflow: "hidden",
+        backgroundColor: colors.gray}
+      }>
+      {layers.size > 0 && <LayerEditor layer={this.state.mapStyle.get('layers').get(layers.get(0))} />}
       </div>
       {this.mapRenderer()}
     </div>
