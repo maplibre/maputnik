@@ -123,7 +123,7 @@ export default class App extends React.Component {
         top: 50,
         left: 0,
         zIndex: 100,
-        width: 200,
+        width: 180,
         overflow: "hidden",
         backgroundColor: colors.gray
       }}>
@@ -136,7 +136,7 @@ export default class App extends React.Component {
       <div style={{
         ...fullHeight,
         top: 50,
-        left: 200,
+        left: 180,
         zIndex: 100,
         width: 300,
         overflow: "hidden",

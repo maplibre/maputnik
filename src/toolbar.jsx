@@ -122,7 +122,7 @@ export class Toolbar extends React.Component {
         toggle={() => this.toggleSettings.bind(this)}
       />
       <InlineBlock>
-          <Button style={{width: 300, textAlign: 'left'}}>
+          <Button style={{width: 180, textAlign: 'left'}}>
             <img src="https://github.com/maputnik/editor/raw/master/media/maputnik.png" alt="Maputnik" style={{width: 40, height: 40, paddingRight: 5, verticalAlign: 'middle'}}/>
             <span style={{fontSize: 20 }}>Maputnik</span>
           </Button>

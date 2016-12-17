@@ -128,13 +128,6 @@ export class LayerEditor extends React.Component {
 
     return <div style={{
         padding: theme.scale[0],
-        borderBottom: 1,
-        borderTop: 1,
-        borderLeft: 2,
-        borderRight: 0,
-        borderStyle: "solid",
-        borderColor: theme.borderColor,
-        borderLeftColor: this.props.layer.getIn(['metadata', 'maputnik:color'])
       }}>
       <Toolbar>
         <NavItem style={{fontWeight: 400}}>

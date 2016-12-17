@@ -48,7 +48,7 @@ export const inputBase = {
 }
 
 const scale = [3, 5, 10, 30, 40]
-const fontSizes = [28, 24, 20, 16, 14, 12, 10]
+const fontSizes = [26, 20, 16, 14, 12, 10]
 
 const border = {
   borderColor: colors.black,

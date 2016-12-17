@@ -25,6 +25,7 @@
     "mapbox-gl-style-spec": "mapbox/mapbox-gl-style-spec#83b1a3e5837d785af582efd5ed1a212f2df6a4ae",
     "ol-mapbox-style": "0.0.11",
     "openlayers": "^3.19.1",
+    "radium": "^0.18.1",
     "randomcolor": "^0.4.4",
     "react": "^15.4.0",
     "react-addons-pure-render-mixin": "^15.4.0",

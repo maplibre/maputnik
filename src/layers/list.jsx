@@ -7,6 +7,7 @@ import NavItem from 'rebass/dist/NavItem'
 import Space from 'rebass/dist/Space'
 
 import { LayerEditor } from './editor.jsx'
+import LayerListItem from './listitem.jsx'
 import scrollbars from '../scrollbars.scss'
 import PureRenderMixin from 'react-addons-pure-render-mixin';
 import theme from '../theme.js'
@@ -39,25 +40,13 @@ export class LayerList extends React.Component {
   }
 
   render() {
-    var layerPanels = []
-    layerPanels = this.props.layers.map(layer => {
+    const layerPanels = this.props.layers.map(layer => {
       const layerId = layer.get('id')
-      return <div key={layerId} style={{
-          padding: theme.scale[0],
-          borderBottom: 1,
-          borderTop: 1,
-          borderLeft: 2,
-          borderRight: 0,
-          borderStyle: "solid",
-          borderColor: theme.borderColor
-      }}>
-        <Toolbar onClick={() => this.props.onLayerSelected(layerId)}>
-          <NavItem style={{fontWeight: 400}}>
-            #{layerId}
-          </NavItem>
-          <Space auto x={1} />
-        </Toolbar>
-      </div>
+      return <LayerListItem
+        key={layerId}
+        layerId={layerId}
+        onLayerSelected={this.props.onLayerSelected}
+      />
     }).toIndexedSeq()
 
     return <div>
