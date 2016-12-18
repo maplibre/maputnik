@@ -50,11 +50,12 @@ class LayerListContainer extends React.Component {
         index={index}
         key={layerId}
         layerId={layerId}
+        layerType={layer.get('type')}
         onLayerSelected={this.props.onLayerSelected}
       />
     })
     return <ScrollContainer>
-      <ul style={{ padding: theme.scale[2] }}>
+      <ul style={{ padding: theme.scale[1], margin: 0 }}>
         {layerPanels}
       </ul>
     </ScrollContainer>

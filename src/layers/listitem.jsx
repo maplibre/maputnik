@@ -8,20 +8,32 @@ import Toolbar from 'rebass/dist/Toolbar'
 import NavItem from 'rebass/dist/NavItem'
 import Space from 'rebass/dist/Space'
 
+import LayerIcon from '../icons/layer.jsx'
 import { LayerEditor } from './editor.jsx'
 import scrollbars from '../scrollbars.scss'
 import PureRenderMixin from 'react-addons-pure-render-mixin';
 import theme from '../theme.js'
 import {SortableElement, SortableHandle} from 'react-sortable-hoc';
-import MdDragHandle from 'react-icons/lib/md/drag-handle'
 
-const DragHandle = SortableHandle(() => <MdDragHandle />);
+
+@SortableHandle
+class LayerTypeDragHandle extends React.Component {
+  static propTypes = LayerIcon.propTypes
+
+  render() {
+    return <LayerIcon
+      {...this.props}
+      style={{width: 15, height: 15, paddingRight: 3}}
+    />
+  }
+}
 
 @SortableElement
 @Radium
 class LayerListItem extends React.Component {
   static propTypes = {
     layerId: React.PropTypes.string.isRequired,
+    layerType: React.PropTypes.string.isRequired,
     onLayerSelected: React.PropTypes.func.isRequired,
   }
 
@@ -54,8 +66,8 @@ class LayerListItem extends React.Component {
           backgroundColor: color(theme.colors.gray).lighten(0.15).hexString(),
         }
     }}>
-      <DragHandle />
-      <span>#{this.props.layerId}</span>
+      <LayerTypeDragHandle type={this.props.layerType} />
+      <span>{this.props.layerId}</span>
     </li>
   }
 }

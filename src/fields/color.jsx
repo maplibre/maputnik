@@ -35,7 +35,7 @@ class ColorField extends React.Component {
         left: 287
       }}>
       <ChromePicker
-        color={getColor(this.props.value)}
+        color={this.props.value ? getColor(this.props.value) : null}
         onChange={c => this.props.onChange(formatColor(c))}
       />
       <div

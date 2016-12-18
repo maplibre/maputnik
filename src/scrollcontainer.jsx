@@ -10,7 +10,6 @@ const ScrollContainer = (props) => {
     right:0,
     top:1,
     position: "absolute",
-    padding: theme.scale[2],
   }}>
     {props.children}
   </div>
