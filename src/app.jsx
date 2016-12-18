@@ -156,7 +156,7 @@ export default class App extends React.Component {
         width: 300,
         backgroundColor: colors.gray}
       }>
-      {selectedLayer && <LayerEditor layer={selectedLayer} onLayerChanged={this.onLayerChanged.bind(this)} />}
+      {selectedLayer && <LayerEditor layer={selectedLayer} onLayerChanged={this.onLayerChanged.bind(this)} sources={this.state.mapStyle.get('sources')}/>}
       </div>
       {this.mapRenderer()}
     </div>

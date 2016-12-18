@@ -11,6 +11,7 @@ import FillLayer from './fill.jsx'
 import LineLayer from './line.jsx'
 import SymbolLayer from './symbol.jsx'
 import BackgroundLayer from './background.jsx'
+import SourceEditor from './source.jsx'
 
 import MdVisibility from 'react-icons/lib/md/visibility'
 import MdVisibilityOff from 'react-icons/lib/md/visibility-off'
@@ -29,6 +30,7 @@ class UnsupportedLayer extends React.Component {
 export class LayerEditor extends React.Component {
   static propTypes = {
     layer: React.PropTypes.object.isRequired,
+    sources: React.PropTypes.instanceOf(Immutable.Map),
     onLayerChanged: React.PropTypes.func,
     onLayerDestroyed: React.PropTypes.func,
   }
@@ -129,6 +131,7 @@ export class LayerEditor extends React.Component {
       visibleIcon = <MdVisibility />
     }
 
+    console.log(this.props.layer.toJSON())
     return <div style={{
         padding: theme.scale[0],
       }}>
@@ -144,6 +147,13 @@ export class LayerEditor extends React.Component {
           <MdDelete />
         </NavItem>
       </Toolbar>
+       {this.props.layer.get('type') !== 'background' && <SourceEditor
+          source={this.props.layer.get('source')}
+          sourceLayer={this.props.layer.get('source-layer')}
+          sources={this.props.sources}
+          onSourceChange={console.log}
+          onSourceLayerChange={console.log}
+        />}
         <div style={{padding: theme.scale[2], paddingRight: 0, backgroundColor: theme.colors.black}}>
         {this.layerFromType(this.props.layer.get('type'))}
         </div>
