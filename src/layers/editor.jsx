@@ -12,6 +12,7 @@ import LineLayer from './line.jsx'
 import SymbolLayer from './symbol.jsx'
 import BackgroundLayer from './background.jsx'
 import SourceEditor from './source.jsx'
+import FilterEditor from '../filter/editor.jsx'
 
 import MdVisibility from 'react-icons/lib/md/visibility'
 import MdVisibilityOff from 'react-icons/lib/md/visibility-off'
@@ -147,6 +148,10 @@ export class LayerEditor extends React.Component {
           <MdDelete />
         </NavItem>
       </Toolbar>
+      <FilterEditor
+        filter={this.props.layer.get('filter').toJSON()}
+        onFilterChanged={console.log}
+      />
        {this.props.layer.get('type') !== 'background' && <SourceEditor
           source={this.props.layer.get('source')}
           sourceLayer={this.props.layer.get('source-layer')}
