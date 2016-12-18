@@ -5,6 +5,7 @@ import color from 'color'
 import GlSpec from 'mapbox-gl-style-spec/reference/latest.min.js'
 import NumberField from './number'
 import EnumField from './enum'
+import BooleanField from './boolean'
 import ColorField from './color'
 import StringField from './string'
 import inputStyle from './input.js'
@@ -30,6 +31,7 @@ class ZoomSpecField extends React.Component {
       React.PropTypes.object,
       React.PropTypes.string,
       React.PropTypes.number,
+      React.PropTypes.bool,
     ]),
   }
 
@@ -116,6 +118,14 @@ class SpecField extends React.Component {
       )
       case 'color': return (
         <ColorField
+          onChange={this.onValueChanged.bind(this, this.props.fieldName)}
+          value={this.props.value}
+          name={label}
+          doc={this.props.fieldSpec.doc}
+        />
+      )
+      case 'boolean': return (
+        <BooleanField
           onChange={this.onValueChanged.bind(this, this.props.fieldName)}
           value={this.props.value}
           name={label}
