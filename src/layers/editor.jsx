@@ -149,7 +149,7 @@ export class LayerEditor extends React.Component {
       </Toolbar>
       <FilterEditor
         filter={this.props.layer.get('filter', Immutable.List()).toJSON()}
-        onFilterChanged={console.log}
+        onChange={f => console.log('filter changed', f)}
       />
        {this.props.layer.get('type') !== 'background' && <SourceEditor
           source={this.props.layer.get('source')}

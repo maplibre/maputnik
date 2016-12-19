@@ -24,7 +24,7 @@ const property = {
 
 const input = {
   ...base,
-  border: '1px solid rgb(36, 36, 36)',
+  border: 'none',
   width: '47%',
   backgroundColor: theme.colors.gray,
   color: theme.colors.lowgray,
