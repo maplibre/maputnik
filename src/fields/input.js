@@ -30,6 +30,13 @@ const input = {
   color: theme.colors.lowgray,
 }
 
+const checkbox = {
+  ...base,
+  border: '1px solid rgb(36, 36, 36)',
+  backgroundColor: theme.colors.gray,
+  color: theme.colors.lowgray,
+}
+
 const select = {
   ...input,
   width: '51%',
@@ -41,4 +48,5 @@ export default {
   select,
   input,
   property,
+  checkbox,
 }
