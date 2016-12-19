@@ -36,24 +36,29 @@ class ZoomSpecField extends React.Component {
   }
 
   render() {
+    const label = <label style={inputStyle.label}>
+      {labelFromFieldName(this.props.fieldName)}
+    </label>
+
     if(isZoomField(this.props.value)) {
       const zoomFields = this.props.value.get('stops').map(stop => {
         const zoomLevel = stop.get(0)
         const value = stop.get(1)
 
-        return <div key={zoomLevel}>
-          <b><span style={inputStyle.label}>Zoom Level {zoomLevel}</span></b>
+        return <div style={inputStyle.property} key={zoomLevel}>
+          {label}
           <SpecField {...this.props}
             value={value}
             style={{
-              width: '20%'
+              width: '33%'
             }}
           />
 
           <input
             style={{
               ...inputStyle.input,
-              width: '10%'
+              width: '10%',
+              marginLeft: theme.scale[0],
             }}
             type="number"
             value={zoomLevel}
@@ -71,7 +76,10 @@ class ZoomSpecField extends React.Component {
         {zoomFields}
       </div>
     } else {
-      return <SpecField {...this.props} />
+      return <div style={inputStyle.property}>
+        {label}
+        <SpecField {...this.props} />
+      </div>
     }
   }
 }
@@ -104,13 +112,12 @@ class SpecField extends React.Component {
   }
 
   render() {
-    const label = labelFromFieldName(this.props.fieldName)
     switch(this.props.fieldSpec.type) {
       case 'number': return (
         <NumberField
           onChange={this.onValueChanged.bind(this, this.props.fieldName)}
           value={this.props.value}
-          name={label}
+          name={this.props.fieldName}
           default={this.props.fieldSpec.default}
           min={this.props.fieldSpec.min}
           max={this.props.fieldSpec.max}
@@ -123,7 +130,7 @@ class SpecField extends React.Component {
         <EnumField
           onChange={this.onValueChanged.bind(this, this.props.fieldName)}
           value={this.props.value}
-          name={label}
+          name={this.props.fieldName}
           allowedValues={Object.keys(this.props.fieldSpec.values)}
           doc={this.props.fieldSpec.doc}
           style={this.props.style}
@@ -133,7 +140,7 @@ class SpecField extends React.Component {
         <StringField
           onChange={this.onValueChanged.bind(this, this.props.fieldName)}
           value={this.props.value}
-          name={label}
+          name={this.props.fieldName}
           doc={this.props.fieldSpec.doc}
           style={this.props.style}
         />
@@ -142,7 +149,7 @@ class SpecField extends React.Component {
         <ColorField
           onChange={this.onValueChanged.bind(this, this.props.fieldName)}
           value={this.props.value}
-          name={label}
+          name={this.props.fieldName}
           doc={this.props.fieldSpec.doc}
           style={this.props.style}
         />
@@ -151,7 +158,7 @@ class SpecField extends React.Component {
         <BooleanField
           onChange={this.onValueChanged.bind(this, this.props.fieldName)}
           value={this.props.value}
-          name={label}
+          name={this.props.fieldName}
           doc={this.props.fieldSpec.doc}
           style={this.props.style}
         />

@@ -11,20 +11,17 @@ class BooleanField extends React.Component {
   }
 
   render() {
-    return <div style={inputStyle.property}>
-      <label style={inputStyle.label}>{this.props.name}</label>
-      <input
-        type="checkbox"
-        style={{
-          ...inputStyle.checkbox,
-          ...this.props.style
-        }}
-        value={this.props.value}
-        onChange={e => {this.props.onChange(!this.props.value)}}
-        checked={this.props.value}
-      >
-      </input>
-    </div>
+    return <input
+      type="checkbox"
+      style={{
+        ...inputStyle.checkbox,
+        ...this.props.style
+      }}
+      value={this.props.value}
+      onChange={e => {this.props.onChange(!this.props.value)}}
+      checked={this.props.value}
+    >
+    </input>
   }
 }
 

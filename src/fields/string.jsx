@@ -18,19 +18,16 @@ class StringField extends React.Component {
   }
 
   render() {
-    return <div style={inputStyle.property}>
-      <label style={inputStyle.label}>{this.props.name}</label>
-      <input
-        style={{
-          ...inputStyle.input,
-          ...this.props.style
-        }}
-        name={this.props.name}
-        placeholder={this.props.default}
-        value={this.props.value ? this.props.value : ""}
-        onChange={this.onChange.bind(this)}
-      />
-    </div>
+    return <input
+      style={{
+        ...inputStyle.input,
+        ...this.props.style
+      }}
+      name={this.props.name}
+      placeholder={this.props.default}
+      value={this.props.value ? this.props.value : ""}
+      onChange={this.onChange.bind(this)}
+    />
   }
 }
 

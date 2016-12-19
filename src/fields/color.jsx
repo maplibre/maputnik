@@ -33,7 +33,8 @@ class ColorField extends React.Component {
   render() {
     const picker = <div style={{
         position: 'absolute',
-        left: 287
+        left: 163,
+        top: 0,
       }}>
       <ChromePicker
         color={this.props.value ? Color(this.props.value).object() : null}
@@ -51,9 +52,12 @@ class ColorField extends React.Component {
         }} />
     </div>
 
-    return <div style={{...inputStyle.property, position: 'relative'}}>
+    return <div style={{
+      ...inputStyle.property,
+      position: 'relative',
+      display: 'inline',
+    }}>
       {this.state.pickerOpened && picker}
-      <label style={inputStyle.label}>{this.props.name}</label>
       <input
         onClick={this.togglePicker.bind(this)}
         style={{

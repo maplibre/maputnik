@@ -20,19 +20,16 @@ class EnumField extends React.Component {
       return <option key={val} value={val}>{val}</option>
     })
 
-    return <div style={inputStyle.property}>
-      <label style={inputStyle.label}>{this.props.name}</label>
-      <select
-        style={{
-          ...inputStyle.select,
-          ...this.props.style
-        }}
-        value={this.props.value}
-        onChange={this.onChange.bind(this)}
-      >
-        {options}
-      </select>
-    </div>
+    return <select
+      style={{
+        ...inputStyle.select,
+        ...this.props.style
+      }}
+      value={this.props.value}
+      onChange={this.onChange.bind(this)}
+    >
+      {options}
+    </select>
   }
 }
 
