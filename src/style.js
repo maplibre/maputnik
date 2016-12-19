@@ -2,7 +2,6 @@ import React from 'react';
 import Immutable from 'immutable'
 import spec from 'mapbox-gl-style-spec/reference/latest.min.js'
 import diffJSONStyles from 'mapbox-gl-style-spec/lib/diff'
-import randomColor from 'randomcolor'
 
 // Standard JSON to Immutable conversion except layers
 // are stored in an OrderedMap to make lookups id fast
@@ -70,20 +69,7 @@ function toJSON(mapStyle) {
   return jsonStyle
 }
 
-export function colorizeLayers(layers) {
-  return layers.map(layer => {
-    if(!layer.metadata) {
-      layer.metadata = {}
-    }
-    if(!"maputnik:color" in layer.metadata) {
-      layer.metadata["maputnik:color"] = randomColor()
-    }
-    return layer
-  })
-}
-
 export default {
-  colorizeLayers,
   toJSON,
   fromJSON,
   diffStyles,
