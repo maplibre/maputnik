@@ -1,26 +1,66 @@
 import Immutable from 'immutable'
+import throttle from 'lodash.throttle'
+import entries from 'lodash.topairs'
 
 /** Listens to map events to build up a store of available vector
  * layers contained in the tiles */
 export default class LayerWatcher {
   constructor() {
     this._sources = {}
+    this._vectorLayers = {}
+    this._map= null
+
+    // Since we scan over all features we want to avoid this as much as
+    // possible and only do it after a batch of data has loaded because
+    // we only care eventuall about knowing the fields in the vector layers
+    this.throttledAnalyzeVectorLayerFields = throttle(this.analyzeVectorLayerFields, 5000)
   }
 
   /** Set the map as soon as the map is initialized */
   set map(m) {
+
+    this._map = m
     //TODO: At some point we need to unsubscribe when new map is set
-    m.on('data', (e) => {
+    this._map.on('data', (e) => {
       if(e.dataType !== 'tile') return
+
       this._sources[e.source.id] = e.source.vectorLayerIds
+      this.throttledAnalyzeVectorLayerFields()
     })
+  }
+
+  analyzeVectorLayerFields() {
+    Object.keys(this._sources).forEach(sourceId => {
+      this._sources[sourceId].forEach(vectorLayerId => {
+        const knownProperties = this._vectorLayers[vectorLayerId] || {}
+        const params = { sourceLayer: vectorLayerId }
+        this._map.querySourceFeatures(sourceId, params).forEach(feature => {
+          Object.keys(feature.properties).forEach(propertyName => {
+            const knownPropertyValues = knownProperties[propertyName] || {}
+            knownPropertyValues[feature.properties[propertyName]] = {}
+            knownProperties[propertyName] = knownPropertyValues
+          })
+        })
+
+        this._vectorLayers[vectorLayerId] = knownProperties
+      })
+    })
+
+    console.log(this.vectorLayers.toJSON())
   }
 
   /** Access all known sources and their vector tile ids */
   get sources() {
-    console.log(this._sources)
     return Immutable.Map(Object.keys(this._sources).map(key => {
       return [key, Immutable.Set(this._sources[key])]
+    }))
+  }
+
+  get vectorLayers() {
+    return Immutable.Map(entries(this._vectorLayers).map(([key, layer]) => {
+      return [key, Immutable.Map(entries(layer).map(([propId, values]) => {
+        return [propId, Immutable.Set(Object.keys(values))]
+      }))]
     }))
   }
 }
