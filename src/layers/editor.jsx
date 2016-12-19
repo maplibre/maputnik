@@ -4,8 +4,8 @@ import Immutable from 'immutable'
 import Toolbar from 'rebass/dist/Toolbar'
 import NavItem from 'rebass/dist/NavItem'
 import Space from 'rebass/dist/Space'
+import Tabs from 'react-simpletabs'
 
-import Collapse from 'react-collapse'
 import theme from '../theme.js'
 import FillLayer from './fill.jsx'
 import LineLayer from './line.jsx'
@@ -13,6 +13,8 @@ import SymbolLayer from './symbol.jsx'
 import BackgroundLayer from './background.jsx'
 import SourceEditor from './source.jsx'
 import FilterEditor from '../filter/editor.jsx'
+
+
 
 import MdVisibility from 'react-icons/lib/md/visibility'
 import MdVisibilityOff from 'react-icons/lib/md/visibility-off'
@@ -153,20 +155,26 @@ export class LayerEditor extends React.Component {
           <MdDelete />
         </NavItem>
       </Toolbar>
-      <FilterEditor
-        filter={this.props.layer.get('filter', Immutable.List()).toJSON()}
-        onChange={f => this.onFilterChanged(Immutable.fromJS(f))}
-      />
-       {this.props.layer.get('type') !== 'background' && <SourceEditor
-          source={this.props.layer.get('source')}
-          sourceLayer={this.props.layer.get('source-layer')}
-          sources={this.props.sources}
-          onSourceChange={console.log}
-          onSourceLayerChange={console.log}
-        />}
-        <div style={{padding: theme.scale[2], paddingRight: 0, backgroundColor: theme.colors.black}}>
-        {this.layerFromType(this.props.layer.get('type'))}
-        </div>
+      <Tabs>
+        <Tabs.Panel title='Paint'>
+          <div style={{padding: theme.scale[2], paddingRight: 0, backgroundColor: theme.colors.black}}>
+          {this.layerFromType(this.props.layer.get('type'))}
+          </div>
+        </Tabs.Panel>
+        <Tabs.Panel title='Data'>
+          <FilterEditor
+            filter={this.props.layer.get('filter', Immutable.List()).toJSON()}
+            onChange={f => this.onFilterChanged(Immutable.fromJS(f))}
+          />
+           {this.props.layer.get('type') !== 'background' && <SourceEditor
+              source={this.props.layer.get('source')}
+              sourceLayer={this.props.layer.get('source-layer')}
+              sources={this.props.sources}
+              onSourceChange={console.log}
+              onSourceLayerChange={console.log}
+            />}
+        </Tabs.Panel>
+      </Tabs>
     </div>
   }
 }
