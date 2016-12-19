@@ -1,7 +1,7 @@
 import React from 'react'
 import Radium from 'radium'
 import Immutable from 'immutable'
-import color from 'color'
+import Color from 'color'
 
 import Heading from 'rebass/dist/Heading'
 import Toolbar from 'rebass/dist/Toolbar'
@@ -60,10 +60,10 @@ class LayerListItem extends React.Component {
         cursor: 'pointer',
         position: 'relative',
         padding: theme.scale[1],
-        borderColor: color(theme.colors.gray).lighten(0.1).hexString(),
+        borderColor: Color(theme.colors.gray).lighten(0.1).string(),
         backgroundColor: theme.colors.gray,
         ":hover": {
-          backgroundColor: color(theme.colors.gray).lighten(0.15).hexString(),
+          backgroundColor: Color(theme.colors.gray).lighten(0.15).string(),
         }
     }}>
       <LayerTypeDragHandle type={this.props.layerType} />

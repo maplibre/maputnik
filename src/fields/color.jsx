@@ -1,6 +1,6 @@
 import React from 'react'
+import Color from 'color'
 import inputStyle from './input.js'
-import { getColor } from 'react-colorpickr/dist/colorfunc'
 import ChromePicker from 'react-color/lib/components/chrome/Chrome'
 
 function formatColor(color) {
@@ -35,7 +35,7 @@ class ColorField extends React.Component {
         left: 287
       }}>
       <ChromePicker
-        color={this.props.value ? getColor(this.props.value) : null}
+        color={this.props.value ? Color(this.props.value).object() : null}
         onChange={c => this.props.onChange(formatColor(c))}
       />
       <div
