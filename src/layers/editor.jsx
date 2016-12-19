@@ -82,6 +82,12 @@ export class LayerEditor extends React.Component {
     this.props.onLayerChanged(changedLayer)
   }
 
+  onFilterChanged(newValue) {
+    let layer = this.props.layer
+    const changedLayer = layer.set('filter', newValue)
+    this.props.onLayerChanged(changedLayer)
+  }
+
   layerFromType(type) {
     if (type === "fill") {
       return <FillLayer
@@ -149,7 +155,7 @@ export class LayerEditor extends React.Component {
       </Toolbar>
       <FilterEditor
         filter={this.props.layer.get('filter', Immutable.List()).toJSON()}
-        onChange={f => console.log('filter changed', f)}
+        onChange={f => this.onFilterChanged(Immutable.fromJS(f))}
       />
        {this.props.layer.get('type') !== 'background' && <SourceEditor
           source={this.props.layer.get('source')}
