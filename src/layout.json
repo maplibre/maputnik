@@ -1,0 +1,116 @@
+{
+    "line": {
+      "groups": [
+        {
+          "title": "Paint",
+          "fields": [
+            "line-opacity",
+            "line-color",
+            "line-width",
+            "line-offset",
+            "line-blur",
+            "line-pattern"
+          ]
+        },
+        {
+          "title": "Secondary",
+          "fields": [
+            "line-translate",
+            "line-translate-anchor",
+            "line-cap",
+            "line-join",
+            "line-miter-limit",
+            "line-round-limit",
+            "line-dasharray",
+            "line-gap-width"
+          ]
+        }
+      ]
+    },
+    "background": {
+      "groups": [
+        {
+          "title": "primary",
+          "fields": [
+            "background-color",
+            "background-pattern",
+            "background-opacity"
+          ]
+        }
+      ]
+    },
+    "fill": {
+      "groups": [
+        {
+          "title": "primary",
+          "fields": [
+            "fill-opacity",
+            "fill-color",
+            "fill-antialias",
+            "fill-outline-color",
+            "fill-pattern",
+            "fill-translate",
+            "fill-translate-anchor"
+          ]
+        }
+      ]
+    },
+    "symbol": {
+      "groups": [
+        {
+          "title": "primary",
+          "fields": [
+            "text-field",
+            "text-font",
+            "text-size",
+            "text-line-height"
+          ]
+        },
+        {
+          "title": "placement",
+          "fields": [
+            "symbol-placement",
+            "symbol-spacing",
+            "symbol-avoid-edges",
+            "text-padding",
+            "text-allow-overlap",
+            "text-ignore-placement"
+          ]
+        },
+        {
+          "title": "layout",
+          "fields": [
+            "text-pitch-alignment",
+            "text-rotation-alignment",
+            "text-max-width",
+            "text-letter-spacing",
+            "text-justify",
+            "text-anchor",
+            "text-max-angle",
+            "text-rotate",
+            "text-keep-upright",
+            "text-transform",
+            "text-offset",
+            "text-optional"
+          ]
+        },
+        {
+          "title": "icon",
+          "fields": [
+            "icon-allow-overlap",
+            "icon-ignore-placement",
+            "icon-optional",
+            "icon-rotation-alignment",
+            "icon-size",
+            "icon-text-fit",
+            "icon-text-fit-padding",
+            "icon-image",
+            "icon-rotate",
+            "icon-padding",
+            "icon-keep-upright",
+            "icon-offset"
+          ]
+        }
+      ]
+    }
+}

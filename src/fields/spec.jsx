@@ -24,7 +24,7 @@ const specFieldProps =  {
 /** Supports displaying spec field for zoom function objects
  * https://www.mapbox.com/mapbox-gl-style-spec/#types-function-zoom-property
  */
-class ZoomSpecField extends React.Component {
+export class ZoomSpecField extends React.Component {
   static propTypes = {
     ...specFieldProps,
     value: React.PropTypes.oneOfType([
@@ -165,32 +165,5 @@ class SpecField extends React.Component {
       )
       default: return null
     }
-  }
-}
-
-export class PropertyGroup extends React.Component {
-  static propTypes = {
-    onChange: React.PropTypes.func.isRequired,
-    properties: React.PropTypes.instanceOf(Immutable.Map).isRequired,
-    layerType: React.PropTypes.oneOf(['fill', 'background', 'line', 'symbol']).isRequired,
-    groupType: React.PropTypes.oneOf(['paint', 'layout']).isRequired,
-  }
-
-  render() {
-    const layerTypeSpec = GlSpec[this.props.groupType + "_" + this.props.layerType]
-    const specFields = Object.keys(layerTypeSpec).filter(propName => propName !== 'visibility').map(propName => {
-      const fieldSpec = layerTypeSpec[propName]
-      const propValue = this.props.properties.get(propName)
-      return <ZoomSpecField
-        onChange={this.props.onChange}
-        key={propName}
-        value={propValue}
-        fieldName={propName}
-        fieldSpec={fieldSpec}
-      />
-    })
-    return <div>
-      {specFields}
-    </div>
   }
 }

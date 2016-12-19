@@ -9,7 +9,7 @@ import Tabs from 'react-simpletabs'
 import theme from '../theme.js'
 import SourceEditor from './source.jsx'
 import FilterEditor from '../filter/editor.jsx'
-import { PropertyGroup } from '../fields/spec.jsx'
+import PropertyGroup from '../fields/propertygroup.jsx'
 
 import MdVisibility from 'react-icons/lib/md/visibility'
 import MdVisibilityOff from 'react-icons/lib/md/visibility-off'
@@ -17,6 +17,7 @@ import MdDelete from 'react-icons/lib/md/delete'
 import PureRenderMixin from 'react-addons-pure-render-mixin';
 
 import ScrollContainer from '../scrollcontainer.jsx'
+import layout from '../layout.json'
 
 class UnsupportedLayer extends React.Component {
   render() {
@@ -56,30 +57,13 @@ export class LayerEditor extends React.Component {
     }
   }
 
-  onPaintChanged(property, newValue) {
-    let layer = this.props.layer
-    //TODO: by using immutable records we can avoid this checking if object exists
-    //
-    if(!layer.has('paint')) {
-      layer = layer.set('paint', Immutable.Map())
-    }
-
-    const changedLayer = layer.setIn(['paint', property], newValue)
+  onPropertyChange(group, property, newValue) {
+    const layer = this.props.layer
+    const changedLayer = layer.setIn([group, property], newValue)
     this.props.onLayerChanged(changedLayer)
   }
 
-  onLayoutChanged(property, newValue) {
-    let layer = this.props.layer
-    //TODO: by using immutable records we can avoid this checking if object exists
-    if(!layer.has('layout')) {
-      layer = layer.set('layout', Immutable.Map())
-    }
-
-    const changedLayer = layer.setIn(['layout', property], newValue)
-    this.props.onLayerChanged(changedLayer)
-  }
-
-  onFilterChanged(newValue) {
+  onFilterChange(newValue) {
     let layer = this.props.layer
     const changedLayer = layer.set('filter', newValue)
     this.props.onLayerChanged(changedLayer)
@@ -94,17 +78,26 @@ export class LayerEditor extends React.Component {
   }
 
   render() {
+    const layerType = this.props.layer.get('type')
+    const groups = layout[layerType].groups
+    const propertyGroups = groups.map(group => {
+      return <PropertyGroup
+        layer={this.props.layer}
+        groupFields={Immutable.OrderedSet(group.fields)}
+        onChange={this.onPropertyChange.bind(this)}
+      />
+    })
+
     let visibleIcon = <MdVisibilityOff />
     if(this.props.layer.has('layout') && this.props.layer.getIn(['layout', 'visibility']) === 'none') {
       visibleIcon = <MdVisibility />
     }
-
     return <div style={{
         padding: theme.scale[0],
-      }}>
+    }}>
       <Toolbar>
         <NavItem style={{fontWeight: 400}}>
-          #{this.props.layer.get('id')}
+          {this.props.layer.get('id')}
         </NavItem>
         <Space auto x={1} />
         <NavItem onClick={this.toggleVisibility.bind(this)}>
@@ -114,42 +107,19 @@ export class LayerEditor extends React.Component {
           <MdDelete />
         </NavItem>
       </Toolbar>
-      <Tabs>
-        <Tabs.Panel title='Paint'>
-          <div style={{padding: theme.scale[2], paddingRight: 0, backgroundColor: theme.colors.black}}>
-          <PropertyGroup
-            onChange={this.onPaintChanged.bind(this)}
-            layerType={this.props.layer.get('type')}
-            groupType="paint"
-            properties={this.props.layer.get('paint', Immutable.Map())}
-          />
-          </div>
-        </Tabs.Panel>
-        <Tabs.Panel title='Layout'>
-          <div style={{padding: theme.scale[2], paddingRight: 0, backgroundColor: theme.colors.black}}>
-          <PropertyGroup
-            onChange={this.onLayoutChanged.bind(this)}
-            layerType={this.props.layer.get('type')}
-            groupType="layout"
-            properties={this.props.layer.get('layout', Immutable.Map())}
-          />
-          </div>
-        </Tabs.Panel>
-        <Tabs.Panel title='Data'>
+        {propertyGroups}
           <FilterEditor
             filter={this.props.layer.get('filter', Immutable.List()).toJSON()}
-            onChange={f => this.onFilterChanged(Immutable.fromJS(f))}
+            onChange={f => this.onFilterChange(Immutable.fromJS(f))}
           />
-           {this.props.layer.get('type') !== 'background' && <SourceEditor
+           {this.props.layer.get('type') !== 'background'
+             && <SourceEditor
               source={this.props.layer.get('source')}
               sourceLayer={this.props.layer.get('source-layer')}
               sources={this.props.sources}
               onSourceChange={console.log}
               onSourceLayerChange={console.log}
             />}
-        </Tabs.Panel>
-      </Tabs>
     </div>
   }
 }
-
