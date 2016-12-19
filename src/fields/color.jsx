@@ -16,6 +16,7 @@ class ColorField extends React.Component {
     value: React.PropTypes.string,
     default: React.PropTypes.number,
     doc: React.PropTypes.string,
+    style: React.PropTypes.object,
   }
 
   constructor(props) {
@@ -55,7 +56,10 @@ class ColorField extends React.Component {
       <label style={inputStyle.label}>{this.props.name}</label>
       <input
         onClick={this.togglePicker.bind(this)}
-        style={inputStyle.input}
+        style={{
+          ...inputStyle.select,
+          ...this.props.style
+        }}
         name={this.props.name}
         placeholder={this.props.default}
         value={this.props.value ? this.props.value : ""}

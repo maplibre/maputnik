@@ -9,6 +9,7 @@ class StringField extends React.Component {
     value: React.PropTypes.string,
     default: React.PropTypes.number,
     doc: React.PropTypes.string,
+    style: React.PropTypes.object,
   }
 
   onChange(e) {
@@ -20,7 +21,10 @@ class StringField extends React.Component {
     return <div style={inputStyle.property}>
       <label style={inputStyle.label}>{this.props.name}</label>
       <input
-        style={inputStyle.input}
+        style={{
+          ...inputStyle.input,
+          ...this.props.style
+        }}
         name={this.props.name}
         placeholder={this.props.default}
         value={this.props.value ? this.props.value : ""}

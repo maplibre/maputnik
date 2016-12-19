@@ -7,6 +7,7 @@ class BooleanField extends React.Component {
     name: React.PropTypes.string.isRequired,
     value: React.PropTypes.bool,
     doc: React.PropTypes.string,
+    style: React.PropTypes.object,
   }
 
   render() {
@@ -14,7 +15,10 @@ class BooleanField extends React.Component {
       <label style={inputStyle.label}>{this.props.name}</label>
       <input
         type="checkbox"
-        style={inputStyle.checkbox}
+        style={{
+          ...inputStyle.checkbox,
+          ...this.props.style
+        }}
         value={this.props.value}
         onChange={e => {this.props.onChange(!this.props.value)}}
         checked={this.props.value}

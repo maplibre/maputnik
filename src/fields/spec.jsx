@@ -43,7 +43,23 @@ class ZoomSpecField extends React.Component {
 
         return <div key={zoomLevel}>
           <b><span style={inputStyle.label}>Zoom Level {zoomLevel}</span></b>
-          <SpecField {...this.props} value={value} />
+          <SpecField {...this.props}
+            value={value}
+            style={{
+              width: '20%'
+            }}
+          />
+
+          <input
+            style={{
+              ...inputStyle.input,
+              width: '10%'
+            }}
+            type="number"
+            value={zoomLevel}
+            min={0}
+            max={22}
+          />
         </div>
       }).toSeq()
       return <div style={{
@@ -68,6 +84,7 @@ function labelFromFieldName(fieldName) {
   return label
 }
 
+
 /** Display any field from the Mapbox GL style spec and
  * choose the correct field component based on the @{fieldSpec}
  * to display @{value}. */
@@ -78,6 +95,8 @@ class SpecField extends React.Component {
       React.PropTypes.string,
       React.PropTypes.number,
     ]),
+    /** Override the style of the field */
+    style: React.PropTypes.object,
   }
 
   onValueChanged(property, value) {
@@ -97,6 +116,7 @@ class SpecField extends React.Component {
           max={this.props.fieldSpec.max}
           unit={this.props.fieldSpec.unit}
           doc={this.props.fieldSpec.doc}
+          style={this.props.style}
         />
       )
       case 'enum': return (
@@ -106,6 +126,7 @@ class SpecField extends React.Component {
           name={label}
           allowedValues={Object.keys(this.props.fieldSpec.values)}
           doc={this.props.fieldSpec.doc}
+          style={this.props.style}
         />
       )
       case 'string': return (
@@ -114,6 +135,7 @@ class SpecField extends React.Component {
           value={this.props.value}
           name={label}
           doc={this.props.fieldSpec.doc}
+          style={this.props.style}
         />
       )
       case 'color': return (
@@ -122,6 +144,7 @@ class SpecField extends React.Component {
           value={this.props.value}
           name={label}
           doc={this.props.fieldSpec.doc}
+          style={this.props.style}
         />
       )
       case 'boolean': return (
@@ -130,6 +153,7 @@ class SpecField extends React.Component {
           value={this.props.value}
           name={label}
           doc={this.props.fieldSpec.doc}
+          style={this.props.style}
         />
       )
       default: return null

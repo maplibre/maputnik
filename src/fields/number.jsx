@@ -12,6 +12,7 @@ class NumberField extends React.Component {
     min: React.PropTypes.number,
     max: React.PropTypes.number,
     doc: React.PropTypes.string,
+    style: React.PropTypes.object,
   }
 
   onChange(e) {
@@ -27,7 +28,10 @@ class NumberField extends React.Component {
     return <div style={inputStyle.property}>
       <label style={inputStyle.label}>{this.props.name}</label>
       <input
-        style={inputStyle.input}
+        style={{
+          ...inputStyle.input,
+          ...this.props.style
+        }}
         type="number"
         name={this.props.name}
         placeholder={this.props.default}

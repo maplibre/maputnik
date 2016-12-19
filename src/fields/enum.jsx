@@ -8,6 +8,7 @@ class EnumField extends React.Component {
     value: React.PropTypes.string,
     allowedValues: React.PropTypes.array.isRequired,
     doc: React.PropTypes.string,
+    style: React.PropTypes.object,
   }
 
   onChange(e) {
@@ -22,7 +23,10 @@ class EnumField extends React.Component {
     return <div style={inputStyle.property}>
       <label style={inputStyle.label}>{this.props.name}</label>
       <select
-        style={inputStyle.select}
+        style={{
+          ...inputStyle.select,
+          ...this.props.style
+        }}
         value={this.props.value}
         onChange={this.onChange.bind(this)}
       >
