@@ -14,6 +14,15 @@ module.exports = [
     }
   },
   {
+    test: /\.js?$/,
+    include: /node_modules\/mapbox-gl\//,
+    loader: 'babel',
+    query: {
+      presets: ['react'],
+      plugins: ['transform-flow-strip-types'],
+    }
+  },
+  {
     test: /\.(eot|svg|ttf|woff|woff2)$/,
     loader: 'file?name=fonts/[name].[ext]'
   },

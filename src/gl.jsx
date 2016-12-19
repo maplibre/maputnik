@@ -1,5 +1,5 @@
 import React from 'react'
-import MapboxGl from 'mapbox-gl';
+import MapboxGl from 'mapbox-gl'
 import { fullHeight } from './theme.js'
 import style from './style.js'
 import { Map } from './map.jsx'
