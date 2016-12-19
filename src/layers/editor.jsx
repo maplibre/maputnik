@@ -7,14 +7,9 @@ import Space from 'rebass/dist/Space'
 import Tabs from 'react-simpletabs'
 
 import theme from '../theme.js'
-import FillLayer from './fill.jsx'
-import LineLayer from './line.jsx'
-import SymbolLayer from './symbol.jsx'
-import BackgroundLayer from './background.jsx'
 import SourceEditor from './source.jsx'
 import FilterEditor from '../filter/editor.jsx'
-
-
+import { PropertyGroup } from '../fields/spec.jsx'
 
 import MdVisibility from 'react-icons/lib/md/visibility'
 import MdVisibilityOff from 'react-icons/lib/md/visibility-off'
@@ -90,42 +85,6 @@ export class LayerEditor extends React.Component {
     this.props.onLayerChanged(changedLayer)
   }
 
-  layerFromType(type) {
-    if (type === "fill") {
-      return <FillLayer
-        layer={this.props.layer}
-        onPaintChanged={this.onPaintChanged.bind(this)}
-        onLayoutChanged={this.onLayoutChanged.bind(this)}
-      />
-    }
-
-    if (type === "background") {
-      return <BackgroundLayer
-        layer={this.props.layer}
-        onPaintChanged={this.onPaintChanged.bind(this)}
-        onLayoutChanged={this.onLayoutChanged.bind(this)}
-      />
-    }
-
-    if (type === "line") {
-      return <LineLayer
-        layer={this.props.layer}
-        onPaintChanged={this.onPaintChanged.bind(this)}
-        onLayoutChanged={this.onLayoutChanged.bind(this)}
-      />
-    }
-
-    if (type === "symbol") {
-      return <SymbolLayer
-        layer={this.props.layer}
-        onPaintChanged={this.onPaintChanged.bind(this)}
-        onLayoutChanged={this.onLayoutChanged.bind(this)}
-      />
-    }
-
-    return <UnsupportedLayer />
-  }
-
   toggleVisibility() {
     if(this.props.layer.has('layout') && this.props.layer.getIn(['layout', 'visibility']) === 'none') {
       this.onLayoutChanged('visibility', 'visible')
@@ -158,7 +117,22 @@ export class LayerEditor extends React.Component {
       <Tabs>
         <Tabs.Panel title='Paint'>
           <div style={{padding: theme.scale[2], paddingRight: 0, backgroundColor: theme.colors.black}}>
-          {this.layerFromType(this.props.layer.get('type'))}
+          <PropertyGroup
+            onChange={this.onPaintChanged.bind(this)}
+            layerType={this.props.layer.get('type')}
+            groupType="paint"
+            properties={this.props.layer.get('paint', Immutable.Map())}
+          />
+          </div>
+        </Tabs.Panel>
+        <Tabs.Panel title='Layout'>
+          <div style={{padding: theme.scale[2], paddingRight: 0, backgroundColor: theme.colors.black}}>
+          <PropertyGroup
+            onChange={this.onLayoutChanged.bind(this)}
+            layerType={this.props.layer.get('type')}
+            groupType="layout"
+            properties={this.props.layer.get('layout', Immutable.Map())}
+          />
           </div>
         </Tabs.Panel>
         <Tabs.Panel title='Data'>
