@@ -132,7 +132,6 @@ export class LayerEditor extends React.Component {
       visibleIcon = <MdVisibility />
     }
 
-    console.log(this.props.layer.toJSON())
     return <div style={{
         padding: theme.scale[0],
       }}>
@@ -149,7 +148,7 @@ export class LayerEditor extends React.Component {
         </NavItem>
       </Toolbar>
       <FilterEditor
-        filter={this.props.layer.get('filter').toJSON()}
+        filter={this.props.layer.get('filter', Immutable.List()).toJSON()}
         onFilterChanged={console.log}
       />
        {this.props.layer.get('type') !== 'background' && <SourceEditor

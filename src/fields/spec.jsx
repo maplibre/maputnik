@@ -104,7 +104,7 @@ class SpecField extends React.Component {
           onChange={this.onValueChanged.bind(this, this.props.fieldName)}
           value={this.props.value}
           name={label}
-          allowedValues={this.props.fieldSpec.values}
+          allowedValues={Object.keys(this.props.fieldSpec.values)}
           doc={this.props.fieldSpec.doc}
         />
       )

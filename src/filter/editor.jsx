@@ -24,7 +24,7 @@ export default class FilterEditor extends React.Component {
       const prop = f[1]
       const args = f.slice(2)
 
-      const availableFilterOperators = GlSpec.filter_operator.values
+      const availableFilterOperators = Object.keys(GlSpec.filter_operator.values)
       const filterOpOptions = availableFilterOperators.map(value => {
         return <option value={value}>{value}</option>
       })
