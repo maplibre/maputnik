@@ -27,6 +27,12 @@ export default class SourceEditor extends React.Component {
 		const options = this.props.sources.map((source, sourceId)=> {
 			return <option key={sourceId} value={sourceId}>{sourceId}</option>
 		}).toIndexedSeq()
+
+    const layerOptions = this.props.sources.get(this.props.source, Immutable.Set()).map(vectorLayerId => {
+      const id = vectorLayerId
+			return <option key={id} value={id}>{id}</option>
+		}).toIndexedSeq()
+
     console.log(this.props.sources)
 	  return <div>
       <div style={inputStyle.property}>
@@ -41,12 +47,13 @@ export default class SourceEditor extends React.Component {
       </div>
 	    <div style={inputStyle.property}>
         <label style={inputStyle.label}>Source Layer</label>
-        <input
-          style={inputStyle.input}
-          name={"sourceLayer"}
+        <select
+          style={inputStyle.select}
           value={this.props.sourceLayer}
           onChange={(e) => this.onSourceLayerChange(e.target.value)}
-        />
+        >
+          {layerOptions}
+        </select>
 		  </div>
 		</div>
 

@@ -15,6 +15,7 @@ import style from './style.js'
 import { loadDefaultStyle, SettingsStore, StyleStore } from './stylestore.js'
 import { ApiStyleStore } from './apistore.js'
 
+import LayerWatcher from './layerwatcher.js'
 import theme from './theme.js'
 import { colors, fullHeight } from './theme.js'
 import './index.css'
@@ -27,7 +28,7 @@ export default class App extends React.Component {
 
   constructor(props) {
     super(props)
-
+    this.layerWatcher = new LayerWatcher()
     this.styleStore = new ApiStyleStore()
     this.styleStore.supported(isSupported => {
       if(!isSupported) {
@@ -106,6 +107,9 @@ export default class App extends React.Component {
     const mapProps = {
       mapStyle: this.state.mapStyle,
       accessToken: this.state.accessToken,
+      onMapLoaded: (map) => {
+        this.layerWatcher.map = map
+      }
     }
     const renderer = this.state.mapStyle.getIn(['metadata', 'maputnik:renderer'], 'mbgljs')
     if(renderer === 'ol3') {
@@ -156,7 +160,7 @@ export default class App extends React.Component {
         width: 300,
         backgroundColor: colors.gray}
       }>
-      {selectedLayer && <LayerEditor layer={selectedLayer} onLayerChanged={this.onLayerChanged.bind(this)} sources={this.state.mapStyle.get('sources')}/>}
+      {selectedLayer && <LayerEditor layer={selectedLayer} onLayerChanged={this.onLayerChanged.bind(this)} sources={this.layerWatcher.sources}/>}
       </div>
       {this.mapRenderer()}
     </div>
