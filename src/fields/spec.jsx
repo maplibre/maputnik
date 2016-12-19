@@ -49,7 +49,7 @@ class ZoomSpecField extends React.Component {
       return <div style={{
           border: 1,
           borderStyle: 'solid',
-          borderColor: color(theme.colors.gray).lighten(0.1).hexString(),
+          borderColor: color(theme.colors.gray).lighten(0.1).string(),
           padding: theme.scale[1],
         }}>
         {zoomFields}

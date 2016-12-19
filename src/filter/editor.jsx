@@ -7,6 +7,7 @@ import inputStyle from '../fields/input.js'
 import theme from '../theme.js'
 
 const combiningFilterOps = ['all', 'any', 'none']
+const setFilterOps = ['in', '!in']
 const otherFilterOps = Object
   .keys(GlSpec.filter_operator.values)
   .filter(op => combiningFilterOps.indexOf(op) < 0)
@@ -106,8 +107,9 @@ class SingleFilterEditor extends React.Component {
           width: '53%',
           margin: theme.scale[0]
         }}
-        value={filterArgs}
-        onChange={newFilterArgs => this.onFilterPartChanged(filterOp, propertyName, newFilterArgs)}
+        value={filterArgs.join(',')}
+        onChange={e => {
+          this.onFilterPartChanged(filterOp, propertyName, e.target.value.split(','))}}
       />
     </div>
   }
