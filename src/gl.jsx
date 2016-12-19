@@ -7,6 +7,10 @@ import Immutable from 'immutable'
 import validateColor from 'mapbox-gl-style-spec/lib/validate/validate_color'
 
 export class MapboxGlMap extends Map {
+  constructor(props) {
+    super(props)
+    this.state = { map: null }
+  }
   componentWillReceiveProps(nextProps) {
     const tokenChanged = nextProps.accessToken !== MapboxGl.accessToken
 
@@ -15,13 +19,13 @@ export class MapboxGlMap extends Map {
     // TODO: might already be handled in diff algorithm?
     const mapIdChanged = this.props.mapStyle.get('id') !== nextProps.mapStyle.get('id')
 
-    if(mapIdChanged || tokenChanged) {
-      this.state.map.setStyle(style.toJSON(nextProps.mapStyle))
-      return
-    }
-
     // TODO: If there is no map yet we need to apply the changes later?
     if(this.state.map) {
+      if(mapIdChanged || tokenChanged) {
+        this.state.map.setStyle(style.toJSON(nextProps.mapStyle))
+        return
+      }
+
       style.diffStyles(this.props.mapStyle, nextProps.mapStyle).forEach(change => {
 
         //TODO: Invalid outline color can cause map to freeze?
