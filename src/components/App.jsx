@@ -6,25 +6,20 @@ import Container from 'rebass/dist/Container'
 import Block from 'rebass/dist/Block'
 import Fixed from 'rebass/dist/Fixed'
 
-import MapboxGlMap from './map/MapboxGlMap.jsx'
-import OpenLayers3Map from './map/OpenLayers3Map.jsx'
-import LayerList from './layers/LayerList.jsx'
-import LayerEditor from './layers/LayerEditor.jsx'
-import Toolbar from './Toolbar.jsx'
+import MapboxGlMap from './map/MapboxGlMap'
+import OpenLayers3Map from './map/OpenLayers3Map'
+import LayerList from './layers/LayerList'
+import LayerEditor from './layers/LayerEditor'
+import Toolbar from './Toolbar'
+import Layout from './Layout'
 
 import style from '../libs/style.js'
-import { loadDefaultStyle, SettingsStore, StyleStore } from '../libs/stylestore.js'
-import { ApiStyleStore } from '../libs/apistore.js'
-import LayerWatcher from '../libs/layerwatcher.js'
+import { loadDefaultStyle, SettingsStore, StyleStore } from '../libs/stylestore'
+import { ApiStyleStore } from '../libs/apistore'
+import LayerWatcher from '../libs/layerwatcher'
 
-import theme from '../config/rebass.js'
-import colors from '../config/colors.js'
 
 export default class App extends React.Component {
-  static childContextTypes = {
-    rebass: React.PropTypes.object,
-    reactIconBase: React.PropTypes.object
-  }
 
   constructor(props) {
     super(props)
@@ -49,13 +44,6 @@ export default class App extends React.Component {
   onReset() {
     this.styleStore.purge()
     loadDefaultStyle(mapStyle => this.onStyleUpload(mapStyle))
-  }
-
-  getChildContext() {
-    return {
-      rebass: theme,
-      reactIconBase: { size: 20 }
-    }
   }
 
   onStyleDownload() {
@@ -138,45 +126,33 @@ export default class App extends React.Component {
     const layers = this.state.mapStyle.layers || []
     const selectedLayer = layers.length > 0 ? layers[this.state.selectedLayerIndex] : null
 
-    return <div style={{ fontFamily: theme.fontFamily, color: theme.color, fontWeight: 300 }}>
-      <Toolbar
-        mapStyle={this.state.mapStyle}
-        onStyleChanged={this.onStyleChanged.bind(this)}
-        onStyleSave={this.onStyleSave.bind(this)}
-        onStyleUpload={this.onStyleUpload.bind(this)}
-        onStyleDownload={this.onStyleDownload.bind(this)}
-      />
-      <div style={{
-        position: 'absolute',
-        bottom: 0,
-        height: "100%",
-        top: 50,
-        left: 0,
-        zIndex: 100,
-        width: 180,
-        overflow: "hidden",
-        backgroundColor: colors.gray
-      }}>
-        <LayerList
-          onLayersChanged={this.onLayersChanged.bind(this)}
-          onLayerSelected={this.onLayerSelected.bind(this)}
-          layers={layers}
-        />
-      </div>
-      <div style={{
-        position: 'absolute',
-        bottom: 0,
-        height: "100%",
-        top: 50,
-        left: 180,
-        zIndex: 100,
-        width: 300,
-        backgroundColor: colors.gray}
-      }>
-      {selectedLayer && <LayerEditor layer={selectedLayer} onLayerChanged={this.onLayerChanged.bind(this)} sources={this.layerWatcher.sources} vectorLayers={this.layerWatcher.vectorLayers}/>}
-      </div>
-      {this.mapRenderer()}
-    </div>
+    const toolbar = <Toolbar
+      mapStyle={this.state.mapStyle}
+      onStyleChanged={this.onStyleChanged.bind(this)}
+      onStyleSave={this.onStyleSave.bind(this)}
+      onStyleUpload={this.onStyleUpload.bind(this)}
+      onStyleDownload={this.onStyleDownload.bind(this)}
+    />
+
+    const layerList = <LayerList
+      onLayersChanged={this.onLayersChanged.bind(this)}
+      onLayerSelected={this.onLayerSelected.bind(this)}
+      layers={layers}
+    />
+
+    const layerEditor = selectedLayer ? <LayerEditor
+      layer={selectedLayer}
+      onLayerChanged={this.onLayerChanged.bind(this)}
+      sources={this.layerWatcher.sources}
+      vectorLayers={this.layerWatcher.vectorLayers}
+    /> : null
+
+    return <Layout
+      toolbar={toolbar}
+      layerList={layerList}
+      layerEditor={layerEditor}
+      map={this.mapRenderer()}
+    />
   }
 }
 
