@@ -24,7 +24,9 @@ export default class LayerWatcher {
     this._map.on('data', (e) => {
       if(e.dataType !== 'tile') return
 
-      this._sources[e.source.id] = e.source.vectorLayerIds
+      //NOTE: This heavily depends on the internal API of Mapbox GL
+      //so this breaks between Mapbox GL JS releases
+      this._sources[e.sourceId] = e.style.sourceCaches[e.sourceId]._source.vectorLayerIds
       this.throttledAnalyzeVectorLayerFields()
     })
   }

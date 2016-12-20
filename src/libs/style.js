@@ -1,7 +1,6 @@
 import React from 'react';
 import Immutable from 'immutable'
 import spec from 'mapbox-gl-style-spec/reference/latest.min.js'
-import diffJSONStyles from 'mapbox-gl-style-spec/lib/diff'
 
 // Standard JSON to Immutable conversion except layers
 // are stored in an OrderedMap to make lookups id fast
@@ -45,14 +44,6 @@ function ensureMetadataExists(style) {
   return ensureHasId(ensureHasTimestamp(style))
 }
 
-// Compare style with other style and return changes
-//TODO: Write own diff algo that operates on immutable collections
-// Should be able to improve performance since we can only compare
-// by reference
-function diffStyles(before, after) {
-  return diffJSONStyles(toJSON(before), toJSON(after))
-}
-
 // Turns immutable style back into JSON with the original order of the
 // layers preserved
 function toJSON(mapStyle) {
@@ -72,7 +63,6 @@ function toJSON(mapStyle) {
 export default {
   toJSON,
   fromJSON,
-  diffStyles,
   ensureMetadataExists,
   emptyStyle,
 }

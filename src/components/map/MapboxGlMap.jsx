@@ -19,34 +19,11 @@ export default class MapboxGlMap extends Map {
     this.state = { map: null }
   }
   componentWillReceiveProps(nextProps) {
-    const tokenChanged = nextProps.accessToken !== MapboxGl.accessToken
+    if(!this.state.map) return
 
-    // If the id has changed a new style has been uplaoded and
-    // it is safer to do a full new render
-    // TODO: might already be handled in diff algorithm?
-    const mapIdChanged = this.props.mapStyle.get('id') !== nextProps.mapStyle.get('id')
-
-    // TODO: If there is no map yet we need to apply the changes later?
-    if(this.state.map) {
-      if(mapIdChanged || tokenChanged) {
-        this.state.map.setStyle(style.toJSON(nextProps.mapStyle))
-        return
-      }
-
-      style.diffStyles(this.props.mapStyle, nextProps.mapStyle).forEach(change => {
-
-        //TODO: Invalid outline color can cause map to freeze?
-        if(change.command === "setPaintProperty" && change.args[1] === "fill-outline-color" ) {
-          const value = change.args[2]
-          if(validateColor({value}).length > 0) {
-            return
-          }
-        }
-
-        console.log(change.command, ...change.args)
-        this.state.map[change.command].apply(this.state.map, change.args);
-      });
-    }
+    //Mapbox GL now does diffing natively so we don't need to calculate
+    //the necessary operations ourselves!
+    this.state.map.setStyle(style.toJSON(nextProps.mapStyle), { diff: true})
   }
 
   componentDidMount() {

@@ -51,8 +51,8 @@ module.exports = [
     loader: 'json-loader'
   },
   {
-     test: /\.js$/,
-     include: '/node_modules/mapbox-gl-shaders/index.js',
-     loader: 'transform/cacheable?brfs'
+    test: /\.js$/,
+    include: /node_modules\/mapbox-gl\/js\/render\/shaders.js/,
+    loader: 'transform/cacheable?brfs'
   }
 ];

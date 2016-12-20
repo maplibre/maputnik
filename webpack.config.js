@@ -56,7 +56,7 @@ module.exports = {
   module: {
     loaders,
     postLoaders: [{
-      include: /node_modules\/mapbox-gl-shaders/,
+      include: /node_modules\/mapbox-gl\/js\/render\/shaders.js/,
       loader: 'transform',
       query: 'brfs'
     }]

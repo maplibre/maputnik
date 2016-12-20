@@ -24,7 +24,7 @@
     "immutable": "^3.8.1",
     "lodash.throttle": "^4.1.1",
     "lodash.topairs": "^4.3.0",
-    "mapbox-gl": "^0.28.0",
+    "mapbox-gl": "mapbox/mapbox-gl-js#6c24b9621d2aa770eda67fb5638b4d78087b5624",
     "mapbox-gl-style-spec": "mapbox/mapbox-gl-style-spec#e85407a377510acb647161de6be6357ab4f606dd",
     "ol-mapbox-style": "0.0.11",
     "openlayers": "^3.19.1",
@@ -37,7 +37,6 @@
     "react-file-reader-input": "^1.1.0",
     "react-icon-base": "^2.0.4",
     "react-icons": "^2.2.1",
-    "react-simpletabs": "^0.7.0",
     "react-sortable-hoc": "^0.4.5",
     "rebass": "^0.3.1",
     "request": "^2.79.0"
