@@ -1,11 +1,6 @@
 import React from 'react'
 import Color from 'color'
 
-import Heading from 'rebass/dist/Heading'
-import Toolbar from 'rebass/dist/Toolbar'
-import NavItem from 'rebass/dist/NavItem'
-import Space from 'rebass/dist/Space'
-
 import CopyIcon from 'react-icons/lib/md/content-copy'
 import VisibilityIcon from 'react-icons/lib/md/visibility'
 import VisibilityOffIcon from 'react-icons/lib/md/visibility-off'

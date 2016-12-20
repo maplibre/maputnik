@@ -1,11 +1,6 @@
 import React from 'react'
 import { saveAs } from 'file-saver'
 
-import Drawer from 'rebass/dist/Drawer'
-import Container from 'rebass/dist/Container'
-import Block from 'rebass/dist/Block'
-import Fixed from 'rebass/dist/Fixed'
-
 import MapboxGlMap from './map/MapboxGlMap'
 import OpenLayers3Map from './map/OpenLayers3Map'
 import LayerList from './layers/LayerList'

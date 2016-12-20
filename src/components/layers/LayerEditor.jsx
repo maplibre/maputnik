@@ -2,8 +2,6 @@ import React from 'react'
 
 import Toolbar from 'rebass/dist/Toolbar'
 import NavItem from 'rebass/dist/NavItem'
-import Space from 'rebass/dist/Space'
-import Tabs from 'react-simpletabs'
 
 import SourceEditor from './SourceEditor'
 import FilterEditor from '../filter/FilterEditor'

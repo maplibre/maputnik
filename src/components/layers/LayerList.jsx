@@ -2,11 +2,6 @@ import React from 'react'
 import PureRenderMixin from 'react-addons-pure-render-mixin';
 import cloneDeep from 'lodash.clonedeep'
 
-import Heading from 'rebass/dist/Heading'
-import Toolbar from 'rebass/dist/Toolbar'
-import NavItem from 'rebass/dist/NavItem'
-import Space from 'rebass/dist/Space'
-
 import LayerListItem from './LayerListItem'
 import ScrollContainer from '../ScrollContainer'
 
