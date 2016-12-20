@@ -15,6 +15,7 @@ import {SortableContainer, SortableHandle, arrayMove} from 'react-sortable-hoc';
 
 const layerListPropTypes = {
   layers: React.PropTypes.array.isRequired,
+  selectedLayerIndex: React.PropTypes.number.isRequired,
   onLayersChanged: React.PropTypes.func.isRequired,
   onLayerSelected: React.PropTypes.func,
 }
@@ -45,6 +46,7 @@ class LayerListContainer extends React.Component {
         key={layerId}
         layerId={layerId}
         layerType={layer.type}
+        isSelected={index === this.props.selectedLayerIndex}
         onLayerSelected={this.props.onLayerSelected}
       />
     })

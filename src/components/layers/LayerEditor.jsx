@@ -31,7 +31,6 @@ export default class LayerEditor extends React.Component {
     sources: React.PropTypes.object,
     vectorLayers: React.PropTypes.object,
     onLayerChanged: React.PropTypes.func,
-    onLayerDestroyed: React.PropTypes.func,
   }
 
   static defaultProps = {
@@ -98,23 +97,12 @@ export default class LayerEditor extends React.Component {
       />
     })
 
-    let visibleIcon = <MdVisibilityOff />
-    if('layout' in this.props.layer && this.props.layer.layout.visibility === 'none') {
-      visibleIcon = <MdVisibility />
-    }
     return <div style={{
         padding: theme.scale[0],
     }}>
       <Toolbar>
         <NavItem style={{fontWeight: 400}}>
           {this.props.layer.id}
-        </NavItem>
-        <Space auto x={1} />
-        <NavItem onClick={this.toggleVisibility.bind(this)}>
-          {visibleIcon}
-        </NavItem>
-        <NavItem onClick={(e) => this.props.onLayerDestroyed(this.props.layer)}>
-          <MdDelete />
         </NavItem>
       </Toolbar>
         {propertyGroups}

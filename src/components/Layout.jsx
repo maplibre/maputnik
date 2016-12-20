@@ -37,7 +37,7 @@ export default class Layout extends React.Component {
         top: 50,
         left: 0,
         zIndex: 100,
-        width: 180,
+        width: 200,
         overflow: "hidden",
         backgroundColor: colors.gray
       }}>
@@ -48,7 +48,7 @@ export default class Layout extends React.Component {
         bottom: 0,
         height: "100%",
         top: 50,
-        left: 180,
+        left: 200,
         zIndex: 100,
         width: 300,
         backgroundColor: colors.gray}

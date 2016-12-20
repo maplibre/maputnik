@@ -137,6 +137,7 @@ export default class App extends React.Component {
     const layerList = <LayerList
       onLayersChanged={this.onLayersChanged.bind(this)}
       onLayerSelected={this.onLayerSelected.bind(this)}
+      selectedLayerIndex={this.state.selectedLayerIndex}
       layers={layers}
     />
 
