@@ -45,7 +45,7 @@ class IconAction extends React.Component {
 
   renderIcon() {
     const iconStyle = {
-      fill: colors.gray
+      fill: colors.black
     }
 
     if(this.props.active) {
@@ -135,17 +135,17 @@ class LayerListItem extends React.Component {
       cursor: 'pointer',
       position: 'relative',
       padding: margins[1],
-      borderColor: Color(colors.gray).lighten(0.1).string(),
-      backgroundColor: colors.gray,
+      borderColor: Color(colors.black).lighten(0.10).string(),
+      backgroundColor: colors.black,
     }
 
     if(this.state.hover) {
       console.log('hooover')
-      itemStyle.backgroundColor = Color(colors.gray).lighten(0.10)
+      itemStyle.backgroundColor = Color(colors.black).lighten(0.10).string()
     }
 
     if(this.props.isSelected) {
-      itemStyle.backgroundColor = Color(colors.gray).lighten(0.15)
+      itemStyle.backgroundColor = Color(colors.black).lighten(0.15).string()
     }
 
     const iconProps = {

@@ -34,12 +34,12 @@ export default class Layout extends React.Component {
         position: 'absolute',
         bottom: 0,
         height: "100%",
-        top: 50,
+        top: 40,
         left: 0,
         zIndex: 100,
         width: 200,
         overflow: "hidden",
-        backgroundColor: colors.gray
+        backgroundColor: colors.black
       }}>
         {this.props.layerList}
       </div>
@@ -47,12 +47,12 @@ export default class Layout extends React.Component {
         position: 'absolute',
         bottom: 0,
         height: "100%",
-        top: 50,
+        top: 40,
         left: 200,
         zIndex: 100,
         width: 300,
-        backgroundColor: colors.gray}
-      }>
+        backgroundColor: colors.black
+      }}>
         {this.props.layerEditor}
       </div>
       {this.props.map}

@@ -101,7 +101,7 @@ export default class Toolbar extends React.Component {
   render() {
     return <div style={{
       position: "fixed",
-      height: 50,
+      height: 40,
       width: '100%',
       zIndex: 100,
       left: 0,
@@ -121,10 +121,14 @@ export default class Toolbar extends React.Component {
         toggle={() => this.toggleSettings.bind(this)}
       />
       <InlineBlock>
-          <Button style={{width: 180, textAlign: 'left'}}>
-            <img src="https://github.com/maputnik/editor/raw/master/media/maputnik.png" alt="Maputnik" style={{width: 40, height: 40, paddingRight: 5, verticalAlign: 'middle'}}/>
-            <span style={{fontSize: 20 }}>Maputnik</span>
-          </Button>
+        <Button style={{
+          width: 180,
+          textAlign: 'left',
+          backgroundColor: colors.black
+        }}>
+          <img src="https://github.com/maputnik/editor/raw/master/media/maputnik.png" alt="Maputnik" style={{width: 30, height: 30, paddingRight: 5, verticalAlign: 'middle'}}/>
+          <span style={{fontSize: 20, verticalAlign: 'middle' }}>Maputnik</span>
+        </Button>
       </InlineBlock>
       <InlineBlock>
         <FileReaderInput onChange={this.onUpload.bind(this)}>
