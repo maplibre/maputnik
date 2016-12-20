@@ -18,23 +18,3 @@
   color: rgb(142, 142, 142) !important;
   box-shadow: none !important;
 }
-
-ul.tabs-menu {
-    list-style-type: none;
-    margin: 0;
-    padding: 0;
-}
-
-li.tabs-menu-item {
-    display: inline-block;
-    color: rgb(142, 142, 142);
-    font-size: 10px;
-    background-color: rgb(28, 31, 36);
-    padding: 5px;
-    margin-right: 3px;
-}
-
-li.tabs-menu-item:hover {
-  background-color: rgb(28, 31, 32);
-  cursor: pointer;
-}
