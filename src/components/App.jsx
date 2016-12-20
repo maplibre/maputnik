@@ -79,14 +79,11 @@ export default class App extends React.Component {
   }
 
   onLayerChanged(layer) {
-    const changedStyle = {
-      ...this.state.mapStyle,
-      layers: {
-        ...this.state.mapStyle.layers,
-        [layer.id]: layer
-      }
-    }
-    this.setState({ mapStyle: changedStyle })
+    const changedLayers = this.state.mapStyle.layers.slice(0)
+    const idx = style.indexOfLayer(changedLayers, layer.id)
+    changedLayers[idx] = layer
+
+    this.onLayersChange(changedLayers)
   }
 
   mapRenderer() {
