@@ -35,6 +35,7 @@ class IconAction extends React.Component {
   static propTypes = {
     action: React.PropTypes.string.isRequired,
     active: React.PropTypes.bool,
+    onClick: React.PropTypes.func.isRequired,
   }
 
   constructor(props) {
@@ -44,12 +45,19 @@ class IconAction extends React.Component {
 
   renderIcon() {
     const iconStyle = {
-      fill: this.props.active ? (this.state.hover ? colors.lowgray : colors.midgray) : colors.gray,
+      fill: colors.gray
+    }
+
+    if(this.props.active) {
+      iconStyle.fill = colors.midgray
+    }
+    if(this.state.hover) {
+      iconStyle.fill = colors.lowgray
     }
 
     switch(this.props.action) {
       case 'copy': return <CopyIcon style={iconStyle} />
-      case 'show': return <VisibilityOnIcon style={iconStyle} />
+      case 'show': return <VisibilityIcon style={iconStyle} />
       case 'hide': return <VisibilityOffIcon style={iconStyle} />
       case 'delete': return <DeleteIcon style={iconStyle} />
       default: return null
@@ -57,17 +65,18 @@ class IconAction extends React.Component {
   }
 
   render() {
-    return <div
+    return <a
       style={{
         display: "inline",
         marginLeft: margins[0],
         ...this.props.style
       }}
+      onClick={this.props.onClick}
       onMouseOver={e => this.setState({hover: true})}
       onMouseOut={e => this.setState({hover: false})}
     >
       {this.renderIcon()}
-    </div>
+    </a>
   }
 }
 
@@ -77,18 +86,20 @@ class LayerListItem extends React.Component {
     layerId: React.PropTypes.string.isRequired,
     layerType: React.PropTypes.string.isRequired,
     isSelected: React.PropTypes.bool,
-    visibility: React.PropTypes.bool,
+    visibility: React.PropTypes.string,
 
-    onLayerSelected: React.PropTypes.func.isRequired,
-    onLayerDestroyed: React.PropTypes.func,
-    onLayerVisibilityToggled: React.PropTypes.func,
+    onLayerSelect: React.PropTypes.func.isRequired,
+    onLayerCopy: React.PropTypes.func,
+    onLayerDestroy: React.PropTypes.func,
+    onLayerVisibilityToggle: React.PropTypes.func,
   }
 
   static defaultProps = {
     isSelected: false,
-    visibility: true,
-    onLayerDestroyed: () => {},
-    onLayerVisibilityToggled: () => {},
+    visibility: 'visible',
+    onLayerCopy: () => {},
+    onLayerDestroy: () => {},
+    onLayerVisibilityToggle: () => {},
   }
 
   static childContextTypes = {
@@ -143,7 +154,7 @@ class LayerListItem extends React.Component {
 
     return <li
       key={this.props.layerId}
-      onClick={e => this.props.onLayerSelected(this.props.layerId)}
+      onClick={e => this.props.onLayerSelect(this.props.layerId)}
       onMouseOver={e => this.setState({hover: true})}
       onMouseOut={e => this.setState({hover: false})}
       style={itemStyle}>
@@ -161,15 +172,16 @@ class LayerListItem extends React.Component {
         <span style={{flexGrow: 1}} />
         <IconAction {...iconProps}
           action={'delete'}
-          onClick={e => this.props.onLayerDestroyed(this.props.layerId)}
+          onClick={e => this.props.onLayerDestroy(this.props.layerId)}
         />
         <IconAction {...iconProps}
           action={'copy'}
-          onClick={e => this.props.onLayerVisibilityToggled(this.props.layerId)}
+          onClick={e => this.props.onLayerCopy(this.props.layerId)}
         />
         <IconAction {...iconProps}
-          action={this.props.visibility ? 'hide' : 'show'}
-          onClick={e => this.props.onLayerVisibilityToggled(this.props.layerId)}
+          active={this.state.hover || this.props.isSelected || this.props.visibility === 'none'}
+          action={this.props.visibility === 'visible' ? 'hide' : 'show'}
+          onClick={e => this.props.onLayerVisibilityToggle(this.props.layerId)}
         />
       </div>
     </li>

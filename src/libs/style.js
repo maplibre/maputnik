@@ -24,7 +24,17 @@ function ensureMetadataExists(style) {
   return ensureHasId(ensureHasTimestamp(style))
 }
 
+function indexOfLayer(layers, layerId) {
+  for (let i = 0; i < layers.length; i++) {
+    if(layers[i].id === layerId) {
+      return i
+    }
+  }
+  return null
+}
+
 export default {
   ensureMetadataExists,
   emptyStyle,
+  indexOfLayer,
 }

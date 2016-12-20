@@ -1,5 +1,6 @@
 import React from 'react'
 import PureRenderMixin from 'react-addons-pure-render-mixin';
+import cloneDeep from 'lodash.clonedeep'
 
 import Heading from 'rebass/dist/Heading'
 import Toolbar from 'rebass/dist/Toolbar'
@@ -9,6 +10,7 @@ import Space from 'rebass/dist/Space'
 import LayerListItem from './LayerListItem'
 import ScrollContainer from '../ScrollContainer'
 
+import style from '../../libs/style.js'
 import { margins } from '../../config/scales.js'
 
 import {SortableContainer, SortableHandle, arrayMove} from 'react-sortable-hoc';
@@ -16,8 +18,8 @@ import {SortableContainer, SortableHandle, arrayMove} from 'react-sortable-hoc';
 const layerListPropTypes = {
   layers: React.PropTypes.array.isRequired,
   selectedLayerIndex: React.PropTypes.number.isRequired,
-  onLayersChanged: React.PropTypes.func.isRequired,
-  onLayerSelected: React.PropTypes.func,
+  onLayersChange: React.PropTypes.func.isRequired,
+  onLayerSelect: React.PropTypes.func,
 }
 
 // List of collapsible layer editors
@@ -25,7 +27,7 @@ const layerListPropTypes = {
 class LayerListContainer extends React.Component {
   static propTypes = {...layerListPropTypes}
   static defaultProps = {
-    onLayerSelected: () => {},
+    onLayerSelect: () => {},
   }
 
   constructor(props) {
@@ -33,9 +35,34 @@ class LayerListContainer extends React.Component {
     this.shouldComponentUpdate = PureRenderMixin.shouldComponentUpdate.bind(this);
   }
 
-  onLayerDestroyed(deletedLayer) {
-    const remainingLayers = this.props.layers.delete(deletedLayer.id)
-    this.props.onLayersChanged(remainingLayers)
+  onLayerDestroy(layerId) {
+    const remainingLayers = this.props.layers.slice(0)
+    const idx = style.indexOfLayer(remainingLayers, layerId)
+    remainingLayers.splice(idx, 1);
+    this.props.onLayersChange(remainingLayers)
+  }
+
+  onLayerCopy(layerId) {
+    const changedLayers = this.props.layers.slice(0)
+    const idx = style.indexOfLayer(changedLayers, layerId)
+
+    const clonedLayer = cloneDeep(changedLayers[idx])
+    clonedLayer.id = clonedLayer.id + "-copy"
+    changedLayers.splice(idx, 0, clonedLayer)
+    this.props.onLayersChange(changedLayers)
+  }
+
+  onLayerVisibilityToggle(layerId) {
+    const changedLayers = this.props.layers.slice(0)
+    const idx = style.indexOfLayer(changedLayers, layerId)
+
+    const layer = { ...changedLayers[idx] }
+    const changedLayout = 'layout' in layer ? {...layer.layout} : {}
+    changedLayout.visibility = changedLayout.visibility === 'none' ? 'visible' : 'none'
+
+    layer.layout = changedLayout
+    changedLayers[idx] = layer
+    this.props.onLayersChange(changedLayers)
   }
 
   render() {
@@ -46,8 +73,12 @@ class LayerListContainer extends React.Component {
         key={layerId}
         layerId={layerId}
         layerType={layer.type}
+        visibility={(layer.layout || {}).visibility}
         isSelected={index === this.props.selectedLayerIndex}
-        onLayerSelected={this.props.onLayerSelected}
+        onLayerSelect={this.props.onLayerSelect}
+        onLayerDestroy={this.onLayerDestroy.bind(this)}
+        onLayerCopy={this.onLayerCopy.bind(this)}
+        onLayerVisibilityToggle={this.onLayerVisibilityToggle.bind(this)}
       />
     })
     return <ScrollContainer>
@@ -71,7 +102,7 @@ export default class LayerList extends React.Component {
     if(oldIndex === newIndex) return
     let layers = this.props.layers.slice(0)
     layers = arrayMove(layers, oldIndex, newIndex)
-    this.props.onLayersChanged(layers)
+    this.props.onLayersChange(layers)
   }
 
   render() {

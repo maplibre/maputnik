@@ -9,10 +9,6 @@ import SourceEditor from './SourceEditor'
 import FilterEditor from '../filter/FilterEditor'
 import PropertyGroup from '../fields/PropertyGroup'
 
-import MdVisibility from 'react-icons/lib/md/visibility'
-import MdVisibilityOff from 'react-icons/lib/md/visibility-off'
-import MdDelete from 'react-icons/lib/md/delete'
-
 import ScrollContainer from '../ScrollContainer'
 
 import layout from '../../config/layout.json'
@@ -75,14 +71,6 @@ export default class LayerEditor extends React.Component {
       filter: newValue
     }
     this.props.onLayerChanged(changedLayer)
-  }
-
-  toggleVisibility() {
-    if(this.props.layer.has('layout') && this.props.layer.layout.visibility === 'none') {
-      this.onLayoutChanged('visibility', 'visible')
-    } else {
-      this.onLayoutChanged('visibility', 'none')
-    }
   }
 
   render() {

@@ -75,12 +75,12 @@ export default class App extends React.Component {
     this.setState({ accessToken: newToken })
   }
 
-  onLayersChanged(changedLayers) {
+  onLayersChange(changedLayers) {
     const changedStyle = {
       ...this.state.mapStyle,
-      layers: [changedLayers]
+      layers: changedLayers
     }
-    this.setState({ mapStyle: newStyle })
+    this.setState({ mapStyle: changedStyle })
   }
 
   onLayerChanged(layer) {
@@ -112,14 +112,9 @@ export default class App extends React.Component {
     }
   }
 
-  onLayerSelected(layerId) {
-    const layers = this.state.mapStyle.layers
-    for (let i = 0; i < layers.length; i++) {
-      if(layers[i].id === layerId) {
-        this.setState({ selectedLayerIndex: i })
-        break
-      }
-    }
+  onLayerSelect(layerId) {
+    const idx = style.indexOfLayer(this.state.mapStyle.layers, layerId)
+    this.setState({ selectedLayerIndex: idx })
   }
 
   render() {
@@ -135,17 +130,17 @@ export default class App extends React.Component {
     />
 
     const layerList = <LayerList
-      onLayersChanged={this.onLayersChanged.bind(this)}
-      onLayerSelected={this.onLayerSelected.bind(this)}
+      onLayersChange={this.onLayersChange.bind(this)}
+      onLayerSelect={this.onLayerSelect.bind(this)}
       selectedLayerIndex={this.state.selectedLayerIndex}
       layers={layers}
     />
 
     const layerEditor = selectedLayer ? <LayerEditor
       layer={selectedLayer}
-      onLayerChanged={this.onLayerChanged.bind(this)}
       sources={this.layerWatcher.sources}
       vectorLayers={this.layerWatcher.vectorLayers}
+      onLayerChanged={this.onLayerChanged.bind(this)}
     /> : null
 
     return <Layout
