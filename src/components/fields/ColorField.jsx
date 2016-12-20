@@ -1,7 +1,8 @@
 import React from 'react'
 import Color from 'color'
-import inputStyle from './input.js'
 import ChromePicker from 'react-color/lib/components/chrome/Chrome'
+
+import input from '../../config/input.js'
 
 function formatColor(color) {
   const rgb = color.rgb
@@ -53,7 +54,7 @@ class ColorField extends React.Component {
     </div>
 
     return <div style={{
-      ...inputStyle.property,
+      ...input.property,
       position: 'relative',
       display: 'inline',
     }}>
@@ -61,7 +62,7 @@ class ColorField extends React.Component {
       <input
         onClick={this.togglePicker.bind(this)}
         style={{
-          ...inputStyle.select,
+          ...input.select,
           ...this.props.style
         }}
         name={this.props.name}

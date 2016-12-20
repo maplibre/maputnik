@@ -6,18 +6,19 @@ import NavItem from 'rebass/dist/NavItem'
 import Space from 'rebass/dist/Space'
 import Tabs from 'react-simpletabs'
 
-import theme from '../theme.js'
-import SourceEditor from './source.jsx'
-import FilterEditor from '../filter/editor.jsx'
-import PropertyGroup from '../fields/propertygroup.jsx'
+import SourceEditor from './SourceEditor'
+import FilterEditor from '../filter/FilterEditor'
+import PropertyGroup from '../fields/PropertyGroup'
 
 import MdVisibility from 'react-icons/lib/md/visibility'
 import MdVisibilityOff from 'react-icons/lib/md/visibility-off'
 import MdDelete from 'react-icons/lib/md/delete'
 import PureRenderMixin from 'react-addons-pure-render-mixin';
 
-import ScrollContainer from '../scrollcontainer.jsx'
-import layout from '../layout.json'
+import ScrollContainer from '../ScrollContainer'
+
+import layout from '../../config/layout.json'
+import theme from '../../config/rebass.js'
 
 class UnsupportedLayer extends React.Component {
   render() {
@@ -26,10 +27,11 @@ class UnsupportedLayer extends React.Component {
 }
 
 /** Layer editor supporting multiple types of layers. */
-export class LayerEditor extends React.Component {
+export default class LayerEditor extends React.Component {
   static propTypes = {
     layer: React.PropTypes.object.isRequired,
     sources: React.PropTypes.instanceOf(Immutable.Map),
+    vectorLayers: React.PropTypes.instanceOf(Immutable.Map),
     onLayerChanged: React.PropTypes.func,
     onLayerDestroyed: React.PropTypes.func,
   }
@@ -82,12 +84,14 @@ export class LayerEditor extends React.Component {
     const groups = layout[layerType].groups
     const propertyGroups = groups.map(group => {
       return <PropertyGroup
+        key={this.props.group}
         layer={this.props.layer}
         groupFields={Immutable.OrderedSet(group.fields)}
         onChange={this.onPropertyChange.bind(this)}
       />
     })
 
+    console.log(this.props.layer.toJSON())
     let visibleIcon = <MdVisibilityOff />
     if(this.props.layer.has('layout') && this.props.layer.getIn(['layout', 'visibility']) === 'none') {
       visibleIcon = <MdVisibility />
@@ -110,6 +114,7 @@ export class LayerEditor extends React.Component {
         {propertyGroups}
           <FilterEditor
             filter={this.props.layer.get('filter', Immutable.List()).toJSON()}
+            properties={this.props.vectorLayers.get(this.props.layer.get('source-layer'))}
             onChange={f => this.onFilterChange(Immutable.fromJS(f))}
           />
            {this.props.layer.get('type') !== 'background'

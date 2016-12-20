@@ -1,4 +1,5 @@
 import React from 'react'
+import PureRenderMixin from 'react-addons-pure-render-mixin';
 import Immutable from 'immutable'
 
 import Heading from 'rebass/dist/Heading'
@@ -6,11 +7,10 @@ import Toolbar from 'rebass/dist/Toolbar'
 import NavItem from 'rebass/dist/NavItem'
 import Space from 'rebass/dist/Space'
 
-import { LayerEditor } from './editor.jsx'
-import LayerListItem from './listitem.jsx'
-import PureRenderMixin from 'react-addons-pure-render-mixin';
-import theme from '../theme.js'
-import ScrollContainer from '../scrollcontainer.jsx'
+import LayerListItem from './LayerListItem'
+import ScrollContainer from '../ScrollContainer'
+
+import { margins } from '../../config/scales.js'
 
 import {SortableContainer, SortableHandle, arrayMove} from 'react-sortable-hoc';
 
@@ -55,14 +55,14 @@ class LayerListContainer extends React.Component {
       />
     })
     return <ScrollContainer>
-      <ul style={{ padding: theme.scale[1], margin: 0 }}>
+      <ul style={{ padding: margins[1], margin: 0 }}>
         {layerPanels}
       </ul>
     </ScrollContainer>
   }
 }
 
-export class LayerList extends React.Component {
+export default class LayerList extends React.Component {
   static propTypes = {...layerListPropTypes}
 
   constructor(props) {

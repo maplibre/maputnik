@@ -1,5 +1,4 @@
 import React from 'react'
-import theme from './theme.js'
 import scrollbars from './scrollbars.scss'
 
 const ScrollContainer = (props) => {

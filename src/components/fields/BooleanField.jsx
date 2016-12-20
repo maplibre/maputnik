@@ -1,5 +1,5 @@
 import React from 'react'
-import inputStyle from './input.js'
+import input from '../../config/input.js'
 
 class BooleanField extends React.Component {
   static propTypes = {
@@ -14,7 +14,7 @@ class BooleanField extends React.Component {
     return <input
       type="checkbox"
       style={{
-        ...inputStyle.checkbox,
+        ...input.checkbox,
         ...this.props.style
       }}
       value={this.props.value}

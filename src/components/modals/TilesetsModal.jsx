@@ -14,8 +14,8 @@ import Input from 'rebass/dist/Input'
 import Toolbar from 'rebass/dist/Toolbar'
 import NavItem from 'rebass/dist/NavItem'
 
-import publicTilesets from '../tilesets.json'
-import theme from '../theme.js'
+import publicTilesets from '../../config/tilesets.json'
+import theme from '../../config/rebass'
 
 class TilesetsModal extends React.Component {
   static propTypes = {

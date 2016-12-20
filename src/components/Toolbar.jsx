@@ -1,6 +1,6 @@
-import React from 'react';
+import React from 'react'
 import Immutable from 'immutable'
-import FileReaderInput from 'react-file-reader-input';
+import FileReaderInput from 'react-file-reader-input'
 
 import Button from 'rebass/dist/Button'
 import Text from 'rebass/dist/Text'
@@ -25,17 +25,17 @@ import MdFontDownload from 'react-icons/lib/md/font-download'
 import MdHelpOutline from 'react-icons/lib/md/help-outline'
 import MdFindInPage from 'react-icons/lib/md/find-in-page'
 
-import SettingsModal from './modals/settings.jsx'
-import TilesetsModal from './modals/tilesets.jsx'
-import style from './style.js'
-import { fullHeight } from './theme.js'
-import theme from './theme.js';
+import SettingsModal from './modals/SettingsModal'
+import TilesetsModal from './modals/TilesetsModal'
+
+import style from '../libs/style'
+import colors from '../config/colors';
 
 const InlineBlock = props => <div style={{display: "inline-block", ...props.style}}>
   {props.children}
 </div>
 
-export class Toolbar extends React.Component {
+export default class Toolbar extends React.Component {
   static propTypes = {
     mapStyle: React.PropTypes.instanceOf(Immutable.Map).isRequired,
     onStyleChanged: React.PropTypes.func.isRequired,
@@ -107,7 +107,7 @@ export class Toolbar extends React.Component {
       zIndex: 100,
       left: 0,
       top: 0,
-      backgroundColor: theme.colors.black
+      backgroundColor: colors.black
     }}>
       <SettingsModal
         mapStyle={this.props.mapStyle}

@@ -1,6 +1,4 @@
-/** Common input styling */
-
-import theme from '../theme.js'
+import theme from './rebass.js'
 
 const base = {
   display: 'inline-block',

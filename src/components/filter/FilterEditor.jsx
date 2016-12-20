@@ -1,10 +1,11 @@
 import React from 'react'
 import Immutable from 'immutable'
-import { PropertyGroup } from '../fields/spec'
 import PureRenderMixin from 'react-addons-pure-render-mixin';
 import GlSpec from 'mapbox-gl-style-spec/reference/latest.min.js'
-import inputStyle from '../fields/input.js'
-import theme from '../theme.js'
+
+import input from '../../config/input.js'
+import colors from '../../config/colors.js'
+import { margins } from '../../config/scales.js'
 
 const combiningFilterOps = ['all', 'any', 'none']
 const setFilterOps = ['in', '!in']
@@ -26,9 +27,9 @@ class CombiningOperatorSelect extends React.Component {
     return <div>
       <select
         style={{
-          ...inputStyle.select,
+          ...input.select,
           width: '20.5%',
-          margin: theme.scale[0],
+          margin: margins[0],
         }}
         value={this.props.value}
         onChange={e => this.props.onChange(e.target.value)}
@@ -36,9 +37,9 @@ class CombiningOperatorSelect extends React.Component {
         {options}
       </select>
       <label style={{
-        ...inputStyle.label,
+        ...input.label,
         width: '60%',
-        marginLeft: theme.scale[0],
+        marginLeft: margins[0],
       }}>
         of the filters matches
       </label>
@@ -58,9 +59,9 @@ class OperatorSelect extends React.Component {
     })
     return <select
       style={{
-        ...inputStyle.select,
+        ...input.select,
         width: '15%',
-        margin: theme.scale[0]
+        margin: margins[0]
       }}
       value={this.props.value}
       onChange={e => this.props.onChange(e.target.value)}
@@ -74,6 +75,7 @@ class SingleFilterEditor extends React.Component {
   static propTypes = {
     filter: React.PropTypes.array.isRequired,
     onChange: React.PropTypes.func.isRequired,
+    properties: React.PropTypes.instanceOf(Immutable.Map).isRequired,
   }
 
   onFilterPartChanged(filterOp, propertyName, filterArgs) {
@@ -88,24 +90,28 @@ class SingleFilterEditor extends React.Component {
     const filterArgs = f.slice(2)
 
     return <div>
-      <input
+      <select
         style={{
-          ...inputStyle.input,
+          ...input.select,
             width: '17%',
-            margin: theme.scale[0]
+            margin: margins[0]
         }}
         value={propertyName}
         onChange={newPropertyName => this.onFilterPartChanged(filterOp, newPropertyName, filterArgs)}
-      />
+      >
+        {this.props.properties.keySeq().map(propName => {
+          return <option key={propName} value={propName}>{propName}</option>
+        }).toIndexedSeq()}
+      </select>
       <OperatorSelect
         value={filterOp}
         onChange={newFilterOp => this.onFilterPartChanged(newFilterOp, propertyName, filterArgs)}
       />
       <input
         style={{
-          ...inputStyle.input,
+          ...input.input,
           width: '53%',
-          margin: theme.scale[0]
+          margin: margins[0]
         }}
         value={filterArgs.join(',')}
         onChange={e => {
@@ -118,6 +124,8 @@ class SingleFilterEditor extends React.Component {
 
 export default class CombiningFilterEditor extends React.Component {
   static propTypes = {
+    /** Properties of the vector layer and the available fields */
+    properties: React.PropTypes.instanceOf(Immutable.Map).isRequired,
     filter: React.PropTypes.array.isRequired,
     onChange: React.PropTypes.func.isRequired,
   }
@@ -154,15 +162,16 @@ export default class CombiningFilterEditor extends React.Component {
     const filterEditors = filters.map((f, idx) => {
       return <SingleFilterEditor
         key={idx}
+        properties={this.props.properties}
         filter={f}
         onChange={this.onFilterPartChanged.bind(this, idx + 1)}
       />
     })
 
     return <div style={{
-      padding: theme.scale[2],
+      padding: margins[2],
       paddingRight: 0,
-      backgroundColor: theme.colors.black
+      backgroundColor: colors.black
     }}>
       <CombiningOperatorSelect
         value={combiningOp}

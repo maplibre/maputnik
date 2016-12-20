@@ -1,5 +1,5 @@
 import React from 'react'
-import inputStyle from './input.js'
+import input from '../../config/input.js'
 
 /*** Number fields with support for min, max and units and documentation*/
 class NumberField extends React.Component {
@@ -27,7 +27,7 @@ class NumberField extends React.Component {
   render() {
     return <input
       style={{
-        ...inputStyle.input,
+        ...input.input,
         ...this.props.style
       }}
       type="number"

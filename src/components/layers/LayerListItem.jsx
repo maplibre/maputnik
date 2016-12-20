@@ -1,4 +1,5 @@
 import React from 'react'
+import PureRenderMixin from 'react-addons-pure-render-mixin'
 import Radium from 'radium'
 import Immutable from 'immutable'
 import Color from 'color'
@@ -8,12 +9,12 @@ import Toolbar from 'rebass/dist/Toolbar'
 import NavItem from 'rebass/dist/NavItem'
 import Space from 'rebass/dist/Space'
 
-import LayerIcon from '../icons/layer.jsx'
-import { LayerEditor } from './editor.jsx'
-import scrollbars from '../scrollbars.scss'
-import PureRenderMixin from 'react-addons-pure-render-mixin';
-import theme from '../theme.js'
-import {SortableElement, SortableHandle} from 'react-sortable-hoc';
+import LayerIcon from '../icons/LayerIcon'
+import LayerEditor from './LayerEditor'
+import {SortableElement, SortableHandle} from 'react-sortable-hoc'
+
+import colors from '../../config/colors.js'
+import { fontSizes, margins } from '../../config/scales.js'
 
 
 @SortableHandle
@@ -48,8 +49,8 @@ class LayerListItem extends React.Component {
       onClick={() => this.props.onLayerSelected(this.props.layerId)}
       style={{
         fontWeight: 400,
-        color: theme.colors.lowgray,
-        fontSize: theme.fontSizes[5],
+        color: colors.lowgray,
+        fontSize: fontSizes[5],
         borderBottom: 1,
         borderLeft: 2,
         borderRight: 0,
@@ -59,11 +60,11 @@ class LayerListItem extends React.Component {
         zIndex: 2000,
         cursor: 'pointer',
         position: 'relative',
-        padding: theme.scale[1],
-        borderColor: Color(theme.colors.gray).lighten(0.1).string(),
-        backgroundColor: theme.colors.gray,
+        padding: margins[1],
+        borderColor: Color(colors.gray).lighten(0.1).string(),
+        backgroundColor: colors.gray,
         ":hover": {
-          backgroundColor: Color(theme.colors.gray).lighten(0.15).string(),
+          backgroundColor: Color(colors.gray).lighten(0.15).string(),
         }
     }}>
       <LayerTypeDragHandle type={this.props.layerType} />

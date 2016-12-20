@@ -1,24 +1,24 @@
 import React from 'react'
-import {saveAs} from 'file-saver'
+import { saveAs } from 'file-saver'
 
 import Drawer from 'rebass/dist/Drawer'
 import Container from 'rebass/dist/Container'
 import Block from 'rebass/dist/Block'
 import Fixed from 'rebass/dist/Fixed'
 
-import { MapboxGlMap } from './gl.jsx'
-import { OpenLayers3Map } from './ol3.jsx'
-import { LayerList } from './layers/list.jsx'
-import { LayerEditor } from './layers/editor.jsx'
-import {Toolbar} from './toolbar.jsx'
-import style from './style.js'
-import { loadDefaultStyle, SettingsStore, StyleStore } from './stylestore.js'
-import { ApiStyleStore } from './apistore.js'
+import MapboxGlMap from './map/MapboxGlMap.jsx'
+import OpenLayers3Map from './map/OpenLayers3Map.jsx'
+import LayerList from './layers/LayerList.jsx'
+import LayerEditor from './layers/LayerEditor.jsx'
+import Toolbar from './Toolbar.jsx'
 
-import LayerWatcher from './layerwatcher.js'
-import theme from './theme.js'
-import { colors, fullHeight } from './theme.js'
-import './index.css'
+import style from '../libs/style.js'
+import { loadDefaultStyle, SettingsStore, StyleStore } from '../libs/stylestore.js'
+import { ApiStyleStore } from '../libs/apistore.js'
+import LayerWatcher from '../libs/layerwatcher.js'
+
+import theme from '../config/rebass.js'
+import colors from '../config/colors.js'
 
 export default class App extends React.Component {
   static childContextTypes = {
@@ -160,7 +160,7 @@ export default class App extends React.Component {
         width: 300,
         backgroundColor: colors.gray}
       }>
-      {selectedLayer && <LayerEditor layer={selectedLayer} onLayerChanged={this.onLayerChanged.bind(this)} sources={this.layerWatcher.sources}/>}
+      {selectedLayer && <LayerEditor layer={selectedLayer} onLayerChanged={this.onLayerChanged.bind(this)} sources={this.layerWatcher.sources} vectorLayers={this.layerWatcher.vectorLayers}/>}
       </div>
       {this.mapRenderer()}
     </div>

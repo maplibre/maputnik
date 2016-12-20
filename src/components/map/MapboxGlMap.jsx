@@ -1,12 +1,11 @@
 import React from 'react'
 import MapboxGl from 'mapbox-gl'
-import { fullHeight } from './theme.js'
-import style from './style.js'
-import { Map } from './map.jsx'
-import Immutable from 'immutable'
 import validateColor from 'mapbox-gl-style-spec/lib/validate/validate_color'
 
-export class MapboxGlMap extends Map {
+import Map from './Map.jsx'
+import style from '../../libs/style.js'
+
+export default class MapboxGlMap extends Map {
   static propTypes = {
     onMapLoaded: React.PropTypes.func,
   }

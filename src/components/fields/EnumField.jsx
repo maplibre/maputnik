@@ -1,5 +1,5 @@
 import React from 'react'
-import inputStyle from './input.js'
+import input from '../../config/input.js'
 
 class EnumField extends React.Component {
   static propTypes = {
@@ -22,7 +22,7 @@ class EnumField extends React.Component {
 
     return <select
       style={{
-        ...inputStyle.select,
+        ...input.select,
         ...this.props.style
       }}
       value={this.props.value}

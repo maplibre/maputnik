@@ -1,10 +1,11 @@
 import React from 'react'
-import style from './style.js'
-import { Map } from './map.jsx'
 import ol from 'openlayers'
 import olms from 'ol-mapbox-style'
 
-export class OpenLayers3Map extends Map {
+import Map from './Map'
+import style from '../../libs/style.js'
+
+export default class OpenLayers3Map extends Map {
   constructor(props) {
     super(props)
 

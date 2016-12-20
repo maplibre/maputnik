@@ -1,11 +1,13 @@
 import React from 'react'
-import { ZoomSpecField } from './spec.jsx'
 import Immutable from 'immutable'
 import GlSpec from 'mapbox-gl-style-spec/reference/latest.min.js'
-import theme from '../theme.js'
 
-console.log(ZoomSpecField)
+import ZoomSpecField from './ZoomSpecField'
+import colors from '../../config/colors'
+import { margins } from '../../config/scales'
 
+/** Extract field spec by {@fieldName} from the {@layerType} in the
+ * style specification from either the paint or layout group */
 function getFieldSpec(layerType, fieldName) {
   const paint  = GlSpec['paint_' + layerType] || {}
   const layout = GlSpec['layout_' + layerType] || {}
@@ -25,10 +27,8 @@ export default class PropertyGroup extends React.Component {
 
   render() {
     const fields = this.props.groupFields.map(fieldName => {
-      console.log(fieldName)
       const fieldSpec = getFieldSpec(this.props.layer.get('type'), fieldName)
       const fieldValue = this.props.layer.getIn(['paint', fieldName], this.props.layer.getIn(['layout', fieldName]))
-
       return <ZoomSpecField
         onChange={this.props.onChange}
         key={fieldName}
@@ -39,10 +39,10 @@ export default class PropertyGroup extends React.Component {
     }).toIndexedSeq()
 
     return <div style={{
-      padding: theme.scale[2],
+      padding: margins[2],
       paddingRight: 0,
-      backgroundColor: theme.colors.black,
-      marginBottom: theme.scale[2],
+      backgroundColor: colors.black,
+      marginBottom: margins[2],
     }}>
       {fields}
     </div>

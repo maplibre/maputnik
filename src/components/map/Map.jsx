@@ -1,8 +1,7 @@
 import React from 'react'
-import { fullHeight } from './theme.js'
 import Immutable from 'immutable'
 
-export class Map extends React.Component {
+export default class Map extends React.Component {
   static propTypes = {
     mapStyle: React.PropTypes.instanceOf(Immutable.Map).isRequired,
     accessToken: React.PropTypes.string,
@@ -17,7 +16,10 @@ export class Map extends React.Component {
     return <div
     ref={x => this.container = x}
     style={{
-      ...fullHeight,
+      position: "fixed",
+      top: 0,
+      bottom: 0,
+      height: "100%",
       width: "100%",
     }}></div>
   }

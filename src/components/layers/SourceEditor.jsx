@@ -1,8 +1,9 @@
 import React from 'react'
-import Immutable from 'immutable'
-import { PropertyGroup } from '../fields/spec'
 import PureRenderMixin from 'react-addons-pure-render-mixin';
-import inputStyle from '../fields/input.js'
+import Immutable from 'immutable'
+
+import PropertyGroup from '../fields/PropertyGroup'
+import input from '../../config/input.js'
 
 /** Choose tileset (source) and the source layer */
 export default class SourceEditor extends React.Component {
@@ -33,22 +34,21 @@ export default class SourceEditor extends React.Component {
 			return <option key={id} value={id}>{id}</option>
 		}).toIndexedSeq()
 
-    console.log(this.props.sources)
 	  return <div>
-      <div style={inputStyle.property}>
-        <label style={inputStyle.label}>Source</label>
+      <div style={input.property}>
+        <label style={input.label}>Source</label>
         <select
-          style={inputStyle.select}
+          style={input.select}
           value={this.props.source}
           onChange={(e) => this.onSourceChange(e.target.value)}
         >
           {options}
         </select>
       </div>
-	    <div style={inputStyle.property}>
-        <label style={inputStyle.label}>Source Layer</label>
+	    <div style={input.property}>
+        <label style={input.label}>Source Layer</label>
         <select
-          style={inputStyle.select}
+          style={input.select}
           value={this.props.sourceLayer}
           onChange={(e) => this.onSourceLayerChange(e.target.value)}
         >

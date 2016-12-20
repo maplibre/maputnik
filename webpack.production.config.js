@@ -32,15 +32,14 @@ module.exports = {
         'mapbox-gl',
         //TODO: Cannot resolve migrations file?
         //"mapbox-gl-style-spec",
+        "radium",
         "randomcolor",
         'react',
-        "react-collapse",
         "react-dom",
+        "react-color",
         "react-file-reader-input",
-        "react-height",
         //TODO: Icons raise multi vendor errors?
         //"react-icons",
-        "react-motion",
         "rebass",
         // Open Layers
         'openlayers',
