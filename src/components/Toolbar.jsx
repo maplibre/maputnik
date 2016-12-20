@@ -72,15 +72,12 @@ export default class Toolbar extends React.Component {
   }
 
   downloadButton() {
-    if(this.props.styleAvailable) {
-      return <InlineBlock>
-        <Button onClick={this.props.onStyleDownload} big={true}>
-          <MdFileDownload />
-          Download
-        </Button>
-      </InlineBlock>
-    }
-    return null
+    return <InlineBlock>
+      <Button onClick={this.props.onStyleDownload} big={true}>
+        <MdFileDownload />
+        Download
+      </Button>
+    </InlineBlock>
   }
 
   toggleSettings() {
@@ -125,7 +122,7 @@ export default class Toolbar extends React.Component {
       </InlineBlock>
       <InlineBlock>
         <FileReaderInput onChange={this.onUpload.bind(this)}>
-          <Button big={true} theme={this.props.styleAvailable ? "default" : "success"}>
+          <Button big={true}>
             <MdOpenInBrowser />
             Open
           </Button>
