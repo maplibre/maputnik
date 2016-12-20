@@ -25,20 +25,24 @@ function getGroupName(layerType, fieldName) {
 
 export default class PropertyGroup extends React.Component {
   static propTypes = {
-    layer: React.PropTypes.instanceOf(Immutable.Map).isRequired,
+    layer: React.PropTypes.object.isRequired,
     groupFields: React.PropTypes.instanceOf(Immutable.OrderedSet).isRequired,
     onChange: React.PropTypes.func.isRequired,
   }
 
   onPropertyChange(property, newValue) {
-    const group = getGroupName(this.props.layer.get('type'), property)
+    const group = getGroupName(this.props.layer.type, property)
     this.props.onChange(group , property ,newValue)
   }
 
   render() {
     const fields = this.props.groupFields.map(fieldName => {
-      const fieldSpec = getFieldSpec(this.props.layer.get('type'), fieldName)
-      const fieldValue = this.props.layer.getIn(['paint', fieldName], this.props.layer.getIn(['layout', fieldName]))
+      const fieldSpec = getFieldSpec(this.props.layer.type, fieldName)
+
+      const paint = this.props.layer.paint || {}
+      const layout = this.props.layer.layout || {}
+      const fieldValue = paint[fieldName] || layout[fieldName]
+
       return <ZoomSpecField
         onChange={this.onPropertyChange.bind(this)}
         key={fieldName}

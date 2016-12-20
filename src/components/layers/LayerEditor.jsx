@@ -13,7 +13,6 @@ import PropertyGroup from '../fields/PropertyGroup'
 import MdVisibility from 'react-icons/lib/md/visibility'
 import MdVisibilityOff from 'react-icons/lib/md/visibility-off'
 import MdDelete from 'react-icons/lib/md/delete'
-import PureRenderMixin from 'react-addons-pure-render-mixin';
 
 import ScrollContainer from '../ScrollContainer'
 
@@ -47,7 +46,6 @@ export default class LayerEditor extends React.Component {
 
   constructor(props) {
     super(props);
-    this.shouldComponentUpdate = PureRenderMixin.shouldComponentUpdate.bind(this);
   }
 
   getChildContext () {
@@ -59,21 +57,30 @@ export default class LayerEditor extends React.Component {
     }
   }
 
+  /** A {@property} in either the paint our layout {@group} has changed
+   * to a {@newValue}.
+   */
   onPropertyChange(group, property, newValue) {
-    const layer = this.props.layer
-    console.log(group, property, newValue)
-    const changedLayer = layer.setIn([group, property], newValue)
+    const changedLayer = {
+      ...this.props.layer,
+      [group]: {
+        ...this.props.layer[group],
+        [property]: newValue
+      }
+    }
     this.props.onLayerChanged(changedLayer)
   }
 
   onFilterChange(newValue) {
-    let layer = this.props.layer
-    const changedLayer = layer.set('filter', newValue)
+    const changedLayer = {
+      ...this.props.layer,
+      filter: newValue
+    }
     this.props.onLayerChanged(changedLayer)
   }
 
   toggleVisibility() {
-    if(this.props.layer.has('layout') && this.props.layer.getIn(['layout', 'visibility']) === 'none') {
+    if(this.props.layer.has('layout') && this.props.layer.layout.visibility === 'none') {
       this.onLayoutChanged('visibility', 'visible')
     } else {
       this.onLayoutChanged('visibility', 'none')
@@ -81,7 +88,7 @@ export default class LayerEditor extends React.Component {
   }
 
   render() {
-    const layerType = this.props.layer.get('type')
+    const layerType = this.props.layer.type
     const groups = layout[layerType].groups
     const propertyGroups = groups.map(group => {
       return <PropertyGroup
@@ -92,9 +99,8 @@ export default class LayerEditor extends React.Component {
       />
     })
 
-    console.log(this.props.layer.toJSON())
     let visibleIcon = <MdVisibilityOff />
-    if(this.props.layer.has('layout') && this.props.layer.getIn(['layout', 'visibility']) === 'none') {
+    if('layout' in this.props.layer && this.props.layer.layout.visibility === 'none') {
       visibleIcon = <MdVisibility />
     }
     return <div style={{
@@ -102,7 +108,7 @@ export default class LayerEditor extends React.Component {
     }}>
       <Toolbar>
         <NavItem style={{fontWeight: 400}}>
-          {this.props.layer.get('id')}
+          {this.props.layer.id}
         </NavItem>
         <Space auto x={1} />
         <NavItem onClick={this.toggleVisibility.bind(this)}>
@@ -114,14 +120,14 @@ export default class LayerEditor extends React.Component {
       </Toolbar>
         {propertyGroups}
           <FilterEditor
-            filter={this.props.layer.get('filter', Immutable.List()).toJSON()}
-            properties={this.props.vectorLayers.get(this.props.layer.get('source-layer'))}
+            filter={this.props.layer.filter}
+            properties={this.props.vectorLayers.get(this.props.layer['source-layer'])}
             onChange={f => this.onFilterChange(Immutable.fromJS(f))}
           />
-           {this.props.layer.get('type') !== 'background'
+           {this.props.layer.type !== 'background'
              && <SourceEditor
-              source={this.props.layer.get('source')}
-              sourceLayer={this.props.layer.get('source-layer')}
+              source={this.props.layer.source}
+              sourceLayer={this.props.layer['source-layer']}
               sources={this.props.sources}
               onSourceChange={console.log}
               onSourceLayerChange={console.log}

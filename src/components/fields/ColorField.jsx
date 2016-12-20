@@ -15,7 +15,6 @@ class ColorField extends React.Component {
     onChange: React.PropTypes.func.isRequired,
     name: React.PropTypes.string.isRequired,
     value: React.PropTypes.string,
-    default: React.PropTypes.number,
     doc: React.PropTypes.string,
     style: React.PropTypes.object,
   }
@@ -31,14 +30,19 @@ class ColorField extends React.Component {
     this.setState({ pickerOpened: !this.state.pickerOpened })
   }
 
+  get color() {
+    return Color(this.props.value || '#fff')
+  }
+
   render() {
+    console.log(Color(this.props.value))
     const picker = <div style={{
         position: 'absolute',
         left: 163,
         top: 0,
       }}>
       <ChromePicker
-        color={this.props.value ? Color(this.props.value).object() : null}
+        color={this.color.object()}
         onChange={c => this.props.onChange(formatColor(c))}
       />
       <div

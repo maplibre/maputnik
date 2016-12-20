@@ -1,4 +1,5 @@
 import React from 'react'
+import Immutable from 'immutable'
 import { saveAs } from 'file-saver'
 
 import Drawer from 'rebass/dist/Drawer'
@@ -99,7 +100,7 @@ export default class App extends React.Component {
   }
 
   onLayerChanged(layer) {
-    const changedStyle = this.state.mapStyle.setIn(['layers', layer.get('id')], layer)
+    const changedStyle = this.state.mapStyle.setIn(['layers', layer.id], Immutable.fromJS(layer))
     this.onStyleChanged(changedStyle)
   }
 
@@ -125,6 +126,7 @@ export default class App extends React.Component {
 
   render() {
     const selectedLayer = this.state.mapStyle.getIn(['layers', this.state.selectedLayerId], null)
+
     return <div style={{ fontFamily: theme.fontFamily, color: theme.color, fontWeight: 300 }}>
       <Toolbar
         mapStyle={this.state.mapStyle}
@@ -160,7 +162,7 @@ export default class App extends React.Component {
         width: 300,
         backgroundColor: colors.gray}
       }>
-      {selectedLayer && <LayerEditor layer={selectedLayer} onLayerChanged={this.onLayerChanged.bind(this)} sources={this.layerWatcher.sources} vectorLayers={this.layerWatcher.vectorLayers}/>}
+      {selectedLayer && <LayerEditor layer={selectedLayer.toJS()} onLayerChanged={this.onLayerChanged.bind(this)} sources={this.layerWatcher.sources} vectorLayers={this.layerWatcher.vectorLayers}/>}
       </div>
       {this.mapRenderer()}
     </div>
