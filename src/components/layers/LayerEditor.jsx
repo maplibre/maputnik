@@ -1,5 +1,4 @@
 import React from 'react'
-import Immutable from 'immutable'
 
 import Toolbar from 'rebass/dist/Toolbar'
 import NavItem from 'rebass/dist/NavItem'
@@ -29,8 +28,8 @@ class UnsupportedLayer extends React.Component {
 export default class LayerEditor extends React.Component {
   static propTypes = {
     layer: React.PropTypes.object.isRequired,
-    sources: React.PropTypes.instanceOf(Immutable.Map),
-    vectorLayers: React.PropTypes.instanceOf(Immutable.Map),
+    sources: React.PropTypes.object,
+    vectorLayers: React.PropTypes.object,
     onLayerChanged: React.PropTypes.func,
     onLayerDestroyed: React.PropTypes.func,
   }
@@ -94,7 +93,7 @@ export default class LayerEditor extends React.Component {
       return <PropertyGroup
         key={this.props.group}
         layer={this.props.layer}
-        groupFields={Immutable.OrderedSet(group.fields)}
+        groupFields={group.fields}
         onChange={this.onPropertyChange.bind(this)}
       />
     })
@@ -119,19 +118,20 @@ export default class LayerEditor extends React.Component {
         </NavItem>
       </Toolbar>
         {propertyGroups}
+           {this.props.layer.type !== 'background' && <div>
           <FilterEditor
             filter={this.props.layer.filter}
-            properties={this.props.vectorLayers.get(this.props.layer['source-layer'])}
-            onChange={f => this.onFilterChange(Immutable.fromJS(f))}
+            properties={this.props.vectorLayers[this.props.layer['source-layer']]}
+            onChange={f => this.onFilterChange(f)}
           />
-           {this.props.layer.type !== 'background'
-             && <SourceEditor
-              source={this.props.layer.source}
-              sourceLayer={this.props.layer['source-layer']}
-              sources={this.props.sources}
-              onSourceChange={console.log}
-              onSourceLayerChange={console.log}
-            />}
+          <SourceEditor
+            source={this.props.layer.source}
+            sourceLayer={this.props.layer['source-layer']}
+            sources={this.props.sources}
+            onSourceChange={console.log}
+            onSourceLayerChange={console.log}
+          />
+          </div>}
     </div>
   }
 }

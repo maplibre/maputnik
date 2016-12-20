@@ -1,5 +1,4 @@
 import React from 'react'
-import Immutable from 'immutable'
 
 import Heading from 'rebass/dist/Heading'
 import Toolbar from 'rebass/dist/Toolbar'
@@ -13,7 +12,7 @@ import PureRenderMixin from 'react-addons-pure-render-mixin';
 // List of collapsible layer editors
 export class SourceList extends React.Component {
 	static propTypes = {
-		sources: React.PropTypes.instanceOf(Immutable.Map).isRequired,
+		sources: React.PropTypes.object.isRequired,
 		onSourcesChanged: React.PropTypes.func.isRequired,
 	}
 

@@ -1,7 +1,5 @@
 import React from 'react'
-import PureRenderMixin from 'react-addons-pure-render-mixin'
 import Radium from 'radium'
-import Immutable from 'immutable'
 import Color from 'color'
 
 import Heading from 'rebass/dist/Heading'
@@ -36,11 +34,6 @@ class LayerListItem extends React.Component {
     layerId: React.PropTypes.string.isRequired,
     layerType: React.PropTypes.string.isRequired,
     onLayerSelected: React.PropTypes.func.isRequired,
-  }
-
-  constructor(props) {
-    super(props)
-    this.shouldComponentUpdate = PureRenderMixin.shouldComponentUpdate.bind(this);
   }
 
   render() {

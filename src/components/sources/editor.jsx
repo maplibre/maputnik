@@ -1,5 +1,4 @@
 import React from 'react'
-import Immutable from 'immutable'
 
 import Input from 'rebass/dist/Input'
 import Toolbar from 'rebass/dist/Toolbar'
@@ -20,7 +19,7 @@ class UnsupportedSource extends React.Component {
 
 class VectorSource extends React.Component {
 	static propTypes = {
-		source: React.PropTypes.instanceOf(Immutable.Map).isRequired,
+		source: React.PropTypes.object.isRequired,
 		onSourceChanged: React.PropTypes.func.isRequired,
   }
 
@@ -45,7 +44,7 @@ class VectorSource extends React.Component {
 export class SourceEditor extends React.Component {
 	static propTypes = {
 		sourceId: React.PropTypes.string.isRequired,
-		source: React.PropTypes.instanceOf(Immutable.Map).isRequired,
+		source: React.PropTypes.object.isRequired,
 		onSourceChanged: React.PropTypes.func.isRequired,
 	}
 

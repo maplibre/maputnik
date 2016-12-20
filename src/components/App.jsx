@@ -1,5 +1,4 @@
 import React from 'react'
-import Immutable from 'immutable'
 import { saveAs } from 'file-saver'
 
 import Drawer from 'rebass/dist/Drawer'
@@ -43,7 +42,7 @@ export default class App extends React.Component {
     this.state = {
       accessToken: this.settingsStore.accessToken,
       mapStyle: style.emptyStyle,
-      selectedLayerId: null,
+      selectedLayerIndex: 0,
     }
   }
 
@@ -60,19 +59,20 @@ export default class App extends React.Component {
   }
 
   onStyleDownload() {
-    const mapStyle = style.toJSON(this.state.mapStyle)
+    const mapStyle = this.state.mapStyle
     const blob = new Blob([JSON.stringify(mapStyle, null, 4)], {type: "application/json;charset=utf-8"});
     saveAs(blob, mapStyle.id + ".json");
     this.onStyleSave()
   }
 
   onStyleUpload(newStyle) {
+    console.log('upload', newStyle)
     const savedStyle = this.styleStore.save(newStyle)
     this.setState({ mapStyle: savedStyle })
   }
 
   onStyleSave() {
-    const snapshotStyle = this.state.mapStyle.set('modified', new Date().toJSON())
+    const snapshotStyle = this.state.mapStyle.modified = new Date().toJSON()
     this.setState({ mapStyle: snapshotStyle })
     console.log('Save')
     this.styleStore.save(snapshotStyle)
@@ -88,20 +88,22 @@ export default class App extends React.Component {
   }
 
   onLayersChanged(changedLayers) {
-    const changedStyle = this.state.mapStyle.set('layers', changedLayers)
-    this.onStyleChanged(changedStyle)
+    const changedStyle = {
+      ...this.state.mapStyle,
+      layers: [changedLayers]
+    }
+    this.setState({ mapStyle: newStyle })
   }
 
   onLayerChanged(layer) {
-    console.log('layer changed', layer)
-    const layers = this.state.mapStyle.get('layers')
-    const changedLayers = layers.set(layer.get('id'), layer)
-    this.onLayersChanged(changedLayers)
-  }
-
-  onLayerChanged(layer) {
-    const changedStyle = this.state.mapStyle.setIn(['layers', layer.id], Immutable.fromJS(layer))
-    this.onStyleChanged(changedStyle)
+    const changedStyle = {
+      ...this.state.mapStyle,
+      layers: {
+        ...this.state.mapStyle.layers,
+        [layer.id]: layer
+      }
+    }
+    this.setState({ mapStyle: changedStyle })
   }
 
   mapRenderer() {
@@ -112,7 +114,9 @@ export default class App extends React.Component {
         this.layerWatcher.map = map
       }
     }
-    const renderer = this.state.mapStyle.getIn(['metadata', 'maputnik:renderer'], 'mbgljs')
+
+    const metadata = this.state.mapStyle.metadata || {}
+    const renderer = metadata['maputnik:renderer'] || 'mbgljs'
     if(renderer === 'ol3') {
       return  <OpenLayers3Map {...mapProps} />
     } else {
@@ -121,11 +125,18 @@ export default class App extends React.Component {
   }
 
   onLayerSelected(layerId) {
-    this.setState({ selectedLayerId: layerId })
+    const layers = this.state.mapStyle.layers
+    for (let i = 0; i < layers.length; i++) {
+      if(layers[i].id === layerId) {
+        this.setState({ selectedLayerIndex: i })
+        break
+      }
+    }
   }
 
   render() {
-    const selectedLayer = this.state.mapStyle.getIn(['layers', this.state.selectedLayerId], null)
+    const layers = this.state.mapStyle.layers || []
+    const selectedLayer = layers.length > 0 ? layers[this.state.selectedLayerIndex] : null
 
     return <div style={{ fontFamily: theme.fontFamily, color: theme.color, fontWeight: 300 }}>
       <Toolbar
@@ -149,7 +160,7 @@ export default class App extends React.Component {
         <LayerList
           onLayersChanged={this.onLayersChanged.bind(this)}
           onLayerSelected={this.onLayerSelected.bind(this)}
-          layers={this.state.mapStyle.get('layers')}
+          layers={layers}
         />
       </div>
       <div style={{
@@ -162,7 +173,7 @@ export default class App extends React.Component {
         width: 300,
         backgroundColor: colors.gray}
       }>
-      {selectedLayer && <LayerEditor layer={selectedLayer.toJS()} onLayerChanged={this.onLayerChanged.bind(this)} sources={this.layerWatcher.sources} vectorLayers={this.layerWatcher.vectorLayers}/>}
+      {selectedLayer && <LayerEditor layer={selectedLayer} onLayerChanged={this.onLayerChanged.bind(this)} sources={this.layerWatcher.sources} vectorLayers={this.layerWatcher.vectorLayers}/>}
       </div>
       {this.mapRenderer()}
     </div>

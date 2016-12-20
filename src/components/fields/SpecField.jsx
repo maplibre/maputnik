@@ -1,5 +1,4 @@
 import React from 'react'
-import Immutable from 'immutable'
 import color from 'color'
 
 import GlSpec from 'mapbox-gl-style-spec/reference/latest.min.js'
@@ -11,10 +10,6 @@ import StringField from './StringField'
 
 import input from '../../config/input.js'
 import theme from '../../config/rebass.js'
-
-function isZoomField(value) {
-  return Immutable.Map.isMap(value)
-}
 
 function labelFromFieldName(fieldName) {
   let label = fieldName.split('-').slice(1).join(' ')

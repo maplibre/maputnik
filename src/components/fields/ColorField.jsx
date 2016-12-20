@@ -35,7 +35,6 @@ class ColorField extends React.Component {
   }
 
   render() {
-    console.log(Color(this.props.value))
     const picker = <div style={{
         position: 'absolute',
         left: 163,

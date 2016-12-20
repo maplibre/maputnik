@@ -1,5 +1,4 @@
 import React from 'react'
-import Immutable from 'immutable'
 import FileReaderInput from 'react-file-reader-input'
 
 import Button from 'rebass/dist/Button'
@@ -37,7 +36,7 @@ const InlineBlock = props => <div style={{display: "inline-block", ...props.styl
 
 export default class Toolbar extends React.Component {
   static propTypes = {
-    mapStyle: React.PropTypes.instanceOf(Immutable.Map).isRequired,
+    mapStyle: React.PropTypes.object.isRequired,
     onStyleChanged: React.PropTypes.func.isRequired,
     // A new style has been uploaded
     onStyleUpload: React.PropTypes.func.isRequired,
@@ -60,7 +59,7 @@ export default class Toolbar extends React.Component {
     const reader = new FileReader();
     reader.readAsText(file, "UTF-8");
     reader.onload = e => {
-      let mapStyle = style.fromJSON(JSON.parse(e.target.result))
+      let mapStyle = JSON.parse(e.target.result)
       mapStyle = style.ensureMetadataExists(mapStyle)
       this.props.onStyleUpload(mapStyle);
     }
@@ -68,7 +67,7 @@ export default class Toolbar extends React.Component {
   }
 
   saveButton() {
-    if(this.props.mapStyle.get('layers').size > 0) {
+    if(this.props.mapStyle.layers.length > 0) {
       return <InlineBlock>
         <Button onClick={this.props.onStyleSave} big={true}>
           <MdSave />

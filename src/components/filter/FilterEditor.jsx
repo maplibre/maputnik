@@ -1,5 +1,4 @@
 import React from 'react'
-import Immutable from 'immutable'
 import PureRenderMixin from 'react-addons-pure-render-mixin';
 import GlSpec from 'mapbox-gl-style-spec/reference/latest.min.js'
 
@@ -75,11 +74,11 @@ class SingleFilterEditor extends React.Component {
   static propTypes = {
     filter: React.PropTypes.array.isRequired,
     onChange: React.PropTypes.func.isRequired,
-    properties: React.PropTypes.instanceOf(Immutable.Map),
+    properties: React.PropTypes.object,
   }
 
   static defaultProps = {
-    properties: Immutable.Map(),
+    properties: {},
   }
 
   onFilterPartChanged(filterOp, propertyName, filterArgs) {
@@ -103,9 +102,9 @@ class SingleFilterEditor extends React.Component {
         value={propertyName}
         onChange={newPropertyName => this.onFilterPartChanged(filterOp, newPropertyName, filterArgs)}
       >
-        {this.props.properties.keySeq().map(propName => {
+        {Object.keys(this.props.properties).map(propName => {
           return <option key={propName} value={propName}>{propName}</option>
-        }).toIndexedSeq()}
+        })}
       </select>
       <OperatorSelect
         value={filterOp}
@@ -129,7 +128,7 @@ class SingleFilterEditor extends React.Component {
 export default class CombiningFilterEditor extends React.Component {
   static propTypes = {
     /** Properties of the vector layer and the available fields */
-    properties: React.PropTypes.instanceOf(Immutable.Map).isRequired,
+    properties: React.PropTypes.object.isRequired,
     filter: React.PropTypes.array.isRequired,
     onChange: React.PropTypes.func.isRequired,
   }

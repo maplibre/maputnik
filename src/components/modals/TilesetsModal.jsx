@@ -1,5 +1,4 @@
 import React from 'react'
-import Immutable from 'immutable'
 
 import Overlay from 'rebass/dist/Overlay'
 import Panel from 'rebass/dist/Panel'
@@ -19,19 +18,13 @@ import theme from '../../config/rebass'
 
 class TilesetsModal extends React.Component {
   static propTypes = {
-    mapStyle: React.PropTypes.instanceOf(Immutable.Map).isRequired,
-    onStyleChanged: React.PropTypes.func.isRequired,
+    mapStyle: React.PropTypes.object.isRequired,
     open: React.PropTypes.bool.isRequired,
     toggle: React.PropTypes.func.isRequired,
   }
 
   constructor(props) {
     super(props);
-  }
-
-  onChange(property, e) {
-    const changedStyle = this.props.mapStyle.set(property, e.target.value)
-    this.props.onStyleChanged(changedStyle)
   }
 
   render() {

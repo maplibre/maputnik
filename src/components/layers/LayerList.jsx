@@ -1,6 +1,5 @@
 import React from 'react'
 import PureRenderMixin from 'react-addons-pure-render-mixin';
-import Immutable from 'immutable'
 
 import Heading from 'rebass/dist/Heading'
 import Toolbar from 'rebass/dist/Toolbar'
@@ -15,7 +14,7 @@ import { margins } from '../../config/scales.js'
 import {SortableContainer, SortableHandle, arrayMove} from 'react-sortable-hoc';
 
 const layerListPropTypes = {
-  layers: React.PropTypes.instanceOf(Immutable.OrderedMap),
+  layers: React.PropTypes.array.isRequired,
   onLayersChanged: React.PropTypes.func.isRequired,
   onLayerSelected: React.PropTypes.func,
 }
@@ -34,23 +33,18 @@ class LayerListContainer extends React.Component {
   }
 
   onLayerDestroyed(deletedLayer) {
-    const remainingLayers = this.props.layers.delete(deletedLayer.get('id'))
+    const remainingLayers = this.props.layers.delete(deletedLayer.id)
     this.props.onLayersChanged(remainingLayers)
   }
 
-  onLayerChanged(layer) {
-    const changedLayers = this.props.layers.set(layer.get('id'), layer)
-    this.props.onLayersChanged(changedLayers)
-  }
-
   render() {
-    const layerPanels = this.props.layers.toIndexedSeq().map((layer, index) => {
-      const layerId = layer.get('id')
+    const layerPanels = this.props.layers.map((layer, index) => {
+      const layerId = layer.id
       return <LayerListItem
         index={index}
         key={layerId}
         layerId={layerId}
-        layerType={layer.get('type')}
+        layerType={layer.type}
         onLayerSelected={this.props.onLayerSelected}
       />
     })
@@ -73,13 +67,8 @@ export default class LayerList extends React.Component {
   onSortEnd(move) {
     const { oldIndex, newIndex } = move
     if(oldIndex === newIndex) return
-
-    //TODO: Implement this more performant for immutable collections
-    // instead of converting back and forth
-    let layers = this.props.layers.toArray()
+    let layers = this.props.layers.slice(0)
     layers = arrayMove(layers, oldIndex, newIndex)
-    layers = Immutable.OrderedMap(layers.map(l => [l.get('id'), l]))
-
     this.props.onLayersChanged(layers)
   }
 

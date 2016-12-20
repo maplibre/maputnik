@@ -1,5 +1,4 @@
 import React from 'react'
-import Immutable from 'immutable'
 import Color from 'color'
 
 import NumberField from './NumberField'
@@ -14,7 +13,7 @@ import colors from '../../config/colors.js'
 import { margins } from '../../config/scales.js'
 
 function isZoomField(value) {
-  return Immutable.Map.isMap(value)
+  return typeof value === 'object' && value.stops
 }
 
 const specFieldProps =  {
@@ -46,9 +45,9 @@ export default class ZoomSpecField extends React.Component {
     </label>
 
     if(isZoomField(this.props.value)) {
-      const zoomFields = this.props.value.get('stops').map(stop => {
-        const zoomLevel = stop.get(0)
-        const value = stop.get(1)
+      const zoomFields = this.props.value.stops.map(stop => {
+        const zoomLevel = stop[0]
+        const value = stop[1]
 
         return <div style={input.property} key={zoomLevel}>
           {label}
@@ -71,7 +70,7 @@ export default class ZoomSpecField extends React.Component {
             max={22}
           />
         </div>
-      }).toSeq()
+      })
       return <div style={{
           border: 1,
           borderStyle: 'solid',

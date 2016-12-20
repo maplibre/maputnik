@@ -1,5 +1,4 @@
 import React from 'react'
-import Immutable from 'immutable'
 
 import Select from 'rebass/dist/Select'
 import Overlay from 'rebass/dist/Overlay'
@@ -15,7 +14,7 @@ import Input from 'rebass/dist/Input'
 
 class SettingsModal extends React.Component {
   static propTypes = {
-    mapStyle: React.PropTypes.instanceOf(Immutable.Map).isRequired,
+    mapStyle: React.PropTypes.object.isRequired,
     onStyleChanged: React.PropTypes.func.isRequired,
     open: React.PropTypes.bool.isRequired,
     toggle: React.PropTypes.func.isRequired,
@@ -47,31 +46,31 @@ class SettingsModal extends React.Component {
         <Input
           name="name"
           label="Name"
-          value={this.props.mapStyle.get('name')}
+          value={this.props.mapStyle.name}
           onChange={this.onChange.bind(this, "name")}
         />
         <Input
           name="owner"
           label="Owner"
-          value={this.props.mapStyle.get('owner')}
+          value={this.props.mapStyle.owner}
           onChange={this.onChange.bind(this, "owner")}
         />
         <Input
           name="sprite"
           label="Sprite URL"
-          value={this.props.mapStyle.get('sprite')}
+          value={this.props.mapStyle.sprite}
           onChange={this.onChange.bind(this, "sprite")}
         />
         <Input
           name="glyphs"
           label="Glyphs URL"
-          value={this.props.mapStyle.get('glyphs')}
+          value={this.props.mapStyle.glyphs}
           onChange={this.onChange.bind(this, "glyphs")}
         />
         <Input
           name="glyphs"
           label="Glyphs URL"
-          value={this.props.mapStyle.get('glyphs')}
+          value={this.props.mapStyle.glyphs}
           onChange={this.onChange.bind(this, "glyphs")}
         />
         <Select

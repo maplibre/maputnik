@@ -8,18 +8,8 @@ import Toolbar from 'rebass/dist/Toolbar'
 import NavItem from 'rebass/dist/NavItem'
 import Space from 'rebass/dist/Space'
 
-import Immutable from 'immutable'
-import PureRenderMixin from 'react-addons-pure-render-mixin';
-
 /** About page with basic infos and links to github repo */
 export class About extends React.Component {
-	static propTypes = {}
-
-	constructor(props) {
-		super(props);
-		this.shouldComponentUpdate = PureRenderMixin.shouldComponentUpdate.bind(this);
-	}
-
 	render() {
 		return <div>
 			<Toolbar style={{marginRight: 20}}>

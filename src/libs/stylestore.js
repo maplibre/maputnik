@@ -1,5 +1,4 @@
 import { colorizeLayers } from './style.js'
-import Immutable from 'immutable'
 import style from './style.js'
 
 const storagePrefix = "maputnik"
@@ -18,7 +17,7 @@ export function loadDefaultStyle(cb) {
 
   request.onload = () => {
     if (request.status >= 200 && request.status < 400) {
-      cb(style.ensureMetadataExists(style.fromJSON(request.responseText)))
+      cb(style.ensureMetadataExists(JSON.parse(request.responseText)))
     } else {
       cb(style.emptyStyle)
     }
@@ -104,15 +103,15 @@ export class StyleStore {
     const styleId = window.localStorage.getItem(storageKeys.latest)
     const styleItem = window.localStorage.getItem(styleKey(styleId))
 
-    if(styleItem) return cb(style.fromJSON(styleItem))
+    if(styleItem) return cb(JSON.parse(styleItem))
     cb(style.emptyStyle)
   }
 
   // Save current style replacing previous version
   save(mapStyle) {
-    const key = styleKey(mapStyle.get('id'))
-    window.localStorage.setItem(key, JSON.stringify(style.toJSON(mapStyle)))
-    window.localStorage.setItem(storageKeys.latest, mapStyle.get('id'))
+    const key = styleKey(mapStyle.id)
+    window.localStorage.setItem(key, JSON.stringify(mapStyle))
+    window.localStorage.setItem(storageKeys.latest, mapStyle.id)
     return mapStyle
   }
 }

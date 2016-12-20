@@ -1,5 +1,4 @@
 import React from 'react'
-import Immutable from 'immutable'
 import GlSpec from 'mapbox-gl-style-spec/reference/latest.min.js'
 
 import ZoomSpecField from './ZoomSpecField'
@@ -26,7 +25,7 @@ function getGroupName(layerType, fieldName) {
 export default class PropertyGroup extends React.Component {
   static propTypes = {
     layer: React.PropTypes.object.isRequired,
-    groupFields: React.PropTypes.instanceOf(Immutable.OrderedSet).isRequired,
+    groupFields: React.PropTypes.array.isRequired,
     onChange: React.PropTypes.func.isRequired,
   }
 
@@ -50,7 +49,7 @@ export default class PropertyGroup extends React.Component {
         value={fieldValue}
         fieldSpec={fieldSpec}
       />
-    }).toIndexedSeq()
+    })
 
     return <div style={{
       padding: margins[2],

@@ -1,6 +1,4 @@
-import Immutable from 'immutable'
 import throttle from 'lodash.throttle'
-import entries from 'lodash.topairs'
 
 /** Listens to map events to build up a store of available vector
  * layers contained in the tiles */
@@ -47,22 +45,15 @@ export default class LayerWatcher {
         this._vectorLayers[vectorLayerId] = knownProperties
       })
     })
-
-    console.log(this.vectorLayers.toJSON())
+    console.log(this.vectorLayers)
   }
 
   /** Access all known sources and their vector tile ids */
   get sources() {
-    return Immutable.Map(Object.keys(this._sources).map(key => {
-      return [key, Immutable.Set(this._sources[key])]
-    }))
+    return this._sources
   }
 
   get vectorLayers() {
-    return Immutable.Map(entries(this._vectorLayers).map(([key, layer]) => {
-      return [key, Immutable.Map(entries(layer).map(([propId, values]) => {
-        return [propId, Immutable.Set(Object.keys(values))]
-      }))]
-    }))
+    return this._vectorLayers
   }
 }

@@ -1,6 +1,4 @@
 import React from 'react'
-import PureRenderMixin from 'react-addons-pure-render-mixin';
-import Immutable from 'immutable'
 
 import PropertyGroup from '../fields/PropertyGroup'
 import input from '../../config/input.js'
@@ -16,23 +14,18 @@ export default class SourceEditor extends React.Component {
 
     /** List of available sources in the style
      * https://www.mapbox.com/mapbox-gl-style-spec/#root-sources */
-    sources: React.PropTypes.instanceOf(Immutable.Map).isRequired,
+    sources: React.PropTypes.object.isRequired,
   }
 
-	constructor(props) {
-		super(props);
-		this.shouldComponentUpdate = PureRenderMixin.shouldComponentUpdate.bind(this);
-	}
-
   render() {
-		const options = this.props.sources.map((source, sourceId)=> {
+		const options = Object.keys(this.props.sources).map(sourceId => {
 			return <option key={sourceId} value={sourceId}>{sourceId}</option>
-		}).toIndexedSeq()
+		})
 
-    const layerOptions = this.props.sources.get(this.props.source, Immutable.Set()).map(vectorLayerId => {
+    const layerOptions = this.props.sources[this.props.source].map(vectorLayerId => {
       const id = vectorLayerId
 			return <option key={id} value={id}>{id}</option>
-		}).toIndexedSeq()
+		})
 
 	  return <div>
       <div style={input.property}>
