@@ -41,60 +41,43 @@ export default class SpecField extends React.Component {
     style: React.PropTypes.object,
   }
 
-  onValueChanged(property, value) {
-    return this.props.onChange(property, value)
-  }
-
   render() {
+    const commonProps = {
+      doc: this.props.fieldSpec.doc,
+      style: this.props.style,
+      value: this.props.value,
+      name: this.props.fieldName,
+      onChange: newValue => this.props.onChange(this.props.fieldName, newValue)
+    }
     switch(this.props.fieldSpec.type) {
       case 'number': return (
         <NumberField
-          onChange={this.onValueChanged.bind(this, this.props.fieldName)}
-          value={this.props.value}
-          name={this.props.fieldName}
+          {...commonProps}
           default={this.props.fieldSpec.default}
           min={this.props.fieldSpec.min}
           max={this.props.fieldSpec.max}
           unit={this.props.fieldSpec.unit}
-          doc={this.props.fieldSpec.doc}
-          style={this.props.style}
         />
       )
       case 'enum': return (
         <EnumField
-          onChange={this.onValueChanged.bind(this, this.props.fieldName)}
-          value={this.props.value}
-          name={this.props.fieldName}
+          {...commonProps}
           allowedValues={Object.keys(this.props.fieldSpec.values)}
-          doc={this.props.fieldSpec.doc}
-          style={this.props.style}
         />
       )
       case 'string': return (
         <StringField
-          onChange={this.onValueChanged.bind(this, this.props.fieldName)}
-          value={this.props.value}
-          name={this.props.fieldName}
-          doc={this.props.fieldSpec.doc}
-          style={this.props.style}
+          {...commonProps}
         />
       )
       case 'color': return (
         <ColorField
-          onChange={this.onValueChanged.bind(this, this.props.fieldName)}
-          value={this.props.value}
-          name={this.props.fieldName}
-          doc={this.props.fieldSpec.doc}
-          style={this.props.style}
+          {...commonProps}
         />
       )
       case 'boolean': return (
         <BooleanField
-          onChange={this.onValueChanged.bind(this, this.props.fieldName)}
-          value={this.props.value}
-          name={this.props.fieldName}
-          doc={this.props.fieldSpec.doc}
-          style={this.props.style}
+          {...commonProps}
         />
       )
       default: return null

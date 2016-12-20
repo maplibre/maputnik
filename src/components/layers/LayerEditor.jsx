@@ -61,6 +61,7 @@ export default class LayerEditor extends React.Component {
 
   onPropertyChange(group, property, newValue) {
     const layer = this.props.layer
+    console.log(group, property, newValue)
     const changedLayer = layer.setIn([group, property], newValue)
     this.props.onLayerChanged(changedLayer)
   }

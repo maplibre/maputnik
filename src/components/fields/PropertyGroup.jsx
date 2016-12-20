@@ -9,12 +9,17 @@ import { margins } from '../../config/scales'
 /** Extract field spec by {@fieldName} from the {@layerType} in the
  * style specification from either the paint or layout group */
 function getFieldSpec(layerType, fieldName) {
+  const groupName = getGroupName(layerType, fieldName)
+  const group = GlSpec[groupName + '_' + layerType]
+  return group[fieldName]
+}
+
+function getGroupName(layerType, fieldName) {
   const paint  = GlSpec['paint_' + layerType] || {}
-  const layout = GlSpec['layout_' + layerType] || {}
   if (fieldName in paint) {
-    return paint[fieldName]
+    return 'paint'
   } else {
-    return layout[fieldName]
+    return 'layout'
   }
 }
 
@@ -25,12 +30,17 @@ export default class PropertyGroup extends React.Component {
     onChange: React.PropTypes.func.isRequired,
   }
 
+  onPropertyChange(property, newValue) {
+    const group = getGroupName(this.props.layer.get('type'), property)
+    this.props.onChange(group , property ,newValue)
+  }
+
   render() {
     const fields = this.props.groupFields.map(fieldName => {
       const fieldSpec = getFieldSpec(this.props.layer.get('type'), fieldName)
       const fieldValue = this.props.layer.getIn(['paint', fieldName], this.props.layer.getIn(['layout', fieldName]))
       return <ZoomSpecField
-        onChange={this.props.onChange}
+        onChange={this.onPropertyChange.bind(this)}
         key={fieldName}
         fieldName={fieldName}
         value={fieldValue}

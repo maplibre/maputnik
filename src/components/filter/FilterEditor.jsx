@@ -75,7 +75,11 @@ class SingleFilterEditor extends React.Component {
   static propTypes = {
     filter: React.PropTypes.array.isRequired,
     onChange: React.PropTypes.func.isRequired,
-    properties: React.PropTypes.instanceOf(Immutable.Map).isRequired,
+    properties: React.PropTypes.instanceOf(Immutable.Map),
+  }
+
+  static defaultProps = {
+    properties: Immutable.Map(),
   }
 
   onFilterPartChanged(filterOp, propertyName, filterArgs) {
