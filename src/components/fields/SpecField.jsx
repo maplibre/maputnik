@@ -49,8 +49,8 @@ export default class SpecField extends React.Component {
         <NumberField
           {...commonProps}
           default={this.props.fieldSpec.default}
-          min={this.props.fieldSpec.min}
-          max={this.props.fieldSpec.max}
+          min={this.props.fieldSpec.minimum}
+          max={this.props.fieldSpec.maximum}
           unit={this.props.fieldSpec.unit}
         />
       )

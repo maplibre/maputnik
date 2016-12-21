@@ -25,12 +25,20 @@ class NumberField extends React.Component {
   }
 
   render() {
+    let stepSize = null
+    if(this.props.max && this.props.min) {
+      stepSize = (this.props.max - this.props.min) / 10
+    }
+
     return <input
       style={{
         ...input.input,
         ...this.props.style
       }}
       type="number"
+      min={this.props.min}
+      max={this.props.max}
+      step={stepSize}
       name={this.props.name}
       placeholder={this.props.default}
       value={this.props.value}
