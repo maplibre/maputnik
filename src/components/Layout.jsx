@@ -1,4 +1,5 @@
 import React from 'react'
+import ScrollContainer from './ScrollContainer'
 
 import theme from '../config/rebass'
 import colors from '../config/colors'
@@ -31,29 +32,33 @@ export default class Layout extends React.Component {
     }}>
       {this.props.toolbar}
       <div style={{
-        position: 'absolute',
+        position: 'fixed',
         bottom: 0,
         height: "100%",
         top: 40,
         left: 0,
-        zIndex: 100,
+        zIndex: 1,
         width: 200,
         overflow: "hidden",
         backgroundColor: colors.black
       }}>
-        {this.props.layerList}
+        <ScrollContainer>
+          {this.props.layerList}
+        </ScrollContainer>
       </div>
       <div style={{
-        position: 'absolute',
+        position: 'fixed',
         bottom: 0,
         height: "100%",
         top: 40,
         left: 200,
-        zIndex: 100,
+        zIndex: 1,
         width: 300,
         backgroundColor: colors.black
       }}>
-        {this.props.layerEditor}
+        <ScrollContainer>
+          {this.props.layerEditor}
+        </ScrollContainer>
       </div>
       {this.props.map}
     </div>

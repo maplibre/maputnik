@@ -22,7 +22,27 @@ class ColorField extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      pickerOpened: false
+      pickerOpened: false,
+    }
+  }
+
+  //TODO: I much rather would do this with absolute positioning
+  //but I am too stupid to get it to work together with fixed position
+  //and scrollbars so I have to fallback to JavaScript
+  calcPickerOffset() {
+    const elem = this.refs.colorInput
+    if(elem) {
+      const pos = elem.getBoundingClientRect()
+      return {
+        top: pos.top,
+        left: pos.left + 165,
+      }
+    } else {
+      console.log('No elem!!')
+      return {
+        top: 160,
+        left: 500,
+      }
     }
   }
 
@@ -35,10 +55,13 @@ class ColorField extends React.Component {
   }
 
   render() {
-    const picker = <div style={{
-        position: 'absolute',
-        left: 163,
-        top: 0,
+    const offset = this.calcPickerOffset()
+    const picker = <div
+      style={{
+        position: 'fixed',
+        zIndex: 1,
+        left: offset.left,
+        top: offset.top,
       }}>
       <ChromePicker
         color={this.color.object()}
@@ -53,7 +76,8 @@ class ColorField extends React.Component {
           right: '0px',
           bottom: '0px',
           left: '0px',
-        }} />
+        }}
+      />
     </div>
 
     return <div style={{
@@ -63,6 +87,7 @@ class ColorField extends React.Component {
     }}>
       {this.state.pickerOpened && picker}
       <input
+        ref="colorInput"
         onClick={this.togglePicker.bind(this)}
         style={{
           ...input.select,

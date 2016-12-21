@@ -3,7 +3,6 @@ import PureRenderMixin from 'react-addons-pure-render-mixin';
 import cloneDeep from 'lodash.clonedeep'
 
 import LayerListItem from './LayerListItem'
-import ScrollContainer from '../ScrollContainer'
 
 import style from '../../libs/style.js'
 import { margins } from '../../config/scales.js'
@@ -76,11 +75,9 @@ class LayerListContainer extends React.Component {
         onLayerVisibilityToggle={this.onLayerVisibilityToggle.bind(this)}
       />
     })
-    return <ScrollContainer>
-      <ul style={{ padding: margins[1], paddingRight: 0, margin: 0 }}>
-        {layerPanels}
-      </ul>
-    </ScrollContainer>
+    return <ul style={{ padding: margins[1], paddingRight: 0, margin: 0 }}>
+      {layerPanels}
+    </ul>
   }
 }
 

@@ -5,8 +5,6 @@ import FilterEditor from '../filter/FilterEditor'
 import PropertyGroup from '../fields/PropertyGroup'
 import LayerEditorGroup from './LayerEditorGroup'
 
-import ScrollContainer from '../ScrollContainer'
-
 import layout from '../../config/layout.json'
 import theme from '../../config/rebass.js'
 

@@ -3,6 +3,7 @@ import scrollbars from './scrollbars.scss'
 
 const ScrollContainer = (props) => {
   return <div className={scrollbars.darkScrollbar} style={{
+    overflowX: "visible",
     overflowY: "scroll",
     bottom:0,
     left:0,
