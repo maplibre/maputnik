@@ -1,6 +1,7 @@
 import React from 'react'
 import Modal from './Modal'
 import Heading from '../Heading'
+import Button from '../Button'
 import InputBlock from '../inputs/InputBlock'
 import StringInput from '../inputs/StringInput'
 import SelectInput from '../inputs/SelectInput'
@@ -11,13 +12,13 @@ import colors from '../../config/colors'
 import { margins, fontSizes } from '../../config/scales'
 
 import AddIcon from 'react-icons/lib/md/add-circle-outline'
+import DeleteIcon from 'react-icons/lib/md/delete'
 
 class PublicSource extends React.Component {
   static propTypes = {
     id: React.PropTypes.string.isRequired,
     type: React.PropTypes.string.isRequired,
     title: React.PropTypes.string.isRequired,
-    description: React.PropTypes.string.isRequired,
     onSelect: React.PropTypes.func.isRequired,
   }
 
@@ -32,34 +33,38 @@ class PublicSource extends React.Component {
         fontSize: fontSizes[4],
         color: colors.lowgray,
     }}>
-      <div style={{
+      <Button style={{
+        backgroundColor: 'transparent',
         padding: margins[2],
         display: 'flex',
         flexDirection: 'row',
       }}>
         <div>
-          <span style={{fontWeight: 700}}>{this.props.title}</span><br/>
+          <span style={{fontWeight: 700}}>{this.props.title}</span>
+          <br/>
           <span style={{fontSize: fontSizes[5]}}>#{this.props.id}</span>
         </div>
         <span style={{flexGrow: 1}} />
-        <a style={{
-          cursor: 'pointer',
-          backgroundColor: colors.midgray,
-          color: colors.lowgray,
-          padding: margins[1],
-          borderRadius: 2,
-        }}>
-          Add
-        </a>
-      </div>
+        <AddIcon />
+      </Button>
     </div>
   }
+}
+
+function editorMode(source) {
+  if(source.type === 'geojson') return ' geojson'
+  if(source.type === 'vector' && source.tiles) {
+    return 'tilexyz'
+  }
+  return 'tilejson'
 }
 
 class SourceEditorLayout extends React.Component {
   static propTypes = {
     sourceId: React.PropTypes.string.isRequired,
     source: React.PropTypes.object.isRequired,
+    onSourceDelete: React.PropTypes.func.isRequired,
+    onSourceChange: React.PropTypes.func.isRequired,
   }
 
   render() {
@@ -74,17 +79,14 @@ class SourceEditorLayout extends React.Component {
         fontSize: fontSizes[4],
         flexDirection: 'row',
       }}>
-        <span style={{fontSize: fontSizes[4], lineHeight: 2}}>#{this.props.sourceId}</span>
+        <span style={{fontWeight: 700, fontSize: fontSizes[4], lineHeight: 2}}>#{this.props.sourceId}</span>
         <span style={{flexGrow: 1}} />
-        <a style={{
-          cursor: 'pointer',
-          backgroundColor: colors.midgray,
-          color: colors.lowgray,
-          padding: margins[1],
-          borderRadius: 2,
-        }}>
-          Remove
-        </a>
+        <Button
+          onClick={this.props.onSourceDelete}
+          style={{backgroundColor: 'transparent'}}
+        >
+          <DeleteIcon />
+        </Button>
       </div>
       <div style={{
         borderColor: colors.gray,
@@ -92,7 +94,11 @@ class SourceEditorLayout extends React.Component {
         borderStyle: 'solid',
         padding: margins[1],
       }}>
-        <SourceTypeEditor source={this.props.source} />
+        <SourceTypeEditor
+          onChange={this.props.onSourceChange}
+          mode={editorMode(this.props.source)}
+          source={this.props.source}
+        />
       </div>
     </div>
   }
@@ -100,6 +106,21 @@ class SourceEditorLayout extends React.Component {
 
 class AddSource extends React.Component {
   static propTypes = {
+    onSourceAdd: React.PropTypes.func.isRequired,
+  }
+
+  constructor(props) {
+    super(props)
+    this.state = {
+      mode: 'tilejson',
+      source: {}
+    }
+  }
+
+  onSourceChange(source) {
+    this.setState({
+      source: source
+    })
   }
 
   render() {
@@ -114,21 +135,20 @@ class AddSource extends React.Component {
           options={[
             ['geojson', 'GeoJSON'],
             ['tilejson', 'Vector (TileJSON URL)'],
-            ['tileurls', 'Vector (Direct URLs)'],
+            ['tilexyz', 'Vector (XYZ URLs)'],
           ]}
-          value={'geojson'}
+          onChange={v => this.setState({mode: v})}
+          value={this.state.mode}
         />
       </InputBlock>
-      <a style={{
-        fontSize: fontSizes[4],
-        cursor: 'pointer',
-        backgroundColor: colors.midgray,
-        color: colors.lowgray,
-        padding: margins[1],
-        borderRadius: 2,
-      }}>
+      <SourceTypeEditor
+        onChange={this.onSourceChange.bind(this)}
+        mode={this.state.mode}
+        source={this.state.source}
+      />
+      <Button onClick={() => this.props.onSourceAdd(this.state.source)}>
         Add Source
-      </a>
+      </Button>
     </div>
   }
 }
@@ -165,7 +185,10 @@ class SourcesModal extends React.Component {
       {activeSources}
 
       <Heading level={4}>Add New Source</Heading>
-      <AddSource />
+      <div style={{maxWidth: 300}}>
+        <p style={{color: colors.lowgray, fontSize: fontSizes[5]}}>Add a new source to your style. You can only choose the source type and id at creation time!</p>
+        <AddSource onSourceAdd={} />
+      </div>
 
       <Heading level={4}>Choose Public Source</Heading>
       <p style={{color: colors.lowgray, fontSize: fontSizes[5]}}>Add one of the publicly availble sources to your style.</p>

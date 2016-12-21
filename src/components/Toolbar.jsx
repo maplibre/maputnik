@@ -113,8 +113,7 @@ export default class Toolbar extends React.Component {
       <SourcesModal
         mapStyle={this.props.mapStyle}
         onStyleChanged={this.props.onStyleChanged}
-        //isOpen={this.state.openSourcesModal}
-        isOpen={true}
+        isOpen={this.state.openSourcesModal}
         toggle={() => this.toggleSources.bind(this)}
       />
       <ToolbarAction style={{
