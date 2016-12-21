@@ -5,5 +5,30 @@
     "url": "mapbox://mapbox.mapbox-streets-v7",
     "title": "Mapbox Streets",
     "description": "Mapbox Streets provides a vector tileset for complex general-purpose maps."
+  },
+  {
+    "id": "tilezen",
+    "type": "vector",
+    "tiles": [
+      "http://tile.mapzen.com/mapzen/vector/v1/{layers}/{z}/{x}/{y}.pbf?api_key=mapzen-RVcyVL7"
+    ],
+    "minZoom": 0,
+    "maxZoom": 15,
+    "title": "Mapzen",
+    "description": "Mapzen vector tile services"
+  },
+  {
+    "id": "openmaptiles",
+    "type": "vector",
+    "url": "https://free.tilehosting.com/data/v3.json?key=25ItXg7aI5wurYDtttD",
+    "title": "OpenMapTiles",
+    "description": "A free vector tile schema for general-purpose maps."
+  },
+  {
+    "id": "swissnames-landscape",
+    "type": "geojson",
+    "data": "http://swissnames.lukasmartinelli.ch/data/landscape.geojson",
+    "title": "Geographic Names of Switzerland",
+    "description": "GeoJSON example from https://github.com/lukasmartinelli/swissnames"
   }
 ]

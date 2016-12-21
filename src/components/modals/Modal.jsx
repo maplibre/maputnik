@@ -4,7 +4,7 @@ import CloseIcon from 'react-icons/lib/md/close'
 
 import Overlay from './Overlay'
 import colors from '../../config/colors'
-import { margins } from '../../config/scales'
+import { margins, fontSizes } from '../../config/scales'
 
 class Modal extends React.Component {
   static propTypes = {
@@ -17,17 +17,21 @@ class Modal extends React.Component {
     return <Overlay isOpen={this.props.isOpen}>
       <div style={{
         minWidth: 350,
+        maxWidth: 600,
         backgroundColor: colors.gray,
       }}>
         <div style={{
           backgroundColor: colors.midgray,
           display: 'flex',
           flexDirection: 'row',
-          padding: margins[1]
+          padding: margins[1],
+          fontSize: fontSizes[4],
         }}>
           {this.props.title}
           <span style={{flexGrow: 1}} />
-          <a onClick={this.props.toggleOpen(false)}>
+          <a
+            onClick={this.props.toggleOpen(false)}
+            style={{ cursor: 'pointer' }} >
             <CloseIcon />
           </a>
         </div>

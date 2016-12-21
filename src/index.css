@@ -4,8 +4,9 @@
   font-weight: normal;
   font-style: normal;
 }
-.app {
 
+html {
+  font-size: 10px
 }
 
 .chrome-picker {

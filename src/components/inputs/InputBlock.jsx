@@ -1,5 +1,6 @@
 import React from 'react'
 import input from '../../config/input'
+import { margins } from '../../config/scales'
 
 /** Wrap a component with a label */
 class InputBlock extends React.Component {
@@ -15,7 +16,9 @@ class InputBlock extends React.Component {
 
   render() {
     return <div style={{
-      display: 'block'
+      display: 'block',
+      marginTop: margins[2],
+      marginBottom: margins[2],
     }}>
       <label style={input.label}>{this.props.label}</label>
       {this.props.children}

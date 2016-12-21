@@ -16,7 +16,7 @@ import MdHelpOutline from 'react-icons/lib/md/help-outline'
 import MdFindInPage from 'react-icons/lib/md/find-in-page'
 
 import SettingsModal from './modals/SettingsModal'
-import TilesetsModal from './modals/TilesetsModal'
+import SourcesModal from './modals/SourcesModal'
 
 import style from '../libs/style'
 import colors from '../config/colors'
@@ -53,7 +53,7 @@ export default class Toolbar extends React.Component {
     super(props)
     this.state = {
       openSettingsModal: false,
-      openTilesetsModal: false,
+      openSourcesModal: false,
     }
   }
 
@@ -90,8 +90,8 @@ export default class Toolbar extends React.Component {
     this.setState({openSettingsModal: !this.state.openSettingsModal})
   }
 
-  toggleTilesets() {
-    this.setState({openTilesetsModal: !this.state.openTilesetsModal})
+  toggleSources() {
+    this.setState({openSourcesModal: !this.state.openSourcesModal})
   }
 
   render() {
@@ -107,14 +107,14 @@ export default class Toolbar extends React.Component {
       <SettingsModal
         mapStyle={this.props.mapStyle}
         onStyleChanged={this.props.onStyleChanged}
-        open={this.state.openSettingsModal}
+        isOpen={this.state.openSettingsModal}
         toggle={() => this.toggleSettings.bind(this)}
       />
-      <TilesetsModal
+      <SourcesModal
         mapStyle={this.props.mapStyle}
         onStyleChanged={this.props.onStyleChanged}
-        open={this.state.openTilesetsModal}
-        toggle={() => this.toggleSettings.bind(this)}
+        isOpen={this.state.openSourcesModal}
+        toggle={() => this.toggleSources.bind(this)}
       />
       <ToolbarAction style={{
         width: 180,
@@ -132,9 +132,9 @@ export default class Toolbar extends React.Component {
       </ToolbarAction>
       {this.downloadButton()}
       {this.saveButton()}
-      <ToolbarAction onClick={this.toggleTilesets.bind(this)}>
+      <ToolbarAction onClick={this.toggleSources.bind(this)}>
         <MdLayers />
-        <IconText>Tilesets</IconText>
+        <IconText>Sources</IconText>
       </ToolbarAction>
       <ToolbarAction onClick={this.toggleSettings.bind(this)}>
         <MdSettings />

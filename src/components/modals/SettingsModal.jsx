@@ -10,7 +10,7 @@ class SettingsModal extends React.Component {
   static propTypes = {
     mapStyle: React.PropTypes.object.isRequired,
     onStyleChanged: React.PropTypes.func.isRequired,
-    open: React.PropTypes.bool.isRequired,
+    isOpen: React.PropTypes.bool.isRequired,
     toggle: React.PropTypes.func.isRequired,
   }
 
@@ -31,11 +31,11 @@ class SettingsModal extends React.Component {
   render() {
     const inputProps = {
       style: {
-        backgroundColor: colors.gray
+        backgroundColor: colors.midgray
       }
     }
     return <Modal
-      isOpen={this.props.open}
+      isOpen={this.props.isOpen}
       toggleOpen={this.props.toggle}
       title={'StyleSettings'}
     >
