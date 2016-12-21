@@ -28,9 +28,7 @@ export default class LayerEditorGroup extends React.Component {
   }
 
   render() {
-    return <div
-      onClick={e => this.props.onActiveToggle(!this.props.isActive)}
-    >
+    return <div>
       <div style={{
         fontSize: fontSizes[4],
         backgroundColor: colors.gray,
@@ -39,7 +37,9 @@ export default class LayerEditorGroup extends React.Component {
         display: 'flex',
         flexDirection: 'row',
         lineHeight: '20px',
-      }}>
+      }}
+        onClick={e => this.props.onActiveToggle(!this.props.isActive)}
+      >
         <span>{this.props.title}</span>
         <span style={{flexGrow: 1}} />
         <Collapser isCollapsed={this.props.isActive} />
