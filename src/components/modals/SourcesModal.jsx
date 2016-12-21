@@ -3,6 +3,7 @@ import Modal from './Modal'
 import Heading from '../Heading'
 import InputBlock from '../inputs/InputBlock'
 import StringInput from '../inputs/StringInput'
+import SelectInput from '../inputs/SelectInput'
 import SourceTypeEditor from '../sources/SourceTypeEditor'
 
 import publicSources from '../../config/tilesets.json'
@@ -97,6 +98,40 @@ class SourceEditorLayout extends React.Component {
   }
 }
 
+class AddSource extends React.Component {
+  static propTypes = {
+  }
+
+  render() {
+    return <div>
+      <InputBlock label={"Source ID"}>
+        <StringInput
+          value={'blubid'}
+        />
+      </InputBlock>
+      <InputBlock label={"Source Type"}>
+        <SelectInput
+          options={[
+            ['geojson', 'GeoJSON'],
+            ['tilejson', 'Vector (TileJSON URL)'],
+            ['tileurls', 'Vector (Direct URLs)'],
+          ]}
+          value={'geojson'}
+        />
+      </InputBlock>
+      <a style={{
+        fontSize: fontSizes[4],
+        cursor: 'pointer',
+        backgroundColor: colors.midgray,
+        color: colors.lowgray,
+        padding: margins[1],
+        borderRadius: 2,
+      }}>
+        Add Source
+      </a>
+    </div>
+  }
+}
 
 class SourcesModal extends React.Component {
   static propTypes = {
@@ -130,9 +165,8 @@ class SourcesModal extends React.Component {
       {activeSources}
 
       <Heading level={4}>Add New Source</Heading>
-      <InputBlock label={"TileJSON URL"}>
-        <StringInput {...inputProps} />
-      </InputBlock>
+      <AddSource />
+
       <Heading level={4}>Choose Public Source</Heading>
       <p style={{color: colors.lowgray, fontSize: fontSizes[5]}}>Add one of the publicly availble sources to your style.</p>
       <div style={{maxwidth: 500}}>
