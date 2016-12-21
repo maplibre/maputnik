@@ -42,6 +42,7 @@ const select = {
 }
 
 export default {
+  base,
   label,
   select,
   input,

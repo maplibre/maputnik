@@ -1,5 +1,8 @@
 import React from 'react'
-import input from '../../config/input.js'
+
+import input from '../../config/input'
+import colors from '../../config/colors'
+import { margins } from '../../config/scales'
 
 class BooleanField extends React.Component {
   static propTypes = {
@@ -11,17 +14,61 @@ class BooleanField extends React.Component {
   }
 
   render() {
-    return <input
-      type="checkbox"
-      style={{
-        ...input.checkbox,
-        ...this.props.style
-      }}
-      value={this.props.value}
-      onChange={e => {this.props.onChange(!this.props.value)}}
-      checked={this.props.value}
-    >
-    </input>
+    const styles = {
+			root: {
+        ...input.base,
+        padding: 0,
+				position: 'relative',
+        textAlign: 'center ',
+				cursor: 'pointer'
+			},
+			input: {
+				position: 'absolute',
+				zIndex: -1,
+				opacity: 0
+			},
+			box: {
+				display: 'inline-block',
+        textAlign: 'center ',
+        height: 15,
+        width: 15,
+				marginRight: margins[1],
+				marginBottom: null,
+				backgroundColor: colors.gray,
+				borderRadius: 2,
+				borderStyle: 'solid',
+				borderWidth: 2,
+				borderColor: colors.gray,
+				transition: 'background-color .1s ease-out'
+			},
+			icon: {
+				display: this.props.value ? null : 'none',
+				width: '75%',
+				height: '75%',
+				marginTop: 1,
+				fill: colors.lowgray
+			}
+    }
+
+		return <label style={styles.root}>
+      <input
+				type="checkbox"
+				style={{
+          ...styles.input,
+					...this.props.style,
+				}}
+				value={this.props.value}
+				onChange={e => {this.props.onChange(!this.props.value)}}
+				checked={this.props.value}
+			/>
+      <div style={styles.box}>
+        <svg
+          viewBox='0 0 32 32'
+          style={styles.icon}>
+          <path d='M1 14 L5 10 L13 18 L27 4 L31 8 L13 26 z' />
+        </svg>
+		  </div>
+		</label>
   }
 }
 
