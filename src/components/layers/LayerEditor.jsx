@@ -1,11 +1,9 @@
 import React from 'react'
 
-import Toolbar from 'rebass/dist/Toolbar'
-import NavItem from 'rebass/dist/NavItem'
-
 import SourceEditor from './SourceEditor'
 import FilterEditor from '../filter/FilterEditor'
 import PropertyGroup from '../fields/PropertyGroup'
+import LayerEditorGroup from './LayerEditorGroup'
 
 import ScrollContainer from '../ScrollContainer'
 
@@ -37,7 +35,30 @@ export default class LayerEditor extends React.Component {
   }
 
   constructor(props) {
-    super(props);
+    super(props)
+
+    //TODO: Clean this up and refactor into function
+    const editorGroups = {}
+    layout[this.props.layer.type].groups.forEach(group => {
+      editorGroups[group.title] = true
+    })
+    editorGroups['Source'] = true
+
+    this.state = { editorGroups }
+  }
+
+  componentWillReceiveProps(nextProps) {
+    const additionalGroups = { ...this.state.editorGroups }
+
+    layout[nextProps.layer.type].groups.forEach(group => {
+      if(!(group.title in additionalGroups)) {
+        additionalGroups[group.title] = true
+      }
+    })
+
+    this.setState({
+      editorGroups: additionalGroups
+    })
   }
 
   getChildContext () {
@@ -71,41 +92,62 @@ export default class LayerEditor extends React.Component {
     this.props.onLayerChanged(changedLayer)
   }
 
+  onGroupToggle(groupTitle, active) {
+    const changedActiveGroups = {
+      ...this.state.editorGroups,
+      [groupTitle]: active,
+    }
+    this.setState({
+      editorGroups: changedActiveGroups
+    })
+  }
+
   render() {
+    console.log('editor groups', this.state.editorGroups)
     const layerType = this.props.layer.type
     const groups = layout[layerType].groups
     const propertyGroups = groups.map(group => {
-      return <PropertyGroup
-        key={this.props.group}
-        layer={this.props.layer}
-        groupFields={group.fields}
-        onChange={this.onPropertyChange.bind(this)}
-      />
+      return <LayerEditorGroup
+        key={group.title}
+        title={group.title}
+        isActive={this.state.editorGroups[group.title]}
+        onActiveToggle={this.onGroupToggle.bind(this, group.title)}
+      >
+        <PropertyGroup
+          layer={this.props.layer}
+          groupFields={group.fields}
+          onChange={this.onPropertyChange.bind(this)}
+        />
+      </LayerEditorGroup>
     })
+
+    let dataGroup = null
+    if(this.props.layer.type !== 'background') {
+      dataGroup = <LayerEditorGroup
+        title="Source"
+        isActive={this.state.editorGroups['Source']}
+        onActiveToggle={this.onGroupToggle.bind(this, 'Source')}
+      >
+        <FilterEditor
+          filter={this.props.layer.filter}
+          properties={this.props.vectorLayers[this.props.layer['source-layer']]}
+          onChange={f => this.onFilterChange(f)}
+        />
+        <SourceEditor
+          source={this.props.layer.source}
+          sourceLayer={this.props.layer['source-layer']}
+          sources={this.props.sources}
+          onSourceChange={console.log}
+          onSourceLayerChange={console.log}
+        />
+      </LayerEditorGroup>
+    }
 
     return <div style={{
         padding: theme.scale[0],
     }}>
-      <Toolbar>
-        <NavItem style={{fontWeight: 400}}>
-          {this.props.layer.id}
-        </NavItem>
-      </Toolbar>
-        {propertyGroups}
-           {this.props.layer.type !== 'background' && <div>
-          <FilterEditor
-            filter={this.props.layer.filter}
-            properties={this.props.vectorLayers[this.props.layer['source-layer']]}
-            onChange={f => this.onFilterChange(f)}
-          />
-          <SourceEditor
-            source={this.props.layer.source}
-            sourceLayer={this.props.layer['source-layer']}
-            sources={this.props.sources}
-            onSourceChange={console.log}
-            onSourceLayerChange={console.log}
-          />
-          </div>}
+      {propertyGroups}
+      {dataGroup}
     </div>
   }
 }
