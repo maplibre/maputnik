@@ -1,16 +1,10 @@
 import React from 'react'
 
-import Select from 'rebass/dist/Select'
-import Overlay from 'rebass/dist/Overlay'
-import Panel from 'rebass/dist/Panel'
-import PanelHeader from 'rebass/dist/PanelHeader'
-import PanelFooter from 'rebass/dist/PanelFooter'
-import Button from 'rebass/dist/Button'
-import Text from 'rebass/dist/Text'
-import Media from 'rebass/dist/Media'
-import Close from 'rebass/dist/Close'
-import Space from 'rebass/dist/Space'
-import Input from 'rebass/dist/Input'
+import InputBlock from '../inputs/InputBlock'
+import StringInput from '../inputs/StringInput'
+import SelectInput from '../inputs/SelectInput'
+import Modal from './Modal'
+import colors from '../../config/colors'
 
 class SettingsModal extends React.Component {
   static propTypes = {
@@ -35,60 +29,54 @@ class SettingsModal extends React.Component {
   }
 
   render() {
-    return <Overlay open={this.props.open} >
-      <Panel theme={'secondary'}>
-        <PanelHeader theme={'default'}>
-          Style Settings
-          <Space auto />
-          <Close onClick={this.props.toggle('modalOpen')} />
-        </PanelHeader>
-        <br />
-        <Input
-          name="name"
-          label="Name"
+    const inputProps = {
+      style: {
+        backgroundColor: colors.gray
+      }
+    }
+    return <Modal
+      isOpen={this.props.open}
+      toggleOpen={this.props.toggle}
+      title={'StyleSettings'}
+    >
+      <InputBlock label={"Name"}>
+        <StringInput {...inputProps}
           value={this.props.mapStyle.name}
           onChange={this.onChange.bind(this, "name")}
         />
-        <Input
-          name="owner"
-          label="Owner"
+      </InputBlock>
+      <InputBlock label={"Owner"}>
+        <StringInput {...inputProps}
           value={this.props.mapStyle.owner}
           onChange={this.onChange.bind(this, "owner")}
         />
-        <Input
-          name="sprite"
-          label="Sprite URL"
+      </InputBlock>
+      <InputBlock label={"Sprite URL"}>
+        <StringInput {...inputProps}
           value={this.props.mapStyle.sprite}
           onChange={this.onChange.bind(this, "sprite")}
         />
-        <Input
-          name="glyphs"
-          label="Glyphs URL"
-          value={this.props.mapStyle.glyphs}
-          onChange={this.onChange.bind(this, "glyphs")}
-        />
-        <Input
-          name="glyphs"
-          label="Glyphs URL"
-          value={this.props.mapStyle.glyphs}
-          onChange={this.onChange.bind(this, "glyphs")}
-        />
-        <Select
-          label="Style Renderer"
-          name="renderer"
-          onChange={this.onRendererChange.bind(this)}
-          options={[{children: 'Mapbox GL JS', value: 'mbgljs'}, {children: 'Open Layers 3', value: 'ol3'}]}
-        />
+      </InputBlock>
 
-        <PanelFooter>
-          <Space auto />
-          <Button theme={'default'}
-            onClick={this.props.toggle('modalOpen')}
-            children='Close!'
-          />
-        </PanelFooter>
-      </Panel>
-    </Overlay>
+      <InputBlock label={"Glyphs URL"}>
+        <StringInput {...inputProps}
+          value={this.props.mapStyle.glyphs}
+          onChange={this.onChange.bind(this, "glyphs")}
+        />
+      </InputBlock>
+
+
+      <InputBlock label={"Style Renderer"}>
+        <SelectInput {...inputProps}
+          options={[
+            ['mbgljs', 'MapboxGL JS'],
+            ['ol3', 'Open Layers 3']
+          ]}
+          value={(this.props.mapStyle.metadata || {})['maputnik:renderer']}
+          onChange={this.onRendererChange.bind(this)}
+        />
+      </InputBlock>
+    </Modal>
   }
 }
 

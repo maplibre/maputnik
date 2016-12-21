@@ -1,9 +1,5 @@
 import React from 'react'
 
-import Space from 'rebass/dist/Space'
-import Toolbar from 'rebass/dist/Toolbar'
-import NavItem from 'rebass/dist/NavItem'
-
 import Modal from './Modal'
 
 import publicTilesets from '../../config/tilesets.json'
@@ -18,7 +14,7 @@ class TilesetsModal extends React.Component {
   }
 
   constructor(props) {
-    super(props);
+    super(props)
   }
 
   render() {
@@ -32,22 +28,18 @@ class TilesetsModal extends React.Component {
         borderStyle: "solid",
         borderColor: theme.borderColor,
       }}>
-        <Toolbar>
-          <NavItem style={{fontWeight: 400}}>
-            #{tileset.id}
-          </NavItem>
-          <Space auto x={1} />
-        </Toolbar>
+        #{tileset.id}
+        <br />
         {tileset.url}
       </div>
     })
 
     return <Modal
-      //isOpen={this.props.open}
-      isOpen={true}
+      isOpen={this.props.open}
       toggleOpen={this.props.toggle}
       title={'Tilesets'}
     >
+      <h2>Add New Tileset</h2>
       <h2>Choose Public Tileset</h2>
       {tilesetOptions}
     </Modal>

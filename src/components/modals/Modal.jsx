@@ -16,6 +16,7 @@ class Modal extends React.Component {
   render() {
     return <Overlay isOpen={this.props.isOpen}>
       <div style={{
+        minWidth: 350,
         backgroundColor: colors.gray,
       }}>
         <div style={{
