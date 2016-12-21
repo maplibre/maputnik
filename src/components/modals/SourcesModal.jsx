@@ -5,7 +5,9 @@ import InputBlock from '../inputs/InputBlock'
 import StringInput from '../inputs/StringInput'
 import publicSources from '../../config/tilesets.json'
 import colors from '../../config/colors'
-import { margins } from '../../config/scales'
+import { margins, fontSizes } from '../../config/scales'
+
+import AddIcon from 'react-icons/lib/md/add-circle-outline'
 
 class PublicSource extends React.Component {
   static propTypes = {
@@ -21,27 +23,32 @@ class PublicSource extends React.Component {
         verticalAlign: 'top',
         marginTop: margins[2],
         marginRight: margins[2],
-        borderColor: colors.midgray,
-        borderStyle: 'solid',
-        borderWidth: 2,
+        backgroundColor: colors.gray,
         display: 'inline-block',
         width: 240,
-        height: 120,
+        fontSize: fontSizes[4],
+        color: colors.lowgray,
     }}>
       <div style={{
-        backgroundColor: colors.midgray,
-        padding: margins[1],
+        padding: margins[2],
         display: 'flex',
         flexDirection: 'row',
       }}>
-        <span>{this.props.title}</span>
+        <div>
+          <span style={{fontWeight: 700}}>{this.props.title}</span><br/>
+          <span style={{fontSize: fontSizes[5]}}>{this.props.id}</span>
+        </div>
         <span style={{flexGrow: 1}} />
-        <span>#{this.props.id}</span>
-      </div>
-      <div style={{
-        padding: margins[1],
-      }}>
-        <p>{this.props.description}</p>
+        <a style={{
+          display: 'table',
+          cursor: 'pointer',
+          backgroundColor: colors.midgray,
+          color: colors.lowgray,
+          padding: margins[1],
+          borderRadius: 2,
+        }}>
+          Add
+        </a>
       </div>
     </div>
   }
@@ -54,11 +61,7 @@ class SourceEditor extends React.Component {
   }
 
   render() {
-    const inputProps = {
-      style: {
-        backgroundColor: colors.midgray
-      }
-    }
+    const inputProps = { }
     return <div style={{
     }}>
       <InputBlock label={"Source ID"}>
@@ -103,12 +106,7 @@ class SourcesModal extends React.Component {
       />
     })
 
-    const inputProps = {
-      style: {
-        backgroundColor: colors.midgray
-      }
-    }
-
+    const inputProps = { }
     return <Modal
       isOpen={this.props.isOpen}
       toggleOpen={this.props.toggle}
@@ -122,6 +120,7 @@ class SourcesModal extends React.Component {
         <StringInput {...inputProps} />
       </InputBlock>
       <Heading level={4}>Choose Public Source</Heading>
+      <p style={{color: colors.lowgray, fontSize: fontSizes[5]}}>Add one of the publicly availble sources to your style.</p>
       <div style={{maxwidth: 500}}>
       {tilesetOptions}
       </div>

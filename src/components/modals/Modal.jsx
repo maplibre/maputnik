@@ -18,13 +18,14 @@ class Modal extends React.Component {
       <div style={{
         minWidth: 350,
         maxWidth: 600,
-        backgroundColor: colors.gray,
+        backgroundColor: colors.black,
+        boxShadow: '0px 0px 5px 0px rgba(0,0,0,0.3)',
       }}>
         <div style={{
-          backgroundColor: colors.midgray,
+          backgroundColor: colors.gray,
           display: 'flex',
           flexDirection: 'row',
-          padding: margins[1],
+          padding: margins[2],
           fontSize: fontSizes[4],
         }}>
           {this.props.title}
@@ -36,7 +37,7 @@ class Modal extends React.Component {
           </a>
         </div>
         <div style={{
-          padding: margins[1]
+          padding: margins[2],
         }}>
           {this.props.children}
         </div>

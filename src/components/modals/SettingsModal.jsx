@@ -29,11 +29,7 @@ class SettingsModal extends React.Component {
   }
 
   render() {
-    const inputProps = {
-      style: {
-        backgroundColor: colors.midgray
-      }
-    }
+    const inputProps = { }
     return <Modal
       isOpen={this.props.isOpen}
       toggleOpen={this.props.toggle}

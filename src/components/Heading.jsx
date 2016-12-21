@@ -1,5 +1,5 @@
 import React from 'react'
-import { fontSizes } from '../config/scales'
+import { fontSizes, margins } from '../config/scales'
 
 class Heading extends React.Component {
   static propTypes = {
@@ -10,7 +10,9 @@ class Heading extends React.Component {
   render() {
     const headingProps = {
       style: {
+        fontWeight: 400,
         fontSize: fontSizes[this.props.level - 1],
+        marginBottom: margins[1],
         ...this.props.style
       }
     }
