@@ -3,6 +3,8 @@ import Modal from './Modal'
 import Heading from '../Heading'
 import InputBlock from '../inputs/InputBlock'
 import StringInput from '../inputs/StringInput'
+import SourceTypeEditor from '../sources/SourceTypeEditor'
+
 import publicSources from '../../config/tilesets.json'
 import colors from '../../config/colors'
 import { margins, fontSizes } from '../../config/scales'
@@ -36,11 +38,10 @@ class PublicSource extends React.Component {
       }}>
         <div>
           <span style={{fontWeight: 700}}>{this.props.title}</span><br/>
-          <span style={{fontSize: fontSizes[5]}}>{this.props.id}</span>
+          <span style={{fontSize: fontSizes[5]}}>#{this.props.id}</span>
         </div>
         <span style={{flexGrow: 1}} />
         <a style={{
-          display: 'table',
           cursor: 'pointer',
           backgroundColor: colors.midgray,
           color: colors.lowgray,
@@ -54,7 +55,7 @@ class PublicSource extends React.Component {
   }
 }
 
-class SourceEditor extends React.Component {
+class SourceEditorLayout extends React.Component {
   static propTypes = {
     sourceId: React.PropTypes.string.isRequired,
     source: React.PropTypes.object.isRequired,
@@ -64,21 +65,34 @@ class SourceEditor extends React.Component {
     const inputProps = { }
     return <div style={{
     }}>
-      <InputBlock label={"Source ID"}>
-        <StringInput {...inputProps}
-          value={this.props.sourceId}
-        />
-      </InputBlock>
-      <InputBlock label={"Source URL"}>
-        <StringInput {...inputProps}
-          value={this.props.source.url}
-        />
-      </InputBlock>
-      <InputBlock label={"Source Type"}>
-        <StringInput {...inputProps}
-          value={this.props.source.type}
-        />
-      </InputBlock>
+      <div style={{
+        backgroundColor: colors.gray,
+        color: colors.lowgray,
+        padding: margins[1],
+        display: 'flex',
+        fontSize: fontSizes[4],
+        flexDirection: 'row',
+      }}>
+        <span style={{fontSize: fontSizes[4], lineHeight: 2}}>#{this.props.sourceId}</span>
+        <span style={{flexGrow: 1}} />
+        <a style={{
+          cursor: 'pointer',
+          backgroundColor: colors.midgray,
+          color: colors.lowgray,
+          padding: margins[1],
+          borderRadius: 2,
+        }}>
+          Remove
+        </a>
+      </div>
+      <div style={{
+        borderColor: colors.gray,
+        borderWidth: 2,
+        borderStyle: 'solid',
+        padding: margins[1],
+      }}>
+        <SourceTypeEditor source={this.props.source} />
+      </div>
     </div>
   }
 }
@@ -94,10 +108,10 @@ class SourcesModal extends React.Component {
   render() {
     const activeSources = Object.keys(this.props.mapStyle.sources).map(sourceId => {
       const source = this.props.mapStyle.sources[sourceId]
-      return <SourceEditor sourceId={sourceId} source={source} />
+      return <SourceEditorLayout sourceId={sourceId} source={source} />
     })
 
-    const tilesetOptions = publicSources.map(tileset => {
+    const tilesetOptions = publicSources.filter(tileset => !(tileset.id in this.props.mapStyle.sources)).map(tileset => {
       return <PublicSource
         id={tileset.id}
         type={tileset.type}
