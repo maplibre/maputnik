@@ -40,7 +40,6 @@ module.exports = {
         "react-file-reader-input",
         //TODO: Icons raise multi vendor errors?
         //"react-icons",
-        "rebass",
         // Open Layers
         'openlayers',
         'ol-mapbox-style'

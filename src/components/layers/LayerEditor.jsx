@@ -6,7 +6,8 @@ import PropertyGroup from '../fields/PropertyGroup'
 import LayerEditorGroup from './LayerEditorGroup'
 
 import layout from '../../config/layout.json'
-import theme from '../../config/rebass.js'
+import { margins, fontSizes } from '../../config/scales'
+import colors from '../../config/colors'
 
 class UnsupportedLayer extends React.Component {
   render() {
@@ -62,8 +63,8 @@ export default class LayerEditor extends React.Component {
   getChildContext () {
     return {
       reactIconBase: {
-        size: theme.fontSizes[4],
-        color: theme.colors.lowgray,
+        size: fontSizes[4],
+        color: colors.lowgray,
       }
     }
   }
@@ -142,7 +143,7 @@ export default class LayerEditor extends React.Component {
     }
 
     return <div style={{
-        padding: theme.scale[0],
+        padding: margins[0],
     }}>
       {propertyGroups}
       {dataGroup}

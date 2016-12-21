@@ -1,8 +1,6 @@
 import React from 'react'
 import FileReaderInput from 'react-file-reader-input'
 
-import Button from 'rebass/dist/Button'
-
 import MdFileDownload from 'react-icons/lib/md/file-download'
 import MdFileUpload from 'react-icons/lib/md/file-upload'
 import MdOpenInBrowser from 'react-icons/lib/md/open-in-browser'
@@ -26,6 +24,11 @@ import colors from '../config/colors';
 const InlineBlock = props => <div style={{display: "inline-block", ...props.style}}>
   {props.children}
 </div>
+
+const ToolbarAction = props => <a onClick={props.onClick}
+  style={{ display: "inline-block", ...props.style }}>
+  {props.children}
+</a>
 
 export default class Toolbar extends React.Component {
   static propTypes = {
@@ -62,10 +65,10 @@ export default class Toolbar extends React.Component {
   saveButton() {
     if(this.props.mapStyle.layers.length > 0) {
       return <InlineBlock>
-        <Button onClick={this.props.onStyleSave} big={true}>
+        <ToolbarAction onClick={this.props.onStyleSave} big={true}>
           <MdSave />
           Save
-        </Button>
+        </ToolbarAction>
       </InlineBlock>
     }
     return null
@@ -73,10 +76,10 @@ export default class Toolbar extends React.Component {
 
   downloadButton() {
     return <InlineBlock>
-      <Button onClick={this.props.onStyleDownload} big={true}>
+      <ToolbarAction onClick={this.props.onStyleDownload} big={true}>
         <MdFileDownload />
         Download
-      </Button>
+      </ToolbarAction>
     </InlineBlock>
   }
 
@@ -111,48 +114,48 @@ export default class Toolbar extends React.Component {
         toggle={() => this.toggleSettings.bind(this)}
       />
       <InlineBlock>
-        <Button style={{
+        <ToolbarAction style={{
           width: 180,
           textAlign: 'left',
           backgroundColor: colors.black
         }}>
           <img src="https://github.com/maputnik/editor/raw/master/media/maputnik.png" alt="Maputnik" style={{width: 30, height: 30, paddingRight: 5, verticalAlign: 'middle'}}/>
           <span style={{fontSize: 20, verticalAlign: 'middle' }}>Maputnik</span>
-        </Button>
+        </ToolbarAction>
       </InlineBlock>
       <InlineBlock>
         <FileReaderInput onChange={this.onUpload.bind(this)}>
-          <Button big={true}>
+          <ToolbarAction>
             <MdOpenInBrowser />
             Open
-          </Button>
+          </ToolbarAction>
         </FileReaderInput>
       </InlineBlock>
       {this.downloadButton()}
       {this.saveButton()}
       <InlineBlock>
-        <Button big={true} onClick={this.toggleTilesets.bind(this)}>
+        <ToolbarAction onClick={this.toggleTilesets.bind(this)}>
           <MdLayers />
           Tilesets
-        </Button>
+        </ToolbarAction>
       </InlineBlock>
       <InlineBlock>
-        <Button big={true} onClick={this.toggleSettings.bind(this)}>
+        <ToolbarAction onClick={this.toggleSettings.bind(this)}>
           <MdSettings />
           Style Settings
-        </Button>
+        </ToolbarAction>
       </InlineBlock>
       <InlineBlock>
-        <Button big={true} onClick={this.toggleSettings.bind(this)}>
+        <ToolbarAction onClick={this.toggleSettings.bind(this)}>
           <MdFindInPage />
           Inspect
-        </Button>
+        </ToolbarAction>
       </InlineBlock>
       <InlineBlock>
-        <Button big={true} onClick={this.props.onOpenAbout}>
+        <ToolbarAction onClick={this.props.onOpenAbout}>
           <MdHelpOutline />
           Help
-        </Button>
+        </ToolbarAction>
       </InlineBlock>
     </div>
   }

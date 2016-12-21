@@ -1,8 +1,9 @@
-import theme from './rebass.js'
+import colors from './colors'
+import { margins, fontSizes } from './scales'
 
 const base = {
   display: 'inline-block',
-  fontSize: theme.fontSizes[5],
+  fontSize: fontSizes[5],
   lineHeight: 2,
   paddingLeft: 5,
   paddingRight: 5,
@@ -11,28 +12,28 @@ const base = {
 const label = {
   ...base,
   width: '40%',
-  color: theme.colors.lowgray,
+  color: colors.lowgray,
   userSelect: 'none',
 }
 
 const property = {
-  marginTop: theme.scale[2],
-  marginBottom: theme.scale[2],
+  marginTop: margins[2],
+  marginBottom: margins[2],
 }
 
 const input = {
   ...base,
   border: 'none',
   width: '47%',
-  backgroundColor: theme.colors.gray,
-  color: theme.colors.lowgray,
+  backgroundColor: colors.gray,
+  color: colors.lowgray,
 }
 
 const checkbox = {
   ...base,
   border: '1px solid rgb(36, 36, 36)',
-  backgroundColor: theme.colors.gray,
-  color: theme.colors.lowgray,
+  backgroundColor: colors.gray,
+  color: colors.lowgray,
 }
 
 const select = {

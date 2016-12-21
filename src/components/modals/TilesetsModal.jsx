@@ -3,8 +3,8 @@ import React from 'react'
 import Modal from './Modal'
 
 import publicTilesets from '../../config/tilesets.json'
-import theme from '../../config/rebass'
 import colors from '../../config/colors'
+import { margins } from '../../config/scales'
 
 class TilesetsModal extends React.Component {
   static propTypes = {
@@ -20,13 +20,8 @@ class TilesetsModal extends React.Component {
   render() {
     const tilesetOptions = publicTilesets.map(tileset => {
       return <div key={tileset.id} style={{
-        padding: theme.scale[0],
+        padding: margins[0],
         borderBottom: 1,
-        borderTop: 1,
-        borderLeft: 2,
-        borderRight: 0,
-        borderStyle: "solid",
-        borderColor: theme.borderColor,
       }}>
         #{tileset.id}
         <br />

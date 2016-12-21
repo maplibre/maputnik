@@ -1,7 +1,7 @@
 import React from 'react'
 import ScrollContainer from './ScrollContainer'
 
-import theme from '../config/rebass'
+import theme from '../config/theme'
 import colors from '../config/colors'
 
 export default class Layout extends React.Component {
@@ -13,13 +13,11 @@ export default class Layout extends React.Component {
   }
 
   static childContextTypes = {
-    rebass: React.PropTypes.object,
     reactIconBase: React.PropTypes.object
   }
 
   getChildContext() {
     return {
-      rebass: theme,
       reactIconBase: { size: 20 }
     }
   }

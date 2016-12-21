@@ -9,7 +9,6 @@ import ColorField from './ColorField'
 import StringField from './StringField'
 
 import input from '../../config/input.js'
-import theme from '../../config/rebass.js'
 
 function labelFromFieldName(fieldName) {
   let label = fieldName.split('-').slice(1).join(' ')
