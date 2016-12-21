@@ -18,7 +18,7 @@ export default class Layout extends React.Component {
 
   getChildContext() {
     return {
-      reactIconBase: { size: 20 }
+      reactIconBase: { size: 14 }
     }
   }
 

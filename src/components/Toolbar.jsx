@@ -19,14 +19,21 @@ import SettingsModal from './modals/SettingsModal'
 import TilesetsModal from './modals/TilesetsModal'
 
 import style from '../libs/style'
-import colors from '../config/colors';
+import colors from '../config/colors'
+import { margins, fontSizes } from '../config/scales'
 
-const InlineBlock = props => <div style={{display: "inline-block", ...props.style}}>
+const IconText = props => <span style={{ paddingLeft: margins[0] }}>
   {props.children}
-</div>
+</span>
 
 const ToolbarAction = props => <a onClick={props.onClick}
-  style={{ display: "inline-block", ...props.style }}>
+  style={{
+    display: "inline-block",
+    padding: margins[1],
+    fontSize: fontSizes[4],
+    cursor: "pointer",
+    ...props.style,
+  }}>
   {props.children}
 </a>
 
@@ -64,23 +71,19 @@ export default class Toolbar extends React.Component {
 
   saveButton() {
     if(this.props.mapStyle.layers.length > 0) {
-      return <InlineBlock>
-        <ToolbarAction onClick={this.props.onStyleSave} big={true}>
-          <MdSave />
-          Save
-        </ToolbarAction>
-      </InlineBlock>
+      return <ToolbarAction onClick={this.props.onStyleSave} big={true}>
+        <MdSave />
+        <IconText>Save</IconText>
+      </ToolbarAction>
     }
     return null
   }
 
   downloadButton() {
-    return <InlineBlock>
-      <ToolbarAction onClick={this.props.onStyleDownload} big={true}>
-        <MdFileDownload />
-        Download
-      </ToolbarAction>
-    </InlineBlock>
+    return <ToolbarAction onClick={this.props.onStyleDownload} big={true}>
+      <MdFileDownload />
+      <IconText>Download</IconText>
+    </ToolbarAction>
   }
 
   toggleSettings() {
@@ -113,50 +116,38 @@ export default class Toolbar extends React.Component {
         open={this.state.openTilesetsModal}
         toggle={() => this.toggleSettings.bind(this)}
       />
-      <InlineBlock>
-        <ToolbarAction style={{
-          width: 180,
-          textAlign: 'left',
-          backgroundColor: colors.black
-        }}>
-          <img src="https://github.com/maputnik/editor/raw/master/media/maputnik.png" alt="Maputnik" style={{width: 30, height: 30, paddingRight: 5, verticalAlign: 'middle'}}/>
-          <span style={{fontSize: 20, verticalAlign: 'middle' }}>Maputnik</span>
-        </ToolbarAction>
-      </InlineBlock>
-      <InlineBlock>
+      <ToolbarAction style={{
+        width: 180,
+        textAlign: 'left',
+        backgroundColor: colors.black
+      }}>
+        <img src="https://github.com/maputnik/editor/raw/master/media/maputnik.png" alt="Maputnik" style={{width: 30, height: 30, paddingRight: 5, verticalAlign: 'middle'}}/>
+        <span style={{fontSize: 20, verticalAlign: 'middle' }}>Maputnik</span>
+      </ToolbarAction>
+      <ToolbarAction>
         <FileReaderInput onChange={this.onUpload.bind(this)}>
-          <ToolbarAction>
-            <MdOpenInBrowser />
-            Open
-          </ToolbarAction>
+          <MdOpenInBrowser />
+          <IconText>Open</IconText>
         </FileReaderInput>
-      </InlineBlock>
+      </ToolbarAction>
       {this.downloadButton()}
       {this.saveButton()}
-      <InlineBlock>
-        <ToolbarAction onClick={this.toggleTilesets.bind(this)}>
-          <MdLayers />
-          Tilesets
-        </ToolbarAction>
-      </InlineBlock>
-      <InlineBlock>
-        <ToolbarAction onClick={this.toggleSettings.bind(this)}>
-          <MdSettings />
-          Style Settings
-        </ToolbarAction>
-      </InlineBlock>
-      <InlineBlock>
-        <ToolbarAction onClick={this.toggleSettings.bind(this)}>
-          <MdFindInPage />
-          Inspect
-        </ToolbarAction>
-      </InlineBlock>
-      <InlineBlock>
-        <ToolbarAction onClick={this.props.onOpenAbout}>
-          <MdHelpOutline />
-          Help
-        </ToolbarAction>
-      </InlineBlock>
+      <ToolbarAction onClick={this.toggleTilesets.bind(this)}>
+        <MdLayers />
+        <IconText>Tilesets</IconText>
+      </ToolbarAction>
+      <ToolbarAction onClick={this.toggleSettings.bind(this)}>
+        <MdSettings />
+        <IconText>Style Settings</IconText>
+      </ToolbarAction>
+      <ToolbarAction onClick={this.toggleSettings.bind(this)}>
+        <MdFindInPage />
+        <IconText>Inspect</IconText>
+      </ToolbarAction>
+      <ToolbarAction onClick={this.props.onOpenAbout}>
+        <MdHelpOutline />
+        <IconText>Help</IconText>
+      </ToolbarAction>
     </div>
   }
 }
