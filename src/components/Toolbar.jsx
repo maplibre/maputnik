@@ -121,22 +121,25 @@ export default class Toolbar extends React.Component {
       top: 0,
       backgroundColor: colors.black
     }}>
-      <SettingsModal
-        mapStyle={this.props.mapStyle}
-        onStyleChanged={this.props.onStyleChanged}
-        isOpen={this.state.openSettingsModal}
-        toggle={() => this.toggleSettings.bind(this)}
-      />
-      <OpenModal
-        isOpen={this.state.openOpenModal}
-        toggle={() => this.toggleOpen.bind(this)}
-      />
-      <SourcesModal
-        mapStyle={this.props.mapStyle}
-        onStyleChanged={this.props.onStyleChanged}
-        isOpen={this.state.openSourcesModal}
-        toggle={() => this.toggleSources.bind(this)}
-      />
+      {this.state.openSettingsModal && <SettingsModal
+          mapStyle={this.props.mapStyle}
+          onStyleChanged={this.props.onStyleChanged}
+          isOpen={this.state.openSettingsModal}
+          toggle={() => this.toggleSettings.bind(this)}
+        />
+      }
+      {this.state.openOpenModal &&<OpenModal
+          isOpen={this.state.openOpenModal}
+          toggle={() => this.toggleOpen.bind(this)}
+        />
+      }
+      {this.state.openSourcesModal && <SourcesModal
+          mapStyle={this.props.mapStyle}
+          onStyleChanged={this.props.onStyleChanged}
+          isOpen={this.state.openSourcesModal}
+          toggle={() => this.toggleSources.bind(this)}
+        />
+      }
       <ToolbarAction style={{
         width: 180,
         textAlign: 'left',
