@@ -2,6 +2,7 @@ import React from 'react'
 import colors from '../../config/colors'
 import { margins, fontSizes } from '../../config/scales'
 
+import Collapse from 'react-collapse'
 import CollapseOpenIcon from 'react-icons/lib/md/arrow-drop-down'
 import CollapseCloseIcon from 'react-icons/lib/md/arrow-drop-up'
 
@@ -45,12 +46,13 @@ export default class LayerEditorGroup extends React.Component {
         <Collapser isCollapsed={this.props.isActive} />
       </div>
       <div style={{
-        display: this.props.isActive ? null : 'none',
         border: 2,
         borderStyle: 'solid',
         borderColor: colors.gray,
       }}>
-        {this.props.children}
+        <Collapse isOpened={this.props.isActive}>
+          {this.props.children}
+        </Collapse>
       </div>
     </div>
   }
