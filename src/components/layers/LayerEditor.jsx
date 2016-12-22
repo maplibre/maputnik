@@ -1,5 +1,6 @@
 import React from 'react'
 
+import JSONEditor from './JSONEditor'
 import SourceEditor from './SourceEditor'
 import FilterEditor from '../filter/FilterEditor'
 import PropertyGroup from '../fields/PropertyGroup'
@@ -125,6 +126,10 @@ export default class LayerEditor extends React.Component {
         layer={this.props.layer}
         groupFields={fields}
         onChange={this.onPropertyChange.bind(this)}
+      />
+      case 'jsoneditor': return <JSONEditor
+        layer={this.props.layer}
+        onChange={this.props.onLayerChanged}
       />
       default: return null
     }

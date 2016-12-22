@@ -34,6 +34,10 @@
             "line-dasharray",
             "line-gap-width"
           ]
+        },
+        {
+          "title": "JSON",
+          "type": "jsoneditor"
         }
       ]
     },
@@ -55,6 +59,10 @@
             "background-pattern",
             "background-opacity"
           ]
+        },
+        {
+          "title": "JSON",
+          "type": "jsoneditor"
         }
       ]
     },
@@ -80,6 +88,10 @@
             "fill-translate",
             "fill-translate-anchor"
           ]
+        },
+        {
+          "title": "JSON",
+          "type": "jsoneditor"
         }
       ]
     },
@@ -150,6 +162,10 @@
             "icon-keep-upright",
             "icon-offset"
           ]
+        },
+        {
+          "title": "JSON",
+          "type": "jsoneditor"
         }
       ]
     }

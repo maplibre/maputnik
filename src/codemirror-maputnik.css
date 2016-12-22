@@ -1,0 +1,43 @@
+.cm-s-maputnik.CodeMirror {
+  height: 100%;
+  font-size: 10px;
+}
+
+.cm-s-maputnik.CodeMirror, .cm-s-maputnik .CodeMirror-gutters {
+  background: transparent;
+  color: #8e8e8e;
+  border: none;
+}
+.cm-s-maputnik .CodeMirror-cursor {
+    border-left: solid thin #8e8e8e !important;
+}
+
+.cm-s-maputnik.CodeMirror-focused div.CodeMirror-selected {
+  background: rgba(255, 255, 255, 0.10);
+}
+
+.cm-s-maputnik .CodeMirror-line::selection,
+.cm-s-maputnik .CodeMirror-line > span::selection,
+.cm-s-maputnik .CodeMirror-line > span > span::selection {
+  background: rgba(255, 255, 255, 0.10);
+}
+
+.cm-s-maputnik .CodeMirror-line::-moz-selection,
+.cm-s-maputnik .CodeMirror-line > span::-moz-selection,
+.cm-s-maputnik .CodeMirror-line > span > span::-moz-selection {
+  background: rgba(255, 255, 255, 0.10);
+}
+
+.cm-s-maputnik span.cm-string, .cm-s-maputnik span.cm-string-2 {
+  color: #8f9d6a;
+}
+.cm-s-maputnik span.cm-number { color: #91675f; }
+.cm-s-maputnik span.cm-property { color: #b8a077; }
+
+.cm-s-maputnik .CodeMirror-activeline-background {
+  background: rgba(255,255,255,0.1);
+}
+
+.cm-s-maputnik .CodeMirror-matchingbracket {
+  text-decoration: underline; color: white !important;
+}
