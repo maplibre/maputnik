@@ -195,7 +195,11 @@ class SourcesModal extends React.Component {
   render() {
     const activeSources = Object.keys(this.props.mapStyle.sources).map(sourceId => {
       const source = this.props.mapStyle.sources[sourceId]
-      return <SourceEditorLayout sourceId={sourceId} source={source} />
+      return <SourceEditorLayout
+        key={sourceId}
+        sourceId={sourceId}
+        source={source}
+      />
     })
 
     const tilesetOptions = publicSources.filter(source => !(source.id in this.props.mapStyle.sources)).map(source => {

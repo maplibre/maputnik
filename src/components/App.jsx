@@ -25,7 +25,7 @@ export default class App extends React.Component {
         console.log('Falling back to local storage for storing styles')
         this.styleStore = new StyleStore()
       }
-      this.styleStore.latestStyle(mapStyle => this.onStyleOpen(mapStyle))
+      this.styleStore.latestStyle(mapStyle => this.onStyleChanged(mapStyle))
     })
 
     this.settingsStore = new SettingsStore()
@@ -45,23 +45,15 @@ export default class App extends React.Component {
     const mapStyle = this.state.mapStyle
     const blob = new Blob([JSON.stringify(mapStyle, null, 4)], {type: "application/json;charset=utf-8"});
     saveAs(blob, mapStyle.id + ".json");
-    this.onStyleSave()
   }
 
-  onStyleOpen(newStyle) {
-    console.log('upload', newStyle)
-    const savedStyle = this.styleStore.save(newStyle)
-    this.setState({ mapStyle: savedStyle })
-  }
-
-  onStyleSave() {
-    const snapshotStyle = this.state.mapStyle.modified = new Date().toJSON()
-    this.setState({ mapStyle: snapshotStyle })
-    console.log('Save')
+  saveStyle(snapshotStyle) {
+    snapshotStyle.modified = new Date().toJSON()
     this.styleStore.save(snapshotStyle)
   }
 
   onStyleChanged(newStyle) {
+    this.saveStyle(newStyle)
     this.setState({ mapStyle: newStyle })
   }
 
@@ -75,7 +67,7 @@ export default class App extends React.Component {
       ...this.state.mapStyle,
       layers: changedLayers
     }
-    this.setState({ mapStyle: changedStyle })
+    this.onStyleChanged(changedStyle)
   }
 
   onLayerIdChange(oldId, newId) {
@@ -91,7 +83,6 @@ export default class App extends React.Component {
   }
 
   onLayerChanged(layer) {
-    console.log('layer changed', layer)
     const changedLayers = this.state.mapStyle.layers.slice(0)
     const idx = style.indexOfLayer(changedLayers, layer.id)
     changedLayers[idx] = layer
@@ -131,8 +122,7 @@ export default class App extends React.Component {
     const toolbar = <Toolbar
       mapStyle={this.state.mapStyle}
       onStyleChanged={this.onStyleChanged.bind(this)}
-      onStyleSave={this.onStyleSave.bind(this)}
-      onStyleOpen={this.onStyleOpen.bind(this)}
+      onStyleOpen={this.onStyleChanged.bind(this)}
       onStyleDownload={this.onStyleDownload.bind(this)}
     />
 

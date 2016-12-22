@@ -38,7 +38,7 @@ class ColorField extends React.Component {
         left: pos.left + 165,
       }
     } else {
-      console.log('No elem!!')
+      console.warn('Color field has no element to adjust position')
       return {
         top: 160,
         left: 500,

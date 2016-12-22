@@ -13,7 +13,14 @@ class OpenLayers3Map extends Map {
       const olms = require('ol-mapbox-style')
       const jsonStyle = nextProps.mapStyle
       const styleFunc = olms.getStyleFunction(jsonStyle, 'openmaptiles', this.resolutions)
-      this.layer.setStyle(styleFunc)
+      console.log('New style babee')
+
+      const layer = this.layer
+      layer.setStyle(styleFunc)
+      //NOTE: We need to mark the source as changed in order
+      //to trigger a rerender
+      layer.getSource().changed()
+
       this.state.map.render()
     })
   }
@@ -43,9 +50,8 @@ class OpenLayers3Map extends Map {
       const styleFunc = olms.getStyleFunction(jsonStyle, 'openmaptiles', this.resolutions)
       this.layer.setStyle(styleFunc)
 
-      console.log(jsonStyle.center, jsonStyle.zoom)
       const map = new ol.Map({
-      target: this.container,
+        target: this.container,
         layers: [this.layer],
         view: new ol.View({
           center: jsonStyle.center,

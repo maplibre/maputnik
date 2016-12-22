@@ -79,8 +79,6 @@ export default class Toolbar extends React.Component {
     onStyleOpen: React.PropTypes.func.isRequired,
     // Current style is requested for download
     onStyleDownload: React.PropTypes.func.isRequired,
-    // Style is explicitely saved to local cache
-    onStyleSave: React.PropTypes.func,
   }
 
   constructor(props) {

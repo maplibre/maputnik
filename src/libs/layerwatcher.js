@@ -45,7 +45,6 @@ export default class LayerWatcher {
         this._vectorLayers[vectorLayerId] = knownProperties
       })
     })
-    console.log(this.vectorLayers)
   }
 
   /** Access all known sources and their vector tile ids */
