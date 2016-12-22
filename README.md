@@ -13,7 +13,6 @@ Check it out at **http://maputnik.com/editor/**
 ## Latest Status Update Video
 
 ![Latest Status Update for  Maputnik v0.2.2](https://j.gifs.com/g5XMgl.gif)
-![](http://img.youtube.com/vi/z9MVwvzshiE/hqdefault.jpg)
 
 ## Develop
 
