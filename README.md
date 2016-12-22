@@ -5,20 +5,15 @@
 A free and open visual editor for the [Mapbox GL styles](https://www.mapbox.com/mapbox-gl-style-spec/)
 targeted at developers and map designers. Creating your own custom map is easy with **Maputnik**.
 
+Check it out at **http://maputnik.com/editor/**
+
 *Maputnik is an early prototype and is under development.
 [Thanks to the supporters of the Kickstarter campaign who made this project possible](https://www.kickstarter.com/projects/174808720/maputnik-visual-map-editor-for-mapbox-gl)*.
 
-## Features
+## Latest Status Update Video
 
-- [x] Completely free and open source
-- [x] Visual interface for designing maps
-- [x] Immediate feedback (thanks to [style diffs](https://github.com/mapbox/mapbox-gl-style-spec/blob/mb-pages/lib/diff.js))
-- [x] Edit layers
-- [x] Easy to deploy as single HTML file
-- [ ] Support for Open Layers 3
-
-![Demo showing interactive feedback](media/demo.gif)
-
+![Latest Status Update for  Maputnik v0.2.2](https://j.gifs.com/g5XMgl.gif)
+![](http://img.youtube.com/vi/z9MVwvzshiE/hqdefault.jpg)
 
 ## Develop
 
