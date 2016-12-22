@@ -27,12 +27,28 @@ const IconText = props => <span style={{ paddingLeft: margins[0] }}>
   {props.children}
 </span>
 
+const actionStyle = {
+  display: "inline-block",
+  padding: margins[1],
+  fontSize: fontSizes[4],
+  cursor: "pointer",
+color: colors.white,
+  textDecoration: 'none',
+}
+
+const ToolbarLink = props => <a
+  href={props.href}
+  target={"blank"}
+  style={{
+    ...actionStyle,
+    ...props.style,
+  }}>
+  {props.children}
+</a>
+
 const ToolbarAction = props => <a onClick={props.onClick}
   style={{
-    display: "inline-block",
-    padding: margins[1],
-    fontSize: fontSizes[4],
-    cursor: "pointer",
+    ...actionStyle,
     ...props.style,
   }}>
   {props.children}
@@ -58,16 +74,6 @@ export default class Toolbar extends React.Component {
       openSourcesModal: false,
       openOpenModal: false,
     }
-  }
-
-  saveButton() {
-    if(this.props.mapStyle.layers.length > 0) {
-      return <ToolbarAction onClick={this.props.onStyleSave} big={true}>
-        <MdSave />
-        <IconText>Save</IconText>
-      </ToolbarAction>
-    }
-    return null
   }
 
   downloadButton() {
@@ -128,7 +134,6 @@ export default class Toolbar extends React.Component {
         <IconText>Open</IconText>
       </ToolbarAction>
       {this.downloadButton()}
-      {this.saveButton()}
       <ToolbarAction onClick={this.toggleSources.bind(this)}>
         <MdLayers />
         <IconText>Sources</IconText>
@@ -141,10 +146,10 @@ export default class Toolbar extends React.Component {
         <MdFindInPage />
         <IconText>Inspect</IconText>
       </ToolbarAction>
-      <ToolbarAction onClick={this.props.onOpenAbout}>
+      <ToolbarLink href={"https://github.com/maputnik/editor/wiki"}>
         <MdHelpOutline />
         <IconText>Help</IconText>
-      </ToolbarAction>
+      </ToolbarLink>
     </div>
   }
 }
