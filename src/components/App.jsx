@@ -6,7 +6,7 @@ import OpenLayers3Map from './map/OpenLayers3Map'
 import LayerList from './layers/LayerList'
 import LayerEditor from './layers/LayerEditor'
 import Toolbar from './Toolbar'
-import Layout from './Layout'
+import AppLayout from './AppLayout'
 
 import style from '../libs/style.js'
 import { loadDefaultStyle, SettingsStore, StyleStore } from '../libs/stylestore'
@@ -149,7 +149,7 @@ export default class App extends React.Component {
       onLayerIdChange={this.onLayerIdChange.bind(this)}
     /> : null
 
-    return <Layout
+    return <AppLayout
       toolbar={toolbar}
       layerList={layerList}
       layerEditor={layerEditor}

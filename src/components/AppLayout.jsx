@@ -4,7 +4,7 @@ import ScrollContainer from './ScrollContainer'
 import theme from '../config/theme'
 import colors from '../config/colors'
 
-export default class Layout extends React.Component {
+class AppLayout extends React.Component {
   static propTypes = {
     toolbar: React.PropTypes.element.isRequired,
     layerList: React.PropTypes.element.isRequired,
@@ -62,3 +62,5 @@ export default class Layout extends React.Component {
     </div>
   }
 }
+
+export default AppLayout
