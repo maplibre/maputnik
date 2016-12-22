@@ -9,6 +9,7 @@ import request from 'request'
 import FileUploadIcon from 'react-icons/lib/md/file-upload'
 import AddIcon from 'react-icons/lib/md/add-circle-outline'
 
+import style from '../../libs/style.js'
 import colors from '../../config/colors'
 import { margins, fontSizes } from '../../config/scales'
 import publicStyles from '../../config/styles.json'
@@ -75,7 +76,7 @@ class OpenModal extends React.Component {
       withCredentials: false,
     }, (error, response, body) => {
         if (!error && response.statusCode == 200) {
-          const mapStyle = JSON.parse(body)
+          const mapStyle = style.ensureMetadataExists(JSON.parse(body))
           console.log('Loaded style ', mapStyle.id)
           this.props.onStyleOpen(mapStyle)
         } else {

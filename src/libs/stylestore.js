@@ -1,5 +1,7 @@
 import { colorizeLayers } from './style.js'
 import style from './style.js'
+import publicSources from '../config/styles.json'
+import request from 'request'
 
 const storagePrefix = "maputnik"
 const stylePrefix = 'style'
@@ -8,27 +10,22 @@ const storageKeys = {
   accessToken: [storagePrefix, 'access_token'].join(':')
 }
 
-const defaultStyleUrl = "https://raw.githubusercontent.com/osm2vectortiles/mapbox-gl-styles/master/styles/basic-v9-cdn.json"
+const defaultStyleUrl = publicSources[0].url
+
 // Fetch a default style via URL and return it or a fallback style via callback
 export function loadDefaultStyle(cb) {
-  console.log('Load default style')
-  var request = new XMLHttpRequest()
-  request.open('GET', defaultStyleUrl, true)
-
-  request.onload = () => {
-    if (request.status >= 200 && request.status < 400) {
-      cb(style.ensureMetadataExists(JSON.parse(request.responseText)))
-    } else {
-      cb(style.emptyStyle)
-    }
-  }
-
-  request.onerror = function() {
-      console.log('Could not fetch default style')
-      cb(style.emptyStyle)
-  }
-
-  request.send()
+  console.log('Falling back to default style')
+  request({
+    url: defaultStyleUrl,
+    withCredentials: false,
+  }, (error, response, body) => {
+      if (!error && response.statusCode == 200) {
+        cb(style.ensureMetadataExists(JSON.parse(body)))
+      } else {
+        console.warn('Could not fetch default style', styleUrl)
+        cb(style.emptyStyle)
+      }
+  })
 }
 
 // Return style ids and dates of all styles stored in local storage
@@ -99,16 +96,17 @@ export class StyleStore {
 
   // Find the last edited style
   latestStyle(cb) {
-    if(this.mapStyles.length === 0) return cb(style.emptyStyle)
+    if(this.mapStyles.length === 0) return loadDefaultStyle(cb)
     const styleId = window.localStorage.getItem(storageKeys.latest)
     const styleItem = window.localStorage.getItem(styleKey(styleId))
 
     if(styleItem) return cb(JSON.parse(styleItem))
-    cb(style.emptyStyle)
+    loadDefaultStyle(cb)
   }
 
   // Save current style replacing previous version
   save(mapStyle) {
+    mapStyle = style.ensureMetadataExists(mapStyle)
     const key = styleKey(mapStyle.id)
     window.localStorage.setItem(key, JSON.stringify(mapStyle))
     window.localStorage.setItem(storageKeys.latest, mapStyle.id)

@@ -21,7 +21,6 @@ class LayerSettings extends React.Component {
       padding: margins[2],
       paddingRight: 0,
       backgroundColor: colors.black,
-      marginBottom: margins[2],
     }}>
       <InputBlock label={"Layer ID"}>
         <StringInput
