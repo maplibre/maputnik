@@ -35,6 +35,7 @@ export default class PropertyGroup extends React.Component {
   }
 
   render() {
+    console.log(this.props.layer.id, this.props.groupFields)
     const fields = this.props.groupFields.map(fieldName => {
       const fieldSpec = getFieldSpec(this.props.layer.type, fieldName)
 

@@ -2,7 +2,16 @@
     "line": {
       "groups": [
         {
+          "title": "Settings",
+          "type": "settings"
+        },
+        {
+          "title": "Source",
+          "type": "source"
+        },
+        {
           "title": "Paint",
+          "type": "properties",
           "fields": [
             "line-opacity",
             "line-color",
@@ -14,6 +23,7 @@
         },
         {
           "title": "Secondary",
+          "type": "properties",
           "fields": [
             "line-translate",
             "line-translate-anchor",
@@ -30,7 +40,16 @@
     "background": {
       "groups": [
         {
-          "title": "primary",
+          "title": "Settings",
+          "type": "settings"
+        },
+        {
+          "title": "Source",
+          "type": "source"
+        },
+        {
+          "title": "Basic",
+          "type": "properties",
           "fields": [
             "background-color",
             "background-pattern",
@@ -42,7 +61,16 @@
     "fill": {
       "groups": [
         {
-          "title": "primary",
+          "title": "Settings",
+          "type": "settings"
+        },
+        {
+          "title": "Source",
+          "type": "source"
+        },
+        {
+          "title": "Basic",
+          "type": "properties",
           "fields": [
             "fill-opacity",
             "fill-color",
@@ -58,7 +86,16 @@
     "symbol": {
       "groups": [
         {
-          "title": "primary",
+          "title": "Settings",
+          "type": "settings"
+        },
+        {
+          "title": "Source",
+          "type": "source"
+        },
+        {
+          "title": "Basic",
+          "type": "properties",
           "fields": [
             "text-field",
             "text-font",
@@ -67,7 +104,8 @@
           ]
         },
         {
-          "title": "placement",
+          "title": "Placement",
+          "type": "properties",
           "fields": [
             "symbol-placement",
             "symbol-spacing",
@@ -78,7 +116,8 @@
           ]
         },
         {
-          "title": "layout",
+          "title": "Layout",
+          "type": "properties",
           "fields": [
             "text-pitch-alignment",
             "text-rotation-alignment",
@@ -95,7 +134,8 @@
           ]
         },
         {
-          "title": "icon",
+          "title": "Icon",
+          "type": "properties",
           "fields": [
             "icon-allow-overlap",
             "icon-ignore-placement",

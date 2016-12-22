@@ -42,8 +42,6 @@ export default class LayerEditor extends React.Component {
     layout[this.props.layer.type].groups.forEach(group => {
       editorGroups[group.title] = true
     })
-    editorGroups['Source'] = true
-    editorGroups['Settings'] = true
 
     this.state = { editorGroups }
   }
@@ -103,32 +101,13 @@ export default class LayerEditor extends React.Component {
     })
   }
 
-  render() {
-    console.log('editor groups', this.state.editorGroups)
-    const layerType = this.props.layer.type
-    const groups = layout[layerType].groups
-    const propertyGroups = groups.map(group => {
-      return <LayerEditorGroup
-        key={group.title}
-        title={group.title}
-        isActive={this.state.editorGroups[group.title]}
-        onActiveToggle={this.onGroupToggle.bind(this, group.title)}
-      >
-        <PropertyGroup
-          layer={this.props.layer}
-          groupFields={group.fields}
-          onChange={this.onPropertyChange.bind(this)}
-        />
-      </LayerEditorGroup>
-    })
-
-    let dataGroup = null
-    if(this.props.layer.type !== 'background') {
-      dataGroup = <LayerEditorGroup
-        title="Source"
-        isActive={this.state.editorGroups['Source']}
-        onActiveToggle={this.onGroupToggle.bind(this, 'Source')}
-      >
+  renderGroupType(type, fields) {
+    switch(type) {
+      case 'settings': return <LayerSettings
+        id={this.props.layer.id}
+        type={this.props.layer.type}
+      />
+      case 'source': return <div>
         <FilterEditor
           filter={this.props.layer.filter}
           properties={this.props.vectorLayers[this.props.layer['source-layer']]}
@@ -141,24 +120,34 @@ export default class LayerEditor extends React.Component {
           onSourceChange={console.log}
           onSourceLayerChange={console.log}
         />
-      </LayerEditorGroup>
-    }
-
-    const settingsGroup = <LayerEditorGroup
-      title="Settings"
-      isActive={this.state.editorGroups['Settings']}
-      onActiveToggle={this.onGroupToggle.bind(this, 'Settings')}
-    >
-      <LayerSettings
-        id={this.props.layer.id}
-        type={this.props.layer.type}
+      </div>
+      case 'properties': return <PropertyGroup
+        layer={this.props.layer}
+        groupFields={fields}
+        onChange={this.onPropertyChange.bind(this)}
       />
-    </LayerEditorGroup>
+      default: return null
+    }
+  }
+
+  render() {
+    console.log('editor groups', this.state.editorGroups)
+    const layerType = this.props.layer.type
+    const layoutGroups = layout[layerType].groups.filter(group => {
+      return !(this.props.layer.type === 'background' && group.type === 'source')
+    }).map(group => {
+      return <LayerEditorGroup
+        key={group.title}
+        title={group.title}
+        isActive={this.state.editorGroups[group.title]}
+        onActiveToggle={this.onGroupToggle.bind(this, group.title)}
+      >
+        {this.renderGroupType(group.type, group.fields)}
+      </LayerEditorGroup>
+    })
 
     return <div>
-      {settingsGroup}
-      {dataGroup}
-      {propertyGroups}
+      {layoutGroups}
     </div>
   }
 }
