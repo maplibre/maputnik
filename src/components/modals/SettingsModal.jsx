@@ -23,8 +23,14 @@ class SettingsModal extends React.Component {
     this.props.onStyleChanged(changedStyle)
   }
 
-  onRendererChange(e) {
-    const changedStyle = this.props.mapStyle.setIn(['metadata', 'maputnik:renderer'], e.target.value)
+  onRendererChange(renderer) {
+    const changedStyle = {
+      ...this.props.mapStyle,
+      metadata: {
+        ...this.props.mapStyle.metadata,
+        'maputnik:renderer': renderer,
+      }
+    }
     this.props.onStyleChanged(changedStyle)
   }
 

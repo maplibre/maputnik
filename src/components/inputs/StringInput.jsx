@@ -5,7 +5,7 @@ class StringInput extends React.Component {
   static propTypes = {
     value: React.PropTypes.string,
     style: React.PropTypes.object,
-    onChange: React.PropTypes.func.isRequired,
+    onChange: React.PropTypes.func,
   }
 
   render() {

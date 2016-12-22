@@ -28,26 +28,32 @@ module.exports = {
     app: './src/index.jsx',
     vendor: [
         'file-saver',
-        'immutable',
         'mapbox-gl',
-        //TODO: Cannot resolve migrations file?
+        //TODO: Build failure because cannot resolve migrations file
         //"mapbox-gl-style-spec",
-        "radium",
         "randomcolor",
+        "lodash.clonedeep",
+        "lodash.throttle",
+        "lodash.topairs",
+        'color',
         'react',
         "react-dom",
         "react-color",
         "react-file-reader-input",
+        "react-collapse",
+        "react-height",
+        "react-icon-base",
+        "react-motion",
+        "react-sortable-hoc",
+        "request",
         //TODO: Icons raise multi vendor errors?
         //"react-icons",
-        // Open Layers
-        'openlayers',
-        'ol-mapbox-style'
     ]
   },
   output: {
     path: path.join(__dirname, 'public'),
-    filename: '[chunkhash].app.js'
+    filename: '[name].[chunkhash].js',
+    chunkFilename: '[chunkhash].js'
   },
   resolve: {
     alias: {

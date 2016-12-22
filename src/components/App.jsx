@@ -110,8 +110,10 @@ export default class App extends React.Component {
 
     const metadata = this.state.mapStyle.metadata || {}
     const renderer = metadata['maputnik:renderer'] || 'mbgljs'
+
+    // Check if OL3 code has been loaded?
     if(renderer === 'ol3') {
-      return  <OpenLayers3Map {...mapProps} />
+      return <OpenLayers3Map {...mapProps} />
     } else {
       return  <MapboxGlMap {...mapProps} />
     }

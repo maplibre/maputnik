@@ -5,7 +5,7 @@ import StringInput from '../inputs/StringInput'
 class TileJSONSourceEditor extends React.Component {
   static propTypes = {
     url: React.PropTypes.string.isRequired,
-    onChange: React.PropTypes.func.isRequired,
+    onChange: React.PropTypes.func,
   }
 
   render() {
@@ -23,7 +23,7 @@ class TileURLSourceEditor extends React.Component {
     tiles: React.PropTypes.array.isRequired,
     minZoom: React.PropTypes.number.isRequired,
     maxZoom: React.PropTypes.number.isRequired,
-    onChange: React.PropTypes.func.isRequired,
+    onChange: React.PropTypes.func,
   }
 
   renderTileUrls() {
@@ -59,7 +59,7 @@ class TileURLSourceEditor extends React.Component {
 class GeoJSONSourceEditor extends React.Component {
   static propTypes = {
     data: React.PropTypes.string.isRequired,
-    onChange: React.PropTypes.func.isRequired,
+    onChange: React.PropTypes.func,
   }
 
   render() {

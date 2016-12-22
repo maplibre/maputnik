@@ -8,6 +8,7 @@ import StringInput from '../inputs/StringInput'
 import SelectInput from '../inputs/SelectInput'
 import SourceTypeEditor from '../sources/SourceTypeEditor'
 
+import style from '../../libs/style'
 import publicSources from '../../config/tilesets.json'
 import colors from '../../config/colors'
 import { margins, fontSizes } from '../../config/scales'
@@ -34,12 +35,15 @@ class PublicSource extends React.Component {
         fontSize: fontSizes[4],
         color: colors.lowgray,
     }}>
-      <Button style={{
-        backgroundColor: 'transparent',
-        padding: margins[2],
-        display: 'flex',
-        flexDirection: 'row',
-      }}>
+      <Button
+        onClick={() => this.props.onSelect(this.props.id)}
+        style={{
+          backgroundColor: 'transparent',
+          padding: margins[2],
+          display: 'flex',
+          flexDirection: 'row',
+        }}
+      >
         <div>
           <span style={{fontWeight: 700}}>{this.props.title}</span>
           <br/>
@@ -114,8 +118,19 @@ class AddSource extends React.Component {
     super(props)
     this.state = {
       mode: 'tilejson',
-      source: {}
+      source: {
+        id: style.generateId(),
+      }
     }
+  }
+
+  onSourceIdChange(newId) {
+    this.setState({
+      source: {
+        ...this.state.source,
+        id: newId,
+      }
+    })
   }
 
   onSourceChange(source) {
@@ -128,7 +143,8 @@ class AddSource extends React.Component {
     return <div>
       <InputBlock label={"Source ID"}>
         <StringInput
-          value={'blubid'}
+          value={this.state.source.id}
+          onChange={this.onSourceIdChange.bind(this)}
         />
       </InputBlock>
       <InputBlock label={"Source Type"}>
@@ -147,7 +163,7 @@ class AddSource extends React.Component {
         mode={this.state.mode}
         source={this.state.source}
       />
-      <Button onClick={() => this.props.onSourceAdd(this.state.source)}>
+      <Button onClick={() => this.onSourceAdd(this.state.source)}>
         Add Source
       </Button>
     </div>
@@ -159,6 +175,21 @@ class SourcesModal extends React.Component {
     mapStyle: React.PropTypes.object.isRequired,
     isOpen: React.PropTypes.bool.isRequired,
     onOpenToggle: React.PropTypes.func.isRequired,
+    onStyleChanged: React.PropTypes.func.isRequired,
+  }
+
+  onSourceAdd(source) {
+    const changedSources = {
+      ...this.props.mapStyle.sources,
+      [source.id]: source
+    }
+
+    const changedStyle = {
+      ...this.props.mapStyle,
+      sources: changedSources
+    }
+
+    this.props.onStyleChanged(changedStyle)
   }
 
   render() {
@@ -167,12 +198,14 @@ class SourcesModal extends React.Component {
       return <SourceEditorLayout sourceId={sourceId} source={source} />
     })
 
-    const tilesetOptions = publicSources.filter(tileset => !(tileset.id in this.props.mapStyle.sources)).map(tileset => {
+    const tilesetOptions = publicSources.filter(source => !(source.id in this.props.mapStyle.sources)).map(source => {
       return <PublicSource
-        id={tileset.id}
-        type={tileset.type}
-        title={tileset.title}
-        description={tileset.description}
+        key={source.id}
+        id={source.id}
+        type={source.type}
+        title={source.title}
+        description={source.description}
+        onSelect={() => this.onSourceAdd(source)}
       />
     })
 
@@ -188,7 +221,7 @@ class SourcesModal extends React.Component {
       <Heading level={4}>Add New Source</Heading>
       <div style={{maxWidth: 300}}>
         <p style={{color: colors.lowgray, fontSize: fontSizes[5]}}>Add a new source to your style. You can only choose the source type and id at creation time!</p>
-        <AddSource />
+        <AddSource onSourceAdd={this.onSourceAdd.bind(this)} />
       </div>
 
       <Heading level={4}>Choose Public Source</Heading>

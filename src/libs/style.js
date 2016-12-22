@@ -8,9 +8,13 @@ const emptyStyle = ensureMetadataExists({
   layers: [],
 })
 
+function generateId() {
+  return Math.random().toString(36).substr(2, 9)
+}
+
 function ensureHasId(style) {
   if('id' in style) return style
-  style.id = Math.random().toString(36).substr(2, 9)
+  style.id = generateId()
   return style
 }
 
@@ -37,4 +41,5 @@ export default {
   ensureMetadataExists,
   emptyStyle,
   indexOfLayer,
+  generateId,
 }
