@@ -75,7 +75,10 @@ class LayerListContainer extends React.Component {
         onLayerVisibilityToggle={this.onLayerVisibilityToggle.bind(this)}
       />
     })
-    return <ul style={{ padding: margins[1], paddingRight: 0, margin: 0 }}>
+    return <ul style={{
+      padding: 0,
+      margin: 0
+    }}>
       {layerPanels}
     </ul>
   }
