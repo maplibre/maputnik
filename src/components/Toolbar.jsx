@@ -110,28 +110,6 @@ export default class Toolbar extends React.Component {
     })
   }
 
-  renderModals() {
-    return [
-      <SettingsModal
-        mapStyle={this.props.mapStyle}
-        onStyleChanged={this.props.onStyleChanged}
-        isOpen={this.state.isOpen.settings}
-        onOpenToggle={this.toggleModal.bind(this, 'settings')}
-      />,
-      <OpenModal
-        isOpen={this.state.isOpen.open}
-        onStyleOpen={this.props.onStyleOpen}
-        onOpenToggle={this.toggleModal.bind(this, 'open')}
-      />,
-      <SourcesModal
-          mapStyle={this.props.mapStyle}
-          onStyleChanged={this.props.onStyleChanged}
-          isOpen={this.state.isOpen.sources}
-          onOpenToggle={this.toggleModal.bind(this, 'sources')}
-      />,
-    ]
-  }
-
   render() {
     return <div style={{
       position: "fixed",
@@ -142,7 +120,23 @@ export default class Toolbar extends React.Component {
       top: 0,
       backgroundColor: colors.black
     }}>
-      {this.renderModals()}
+      <SettingsModal
+        mapStyle={this.props.mapStyle}
+        onStyleChanged={this.props.onStyleChanged}
+        isOpen={this.state.isOpen.settings}
+        onOpenToggle={this.toggleModal.bind(this, 'settings')}
+      />
+      <OpenModal
+        isOpen={this.state.isOpen.open}
+        onStyleOpen={this.props.onStyleOpen}
+        onOpenToggle={this.toggleModal.bind(this, 'open')}
+      />
+      <SourcesModal
+          mapStyle={this.props.mapStyle}
+          onStyleChanged={this.props.onStyleChanged}
+          isOpen={this.state.isOpen.sources}
+          onOpenToggle={this.toggleModal.bind(this, 'sources')}
+      />
       <ToolbarLink
         href={"https://github.com/maputnik/editor"}
         style={{
