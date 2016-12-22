@@ -29,10 +29,10 @@ const IconText = props => <span style={{ paddingLeft: margins[0] }}>
 
 const actionStyle = {
   display: "inline-block",
-  padding: margins[1],
+  padding: 12.5,
   fontSize: fontSizes[4],
   cursor: "pointer",
-color: colors.white,
+  color: colors.white,
   textDecoration: 'none',
 }
 
@@ -46,14 +46,30 @@ const ToolbarLink = props => <a
   {props.children}
 </a>
 
-const ToolbarAction = props => <a onClick={props.onClick}
-  style={{
-    ...actionStyle,
-    ...props.style,
-  }}>
-  {props.children}
-</a>
+class ToolbarAction extends React.Component {
+  static propTypes = {
+    onClick: React.PropTypes.func.isRequired,
+  }
 
+  constructor(props) {
+    super(props)
+    this.state = { hover: false }
+  }
+
+  render() {
+    return <a
+      onClick={this.props.onClick}
+      onMouseOver={e => this.setState({hover: true})}
+      onMouseOut={e => this.setState({hover: false})}
+      style={{
+        ...actionStyle,
+        ...this.props.style,
+        backgroundColor: this.state.hover ? colors.gray : null,
+      }}>
+      {this.props.children}
+    </a>
+  }
+}
 
 export default class Toolbar extends React.Component {
   static propTypes = {
@@ -124,7 +140,8 @@ export default class Toolbar extends React.Component {
       <ToolbarAction style={{
         width: 180,
         textAlign: 'left',
-        backgroundColor: colors.black
+        backgroundColor: colors.black,
+        padding: 5,
       }}>
         <img src="https://github.com/maputnik/editor/raw/master/media/maputnik.png" alt="Maputnik" style={{width: 30, height: 30, paddingRight: 5, verticalAlign: 'middle'}}/>
         <span style={{fontSize: 20, verticalAlign: 'middle' }}>Maputnik</span>
