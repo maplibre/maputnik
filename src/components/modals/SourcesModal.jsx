@@ -2,6 +2,7 @@ import React from 'react'
 import Modal from './Modal'
 import Heading from '../Heading'
 import Button from '../Button'
+import Paragraph from '../Paragraph'
 import InputBlock from '../inputs/InputBlock'
 import StringInput from '../inputs/StringInput'
 import SelectInput from '../inputs/SelectInput'
@@ -187,11 +188,13 @@ class SourcesModal extends React.Component {
       <Heading level={4}>Add New Source</Heading>
       <div style={{maxWidth: 300}}>
         <p style={{color: colors.lowgray, fontSize: fontSizes[5]}}>Add a new source to your style. You can only choose the source type and id at creation time!</p>
-        <AddSource onSourceAdd={} />
+        <AddSource />
       </div>
 
       <Heading level={4}>Choose Public Source</Heading>
-      <p style={{color: colors.lowgray, fontSize: fontSizes[5]}}>Add one of the publicly availble sources to your style.</p>
+      <Paragraph>
+        Add one of the publicly availble sources to your style.
+      </Paragraph>
       <div style={{maxwidth: 500}}>
       {tilesetOptions}
       </div>

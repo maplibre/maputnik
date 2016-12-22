@@ -17,6 +17,7 @@ import MdFindInPage from 'react-icons/lib/md/find-in-page'
 
 import SettingsModal from './modals/SettingsModal'
 import SourcesModal from './modals/SourcesModal'
+import OpenModal from './modals/OpenModal'
 
 import style from '../libs/style'
 import colors from '../config/colors'
@@ -37,6 +38,7 @@ const ToolbarAction = props => <a onClick={props.onClick}
   {props.children}
 </a>
 
+
 export default class Toolbar extends React.Component {
   static propTypes = {
     mapStyle: React.PropTypes.object.isRequired,
@@ -54,19 +56,8 @@ export default class Toolbar extends React.Component {
     this.state = {
       openSettingsModal: false,
       openSourcesModal: false,
+      openOpenModal: false,
     }
-  }
-
-  onUpload(_, files) {
-    const [e, file] = files[0];
-    const reader = new FileReader();
-    reader.readAsText(file, "UTF-8");
-    reader.onload = e => {
-      let mapStyle = JSON.parse(e.target.result)
-      mapStyle = style.ensureMetadataExists(mapStyle)
-      this.props.onStyleUpload(mapStyle);
-    }
-    reader.onerror = e => console.log(e.target);
   }
 
   saveButton() {
@@ -94,6 +85,10 @@ export default class Toolbar extends React.Component {
     this.setState({openSourcesModal: !this.state.openSourcesModal})
   }
 
+  toggleOpen() {
+    this.setState({openOpenModal: !this.state.openOpenModal})
+  }
+
   render() {
     return <div style={{
       position: "fixed",
@@ -110,6 +105,10 @@ export default class Toolbar extends React.Component {
         isOpen={this.state.openSettingsModal}
         toggle={() => this.toggleSettings.bind(this)}
       />
+      <OpenModal
+        isOpen={this.state.openOpenModal}
+        toggle={() => this.toggleOpen.bind(this)}
+      />
       <SourcesModal
         mapStyle={this.props.mapStyle}
         onStyleChanged={this.props.onStyleChanged}
@@ -124,11 +123,9 @@ export default class Toolbar extends React.Component {
         <img src="https://github.com/maputnik/editor/raw/master/media/maputnik.png" alt="Maputnik" style={{width: 30, height: 30, paddingRight: 5, verticalAlign: 'middle'}}/>
         <span style={{fontSize: 20, verticalAlign: 'middle' }}>Maputnik</span>
       </ToolbarAction>
-      <ToolbarAction>
-        <FileReaderInput onChange={this.onUpload.bind(this)}>
-          <MdOpenInBrowser />
-          <IconText>Open</IconText>
-        </FileReaderInput>
+      <ToolbarAction onClick={this.toggleOpen.bind(this)}>
+        <MdOpenInBrowser />
+        <IconText>Open</IconText>
       </ToolbarAction>
       {this.downloadButton()}
       {this.saveButton()}
