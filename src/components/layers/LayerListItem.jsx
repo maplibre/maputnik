@@ -135,7 +135,6 @@ class LayerListItem extends React.Component {
     }
 
     if(this.state.hover) {
-      console.log('hooover')
       itemStyle.backgroundColor = Color(colors.black).lighten(0.10).string()
     }
 

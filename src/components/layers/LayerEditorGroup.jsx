@@ -1,4 +1,5 @@
 import React from 'react'
+import Color from 'color'
 import colors from '../../config/colors'
 import { margins, fontSizes } from '../../config/scales'
 
@@ -28,32 +29,35 @@ export default class LayerEditorGroup extends React.Component {
     onActiveToggle: React.PropTypes.func.isRequired
   }
 
+  constructor(props) {
+    super(props)
+    this.state = { hover: false }
+  }
+
   render() {
     return <div>
       <div style={{
         fontSize: fontSizes[4],
-        backgroundColor: colors.gray,
+        backgroundColor: this.state.hover ? Color(colors.black).lighten(0.30).string() : Color(colors.black).lighten(0.15).string(),
         color: colors.lowgray,
+        cursor: 'pointer',
+        userSelect: 'none',
         padding: margins[1],
         display: 'flex',
         flexDirection: 'row',
         lineHeight: '20px',
       }}
+        onMouseOver={e => this.setState({hover: true})}
+        onMouseOut={e => this.setState({hover: false})}
         onClick={e => this.props.onActiveToggle(!this.props.isActive)}
       >
         <span>{this.props.title}</span>
         <span style={{flexGrow: 1}} />
         <Collapser isCollapsed={this.props.isActive} />
       </div>
-      <div style={{
-        border: 2,
-        borderStyle: 'solid',
-        borderColor: colors.gray,
-      }}>
-        <Collapse isOpened={this.props.isActive}>
-          {this.props.children}
-        </Collapse>
-      </div>
+      <Collapse isOpened={this.props.isActive}>
+        {this.props.children}
+      </Collapse>
     </div>
   }
 }

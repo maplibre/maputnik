@@ -142,9 +142,7 @@ export default class LayerEditor extends React.Component {
       </LayerEditorGroup>
     }
 
-    return <div style={{
-        padding: margins[0],
-    }}>
+    return <div>
       {propertyGroups}
       {dataGroup}
     </div>
