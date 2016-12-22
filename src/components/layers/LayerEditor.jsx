@@ -24,10 +24,12 @@ export default class LayerEditor extends React.Component {
     sources: React.PropTypes.object,
     vectorLayers: React.PropTypes.object,
     onLayerChanged: React.PropTypes.func,
+    onLayerIdChange: React.PropTypes.func,
   }
 
   static defaultProps = {
     onLayerChanged: () => {},
+    onLayerIdChange: () => {},
     onLayerDestroyed: () => {},
   }
 
@@ -74,14 +76,20 @@ export default class LayerEditor extends React.Component {
    * to a {@newValue}.
    */
   onPropertyChange(group, property, newValue) {
-    const changedLayer = {
-      ...this.props.layer,
-      [group]: {
-        ...this.props.layer[group],
+    if(group) {
+      this.props.onLayerChanged({
+        ...this.props.layer,
+        [group]: {
+          ...this.props.layer[group],
+          [property]: newValue
+        }
+      })
+    } else {
+      this.props.onLayerChanged({
+        ...this.props.layer,
         [property]: newValue
-      }
+      })
     }
-    this.props.onLayerChanged(changedLayer)
   }
 
   onFilterChange(newValue) {
@@ -107,6 +115,8 @@ export default class LayerEditor extends React.Component {
       case 'settings': return <LayerSettings
         id={this.props.layer.id}
         type={this.props.layer.type}
+        onTypeChange={v => this.onPropertyChange(null, 'type', v)}
+        onIdChange={newId => this.props.onLayerIdChange(this.props.layer.id, newId)}
       />
       case 'source': return <div>
         <FilterEditor
@@ -136,7 +146,6 @@ export default class LayerEditor extends React.Component {
   }
 
   render() {
-    console.log('editor groups', this.state.editorGroups)
     const layerType = this.props.layer.type
     const layoutGroups = layout[layerType].groups.filter(group => {
       return !(this.props.layer.type === 'background' && group.type === 'source')

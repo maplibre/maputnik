@@ -1,5 +1,4 @@
 import React from 'react'
-import PureRenderMixin from 'react-addons-pure-render-mixin';
 import GlSpec from 'mapbox-gl-style-spec/reference/latest.min.js'
 
 import input from '../../config/input.js'
@@ -131,11 +130,6 @@ export default class CombiningFilterEditor extends React.Component {
     properties: React.PropTypes.object.isRequired,
     filter: React.PropTypes.array.isRequired,
     onChange: React.PropTypes.func.isRequired,
-  }
-
-  constructor(props) {
-    super(props);
-    this.shouldComponentUpdate = PureRenderMixin.shouldComponentUpdate.bind(this);
   }
 
   // Convert filter to combining filter

@@ -78,7 +78,20 @@ export default class App extends React.Component {
     this.setState({ mapStyle: changedStyle })
   }
 
+  onLayerIdChange(oldId, newId) {
+    const changedLayers = this.state.mapStyle.layers.slice(0)
+    const idx = style.indexOfLayer(changedLayers, oldId)
+
+    changedLayers[idx] = {
+      ...changedLayers[idx],
+      id: newId
+    }
+
+    this.onLayersChange(changedLayers)
+  }
+
   onLayerChanged(layer) {
+    console.log('layer changed', layer)
     const changedLayers = this.state.mapStyle.layers.slice(0)
     const idx = style.indexOfLayer(changedLayers, layer.id)
     changedLayers[idx] = layer
@@ -133,6 +146,7 @@ export default class App extends React.Component {
       sources={this.layerWatcher.sources}
       vectorLayers={this.layerWatcher.vectorLayers}
       onLayerChanged={this.onLayerChanged.bind(this)}
+      onLayerIdChange={this.onLayerIdChange.bind(this)}
     /> : null
 
     return <Layout

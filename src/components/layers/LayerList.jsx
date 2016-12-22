@@ -1,5 +1,4 @@
 import React from 'react'
-import PureRenderMixin from 'react-addons-pure-render-mixin';
 import cloneDeep from 'lodash.clonedeep'
 
 import LayerListItem from './LayerListItem'
@@ -22,11 +21,6 @@ class LayerListContainer extends React.Component {
   static propTypes = {...layerListPropTypes}
   static defaultProps = {
     onLayerSelect: () => {},
-  }
-
-  constructor(props) {
-    super(props)
-    this.shouldComponentUpdate = PureRenderMixin.shouldComponentUpdate.bind(this);
   }
 
   onLayerDestroy(layerId) {
@@ -86,11 +80,6 @@ class LayerListContainer extends React.Component {
 
 export default class LayerList extends React.Component {
   static propTypes = {...layerListPropTypes}
-
-  constructor(props) {
-    super(props)
-    this.shouldComponentUpdate = PureRenderMixin.shouldComponentUpdate.bind(this);
-  }
 
   onSortEnd(move) {
     const { oldIndex, newIndex } = move
