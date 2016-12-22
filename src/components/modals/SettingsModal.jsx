@@ -11,7 +11,7 @@ class SettingsModal extends React.Component {
     mapStyle: React.PropTypes.object.isRequired,
     onStyleChanged: React.PropTypes.func.isRequired,
     isOpen: React.PropTypes.bool.isRequired,
-    toggle: React.PropTypes.func.isRequired,
+    onOpenToggle: React.PropTypes.func.isRequired,
   }
 
   constructor(props) {
@@ -32,7 +32,7 @@ class SettingsModal extends React.Component {
     const inputProps = { }
     return <Modal
       isOpen={this.props.isOpen}
-      toggleOpen={this.props.toggle}
+      onOpenToggle={this.props.onOpenToggle}
       title={'StyleSettings'}
     >
       <InputBlock label={"Name"}>

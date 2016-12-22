@@ -4,6 +4,7 @@ import Heading from '../Heading'
 import Button from '../Button'
 import Paragraph from '../Paragraph'
 import FileReaderInput from 'react-file-reader-input'
+import request from 'request'
 
 import FileUploadIcon from 'react-icons/lib/md/file-upload'
 import AddIcon from 'react-icons/lib/md/add-circle-outline'
@@ -31,11 +32,14 @@ class PublicStyle extends React.Component {
         fontSize: fontSizes[4],
         color: colors.lowgray,
     }}>
-      <Button style={{
-        backgroundColor: 'transparent',
-        padding: margins[2],
-        display: 'block',
-      }}>
+      <Button
+        onClick={() => this.props.onSelect(this.props.url)}
+        style={{
+          backgroundColor: 'transparent',
+          padding: margins[2],
+          display: 'block',
+        }}
+      >
         <div style={{
           display: 'flex',
           flexDirection: 'row',
@@ -61,8 +65,23 @@ class PublicStyle extends React.Component {
 class OpenModal extends React.Component {
   static propTypes = {
     isOpen: React.PropTypes.bool.isRequired,
-    toggle: React.PropTypes.func.isRequired,
+    onOpenToggle: React.PropTypes.func.isRequired,
     onStyleOpen: React.PropTypes.func.isRequired,
+  }
+
+  onStyleSelect(styleUrl) {
+    request({
+      url: styleUrl,
+      withCredentials: false,
+    }, (error, response, body) => {
+        if (!error && response.statusCode == 200) {
+          const mapStyle = JSON.parse(body)
+          console.log('Loaded style ', mapStyle.id)
+          this.props.onStyleOpen(mapStyle)
+        } else {
+          console.warn('Could not open the style URL', styleUrl)
+        }
+    })
   }
 
   onUpload(_, files) {
@@ -80,16 +99,17 @@ class OpenModal extends React.Component {
   render() {
     const styleOptions = publicStyles.map(style => {
       return <PublicStyle
-        key={style.key}
+        key={style.id}
         url={style.url}
         title={style.title}
         thumbnailUrl={style.thumbnail}
+        onSelect={this.onStyleSelect.bind(this)}
       />
     })
 
     return <Modal
       isOpen={this.props.isOpen}
-      toggleOpen={this.props.toggle}
+      onOpenToggle={this.props.onOpenToggle}
       title={'Open Style'}
     >
       <Heading level={4}>Upload Style</Heading>
@@ -98,8 +118,8 @@ class OpenModal extends React.Component {
       </Paragraph>
       <FileReaderInput onChange={this.onUpload.bind(this)}>
         <Button>
-        <FileUploadIcon />
-        Upload
+          <FileUploadIcon />
+          Upload
         </Button>
       </FileReaderInput>
 

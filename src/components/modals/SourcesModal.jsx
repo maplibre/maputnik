@@ -158,7 +158,7 @@ class SourcesModal extends React.Component {
   static propTypes = {
     mapStyle: React.PropTypes.object.isRequired,
     isOpen: React.PropTypes.bool.isRequired,
-    toggle: React.PropTypes.func.isRequired,
+    onOpenToggle: React.PropTypes.func.isRequired,
   }
 
   render() {
@@ -179,7 +179,7 @@ class SourcesModal extends React.Component {
     const inputProps = { }
     return <Modal
       isOpen={this.props.isOpen}
-      toggleOpen={this.props.toggle}
+      onOpenToggle={this.props.onOpenToggle}
       title={'Sources'}
     >
       <Heading level={4}>Active Sources</Heading>

@@ -10,7 +10,7 @@ class Modal extends React.Component {
   static propTypes = {
     isOpen: React.PropTypes.bool.isRequired,
     title: React.PropTypes.string.isRequired,
-    toggleOpen: React.PropTypes.func.isRequired,
+    onOpenToggle: React.PropTypes.func.isRequired,
   }
 
   render() {

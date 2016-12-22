@@ -4,7 +4,7 @@ import { margins, fontSizes } from '../config/scales'
 
 class Button extends React.Component {
   static propTypes = {
-    onClick: React.PropTypes.func.isRequired,
+    onClick: React.PropTypes.func,
     style: React.PropTypes.object,
   }
 
