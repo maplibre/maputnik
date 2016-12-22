@@ -54,5 +54,12 @@ module.exports = [
     test: /\.js$/,
     include: /node_modules\/mapbox-gl\/js\/render\/shaders.js/,
     loader: 'transform/cacheable?brfs'
+  },
+  {
+    test: /[\/\\](node_modules|global|src)[\/\\].*\.css$/,
+    loaders: [
+      'style?sourceMap',
+      'css'
+    ]
   }
 ];
