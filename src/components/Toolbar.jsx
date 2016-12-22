@@ -93,7 +93,7 @@ export default class Toolbar extends React.Component {
   }
 
   downloadButton() {
-    return <ToolbarAction onClick={this.props.onStyleDownload} big={true}>
+    return <ToolbarAction onClick={this.props.onStyleDownload}>
       <MdFileDownload />
       <IconText>Download</IconText>
     </ToolbarAction>
@@ -141,15 +141,18 @@ export default class Toolbar extends React.Component {
           onToggleOpen={this.toggleSources.bind(this)}
         />
       }
-      <ToolbarAction style={{
-        width: 180,
-        textAlign: 'left',
-        backgroundColor: colors.black,
-        padding: 5,
-      }}>
+      <ToolbarLink
+        href={"https://github.com/maputnik/editor"}
+        style={{
+          width: 180,
+          textAlign: 'left',
+          backgroundColor: colors.black,
+          padding: 5,
+        }}
+      >
         <img src="https://github.com/maputnik/editor/raw/master/media/maputnik.png" alt="Maputnik" style={{width: 30, height: 30, paddingRight: 5, verticalAlign: 'middle'}}/>
         <span style={{fontSize: 20, verticalAlign: 'middle' }}>Maputnik</span>
-      </ToolbarAction>
+      </ToolbarLink>
       <ToolbarAction onClick={this.toggleOpen.bind(this)}>
         <MdOpenInBrowser />
         <IconText>Open</IconText>
