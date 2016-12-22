@@ -4,6 +4,7 @@ import SourceEditor from './SourceEditor'
 import FilterEditor from '../filter/FilterEditor'
 import PropertyGroup from '../fields/PropertyGroup'
 import LayerEditorGroup from './LayerEditorGroup'
+import LayerSettings from './LayerSettings'
 
 import layout from '../../config/layout.json'
 import { margins, fontSizes } from '../../config/scales'
@@ -42,6 +43,7 @@ export default class LayerEditor extends React.Component {
       editorGroups[group.title] = true
     })
     editorGroups['Source'] = true
+    editorGroups['Settings'] = true
 
     this.state = { editorGroups }
   }
@@ -142,9 +144,21 @@ export default class LayerEditor extends React.Component {
       </LayerEditorGroup>
     }
 
+    const settingsGroup = <LayerEditorGroup
+      title="Settings"
+      isActive={this.state.editorGroups['Settings']}
+      onActiveToggle={this.onGroupToggle.bind(this, 'Settings')}
+    >
+      <LayerSettings
+        id={this.props.layer.id}
+        type={this.props.layer.type}
+      />
+    </LayerEditorGroup>
+
     return <div>
-      {propertyGroups}
+      {settingsGroup}
       {dataGroup}
+      {propertyGroups}
     </div>
   }
 }

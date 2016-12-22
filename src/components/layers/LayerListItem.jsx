@@ -21,7 +21,12 @@ class LayerTypeDragHandle extends React.Component {
   render() {
     return <LayerIcon
       {...this.props}
-      style={{width: 15, height: 15, paddingRight: 3}}
+      style={{
+        cursor: 'move',
+        width: 15,
+        height: 15,
+        paddingRight: margins[0],
+      }}
     />
   }
 }
