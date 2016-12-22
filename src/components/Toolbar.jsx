@@ -76,7 +76,7 @@ export default class Toolbar extends React.Component {
     mapStyle: React.PropTypes.object.isRequired,
     onStyleChanged: React.PropTypes.func.isRequired,
     // A new style has been uploaded
-    onStyleUpload: React.PropTypes.func.isRequired,
+    onStyleOpen: React.PropTypes.func.isRequired,
     // Current style is requested for download
     onStyleDownload: React.PropTypes.func.isRequired,
     // Style is explicitely saved to local cache
@@ -86,9 +86,11 @@ export default class Toolbar extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      openSettingsModal: false,
-      openSourcesModal: false,
-      openOpenModal: false,
+      isOpen: {
+        settings: false,
+        sources: false,
+        open: false,
+      }
     }
   }
 
@@ -99,16 +101,35 @@ export default class Toolbar extends React.Component {
     </ToolbarAction>
   }
 
-  toggleSettings() {
-    this.setState({openSettingsModal: !this.state.openSettingsModal})
+  toggleModal(modalName) {
+    this.setState({
+      isOpen: {
+        ...this.state.isOpen,
+        [modalName]: !this.state.isOpen[modalName]
+      }
+    })
   }
 
-  toggleSources() {
-    this.setState({openSourcesModal: !this.state.openSourcesModal})
-  }
-
-  toggleOpen() {
-    this.setState({openOpenModal: !this.state.openOpenModal})
+  renderModals() {
+    return [
+      <SettingsModal
+        mapStyle={this.props.mapStyle}
+        onStyleChanged={this.props.onStyleChanged}
+        isOpen={this.state.isOpen.settings}
+        onOpenToggle={this.toggleModal.bind(this, 'settings')}
+      />,
+      <OpenModal
+        isOpen={this.state.isOpen.open}
+        onStyleOpen={this.props.onStyleOpen}
+        onOpenToggle={this.toggleModal.bind(this, 'open')}
+      />,
+      <SourcesModal
+          mapStyle={this.props.mapStyle}
+          onStyleChanged={this.props.onStyleChanged}
+          isOpen={this.state.isOpen.sources}
+          onOpenToggle={this.toggleModal.bind(this, 'sources')}
+      />,
+    ]
   }
 
   render() {
@@ -121,26 +142,7 @@ export default class Toolbar extends React.Component {
       top: 0,
       backgroundColor: colors.black
     }}>
-      {this.state.openSettingsModal && <SettingsModal
-          mapStyle={this.props.mapStyle}
-          onStyleChanged={this.props.onStyleChanged}
-          isOpen={this.state.openSettingsModal}
-          onToggleOpen={this.toggleSettings.bind(this)}
-        />
-      }
-      {this.state.openOpenModal &&<OpenModal
-          isOpen={this.state.openOpenModal}
-          onStyleOpen={this.props.onStyleUpload}
-          onToggleOpen={this.toggleOpen.bind(this)}
-        />
-      }
-      {this.state.openSourcesModal && <SourcesModal
-          mapStyle={this.props.mapStyle}
-          onStyleChanged={this.props.onStyleChanged}
-          isOpen={this.state.openSourcesModal}
-          onToggleOpen={this.toggleSources.bind(this)}
-        />
-      }
+      {this.renderModals()}
       <ToolbarLink
         href={"https://github.com/maputnik/editor"}
         style={{
@@ -153,20 +155,20 @@ export default class Toolbar extends React.Component {
         <img src="https://github.com/maputnik/editor/raw/master/media/maputnik.png" alt="Maputnik" style={{width: 30, height: 30, paddingRight: 5, verticalAlign: 'middle'}}/>
         <span style={{fontSize: 20, verticalAlign: 'middle' }}>Maputnik</span>
       </ToolbarLink>
-      <ToolbarAction onClick={this.toggleOpen.bind(this)}>
+      <ToolbarAction onClick={this.toggleModal.bind(this, 'open')}>
         <MdOpenInBrowser />
         <IconText>Open</IconText>
       </ToolbarAction>
       {this.downloadButton()}
-      <ToolbarAction onClick={this.toggleSources.bind(this)}>
+      <ToolbarAction onClick={this.toggleModal.bind(this, 'sources')}>
         <MdLayers />
         <IconText>Sources</IconText>
       </ToolbarAction>
-      <ToolbarAction onClick={this.toggleSettings.bind(this)}>
+      <ToolbarAction onClick={this.toggleModal.bind(this, 'settings')}>
         <MdSettings />
         <IconText>Style Settings</IconText>
       </ToolbarAction>
-      <ToolbarAction onClick={this.toggleSettings.bind(this)}>
+      <ToolbarAction onClick={this.toggleModal.bind(this, 'settings')}>
         <MdFindInPage />
         <IconText>Inspect</IconText>
       </ToolbarAction>

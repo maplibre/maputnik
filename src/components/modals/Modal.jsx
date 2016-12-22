@@ -31,7 +31,7 @@ class Modal extends React.Component {
           {this.props.title}
           <span style={{flexGrow: 1}} />
           <a
-            onClick={this.props.toggleOpen(false)}
+            onClick={() => this.props.onOpenToggle(false)}
             style={{ cursor: 'pointer' }} >
             <CloseIcon />
           </a>

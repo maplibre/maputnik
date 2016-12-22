@@ -25,7 +25,7 @@ export default class App extends React.Component {
         console.log('Falling back to local storage for storing styles')
         this.styleStore = new StyleStore()
       }
-      this.styleStore.latestStyle(mapStyle => this.onStyleUpload(mapStyle))
+      this.styleStore.latestStyle(mapStyle => this.onStyleOpen(mapStyle))
     })
 
     this.settingsStore = new SettingsStore()
@@ -38,7 +38,7 @@ export default class App extends React.Component {
 
   onReset() {
     this.styleStore.purge()
-    loadDefaultStyle(mapStyle => this.onStyleUpload(mapStyle))
+    loadDefaultStyle(mapStyle => this.onStyleOpen(mapStyle))
   }
 
   onStyleDownload() {
@@ -48,7 +48,7 @@ export default class App extends React.Component {
     this.onStyleSave()
   }
 
-  onStyleUpload(newStyle) {
+  onStyleOpen(newStyle) {
     console.log('upload', newStyle)
     const savedStyle = this.styleStore.save(newStyle)
     this.setState({ mapStyle: savedStyle })
@@ -130,7 +130,7 @@ export default class App extends React.Component {
       mapStyle={this.state.mapStyle}
       onStyleChanged={this.onStyleChanged.bind(this)}
       onStyleSave={this.onStyleSave.bind(this)}
-      onStyleUpload={this.onStyleUpload.bind(this)}
+      onStyleOpen={this.onStyleOpen.bind(this)}
       onStyleDownload={this.onStyleDownload.bind(this)}
     />
 
