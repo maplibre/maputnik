@@ -26,6 +26,7 @@
     "lodash.topairs": "^4.3.0",
     "mapbox-gl": "mapbox/mapbox-gl-js#6c24b9621d2aa770eda67fb5638b4d78087b5624",
     "mapbox-gl-style-spec": "mapbox/mapbox-gl-style-spec#e85407a377510acb647161de6be6357ab4f606dd",
+    "mousetrap": "^1.6.0",
     "ol-mapbox-style": "0.0.11",
     "openlayers": "^3.19.1",
     "randomcolor": "^0.4.4",

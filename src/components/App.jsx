@@ -1,5 +1,6 @@
 import React from 'react'
 import { saveAs } from 'file-saver'
+import Mousetrap from 'mousetrap'
 
 import MapboxGlMap from './map/MapboxGlMap'
 import OpenLayers3Map from './map/OpenLayers3Map'
@@ -11,15 +12,16 @@ import AppLayout from './AppLayout'
 import style from '../libs/style.js'
 import { loadDefaultStyle, SettingsStore, StyleStore } from '../libs/stylestore'
 import { ApiStyleStore } from '../libs/apistore'
+import { RevisionStore } from '../libs/revisions'
 import LayerWatcher from '../libs/layerwatcher'
 
 
 export default class App extends React.Component {
-
   constructor(props) {
     super(props)
     this.layerWatcher = new LayerWatcher()
     this.styleStore = new ApiStyleStore()
+    this.revisionStore = new RevisionStore()
     this.styleStore.supported(isSupported => {
       if(!isSupported) {
         console.log('Falling back to local storage for storing styles')
@@ -34,6 +36,16 @@ export default class App extends React.Component {
       mapStyle: style.emptyStyle,
       selectedLayerIndex: 0,
     }
+  }
+
+  componentDidMount() {
+    Mousetrap.bind(['ctrl+z'], this.onUndo.bind(this));
+    Mousetrap.bind(['ctrl+y'], this.onRedo.bind(this));
+  }
+
+  componentWillUnmount() {
+    Mousetrap.unbind(['ctrl+z'], this.onUndo.bind(this));
+    Mousetrap.unbind(['ctrl+y'], this.onRedo.bind(this));
   }
 
   onReset() {
@@ -53,8 +65,23 @@ export default class App extends React.Component {
   }
 
   onStyleChanged(newStyle) {
+    this.revisionStore.addRevision(newStyle)
     this.saveStyle(newStyle)
     this.setState({ mapStyle: newStyle })
+  }
+
+  onUndo() {
+    const activeStyle = this.revisionStore.undo()
+    console.log('Undo revision', this.revisionStore.currentIdx)
+    this.saveStyle(activeStyle)
+    this.setState({ mapStyle: activeStyle })
+  }
+
+  onRedo() {
+    const activeStyle = this.revisionStore.redo()
+    console.log('Redo revision', this.revisionStore.currentIdx)
+    this.saveStyle(activeStyle)
+    this.setState({ mapStyle: activeStyle })
   }
 
   onAccessTokenChanged(newToken) {
