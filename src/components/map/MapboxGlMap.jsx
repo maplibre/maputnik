@@ -1,8 +1,16 @@
 import React from 'react'
+import ReactDOM from 'react-dom'
 import MapboxGl from 'mapbox-gl'
+import FeatureLayerTable from './FeatureLayerTable'
 import validateColor from 'mapbox-gl-style-spec/lib/validate/validate_color'
 import style from '../../libs/style.js'
 import 'mapbox-gl/dist/mapbox-gl.css'
+
+function renderTable(feature) {
+  var mountNode = document.createElement('div');
+  ReactDOM.render(<FeatureLayerTable feature={feature} />, mountNode);
+  return mountNode.innerHTML;
+}
 
 export default class MapboxGlMap extends React.Component {
   static propTypes = {
@@ -52,6 +60,24 @@ export default class MapboxGlMap extends React.Component {
         map: this.state.map
       })
     })
+
+    map.on('click', this.displayPopup.bind(this));
+  }
+
+  displayPopup(e) {
+		const features = this.state.map.queryRenderedFeatures(e.point, {
+			layers: this.layers
+		});
+
+		if (!features.length) {
+			return
+		}
+		const feature = features[0]
+    console.log('Click on feature', feature)
+		const popup = new MapboxGl.Popup()
+			.setLngLat(e.lngLat)
+			.setHTML(renderTable(feature))
+			.addTo(this.state.map)
   }
 
   render() {
