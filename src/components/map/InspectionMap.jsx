@@ -1,9 +1,12 @@
 import React from 'react'
+import ReactDOM from 'react-dom'
 import MapboxGl from 'mapbox-gl'
 import validateColor from 'mapbox-gl-style-spec/lib/validate/validate_color'
 import colors from '../../config/colors'
 import style from '../../libs/style'
+import FeaturePropertyTable from './FeaturePropertyTable'
 import { generateColoredLayers } from '../../libs/stylegen'
+import 'mapbox-gl/dist/mapbox-gl.css'
 
 function convertInspectStyle(mapStyle, sources) {
   const newStyle = {
@@ -22,11 +25,18 @@ function convertInspectStyle(mapStyle, sources) {
   return newStyle
 }
 
+function renderFeaturePropertyTable(feature) {
+  var mountNode = document.createElement('div');
+  ReactDOM.render(<FeaturePropertyTable feature={feature} />, mountNode);
+  return mountNode.innerHTML;
+}
+
 export default class InspectionMap extends React.Component {
   static propTypes = {
     onDataChange: React.PropTypes.func,
     sources: React.PropTypes.object,
     originalStyle: React.PropTypes.object,
+    style: React.PropTypes.object,
   }
 
   static defaultProps = {
@@ -53,6 +63,9 @@ export default class InspectionMap extends React.Component {
       style: convertInspectStyle(this.props.mapStyle, this.props.sources),
     })
 
+		const nav = new MapboxGl.NavigationControl();
+		map.addControl(nav, 'top-right');
+
     map.on("style.load", () => {
       this.setState({ map });
     })
@@ -63,6 +76,34 @@ export default class InspectionMap extends React.Component {
         map: this.state.map
       })
     })
+
+    map.on('click', this.displayPopup.bind(this));
+  }
+
+  displayPopup(e) {
+		const features = this.state.map.queryRenderedFeatures(e.point, {
+			layers: this.layers
+		});
+
+		if (!features.length) {
+			return
+		}
+		const feature = features[0]
+
+/*
+		const clickEvent = e.originalEvent
+		const x = clickEvent.pageX
+		const y = clickEvent.pageY
+
+		console.log(e)
+		console.log('Show feature', feature)
+*/
+		// Populate the popup and set its coordinates
+		// based on the feature found.
+		const popup = new MapboxGl.Popup()
+			.setLngLat(e.lngLat)
+			.setHTML(renderFeaturePropertyTable(feature))
+			.addTo(this.state.map)
   }
 
   render() {
@@ -74,6 +115,7 @@ export default class InspectionMap extends React.Component {
       bottom: 0,
       height: "100%",
       width: "100%",
+      ...this.props.style,
     }}></div>
   }
 }

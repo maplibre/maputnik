@@ -124,7 +124,12 @@ export default class App extends React.Component {
       accessToken: this.state.accessToken,
       onDataChange: (e) => {
         this.layerWatcher.analyzeMap(e.map)
-      }
+      },
+			//TODO: This would actually belong to the layout component
+      style:{
+				top: 40,
+				//left: 500,
+			}
     }
 
     const metadata = this.state.mapStyle.metadata || {}

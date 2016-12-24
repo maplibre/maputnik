@@ -1,14 +1,15 @@
 import React from 'react'
 import MapboxGl from 'mapbox-gl'
 import validateColor from 'mapbox-gl-style-spec/lib/validate/validate_color'
-
 import style from '../../libs/style.js'
+import 'mapbox-gl/dist/mapbox-gl.css'
 
 export default class MapboxGlMap extends React.Component {
   static propTypes = {
     onDataChange: React.PropTypes.func,
     mapStyle: React.PropTypes.object.isRequired,
     accessToken: React.PropTypes.string,
+    style: React.PropTypes.object,
   }
 
   static defaultProps = {
@@ -37,6 +38,9 @@ export default class MapboxGlMap extends React.Component {
       style: this.props.mapStyle,
     })
 
+		const nav = new MapboxGl.NavigationControl();
+		map.addControl(nav, 'top-right');
+
     map.on("style.load", () => {
       this.setState({ map });
     })
@@ -58,6 +62,7 @@ export default class MapboxGlMap extends React.Component {
       bottom: 0,
       height: "100%",
       width: "100%",
+      ...this.props.style,
     }}></div>
   }
 }
