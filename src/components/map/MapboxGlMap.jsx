@@ -36,6 +36,7 @@ export default class MapboxGlMap extends React.Component {
     const map = new MapboxGl.Map({
       container: this.container,
       style: this.props.mapStyle,
+      hash: true,
     })
 
 		const nav = new MapboxGl.NavigationControl();

@@ -61,6 +61,7 @@ export default class InspectionMap extends React.Component {
     const map = new MapboxGl.Map({
       container: this.container,
       style: convertInspectStyle(this.props.mapStyle, this.props.sources),
+      hash: true,
     })
 
 		const nav = new MapboxGl.NavigationControl();
