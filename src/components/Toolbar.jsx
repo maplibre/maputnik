@@ -99,6 +99,22 @@ export default class Toolbar extends React.Component {
     </ToolbarAction>
   }
 
+  toggleInspectionMode() {
+    const metadata = this.props.mapStyle.metadata || {}
+    const currentRenderer = metadata['maputnik:renderer'] || 'mbgljs'
+
+    const changedRenderer = currentRenderer === 'inspection' ? 'mbgljs' : 'inspection'
+
+    const changedStyle = {
+      ...this.props.mapStyle,
+      metadata: {
+        'maputnik:renderer': changedRenderer
+      }
+    }
+
+    this.props.onStyleChanged(changedStyle)
+  }
+
   toggleModal(modalName) {
     this.setState({
       isOpen: {
@@ -160,7 +176,7 @@ export default class Toolbar extends React.Component {
         <MdSettings />
         <IconText>Style Settings</IconText>
       </ToolbarAction>
-      <ToolbarAction onClick={this.toggleModal.bind(this, 'settings')}>
+      <ToolbarAction onClick={this.toggleInspectionMode.bind(this)}>
         <MdFindInPage />
         <IconText>Inspect</IconText>
       </ToolbarAction>
