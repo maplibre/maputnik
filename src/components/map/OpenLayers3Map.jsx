@@ -1,10 +1,16 @@
 import React from 'react'
-import Map from './Map'
 import style from '../../libs/style.js'
 
-class OpenLayers3Map extends Map {
-  constructor(props) {
-    super(props)
+class OpenLayers3Map extends React.Component {
+  static propTypes = {
+    onDataChange: React.PropTypes.func,
+    mapStyle: React.PropTypes.object.isRequired,
+    accessToken: React.PropTypes.string,
+  }
+
+  static defaultProps = {
+    onMapLoaded: () => {},
+    onDataChange: () => {},
   }
 
   componentWillReceiveProps(nextProps) {
@@ -62,6 +68,18 @@ class OpenLayers3Map extends Map {
       map.addControl(new ol.control.Zoom());
       this.setState({ map });
     })
+  }
+
+  render() {
+    return <div
+    ref={x => this.container = x}
+    style={{
+      position: "fixed",
+      top: 0,
+      bottom: 0,
+      height: "100%",
+      width: "100%",
+    }}></div>
   }
 }
 

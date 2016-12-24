@@ -72,7 +72,8 @@ class SettingsModal extends React.Component {
         <SelectInput {...inputProps}
           options={[
             ['mbgljs', 'MapboxGL JS'],
-            ['ol3', 'Open Layers 3']
+            ['ol3', 'Open Layers 3'],
+            ['inspection', 'Inspection Mode'],
           ]}
           value={(this.props.mapStyle.metadata || {})['maputnik:renderer'] || 'mbgljs'}
           onChange={this.onRendererChange.bind(this)}

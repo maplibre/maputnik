@@ -1,19 +1,37 @@
 import React from 'react'
 import MapboxGl from 'mapbox-gl'
 import validateColor from 'mapbox-gl-style-spec/lib/validate/validate_color'
+import colors from '../../config/colors'
+import style from '../../libs/style'
+import { generateColoredLayers } from '../../libs/stylegen'
 
-import style from '../../libs/style.js'
+function convertInspectStyle(mapStyle, sources) {
+  const newStyle = {
+    ...mapStyle,
+    layers: [
+      {
+        "id": "background",
+        "type": "background",
+        "paint": {
+          "background-color": colors.black,
+        }
+      },
+      ...generateColoredLayers(sources),
+    ]
+  }
+  return newStyle
+}
 
-export default class MapboxGlMap extends React.Component {
+export default class InspectionMap extends React.Component {
   static propTypes = {
     onDataChange: React.PropTypes.func,
-    mapStyle: React.PropTypes.object.isRequired,
-    accessToken: React.PropTypes.string,
+    sources: React.PropTypes.object,
+    originalStyle: React.PropTypes.object,
   }
 
   static defaultProps = {
     onMapLoaded: () => {},
-    onDataChange: () => {},
+    onTileLoaded: () => {},
   }
 
   constructor(props) {
@@ -24,9 +42,7 @@ export default class MapboxGlMap extends React.Component {
   componentWillReceiveProps(nextProps) {
     if(!this.state.map) return
 
-    //Mapbox GL now does diffing natively so we don't need to calculate
-    //the necessary operations ourselves!
-    this.state.map.setStyle(nextProps.mapStyle, { diff: true})
+    this.state.map.setStyle(convertInspectStyle(nextProps.mapStyle, this.props.sources), { diff: true})
   }
 
   componentDidMount() {
@@ -34,7 +50,7 @@ export default class MapboxGlMap extends React.Component {
 
     const map = new MapboxGl.Map({
       container: this.container,
-      style: this.props.mapStyle,
+      style: convertInspectStyle(this.props.mapStyle, this.props.sources),
     })
 
     map.on("style.load", () => {

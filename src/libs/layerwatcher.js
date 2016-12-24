@@ -6,7 +6,6 @@ export default class LayerWatcher {
   constructor() {
     this._sources = {}
     this._vectorLayers = {}
-    this._map= null
 
     // Since we scan over all features we want to avoid this as much as
     // possible and only do it after a batch of data has loaded because
@@ -14,27 +13,21 @@ export default class LayerWatcher {
     this.throttledAnalyzeVectorLayerFields = throttle(this.analyzeVectorLayerFields, 5000)
   }
 
-  /** Set the map as soon as the map is initialized */
-  set map(m) {
-
-    this._map = m
-    //TODO: At some point we need to unsubscribe when new map is set
-    this._map.on('data', (e) => {
-      if(e.dataType !== 'tile') return
-
+  analyzeMap(map) {
+    Object.keys(map.style.sourceCaches).forEach(sourceId => {
       //NOTE: This heavily depends on the internal API of Mapbox GL
       //so this breaks between Mapbox GL JS releases
-      this._sources[e.sourceId] = e.style.sourceCaches[e.sourceId]._source.vectorLayerIds
-      this.throttledAnalyzeVectorLayerFields()
+      this._sources[sourceId] = map.style.sourceCaches[sourceId]._source.vectorLayerIds
     })
+    this.throttledAnalyzeVectorLayerFields(map)
   }
 
-  analyzeVectorLayerFields() {
+  analyzeVectorLayerFields(map) {
     Object.keys(this._sources).forEach(sourceId => {
       this._sources[sourceId].forEach(vectorLayerId => {
         const knownProperties = this._vectorLayers[vectorLayerId] || {}
         const params = { sourceLayer: vectorLayerId }
-        this._map.querySourceFeatures(sourceId, params).forEach(feature => {
+        map.querySourceFeatures(sourceId, params).forEach(feature => {
           Object.keys(feature.properties).forEach(propertyName => {
             const knownPropertyValues = knownProperties[propertyName] || {}
             knownPropertyValues[feature.properties[propertyName]] = {}

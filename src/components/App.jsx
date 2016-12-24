@@ -2,6 +2,7 @@ import React from 'react'
 import { saveAs } from 'file-saver'
 import Mousetrap from 'mousetrap'
 
+import InspectionMap from './map/InspectionMap'
 import MapboxGlMap from './map/MapboxGlMap'
 import OpenLayers3Map from './map/OpenLayers3Map'
 import LayerList from './layers/LayerList'
@@ -121,8 +122,8 @@ export default class App extends React.Component {
     const mapProps = {
       mapStyle: this.state.mapStyle,
       accessToken: this.state.accessToken,
-      onMapLoaded: (map) => {
-        this.layerWatcher.map = map
+      onDataChange: (e) => {
+        this.layerWatcher.analyzeMap(e.map)
       }
     }
 
@@ -132,6 +133,8 @@ export default class App extends React.Component {
     // Check if OL3 code has been loaded?
     if(renderer === 'ol3') {
       return <OpenLayers3Map {...mapProps} />
+    } else if(renderer === 'inspection') {
+      return  <InspectionMap {...mapProps} sources={this.layerWatcher.sources} />
     } else {
       return  <MapboxGlMap {...mapProps} />
     }
