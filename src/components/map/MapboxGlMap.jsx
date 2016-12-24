@@ -2,13 +2,14 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import MapboxGl from 'mapbox-gl'
 import FeatureLayerTable from './FeatureLayerTable'
+import Popup from './Popup'
 import validateColor from 'mapbox-gl-style-spec/lib/validate/validate_color'
 import style from '../../libs/style.js'
 import 'mapbox-gl/dist/mapbox-gl.css'
 
-function renderTable(feature) {
+function renderPopup(features) {
   var mountNode = document.createElement('div');
-  ReactDOM.render(<FeatureLayerTable feature={feature} />, mountNode);
+  ReactDOM.render(<FeatureLayerTable features={features} />, mountNode)
   return mountNode.innerHTML;
 }
 
@@ -27,7 +28,12 @@ export default class MapboxGlMap extends React.Component {
 
   constructor(props) {
     super(props)
-    this.state = { map: null }
+    this.state = {
+      map: null,
+      isPopupOpen: false,
+      popupX: 0,
+      popupY: 0,
+    }
   }
 
   componentWillReceiveProps(nextProps) {
@@ -69,27 +75,24 @@ export default class MapboxGlMap extends React.Component {
 			layers: this.layers
 		});
 
-		if (!features.length) {
-			return
-		}
-		const feature = features[0]
-    console.log('Click on feature', feature)
+    console.log('Click on features', features)
 		const popup = new MapboxGl.Popup()
 			.setLngLat(e.lngLat)
-			.setHTML(renderTable(feature))
+			.setHTML(renderPopup(features))
 			.addTo(this.state.map)
   }
 
   render() {
     return <div
-    ref={x => this.container = x}
-    style={{
-      position: "fixed",
-      top: 0,
-      bottom: 0,
-      height: "100%",
-      width: "100%",
-      ...this.props.style,
-    }}></div>
+      ref={x => this.container = x}
+      style={{
+        position: "fixed",
+        top: 0,
+        bottom: 0,
+        height: "100%",
+        width: "100%",
+        ...this.props.style,
+      }}>
+    </div>
   }
 }

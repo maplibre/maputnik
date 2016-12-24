@@ -4,7 +4,7 @@ import MapboxGl from 'mapbox-gl'
 import validateColor from 'mapbox-gl-style-spec/lib/validate/validate_color'
 import colors from '../../config/colors'
 import style from '../../libs/style'
-import FeaturePropertyTable from './FeaturePropertyTable'
+import FeatureLayerTable from './FeatureLayerTable'
 import { generateColoredLayers } from '../../libs/stylegen'
 import 'mapbox-gl/dist/mapbox-gl.css'
 
@@ -25,9 +25,9 @@ function convertInspectStyle(mapStyle, sources) {
   return newStyle
 }
 
-function renderFeaturePropertyTable(feature) {
+function renderPopup(features) {
   var mountNode = document.createElement('div');
-  ReactDOM.render(<FeaturePropertyTable feature={feature} />, mountNode);
+  ReactDOM.render(<FeatureLayerTable features={features} />, mountNode)
   return mountNode.innerHTML;
 }
 
@@ -64,8 +64,8 @@ export default class InspectionMap extends React.Component {
       hash: true,
     })
 
-		const nav = new MapboxGl.NavigationControl();
-		map.addControl(nav, 'top-right');
+    const nav = new MapboxGl.NavigationControl();
+    map.addControl(nav, 'top-right');
 
     map.on("style.load", () => {
       this.setState({ map });
@@ -82,29 +82,20 @@ export default class InspectionMap extends React.Component {
   }
 
   displayPopup(e) {
-		const features = this.state.map.queryRenderedFeatures(e.point, {
-			layers: this.layers
-		});
+    const features = this.state.map.queryRenderedFeatures(e.point, {
+      layers: this.layers
+    });
 
-		if (!features.length) {
-			return
-		}
-		const feature = features[0]
+    if (!features.length) {
+      return
+    }
 
-/*
-		const clickEvent = e.originalEvent
-		const x = clickEvent.pageX
-		const y = clickEvent.pageY
-
-		console.log(e)
-		console.log('Show feature', feature)
-*/
-		// Populate the popup and set its coordinates
-		// based on the feature found.
-		const popup = new MapboxGl.Popup()
-			.setLngLat(e.lngLat)
-			.setHTML(renderFeaturePropertyTable(feature))
-			.addTo(this.state.map)
+    // Populate the popup and set its coordinates
+    // based on the feature found.
+    const popup = new MapboxGl.Popup()
+      .setLngLat(e.lngLat)
+      .setHTML(renderPopup(features))
+      .addTo(this.state.map)
   }
 
   render() {

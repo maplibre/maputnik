@@ -7,6 +7,7 @@ class InputBlock extends React.Component {
   static propTypes = {
     label: React.PropTypes.string.isRequired,
     children: React.PropTypes.element.isRequired,
+    style: React.PropTypes.object,
   }
 
   onChange(e) {
@@ -19,6 +20,7 @@ class InputBlock extends React.Component {
       display: 'block',
       marginTop: margins[2],
       marginBottom: margins[2],
+      ...this.props.style,
     }}>
       <label style={input.label}>{this.props.label}</label>
       {this.props.children}

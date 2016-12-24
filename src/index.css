@@ -15,3 +15,31 @@
   color: rgb(142, 142, 142) !important;
   box-shadow: none !important;
 }
+
+.mapboxgl-popup-tip {
+  border-top-color: rgb(28, 31, 36) !important;
+}
+
+.mapboxgl-popup-content {
+  background-color: rgb(28, 31, 36) !important;
+  border-radius: 0px !important;
+  box-shadow: rgba(0, 0, 0, 0.298039) 0px 0px 5px 0px;
+  padding: 0px !important;
+}
+
+.mapboxgl-popup-close-button {
+  color: white !important;
+}
+
+.mapboxgl-ctrl-group {
+  background: rgb(28, 31, 36) !important;
+}
+
+.mapboxgl-ctrl-group > button {
+  background-color: rgb(28, 31, 36) !important;
+  border-color: rgb(28, 31, 36) !important;
+
+  &:hover {
+    background-color: rgb(86, 83, 83);
+  }
+}
