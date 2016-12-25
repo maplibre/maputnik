@@ -1,6 +1,7 @@
 import React from 'react'
 import Color from 'color'
 
+import Button from '../Button'
 import NumberField from './NumberField'
 import EnumField from './EnumField'
 import BooleanField from './BooleanField'
@@ -8,9 +9,12 @@ import ColorField from './ColorField'
 import StringField from './StringField'
 import SpecField from './SpecField'
 
+import AddIcon from 'react-icons/lib/md/add-circle-outline'
+import DeleteIcon from 'react-icons/lib/md/delete'
+
 import input from '../../config/input.js'
 import colors from '../../config/colors.js'
-import { margins } from '../../config/scales.js'
+import { margins, fontSizes } from '../../config/scales.js'
 
 function isZoomField(value) {
   return typeof value === 'object' && value.stops
@@ -40,43 +44,56 @@ export default class ZoomSpecField extends React.Component {
   }
 
   render() {
-    const label = <label style={input.label}>
+    let label = <label style={{...input.label}}>
       {labelFromFieldName(this.props.fieldName)}
     </label>
 
     if(isZoomField(this.props.value)) {
-      const zoomFields = this.props.value.stops.map(stop => {
+      const zoomFields = this.props.value.stops.map((stop, idx) => {
+        label = <label style={{...input.label, width: '30%'}}>
+          {labelFromFieldName(this.props.fieldName)}
+        </label>
+
+        if(idx > 0) {
+          label = <label style={{...input.label, width: '30%'}}></label>
+        }
+
+        if(idx === 1) {
+          label = <label style={{...input.label, width: '30%'}}>
+            <Button style={{fontSize: fontSizes[5]}}>
+              Add stop
+            </Button>
+          </label>
+        }
+
         const zoomLevel = stop[0]
         const value = stop[1]
 
         return <div style={input.property} key={zoomLevel}>
           {label}
-          <SpecField {...this.props}
-            value={value}
-            style={{
-              width: '33%'
-            }}
-          />
-
+          <Button style={{backgroundColor: null}}>
+            <DeleteIcon />
+          </Button>
           <input
             style={{
               ...input.input,
               width: '10%',
-              marginLeft: margins[0],
             }}
             type="number"
             value={zoomLevel}
             min={0}
             max={22}
           />
+          <SpecField {...this.props}
+            value={value}
+            style={{
+              width: '33%',
+              marginLeft: margins[0],
+            }}
+          />
         </div>
       })
-      return <div style={{
-          border: 1,
-          borderStyle: 'solid',
-          borderColor: Color(colors.gray).lighten(0.1).string(),
-          padding: margins[1],
-        }}>
+      return <div style={input.property}>
         {zoomFields}
       </div>
     } else {
