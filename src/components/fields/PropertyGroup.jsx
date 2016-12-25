@@ -1,5 +1,5 @@
 import React from 'react'
-import GlSpec from 'mapbox-gl-style-spec/reference/latest.min.js'
+import GlSpec from 'mapbox-gl-style-spec/reference/latest.js'
 
 import ZoomSpecField from './ZoomSpecField'
 import colors from '../../config/colors'

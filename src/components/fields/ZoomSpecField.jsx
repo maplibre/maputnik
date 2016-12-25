@@ -8,6 +8,7 @@ import BooleanField from './BooleanField'
 import ColorField from './ColorField'
 import StringField from './StringField'
 import SpecField from './SpecField'
+import DocLabel from './DocLabel'
 
 import AddIcon from 'react-icons/lib/md/add-circle-outline'
 import DeleteIcon from 'react-icons/lib/md/delete'
@@ -44,9 +45,11 @@ export default class ZoomSpecField extends React.Component {
   }
 
   render() {
-    let label = <label style={{...input.label}}>
-      {labelFromFieldName(this.props.fieldName)}
-    </label>
+    console.log(this.props.fieldSpec)
+    let label = <DocLabel
+      label={labelFromFieldName(this.props.fieldName)}
+      doc={this.props.fieldSpec.doc}
+    />
 
     if(isZoomField(this.props.value)) {
       const zoomFields = this.props.value.stops.map((stop, idx) => {
