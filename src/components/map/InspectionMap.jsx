@@ -4,9 +4,10 @@ import MapboxGl from 'mapbox-gl'
 import validateColor from 'mapbox-gl-style-spec/lib/validate/validate_color'
 import colors from '../../config/colors'
 import style from '../../libs/style'
-import FeatureLayerTable from './FeatureLayerTable'
+import FeaturePropertyPopup from './FeaturePropertyPopup'
 import { generateColoredLayers } from '../../libs/stylegen'
 import 'mapbox-gl/dist/mapbox-gl.css'
+import '../../mapboxgl.css'
 
 function convertInspectStyle(mapStyle, sources) {
   const newStyle = {
@@ -27,7 +28,7 @@ function convertInspectStyle(mapStyle, sources) {
 
 function renderPopup(features) {
   var mountNode = document.createElement('div');
-  ReactDOM.render(<FeatureLayerTable features={features} />, mountNode)
+  ReactDOM.render(<FeaturePropertyPopup features={features} />, mountNode)
   return mountNode.innerHTML;
 }
 

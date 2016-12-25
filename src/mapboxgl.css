@@ -1,0 +1,39 @@
+.mapboxgl-popup-anchor-top .mapboxgl-popup-tip {
+ border-bottom-color: rgb(28, 31, 36);
+}
+
+.mapboxgl-popup-anchor-left .mapboxgl-popup-tip {
+  border-right-color: rgb(28, 31, 36);
+}
+
+.mapboxgl-popup-anchor-right .mapboxgl-popup-tip {
+  border-left-color: rgb(28, 31, 36);
+}
+
+.mapboxgl-popup-anchor-bottom .mapboxgl-popup-tip {
+  border-top-color: rgb(28, 31, 36);
+}
+
+.mapboxgl-popup-content {
+  background-color: rgb(28, 31, 36);
+  border-radius: 0px;
+  box-shadow: rgba(0, 0, 0, 0.298039) 0px 0px 5px 0px;
+  padding: 0px;
+}
+
+.mapboxgl-popup-close-button {
+  color: white;
+}
+
+.mapboxgl-ctrl-group {
+  background: rgb(28, 31, 36);
+}
+
+.mapboxgl-ctrl-group > button {
+  background-color: rgb(28, 31, 36);
+  border-color: rgb(28, 31, 36);
+}
+
+.mapboxgl-ctrl-group > button:hover {
+  background-color: rgb(86, 83, 83);
+}

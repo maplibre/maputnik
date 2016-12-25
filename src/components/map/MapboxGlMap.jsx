@@ -5,6 +5,7 @@ import FeatureLayerTable from './FeatureLayerTable'
 import validateColor from 'mapbox-gl-style-spec/lib/validate/validate_color'
 import style from '../../libs/style.js'
 import 'mapbox-gl/dist/mapbox-gl.css'
+import '../../mapboxgl.css'
 
 function renderPopup(features) {
   var mountNode = document.createElement('div');
@@ -74,7 +75,7 @@ export default class MapboxGlMap extends React.Component {
 			layers: this.layers
 		});
 
-    console.log('Click on features', features)
+    if(features.length < 1) return
 		const popup = new MapboxGl.Popup()
 			.setLngLat(e.lngLat)
 			.setHTML(renderPopup(features))

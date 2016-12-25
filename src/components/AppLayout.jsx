@@ -3,6 +3,7 @@ import ScrollContainer from './ScrollContainer'
 
 import theme from '../config/theme'
 import colors from '../config/colors'
+import { fontSizes } from '../config/scales'
 
 class AppLayout extends React.Component {
   static propTypes = {
@@ -18,7 +19,7 @@ class AppLayout extends React.Component {
 
   getChildContext() {
     return {
-      reactIconBase: { size: 14 }
+      reactIconBase: { size: fontSizes[3] }
     }
   }
 

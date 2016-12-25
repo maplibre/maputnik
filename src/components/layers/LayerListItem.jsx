@@ -23,8 +23,8 @@ class LayerTypeDragHandle extends React.Component {
       {...this.props}
       style={{
         cursor: 'move',
-        width: 15,
-        height: 15,
+        width: fontSizes[4],
+        height: fontSizes[4],
         paddingRight: margins[0],
       }}
     />
@@ -115,7 +115,7 @@ class LayerListItem extends React.Component {
 
   getChildContext() {
     return {
-      reactIconBase: { size: 12 }
+      reactIconBase: { size: fontSizes[4] }
     }
   }
 
