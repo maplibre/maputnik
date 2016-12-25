@@ -29,7 +29,7 @@ const IconText = props => <span style={{ paddingLeft: margins[0] }}>
 
 const actionStyle = {
   display: "inline-block",
-  padding: 12.5,
+  padding: 10,
   fontSize: fontSizes[4],
   cursor: "pointer",
   color: colors.white,
