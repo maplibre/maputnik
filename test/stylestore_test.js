@@ -1,4 +1,4 @@
-import { SettingsStore } from '../src/stylestore.js'
+import { SettingsStore } from '../src/libs/stylestore.js'
 import assert from 'assert'
 
 describe('SettingsStore', () => {
