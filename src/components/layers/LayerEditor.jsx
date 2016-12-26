@@ -119,11 +119,13 @@ export default class LayerEditor extends React.Component {
         onIdChange={newId => this.props.onLayerIdChange(this.props.layer.id, newId)}
       />
       case 'source': return <div>
+        {this.props.layer.filter &&
         <FilterEditor
           filter={this.props.layer.filter}
           properties={this.props.vectorLayers[this.props.layer['source-layer']]}
           onChange={f => this.onFilterChange(f)}
         />
+        }
         <SourceEditor
           source={this.props.layer.source}
           sourceLayer={this.props.layer['source-layer']}

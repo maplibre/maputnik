@@ -20,7 +20,7 @@ export function loadDefaultStyle(cb) {
     withCredentials: false,
   }, (error, response, body) => {
       if (!error && response.statusCode == 200) {
-        cb(style.ensureMetadataExists(JSON.parse(body)))
+        cb(style.ensureStyleValidity(JSON.parse(body)))
       } else {
         console.warn('Could not fetch default style', styleUrl)
         cb(style.emptyStyle)
@@ -106,7 +106,7 @@ export class StyleStore {
 
   // Save current style replacing previous version
   save(mapStyle) {
-    mapStyle = style.ensureMetadataExists(mapStyle)
+    mapStyle = style.ensureStyleValidity(mapStyle)
     const key = styleKey(mapStyle.id)
     window.localStorage.setItem(key, JSON.stringify(mapStyle))
     window.localStorage.setItem(storageKeys.latest, mapStyle.id)

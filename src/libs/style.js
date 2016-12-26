@@ -1,8 +1,9 @@
 import React from 'react';
 import spec from 'mapbox-gl-style-spec/reference/latest.min.js'
+import derefLayers from 'mapbox-gl-style-spec/lib/deref'
 
 // Empty style is always used if no style could be restored or fetched
-const emptyStyle = ensureMetadataExists({
+const emptyStyle = ensureStyleValidity({
   version: 8,
   sources: {},
   layers: [],
@@ -24,8 +25,17 @@ function ensureHasTimestamp(style) {
   return style
 }
 
-function ensureMetadataExists(style) {
-  return ensureHasId(ensureHasTimestamp(style))
+function ensureHasNoRefs(style) {
+  const derefedStyle = {
+    ...style,
+    layers: derefLayers(style.layers)
+  }
+  console.log(derefedStyle)
+  return derefedStyle
+}
+
+function ensureStyleValidity(style) {
+  return ensureHasNoRefs(ensureHasId(ensureHasTimestamp(style)))
 }
 
 function indexOfLayer(layers, layerId) {
@@ -38,7 +48,7 @@ function indexOfLayer(layers, layerId) {
 }
 
 export default {
-  ensureMetadataExists,
+  ensureStyleValidity,
   emptyStyle,
   indexOfLayer,
   generateId,

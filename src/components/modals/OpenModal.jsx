@@ -76,7 +76,7 @@ class OpenModal extends React.Component {
       withCredentials: false,
     }, (error, response, body) => {
         if (!error && response.statusCode == 200) {
-          const mapStyle = style.ensureMetadataExists(JSON.parse(body))
+          const mapStyle = style.ensureStyleValidity(JSON.parse(body))
           console.log('Loaded style ', mapStyle.id)
           this.props.onStyleOpen(mapStyle)
         } else {
@@ -91,7 +91,7 @@ class OpenModal extends React.Component {
     reader.readAsText(file, "UTF-8");
     reader.onload = e => {
       let mapStyle = JSON.parse(e.target.result)
-      mapStyle = style.ensureMetadataExists(mapStyle)
+      mapStyle = style.ensureStyleValidity(mapStyle)
       this.props.onStyleOpen(mapStyle);
     }
     reader.onerror = e => console.log(e.target);
