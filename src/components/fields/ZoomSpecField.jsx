@@ -2,11 +2,6 @@ import React from 'react'
 import Color from 'color'
 
 import Button from '../Button'
-import NumberField from './NumberField'
-import EnumField from './EnumField'
-import BooleanField from './BooleanField'
-import ColorField from './ColorField'
-import StringField from './StringField'
 import SpecField from './SpecField'
 import DocLabel from './DocLabel'
 
@@ -45,7 +40,6 @@ export default class ZoomSpecField extends React.Component {
   }
 
   render() {
-    console.log(this.props.fieldSpec)
     let label = <DocLabel
       label={labelFromFieldName(this.props.fieldName)}
       doc={this.props.fieldSpec.doc}

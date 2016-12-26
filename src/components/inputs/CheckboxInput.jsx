@@ -1,16 +1,13 @@
 import React from 'react'
-
-import input from '../../config/input'
+import input from '../../config/input.js'
 import colors from '../../config/colors'
 import { margins } from '../../config/scales'
 
-class BooleanField extends React.Component {
+class CheckboxInput extends React.Component {
   static propTypes = {
-    onChange: React.PropTypes.func.isRequired,
-    name: React.PropTypes.string.isRequired,
-    value: React.PropTypes.bool,
-    doc: React.PropTypes.string,
+    value: React.PropTypes.string,
     style: React.PropTypes.object,
+    onChange: React.PropTypes.func,
   }
 
   render() {
@@ -57,7 +54,6 @@ class BooleanField extends React.Component {
           ...styles.input,
 					...this.props.style,
 				}}
-				value={this.props.value}
 				onChange={e => {this.props.onChange(!this.props.value)}}
 				checked={this.props.value}
 			/>
@@ -72,4 +68,4 @@ class BooleanField extends React.Component {
   }
 }
 
-export default BooleanField
+export default CheckboxInput

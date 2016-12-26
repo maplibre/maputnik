@@ -2,11 +2,11 @@ import React from 'react'
 import color from 'color'
 
 import GlSpec from 'mapbox-gl-style-spec/reference/latest.min.js'
-import NumberField from './NumberField'
-import EnumField from './EnumField'
-import BooleanField from './BooleanField'
 import ColorField from './ColorField'
-import StringField from './StringField'
+import NumberInput from '../inputs/NumberInput'
+import CheckboxInput from '../inputs/CheckboxInput'
+import StringInput from '../inputs/StringInput'
+import SelectInput from '../inputs/SelectInput'
 
 import input from '../../config/input.js'
 
@@ -37,30 +37,29 @@ export default class SpecField extends React.Component {
 
   render() {
     const commonProps = {
-      doc: this.props.fieldSpec.doc,
       style: this.props.style,
       value: this.props.value,
       name: this.props.fieldName,
       onChange: newValue => this.props.onChange(this.props.fieldName, newValue)
     }
+    console.log(this.props.fieldName, this.props.fieldSpec.type)
     switch(this.props.fieldSpec.type) {
       case 'number': return (
-        <NumberField
+        <NumberInput
           {...commonProps}
           default={this.props.fieldSpec.default}
           min={this.props.fieldSpec.minimum}
           max={this.props.fieldSpec.maximum}
-          unit={this.props.fieldSpec.unit}
         />
       )
       case 'enum': return (
-        <EnumField
+        <SelectInput
           {...commonProps}
-          allowedValues={Object.keys(this.props.fieldSpec.values)}
+          options={Object.keys(this.props.fieldSpec.values).map(v => [v, v])}
         />
       )
       case 'string': return (
-        <StringField
+        <StringInput
           {...commonProps}
         />
       )
@@ -70,7 +69,7 @@ export default class SpecField extends React.Component {
         />
       )
       case 'boolean': return (
-        <BooleanField
+        <CheckboxInput
           {...commonProps}
         />
       )
