@@ -52,7 +52,7 @@ class AppLayout extends React.Component {
         top: 40,
         left: 200,
         zIndex: 1,
-        width: 300,
+        width: 350,
         backgroundColor: colors.black
       }}>
         <ScrollContainer>

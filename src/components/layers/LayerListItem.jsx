@@ -137,6 +137,7 @@ class LayerListItem extends React.Component {
       padding: margins[1],
       borderColor: Color(colors.black).lighten(0.10).string(),
       backgroundColor: colors.black,
+      lineHeight: 1.3,
     }
 
     if(this.state.hover) {
