@@ -51,6 +51,7 @@ class JSONEditor extends React.Component {
       theme: 'maputnik',
       viewportMargin: Infinity,
       lineNumbers: false,
+      scrollbarStyle: "null",
     }
 
     return <CodeMirror
