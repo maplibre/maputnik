@@ -90,7 +90,7 @@ class ColorField extends React.Component {
         ref="colorInput"
         onClick={this.togglePicker.bind(this)}
         style={{
-          ...input.select,
+          ...input.input,
           ...this.props.style
         }}
         name={this.props.name}

@@ -38,8 +38,8 @@ const checkbox = {
 
 const select = {
   ...input,
-  width: '51%',
-  height: '2.3em',
+  width: '50%',
+  height: '2.15em',
 }
 
 export default {
