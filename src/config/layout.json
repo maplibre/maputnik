@@ -95,6 +95,35 @@
         }
       ]
     },
+    "fill-extrusion": {
+      "groups": [
+        {
+          "title": "Settings",
+          "type": "settings"
+        },
+        {
+          "title": "Source",
+          "type": "source"
+        },
+        {
+          "title": "Basic",
+          "type": "properties",
+          "fields": [
+            "fill-extrusion-opacity",
+            "fill-extrusion-color",
+            "fill-extrusion-translate",
+            "fill-extrusion-translate-anchor",
+            "fill-extrusion-pattern",
+            "fill-extrusion-height",
+            "fill-extrusion-base"
+          ]
+        },
+        {
+          "title": "JSON",
+          "type": "jsoneditor"
+        }
+      ]
+    },
     "symbol": {
       "groups": [
         {
