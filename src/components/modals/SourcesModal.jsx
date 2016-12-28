@@ -118,19 +118,30 @@ class AddSource extends React.Component {
     super(props)
     this.state = {
       mode: 'tilejson',
-      source: {
-        id: style.generateId(),
-      }
+      sourceId: style.generateId(),
+      source: this.defaultSource('tilejson'),
     }
   }
 
-  onSourceIdChange(newId) {
-    this.setState({
-      source: {
-        ...this.state.source,
-        id: newId,
+  defaultSource(mode) {
+    const source = (this.state || {}).source || {}
+    switch(mode) {
+      case 'geojson': return {
+        type: 'geojson',
+        data: source.data || 'http://localhost:3000/geojson.json'
       }
-    })
+      case 'tilejson': return {
+        type: 'vector',
+        url: source.url || 'http://localhost:3000/tilejson.json'
+      }
+      case 'tilexyz': return {
+        type: 'vector',
+        tiles: source.tiles || ['http://localhost:3000/{x}/{y}/{z}.pbf'],
+        minZoom: source.minZoom || 0,
+        maxZoom: source.maxZoom || 14
+      }
+      default: return {}
+    }
   }
 
   onSourceChange(source) {
@@ -143,8 +154,8 @@ class AddSource extends React.Component {
     return <div>
       <InputBlock label={"Source ID"}>
         <StringInput
-          value={this.state.source.id}
-          onChange={this.onSourceIdChange.bind(this)}
+          value={this.state.sourceId}
+          onChange={v => this.setState({ sourceId: v})}
         />
       </InputBlock>
       <InputBlock label={"Source Type"}>
@@ -154,7 +165,7 @@ class AddSource extends React.Component {
             ['tilejson', 'Vector (TileJSON URL)'],
             ['tilexyz', 'Vector (XYZ URLs)'],
           ]}
-          onChange={v => this.setState({mode: v})}
+          onChange={mode => this.setState({mode: mode, source: this.defaultSource(mode)})}
           value={this.state.mode}
         />
       </InputBlock>
@@ -163,7 +174,7 @@ class AddSource extends React.Component {
         mode={this.state.mode}
         source={this.state.source}
       />
-      <Button onClick={() => this.onSourceAdd(this.state.source)}>
+      <Button onClick={() => this.props.onSourceAdd(this.state.sourceId, this.state.source)}>
         Add Source
       </Button>
     </div>
@@ -178,10 +189,10 @@ class SourcesModal extends React.Component {
     onStyleChanged: React.PropTypes.func.isRequired,
   }
 
-  onSourceAdd(source) {
+  onSourceAdd(sourceId, source) {
     const changedSources = {
       ...this.props.mapStyle.sources,
-      [source.id]: source
+      [sourceId]: source
     }
 
     const changedStyle = {
@@ -203,6 +214,12 @@ class SourcesModal extends React.Component {
     this.props.onStyleChanged(changedStyle)
   }
 
+  stripTitle(source) {
+    const strippedSource = {...source}
+    delete strippedSource['title']
+    return strippedSource
+  }
+
   render() {
     const activeSources = Object.keys(this.props.mapStyle.sources).map(sourceId => {
       const source = this.props.mapStyle.sources[sourceId]
@@ -214,14 +231,14 @@ class SourcesModal extends React.Component {
       />
     })
 
-    const tilesetOptions = publicSources.filter(source => !(source.id in this.props.mapStyle.sources)).map(source => {
+    const tilesetOptions = Object.keys(publicSources).filter(sourceId => !(sourceId in this.props.mapStyle.sources)).map(sourceId => {
+      const source = publicSources[sourceId]
       return <PublicSource
-        key={source.id}
-        id={source.id}
+        key={sourceId}
+        id={sourceId}
         type={source.type}
         title={source.title}
-        description={source.description}
-        onSelect={() => this.onSourceAdd(source)}
+        onSelect={() => this.onSourceAdd(sourceId, this.stripTitle(source))}
       />
     })
 

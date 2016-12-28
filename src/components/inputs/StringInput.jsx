@@ -5,6 +5,7 @@ class StringInput extends React.Component {
   static propTypes = {
     value: React.PropTypes.string,
     style: React.PropTypes.object,
+    default: React.PropTypes.number,
     onChange: React.PropTypes.func,
   }
 
@@ -15,6 +16,7 @@ class StringInput extends React.Component {
         ...this.props.style
       }}
       value={this.props.value}
+      placeholder={this.props.default}
       onChange={e => this.props.onChange(e.target.value)}
     />
   }
