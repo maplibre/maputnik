@@ -1,6 +1,6 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
-import MapboxGl from 'mapbox-gl'
+import MapboxGl from 'mapbox-gl/dist/mapbox-gl.js'
 import validateColor from 'mapbox-gl-style-spec/lib/validate/validate_color'
 import colors from '../../config/colors'
 import style from '../../libs/style'
