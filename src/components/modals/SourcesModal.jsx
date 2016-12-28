@@ -64,7 +64,7 @@ function editorMode(source) {
   return 'tilejson'
 }
 
-class SourceEditorLayout extends React.Component {
+class ActiveSourceTypeEditor extends React.Component {
   static propTypes = {
     sourceId: React.PropTypes.string.isRequired,
     source: React.PropTypes.object.isRequired,
@@ -87,7 +87,7 @@ class SourceEditorLayout extends React.Component {
         <span style={{fontWeight: 700, fontSize: fontSizes[4], lineHeight: 2}}>#{this.props.sourceId}</span>
         <span style={{flexGrow: 1}} />
         <Button
-          onClick={this.props.onSourceDelete}
+          onClick={()=> this.props.onSourceDelete(this.props.sourceId)}
           style={{backgroundColor: 'transparent'}}
         >
           <DeleteIcon />
@@ -192,13 +192,25 @@ class SourcesModal extends React.Component {
     this.props.onStyleChanged(changedStyle)
   }
 
+  deleteSource(sourceId) {
+    const remainingSources = { ...this.props.mapStyle.sources}
+    delete remainingSources[sourceId]
+
+    const changedStyle = {
+      ...this.props.mapStyle,
+      sources: remainingSources
+    }
+    this.props.onStyleChanged(changedStyle)
+  }
+
   render() {
     const activeSources = Object.keys(this.props.mapStyle.sources).map(sourceId => {
       const source = this.props.mapStyle.sources[sourceId]
-      return <SourceEditorLayout
+      return <ActiveSourceTypeEditor
         key={sourceId}
         sourceId={sourceId}
         source={source}
+        onSourceDelete={this.deleteSource.bind(this)}
       />
     })
 
