@@ -17,7 +17,7 @@ module.exports = {
     app: './src/index.jsx',
     vendor: [
         'file-saver',
-        'mapbox-gl',
+        'mapbox-gl/dist/mapbox-gl.js',
         //TODO: Build failure because cannot resolve migrations file
         //"mapbox-gl-style-spec",
         "randomcolor",
@@ -51,12 +51,7 @@ module.exports = {
     extensions: ['', '.js', '.jsx']
   },
   module: {
-    loaders,
-    postLoaders: [{
-      include: /node_modules\/mapbox-gl-shaders/,
-      loader: 'transform',
-      query: 'brfs'
-    }]
+    loaders
   },
   node: {
     fs: "empty",

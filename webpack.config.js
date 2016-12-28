@@ -31,19 +31,12 @@ module.exports = {
   },
   resolve: {
     alias: {
-      'webworkify': 'webworkify-webpack',
-      // TODO: otherwise I get a max call stack error in browser?
-      // 'mapbox-gl': path.resolve('./node_modules/mapbox-gl/dist/mapbox-gl.js')
+      'webworkify': 'webworkify-webpack'
     },
     extensions: ['', '.js', '.jsx']
   },
   module: {
-    loaders,
-    postLoaders: [{
-      include: /node_modules\/mapbox-gl\/js\/render\/shaders.js/,
-      loader: 'transform',
-      query: 'brfs'
-    }]
+    loaders
   },
   node: {
     fs: "empty",
