@@ -3,17 +3,18 @@ import FileReaderInput from 'react-file-reader-input'
 
 import MdFileDownload from 'react-icons/lib/md/file-download'
 import MdFileUpload from 'react-icons/lib/md/file-upload'
-import MdOpenInBrowser from 'react-icons/lib/md/open-in-browser'
-import MdSettings from 'react-icons/lib/md/settings'
+import OpenIcon from 'react-icons/lib/md/open-in-browser'
+import SettingsIcon from 'react-icons/lib/md/settings'
 import MdInfo from 'react-icons/lib/md/info'
-import MdLayers from 'react-icons/lib/md/layers'
+import SourcesIcon from 'react-icons/lib/md/layers'
 import MdSave from 'react-icons/lib/md/save'
 import MdStyle from 'react-icons/lib/md/style'
 import MdMap from 'react-icons/lib/md/map'
 import MdInsertEmoticon from 'react-icons/lib/md/insert-emoticon'
 import MdFontDownload from 'react-icons/lib/md/font-download'
-import MdHelpOutline from 'react-icons/lib/md/help-outline'
-import MdFindInPage from 'react-icons/lib/md/find-in-page'
+import HelpIcon from 'react-icons/lib/md/help-outline'
+import InspectionIcon from 'react-icons/lib/md/find-in-page'
+import AddIcon from 'react-icons/lib/md/add-circle-outline'
 
 import SettingsModal from './modals/SettingsModal'
 import SourcesModal from './modals/SourcesModal'
@@ -164,24 +165,28 @@ export default class Toolbar extends React.Component {
         <span style={{fontSize: 20, verticalAlign: 'middle' }}>Maputnik</span>
       </ToolbarLink>
       <ToolbarAction onClick={this.toggleModal.bind(this, 'open')}>
-        <MdOpenInBrowser />
+        <OpenIcon />
         <IconText>Open</IconText>
       </ToolbarAction>
       {this.downloadButton()}
+      <ToolbarAction onClick={this.toggleModal.bind(this, 'add')}>
+        <AddIcon />
+        <IconText>Add Layer</IconText>
+      </ToolbarAction>
       <ToolbarAction onClick={this.toggleModal.bind(this, 'sources')}>
-        <MdLayers />
+        <SourcesIcon />
         <IconText>Sources</IconText>
       </ToolbarAction>
       <ToolbarAction onClick={this.toggleModal.bind(this, 'settings')}>
-        <MdSettings />
+        <SettingsIcon />
         <IconText>Style Settings</IconText>
       </ToolbarAction>
       <ToolbarAction onClick={this.toggleInspectionMode.bind(this)}>
-        <MdFindInPage />
+        <InspectionIcon />
         <IconText>Inspect</IconText>
       </ToolbarAction>
       <ToolbarLink href={"https://github.com/maputnik/editor/wiki"}>
-        <MdHelpOutline />
+        <HelpIcon />
         <IconText>Help</IconText>
       </ToolbarLink>
     </div>
