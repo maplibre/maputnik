@@ -7,6 +7,9 @@ import PropertyGroup from '../fields/PropertyGroup'
 import LayerEditorGroup from './LayerEditorGroup'
 import LayerSettings from './LayerSettings'
 
+import InputBlock from '../inputs/InputBlock'
+import MultiButtonInput from '../inputs/MultiButtonInput'
+
 import layout from '../../config/layout.json'
 import { margins, fontSizes } from '../../config/scales'
 import colors from '../../config/colors'
@@ -133,6 +136,12 @@ export default class LayerEditor extends React.Component {
           onSourceChange={console.log}
           onSourceLayerChange={console.log}
         />
+        <InputBlock label={"Inspection Mode"}>
+          <MultiButtonInput
+            value={"highlight"}
+            options={[["highlight", "Highlight"], ["normal", "Normal"]]}
+          />
+        </InputBlock>
       </div>
       case 'properties': return <PropertyGroup
         layer={this.props.layer}

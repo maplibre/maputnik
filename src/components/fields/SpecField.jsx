@@ -7,6 +7,9 @@ import NumberInput from '../inputs/NumberInput'
 import CheckboxInput from '../inputs/CheckboxInput'
 import StringInput from '../inputs/StringInput'
 import SelectInput from '../inputs/SelectInput'
+import MultiButtonInput from '../inputs/MultiButtonInput'
+import capitalize from 'lodash.capitalize'
+
 
 import input from '../../config/input.js'
 
@@ -52,12 +55,19 @@ export default class SpecField extends React.Component {
           max={this.props.fieldSpec.maximum}
         />
       )
-      case 'enum': return (
-        <SelectInput
-          {...commonProps}
-          options={Object.keys(this.props.fieldSpec.values).map(v => [v, v])}
-        />
-      )
+      case 'enum':
+        const options = Object.keys(this.props.fieldSpec.values).map(v => [v, capitalize(v)])
+        if(options.length < 3) {
+          return <MultiButtonInput
+            {...commonProps}
+            options={options}
+          />
+        } else {
+          return <SelectInput
+            {...commonProps}
+            options={options}
+          />
+        }
       case 'string': return (
         <StringInput
           {...commonProps}

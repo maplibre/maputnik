@@ -8,6 +8,7 @@ import DocLabel from './DocLabel'
 import AddIcon from 'react-icons/lib/md/add-circle-outline'
 import DeleteIcon from 'react-icons/lib/md/delete'
 
+import capitalize from 'lodash.capitalize'
 import input from '../../config/input.js'
 import colors from '../../config/colors.js'
 import { margins, fontSizes } from '../../config/scales.js'
@@ -104,8 +105,5 @@ export default class ZoomSpecField extends React.Component {
 
 function labelFromFieldName(fieldName) {
   let label = fieldName.split('-').slice(1).join(' ')
-  if(label.length > 0) {
-    label = label.charAt(0).toUpperCase() + label.slice(1);
-  }
-  return label
+  return capitalize(label)
 }

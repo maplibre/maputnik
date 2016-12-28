@@ -15,7 +15,7 @@ class Button extends React.Component {
         cursor: 'pointer',
         backgroundColor: colors.midgray,
         color: colors.lowgray,
-        fontSize: fontSizes[4],
+        fontSize: fontSizes[5],
         padding: margins[1],
         userSelect: 'none',
         borderRadius: 2,
