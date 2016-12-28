@@ -110,6 +110,20 @@ export default class App extends React.Component {
     this.onLayersChange(changedLayers)
   }
 
+  changeHighlightedLayer(highlight) {
+    const metadata = this.state.mapStyle.metadata || {}
+    const layers = this.state.mapStyle.layers
+    const highlightedLayer = highlight ? layers[this.state.selectedLayerIndex].id : null
+
+    const changedStyle = {
+      ...this.state.mapStyle,
+      metadata: {
+        'maputnik:highlighted_layer': highlightedLayer
+      }
+    }
+    this.onStyleChanged(changedStyle)
+  }
+
   onLayerChanged(layer) {
     const changedLayers = this.state.mapStyle.layers.slice(0)
     const idx = style.indexOfLayer(changedLayers, layer.id)
@@ -153,6 +167,7 @@ export default class App extends React.Component {
   render() {
     const layers = this.state.mapStyle.layers || []
     const selectedLayer = layers.length > 0 ? layers[this.state.selectedLayerIndex] : null
+    const metadata = this.state.mapStyle.metadata || {}
 
     const toolbar = <Toolbar
       mapStyle={this.state.mapStyle}
@@ -172,8 +187,10 @@ export default class App extends React.Component {
       layer={selectedLayer}
       sources={this.layerWatcher.sources}
       vectorLayers={this.layerWatcher.vectorLayers}
+      highlightLayer={metadata['maputnik:highlighted_layer'] ? true : false}
       onLayerChanged={this.onLayerChanged.bind(this)}
       onLayerIdChange={this.onLayerIdChange.bind(this)}
+      onHighlightLayerChange={this.changeHighlightedLayer.bind(this)}
     /> : null
 
     return <AppLayout
