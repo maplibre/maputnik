@@ -61,17 +61,6 @@ function styleKey(styleId) {
   return [storagePrefix, stylePrefix, styleId].join(":")
 }
 
-// Store style independent settings
-export class SettingsStore {
-  get accessToken() {
-    const token = window.localStorage.getItem(storageKeys.accessToken)
-    return token ? token : ""
-  }
-  set accessToken(val) {
-    window.localStorage.setItem(storageKeys.accessToken, val)
-  }
-}
-
 // Manages many possible styles that are stored in the local storage
 export class StyleStore {
   // Tile store will load all items from local storage and

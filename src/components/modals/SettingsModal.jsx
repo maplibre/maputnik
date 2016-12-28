@@ -23,18 +23,19 @@ class SettingsModal extends React.Component {
     this.props.onStyleChanged(changedStyle)
   }
 
-  onRendererChange(renderer) {
+  onMetadataChange(key, value) {
     const changedStyle = {
       ...this.props.mapStyle,
       metadata: {
         ...this.props.mapStyle.metadata,
-        'maputnik:renderer': renderer,
+        [key]: value
       }
     }
     this.props.onStyleChanged(changedStyle)
   }
 
   render() {
+    const metadata = this.props.mapStyle.metadata || {}
     const inputProps = { }
     return <Modal
       isOpen={this.props.isOpen}
@@ -67,6 +68,12 @@ class SettingsModal extends React.Component {
         />
       </InputBlock>
 
+      <InputBlock label={"Access Token"}>
+        <StringInput {...inputProps}
+          value={metadata['maputnik:access_token']}
+          onChange={this.onMetadataChange.bind(this, "maputnik:access_token")}
+        />
+      </InputBlock>
 
       <InputBlock label={"Style Renderer"}>
         <SelectInput {...inputProps}
@@ -75,8 +82,8 @@ class SettingsModal extends React.Component {
             ['ol3', 'Open Layers 3'],
             ['inspection', 'Inspection Mode'],
           ]}
-          value={(this.props.mapStyle.metadata || {})['maputnik:renderer'] || 'mbgljs'}
-          onChange={this.onRendererChange.bind(this)}
+          value={metadata['maputnik:renderer'] || 'mbgljs'}
+          onChange={this.onMetadataChange.bind(this, 'maputnik:renderer')}
         />
       </InputBlock>
     </Modal>

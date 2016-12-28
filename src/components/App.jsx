@@ -11,7 +11,7 @@ import Toolbar from './Toolbar'
 import AppLayout from './AppLayout'
 
 import style from '../libs/style.js'
-import { loadDefaultStyle, SettingsStore, StyleStore } from '../libs/stylestore'
+import { loadDefaultStyle, StyleStore } from '../libs/stylestore'
 import { ApiStyleStore } from '../libs/apistore'
 import { RevisionStore } from '../libs/revisions'
 import LayerWatcher from '../libs/layerwatcher'
@@ -31,9 +31,7 @@ export default class App extends React.Component {
       this.styleStore.latestStyle(mapStyle => this.onStyleChanged(mapStyle))
     })
 
-    this.settingsStore = new SettingsStore()
     this.state = {
-      accessToken: this.settingsStore.accessToken,
       mapStyle: style.emptyStyle,
       selectedLayerIndex: 0,
     }
@@ -85,11 +83,6 @@ export default class App extends React.Component {
     this.setState({ mapStyle: activeStyle })
   }
 
-  onAccessTokenChanged(newToken) {
-    this.settingsStore.accessToken = newToken
-    this.setState({ accessToken: newToken })
-  }
-
   onLayersChange(changedLayers) {
     const changedStyle = {
       ...this.state.mapStyle,
@@ -133,9 +126,10 @@ export default class App extends React.Component {
   }
 
   mapRenderer() {
+    const metadata = this.state.mapStyle.metadata || {}
     const mapProps = {
       mapStyle: this.state.mapStyle,
-      accessToken: this.state.accessToken,
+      accessToken: metadata['maputnik:access_token'],
       onDataChange: (e) => {
         this.layerWatcher.analyzeMap(e.map)
       },
@@ -146,7 +140,6 @@ export default class App extends React.Component {
 			}
     }
 
-    const metadata = this.state.mapStyle.metadata || {}
     const renderer = metadata['maputnik:renderer'] || 'mbgljs'
 
     // Check if OL3 code has been loaded?
