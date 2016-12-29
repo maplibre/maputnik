@@ -10,6 +10,8 @@ import LayerEditor from './layers/LayerEditor'
 import Toolbar from './Toolbar'
 import AppLayout from './AppLayout'
 
+import GlSpec from 'mapbox-gl-style-spec/reference/latest.js'
+import validateStyleMin from 'mapbox-gl-style-spec/lib/validate_style.min'
 import style from '../libs/style.js'
 import { loadDefaultStyle, StyleStore } from '../libs/stylestore'
 import { ApiStyleStore } from '../libs/apistore'
@@ -71,9 +73,14 @@ export default class App extends React.Component {
   }
 
   onStyleChanged(newStyle) {
-    this.revisionStore.addRevision(newStyle)
-    this.saveStyle(newStyle)
-    this.setState({ mapStyle: newStyle })
+    const errors = validateStyleMin(newStyle, GlSpec)
+    if(errors.length === 0) {
+      this.revisionStore.addRevision(newStyle)
+      this.saveStyle(newStyle)
+      this.setState({ mapStyle: newStyle })
+    } else {
+      errors.forEach(err => console.error(err.message))
+    }
   }
 
   onUndo() {
