@@ -10,12 +10,10 @@ import 'mapbox-gl/dist/mapbox-gl.css'
 import '../../mapboxgl.css'
 
 function convertInspectStyle(mapStyle, sources, highlightedLayer) {
-  let coloredLayers = generateColoredLayers(sources)
-  const layer = colorHighlightedLayer(highlightedLayer)
+  const coloredLayers = generateColoredLayers(sources)
 
+  const layer = colorHighlightedLayer(highlightedLayer)
   if(layer) {
-    const idx = style.indexOfLayer(coloredLayers, layer.id)
-    coloredLayers.splice(idx, 1)
     coloredLayers.push(layer)
   }
 

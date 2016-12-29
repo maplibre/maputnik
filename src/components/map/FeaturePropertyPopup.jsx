@@ -24,13 +24,14 @@ const Panel = (props) => {
 }
 
 function renderFeature(feature) {
+  console.log(feature)
   return <div>
     <Panel>{feature.layer['source-layer']}</Panel>
     {renderProperties(feature)}
   </div>
 }
 
-class FeatureLayerTable extends React.Component {
+class FeaturePropertyPopup extends React.Component {
 
   render() {
     const features = this.props.features
@@ -41,4 +42,4 @@ class FeatureLayerTable extends React.Component {
 }
 
 
-export default FeatureLayerTable
+export default FeaturePropertyPopup

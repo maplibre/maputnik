@@ -75,12 +75,13 @@ function lineLayer(source, vectorLayer, color) {
 export function colorHighlightedLayer(layer) {
   if(!layer || layer.type === 'background' || layer.type === 'raster') return null
 
-  function changeFilter(l) {
+  function changeLayer(l) {
     if(layer.filter) {
       l.filter = layer.filter
     } else {
       delete l['filter']
     }
+    l.id = l.id + '_highlight'
     return l
   }
 
@@ -88,15 +89,15 @@ export function colorHighlightedLayer(layer) {
   const layers = []
 
   if(layer.type === "fill" || layer.type === 'fill-extrusion') {
-    return changeFilter(polygonLayer(layer.source, layer['source-layer'], color, Color(color).alpha(0.2).string()))
+    return changeLayer(polygonLayer(layer.source, layer['source-layer'], color, Color(color).alpha(0.2).string()))
   }
 
   if(layer.type === "symbol" || layer.type === 'circle') {
-    return changeFilter(circleLayer(layer.source, layer['source-layer'], color))
+    return changeLayer(circleLayer(layer.source, layer['source-layer'], color))
   }
 
   if(layer.type === 'line') {
-    return changeFilter(lineLayer(layer.source, layer['source-layer'], color))
+    return changeLayer(lineLayer(layer.source, layer['source-layer'], color))
   }
 
   return null
