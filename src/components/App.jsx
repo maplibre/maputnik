@@ -139,7 +139,9 @@ export default class App extends React.Component {
     if(renderer === 'ol3') {
       return <OpenLayers3Map {...mapProps} />
     } else if(renderer === 'inspection') {
-      return  <InspectionMap {...mapProps} sources={this.state.sources} />
+      return  <InspectionMap {...mapProps}
+        sources={this.state.sources}
+        highlightedLayer={this.state.mapStyle.layers[this.state.selectedLayerIndex]} />
     } else {
       return  <MapboxGlMap {...mapProps} />
     }

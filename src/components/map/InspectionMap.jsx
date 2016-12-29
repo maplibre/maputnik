@@ -5,11 +5,20 @@ import validateColor from 'mapbox-gl-style-spec/lib/validate/validate_color'
 import colors from '../../config/colors'
 import style from '../../libs/style'
 import FeaturePropertyPopup from './FeaturePropertyPopup'
-import { generateColoredLayers } from '../../libs/stylegen'
+import { colorHighlightedLayer, generateColoredLayers } from '../../libs/stylegen'
 import 'mapbox-gl/dist/mapbox-gl.css'
 import '../../mapboxgl.css'
 
-function convertInspectStyle(mapStyle, sources) {
+function convertInspectStyle(mapStyle, sources, highlightedLayer) {
+  let coloredLayers = generateColoredLayers(sources)
+  const layer = colorHighlightedLayer(highlightedLayer)
+
+  if(layer) {
+    const idx = style.indexOfLayer(coloredLayers, layer.id)
+    coloredLayers.splice(idx, 1)
+    coloredLayers.push(layer)
+  }
+
   const newStyle = {
     ...mapStyle,
     layers: [
@@ -20,7 +29,7 @@ function convertInspectStyle(mapStyle, sources) {
           "background-color": colors.black,
         }
       },
-      ...generateColoredLayers(sources),
+      ...coloredLayers,
     ]
   }
   return newStyle
@@ -37,6 +46,7 @@ export default class InspectionMap extends React.Component {
     onDataChange: React.PropTypes.func,
     sources: React.PropTypes.object,
     originalStyle: React.PropTypes.object,
+    highlightedLayer: React.PropTypes.object,
     style: React.PropTypes.object,
   }
 
@@ -53,7 +63,7 @@ export default class InspectionMap extends React.Component {
   componentWillReceiveProps(nextProps) {
     if(!this.state.map) return
 
-    this.state.map.setStyle(convertInspectStyle(nextProps.mapStyle, this.props.sources), { diff: true})
+    this.state.map.setStyle(convertInspectStyle(nextProps.mapStyle, this.props.sources, nextProps.highlightedLayer), { diff: true})
   }
 
   componentDidMount() {
@@ -61,7 +71,7 @@ export default class InspectionMap extends React.Component {
 
     const map = new MapboxGl.Map({
       container: this.container,
-      style: convertInspectStyle(this.props.mapStyle, this.props.sources),
+      style: convertInspectStyle(this.props.mapStyle, this.props.sources, this.props.highlightedLayer),
       hash: true,
     })
 
