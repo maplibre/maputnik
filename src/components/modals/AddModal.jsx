@@ -1,5 +1,6 @@
 import React from 'react'
 
+import Button from '../Button'
 import InputBlock from '../inputs/InputBlock'
 import StringInput from '../inputs/StringInput'
 import SelectInput from '../inputs/SelectInput'
@@ -14,12 +15,30 @@ import LayerSourceLayerBlock from '../layers/LayerSourceLayerBlock'
 class AddModal extends React.Component {
   static propTypes = {
     mapStyle: React.PropTypes.object.isRequired,
-    onStyleChanged: React.PropTypes.func.isRequired,
+    onStyleChange: React.PropTypes.func.isRequired,
     isOpen: React.PropTypes.bool.isRequired,
     onOpenToggle: React.PropTypes.func.isRequired,
 
     // A dict of source id's and the available source layers
     sources: React.PropTypes.object.isRequired,
+  }
+
+  addLayer() {
+    const changedLayers = this.props.mapStyle.layers.slice(0)
+    changedLayers.push({
+      id: this.state.id,
+      type: this.state.type,
+      source: this.state.source,
+      'source-layer': this.state['source-layer'],
+    })
+
+    const changedStyle = {
+      ...this.props.mapStyle,
+      layers: changedLayers,
+    }
+
+    this.props.onStyleChange(changedStyle)
+    this.props.onOpenToggle(false)
   }
 
   constructor(props) {
@@ -31,6 +50,7 @@ class AddModal extends React.Component {
 
     if(props.sources.length > 0) {
       this.state.source = Object.keys(this.props.sources)[0]
+      this.state['source-layer'] = this.props.sources[this.state.source][0]
     }
   }
 
@@ -39,6 +59,7 @@ class AddModal extends React.Component {
     if(!this.state.source && sourceIds.length > 0) {
       this.setState({
         source: sourceIds[0],
+        'source-layer': this.state['source-layer'] || nextProps.sources[sourceIds[0]][0]
       })
     }
   }
@@ -68,6 +89,9 @@ class AddModal extends React.Component {
         value={this.state['source-layer']}
         onChange={v => this.setState({ 'source-layer': v })}
       />
+      <Button onClick={this.addLayer.bind(this)}>
+        Add Layer
+      </Button>
     </Modal>
   }
 }

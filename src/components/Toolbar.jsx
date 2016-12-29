@@ -159,9 +159,9 @@ export default class Toolbar extends React.Component {
       <AddModal
           mapStyle={this.props.mapStyle}
           sources={this.props.sources}
-          onStyleChanged={this.props.onStyleChanged}
           isOpen={this.state.isOpen.add}
           onOpenToggle={this.toggleModal.bind(this, 'add')}
+          onStyleChange={this.props.onStyleChanged}
       />
       <ToolbarLink
         href={"https://github.com/maputnik/editor"}
