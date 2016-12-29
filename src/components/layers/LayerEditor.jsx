@@ -1,11 +1,13 @@
 import React from 'react'
 
 import JSONEditor from './JSONEditor'
-import SourceEditor from './SourceEditor'
 import FilterEditor from '../filter/FilterEditor'
 import PropertyGroup from '../fields/PropertyGroup'
 import LayerEditorGroup from './LayerEditorGroup'
-import LayerSettings from './LayerSettings'
+import LayerTypeBlock from './LayerTypeBlock'
+import LayerIdBlock from './LayerIdBlock'
+import LayerSourceBlock from './LayerSourceBlock'
+import LayerSourceLayerBlock from './LayerSourceLayerBlock'
 
 import InputBlock from '../inputs/InputBlock'
 import MultiButtonInput from '../inputs/MultiButtonInput'
@@ -80,7 +82,7 @@ export default class LayerEditor extends React.Component {
   /** A {@property} in either the paint our layout {@group} has changed
    * to a {@newValue}.
    */
-  onPropertyChange(group, property, newValue) {
+  changeProperty(group, property, newValue) {
     if(group) {
       this.props.onLayerChanged({
         ...this.props.layer,
@@ -117,12 +119,16 @@ export default class LayerEditor extends React.Component {
 
   renderGroupType(type, fields) {
     switch(type) {
-      case 'settings': return <LayerSettings
-        id={this.props.layer.id}
-        type={this.props.layer.type}
-        onTypeChange={v => this.onPropertyChange(null, 'type', v)}
-        onIdChange={newId => this.props.onLayerIdChange(this.props.layer.id, newId)}
-      />
+      case 'settings': return <div>
+          <LayerIdBlock
+            value={this.props.layer.id}
+            onChange={newId => this.props.onLayerIdChange(this.props.layer.id, newId)}
+          />
+          <LayerTypeBlock
+            value={this.props.layer.type}
+            onChange={v => this.changeProperty(null, 'type', v)}
+          />
+        </div>
       case 'source': return <div>
         {this.props.layer.filter &&
         <FilterEditor
@@ -131,12 +137,15 @@ export default class LayerEditor extends React.Component {
           onChange={f => this.onFilterChange(f)}
         />
         }
-        <SourceEditor
-          source={this.props.layer.source}
-          sourceLayer={this.props.layer['source-layer']}
-          sources={this.props.sources}
-          onSourceChange={console.log}
-          onSourceLayerChange={console.log}
+        <LayerSourceBlock
+          sourceIds={Object.keys(this.props.sources)}
+          value={this.props.layer.source}
+          onChange={v => this.changeProperty(null, 'source', v)}
+        />
+        <LayerSourceLayerBlock
+          sourceLayerIds={this.props.sources[this.props.layer.source]}
+          value={this.props.layer['source-layer']}
+          onChange={v => this.changeProperty(null, 'source-layer', v)}
         />
         <InputBlock label={"Inspection Mode"}>
           <MultiButtonInput
@@ -149,7 +158,7 @@ export default class LayerEditor extends React.Component {
       case 'properties': return <PropertyGroup
         layer={this.props.layer}
         groupFields={fields}
-        onChange={this.onPropertyChange.bind(this)}
+        onChange={this.changeProperty.bind(this)}
       />
       case 'jsoneditor': return <JSONEditor
         layer={this.props.layer}

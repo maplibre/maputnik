@@ -164,6 +164,7 @@ export default class App extends React.Component {
 
     const toolbar = <Toolbar
       mapStyle={this.state.mapStyle}
+      sources={this.layerWatcher.sources}
       onStyleChanged={this.onStyleChanged.bind(this)}
       onStyleOpen={this.onStyleChanged.bind(this)}
       onStyleDownload={this.onStyleDownload.bind(this)}

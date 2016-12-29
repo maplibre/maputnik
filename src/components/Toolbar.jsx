@@ -16,6 +16,7 @@ import HelpIcon from 'react-icons/lib/md/help-outline'
 import InspectionIcon from 'react-icons/lib/md/find-in-page'
 import AddIcon from 'react-icons/lib/md/add-circle-outline'
 
+import AddModal from './modals/AddModal'
 import SettingsModal from './modals/SettingsModal'
 import SourcesModal from './modals/SourcesModal'
 import OpenModal from './modals/OpenModal'
@@ -80,6 +81,8 @@ export default class Toolbar extends React.Component {
     onStyleOpen: React.PropTypes.func.isRequired,
     // Current style is requested for download
     onStyleDownload: React.PropTypes.func.isRequired,
+    // A dict of source id's and the available source layers
+    sources: React.PropTypes.object.isRequired,
   }
 
   constructor(props) {
@@ -89,6 +92,7 @@ export default class Toolbar extends React.Component {
         settings: false,
         sources: false,
         open: false,
+        add: false,
       }
     }
   }
@@ -151,6 +155,13 @@ export default class Toolbar extends React.Component {
           onStyleChanged={this.props.onStyleChanged}
           isOpen={this.state.isOpen.sources}
           onOpenToggle={this.toggleModal.bind(this, 'sources')}
+      />
+      <AddModal
+          mapStyle={this.props.mapStyle}
+          sources={this.props.sources}
+          onStyleChanged={this.props.onStyleChanged}
+          isOpen={this.state.isOpen.add}
+          onOpenToggle={this.toggleModal.bind(this, 'add')}
       />
       <ToolbarLink
         href={"https://github.com/maputnik/editor"}
