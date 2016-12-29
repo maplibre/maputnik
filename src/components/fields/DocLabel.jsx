@@ -35,10 +35,11 @@ export default class DocLabel extends React.Component {
       <div style={{
         backgroundColor: colors.gray,
         padding: margins[1],
+        fontSize: 10,
         position: 'absolute',
         top: 20,
         left: 0,
-        width: 100,
+        width: 120,
         display: this.state.showDoc ? null : 'none',
         zIndex: 3,
       }}>
