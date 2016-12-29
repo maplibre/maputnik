@@ -8,6 +8,7 @@ import CheckboxInput from '../inputs/CheckboxInput'
 import StringInput from '../inputs/StringInput'
 import SelectInput from '../inputs/SelectInput'
 import MultiButtonInput from '../inputs/MultiButtonInput'
+import ArrayInput from '../inputs/ArrayInput'
 import capitalize from 'lodash.capitalize'
 
 
@@ -41,6 +42,7 @@ export default class SpecField extends React.Component {
     value: React.PropTypes.oneOfType([
       React.PropTypes.string,
       React.PropTypes.number,
+      React.PropTypes.array,
     ]),
     /** Override the style of the field */
     style: React.PropTypes.object,
@@ -89,6 +91,14 @@ export default class SpecField extends React.Component {
       case 'boolean': return (
         <CheckboxInput
           {...commonProps}
+        />
+      )
+      case 'array': return (
+        <ArrayInput
+          {...commonProps}
+          type={this.props.fieldSpec.value}
+          length={this.props.fieldSpec.length}
+          default={this.props.fieldSpec.default}
         />
       )
       default: return null
