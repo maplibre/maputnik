@@ -68,6 +68,10 @@ export default class MapboxGlMap extends React.Component {
     })
 
     map.on('click', this.displayPopup.bind(this));
+    map.on('mousemove', function(e) {
+      var features = map.queryRenderedFeatures(e.point, { layers: this.layers })
+      map.getCanvas().style.cursor = (features.length) ? 'pointer' : ''
+    })
   }
 
   displayPopup(e) {
