@@ -32,12 +32,24 @@ class JSONEditor extends React.Component {
     })
   }
 
+  shouldComponentUpdate(nextProps, nextState) {
+    try {
+      const parsedLayer = JSON.parse(this.state.code)
+      // If the structure is still the same do not update
+      // because it affects editing experience by reformatting all the time
+      return nextState.code !== JSON.stringify(parsedLayer, null, 2)
+    } catch(err) {
+      return true
+    }
+  }
+
   onCodeUpdate(newCode) {
     try {
       const parsedLayer = JSON.parse(newCode)
       this.props.onChange(parsedLayer)
     } catch(err) {
       console.warn(err)
+    } finally {
       this.setState({
         code: newCode
       })
