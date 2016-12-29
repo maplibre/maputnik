@@ -28,8 +28,6 @@ export default class LayerEditor extends React.Component {
     layer: React.PropTypes.object.isRequired,
     sources: React.PropTypes.object,
     vectorLayers: React.PropTypes.object,
-    highlightLayer: React.PropTypes.bool,
-    onHighlightLayerChange: React.PropTypes.func,
     onLayerChanged: React.PropTypes.func,
     onLayerIdChange: React.PropTypes.func,
   }
@@ -147,13 +145,6 @@ export default class LayerEditor extends React.Component {
           value={this.props.layer['source-layer']}
           onChange={v => this.changeProperty(null, 'source-layer', v)}
         />
-        <InputBlock label={"Inspection Mode"}>
-          <MultiButtonInput
-            value={this.props.highlightLayer ? "highlight" : "normal"}
-            options={[["highlight", "Highlight"], ["normal", "Normal"]]}
-            onChange={v => this.props.onHighlightLayerChange(v === "highlight")}
-          />
-        </InputBlock>
       </div>
       case 'properties': return <PropertyGroup
         layer={this.props.layer}
