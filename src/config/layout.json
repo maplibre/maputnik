@@ -124,6 +124,50 @@
         }
       ]
     },
+    "circle": {
+      "groups": [
+        {
+          "title": "Settings",
+          "type": "settings"
+        },
+        {
+          "title": "Source",
+          "type": "source"
+        },
+        {
+          "title": "Basic",
+          "type": "properties",
+          "fields": [
+            "circle-color",
+            "circle-opacity",
+            "circle-stroke-color",
+            "circle-stroke-opacity",
+            "circle-blur"
+          ]
+        },
+        {
+          "title": "Scale",
+          "type": "properties",
+          "fields": [
+            "circle-radius",
+            "circle-stroke-width",
+            "circle-pitch-scale"
+          ]
+        },
+        {
+          "title": "Position",
+          "type": "properties",
+          "fields": [
+            "circle-translate",
+            "circle-translate-anchor"
+          ]
+        },
+        {
+          "title": "JSON",
+          "type": "jsoneditor"
+        }
+      ]
+    },
     "symbol": {
       "groups": [
         {
