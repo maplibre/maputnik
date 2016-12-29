@@ -21,6 +21,14 @@ function labelFromFieldName(fieldName) {
   return label
 }
 
+function optionsLabelLength(options) {
+  let sum = 0;
+  options.forEach(([_, label]) => {
+    sum += label.length
+  })
+  return sum
+}
+
 /** Display any field from the Mapbox GL style spec and
  * choose the correct field component based on the @{fieldSpec}
  * to display @{value}. */
@@ -56,7 +64,8 @@ export default class SpecField extends React.Component {
       )
       case 'enum':
         const options = Object.keys(this.props.fieldSpec.values).map(v => [v, capitalize(v)])
-        if(options.length < 3) {
+
+        if(options.length <= 3 && optionsLabelLength(options) <= 20) {
           return <MultiButtonInput
             {...commonProps}
             options={options}
