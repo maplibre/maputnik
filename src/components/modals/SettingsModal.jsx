@@ -18,17 +18,20 @@ class SettingsModal extends React.Component {
     super(props);
   }
 
-  onChange(property, e) {
-    const changedStyle = this.props.mapStyle.set(property, e.target.value)
+  changeStyleProperty(property, value) {
+    const changedStyle = {
+      ...this.props.mapStyle,
+      [property]: value
+    }
     this.props.onStyleChanged(changedStyle)
   }
 
-  onMetadataChange(key, value) {
+  changeMetadataProperty(property, value) {
     const changedStyle = {
       ...this.props.mapStyle,
       metadata: {
         ...this.props.mapStyle.metadata,
-        [key]: value
+        [property]: value
       }
     }
     this.props.onStyleChanged(changedStyle)
@@ -45,33 +48,33 @@ class SettingsModal extends React.Component {
       <InputBlock label={"Name"}>
         <StringInput {...inputProps}
           value={this.props.mapStyle.name}
-          onChange={this.onChange.bind(this, "name")}
+          onChange={this.changeStyleProperty.bind(this, "name")}
         />
       </InputBlock>
       <InputBlock label={"Owner"}>
         <StringInput {...inputProps}
           value={this.props.mapStyle.owner}
-          onChange={this.onChange.bind(this, "owner")}
+          onChange={this.changeStyleProperty.bind(this, "owner")}
         />
       </InputBlock>
       <InputBlock label={"Sprite URL"}>
         <StringInput {...inputProps}
           value={this.props.mapStyle.sprite}
-          onChange={this.onChange.bind(this, "sprite")}
+          onChange={this.changeStyleProperty.bind(this, "sprite")}
         />
       </InputBlock>
 
       <InputBlock label={"Glyphs URL"}>
         <StringInput {...inputProps}
           value={this.props.mapStyle.glyphs}
-          onChange={this.onChange.bind(this, "glyphs")}
+          onChange={this.changeStyleProperty.bind(this, "glyphs")}
         />
       </InputBlock>
 
       <InputBlock label={"Access Token"}>
         <StringInput {...inputProps}
           value={metadata['maputnik:access_token']}
-          onChange={this.onMetadataChange.bind(this, "maputnik:access_token")}
+          onChange={this.changeMetadataProperty.bind(this, "maputnik:access_token")}
         />
       </InputBlock>
 
@@ -83,7 +86,7 @@ class SettingsModal extends React.Component {
             ['inspection', 'Inspection Mode'],
           ]}
           value={metadata['maputnik:renderer'] || 'mbgljs'}
-          onChange={this.onMetadataChange.bind(this, 'maputnik:renderer')}
+          onChange={this.changeMetadataProperty.bind(this, 'maputnik:renderer')}
         />
       </InputBlock>
     </Modal>
