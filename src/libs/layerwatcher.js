@@ -1,9 +1,13 @@
 import throttle from 'lodash.throttle'
+import isEqual from 'lodash.isequal'
 
 /** Listens to map events to build up a store of available vector
  * layers contained in the tiles */
 export default class LayerWatcher {
-  constructor() {
+  constructor(opts = {}) {
+    this.onSourcesChange = opts.onSourcesChange || (() => {})
+    this.onVectorLayersChange = opts.onVectorLayersChange || (() => {})
+
     this._sources = {}
     this._vectorLayers = {}
 
@@ -14,15 +18,24 @@ export default class LayerWatcher {
   }
 
   analyzeMap(map) {
+    const previousSources = { ...this._sources }
+
     Object.keys(map.style.sourceCaches).forEach(sourceId => {
       //NOTE: This heavily depends on the internal API of Mapbox GL
       //so this breaks between Mapbox GL JS releases
       this._sources[sourceId] = map.style.sourceCaches[sourceId]._source.vectorLayerIds
     })
+
+    if(!isEqual(previousSources, this._sources)) {
+      this.onSourcesChange(this._sources)
+    }
+
     this.throttledAnalyzeVectorLayerFields(map)
   }
 
   analyzeVectorLayerFields(map) {
+    const previousVectorLayers = { ...this._vectorLayers }
+
     Object.keys(this._sources).forEach(sourceId => {
       this._sources[sourceId].forEach(vectorLayerId => {
         const knownProperties = this._vectorLayers[vectorLayerId] || {}
@@ -38,6 +51,11 @@ export default class LayerWatcher {
         this._vectorLayers[vectorLayerId] = knownProperties
       })
     })
+
+    if(!isEqual(previousVectorLayers, this._vectorLayers)) {
+      this.onVectorLayersChange(this._vectorLayers)
+    }
+
   }
 
   /** Access all known sources and their vector tile ids */

@@ -24,15 +24,25 @@ class AddModal extends React.Component {
 
   constructor(props) {
     super(props)
-
-    console.log('sources', this.props.sources)
     this.state = {
       type: 'fill',
       id: '',
-      //source: Object.keys(this.props.sources)[0],
-      //'source-layer': this.props.sources[0][0]
+    }
+
+    if(props.sources.length > 0) {
+      this.state.source = Object.keys(this.props.sources)[0]
     }
   }
+
+  componentWillReceiveProps(nextProps) {
+    const sourceIds = Object.keys(nextProps.sources)
+    if(!this.state.source && sourceIds.length > 0) {
+      this.setState({
+        source: sourceIds[0],
+      })
+    }
+  }
+
 
   render() {
     return <Modal

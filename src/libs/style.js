@@ -30,7 +30,6 @@ function ensureHasNoRefs(style) {
     ...style,
     layers: derefLayers(style.layers)
   }
-  console.log(derefedStyle)
   return derefedStyle
 }
 

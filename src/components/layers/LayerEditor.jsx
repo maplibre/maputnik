@@ -169,7 +169,6 @@ export default class LayerEditor extends React.Component {
   }
 
   render() {
-    console.log(this.props)
     const layerType = this.props.layer.type
     const layoutGroups = layout[layerType].groups.filter(group => {
       return !(this.props.layer.type === 'background' && group.type === 'source')

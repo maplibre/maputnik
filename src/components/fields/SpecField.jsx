@@ -45,7 +45,6 @@ export default class SpecField extends React.Component {
       name: this.props.fieldName,
       onChange: newValue => this.props.onChange(this.props.fieldName, newValue)
     }
-    console.log(this.props.fieldName, this.props.fieldSpec.type)
     switch(this.props.fieldSpec.type) {
       case 'number': return (
         <NumberInput

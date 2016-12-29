@@ -20,9 +20,9 @@ import LayerWatcher from '../libs/layerwatcher'
 export default class App extends React.Component {
   constructor(props) {
     super(props)
-    this.layerWatcher = new LayerWatcher()
     this.styleStore = new ApiStyleStore()
     this.revisionStore = new RevisionStore()
+
     this.styleStore.supported(isSupported => {
       if(!isSupported) {
         console.log('Falling back to local storage for storing styles')
@@ -34,7 +34,14 @@ export default class App extends React.Component {
     this.state = {
       mapStyle: style.emptyStyle,
       selectedLayerIndex: 0,
+      sources: {},
+      vectorLayers: {},
     }
+
+    this.layerWatcher = new LayerWatcher({
+      onSourcesChange: v => this.setState({ sources: v }),
+      onVectorLayersChange: v => this.setState({ vectorLayers: v })
+    })
   }
 
   componentDidMount() {
@@ -146,7 +153,7 @@ export default class App extends React.Component {
     if(renderer === 'ol3') {
       return <OpenLayers3Map {...mapProps} />
     } else if(renderer === 'inspection') {
-      return  <InspectionMap {...mapProps} sources={this.layerWatcher.sources} />
+      return  <InspectionMap {...mapProps} sources={this.state.sources} />
     } else {
       return  <MapboxGlMap {...mapProps} />
     }
@@ -164,7 +171,7 @@ export default class App extends React.Component {
 
     const toolbar = <Toolbar
       mapStyle={this.state.mapStyle}
-      sources={this.layerWatcher.sources}
+      sources={this.state.sources}
       onStyleChanged={this.onStyleChanged.bind(this)}
       onStyleOpen={this.onStyleChanged.bind(this)}
       onStyleDownload={this.onStyleDownload.bind(this)}
@@ -179,8 +186,8 @@ export default class App extends React.Component {
 
     const layerEditor = selectedLayer ? <LayerEditor
       layer={selectedLayer}
-      sources={this.layerWatcher.sources}
-      vectorLayers={this.layerWatcher.vectorLayers}
+      sources={this.state.sources}
+      vectorLayers={this.state.vectorLayers}
       highlightLayer={metadata['maputnik:highlighted_layer'] ? true : false}
       onLayerChanged={this.onLayerChanged.bind(this)}
       onLayerIdChange={this.onLayerIdChange.bind(this)}
