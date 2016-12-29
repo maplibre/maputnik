@@ -194,14 +194,14 @@
           "fields": [
             "symbol-placement",
             "symbol-spacing",
-            "symbol-avoid-edges",
             "text-padding",
+            "symbol-avoid-edges",
             "text-allow-overlap",
             "text-ignore-placement"
           ]
         },
         {
-          "title": "Layout",
+          "title": "Text",
           "type": "properties",
           "fields": [
             "text-pitch-alignment",
