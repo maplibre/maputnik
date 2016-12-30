@@ -9,14 +9,21 @@ class ErrorPanel extends React.Component {
   }
 
   render() {
+    const errors = this.props.messages.map((m, i) => {
+      return <Paragraph key={i}
+        style={{
+          color: colors.red,
+          margin: 0,
+          lineHeight: 1.2,
+        }}>
+        {m}
+      </Paragraph>
+    })
+
     return <div style={{
       padding: margins[1],
     }}>
-      {this.props.messages.map(m => <Paragraph style={{
-        color: colors.red,
-        margin: 0,
-        lineHeight: 1.2,
-      }}>{m}</Paragraph>)}
+      {errors}
     </div>
   }
 }

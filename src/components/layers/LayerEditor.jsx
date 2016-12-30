@@ -1,5 +1,6 @@
 import React from 'react'
 
+import GlSpec from 'mapbox-gl-style-spec/reference/latest.min.js'
 import JSONEditor from './JSONEditor'
 import FilterEditor from '../filter/FilterEditor'
 import PropertyGroup from '../fields/PropertyGroup'
@@ -12,6 +13,7 @@ import LayerSourceLayerBlock from './LayerSourceLayerBlock'
 import InputBlock from '../inputs/InputBlock'
 import MultiButtonInput from '../inputs/MultiButtonInput'
 
+import { changeType } from '../../libs/layer'
 import layout from '../../config/layout.json'
 import { margins, fontSizes } from '../../config/scales'
 import colors from '../../config/colors'
@@ -124,7 +126,7 @@ export default class LayerEditor extends React.Component {
           />
           <LayerTypeBlock
             value={this.props.layer.type}
-            onChange={v => this.changeProperty(null, 'type', v)}
+            onChange={newType => this.props.onLayerChanged(changeType(this.props.layer, newType))}
           />
         </div>
       case 'source': return <div>
