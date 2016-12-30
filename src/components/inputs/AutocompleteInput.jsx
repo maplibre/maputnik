@@ -13,41 +13,44 @@ class AutocompleteInput extends React.Component {
   }
 
   render() {
-		return <Autocomplete
-			menuStyle={{
-				border: 'none',
+    return <Autocomplete
+      menuStyle={{
+        border: 'none',
         padding: '2px 0',
         position: 'fixed',
         overflow: 'auto',
         maxHeight: '50%',
-			}}
-			inputProps={{
+        background: colors.gray,
+        zIndex: 3,
+      }}
+      inputProps={{
         style: {
-					...input.input,
-					width: null,
+          ...input.input,
+          width: null,
           ...this.props.style,
-				}
-			}}
+        }
+      }}
       value={this.props.value}
-			items={this.props.options}
-			getItemValue={(item) => item[0]}
-			onSelect={v => this.props.onChange(v)}
+      items={this.props.options}
+      getItemValue={(item) => item[0]}
+      onSelect={v => this.props.onChange(v)}
       onChange={(e, v) => this.props.onChange(v)}
-			renderItem={(item, isHighlighted) => (
-				<div
-					key={item[0]}
-					style={{
-						userSelect: 'none',
-						color: colors.lowgray,
-						background: isHighlighted ? colors.midgray : colors.gray,
-						padding: margins[0],
-						fontSize: fontSizes[5],
-					}}
-				>
-			   {item[1]}
-				</div>
-			)}
-		/>
+      renderItem={(item, isHighlighted) => (
+        <div
+          key={item[0]}
+          style={{
+            userSelect: 'none',
+            color: colors.lowgray,
+            background: isHighlighted ? colors.midgray : colors.gray,
+            padding: margins[0],
+            fontSize: fontSizes[5],
+            zIndex: 3,
+          }}
+        >
+         {item[1]}
+        </div>
+      )}
+    />
   }
 }
 
