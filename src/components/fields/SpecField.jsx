@@ -51,6 +51,7 @@ export default class SpecField extends React.Component {
   render() {
     const commonProps = {
       style: this.props.style,
+      default: this.props.fieldSpec.default,
       value: this.props.value,
       name: this.props.fieldName,
       onChange: newValue => this.props.onChange(this.props.fieldName, newValue)
@@ -59,7 +60,6 @@ export default class SpecField extends React.Component {
       case 'number': return (
         <NumberInput
           {...commonProps}
-          default={this.props.fieldSpec.default}
           min={this.props.fieldSpec.minimum}
           max={this.props.fieldSpec.maximum}
         />
@@ -98,7 +98,6 @@ export default class SpecField extends React.Component {
           {...commonProps}
           type={this.props.fieldSpec.value}
           length={this.props.fieldSpec.length}
-          default={this.props.fieldSpec.default}
         />
       )
       default: return null

@@ -17,6 +17,7 @@ class ColorField extends React.Component {
     value: React.PropTypes.string,
     doc: React.PropTypes.string,
     style: React.PropTypes.object,
+    default: React.PropTypes.string,
   }
 
   constructor(props) {
