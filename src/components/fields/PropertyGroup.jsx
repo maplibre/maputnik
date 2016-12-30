@@ -51,11 +51,7 @@ export default class PropertyGroup extends React.Component {
       />
     })
 
-    return <div style={{
-      padding: margins[2],
-      paddingRight: 0,
-      backgroundColor: colors.black,
-    }}>
+    return <div>
       {fields}
     </div>
   }
