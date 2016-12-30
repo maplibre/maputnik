@@ -1,5 +1,4 @@
-{
-  "Metropolis": [
+[
     "Metropolis Black Italic",
     "Metropolis Black",
     "Metropolis Bold Italic",
@@ -17,9 +16,7 @@
     "Metropolis Semi Bold Italic",
     "Metropolis Semi Bold",
     "Metropolis Thin Italic",
-    "Metropolis Thin"
-  ],
-  "Open Sans": [
+    "Metropolis Thin",
     "Open Sans Bold Italic",
     "Open Sans Bold",
     "Open Sans Extra Bold Italic",
@@ -29,13 +26,10 @@
     "Open Sans Light",
     "Open Sans Regular",
     "Open Sans Semibold Italic",
-    "Open Sans Semibold"
-  ],
-  "Klokantech Noto Sans": [
+    "Open Sans Semibold",
     "Klokantech Noto Sans Bold",
     "Klokantech Noto Sans CJK Bold",
     "Klokantech Noto Sans CJK Regular",
     "Klokantech Noto Sans Italic",
     "Klokantech Noto Sans Regular"
-  ]
-}
+]

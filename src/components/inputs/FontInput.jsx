@@ -3,12 +3,7 @@ import SelectInput from './SelectInput'
 import input from '../../config/input.js'
 
 //TODO: Query available font stack dynamically
-import fontFamilies from '../../config/fontstacks.json'
-let fontStacks = []
-
-Object.keys(fontFamilies).forEach(family => {
-  fontStacks = fontStacks.concat(fontFamilies[family])
-})
+import fontStacks from '../../config/fontstacks.json'
 
 class FontInput extends React.Component {
   static propTypes = {
@@ -18,7 +13,7 @@ class FontInput extends React.Component {
   }
 
   get values() {
-   return this.props.value || this.props.default || []
+   return this.props.value || this.props.default.slice(1) || []
   }
 
   changeFont(idx, newValue) {
