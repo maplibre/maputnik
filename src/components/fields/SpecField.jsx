@@ -9,6 +9,7 @@ import StringInput from '../inputs/StringInput'
 import SelectInput from '../inputs/SelectInput'
 import MultiButtonInput from '../inputs/MultiButtonInput'
 import ArrayInput from '../inputs/ArrayInput'
+import FontInput from '../inputs/FontInput'
 import capitalize from 'lodash.capitalize'
 
 
@@ -38,7 +39,6 @@ export default class SpecField extends React.Component {
     onChange: React.PropTypes.func.isRequired,
     fieldName: React.PropTypes.string.isRequired,
     fieldSpec: React.PropTypes.object.isRequired,
-
     value: React.PropTypes.oneOfType([
       React.PropTypes.string,
       React.PropTypes.number,
@@ -93,13 +93,18 @@ export default class SpecField extends React.Component {
           {...commonProps}
         />
       )
-      case 'array': return (
-        <ArrayInput
-          {...commonProps}
-          type={this.props.fieldSpec.value}
-          length={this.props.fieldSpec.length}
-        />
-      )
+      case 'array':
+        if(this.props.fieldName === 'text-font') {
+          return <FontInput
+            {...commonProps}
+          />
+        } else {
+          return <ArrayInput
+            {...commonProps}
+            type={this.props.fieldSpec.value}
+            length={this.props.fieldSpec.length}
+          />
+        }
       default: return null
     }
   }
