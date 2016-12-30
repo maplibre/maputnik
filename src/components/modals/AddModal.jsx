@@ -25,12 +25,17 @@ class AddModal extends React.Component {
 
   addLayer() {
     const changedLayers = this.props.mapStyle.layers.slice(0)
-    changedLayers.push({
+    const layer = {
       id: this.state.id,
       type: this.state.type,
-      source: this.state.source,
-      'source-layer': this.state['source-layer'],
-    })
+    }
+
+    if(this.state.type !== 'background') {
+      layer.source = this.state.source
+      layer['source-layer'] = this.state['source-layer']
+    }
+
+    changedLayers.push(layer)
 
     const changedStyle = {
       ...this.props.mapStyle,
@@ -79,16 +84,20 @@ class AddModal extends React.Component {
         value={this.state.type}
         onChange={v => this.setState({ type: v })}
       />
+      {this.state.type !== 'background' &&
       <LayerSourceBlock
         sourceIds={Object.keys(this.props.sources)}
         value={this.state.source}
         onChange={v => this.setState({ source: v })}
       />
+      }
+      {this.state.type !== 'background' &&
       <LayerSourceLayerBlock
         sourceLayerIds={this.props.sources[this.state.source] || []}
         value={this.state['source-layer']}
         onChange={v => this.setState({ 'source-layer': v })}
       />
+      }
       <Button onClick={this.addLayer.bind(this)}>
         Add Layer
       </Button>
