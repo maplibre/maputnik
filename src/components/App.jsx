@@ -9,6 +9,7 @@ import LayerList from './layers/LayerList'
 import LayerEditor from './layers/LayerEditor'
 import Toolbar from './Toolbar'
 import AppLayout from './AppLayout'
+import ErrorPanel from './ErrorPanel'
 
 import GlSpec from 'mapbox-gl-style-spec/reference/latest.js'
 import validateStyleMin from 'mapbox-gl-style-spec/lib/validate_style.min'
@@ -34,6 +35,7 @@ export default class App extends React.Component {
     })
 
     this.state = {
+      errors: [],
       mapStyle: style.emptyStyle,
       selectedLayerIndex: 0,
       sources: {},
@@ -77,9 +79,14 @@ export default class App extends React.Component {
     if(errors.length === 0) {
       this.revisionStore.addRevision(newStyle)
       this.saveStyle(newStyle)
-      this.setState({ mapStyle: newStyle })
+      this.setState({
+        mapStyle: newStyle,
+        errors: [],
+      })
     } else {
-      errors.forEach(err => console.error(err.message))
+      this.setState({
+        errors: errors.map(err => err.message)
+      })
     }
   }
 
@@ -187,11 +194,16 @@ export default class App extends React.Component {
       onLayerIdChange={this.onLayerIdChange.bind(this)}
     /> : null
 
+    const bottomPanel = this.state.errors.length > 0 ? <ErrorPanel
+      messages={this.state.errors}
+    /> : null
+
     return <AppLayout
       toolbar={toolbar}
       layerList={layerList}
       layerEditor={layerEditor}
       map={this.mapRenderer()}
+      bottom={bottomPanel}
     />
   }
 }

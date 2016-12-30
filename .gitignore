@@ -2,6 +2,7 @@
 logs
 *.log
 *.swp
+*.swo
 
 # Runtime data
 pids

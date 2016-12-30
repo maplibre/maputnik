@@ -8,7 +8,7 @@ const baseColors = {
   blue: '#00d9f7',
   green: '#B4C7AD',
   orange: '#fb3',
-  red: '#f04',
+  red: '#cf4a4a',
 }
 
 const themeColors = {

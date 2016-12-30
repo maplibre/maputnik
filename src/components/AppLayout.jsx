@@ -11,6 +11,7 @@ class AppLayout extends React.Component {
     layerList: React.PropTypes.element.isRequired,
     layerEditor: React.PropTypes.element,
     map: React.PropTypes.element.isRequired,
+    bottom: React.PropTypes.element,
   }
 
   static childContextTypes = {
@@ -60,6 +61,18 @@ class AppLayout extends React.Component {
         </ScrollContainer>
       </div>
       {this.props.map}
+      {this.props.bottom && <div style={{
+          position: 'fixed',
+          height: 50,
+          bottom: 0,
+          left: 550,
+          zIndex: 1,
+          width: '100%',
+          backgroundColor: colors.black
+        }}>
+          {this.props.bottom}
+        </div>
+      }
     </div>
   }
 }
