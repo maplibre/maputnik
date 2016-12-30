@@ -184,8 +184,12 @@
           "fields": [
             "text-field",
             "text-font",
+            "text-color",
             "text-size",
-            "text-line-height"
+            "text-line-height",
+            "text-halo-color",
+            "text-halo-width",
+            "text-halo-blur"
           ]
         },
         {
@@ -197,7 +201,9 @@
             "text-padding",
             "symbol-avoid-edges",
             "text-allow-overlap",
-            "text-ignore-placement"
+            "text-ignore-placement",
+            "text-translate",
+            "text-translate-anchor"
           ]
         },
         {
