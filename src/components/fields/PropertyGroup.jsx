@@ -31,7 +31,7 @@ export default class PropertyGroup extends React.Component {
 
   onPropertyChange(property, newValue) {
     const group = getGroupName(this.props.layer.type, property)
-    this.props.onChange(group , property ,newValue)
+    this.props.onChange(group , property, newValue)
   }
 
   render() {
@@ -40,7 +40,7 @@ export default class PropertyGroup extends React.Component {
 
       const paint = this.props.layer.paint || {}
       const layout = this.props.layer.layout || {}
-      const fieldValue = paint[fieldName] || layout[fieldName]
+      const fieldValue = fieldName in paint ? paint[fieldName] : layout[fieldName]
 
       return <ZoomSpecField
         onChange={this.onPropertyChange.bind(this)}
