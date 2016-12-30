@@ -3,6 +3,7 @@ import React from 'react'
 import InputBlock from '../inputs/InputBlock'
 import StringInput from '../inputs/StringInput'
 import SelectInput from '../inputs/SelectInput'
+import AutocompleteInput from '../inputs/AutocompleteInput'
 
 class LayerSourceBlock extends React.Component {
   static propTypes = {
@@ -13,10 +14,10 @@ class LayerSourceBlock extends React.Component {
 
   render() {
     return <InputBlock label={"Source"}>
-      <SelectInput
+      <AutocompleteInput
         value={this.props.value}
         onChange={this.props.onChange}
-        options={this.props.sourceIds.map(s => [s, s])}
+        options={this.props.sourceIds.map(src => [src, src])}
       />
     </InputBlock>
   }
