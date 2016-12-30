@@ -41,6 +41,7 @@ class AutocompleteInput extends React.Component {
           style={{
             userSelect: 'none',
             color: colors.lowgray,
+            cursor: 'default',
             background: isHighlighted ? colors.midgray : colors.gray,
             padding: margins[0],
             fontSize: fontSizes[5],

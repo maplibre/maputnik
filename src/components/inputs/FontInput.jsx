@@ -1,5 +1,5 @@
 import React from 'react'
-import SelectInput from './SelectInput'
+import AutocompleteInput from './AutocompleteInput'
 import input from '../../config/input.js'
 
 //TODO: Query available font stack dynamically
@@ -24,12 +24,8 @@ class FontInput extends React.Component {
 
   render() {
     const inputs = this.values.map((value, i) => {
-      return <SelectInput
+      return <AutocompleteInput
         key={i}
-        style={{
-          width: '100%',
-          ...this.props.style,
-        }}
         value={value}
         options={fontStacks.map(f => [f, f])}
         onChange={this.changeFont.bind(this, i)}
