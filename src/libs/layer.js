@@ -22,3 +22,23 @@ export function changeType(layer, newType) {
     type: newType,
   }
 }
+
+/** A {@property} in either the paint our layout {@group} has changed
+ * to a {@newValue}.
+ */
+export function changeProperty(layer, group, property, newValue) {
+  if(group) {
+    return {
+      ...layer,
+      [group]: {
+        ...layer[group],
+        [property]: newValue
+      }
+    }
+  } else {
+    return {
+      ...layer,
+      [property]: newValue
+    }
+  }
+}

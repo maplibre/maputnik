@@ -13,7 +13,7 @@ import LayerSourceLayerBlock from './LayerSourceLayerBlock'
 import InputBlock from '../inputs/InputBlock'
 import MultiButtonInput from '../inputs/MultiButtonInput'
 
-import { changeType } from '../../libs/layer'
+import { changeType, changeProperty } from '../../libs/layer'
 import layout from '../../config/layout.json'
 import { margins, fontSizes } from '../../config/scales'
 import colors from '../../config/colors'
@@ -79,32 +79,8 @@ export default class LayerEditor extends React.Component {
     }
   }
 
-  /** A {@property} in either the paint our layout {@group} has changed
-   * to a {@newValue}.
-   */
   changeProperty(group, property, newValue) {
-    if(group) {
-      this.props.onLayerChanged({
-        ...this.props.layer,
-        [group]: {
-          ...this.props.layer[group],
-          [property]: newValue
-        }
-      })
-    } else {
-      this.props.onLayerChanged({
-        ...this.props.layer,
-        [property]: newValue
-      })
-    }
-  }
-
-  onFilterChange(newValue) {
-    const changedLayer = {
-      ...this.props.layer,
-      filter: newValue
-    }
-    this.props.onLayerChanged(changedLayer)
+    this.props.onLayerChanged(changeProperty(this.props.layer, group, property, newValue))
   }
 
   onGroupToggle(groupTitle, active) {
@@ -134,7 +110,7 @@ export default class LayerEditor extends React.Component {
         <FilterEditor
           filter={this.props.layer.filter}
           properties={this.props.vectorLayers[this.props.layer['source-layer']]}
-          onChange={f => this.onFilterChange(f)}
+          onChange={f => this.changeProperty(null, 'filter', f)}
         />
         }
         <LayerSourceBlock
