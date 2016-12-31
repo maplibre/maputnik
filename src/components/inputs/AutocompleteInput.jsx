@@ -6,10 +6,15 @@ import { margins, fontSizes } from '../../config/scales'
 
 class AutocompleteInput extends React.Component {
   static propTypes = {
-    value: React.PropTypes.string.isRequired,
-    options: React.PropTypes.array.isRequired,
+    value: React.PropTypes.string,
+    options: React.PropTypes.array,
     style: React.PropTypes.object,
-    onChange: React.PropTypes.func.isRequired,
+    onChange: React.PropTypes.func,
+  }
+
+  static defaultProps = {
+    onChange: () => {},
+    options: [],
   }
 
   render() {

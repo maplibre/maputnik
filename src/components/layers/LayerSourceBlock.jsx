@@ -7,9 +7,14 @@ import AutocompleteInput from '../inputs/AutocompleteInput'
 
 class LayerSourceBlock extends React.Component {
   static propTypes = {
-    value: React.PropTypes.string.isRequired,
-    onChange: React.PropTypes.func.isRequired,
-    sourceIds: React.PropTypes.array.isRequired,
+    value: React.PropTypes.string,
+    onChange: React.PropTypes.func,
+    sourceIds: React.PropTypes.array,
+  }
+
+  static defaultProps = {
+    onChange: () => {},
+    sourceIds: [],
   }
 
   render() {
