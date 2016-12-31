@@ -9,11 +9,12 @@ import LayerList from './layers/LayerList'
 import LayerEditor from './layers/LayerEditor'
 import Toolbar from './Toolbar'
 import AppLayout from './AppLayout'
-import ErrorPanel from './ErrorPanel'
+import MessagePanel from './MessagePanel'
 
 import GlSpec from 'mapbox-gl-style-spec/reference/latest.js'
 import validateStyleMin from 'mapbox-gl-style-spec/lib/validate_style.min'
 import style from '../libs/style.js'
+import { undoMessages, redoMessages } from '../libs/diffmessage'
 import { loadDefaultStyle, StyleStore } from '../libs/stylestore'
 import { ApiStyleStore } from '../libs/apistore'
 import { RevisionStore } from '../libs/revisions'
@@ -36,6 +37,7 @@ export default class App extends React.Component {
 
     this.state = {
       errors: [],
+      infos: [],
       mapStyle: style.emptyStyle,
       selectedLayerIndex: 0,
       sources: {},
@@ -92,16 +94,22 @@ export default class App extends React.Component {
 
   onUndo() {
     const activeStyle = this.revisionStore.undo()
-    console.log('Undo revision', this.revisionStore.currentIdx)
+    const messages = undoMessages(this.state.mapStyle, activeStyle)
     this.saveStyle(activeStyle)
-    this.setState({ mapStyle: activeStyle })
+    this.setState({
+      mapStyle: activeStyle,
+      infos: messages,
+    })
   }
 
   onRedo() {
     const activeStyle = this.revisionStore.redo()
-    console.log('Redo revision', this.revisionStore.currentIdx)
+    const messages = redoMessages(this.state.mapStyle, activeStyle)
     this.saveStyle(activeStyle)
-    this.setState({ mapStyle: activeStyle })
+    this.setState({
+      mapStyle: activeStyle,
+      infos: messages,
+    })
   }
 
   onLayersChange(changedLayers) {
@@ -194,8 +202,9 @@ export default class App extends React.Component {
       onLayerIdChange={this.onLayerIdChange.bind(this)}
     /> : null
 
-    const bottomPanel = this.state.errors.length > 0 ? <ErrorPanel
-      messages={this.state.errors}
+    const bottomPanel = (this.state.errors.length + this.state.infos.length) > 0 ? <MessagePanel
+      errors={this.state.errors}
+      infos={this.state.infos}
     /> : null
 
     return <AppLayout
