@@ -37,7 +37,7 @@ export default class LayerWatcher {
     const previousVectorLayers = { ...this._vectorLayers }
 
     Object.keys(this._sources).forEach(sourceId => {
-      this._sources[sourceId].forEach(vectorLayerId => {
+      (this._sources[sourceId] || []).forEach(vectorLayerId => {
         const knownProperties = this._vectorLayers[vectorLayerId] || {}
         const params = { sourceLayer: vectorLayerId }
         map.querySourceFeatures(sourceId, params).forEach(feature => {

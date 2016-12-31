@@ -32,7 +32,7 @@ class FontInput extends React.Component {
       />
     })
 
-    return <div style={{display: 'inline-block', width: '51%'}}>
+    return <div style={{display: 'inline-block'}}>
       {inputs}
     </div>
   }

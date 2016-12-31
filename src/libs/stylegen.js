@@ -27,10 +27,9 @@ function assignVectorLayerColor(layerId) {
 }
 
 function circleLayer(source, vectorLayer, color) {
-  return {
+  const layer = {
     id: `${source}_${vectorLayer}_circle`,
     source: source,
-    'source-layer': vectorLayer,
     type: 'circle',
     paint: {
       'circle-color': color,
@@ -38,13 +37,16 @@ function circleLayer(source, vectorLayer, color) {
     },
     filter: ["==", "$type", "Point"]
   }
+  if(vectorLayer) {
+    layer['source-layer'] = vectorLayer
+  }
+  return layer
 }
 
 function polygonLayer(source, vectorLayer, color, fillColor) {
-  return {
+  const layer = {
     id: `${source}_${vectorLayer}_polygon`,
     source: source,
-    'source-layer': vectorLayer,
     type: 'fill',
     paint: {
       'fill-color': fillColor,
@@ -53,13 +55,16 @@ function polygonLayer(source, vectorLayer, color, fillColor) {
     },
     filter: ["==", "$type", "Polygon"]
   }
+  if(vectorLayer) {
+    layer['source-layer'] = vectorLayer
+  }
+  return layer
 }
 
 function lineLayer(source, vectorLayer, color) {
-  return {
+  const layer = {
     id: `${source}_${vectorLayer}_line`,
     source: source,
-    'source-layer': vectorLayer,
     layout: {
       'line-join': 'round',
       'line-cap': 'round'
@@ -70,6 +75,10 @@ function lineLayer(source, vectorLayer, color) {
     },
     filter: ["==", "$type", "LineString"]
   }
+  if(vectorLayer) {
+    layer['source-layer'] = vectorLayer
+  }
+  return layer
 }
 
 export function colorHighlightedLayer(layer) {
@@ -110,6 +119,16 @@ export function generateColoredLayers(sources) {
 
   Object.keys(sources).forEach(sourceId => {
     const layers = sources[sourceId]
+
+    // Deal with GeoJSON sources that do not have any source layers
+    if(!layers) {
+      const color = Color(assignVectorLayerColor(sourceId))
+      circleLayers.push(circleLayer(sourceId, null, color.alpha(0.3).string()))
+      lineLayers.push(lineLayer(sourceId, null, color.alpha(0.3).string()))
+      polyLayers.push(polygonLayer(sourceId, null, color.alpha(0.2).string(), color.alpha(0.05).string()))
+      return
+    }
+
     layers.forEach(layerId => {
       const color = Color(assignVectorLayerColor(layerId))
       circleLayers.push(circleLayer(sourceId, layerId, color.alpha(0.3).string()))

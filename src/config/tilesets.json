@@ -18,9 +18,9 @@
     "url": "https://free.tilehosting.com/data/v3.json?key=25ItXg7aI5wurYDtttD",
     "title": "OpenMapTiles CDN"
   },
-  "swissnames-landscape": {
+  "naturalearth-airports": {
     "type": "geojson",
-    "data": "http://swissnames.lukasmartinelli.ch/data/landscape.geojson",
-    "title": "Landscape Names GeoJSON"
+    "data": "https://d2ad6b4ur7yvpq.cloudfront.net/naturalearth-3.3.0/ne_10m_airports.geojson",
+    "title": "NaturalEarth Airports GeoJSON"
   }
 }
