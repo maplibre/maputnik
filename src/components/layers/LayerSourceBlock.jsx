@@ -23,6 +23,7 @@ class LayerSourceBlock extends React.Component {
         value={this.props.value}
         onChange={this.props.onChange}
         options={this.props.sourceIds.map(src => [src, src])}
+        wrapperStyle={{ width: '50%' }}
       />
     </InputBlock>
   }

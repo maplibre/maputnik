@@ -13,6 +13,7 @@ import LayerSourceLayerBlock from './LayerSourceLayerBlock'
 import InputBlock from '../inputs/InputBlock'
 import MultiButtonInput from '../inputs/MultiButtonInput'
 
+import input from '../../config/input.js'
 import { changeType, changeProperty } from '../../libs/layer'
 import layout from '../../config/layout.json'
 import { margins, fontSizes } from '../../config/scales'
@@ -106,13 +107,6 @@ export default class LayerEditor extends React.Component {
           />
         </div>
       case 'source': return <div>
-        {this.props.layer.filter &&
-        <FilterEditor
-          filter={this.props.layer.filter}
-          properties={this.props.vectorLayers[this.props.layer['source-layer']]}
-          onChange={f => this.changeProperty(null, 'filter', f)}
-        />
-        }
         <LayerSourceBlock
           sourceIds={Object.keys(this.props.sources)}
           value={this.props.layer.source}
@@ -123,6 +117,15 @@ export default class LayerEditor extends React.Component {
           value={this.props.layer['source-layer']}
           onChange={v => this.changeProperty(null, 'source-layer', v)}
         />
+        {this.props.layer.filter &&
+        <div style={input.property}>
+          <FilterEditor
+            filter={this.props.layer.filter}
+            properties={this.props.vectorLayers[this.props.layer['source-layer']]}
+            onChange={f => this.changeProperty(null, 'filter', f)}
+          />
+        </div>
+        }
       </div>
       case 'properties': return <PropertyGroup
         layer={this.props.layer}

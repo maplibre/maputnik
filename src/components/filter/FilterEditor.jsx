@@ -38,13 +38,16 @@ class CombiningOperatorSelect extends React.Component {
       return <option key={op} value={op}>{op}</option>
     })
 
-    return <div>
-
+    return <div
+      style={{
+          marginTop: margins[1],
+          marginBottom: margins[1],
+        }}
+      >
       <select
         style={{
           ...input.select,
           width: '20.5%',
-          margin: margins[0],
         }}
         value={this.props.value}
         onChange={e => this.props.onChange(e.target.value)}
@@ -103,11 +106,14 @@ class SingleFilterEditor extends React.Component {
     const propertyName = f[1]
     const filterArgs = f.slice(2)
 
-    return <div>
+    return <div style={{
+      marginTop: margins[1],
+      marginBottom: margins[1],
+    }}>
       <AutocompleteInput
         wrapperStyle={{
-          width: '35%',
-          margin: margins[0],
+          width: '31%',
+          marginRight: margins[0]
         }}
         value={propertyName}
         options={Object.keys(this.props.properties).map(propName => [propName, propName])}
@@ -119,8 +125,8 @@ class SingleFilterEditor extends React.Component {
       />
       <StringInput
         style={{
-          width: '35%',
-          margin: margins[0]
+          width: '50%',
+          marginLeft: margins[0]
         }}
         value={filterArgs.join(',')}
         onChange={ v=> this.onFilterPartChanged(filterOp, propertyName, v.split(','))}
