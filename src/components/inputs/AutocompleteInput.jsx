@@ -8,7 +8,8 @@ class AutocompleteInput extends React.Component {
   static propTypes = {
     value: React.PropTypes.string,
     options: React.PropTypes.array,
-    style: React.PropTypes.object,
+    wrapperStyle: React.PropTypes.object,
+    inputStyle: React.PropTypes.object,
     onChange: React.PropTypes.func,
   }
 
@@ -28,11 +29,15 @@ class AutocompleteInput extends React.Component {
         background: colors.gray,
         zIndex: 3,
       }}
+      wrapperStyle={{
+        display: 'inline-block',
+        ...this.props.wrapperStyle
+      }}
       inputProps={{
         style: {
           ...input.input,
-          width: null,
-          ...this.props.style,
+          width: '100%',
+          ...this.props.inputStyle,
         }
       }}
       value={this.props.value}

@@ -18,8 +18,8 @@ class ArrayInput extends React.Component {
   render() {
     const values = this.props.value || this.props.default || []
     const commonStyle = {
-      width: '15%',
-      marginRight: margins[0],
+      width: '49%',
+      marginRight: '1%',
     }
     const inputs = values.map((v, i) => {
       if(this.props.type === 'number') {
@@ -28,7 +28,7 @@ class ArrayInput extends React.Component {
       return <StringInput key={i} value={v} style={commonStyle} />
     })
 
-    return <div style={{display: 'inline-block', width: '51%'}}>
+    return <div style={{display: 'inline-block', width: '50%'}}>
       {inputs}
     </div>
   }

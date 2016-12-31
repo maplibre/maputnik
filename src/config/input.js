@@ -3,6 +3,7 @@ import { margins, fontSizes } from './scales'
 
 const base = {
   display: 'inline-block',
+  boxSizing: 'border-box',
   fontSize: fontSizes[5],
   lineHeight: 2,
   paddingLeft: 5,
@@ -11,20 +12,19 @@ const base = {
 
 const label = {
   ...base,
-  width: '40%',
+  padding: null,
   color: colors.lowgray,
   userSelect: 'none',
 }
 
 const property = {
-  marginTop: margins[2],
-  marginBottom: margins[2],
+  display: 'block',
+  margin: margins[2],
 }
 
 const input = {
   ...base,
   border: 'none',
-  width: '47%',
   backgroundColor: colors.gray,
   color: colors.lowgray,
 }
@@ -38,7 +38,6 @@ const checkbox = {
 
 const select = {
   ...input,
-  width: '50%',
   height: '2.15em',
 }
 

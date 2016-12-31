@@ -5,6 +5,10 @@ import input from '../../config/input.js'
 import colors from '../../config/colors.js'
 import { margins } from '../../config/scales.js'
 
+import SelectInput from '../inputs/SelectInput'
+import StringInput from '../inputs/StringInput'
+import AutocompleteInput from '../inputs/AutocompleteInput'
+
 const combiningFilterOps = ['all', 'any', 'none']
 const setFilterOps = ['in', '!in']
 const otherFilterOps = Object
@@ -35,6 +39,7 @@ class CombiningOperatorSelect extends React.Component {
     })
 
     return <div>
+
       <select
         style={{
           ...input.select,
@@ -64,20 +69,15 @@ class OperatorSelect extends React.Component {
   }
 
   render() {
-    const options = otherFilterOps.map(op => {
-      return <option key={op} value={op}>{op}</option>
-    })
-    return <select
+    return <SelectInput
       style={{
-        ...input.select,
         width: '15%',
         margin: margins[0]
       }}
       value={this.props.value}
-      onChange={e => this.props.onChange(e.target.value)}
-    >
-      {options}
-    </select>
+      onChange={this.props.onChange}
+      options={otherFilterOps.map(op => [op, op])}
+    />
   }
 }
 
@@ -104,32 +104,26 @@ class SingleFilterEditor extends React.Component {
     const filterArgs = f.slice(2)
 
     return <div>
-      <select
-        style={{
-          ...input.select,
-            width: '17%',
-            margin: margins[0]
+      <AutocompleteInput
+        wrapperStyle={{
+          width: '35%',
+          margin: margins[0],
         }}
         value={propertyName}
+        options={Object.keys(this.props.properties).map(propName => [propName, propName])}
         onChange={newPropertyName => this.onFilterPartChanged(filterOp, newPropertyName, filterArgs)}
-      >
-        {Object.keys(this.props.properties).map(propName => {
-          return <option key={propName} value={propName}>{propName}</option>
-        })}
-      </select>
+      />
       <OperatorSelect
         value={filterOp}
         onChange={newFilterOp => this.onFilterPartChanged(newFilterOp, propertyName, filterArgs)}
       />
-      <input
+      <StringInput
         style={{
-          ...input.input,
-          width: '53%',
+          width: '35%',
           margin: margins[0]
         }}
         value={filterArgs.join(',')}
-        onChange={e => {
-          this.onFilterPartChanged(filterOp, propertyName, e.target.value.split(','))}}
+        onChange={ v=> this.onFilterPartChanged(filterOp, propertyName, v.split(','))}
       />
     </div>
   }
@@ -182,11 +176,7 @@ export default class CombiningFilterEditor extends React.Component {
       return null
     }
 
-    return <div style={{
-      padding: margins[2],
-      paddingRight: 0,
-      backgroundColor: colors.black
-    }}>
+    return <div>
       <CombiningOperatorSelect
         value={combiningOp}
         onChange={this.onFilterPartChanged.bind(this, 0)}

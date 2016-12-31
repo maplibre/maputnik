@@ -82,7 +82,6 @@ class ColorField extends React.Component {
     </div>
 
     return <div style={{
-      ...input.property,
       position: 'relative',
       display: 'inline',
     }}>

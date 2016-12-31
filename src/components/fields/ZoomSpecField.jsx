@@ -3,6 +3,7 @@ import Color from 'color'
 
 import Button from '../Button'
 import SpecField from './SpecField'
+import NumberInput from '../inputs/NumberInput'
 import DocLabel from './DocLabel'
 
 import AddIcon from 'react-icons/lib/md/add-circle-outline'
@@ -44,20 +45,21 @@ export default class ZoomSpecField extends React.Component {
     let label = <DocLabel
       label={labelFromFieldName(this.props.fieldName)}
       doc={this.props.fieldSpec.doc}
+      style={{
+        width: '50%',
+      }}
     />
 
     if(isZoomField(this.props.value)) {
       const zoomFields = this.props.value.stops.map((stop, idx) => {
-        label = <label style={{...input.label, width: '30%'}}>
-          {labelFromFieldName(this.props.fieldName)}
-        </label>
-
-        if(idx > 0) {
-          label = <label style={{...input.label, width: '30%'}}></label>
-        }
+        label = <DocLabel
+          doc={this.props.fieldSpec.doc}
+          style={{ width: '42.5%'}}
+          label={idx > 0 ? "" : labelFromFieldName(this.props.fieldName)}
+        />
 
         if(idx === 1) {
-          label = <label style={{...input.label, width: '30%'}}>
+          label = <label style={{...input.label, width: '42.5%'}}>
             <Button style={{fontSize: fontSizes[5]}}>
               Add stop
             </Button>
@@ -67,17 +69,19 @@ export default class ZoomSpecField extends React.Component {
         const zoomLevel = stop[0]
         const value = stop[1]
 
-        return <div style={input.property} key={zoomLevel}>
+        return <div key={zoomLevel} style={{
+            ...input.property,
+            marginLeft: 0,
+            marginRight: 0
+          }}>
           {label}
           <Button style={{backgroundColor: null}}>
             <DeleteIcon />
           </Button>
-          <input
+          <NumberInput
             style={{
-              ...input.input,
-              width: '10%',
+              width: '7%',
             }}
-            type="number"
             value={zoomLevel}
             min={0}
             max={22}
@@ -85,19 +89,20 @@ export default class ZoomSpecField extends React.Component {
           <SpecField {...this.props}
             value={value}
             style={{
-              width: '33%',
+              width: '42%',
               marginLeft: margins[0],
             }}
           />
         </div>
       })
+
       return <div style={input.property}>
         {zoomFields}
       </div>
     } else {
       return <div style={input.property}>
         {label}
-        <SpecField {...this.props} />
+        <SpecField {...this.props} style={{ width: '50%' } }/>
       </div>
     }
   }
