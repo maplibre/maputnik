@@ -11,6 +11,18 @@ const otherFilterOps = Object
   .keys(GlSpec.filter_operator.values)
   .filter(op => combiningFilterOps.indexOf(op) < 0)
 
+function hasCombiningFilter(filter) {
+  return combiningFilterOps.indexOf(filter[0]) >= 0
+}
+
+function hasNestedCombiningFilter(filter) {
+  if(hasCombiningFilter(filter)) {
+    const combinedFilters = filter.slice(1)
+    return filter.slice(1).map(f => hasCombiningFilter(f)).filter(f => f == true).length > 0
+  }
+  return false
+}
+
 class CombiningOperatorSelect extends React.Component {
   static propTypes = {
     value: React.PropTypes.string.isRequired,
@@ -164,6 +176,11 @@ export default class CombiningFilterEditor extends React.Component {
         onChange={this.onFilterPartChanged.bind(this, idx + 1)}
       />
     })
+
+    //TODO: Implement support for nested filter
+    if(hasNestedCombiningFilter(filter)) {
+      return null
+    }
 
     return <div style={{
       padding: margins[2],
