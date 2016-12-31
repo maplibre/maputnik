@@ -18,12 +18,6 @@ function isZoomField(value) {
   return typeof value === 'object' && value.stops
 }
 
-const specFieldProps =  {
-  onChange: React.PropTypes.func.isRequired,
-  fieldName: React.PropTypes.string.isRequired,
-  fieldSpec: React.PropTypes.object.isRequired,
-}
-
 /** Supports displaying spec field for zoom function objects
  * https://www.mapbox.com/mapbox-gl-style-spec/#types-function-zoom-property
  */
@@ -39,6 +33,45 @@ export default class ZoomSpecField extends React.Component {
       React.PropTypes.number,
       React.PropTypes.bool,
     ]),
+  }
+
+  addStop() {
+    const stops = this.props.value.stops.slice(0)
+    const lastStop = stops[stops.length - 1]
+    stops.push([lastStop[0] + 1, lastStop[1]])
+
+    const changedValue = {
+      ...this.props.value,
+      stops: stops,
+    }
+
+    this.props.onChange(this.props.fieldName, changedValue)
+  }
+
+  deleteStop(stopIdx) {
+    const stops = this.props.value.stops.slice(0)
+    stops.splice(stopIdx, 1)
+
+    let changedValue = {
+      ...this.props.value,
+      stops: stops,
+    }
+
+    if(stops.length === 1) {
+      changedValue = stops[0][1]
+    }
+
+    this.props.onChange(this.props.fieldName, changedValue)
+  }
+
+  changeStop(changeIdx, zoomLevel, value) {
+    const stops = this.props.value.stops.slice(0)
+    stops[changeIdx] = [zoomLevel, value]
+    const changedValue = {
+      ...this.props.value,
+      stops: stops,
+    }
+    this.props.onChange(this.props.fieldName, changedValue)
   }
 
   render() {
@@ -60,7 +93,10 @@ export default class ZoomSpecField extends React.Component {
 
         if(idx === 1) {
           label = <label style={{...input.label, width: '42.5%'}}>
-            <Button style={{fontSize: fontSizes[5]}}>
+            <Button
+              style={{fontSize: fontSizes[5]}}
+              onClick={this.addStop.bind(this)}
+            >
               Add stop
             </Button>
           </label>
@@ -75,7 +111,10 @@ export default class ZoomSpecField extends React.Component {
             marginRight: 0
           }}>
           {label}
-          <Button style={{backgroundColor: null}}>
+          <Button
+            style={{backgroundColor: null}}
+            onClick={this.deleteStop.bind(this, idx)}
+          >
             <DeleteIcon />
           </Button>
           <NumberInput
@@ -83,11 +122,15 @@ export default class ZoomSpecField extends React.Component {
               width: '7%',
             }}
             value={zoomLevel}
+            onChange={changedStop => this.changeStop(idx, changedStop, value)}
             min={0}
             max={22}
           />
-          <SpecField {...this.props}
+          <SpecField
+            fieldName={this.props.fieldName}
+            fieldSpec={this.props.fieldSpec}
             value={value}
+            onChange={(_, newValue) => this.changeStop(idx, zoomLevel, newValue)}
             style={{
               width: '42%',
               marginLeft: margins[0],
