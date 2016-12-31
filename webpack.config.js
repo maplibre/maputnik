@@ -7,16 +7,6 @@ var HtmlWebpackPlugin = require('html-webpack-plugin');
 const HOST = process.env.HOST || "127.0.0.1";
 const PORT = process.env.PORT || "8888";
 
-// local scss modules
-loaders.push({
-  test: /[\/\\]src[\/\\].*\.scss/,
-  loaders: [
-    'style?sourceMap',
-    'css?modules&importLoaders=1&localIdentName=[path]___[name]__[local]___[hash:base64:5]',
-    'sass'
-  ]
-});
-
 module.exports = {
   target: 'web',
   entry: [
@@ -30,9 +20,6 @@ module.exports = {
     filename: 'bundle.js'
   },
   resolve: {
-    alias: {
-      'webworkify': 'webworkify-webpack'
-    },
     extensions: ['', '.js', '.jsx']
   },
   module: {

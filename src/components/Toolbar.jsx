@@ -16,6 +16,7 @@ import HelpIcon from 'react-icons/lib/md/help-outline'
 import InspectionIcon from 'react-icons/lib/md/find-in-page'
 import AddIcon from 'react-icons/lib/md/add-circle-outline'
 
+import logoImage from '../img/maputnik.png'
 import AddModal from './modals/AddModal'
 import SettingsModal from './modals/SettingsModal'
 import SourcesModal from './modals/SourcesModal'
@@ -172,7 +173,7 @@ export default class Toolbar extends React.Component {
           padding: 5,
         }}
       >
-        <img src="https://github.com/maputnik/editor/raw/master/media/maputnik.png" alt="Maputnik" style={{width: 30, height: 30, paddingRight: 5, verticalAlign: 'middle'}}/>
+        <img src={logoImage} alt="Maputnik" style={{width: 30, height: 30, paddingRight: 5, verticalAlign: 'middle'}}/>
         <span style={{fontSize: 20, verticalAlign: 'middle' }}>Maputnik</span>
       </ToolbarLink>
       <ToolbarAction onClick={this.toggleModal.bind(this, 'open')}>

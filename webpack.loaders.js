@@ -14,28 +14,16 @@ module.exports = [
     }
   },
   {
-    test: /\.(eot|svg|ttf|woff|woff2)$/,
+    test: /\.(eot|ttf|woff|woff2)$/,
     loader: 'file?name=fonts/[name].[ext]'
   },
   {
-    test: /\.svg(\?v=\d+\.\d+\.\d+)?$/,
-    exclude: /(node_modules|bower_components)/,
-    loader: "url?limit=10000&mimetype=image/svg+xml"
+    test: /\.ico$/,
+    loader: 'file?name=[name].[ext]'
   },
   {
-    test: /\.gif/,
-    exclude: /(node_modules|bower_components)/,
-    loader: "url-loader?limit=10000&mimetype=image/gif"
-  },
-  {
-    test: /\.jpg/,
-    exclude: /(node_modules|bower_components)/,
-    loader: "url-loader?limit=10000&mimetype=image/jpg"
-  },
-  {
-    test: /\.png/,
-    exclude: /(node_modules|bower_components)/,
-    loader: "url-loader?limit=10000&mimetype=image/png"
+    test: /\.(svg|gif|jpg|png)$/,
+    loader: 'file?name=img/[name].[ext]'
   },
   {
     test: /\.json$/,

@@ -6,12 +6,6 @@ var ExtractTextPlugin = require('extract-text-webpack-plugin');
 var HtmlWebpackPlugin = require('html-webpack-plugin');
 var WebpackCleanupPlugin = require('webpack-cleanup-plugin');
 
-// local scss modules
-loaders.push({
-  test: /[\/\\]src[\/\\].*\.scss/,
-  loader: ExtractTextPlugin.extract('style', 'css?modules&importLoaders=1&localIdentName=[name]__[local]___[hash:base64:5]', 'sass')
-});
-
 module.exports = {
   entry: {
     app: './src/index.jsx',
@@ -45,9 +39,6 @@ module.exports = {
     chunkFilename: '[chunkhash].js'
   },
   resolve: {
-    alias: {
-      'webworkify': 'webworkify-webpack',
-    },
     extensions: ['', '.js', '.jsx']
   },
   module: {

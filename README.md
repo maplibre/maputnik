@@ -1,6 +1,6 @@
 # Maputnik [![Build Status](https://travis-ci.org/maputnik/editor.svg?branch=master)](https://travis-ci.org/maputnik/editor) [![Windows Build Status](https://ci.appveyor.com/api/projects/status/anelbgv6jdb3qnh9/branch/master?svg=true)](https://ci.appveyor.com/project/lukasmartinelli/editor) [![License](https://img.shields.io/badge/license-MIT-blue.svg)](https://tldrlegal.com/license/mit-license)
 
-<img width="200" align="right" alt="Maputnik" src="media/maputnik.png" />
+<img width="200" align="right" alt="Maputnik" src="src/img/maputnik.png" />
 
 A free and open visual editor for the [Mapbox GL styles](https://www.mapbox.com/mapbox-gl-style-spec/)
 targeted at developers and map designers. Creating your own custom map is easy with **Maputnik**.
