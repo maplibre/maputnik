@@ -56,6 +56,13 @@ class JSONEditor extends React.Component {
     }
   }
 
+  resetValue() {
+    console.log('reset')
+    this.setState({
+      code: JSON.stringify(this.props.layer, null, 2)
+    })
+  }
+
   render() {
     const codeMirrorOptions = {
       mode: {name: "javascript", json: true},
@@ -69,6 +76,7 @@ class JSONEditor extends React.Component {
     return <CodeMirror
       value={this.state.code}
       onChange={this.onCodeUpdate.bind(this)}
+      onFocusChange={focused => focused ? true : this.resetValue()}
       options={codeMirrorOptions}
     />
   }
