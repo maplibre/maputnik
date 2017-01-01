@@ -1,14 +1,14 @@
 os:
 - linux
 - osx
-node_js:
-- "6.1"
 language: go
 addons:
   artifacts:
     paths:
     - maputnik
 install:
+- nvm install 6
+- nvm use 6
 - go get github.com/fsnotify/fsnotify
 - go get github.com/gorilla/handlers
 - go get github.com/gorilla/mux
