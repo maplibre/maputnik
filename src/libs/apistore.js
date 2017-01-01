@@ -7,46 +7,46 @@ const port = '8000'
 const localUrl = `http://${host}:${port}`
 const websocketUrl = `ws://${host}:${port}/ws`
 
-console.log(localUrl, websocketUrl)
 
 export class ApiStyleStore {
   constructor(opts) {
-    if(opts.onLocalStyleChange) {
-      const connection = new ReconnectingWebSocket(websocketUrl)
-      connection.onmessage = function(e) {
-        if(!e.data) return
-        try {
-          console.log('Received style update from API')
-          const updatedStyle = style.ensureStyleValidity(JSON.parse(e.data))
-          opts.onLocalStyleChange(updatedStyle)
-        } catch(err) {
-          console.error('Cannot parse local file ' + e.data)
-        }
-      }
-    }
+    this.onLocalStyleChange = opts.onLocalStyleChange || (() => {})
   }
 
-  supported(cb) {
+  init(cb) {
     request(localUrl + '/styles', (error, response, body) => {
-      cb(error === null)
+      if (!error && body && response.statusCode == 200) {
+        const styleIds = JSON.parse(body)
+        this.latestStyleId = styleIds[0]
+        this.notifyLocalChanges()
+        cb(null)
+      } else {
+        cb(new Error('Can not connect to style API'))
+      }
     })
+  }
+
+  notifyLocalChanges() {
+    const connection = new ReconnectingWebSocket(websocketUrl)
+    connection.onmessage = function(e) {
+      if(!e.data) return
+      try {
+        console.log('Received style update from API')
+        const updatedStyle = style.ensureStyleValidity(JSON.parse(e.data))
+        this.onLocalStyleChange(updatedStyle)
+      } catch(err) {
+        console.error('Cannot parse local file ' + e.data)
+      }
+    }
   }
 
   latestStyle(cb) {
     if(this.latestStyleId) {
       request(localUrl + '/styles/' + this.latestStyleId, (error, response, body) => {
-        cb(JSON.parse(body))
+        cb(style.ensureStyleValidity(JSON.parse(body)))
       })
     } else {
-      request(localUrl + '/styles', (error, response, body) => {
-        if (!error && response.statusCode == 200) {
-          const styleIds = JSON.parse(body);
-          this.latestStyleId = styleIds[0];
-          request(localUrl + '/styles/' + this.latestStyleId, (error, response, body) => {
-            cb(style.ensureStyleValidity(JSON.parse(body)))
-          })
-        }
-      })
+      throw new Error('No latest style available. You need to init the api backend first.')
     }
   }
 

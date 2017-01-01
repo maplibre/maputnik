@@ -69,8 +69,8 @@ export class StyleStore {
     this.mapStyles = loadStoredStyles()
   }
 
-  supported(cb) {
-    cb(window.localStorage !== undefined)
+  init(cb) {
+    cb(null)
   }
 
   // Delete entire style history

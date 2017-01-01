@@ -29,8 +29,8 @@ export default class App extends React.Component {
       onLocalStyleChange: mapStyle => this.onStyleChanged(mapStyle, false)
     })
 
-    this.styleStore.supported(isSupported => {
-      if(!isSupported) {
+    this.styleStore.init(err => {
+      if(err) {
         console.log('Falling back to local storage for storing styles')
         this.styleStore = new StyleStore()
       }
@@ -150,11 +150,11 @@ export default class App extends React.Component {
       onDataChange: (e) => {
         this.layerWatcher.analyzeMap(e.map)
       },
-			//TODO: This would actually belong to the layout component
+      //TODO: This would actually belong to the layout component
       style:{
-				top: 40,
-				//left: 500,
-			}
+        top: 40,
+        //left: 500,
+      }
     }
 
     const renderer = metadata['maputnik:renderer'] || 'mbgljs'
