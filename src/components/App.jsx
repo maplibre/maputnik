@@ -24,8 +24,10 @@ import LayerWatcher from '../libs/layerwatcher'
 export default class App extends React.Component {
   constructor(props) {
     super(props)
-    this.styleStore = new ApiStyleStore()
     this.revisionStore = new RevisionStore()
+    this.styleStore = new ApiStyleStore({
+      onLocalStyleChange: mapStyle => this.onStyleChanged(mapStyle, false)
+    })
 
     this.styleStore.supported(isSupported => {
       if(!isSupported) {
@@ -76,11 +78,11 @@ export default class App extends React.Component {
     this.styleStore.save(snapshotStyle)
   }
 
-  onStyleChanged(newStyle) {
+  onStyleChanged(newStyle, save=true) {
     const errors = validateStyleMin(newStyle, GlSpec)
     if(errors.length === 0) {
       this.revisionStore.addRevision(newStyle)
-      this.saveStyle(newStyle)
+      if(save) this.saveStyle(newStyle)
       this.setState({
         mapStyle: newStyle,
         errors: [],

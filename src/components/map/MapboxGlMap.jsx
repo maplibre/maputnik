@@ -28,6 +28,7 @@ export default class MapboxGlMap extends React.Component {
 
   constructor(props) {
     super(props)
+    MapboxGl.accessToken = props.accessToken
     this.state = {
       map: null,
       isPopupOpen: false,
@@ -37,6 +38,8 @@ export default class MapboxGlMap extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
+    MapboxGl.accessToken = nextProps.accessToken
+
     if(!this.state.map) return
 
     //Mapbox GL now does diffing natively so we don't need to calculate
@@ -45,8 +48,6 @@ export default class MapboxGlMap extends React.Component {
   }
 
   componentDidMount() {
-    MapboxGl.accessToken = this.props.accessToken
-
     const map = new MapboxGl.Map({
       container: this.container,
       style: this.props.mapStyle,
