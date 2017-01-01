@@ -3,6 +3,7 @@ os:
 - osx
 language: go
 install:
+- go get github.com/fsnotify/fsnotify
 - go get github.com/gorilla/handlers
 - go get github.com/gorilla/mux
 - go get github.com/gorilla/websocket

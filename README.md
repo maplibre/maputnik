@@ -57,6 +57,7 @@ Install the 3rd party dependencies.
 go get github.com/gorilla/handlers
 go get github.com/gorilla/mux
 go get github.com/gorilla/websocket
+go get github.com/fsnotify/fsnotify
 go get github.com/urfave/cli
 go get github.com/elazarl/go-bindata-assetfs/...
 go get github.com/jteeuwen/go-bindata/...
