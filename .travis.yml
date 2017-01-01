@@ -16,5 +16,6 @@ install:
 - go get github.com/urfave/cli
 - go get github.com/elazarl/go-bindata-assetfs/...
 - go get github.com/jteeuwen/go-bindata/...
-test:
+script:
+- mkdir -p editor/public
 - make
