@@ -1,6 +1,8 @@
 os:
 - linux
 - osx
+node_js:
+- "6.1"
 language: go
 addons:
   artifacts:
