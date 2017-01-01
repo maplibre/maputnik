@@ -1,4 +1,5 @@
-# Maputnik Desktop [![Build Status](https://travis-ci.org/maputnik/desktop.svg?branch=master)](https://travis-ci.org/maputnik/desktop)
+# Maputnik Desktop [![Build Status](https://travis-ci.org/maputnik/desktop.svg?branch=master)](https://travis-ci.org/maputnik/desktop) [![Windows Build Status](https://ci.appveyor.com/api/projects/status/sepe9jhfs123dwk9?svg=true)](https://ci.appveyor.com/project/lukasmartinelli/desktop)
+
 
 A Golang based cross platform executable for integrating Maputnik locally.
 This binary packages up the JavaScript and CSS bundle produced by [maputnik/editor](https://github.com/maputnik/desktop)
@@ -6,9 +7,12 @@ and embeds it in the program for easy distribution. It also allows
 exposing a local style file and work on it both in Maputnik and with your favorite
 editor.
 
-### Usage
 
-*Not functional yet*
+## Install
+
+You can download a single binary for Linux, OSX or Windows from [the latest releases of **maputnik/editor**](https://github.com/maputnik/editor/releases/latest).
+
+### Usage
 
 Simply start up a web server and access the Maputnik editor GUI at `localhost:8000`.
 
