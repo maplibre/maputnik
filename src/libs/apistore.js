@@ -28,14 +28,14 @@ export class ApiStyleStore {
 
   notifyLocalChanges() {
     const connection = new ReconnectingWebSocket(websocketUrl)
-    connection.onmessage = function(e) {
+    connection.onmessage = e => {
       if(!e.data) return
+      console.log('Received style update from API')
       try {
-        console.log('Received style update from API')
         const updatedStyle = style.ensureStyleValidity(JSON.parse(e.data))
         this.onLocalStyleChange(updatedStyle)
       } catch(err) {
-        console.error('Cannot parse local file ' + e.data)
+        console.error('Could not parse local style')
       }
     }
   }
