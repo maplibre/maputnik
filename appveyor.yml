@@ -31,6 +31,9 @@ build_script:
 - gofmt -s -l .
 - C:\MinGW\bin\mingw32-make.exe
 
+artifacts:
+- path: maputnik
+
 # to disable automatic tests
 test: off
 

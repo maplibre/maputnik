@@ -2,6 +2,10 @@ os:
 - linux
 - osx
 language: go
+addons:
+  artifacts:
+    paths:
+    - maputnik
 install:
 - go get github.com/fsnotify/fsnotify
 - go get github.com/gorilla/handlers
