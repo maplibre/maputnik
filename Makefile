@@ -14,7 +14,7 @@ editor/public: editor/node_modules
 	cd editor && npm run build
 
 bindata_assetfs.go: editor/public
-	go-bindata-assetfs --prefix "editor/" editor/public
+	go-bindata-assetfs --prefix "editor/" editor/public/...
 
 .PHONY: clean
 clean:
