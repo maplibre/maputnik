@@ -9,15 +9,32 @@ class StringInput extends React.Component {
     onChange: React.PropTypes.func,
   }
 
+  constructor(props) {
+    super(props)
+    this.state = {
+      value: props.value
+    }
+  }
+
+  changeValue(newValue) {
+    //TODO: In feature we can try to do validation here as well
+    this.setState({ value: newValue })
+  }
+
+  componentWillReceiveProps(nextProps) {
+    this.setState({ value: nextProps.value })
+  }
+
   render() {
     return <input
       style={{
         ...input.input,
         ...this.props.style
       }}
-      value={this.props.value}
+      value={this.state.value}
       placeholder={this.props.default}
-      onChange={e => this.props.onChange(e.target.value)}
+      onChange={e => this.changeValue(e.target.value)}
+      onBlur={() => this.props.onChange(this.state.value)}
     />
   }
 }
