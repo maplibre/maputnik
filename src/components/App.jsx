@@ -74,7 +74,6 @@ export default class App extends React.Component {
   }
 
   saveStyle(snapshotStyle) {
-    snapshotStyle.modified = new Date().toJSON()
     this.styleStore.save(snapshotStyle)
   }
 
