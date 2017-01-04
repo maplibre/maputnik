@@ -114,6 +114,7 @@ export default class Toolbar extends React.Component {
     const changedStyle = {
       ...this.props.mapStyle,
       metadata: {
+        ...this.props.mapStyle.metadata,
         'maputnik:renderer': changedRenderer
       }
     }
