@@ -91,7 +91,7 @@ Thanks to the supporters of the **[Kickstarter campaign](https://www.kickstarter
 
 **Influential Stakeholder**
 
-Alan McConchie, Odi, Mats Norén, Uli [geOps](http://geops.ch/), Helge Fahrnberger, Kirusanth Poopalasingam
+Alan McConchie, Odi, Mats Norén, Uli [geOps](http://geops.ch/), Helge Fahrnberger ([Toursprung](http://www.toursprung.com/)), Kirusanth Poopalasingam
 
 **Stakeholder**
 
