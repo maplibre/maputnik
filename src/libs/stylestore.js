@@ -1,5 +1,6 @@
 import { colorizeLayers } from './style.js'
 import style from './style.js'
+import { loadStyleUrl } from './urlopen'
 import publicSources from '../config/styles.json'
 import request from 'request'
 
@@ -14,18 +15,7 @@ const defaultStyleUrl = publicSources[0].url
 
 // Fetch a default style via URL and return it or a fallback style via callback
 export function loadDefaultStyle(cb) {
-  console.log('Falling back to default style')
-  request({
-    url: defaultStyleUrl,
-    withCredentials: false,
-  }, (error, response, body) => {
-      if (!error && response.statusCode == 200) {
-        cb(style.ensureStyleValidity(JSON.parse(body)))
-      } else {
-        console.warn('Could not fetch default style', styleUrl)
-        cb(style.emptyStyle)
-      }
-  })
+  loadStyleUrl(defaultStyleUrl, cb)
 }
 
 // Return style ids and dates of all styles stored in local storage

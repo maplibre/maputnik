@@ -14,6 +14,7 @@ import MessagePanel from './MessagePanel'
 import GlSpec from 'mapbox-gl-style-spec/reference/latest.js'
 import validateStyleMin from 'mapbox-gl-style-spec/lib/validate_style.min'
 import style from '../libs/style.js'
+import { initialStyleUrl, loadStyleUrl } from '../libs/urlopen'
 import { undoMessages, redoMessages } from '../libs/diffmessage'
 import { loadDefaultStyle, StyleStore } from '../libs/stylestore'
 import { ApiStyleStore } from '../libs/apistore'
@@ -29,13 +30,19 @@ export default class App extends React.Component {
       onLocalStyleChange: mapStyle => this.onStyleChanged(mapStyle, false)
     })
 
-    this.styleStore.init(err => {
-      if(err) {
-        console.log('Falling back to local storage for storing styles')
-        this.styleStore = new StyleStore()
-      }
-      this.styleStore.latestStyle(mapStyle => this.onStyleChanged(mapStyle))
-    })
+    const styleUrl = initialStyleUrl()
+    if(styleUrl) {
+      this.styleStore = new StyleStore()
+      loadStyleUrl(styleUrl, mapStyle => this.onStyleChanged(mapStyle))
+    } else {
+      this.styleStore.init(err => {
+        if(err) {
+          console.log('Falling back to local storage for storing styles')
+          this.styleStore = new StyleStore()
+        }
+        this.styleStore.latestStyle(mapStyle => this.onStyleChanged(mapStyle))
+      })
+    }
 
     this.state = {
       errors: [],

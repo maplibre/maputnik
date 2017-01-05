@@ -47,7 +47,8 @@
     "react-motion": "^0.4.7",
     "react-sortable-hoc": "^0.4.5",
     "reconnecting-websocket": "^3.0.3",
-    "request": "^2.79.0"
+    "request": "^2.79.0",
+    "url": "^0.11.0"
   },
   "babel": {
     "presets": [
