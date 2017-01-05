@@ -19,12 +19,6 @@ function ensureHasId(style) {
   return style
 }
 
-function ensureHasTimestamp(style) {
-  if('created' in style) return style
-  style.created = new Date().toJSON()
-  return style
-}
-
 function ensureHasNoRefs(style) {
   const derefedStyle = {
     ...style,
@@ -34,7 +28,7 @@ function ensureHasNoRefs(style) {
 }
 
 function ensureStyleValidity(style) {
-  return ensureHasNoRefs(ensureHasId(ensureHasTimestamp(style)))
+  return ensureHasNoRefs(ensureHasId(style))
 }
 
 function indexOfLayer(layers, layerId) {
