@@ -31,12 +31,14 @@ export class ApiStyleStore {
     connection.onmessage = e => {
       if(!e.data) return
       console.log('Received style update from API')
+      let parsedStyle = style.emptyStyle
       try {
-        const updatedStyle = style.ensureStyleValidity(JSON.parse(e.data))
-        this.onLocalStyleChange(updatedStyle)
+        parsedStyle = JSON.parse(e.data)
       } catch(err) {
-        console.error('Could not parse local style')
+        console.error(err)
       }
+      const updatedStyle = style.ensureStyleValidity(parsedStyle)
+      this.onLocalStyleChange(updatedStyle)
     }
   }
 

@@ -16,6 +16,7 @@ class LayerIcon extends React.Component {
     const iconProps = { style: this.props.style }
     switch(this.props.type) {
       case 'fill-extrusion': return <BackgroundIcon {...iconProps} />
+      case 'raster': return <FillIcon {...iconProps} />
       case 'fill': return <FillIcon {...iconProps} />
       case 'background': return <BackgroundIcon {...iconProps} />
       case 'line': return <LineIcon {...iconProps} />

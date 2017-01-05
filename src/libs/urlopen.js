@@ -4,7 +4,6 @@ import style from './style.js'
 
 export function initialStyleUrl() {
   const initialUrl = url.parse(window.location.href, true)
-  console.log(initialUrl)
   return (initialUrl.query || {}).style
 }
 

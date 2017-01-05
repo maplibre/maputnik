@@ -93,9 +93,10 @@ export default class MapboxGlMap extends React.Component {
       style={{
         position: "fixed",
         top: 0,
+        left: 550,
         bottom: 0,
         height: "100%",
-        width: "100%",
+        width: "75%",
         ...this.props.style,
       }}>
     </div>
