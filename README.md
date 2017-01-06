@@ -7,6 +7,12 @@ targeted at developers and map designers. Creating your own custom map is easy w
 
 :link: Check it out at **http://maputnik.com/editor/**
 
+## Documentation
+
+The documentation can be found in the [Wiki](https://github.com/maputnik/editor/wiki). You are welcome to collaborate!
+
+- [Use the Maputnik CLI for editing a Style JSON](https://github.com/maputnik/editor/wiki/Maputnik-CLI)
+
 ## Videos
 
 ### Editing a local Style JSON
