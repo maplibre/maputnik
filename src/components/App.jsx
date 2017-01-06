@@ -13,6 +13,7 @@ import MessagePanel from './MessagePanel'
 
 import GlSpec from 'mapbox-gl-style-spec/reference/latest.js'
 import validateStyleMin from 'mapbox-gl-style-spec/lib/validate_style.min'
+import formatStyle from 'mapbox-gl-style-spec/lib/format'
 import style from '../libs/style.js'
 import { initialStyleUrl, loadStyleUrl } from '../libs/urlopen'
 import { undoMessages, redoMessages } from '../libs/diffmessage'
@@ -76,7 +77,7 @@ export default class App extends React.Component {
 
   onStyleDownload() {
     const mapStyle = this.state.mapStyle
-    const blob = new Blob([JSON.stringify(mapStyle, null, 4)], {type: "application/json;charset=utf-8"});
+    const blob = new Blob([formatStyle(mapStyle)], {type: "application/json;charset=utf-8"});
     saveAs(blob, mapStyle.id + ".json");
   }
 
@@ -224,4 +225,3 @@ export default class App extends React.Component {
     />
   }
 }
-
