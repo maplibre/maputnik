@@ -40,6 +40,7 @@ export default class MapboxGlMap extends React.Component {
     MapboxGl.accessToken = props.accessToken
     this.state = {
       map: null,
+      inspect: null,
       isPopupOpen: false,
       popupX: 0,
       popupY: 0,
@@ -51,14 +52,14 @@ export default class MapboxGlMap extends React.Component {
 
     if(!this.state.map) return
 
-    if(!this.props.inspectModeEnabled) {
+    if(this.props.inspectModeEnabled !== nextProps.inspectModeEnabled) {
+      this.state.inspect.toggleInspector()
+    }
+
+    if(!nextProps.inspectModeEnabled) {
       //Mapbox GL now does diffing natively so we don't need to calculate
       //the necessary operations ourselves!
       this.state.map.setStyle(nextProps.mapStyle, { diff: true})
-    }
-
-    if(this.props.inspectModeEnabled !== nextProps.inspectModeEnabled) {
-      this.inspect.toggleInspector()
     }
   }
 
@@ -69,10 +70,10 @@ export default class MapboxGlMap extends React.Component {
       hash: true,
     })
 
-		const nav = new MapboxGl.NavigationControl();
-		map.addControl(nav, 'top-right');
+    const nav = new MapboxGl.NavigationControl();
+    map.addControl(nav, 'top-right');
 
-    this.inspect = new MapboxInspect({
+    const inspect = new MapboxInspect({
       popup: new MapboxGl.Popup({
         closeButton: false,
         closeOnClick: false
@@ -86,10 +87,10 @@ export default class MapboxGlMap extends React.Component {
         }
       }
     })
-		map.addControl(this.inspect)
+    map.addControl(inspect)
 
     map.on("style.load", () => {
-      this.setState({ map });
+      this.setState({ map, inspect });
     })
 
     map.on("data", e => {
