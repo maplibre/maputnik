@@ -73,7 +73,6 @@ export default class MapboxGlMap extends React.Component {
 
   componentWillReceiveProps(nextProps) {
     MapboxGl.accessToken = nextProps.accessToken
-
     if(!this.state.map) return
 
     if(!nextProps.inspectModeEnabled) {
@@ -88,7 +87,7 @@ export default class MapboxGlMap extends React.Component {
       this.state.inspect.toggleInspector()
     }
     if(this.props.inspectModeEnabled) {
-      this.state.inspect._renderInspector()
+      this.state.inspect.render()
     }
   }
 
