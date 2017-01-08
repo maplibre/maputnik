@@ -28,7 +28,7 @@
     "lodash.throttle": "^4.1.1",
     "lodash.topairs": "^4.3.0",
     "mapbox-gl": "^0.29.0",
-    "mapbox-gl-inspect": "^1.0.2",
+    "mapbox-gl-inspect": "^1.0.3",
     "mapbox-gl-style-spec": "^8.11.0",
     "mousetrap": "^1.6.0",
     "ol-mapbox-style": "0.0.11",

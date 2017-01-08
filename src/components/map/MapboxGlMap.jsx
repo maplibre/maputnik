@@ -78,6 +78,7 @@ export default class MapboxGlMap extends React.Component {
         closeButton: false,
         closeOnClick: false
       }),
+      showMapPopup: true,
       showInspectButton: false,
       renderPopup: features => {
         if(this.props.inspectModeEnabled) {
