@@ -99,8 +99,10 @@ class SourceTypeEditor extends React.Component {
     }
     switch(this.props.mode) {
       case 'geojson': return <GeoJSONSourceEditor {...commonProps} />
-      case 'tilejson': return <TileJSONSourceEditor {...commonProps} />
-      case 'tilexyz': return <TileURLSourceEditor {...commonProps} />
+      case 'tilejson_vector': return <TileJSONSourceEditor {...commonProps} />
+      case 'tilexyz_vector': return <TileURLSourceEditor {...commonProps} />
+      case 'tilejson_raster': return <TileJSONSourceEditor {...commonProps} />
+      case 'tilexyz_raster': return <TileURLSourceEditor {...commonProps} />
       default: return null
     }
   }

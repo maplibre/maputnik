@@ -130,12 +130,22 @@ class AddSource extends React.Component {
         type: 'geojson',
         data: source.data || 'http://localhost:3000/geojson.json'
       }
-      case 'tilejson': return {
+      case 'tilejson_vector': return {
         type: 'vector',
         url: source.url || 'http://localhost:3000/tilejson.json'
       }
-      case 'tilexyz': return {
+      case 'tilexyz_vector': return {
         type: 'vector',
+        tiles: source.tiles || ['http://localhost:3000/{x}/{y}/{z}.pbf'],
+        minZoom: source.minZoom || 0,
+        maxZoom: source.maxZoom || 14
+      }
+      case 'tilejson_raster': return {
+        type: 'raster',
+        url: source.url || 'http://localhost:3000/tilejson.json'
+      }
+      case 'tilexyz_raster': return {
+        type: 'raster',
         tiles: source.tiles || ['http://localhost:3000/{x}/{y}/{z}.pbf'],
         minZoom: source.minZoom || 0,
         maxZoom: source.maxZoom || 14
@@ -162,8 +172,10 @@ class AddSource extends React.Component {
         <SelectInput
           options={[
             ['geojson', 'GeoJSON'],
-            ['tilejson', 'Vector (TileJSON URL)'],
-            ['tilexyz', 'Vector (XYZ URLs)'],
+            ['tilejson_vector', 'Vector (TileJSON URL)'],
+            ['tilexyz_vector', 'Vector (XYZ URLs)'],
+            ['tilejson_raster', 'Raster (TileJSON URL)'],
+            ['tilexyz_raster', 'Raster (XYZ URL)'],
           ]}
           onChange={mode => this.setState({mode: mode, source: this.defaultSource(mode)})}
           value={this.state.mode}
