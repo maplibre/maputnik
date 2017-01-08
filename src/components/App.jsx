@@ -52,6 +52,7 @@ export default class App extends React.Component {
       selectedLayerIndex: 0,
       sources: {},
       vectorLayers: {},
+      inspectModeEnabled: false,
     }
 
     this.layerWatcher = new LayerWatcher({
@@ -149,6 +150,12 @@ export default class App extends React.Component {
     this.onLayersChange(changedLayers)
   }
 
+  changeInspectMode() {
+    this.setState({
+      inspectModeEnabled: !this.state.inspectModeEnabled
+    })
+  }
+
   mapRenderer() {
     const metadata = this.state.mapStyle.metadata || {}
     const mapProps = {
@@ -169,12 +176,8 @@ export default class App extends React.Component {
     // Check if OL3 code has been loaded?
     if(renderer === 'ol3') {
       return <OpenLayers3Map {...mapProps} />
-    } else if(renderer === 'inspection') {
-      return  <InspectionMap {...mapProps}
-        sources={this.state.sources}
-        highlightedLayer={this.state.mapStyle.layers[this.state.selectedLayerIndex]} />
     } else {
-      return  <MapboxGlMap {...mapProps} />
+      return  <MapboxGlMap {...mapProps} inspectModeEnabled={this.state.inspectModeEnabled} />
     }
   }
 
@@ -194,6 +197,7 @@ export default class App extends React.Component {
       onStyleChanged={this.onStyleChanged.bind(this)}
       onStyleOpen={this.onStyleChanged.bind(this)}
       onStyleDownload={this.onStyleDownload.bind(this)}
+      onInspectModeToggle={this.changeInspectMode.bind(this)}
     />
 
     const layerList = <LayerList

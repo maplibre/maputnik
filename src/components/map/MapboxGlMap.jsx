@@ -1,15 +1,23 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 import MapboxGl from 'mapbox-gl/dist/mapbox-gl.js'
+import MapboxInspect from 'mapbox-gl-inspect'
 import FeatureLayerTable from './FeatureLayerTable'
+import FeaturePropertyPopup from './FeaturePropertyPopup'
 import validateColor from 'mapbox-gl-style-spec/lib/validate/validate_color'
 import style from '../../libs/style.js'
 import 'mapbox-gl/dist/mapbox-gl.css'
 import '../../mapboxgl.css'
 
-function renderPopup(features) {
+function renderLayerPopup(features) {
   var mountNode = document.createElement('div');
   ReactDOM.render(<FeatureLayerTable features={features} />, mountNode)
+  return mountNode.innerHTML;
+}
+
+function renderPropertyPopup(features) {
+  var mountNode = document.createElement('div');
+  ReactDOM.render(<FeaturePropertyPopup features={features} />, mountNode)
   return mountNode.innerHTML;
 }
 
@@ -19,6 +27,7 @@ export default class MapboxGlMap extends React.Component {
     mapStyle: React.PropTypes.object.isRequired,
     accessToken: React.PropTypes.string,
     style: React.PropTypes.object,
+    inspectModeEnabled: React.PropTypes.bool.isRequired,
   }
 
   static defaultProps = {
@@ -42,9 +51,15 @@ export default class MapboxGlMap extends React.Component {
 
     if(!this.state.map) return
 
-    //Mapbox GL now does diffing natively so we don't need to calculate
-    //the necessary operations ourselves!
-    this.state.map.setStyle(nextProps.mapStyle, { diff: true})
+    if(!this.props.inspectModeEnabled) {
+      //Mapbox GL now does diffing natively so we don't need to calculate
+      //the necessary operations ourselves!
+      this.state.map.setStyle(nextProps.mapStyle, { diff: true})
+    }
+
+    if(this.props.inspectModeEnabled !== nextProps.inspectModeEnabled) {
+      this.inspect.toggleInspector()
+    }
   }
 
   componentDidMount() {
@@ -57,6 +72,22 @@ export default class MapboxGlMap extends React.Component {
 		const nav = new MapboxGl.NavigationControl();
 		map.addControl(nav, 'top-right');
 
+    this.inspect = new MapboxInspect({
+      popup: new MapboxGl.Popup({
+        closeButton: false,
+        closeOnClick: false
+      }),
+      showInspectButton: false,
+      renderPopup: features => {
+        if(this.props.inspectModeEnabled) {
+          return renderPropertyPopup(features)
+        } else {
+          return renderLayerPopup(features)
+        }
+      }
+    })
+		map.addControl(this.inspect)
+
     map.on("style.load", () => {
       this.setState({ map });
     })
@@ -67,24 +98,6 @@ export default class MapboxGlMap extends React.Component {
         map: this.state.map
       })
     })
-
-    map.on('click', this.displayPopup.bind(this));
-    map.on('mousemove', function(e) {
-      var features = map.queryRenderedFeatures(e.point, { layers: this.layers })
-      map.getCanvas().style.cursor = (features.length) ? 'pointer' : ''
-    })
-  }
-
-  displayPopup(e) {
-		const features = this.state.map.queryRenderedFeatures(e.point, {
-			layers: this.layers
-		});
-
-    if(features.length < 1) return
-		const popup = new MapboxGl.Popup()
-			.setLngLat(e.lngLat)
-			.setHTML(renderPopup(features))
-			.addTo(this.state.map)
   }
 
   render() {
@@ -93,7 +106,7 @@ export default class MapboxGlMap extends React.Component {
       style={{
         position: "fixed",
         top: 0,
-        left: 550,
+        right: 0,
         bottom: 0,
         height: "100%",
         width: "75%",
