@@ -5,7 +5,9 @@ import MapboxInspect from 'mapbox-gl-inspect'
 import FeatureLayerTable from './FeatureLayerTable'
 import FeaturePropertyPopup from './FeaturePropertyPopup'
 import validateColor from 'mapbox-gl-style-spec/lib/validate/validate_color'
+import colors from '../../config/colors'
 import style from '../../libs/style.js'
+import { colorHighlightedLayer } from '../../libs/highlight'
 import 'mapbox-gl/dist/mapbox-gl.css'
 import '../../mapboxgl.css'
 
@@ -21,6 +23,27 @@ function renderPropertyPopup(features) {
   return mountNode.innerHTML;
 }
 
+function buildInspectStyle(originalMapStyle, coloredLayers, highlightedLayer) {
+  const backgroundLayer = {
+    "id": "background",
+    "type": "background",
+    "paint": {
+      "background-color": colors.black,
+    }
+  }
+
+  const layer = colorHighlightedLayer(highlightedLayer)
+  if(layer) {
+    coloredLayers.push(layer)
+  }
+
+  const inspectStyle = {
+    ...originalMapStyle,
+    layers: [backgroundLayer].concat(coloredLayers)
+  }
+  return inspectStyle
+}
+
 export default class MapboxGlMap extends React.Component {
   static propTypes = {
     onDataChange: React.PropTypes.func,
@@ -28,6 +51,7 @@ export default class MapboxGlMap extends React.Component {
     accessToken: React.PropTypes.string,
     style: React.PropTypes.object,
     inspectModeEnabled: React.PropTypes.bool.isRequired,
+    highlightedLayer: React.PropTypes.object,
   }
 
   static defaultProps = {
@@ -52,14 +76,19 @@ export default class MapboxGlMap extends React.Component {
 
     if(!this.state.map) return
 
-    if(this.props.inspectModeEnabled !== nextProps.inspectModeEnabled) {
-      this.state.inspect.toggleInspector()
-    }
-
     if(!nextProps.inspectModeEnabled) {
       //Mapbox GL now does diffing natively so we don't need to calculate
       //the necessary operations ourselves!
       this.state.map.setStyle(nextProps.mapStyle, { diff: true})
+    }
+  }
+
+  componentDidUpdate(prevProps) {
+    if(this.props.inspectModeEnabled !== prevProps.inspectModeEnabled) {
+      this.state.inspect.toggleInspector()
+    }
+    if(this.props.inspectModeEnabled) {
+      this.state.inspect._renderInspector()
     }
   }
 
@@ -80,6 +109,7 @@ export default class MapboxGlMap extends React.Component {
       }),
       showMapPopup: true,
       showInspectButton: false,
+      buildInspectStyle: (originalMapStyle, coloredLayers) => buildInspectStyle(originalMapStyle, coloredLayers, this.props.highlightedLayer),
       renderPopup: features => {
         if(this.props.inspectModeEnabled) {
           return renderPropertyPopup(features)

@@ -2,7 +2,6 @@ import React from 'react'
 import { saveAs } from 'file-saver'
 import Mousetrap from 'mousetrap'
 
-import InspectionMap from './map/InspectionMap'
 import MapboxGlMap from './map/MapboxGlMap'
 import OpenLayers3Map from './map/OpenLayers3Map'
 import LayerList from './layers/LayerList'
@@ -177,7 +176,9 @@ export default class App extends React.Component {
     if(renderer === 'ol3') {
       return <OpenLayers3Map {...mapProps} />
     } else {
-      return  <MapboxGlMap {...mapProps} inspectModeEnabled={this.state.inspectModeEnabled} />
+      return  <MapboxGlMap {...mapProps}
+        inspectModeEnabled={this.state.inspectModeEnabled}
+        highlightedLayer={this.state.mapStyle.layers[this.state.selectedLayerIndex]} />
     }
   }
 
