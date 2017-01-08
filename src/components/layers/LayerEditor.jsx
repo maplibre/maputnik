@@ -112,11 +112,12 @@ export default class LayerEditor extends React.Component {
           value={this.props.layer.source}
           onChange={v => this.changeProperty(null, 'source', v)}
         />
-        <LayerSourceLayerBlock
+        {this.props.layer.type !== 'raster' && <LayerSourceLayerBlock
           sourceLayerIds={this.props.sources[this.props.layer.source]}
           value={this.props.layer['source-layer']}
           onChange={v => this.changeProperty(null, 'source-layer', v)}
         />
+        }
         {this.props.layer.filter &&
         <div style={input.property}>
           <FilterEditor

@@ -247,5 +247,34 @@
           "type": "jsoneditor"
         }
       ]
+    },
+    "raster": {
+      "groups": [
+        {
+          "title": "Settings",
+          "type": "settings"
+        },
+        {
+          "title": "Source",
+          "type": "source"
+        },
+        {
+          "title": "Basic",
+          "type": "properties",
+          "fields": [
+            "raster-opacity",
+            "raster-hue-rotate",
+            "raster-brightness-min",
+            "raster-brightness-max",
+            "raster-saturation",
+            "raster-contrast",
+            "raster-fade-duration"
+          ]
+        },
+        {
+          "title": "JSON",
+          "type": "jsoneditor"
+        }
+      ]
     }
 }
