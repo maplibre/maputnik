@@ -25,4 +25,4 @@ script:
 - make
 - ./maputnik --help
 - ./maputnik --version
-- timeout 5s ./maputnik --watch --file style.json
+- ./maputnik --watch --file style.json & sleep 5; kill $!
