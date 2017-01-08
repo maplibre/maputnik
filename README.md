@@ -59,6 +59,7 @@ git clone --recursive git@github.com:maputnik/desktop.git
 Install the 3rd party dependencies.
 
 ```
+go get -u golang.org/x/sys/...
 go get github.com/gorilla/handlers
 go get github.com/gorilla/mux
 go get github.com/gorilla/websocket
