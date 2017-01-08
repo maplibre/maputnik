@@ -2,6 +2,8 @@ os:
 - linux
 - osx
 language: go
+go:
+- 1.7.x
 addons:
   artifacts:
     paths:
@@ -22,5 +24,5 @@ script:
 - make
 - ./maputnik --help
 - ./maputnik --version
-- ./maputnik --file style.json
+- timeout 5s ./maputnik --file style.json
 - ./maputnik --watch --file style.json
