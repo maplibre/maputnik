@@ -16,6 +16,11 @@ install:
 - go get github.com/urfave/cli
 - go get github.com/elazarl/go-bindata-assetfs/...
 - go get github.com/jteeuwen/go-bindata/...
+- wget https://raw.githubusercontent.com/openmaptiles/klokantech-basic-gl-style/master/style.json
 script:
 - mkdir -p editor/public
 - make
+- ./maputnik --help
+- ./maputnik --version
+- ./maputnik --file style.json
+- ./maputnik --watch --file style.json
