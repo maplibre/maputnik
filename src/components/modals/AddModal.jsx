@@ -32,7 +32,9 @@ class AddModal extends React.Component {
 
     if(this.state.type !== 'background') {
       layer.source = this.state.source
-      layer['source-layer'] = this.state['source-layer']
+      if(this.state.type !== 'raster') {
+        layer['source-layer'] = this.state['source-layer']
+      }
     }
 
     changedLayers.push(layer)
@@ -91,7 +93,7 @@ class AddModal extends React.Component {
         onChange={v => this.setState({ source: v })}
       />
       }
-      {this.state.type !== 'background' &&
+      {this.state.type !== 'background' && this.state.type !== 'raster' &&
       <LayerSourceLayerBlock
         sourceLayerIds={this.props.sources[this.state.source] || []}
         value={this.state['source-layer']}
