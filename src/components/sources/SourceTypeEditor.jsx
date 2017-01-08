@@ -6,7 +6,7 @@ import NumberInput from '../inputs/NumberInput'
 class TileJSONSourceEditor extends React.Component {
   static propTypes = {
     source: React.PropTypes.object.isRequired,
-    onChange: React.PropTypes.func,
+    onChange: React.PropTypes.func.isRequired,
   }
 
   render() {
@@ -25,7 +25,7 @@ class TileJSONSourceEditor extends React.Component {
 class TileURLSourceEditor extends React.Component {
   static propTypes = {
     source: React.PropTypes.object.isRequired,
-    onChange: React.PropTypes.func,
+    onChange: React.PropTypes.func.isRequired,
   }
 
   renderTileUrls() {
@@ -69,7 +69,7 @@ class TileURLSourceEditor extends React.Component {
 class GeoJSONSourceEditor extends React.Component {
   static propTypes = {
     source: React.PropTypes.object.isRequired,
-    onChange: React.PropTypes.func,
+    onChange: React.PropTypes.func.isRequired,
   }
 
   render() {

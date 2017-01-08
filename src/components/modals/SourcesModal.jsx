@@ -9,6 +9,7 @@ import SelectInput from '../inputs/SelectInput'
 import SourceTypeEditor from '../sources/SourceTypeEditor'
 
 import style from '../../libs/style'
+import { deleteSource, addSource, changeSource } from '../../libs/source'
 import publicSources from '../../config/tilesets.json'
 import colors from '../../config/colors'
 import { margins, fontSizes } from '../../config/scales'
@@ -57,19 +58,24 @@ class PublicSource extends React.Component {
 }
 
 function editorMode(source) {
-  if(source.type === 'geojson') return ' geojson'
-  if(source.type === 'vector' && source.tiles) {
-    return 'tilexyz'
+  if(source.type === 'raster') {
+    if(source.tiles) return 'tilexyz_raster'
+    return 'tilejson_raster'
   }
-  return 'tilejson'
+  if(source.type === 'vector') {
+    if(source.tiles) return 'tilexyz_vector'
+    return 'tilejson_vector'
+  }
+  if(source.type === 'geojson') return ' geojson'
+  return null
 }
 
 class ActiveSourceTypeEditor extends React.Component {
   static propTypes = {
     sourceId: React.PropTypes.string.isRequired,
     source: React.PropTypes.object.isRequired,
-    onSourceDelete: React.PropTypes.func.isRequired,
-    onSourceChange: React.PropTypes.func.isRequired,
+    onDelete: React.PropTypes.func.isRequired,
+    onChange: React.PropTypes.func.isRequired,
   }
 
   render() {
@@ -87,7 +93,7 @@ class ActiveSourceTypeEditor extends React.Component {
         <span style={{fontWeight: 700, fontSize: fontSizes[4], lineHeight: 2}}>#{this.props.sourceId}</span>
         <span style={{flexGrow: 1}} />
         <Button
-          onClick={()=> this.props.onSourceDelete(this.props.sourceId)}
+          onClick={()=> this.props.onDelete(this.props.sourceId)}
           style={{backgroundColor: 'transparent'}}
         >
           <DeleteIcon />
@@ -98,9 +104,10 @@ class ActiveSourceTypeEditor extends React.Component {
         borderWidth: 2,
         borderStyle: 'solid',
         padding: margins[1],
+        height: 50
       }}>
         <SourceTypeEditor
-          onChange={this.props.onSourceChange}
+          onChange={this.props.onChange}
           mode={editorMode(this.props.source)}
           source={this.props.source}
         />
@@ -111,7 +118,7 @@ class ActiveSourceTypeEditor extends React.Component {
 
 class AddSource extends React.Component {
   static propTypes = {
-    onSourceAdd: React.PropTypes.func.isRequired,
+    onAdd: React.PropTypes.func.isRequired,
   }
 
   constructor(props) {
@@ -154,12 +161,6 @@ class AddSource extends React.Component {
     }
   }
 
-  onSourceChange(source) {
-    this.setState({
-      source: source
-    })
-  }
-
   render() {
     return <div>
       <InputBlock label={"Source ID"}>
@@ -182,11 +183,11 @@ class AddSource extends React.Component {
         />
       </InputBlock>
       <SourceTypeEditor
-        onChange={this.onSourceChange.bind(this)}
+        onChange={src => this.setState({ source: src })}
         mode={this.state.mode}
         source={this.state.source}
       />
-      <Button onClick={() => this.props.onSourceAdd(this.state.sourceId, this.state.source)}>
+      <Button onClick={() => this.props.onAdd(this.state.sourceId, this.state.source)}>
         Add Source
       </Button>
     </div>
@@ -201,31 +202,6 @@ class SourcesModal extends React.Component {
     onStyleChanged: React.PropTypes.func.isRequired,
   }
 
-  onSourceAdd(sourceId, source) {
-    const changedSources = {
-      ...this.props.mapStyle.sources,
-      [sourceId]: source
-    }
-
-    const changedStyle = {
-      ...this.props.mapStyle,
-      sources: changedSources
-    }
-
-    this.props.onStyleChanged(changedStyle)
-  }
-
-  deleteSource(sourceId) {
-    const remainingSources = { ...this.props.mapStyle.sources}
-    delete remainingSources[sourceId]
-
-    const changedStyle = {
-      ...this.props.mapStyle,
-      sources: remainingSources
-    }
-    this.props.onStyleChanged(changedStyle)
-  }
-
   stripTitle(source) {
     const strippedSource = {...source}
     delete strippedSource['title']
@@ -233,24 +209,26 @@ class SourcesModal extends React.Component {
   }
 
   render() {
-    const activeSources = Object.keys(this.props.mapStyle.sources).map(sourceId => {
-      const source = this.props.mapStyle.sources[sourceId]
+    const mapStyle = this.props.mapStyle
+    const activeSources = Object.keys(mapStyle.sources).map(sourceId => {
+      const source = mapStyle.sources[sourceId]
       return <ActiveSourceTypeEditor
         key={sourceId}
         sourceId={sourceId}
         source={source}
-        onSourceDelete={this.deleteSource.bind(this)}
+        onChange={src => this.props.onStyleChanged(changeSource(mapStyle, sourceId, src))}
+        onDelete={() => this.props.onStyleChanged(deleteSource(mapStyle, sourceId))}
       />
     })
 
-    const tilesetOptions = Object.keys(publicSources).filter(sourceId => !(sourceId in this.props.mapStyle.sources)).map(sourceId => {
+    const tilesetOptions = Object.keys(publicSources).filter(sourceId => !(sourceId in mapStyle.sources)).map(sourceId => {
       const source = publicSources[sourceId]
       return <PublicSource
         key={sourceId}
         id={sourceId}
         type={source.type}
         title={source.title}
-        onSelect={() => this.onSourceAdd(sourceId, this.stripTitle(source))}
+        onSelect={() => this.props.onStyleChanged(addSource(mapStyle, sourceId, this.stripTitle(source)))}
       />
     })
 
@@ -266,7 +244,9 @@ class SourcesModal extends React.Component {
       <Heading level={4}>Add New Source</Heading>
       <div style={{maxWidth: 300}}>
         <p style={{color: colors.lowgray, fontSize: fontSizes[5]}}>Add a new source to your style. You can only choose the source type and id at creation time!</p>
-        <AddSource onSourceAdd={this.onSourceAdd.bind(this)} />
+        <AddSource
+          onAdd={(sourceId, source) => this.props.onStyleChanged(addSource(mapStyle, sourceId, source))}
+        />
       </div>
 
       <Heading level={4}>Choose Public Source</Heading>

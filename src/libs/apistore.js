@@ -60,7 +60,7 @@ export class ApiStyleStore {
       json: true,
       body: mapStyle
     }, (error, response, body) => {
-     console.log('Saved style');
+      if(error) console.error(error)
     })
     return mapStyle
   }
