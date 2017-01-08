@@ -7,6 +7,7 @@ and embeds it in the program for easy distribution. It also allows
 exposing a local style file and work on it both in Maputnik and with your favorite
 editor.
 
+Report issues on [maputnik/editor](https://github.com/maputnik/editor).
 
 ## Install
 
