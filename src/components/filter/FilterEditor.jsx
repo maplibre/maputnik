@@ -5,9 +5,13 @@ import input from '../../config/input.js'
 import colors from '../../config/colors.js'
 import { margins } from '../../config/scales.js'
 
+import Button from '../Button'
 import SelectInput from '../inputs/SelectInput'
 import StringInput from '../inputs/StringInput'
 import AutocompleteInput from '../inputs/AutocompleteInput'
+
+import AddIcon from 'react-icons/lib/md/add-circle-outline'
+import DeleteIcon from 'react-icons/lib/md/delete'
 
 const combiningFilterOps = ['all', 'any', 'none']
 const setFilterOps = ['in', '!in']
@@ -89,6 +93,7 @@ class SingleFilterEditor extends React.Component {
     filter: React.PropTypes.array.isRequired,
     onChange: React.PropTypes.func.isRequired,
     properties: React.PropTypes.object,
+    style: React.PropTypes.object,
   }
 
   static defaultProps = {
@@ -109,10 +114,11 @@ class SingleFilterEditor extends React.Component {
     return <div style={{
       marginTop: margins[1],
       marginBottom: margins[1],
+      ...this.props.style
     }}>
       <AutocompleteInput
         wrapperStyle={{
-          width: '31%',
+          width: '30%',
           marginRight: margins[0]
         }}
         value={propertyName}
@@ -163,18 +169,37 @@ export default class CombiningFilterEditor extends React.Component {
     this.props.onChange(newFilter)
   }
 
+  deleteFilterItem(filterIdx) {
+    const newFilter = this.combiningFilter().slice(0)
+    console.log('Delete', filterIdx, newFilter)
+    newFilter.splice(filterIdx + 1, 1)
+    this.props.onChange(newFilter)
+  }
+
   render() {
     const filter = this.combiningFilter()
     let combiningOp = filter[0]
     let filters = filter.slice(1)
 
     const filterEditors = filters.map((f, idx) => {
-      return <SingleFilterEditor
-        key={idx}
-        properties={this.props.properties}
-        filter={f}
-        onChange={this.onFilterPartChanged.bind(this, idx + 1)}
-      />
+      return <div>
+        <Button
+          style={{backgroundColor: null}}
+          onClick={this.deleteFilterItem.bind(this, idx)}
+        >
+          <DeleteIcon />
+        </Button>
+        <SingleFilterEditor
+          style={{
+            display: 'inline-block',
+            width: '80%'
+          }}
+          key={idx}
+          properties={this.props.properties}
+          filter={f}
+          onChange={this.onFilterPartChanged.bind(this, idx + 1)}
+        />
+      </div>
     })
 
     //TODO: Implement support for nested filter
