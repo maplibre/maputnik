@@ -3,6 +3,7 @@ import SelectInput from '../inputs/SelectInput'
 
 import input from '../../config/input.js'
 import { margins } from '../../config/scales.js'
+import { combiningFilterOps } from '../../libs/filterops.js'
 
 class CombiningOperatorSelect extends React.Component {
   static propTypes = {
@@ -18,7 +19,7 @@ class CombiningOperatorSelect extends React.Component {
     }}>
       <SelectInput
         value={this.props.value}
-        options={['all', 'any', 'none']}
+        options={combiningFilterOps}
         onChange={this.props.onChange}
         style={{
           display: 'block',
