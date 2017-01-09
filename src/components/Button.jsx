@@ -19,6 +19,7 @@ class Button extends React.Component {
         padding: margins[1],
         userSelect: 'none',
         borderRadius: 2,
+        boxSizing: 'border-box',
         ...this.props.style,
       }}>
       {this.props.children}

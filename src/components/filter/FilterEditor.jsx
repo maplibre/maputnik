@@ -1,16 +1,15 @@
 import React from 'react'
-import GlSpec from 'mapbox-gl-style-spec/reference/latest.js'
 
 import input from '../../config/input.js'
 import colors from '../../config/colors.js'
 import { margins, fontSizes } from '../../config/scales.js'
 import { combiningFilterOps } from '../../libs/filterops.js'
 
-import OperatorSelect from './OperatorSelect'
-import SingleFilterEditor from './SingleFilterEditor'
-import CombiningOperatorSelect from './CombiningOperatorSelect'
-import FilterEditorBlock from './FilterEditorBlock'
+import GlSpec from 'mapbox-gl-style-spec/reference/latest.js'
 import DocLabel from '../fields/DocLabel'
+import SelectInput from '../inputs/SelectInput'
+import SingleFilterEditor from './SingleFilterEditor'
+import FilterEditorBlock from './FilterEditorBlock'
 import Button from '../Button'
 
 import AddIcon from 'react-icons/lib/md/add-circle-outline'
@@ -75,7 +74,7 @@ export default class CombiningFilterEditor extends React.Component {
     let combiningOp = filter[0]
     let filters = filter.slice(1)
 
-    const filterEditors = filters.map((f, idx) => {
+    const editorBlocks = filters.map((f, idx) => {
       return <FilterEditorBlock onDelete={this.deleteFilterItem.bind(this, idx)}>
         <SingleFilterEditor
           key={idx}
@@ -92,31 +91,33 @@ export default class CombiningFilterEditor extends React.Component {
     }
 
     return <div>
-      <div style={{
-        width: '50%',
-        verticalAlign: 'top',
-        display: 'inline-block',
-      }}>
-        <DocLabel
-          label={"Filter"}
-          doc={GlSpec.layer.filter.doc}
+      <div>
+        <Button onClick={this.addFilterItem.bind(this)} style={{
+          display: 'inline-block',
+          width: '18.5%',
+          marginLeft: '8%',
+        }}>Add filter</Button>
+        <SelectInput
+          value={combiningOp}
+          onChange={this.onFilterPartChanged.bind(this, 0)}
+          options={combiningFilterOps}
           style={{
-            display: 'block',
+            display: 'inline-block',
+            marginLeft: '10.5%',
+            width: '18%',
           }}
         />
-        <div>
-          <Button onClick={this.addFilterItem.bind(this)}>Add filter</Button>
-        </div>
+        <DocLabel
+          label={"of the filters match"}
+          doc={GlSpec.layer.filter.doc}
+          style={{
+            marginLeft: '2%',
+            display: 'inline-block',
+            width: '42%',
+          }}
+        />
       </div>
-      <CombiningOperatorSelect
-        value={combiningOp}
-        onChange={this.onFilterPartChanged.bind(this, 0)}
-        style={{
-          display: 'inline-block',
-          width: '50%'
-        }}
-      />
-      {filterEditors}
+      {editorBlocks}
     </div>
   }
 }

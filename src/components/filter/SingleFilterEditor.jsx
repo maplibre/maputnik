@@ -1,9 +1,10 @@
 import React from 'react'
-import OperatorSelect from './OperatorSelect'
 
 import { margins, fontSizes } from '../../config/scales.js'
+import { otherFilterOps } from '../../libs/filterops.js'
 import StringInput from '../inputs/StringInput'
 import AutocompleteInput from '../inputs/AutocompleteInput'
+import SelectInput from '../inputs/SelectInput'
 
 class SingleFilterEditor extends React.Component {
   static propTypes = {
@@ -35,21 +36,25 @@ class SingleFilterEditor extends React.Component {
     }}>
       <AutocompleteInput
         wrapperStyle={{
-          width: '30%',
-          marginRight: margins[0]
+          width: '30%'
         }}
         value={propertyName}
         options={Object.keys(this.props.properties).map(propName => [propName, propName])}
         onChange={newPropertyName => this.onFilterPartChanged(filterOp, newPropertyName, filterArgs)}
       />
-      <OperatorSelect
+      <SelectInput
+        style={{
+          width: '19.5%',
+          marginLeft: '2%'
+        }}
         value={filterOp}
         onChange={newFilterOp => this.onFilterPartChanged(newFilterOp, propertyName, filterArgs)}
+        options={otherFilterOps}
       />
       <StringInput
         style={{
-          width: '50%',
-          marginLeft: margins[0]
+          width: '47%',
+          marginLeft: '1.5%'
         }}
         value={filterArgs.join(',')}
         onChange={ v=> this.onFilterPartChanged(filterOp, propertyName, v.split(','))}
