@@ -1,16 +1,47 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 import MapboxGl from 'mapbox-gl/dist/mapbox-gl.js'
+import MapboxInspect from 'mapbox-gl-inspect'
 import FeatureLayerTable from './FeatureLayerTable'
+import FeaturePropertyPopup from './FeaturePropertyPopup'
 import validateColor from 'mapbox-gl-style-spec/lib/validate/validate_color'
+import colors from '../../config/colors'
 import style from '../../libs/style.js'
+import { colorHighlightedLayer } from '../../libs/highlight'
 import 'mapbox-gl/dist/mapbox-gl.css'
 import '../../mapboxgl.css'
 
-function renderPopup(features) {
+function renderLayerPopup(features) {
   var mountNode = document.createElement('div');
   ReactDOM.render(<FeatureLayerTable features={features} />, mountNode)
   return mountNode.innerHTML;
+}
+
+function renderPropertyPopup(features) {
+  var mountNode = document.createElement('div');
+  ReactDOM.render(<FeaturePropertyPopup features={features} />, mountNode)
+  return mountNode.innerHTML;
+}
+
+function buildInspectStyle(originalMapStyle, coloredLayers, highlightedLayer) {
+  const backgroundLayer = {
+    "id": "background",
+    "type": "background",
+    "paint": {
+      "background-color": colors.black,
+    }
+  }
+
+  const layer = colorHighlightedLayer(highlightedLayer)
+  if(layer) {
+    coloredLayers.push(layer)
+  }
+
+  const inspectStyle = {
+    ...originalMapStyle,
+    layers: [backgroundLayer].concat(coloredLayers)
+  }
+  return inspectStyle
 }
 
 export default class MapboxGlMap extends React.Component {
@@ -19,6 +50,8 @@ export default class MapboxGlMap extends React.Component {
     mapStyle: React.PropTypes.object.isRequired,
     accessToken: React.PropTypes.string,
     style: React.PropTypes.object,
+    inspectModeEnabled: React.PropTypes.bool.isRequired,
+    highlightedLayer: React.PropTypes.object,
   }
 
   static defaultProps = {
@@ -31,6 +64,7 @@ export default class MapboxGlMap extends React.Component {
     MapboxGl.accessToken = props.accessToken
     this.state = {
       map: null,
+      inspect: null,
       isPopupOpen: false,
       popupX: 0,
       popupY: 0,
@@ -39,12 +73,22 @@ export default class MapboxGlMap extends React.Component {
 
   componentWillReceiveProps(nextProps) {
     MapboxGl.accessToken = nextProps.accessToken
-
     if(!this.state.map) return
 
-    //Mapbox GL now does diffing natively so we don't need to calculate
-    //the necessary operations ourselves!
-    this.state.map.setStyle(nextProps.mapStyle, { diff: true})
+    if(!nextProps.inspectModeEnabled) {
+      //Mapbox GL now does diffing natively so we don't need to calculate
+      //the necessary operations ourselves!
+      this.state.map.setStyle(nextProps.mapStyle, { diff: true})
+    }
+  }
+
+  componentDidUpdate(prevProps) {
+    if(this.props.inspectModeEnabled !== prevProps.inspectModeEnabled) {
+      this.state.inspect.toggleInspector()
+    }
+    if(this.props.inspectModeEnabled) {
+      this.state.inspect.render()
+    }
   }
 
   componentDidMount() {
@@ -54,11 +98,29 @@ export default class MapboxGlMap extends React.Component {
       hash: true,
     })
 
-		const nav = new MapboxGl.NavigationControl();
-		map.addControl(nav, 'top-right');
+    const nav = new MapboxGl.NavigationControl();
+    map.addControl(nav, 'top-right');
+
+    const inspect = new MapboxInspect({
+      popup: new MapboxGl.Popup({
+        closeButton: false,
+        closeOnClick: false
+      }),
+      showMapPopup: true,
+      showInspectButton: false,
+      buildInspectStyle: (originalMapStyle, coloredLayers) => buildInspectStyle(originalMapStyle, coloredLayers, this.props.highlightedLayer),
+      renderPopup: features => {
+        if(this.props.inspectModeEnabled) {
+          return renderPropertyPopup(features)
+        } else {
+          return renderLayerPopup(features)
+        }
+      }
+    })
+    map.addControl(inspect)
 
     map.on("style.load", () => {
-      this.setState({ map });
+      this.setState({ map, inspect });
     })
 
     map.on("data", e => {
@@ -67,24 +129,6 @@ export default class MapboxGlMap extends React.Component {
         map: this.state.map
       })
     })
-
-    map.on('click', this.displayPopup.bind(this));
-    map.on('mousemove', function(e) {
-      var features = map.queryRenderedFeatures(e.point, { layers: this.layers })
-      map.getCanvas().style.cursor = (features.length) ? 'pointer' : ''
-    })
-  }
-
-  displayPopup(e) {
-		const features = this.state.map.queryRenderedFeatures(e.point, {
-			layers: this.layers
-		});
-
-    if(features.length < 1) return
-		const popup = new MapboxGl.Popup()
-			.setLngLat(e.lngLat)
-			.setHTML(renderPopup(features))
-			.addTo(this.state.map)
   }
 
   render() {
@@ -93,7 +137,7 @@ export default class MapboxGlMap extends React.Component {
       style={{
         position: "fixed",
         top: 0,
-        left: 550,
+        right: 0,
         bottom: 0,
         height: "100%",
         width: "75%",

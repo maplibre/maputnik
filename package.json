@@ -5,7 +5,7 @@
   "main": "''",
   "scripts": {
     "stats": "webpack --config webpack.production.config.js --profile --json > stats.json",
-    "build": "node --stack_size=100000 node_modules/webpack/bin/webpack.js --config webpack.production.config.js --progress --profile --colors",
+    "build": "webpack --config webpack.production.config.js --progress --profile --colors",
     "test": "karma start --single-run",
     "test-watch": "karma start",
     "start": "webpack-dev-server --progress --profile --colors --watch-poll",
@@ -28,6 +28,7 @@
     "lodash.throttle": "^4.1.1",
     "lodash.topairs": "^4.3.0",
     "mapbox-gl": "^0.29.0",
+    "mapbox-gl-inspect": "^1.0.7",
     "mapbox-gl-style-spec": "^8.11.0",
     "mousetrap": "^1.6.0",
     "ol-mapbox-style": "0.0.11",

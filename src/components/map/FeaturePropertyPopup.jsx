@@ -24,7 +24,6 @@ const Panel = (props) => {
 }
 
 function renderFeature(feature) {
-  console.log(feature)
   return <div>
     <Panel>{feature.layer['source-layer']}</Panel>
     {renderProperties(feature)}

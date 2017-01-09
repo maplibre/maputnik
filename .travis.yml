@@ -16,6 +16,6 @@ install:
   - npm install
 script:
   - mkdir public
-  - npm run build
+  - node --stack_size=100000 $(which npm) run build
   - npm run lint
   - npm run test

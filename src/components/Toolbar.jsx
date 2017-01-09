@@ -84,6 +84,7 @@ export default class Toolbar extends React.Component {
     onStyleDownload: React.PropTypes.func.isRequired,
     // A dict of source id's and the available source layers
     sources: React.PropTypes.object.isRequired,
+    onInspectModeToggle: React.PropTypes.func.isRequired
   }
 
   constructor(props) {
@@ -103,23 +104,6 @@ export default class Toolbar extends React.Component {
       <MdFileDownload />
       <IconText>Download</IconText>
     </ToolbarAction>
-  }
-
-  toggleInspectionMode() {
-    const metadata = this.props.mapStyle.metadata || {}
-    const currentRenderer = metadata['maputnik:renderer'] || 'mbgljs'
-
-    const changedRenderer = currentRenderer === 'inspection' ? 'mbgljs' : 'inspection'
-
-    const changedStyle = {
-      ...this.props.mapStyle,
-      metadata: {
-        ...this.props.mapStyle.metadata,
-        'maputnik:renderer': changedRenderer
-      }
-    }
-
-    this.props.onStyleChanged(changedStyle)
   }
 
   toggleModal(modalName) {
@@ -194,7 +178,7 @@ export default class Toolbar extends React.Component {
         <SettingsIcon />
         <IconText>Style Settings</IconText>
       </ToolbarAction>
-      <ToolbarAction onClick={this.toggleInspectionMode.bind(this)}>
+      <ToolbarAction onClick={this.props.onInspectModeToggle}>
         <InspectionIcon />
         <IconText>Inspect</IconText>
       </ToolbarAction>

@@ -83,7 +83,6 @@ class SettingsModal extends React.Component {
           options={[
             ['mbgljs', 'MapboxGL JS'],
             ['ol3', 'Open Layers 3'],
-            ['inspection', 'Inspection Mode'],
           ]}
           value={metadata['maputnik:renderer'] || 'mbgljs'}
           onChange={this.changeMetadataProperty.bind(this, 'maputnik:renderer')}
