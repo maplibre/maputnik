@@ -1,5 +1,6 @@
 import React from 'react'
 
+import GlSpec from 'mapbox-gl-style-spec/reference/latest.js'
 import InputBlock from '../inputs/InputBlock'
 import StringInput from '../inputs/StringInput'
 import SelectInput from '../inputs/SelectInput'
@@ -43,42 +44,42 @@ class SettingsModal extends React.Component {
     return <Modal
       isOpen={this.props.isOpen}
       onOpenToggle={this.props.onOpenToggle}
-      title={'StyleSettings'}
+      title={'Style Settings'}
     >
-      <InputBlock label={"Name"}>
+      <InputBlock label={"Name"} doc={GlSpec['$root'].name.doc}>
         <StringInput {...inputProps}
           value={this.props.mapStyle.name}
           onChange={this.changeStyleProperty.bind(this, "name")}
         />
       </InputBlock>
-      <InputBlock label={"Owner"}>
+      <InputBlock label={"Owner"} doc={"Owner ID of the style. Used by Mapbox or future style APIs."}>
         <StringInput {...inputProps}
           value={this.props.mapStyle.owner}
           onChange={this.changeStyleProperty.bind(this, "owner")}
         />
       </InputBlock>
-      <InputBlock label={"Sprite URL"}>
+      <InputBlock label={"Sprite URL"} doc={GlSpec['$root'].sprite.doc}>
         <StringInput {...inputProps}
           value={this.props.mapStyle.sprite}
           onChange={this.changeStyleProperty.bind(this, "sprite")}
         />
       </InputBlock>
 
-      <InputBlock label={"Glyphs URL"}>
+      <InputBlock label={"Glyphs URL"} doc={GlSpec['$root'].glyphs.doc}>
         <StringInput {...inputProps}
           value={this.props.mapStyle.glyphs}
           onChange={this.changeStyleProperty.bind(this, "glyphs")}
         />
       </InputBlock>
 
-      <InputBlock label={"Access Token"}>
+      <InputBlock label={"Access Token"} doc={"Public access token for Mapbox GL."}>
         <StringInput {...inputProps}
           value={metadata['maputnik:access_token']}
           onChange={this.changeMetadataProperty.bind(this, "maputnik:access_token")}
         />
       </InputBlock>
 
-      <InputBlock label={"Style Renderer"}>
+      <InputBlock label={"Style Renderer"} doc={"Choose the default Maputnik renderer for this style."}>
         <SelectInput {...inputProps}
           options={[
             ['mbgljs', 'MapboxGL JS'],

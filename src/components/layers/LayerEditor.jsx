@@ -1,6 +1,6 @@
 import React from 'react'
 
-import GlSpec from 'mapbox-gl-style-spec/reference/latest.min.js'
+import GlSpec from 'mapbox-gl-style-spec/reference/latest.js'
 import JSONEditor from './JSONEditor'
 import FilterEditor from '../filter/FilterEditor'
 import PropertyGroup from '../fields/PropertyGroup'
