@@ -118,7 +118,6 @@ export default class LayerEditor extends React.Component {
           onChange={v => this.changeProperty(null, 'source-layer', v)}
         />
         }
-        {this.props.layer.filter &&
         <div style={input.property}>
           <FilterEditor
             filter={this.props.layer.filter}
@@ -126,7 +125,6 @@ export default class LayerEditor extends React.Component {
             onChange={f => this.changeProperty(null, 'filter', f)}
           />
         </div>
-        }
       </div>
       case 'properties': return <PropertyGroup
         layer={this.props.layer}

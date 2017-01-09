@@ -1,10 +1,11 @@
 import React from 'react'
-import GlSpec from 'mapbox-gl-style-spec/reference/latest.min.js'
+import GlSpec from 'mapbox-gl-style-spec/reference/latest.js'
 
 import input from '../../config/input.js'
 import colors from '../../config/colors.js'
 import { margins } from '../../config/scales.js'
 
+import DocLabel from '../fields/DocLabel'
 import Button from '../Button'
 import SelectInput from '../inputs/SelectInput'
 import StringInput from '../inputs/StringInput'
@@ -148,18 +149,20 @@ export default class CombiningFilterEditor extends React.Component {
   static propTypes = {
     /** Properties of the vector layer and the available fields */
     properties: React.PropTypes.object.isRequired,
-    filter: React.PropTypes.array.isRequired,
+    filter: React.PropTypes.array,
     onChange: React.PropTypes.func.isRequired,
   }
 
   // Convert filter to combining filter
   combiningFilter() {
-    let combiningOp = this.props.filter[0]
-    let filters = this.props.filter.slice(1)
+    let filter = this.props.filter || ['all']
+
+    let combiningOp = filter[0]
+    let filters = filter.slice(1)
 
     if(combiningFilterOps.indexOf(combiningOp) < 0) {
       combiningOp = 'all'
-      filters = [this.props.filter.slice(0)]
+      filters = [filter.slice(0)]
     }
 
     return [combiningOp, ...filters]
@@ -216,6 +219,13 @@ export default class CombiningFilterEditor extends React.Component {
     }
 
     return <div>
+      <DocLabel
+        label={"Filter"}
+        doc={GlSpec.layer.filter.doc}
+        style={{
+          width: '42.25%',
+        }}
+      />
       <CombiningOperatorSelect
         value={combiningOp}
         onChange={this.onFilterPartChanged.bind(this, 0)}
