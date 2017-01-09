@@ -36,7 +36,7 @@ class SingleFilterEditor extends React.Component {
     }}>
       <AutocompleteInput
         wrapperStyle={{
-          width: '30%'
+          width: '22%'
         }}
         value={propertyName}
         options={Object.keys(this.props.properties).map(propName => [propName, propName])}
@@ -44,7 +44,7 @@ class SingleFilterEditor extends React.Component {
       />
       <SelectInput
         style={{
-          width: '19.5%',
+          width: '19%',
           marginLeft: '2%'
         }}
         value={filterOp}
@@ -53,8 +53,8 @@ class SingleFilterEditor extends React.Component {
       />
       <StringInput
         style={{
-          width: '47%',
-          marginLeft: '1.5%'
+          width: '54%',
+          marginLeft: '2%'
         }}
         value={filterArgs.join(',')}
         onChange={ v=> this.onFilterPartChanged(filterOp, propertyName, v.split(','))}

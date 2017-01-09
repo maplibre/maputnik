@@ -12,8 +12,8 @@ import SingleFilterEditor from './SingleFilterEditor'
 import FilterEditorBlock from './FilterEditorBlock'
 import Button from '../Button'
 
-import AddIcon from 'react-icons/lib/md/add-circle-outline'
 import DeleteIcon from 'react-icons/lib/md/delete'
+import AddIcon from 'react-icons/lib/fa/plus'
 
 function hasCombiningFilter(filter) {
   return combiningFilterOps.indexOf(filter[0]) >= 0
@@ -91,29 +91,29 @@ export default class CombiningFilterEditor extends React.Component {
     }
 
     return <div>
-      <div>
+      <div style={{ marginBottom: margins[2] }}>
+        <DocLabel
+          label={"Compound Filter"}
+          doc={GlSpec.layer.filter.doc + " Combine multiple filters together by using a compound filter."}
+          style={{
+            display: 'inline-block',
+            width: '30%',
+          }}
+        />
         <Button onClick={this.addFilterItem.bind(this)} style={{
           display: 'inline-block',
-          width: '18.5%',
-          marginLeft: '8%',
-        }}>Add filter</Button>
+          width: '18%',
+          marginRight: '2%',
+        }}>
+          Add filter
+        </Button>
         <SelectInput
           value={combiningOp}
           onChange={this.onFilterPartChanged.bind(this, 0)}
-          options={combiningFilterOps}
+          options={[["all", "every filter matches"], ["none", "no filter matches"], ["any", "any filter matches"]]}
           style={{
             display: 'inline-block',
-            marginLeft: '10.5%',
-            width: '18%',
-          }}
-        />
-        <DocLabel
-          label={"of the filters match"}
-          doc={GlSpec.layer.filter.doc}
-          style={{
-            marginLeft: '2%',
-            display: 'inline-block',
-            width: '42%',
+            width: '50%',
           }}
         />
       </div>
