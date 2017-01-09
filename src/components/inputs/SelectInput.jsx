@@ -11,9 +11,10 @@ class SelectInput extends React.Component {
 
 
   render() {
-    const options = this.props.options.map(([val, label])=> {
-      return <option key={val} value={val}>{label}</option>
-    })
+    let options = this.props.options
+    if(options.length > 0 && !Array.isArray(options[0])) {
+      options = options.map(v => [v, v])
+    }
 
     return <select
       style={{
@@ -23,7 +24,7 @@ class SelectInput extends React.Component {
       value={this.props.value}
       onChange={e => this.props.onChange(e.target.value)}
     >
-      {options}
+      { options.map(([val, label]) => <option key={val} value={val}>{label}</option>) }
     </select>
   }
 }

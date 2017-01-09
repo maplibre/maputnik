@@ -15,21 +15,29 @@ class MultiButtonInput extends React.Component {
   }
 
   render() {
-    const selectedValue = this.props.value || this.props.options[0][0]
-    const buttons = this.props.options.map(([val, label])=> {
+    let options = this.props.options
+    if(options.length > 0 && !Array.isArray(options[0])) {
+      options = options.map(v => [v, v])
+    }
+
+    const selectedValue = this.props.value || options[0][0]
+    const buttons = options.map(([val, label])=> {
       return <Button
         key={val}
+        onClick={e => this.props.onChange(val)}
         style={{
           marginRight: margins[0],
           backgroundColor: val === selectedValue ? colors.midgray : colors.gray,
         }}
-        onClick={e => this.props.onChange(val)}
       >
         {label}
       </Button>
     })
 
-    return <div style={{display: 'inline-block'}}>
+    return <div style={{
+      display: 'inline-block',
+      ...this.props.style,
+    }}>
       {buttons}
     </div>
   }

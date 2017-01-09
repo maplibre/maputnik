@@ -3,11 +3,13 @@ import GlSpec from 'mapbox-gl-style-spec/reference/latest.js'
 
 import input from '../../config/input.js'
 import colors from '../../config/colors.js'
-import { margins } from '../../config/scales.js'
+import { margins, fontSizes } from '../../config/scales.js'
 
+import CombiningOperatorSelect from './CombiningOperatorSelect'
 import DocLabel from '../fields/DocLabel'
 import Button from '../Button'
 import SelectInput from '../inputs/SelectInput'
+import MultiButtonInput from '../inputs/MultiButtonInput'
 import StringInput from '../inputs/StringInput'
 import AutocompleteInput from '../inputs/AutocompleteInput'
 
@@ -32,45 +34,6 @@ function hasNestedCombiningFilter(filter) {
   return false
 }
 
-class CombiningOperatorSelect extends React.Component {
-  static propTypes = {
-    value: React.PropTypes.string.isRequired,
-    onChange: React.PropTypes.func.isRequired,
-    style: React.PropTypes.object,
-  }
-
-  render() {
-    const options = combiningFilterOps.map(op => {
-      return <option key={op} value={op}>{op}</option>
-    })
-
-    return <div
-      style={{
-          marginTop: margins[1],
-          marginBottom: margins[1],
-          ...this.props.style
-        }}
-      >
-      <select
-        style={{
-          ...input.select,
-          width: '20.5%',
-        }}
-        value={this.props.value}
-        onChange={e => this.props.onChange(e.target.value)}
-      >
-        {options}
-      </select>
-      <label style={{
-        ...input.label,
-        width: '60%',
-        marginLeft: margins[0],
-      }}>
-        of the filters matches
-      </label>
-    </div>
-  }
-}
 
 class OperatorSelect extends React.Component {
   static propTypes = {
@@ -194,16 +157,18 @@ export default class CombiningFilterEditor extends React.Component {
 
     const filterEditors = filters.map((f, idx) => {
       return <div>
-        <Button
-          style={{backgroundColor: null}}
-          onClick={this.deleteFilterItem.bind(this, idx)}
-        >
-          <DeleteIcon />
-        </Button>
+        <div style={{display: 'inline-block', width: '25%'}}>
+          <Button
+            style={{backgroundColor: null}}
+            onClick={this.deleteFilterItem.bind(this, idx)}
+          >
+            <DeleteIcon />
+          </Button>
+        </div>
         <SingleFilterEditor
           style={{
             display: 'inline-block',
-            width: '80%'
+            width: '75%'
           }}
           key={idx}
           properties={this.props.properties}
@@ -219,22 +184,30 @@ export default class CombiningFilterEditor extends React.Component {
     }
 
     return <div>
-      <DocLabel
-        label={"Filter"}
-        doc={GlSpec.layer.filter.doc}
-        style={{
-          width: '42.25%',
-        }}
-      />
+      <div style={{
+        width: '50%',
+        verticalAlign: 'top',
+        display: 'inline-block',
+      }}>
+        <DocLabel
+          label={"Filter"}
+          doc={GlSpec.layer.filter.doc}
+          style={{
+            display: 'block',
+          }}
+        />
+        <div>
+          <Button onClick={this.addFilterItem.bind(this)}>Add filter</Button>
+        </div>
+      </div>
       <CombiningOperatorSelect
         value={combiningOp}
         onChange={this.onFilterPartChanged.bind(this, 0)}
         style={{
           display: 'inline-block',
-          width: '80%'
+          width: '50%'
         }}
       />
-      <Button onClick={this.addFilterItem.bind(this)}>Add filter</Button>
       {filterEditors}
     </div>
   }
