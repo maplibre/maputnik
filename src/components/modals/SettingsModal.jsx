@@ -46,7 +46,7 @@ class SettingsModal extends React.Component {
       onOpenToggle={this.props.onOpenToggle}
       title={'Style Settings'}
     >
-      <InputBlock label={"Name"} doc={GlSpec['$root'].name.doc}>
+      <InputBlock label={"Name"} doc={GlSpec.$root.name.doc}>
         <StringInput {...inputProps}
           value={this.props.mapStyle.name}
           onChange={this.changeStyleProperty.bind(this, "name")}
@@ -58,14 +58,14 @@ class SettingsModal extends React.Component {
           onChange={this.changeStyleProperty.bind(this, "owner")}
         />
       </InputBlock>
-      <InputBlock label={"Sprite URL"} doc={GlSpec['$root'].sprite.doc}>
+      <InputBlock label={"Sprite URL"} doc={GlSpec.$root.sprite.doc}>
         <StringInput {...inputProps}
           value={this.props.mapStyle.sprite}
           onChange={this.changeStyleProperty.bind(this, "sprite")}
         />
       </InputBlock>
 
-      <InputBlock label={"Glyphs URL"} doc={GlSpec['$root'].glyphs.doc}>
+      <InputBlock label={"Glyphs URL"} doc={GlSpec.$root.glyphs.doc}>
         <StringInput {...inputProps}
           value={this.props.mapStyle.glyphs}
           onChange={this.changeStyleProperty.bind(this, "glyphs")}

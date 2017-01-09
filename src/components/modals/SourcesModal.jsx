@@ -1,4 +1,5 @@
 import React from 'react'
+import GlSpec from 'mapbox-gl-style-spec/reference/latest.js'
 import Modal from './Modal'
 import Heading from '../Heading'
 import Button from '../Button'
@@ -163,13 +164,13 @@ class AddSource extends React.Component {
 
   render() {
     return <div>
-      <InputBlock label={"Source ID"}>
+      <InputBlock label={"Source ID"} doc={"Unique ID that identifies the source and is used in the layer to reference the source."}>
         <StringInput
           value={this.state.sourceId}
           onChange={v => this.setState({ sourceId: v})}
         />
       </InputBlock>
-      <InputBlock label={"Source Type"}>
+      <InputBlock label={"Source Type"} doc={GlSpec.source_tile.type.doc}>
         <SelectInput
           options={[
             ['geojson', 'GeoJSON'],
