@@ -87,7 +87,12 @@ export default class CombiningFilterEditor extends React.Component {
 
     //TODO: Implement support for nested filter
     if(hasNestedCombiningFilter(filter)) {
-      return null
+      return <div style={{
+        fontSize: fontSizes[5],
+        color: colors.midgray,
+      }}>
+        Nested filters are not supported.
+      </div>
     }
 
     return <div>
