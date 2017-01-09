@@ -30,7 +30,7 @@ function hasNestedCombiningFilter(filter) {
 export default class CombiningFilterEditor extends React.Component {
   static propTypes = {
     /** Properties of the vector layer and the available fields */
-    properties: React.PropTypes.object.isRequired,
+    properties: React.PropTypes.object,
     filter: React.PropTypes.array,
     onChange: React.PropTypes.func.isRequired,
   }

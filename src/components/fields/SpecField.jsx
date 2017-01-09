@@ -70,6 +70,7 @@ export default class SpecField extends React.Component {
         if(options.length <= 3 && optionsLabelLength(options) <= 20) {
           return <MultiButtonInput
             {...commonProps}
+            value={this.props.value || this.props.fieldSpec.default}
             options={options}
           />
         } else {
