@@ -35,6 +35,7 @@ class CombiningOperatorSelect extends React.Component {
   static propTypes = {
     value: React.PropTypes.string.isRequired,
     onChange: React.PropTypes.func.isRequired,
+    style: React.PropTypes.object,
   }
 
   render() {
@@ -46,6 +47,7 @@ class CombiningOperatorSelect extends React.Component {
       style={{
           marginTop: margins[1],
           marginBottom: margins[1],
+          ...this.props.style
         }}
       >
       <select
@@ -176,6 +178,12 @@ export default class CombiningFilterEditor extends React.Component {
     this.props.onChange(newFilter)
   }
 
+  addFilterItem() {
+    const newFilterItem = this.combiningFilter().slice(0)
+    newFilterItem.push(['==', 'name', ''])
+    this.props.onChange(newFilterItem)
+  }
+
   render() {
     const filter = this.combiningFilter()
     let combiningOp = filter[0]
@@ -211,7 +219,12 @@ export default class CombiningFilterEditor extends React.Component {
       <CombiningOperatorSelect
         value={combiningOp}
         onChange={this.onFilterPartChanged.bind(this, 0)}
+        style={{
+          display: 'inline-block',
+          width: '80%'
+        }}
       />
+      <Button onClick={this.addFilterItem.bind(this)}>Add filter</Button>
       {filterEditors}
     </div>
   }
