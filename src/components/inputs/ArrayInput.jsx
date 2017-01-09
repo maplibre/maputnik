@@ -28,8 +28,8 @@ class ArrayInput extends React.Component {
 
   render() {
     const commonStyle = {
-      width: '49%',
-      marginRight: '1%',
+      width: '48%',
+      marginRight: '2%',
     }
     const inputs = this.values.map((v, i) => {
       if(this.props.type === 'number') {

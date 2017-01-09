@@ -98,12 +98,12 @@ export default class ZoomSpecField extends React.Component {
       const zoomFields = this.props.value.stops.map((stop, idx) => {
         label = <DocLabel
           doc={this.props.fieldSpec.doc}
-          style={{ width: '42.5%'}}
+          style={{ width: '41%'}}
           label={idx > 0 ? "" : labelFromFieldName(this.props.fieldName)}
         />
 
         if(idx === 1) {
-          label = <label style={{...input.label, width: '42.5%'}}>
+          label = <label style={{...input.label, width: '41%'}}>
             <Button
               style={{fontSize: fontSizes[5]}}
               onClick={this.addStop.bind(this)}
@@ -130,7 +130,7 @@ export default class ZoomSpecField extends React.Component {
           </Button>
           <NumberInput
             style={{
-              width: '7%',
+              width: '7.5%'
             }}
             value={zoomLevel}
             onChange={changedStop => this.changeStop(idx, changedStop, value)}
@@ -143,8 +143,8 @@ export default class ZoomSpecField extends React.Component {
             value={value}
             onChange={(_, newValue) => this.changeStop(idx, zoomLevel, newValue)}
             style={{
-              width: '42%',
-              marginLeft: margins[0],
+              width: '41%',
+              marginLeft: '1.5%',
             }}
           />
         </div>
@@ -164,7 +164,7 @@ export default class ZoomSpecField extends React.Component {
           label={labelFromFieldName(this.props.fieldName)}
           doc={this.props.fieldSpec.doc}
           style={{
-            width: this.props.fieldSpec['zoom-function'] ? '42.25%' : '50%',
+            width: this.props.fieldSpec['zoom-function'] ? '41%' : '50%',
           }}
         />
         {this.props.fieldSpec['zoom-function'] &&
@@ -175,7 +175,7 @@ export default class ZoomSpecField extends React.Component {
           <FunctionIcon />
         </Button>
         }
-        <SpecField {...this.props} style={{ width: '47%' } }/>
+        <SpecField {...this.props} style={{ width: '50%' } }/>
       </div>
     }
   }
