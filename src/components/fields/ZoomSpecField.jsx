@@ -123,14 +123,15 @@ export default class ZoomSpecField extends React.Component {
           }}>
           {label}
           <Button
-            style={{backgroundColor: null}}
+            style={{backgroundColor: null, verticalAlign: 'top'}}
             onClick={this.deleteStop.bind(this, idx)}
           >
             <DeleteIcon />
           </Button>
           <NumberInput
             style={{
-              width: '7.5%'
+              width: '7.5%',
+              verticalAlign: 'top',
             }}
             value={zoomLevel}
             onChange={changedStop => this.changeStop(idx, changedStop, value)}
@@ -169,7 +170,11 @@ export default class ZoomSpecField extends React.Component {
         />
         {this.props.fieldSpec['zoom-function'] &&
         <Button
-          style={{backgroundColor: null}}
+          style={{
+            verticalAlign: 'top',
+            backgroundColor: null,
+            display: 'inline-block',
+          }}
           onClick={this.makeZoomFunction.bind(this)}
         >
           <FunctionIcon />

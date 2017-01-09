@@ -19,8 +19,9 @@ export default class DocLabel extends React.Component {
     return <label
       style={{
         ...input.label,
-        ...this.props.style,
         position: 'relative',
+        verticalAlign: 'top',
+        ...this.props.style,
       }}
     >
       <span
