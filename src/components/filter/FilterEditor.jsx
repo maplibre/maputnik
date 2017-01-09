@@ -9,6 +9,7 @@ import { combiningFilterOps } from '../../libs/filterops.js'
 import OperatorSelect from './OperatorSelect'
 import SingleFilterEditor from './SingleFilterEditor'
 import CombiningOperatorSelect from './CombiningOperatorSelect'
+import FilterEditorBlock from './FilterEditorBlock'
 import DocLabel from '../fields/DocLabel'
 import Button from '../Button'
 
@@ -75,26 +76,14 @@ export default class CombiningFilterEditor extends React.Component {
     let filters = filter.slice(1)
 
     const filterEditors = filters.map((f, idx) => {
-      return <div>
-        <div style={{display: 'inline-block', width: '25%'}}>
-          <Button
-            style={{backgroundColor: null}}
-            onClick={this.deleteFilterItem.bind(this, idx)}
-          >
-            <DeleteIcon />
-          </Button>
-        </div>
+      return <FilterEditorBlock onDelete={this.deleteFilterItem.bind(this, idx)}>
         <SingleFilterEditor
-          style={{
-            display: 'inline-block',
-            width: '75%'
-          }}
           key={idx}
           properties={this.props.properties}
           filter={f}
           onChange={this.onFilterPartChanged.bind(this, idx + 1)}
         />
-      </div>
+      </FilterEditorBlock>
     })
 
     //TODO: Implement support for nested filter
