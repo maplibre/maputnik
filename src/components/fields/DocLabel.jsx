@@ -5,7 +5,10 @@ import { margins, fontSizes } from '../../config/scales.js'
 
 export default class DocLabel extends React.Component {
   static propTypes = {
-    label: React.PropTypes.string.isRequired,
+    label: React.PropTypes.oneOfType([
+      React.PropTypes.object,
+      React.PropTypes.string
+    ]).isRequired,
     doc: React.PropTypes.string.isRequired,
     style: React.PropTypes.object,
     cursorTargetStyle: React.PropTypes.object,
