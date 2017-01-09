@@ -8,6 +8,7 @@ import DocLabel from './DocLabel'
 
 import AddIcon from 'react-icons/lib/md/add-circle-outline'
 import DeleteIcon from 'react-icons/lib/md/delete'
+import FunctionIcon from 'react-icons/lib/md/functions'
 
 import capitalize from 'lodash.capitalize'
 import input from '../../config/input.js'
@@ -64,6 +65,16 @@ export default class ZoomSpecField extends React.Component {
     this.props.onChange(this.props.fieldName, changedValue)
   }
 
+  makeZoomFunction() {
+    const zoomFunc = {
+      stops: [
+        [6, this.props.value],
+        [10, this.props.value]
+      ]
+    }
+    this.props.onChange(this.props.fieldName, zoomFunc)
+  }
+
   changeStop(changeIdx, zoomLevel, value) {
     const stops = this.props.value.stops.slice(0)
     stops[changeIdx] = [zoomLevel, value]
@@ -75,15 +86,15 @@ export default class ZoomSpecField extends React.Component {
   }
 
   render() {
-    let label = <DocLabel
-      label={labelFromFieldName(this.props.fieldName)}
-      doc={this.props.fieldSpec.doc}
-      style={{
-        width: '50%',
-      }}
-    />
-
     if(isZoomField(this.props.value)) {
+      let label = <DocLabel
+        label={labelFromFieldName(this.props.fieldName)}
+        doc={this.props.fieldSpec.doc}
+        style={{
+          width: '50%',
+        }}
+      />
+
       const zoomFields = this.props.value.stops.map((stop, idx) => {
         label = <DocLabel
           doc={this.props.fieldSpec.doc}
@@ -143,9 +154,28 @@ export default class ZoomSpecField extends React.Component {
         {zoomFields}
       </div>
     } else {
+
+      if(this.props.fieldSpec['zoom-function']) {
+
+      }
+
       return <div style={input.property}>
-        {label}
-        <SpecField {...this.props} style={{ width: '50%' } }/>
+        <DocLabel
+          label={labelFromFieldName(this.props.fieldName)}
+          doc={this.props.fieldSpec.doc}
+          style={{
+            width: this.props.fieldSpec['zoom-function'] ? '42.25%' : '50%',
+          }}
+        />
+        {this.props.fieldSpec['zoom-function'] &&
+        <Button
+          style={{backgroundColor: null}}
+          onClick={this.makeZoomFunction.bind(this)}
+        >
+          <FunctionIcon />
+        </Button>
+        }
+        <SpecField {...this.props} style={{ width: '47%' } }/>
       </div>
     }
   }
