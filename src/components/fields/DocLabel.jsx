@@ -8,6 +8,7 @@ export default class DocLabel extends React.Component {
     label: React.PropTypes.string.isRequired,
     doc: React.PropTypes.string.isRequired,
     style: React.PropTypes.object,
+    cursorTargetStyle: React.PropTypes.object,
   }
 
   constructor(props) {
@@ -29,6 +30,7 @@ export default class DocLabel extends React.Component {
         onMouseOut={e => this.setState({showDoc: false})}
         style={{
           cursor: 'help',
+          ...this.props.cursorTargetStyle,
         }}
       >
         {this.props.label}
