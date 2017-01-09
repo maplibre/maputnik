@@ -25,6 +25,22 @@ class UnsupportedLayer extends React.Component {
   }
 }
 
+function layoutGroups(layerType) {
+  const layerGroup = {
+    title: 'Layer',
+    type: 'layer'
+  }
+  const filterGroup = {
+    title: 'Filter',
+    type: 'filter'
+  }
+  const editorGroup = {
+    title: 'JSON Editor',
+    type: 'jsoneditor'
+  }
+    return [layerGroup, filterGroup].concat(layout[layerType].groups).concat([editorGroup])
+}
+
 /** Layer editor supporting multiple types of layers. */
 export default class LayerEditor extends React.Component {
   static propTypes = {
@@ -50,7 +66,7 @@ export default class LayerEditor extends React.Component {
 
     //TODO: Clean this up and refactor into function
     const editorGroups = {}
-    layout[this.props.layer.type].groups.forEach(group => {
+    layoutGroups(this.props.layer.type).forEach(group => {
       editorGroups[group.title] = true
     })
 
@@ -96,17 +112,15 @@ export default class LayerEditor extends React.Component {
 
   renderGroupType(type, fields) {
     switch(type) {
-      case 'settings': return <div>
-          <LayerIdBlock
-            value={this.props.layer.id}
-            onChange={newId => this.props.onLayerIdChange(this.props.layer.id, newId)}
-          />
-          <LayerTypeBlock
-            value={this.props.layer.type}
-            onChange={newType => this.props.onLayerChanged(changeType(this.props.layer, newType))}
-          />
-        </div>
-      case 'source': return <div>
+      case 'layer': return <div>
+        <LayerIdBlock
+          value={this.props.layer.id}
+          onChange={newId => this.props.onLayerIdChange(this.props.layer.id, newId)}
+        />
+        <LayerTypeBlock
+          value={this.props.layer.type}
+          onChange={newType => this.props.onLayerChanged(changeType(this.props.layer, newType))}
+        />
         <LayerSourceBlock
           sourceIds={Object.keys(this.props.sources)}
           value={this.props.layer.source}
@@ -118,6 +132,8 @@ export default class LayerEditor extends React.Component {
           onChange={v => this.changeProperty(null, 'source-layer', v)}
         />
         }
+      </div>
+      case 'filter': return <div>
         <div style={input.property}>
           <FilterEditor
             filter={this.props.layer.filter}
@@ -141,8 +157,8 @@ export default class LayerEditor extends React.Component {
 
   render() {
     const layerType = this.props.layer.type
-    const layoutGroups = layout[layerType].groups.filter(group => {
-      return !(this.props.layer.type === 'background' && group.type === 'source')
+    const groups = layoutGroups(layerType).filter(group => {
+      return !(layerType === 'background' && group.type === 'source')
     }).map(group => {
       return <LayerEditorGroup
         key={group.title}
@@ -155,7 +171,7 @@ export default class LayerEditor extends React.Component {
     })
 
     return <div>
-      {layoutGroups}
+      {groups}
     </div>
   }
 }

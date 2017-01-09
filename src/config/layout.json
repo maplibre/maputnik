@@ -2,14 +2,6 @@
     "line": {
       "groups": [
         {
-          "title": "Settings",
-          "type": "settings"
-        },
-        {
-          "title": "Source",
-          "type": "source"
-        },
-        {
           "title": "Paint",
           "type": "properties",
           "fields": [
@@ -34,23 +26,11 @@
             "line-dasharray",
             "line-gap-width"
           ]
-        },
-        {
-          "title": "JSON",
-          "type": "jsoneditor"
         }
       ]
     },
     "background": {
       "groups": [
-        {
-          "title": "Settings",
-          "type": "settings"
-        },
-        {
-          "title": "Source",
-          "type": "source"
-        },
         {
           "title": "Basic",
           "type": "properties",
@@ -59,23 +39,11 @@
             "background-pattern",
             "background-opacity"
           ]
-        },
-        {
-          "title": "JSON",
-          "type": "jsoneditor"
         }
       ]
     },
     "fill": {
       "groups": [
-        {
-          "title": "Settings",
-          "type": "settings"
-        },
-        {
-          "title": "Source",
-          "type": "source"
-        },
         {
           "title": "Basic",
           "type": "properties",
@@ -88,23 +56,11 @@
             "fill-translate",
             "fill-translate-anchor"
           ]
-        },
-        {
-          "title": "JSON",
-          "type": "jsoneditor"
         }
       ]
     },
     "fill-extrusion": {
       "groups": [
-        {
-          "title": "Settings",
-          "type": "settings"
-        },
-        {
-          "title": "Source",
-          "type": "source"
-        },
         {
           "title": "Basic",
           "type": "properties",
@@ -117,23 +73,11 @@
             "fill-extrusion-height",
             "fill-extrusion-base"
           ]
-        },
-        {
-          "title": "JSON",
-          "type": "jsoneditor"
         }
       ]
     },
     "circle": {
       "groups": [
-        {
-          "title": "Settings",
-          "type": "settings"
-        },
-        {
-          "title": "Source",
-          "type": "source"
-        },
         {
           "title": "Basic",
           "type": "properties",
@@ -161,23 +105,11 @@
             "circle-translate",
             "circle-translate-anchor"
           ]
-        },
-        {
-          "title": "JSON",
-          "type": "jsoneditor"
         }
       ]
     },
     "symbol": {
       "groups": [
-        {
-          "title": "Settings",
-          "type": "settings"
-        },
-        {
-          "title": "Source",
-          "type": "source"
-        },
         {
           "title": "Basic",
           "type": "properties",
@@ -241,23 +173,11 @@
             "icon-keep-upright",
             "icon-offset"
           ]
-        },
-        {
-          "title": "JSON",
-          "type": "jsoneditor"
         }
       ]
     },
     "raster": {
       "groups": [
-        {
-          "title": "Settings",
-          "type": "settings"
-        },
-        {
-          "title": "Source",
-          "type": "source"
-        },
         {
           "title": "Basic",
           "type": "properties",
@@ -270,10 +190,6 @@
             "raster-contrast",
             "raster-fade-duration"
           ]
-        },
-        {
-          "title": "JSON",
-          "type": "jsoneditor"
         }
       ]
     }

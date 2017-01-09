@@ -11,7 +11,7 @@ class LayerTypeBlock extends React.Component {
   }
 
   render() {
-    return <InputBlock label={"Layer Type"} doc={GlSpec.layer.type.doc}>
+    return <InputBlock label={"Type"} doc={GlSpec.layer.type.doc}>
       <SelectInput
         options={[
           ['background', 'Background'],

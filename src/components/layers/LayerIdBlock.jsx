@@ -11,7 +11,7 @@ class LayerIdBlock extends React.Component {
   }
 
   render() {
-    return <InputBlock label={"Layer ID"} doc={GlSpec.layer.id.doc}>
+    return <InputBlock label={"ID"} doc={GlSpec.layer.id.doc}>
       <StringInput
         value={this.props.value}
         onChange={this.props.onChange}
