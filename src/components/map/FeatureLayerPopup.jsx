@@ -31,13 +31,15 @@ function groupFeaturesBySourceLayer(features) {
   return sources
 }
 
-class FeatureLayerTable extends React.Component {
+class FeatureLayerPopup extends React.Component {
   render() {
     const sources = groupFeaturesBySourceLayer(this.props.features)
 
     const items = Object.keys(sources).map(vectorLayerId => {
-      const layers = sources[vectorLayerId].map(feature => {
-        return <label style={{
+      const layers = sources[vectorLayerId].map((feature, idx) => {
+        return <label
+          key={idx}
+          style={{
             ...input.label,
             display: 'block',
             width: 'auto',
@@ -63,4 +65,4 @@ class FeatureLayerTable extends React.Component {
 }
 
 
-export default FeatureLayerTable
+export default FeatureLayerPopup

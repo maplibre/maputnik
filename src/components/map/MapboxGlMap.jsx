@@ -2,7 +2,7 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import MapboxGl from 'mapbox-gl/dist/mapbox-gl.js'
 import MapboxInspect from 'mapbox-gl-inspect'
-import FeatureLayerTable from './FeatureLayerTable'
+import FeatureLayerPopup from './FeatureLayerPopup'
 import FeaturePropertyPopup from './FeaturePropertyPopup'
 import validateColor from 'mapbox-gl-style-spec/lib/validate/validate_color'
 import colors from '../../config/colors'
@@ -13,7 +13,7 @@ import '../../mapboxgl.css'
 
 function renderLayerPopup(features) {
   var mountNode = document.createElement('div');
-  ReactDOM.render(<FeatureLayerTable features={features} />, mountNode)
+  ReactDOM.render(<FeatureLayerPopup features={features} />, mountNode)
   return mountNode.innerHTML;
 }
 
