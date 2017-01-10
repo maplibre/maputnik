@@ -71,7 +71,8 @@ class LayerListContainer extends React.Component {
     })
     return <ul style={{
       padding: 0,
-      margin: 0
+      margin: 0,
+      paddingBottom: margins[4]
     }}>
       {layerPanels}
     </ul>
