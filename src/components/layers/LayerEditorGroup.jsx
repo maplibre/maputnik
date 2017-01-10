@@ -37,6 +37,7 @@ export default class LayerEditorGroup extends React.Component {
   render() {
     return <div>
       <div style={{
+        fontWeight: 'bold',
         fontSize: fontSizes[4],
         backgroundColor: this.state.hover ? Color(colors.black).lighten(0.30).string() : Color(colors.black).lighten(0.15).string(),
         color: colors.lowgray,
