@@ -19,7 +19,6 @@ class OpenLayers3Map extends React.Component {
       const olms = require('ol-mapbox-style')
       const jsonStyle = nextProps.mapStyle
       const styleFunc = olms.getStyleFunction(jsonStyle, 'openmaptiles', this.resolutions)
-      console.log('New style babee')
 
       const layer = this.layer
       layer.setStyle(styleFunc)
