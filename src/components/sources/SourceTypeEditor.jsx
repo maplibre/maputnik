@@ -46,19 +46,19 @@ class TileURLSourceEditor extends React.Component {
       {this.renderTileUrls()}
       <InputBlock label={"Min Zoom"} doc={GlSpec.source_tile.minzoom.doc}>
         <NumberInput
-          value={this.props.source.minZoom}
-          onChange={minZoom => this.props.onChange({
+          value={this.props.source.minzoom || 0}
+          onChange={minzoom => this.props.onChange({
             ...this.props.source,
-            minZoom: minZoom
+            minzoom: minzoom
           })}
         />
       </InputBlock>
       <InputBlock label={"Max Zoom"} doc={GlSpec.source_tile.maxzoom.doc}>
         <NumberInput
-          value={this.props.source.maxZoom}
-          onChange={maxZoom => this.props.onChange({
+          value={this.props.source.maxzoom || 22}
+          onChange={maxzoom => this.props.onChange({
             ...this.props.source,
-            maxZoom: maxZoom
+            maxzoom: maxzoom
           })}
         />
       </InputBlock>

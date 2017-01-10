@@ -144,8 +144,8 @@ class AddSource extends React.Component {
       case 'tilexyz_vector': return {
         type: 'vector',
         tiles: source.tiles || ['http://localhost:3000/{x}/{y}/{z}.pbf'],
-        minZoom: source.minZoom || 0,
-        maxZoom: source.maxZoom || 14
+        minZoom: source.minzoom || 0,
+        maxZoom: source.maxzoom || 14
       }
       case 'tilejson_raster': return {
         type: 'raster',
@@ -154,8 +154,8 @@ class AddSource extends React.Component {
       case 'tilexyz_raster': return {
         type: 'raster',
         tiles: source.tiles || ['http://localhost:3000/{x}/{y}/{z}.pbf'],
-        minZoom: source.minZoom || 0,
-        maxZoom: source.maxZoom || 14
+        minzoom: source.minzoom || 0,
+        maxzoom: source.maxzoom || 14
       }
       default: return {}
     }
