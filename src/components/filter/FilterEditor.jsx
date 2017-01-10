@@ -95,22 +95,15 @@ export default class CombiningFilterEditor extends React.Component {
     }
 
     return <div>
-      <div style={{ marginBottom: margins[2] }}>
+      <div style={{ marginBottom: margins[1] }}>
         <DocLabel
           label={"Compound Filter"}
           doc={GlSpec.layer.filter.doc + " Combine multiple filters together by using a compound filter."}
           style={{
             display: 'inline-block',
-            width: '30%',
+            width: '49%',
           }}
         />
-        <Button onClick={this.addFilterItem.bind(this)} style={{
-          display: 'inline-block',
-          width: '18%',
-          marginRight: '2%',
-        }}>
-          Add filter
-        </Button>
         <SelectInput
           value={combiningOp}
           onChange={this.onFilterPartChanged.bind(this, 0)}
@@ -122,6 +115,15 @@ export default class CombiningFilterEditor extends React.Component {
         />
       </div>
       {editorBlocks}
+      <div style={{marginTop: margins[1]}}>
+        <Button onClick={this.addFilterItem.bind(this)} style={{
+          display: 'inline-block',
+          marginLeft: '79%',
+          width: '20%',
+        }}>
+          Add filter
+        </Button>
+      </div>
     </div>
   }
 }
