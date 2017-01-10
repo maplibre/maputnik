@@ -21,3 +21,22 @@ export function loadStyleUrl(styleUrl, cb) {
       }
   })
 }
+
+export function loadJSON(url, defaultValue, cb) {
+  request({
+    url: url,
+    withCredentials: false,
+  }, (error, response, body) => {
+    if (!error && body && response.statusCode == 200) {
+      try {
+        cb(JSON.parse(body))
+      } catch(err) {
+        console.error(err)
+        cb(defaultValue)
+      }
+    } else {
+      console.error('Can not load JSON from ' + url)
+      cb(defaultValue)
+    }
+  })
+}

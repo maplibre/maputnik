@@ -1,7 +1,7 @@
 import React from 'react'
 import style from '../../libs/style.js'
 import isEqual from 'lodash.isequal'
-
+import { loadJSON } from '../../libs/urlopen'
 
 function suitableVectorSource(mapStyle) {
   const sources = Object.keys(mapStyle.sources)
@@ -11,19 +11,40 @@ function suitableVectorSource(mapStyle) {
         source: mapStyle.sources[sourceId]
       }
     })
-    .filter(({source}) => source.type === 'vector' && source.tiles && source.tiles.length > 0)
-    .filter(({source}) => source.tiles.length > 0)
+    .filter(({source}) => source.type === 'vector')
   return sources[0]
 }
 
-function toVectorLayer(source, tilegrid) {
-  const ol = require('openlayers')
-  return new ol.layer.VectorTile({
-    source: new ol.source.VectorTile({
-      format: new ol.format.MVT(),
-      tileGrid: tilegrid,
-      tilePixelRatio: 8,
-      url: source.tiles[0]
+function toVectorLayer(source, tilegrid, cb) {
+  function newMVTLayer(tileUrl) {
+    const ol = require('openlayers')
+    return new ol.layer.VectorTile({
+      source: new ol.source.VectorTile({
+        format: new ol.format.MVT(),
+        tileGrid: tilegrid,
+        tilePixelRatio: 8,
+        url: tileUrl
+      })
+    })
+  }
+
+  if(!source.tiles) {
+    sourceFromTileJSON(source.url, tileSource => {
+      cb(newMVTLayer(tileSource.tiles[0]))
+    })
+  } else {
+    cb(newMVTLayer(source.tiles[0]))
+  }
+}
+
+function sourceFromTileJSON(url, cb) {
+  loadJSON(url, null, tilejson => {
+    if(!tilejson) return
+    cb({
+      type: 'vector',
+      tiles: tilejson.tiles,
+      minzoom: tilejson.minzoom,
+      maxzoom: tilejson.maxzoom,
     })
   })
 }
@@ -49,26 +70,36 @@ class OpenLayers3Map extends React.Component {
   }
 
   updateStyle(newMapStyle) {
-      const oldSource = suitableVectorSource(this.props.mapStyle)
-      const newSource = suitableVectorSource(newMapStyle)
+    const oldSource = suitableVectorSource(this.props.mapStyle)
+    const newSource = suitableVectorSource(newMapStyle)
+    const resolutions = this.resolutions
 
-      if(newSource) {
-        if(!this.layer) {
-          this.layer = toVectorLayer(newSource.source, this.tilegrid)
-          this.map.addLayer(this.layer)
-        } else if(!isEqual(oldSource, newSource)) {
-          this.map.removeLayer(this.layer)
-          this.layer = toVectorLayer(newSource.source, this.tilegrid)
-          this.map.addLayer(this.layer)
-        }
+      function setStyleFunc(map, layer) {
         const olms = require('ol-mapbox-style')
-        const styleFunc = olms.getStyleFunction(newMapStyle, newSource.id, this.resolutions)
-        this.layer.setStyle(styleFunc)
+        const styleFunc = olms.getStyleFunction(newMapStyle, newSource.id, resolutions)
+        layer.setStyle(styleFunc)
         //NOTE: We need to mark the source as changed in order
         //to trigger a rerender
-        this.layer.getSource().changed()
-        this.map.render()
+        layer.getSource().changed()
+        map.render()
+    }
+
+    if(newSource) {
+      if(this.layer && !isEqual(oldSource, newSource)) {
+        this.map.removeLayer(this.layer)
+        this.layer = null
       }
+
+      if(!this.layer) {
+        toVectorLayer(newSource.source, this.tilegrid, vectorLayer => {
+          this.layer = vectorLayer
+          this.map.addLayer(this.layer)
+          setStyleFunc(this.map, this.layer)
+        })
+      } else {
+        setStyleFunc(this.map, this.layer)
+      }
+    }
   }
 
   componentWillReceiveProps(nextProps) {
