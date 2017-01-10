@@ -122,7 +122,7 @@ class LayerListItem extends React.Component {
   render() {
     const itemStyle = {
       fontWeight: 400,
-      color: colors.lowgray,
+      color: this.props.isSelected ? colors.white : colors.lowgray,
       fontSize: fontSizes[5],
       borderLeft: 0,
       borderTop: 0,
@@ -135,6 +135,8 @@ class LayerListItem extends React.Component {
       cursor: 'pointer',
       position: 'relative',
       padding: margins[1],
+      paddingLeft: margins[2],
+      paddingRight: margins[2],
       borderColor: Color(colors.black).lighten(0.10).string(),
       backgroundColor: colors.black,
       lineHeight: 1.3,

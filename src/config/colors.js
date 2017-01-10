@@ -4,7 +4,7 @@ const baseColors = {
   midgray: '#36383e',
   lowgray: '#8e8e8e',
 
-  white: '#fff',
+  white: '#f0f0f0',
   blue: '#00d9f7',
   green: '#B4C7AD',
   orange: '#fb3',
