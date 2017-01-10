@@ -10,6 +10,7 @@ import Toolbar from './Toolbar'
 import AppLayout from './AppLayout'
 import MessagePanel from './MessagePanel'
 
+import { downloadGlyphsMetadata, downloadSpriteMetadata } from '../libs/metadata'
 import GlSpec from 'mapbox-gl-style-spec/reference/latest.js'
 import validateStyleMin from 'mapbox-gl-style-spec/lib/validate_style.min'
 import formatStyle from 'mapbox-gl-style-spec/lib/format'
@@ -21,6 +22,18 @@ import { ApiStyleStore } from '../libs/apistore'
 import { RevisionStore } from '../libs/revisions'
 import LayerWatcher from '../libs/layerwatcher'
 
+function updateRootSpec(spec, fieldName, newValues) {
+  return {
+    ...spec,
+    $root: {
+      ...spec.$root,
+      [fieldName]: {
+        ...spec.$root[fieldName],
+        values: newValues
+      }
+    }
+  }
+}
 
 export default class App extends React.Component {
   constructor(props) {
@@ -52,6 +65,7 @@ export default class App extends React.Component {
       sources: {},
       vectorLayers: {},
       inspectModeEnabled: false,
+      spec: GlSpec,
     }
 
     this.layerWatcher = new LayerWatcher({
@@ -85,7 +99,26 @@ export default class App extends React.Component {
     this.styleStore.save(snapshotStyle)
   }
 
+  updateFonts(urlTemplate) {
+    downloadGlyphsMetadata(urlTemplate, fonts => {
+      this.setState({ spec: updateRootSpec(this.state.spec, 'glyphs', fonts)})
+    })
+  }
+
+  updateIcons(baseUrl) {
+    downloadSpriteMetadata(baseUrl, icons => {
+      this.setState({ spec: updateRootSpec(this.state.spec, 'sprite', icons)})
+    })
+  }
+
   onStyleChanged(newStyle, save=true) {
+    if(newStyle.glyphs !== this.state.mapStyle.glyphs) {
+      this.updateFonts(newStyle.glyphs)
+    }
+    if(newStyle.sprite !== this.state.mapStyle.sprite) {
+      this.updateIcons(newStyle.sprite)
+    }
+
     const errors = validateStyleMin(newStyle, GlSpec)
     if(errors.length === 0) {
       this.revisionStore.addRevision(newStyle)
@@ -212,6 +245,7 @@ export default class App extends React.Component {
       layer={selectedLayer}
       sources={this.state.sources}
       vectorLayers={this.state.vectorLayers}
+      spec={this.state.spec}
       onLayerChanged={this.onLayerChanged.bind(this)}
       onLayerIdChange={this.onLayerIdChange.bind(this)}
     /> : null

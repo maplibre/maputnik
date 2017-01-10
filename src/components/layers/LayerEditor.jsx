@@ -1,6 +1,5 @@
 import React from 'react'
 
-import GlSpec from 'mapbox-gl-style-spec/reference/latest.js'
 import JSONEditor from './JSONEditor'
 import FilterEditor from '../filter/FilterEditor'
 import PropertyGroup from '../fields/PropertyGroup'
@@ -47,6 +46,7 @@ export default class LayerEditor extends React.Component {
     layer: React.PropTypes.object.isRequired,
     sources: React.PropTypes.object,
     vectorLayers: React.PropTypes.object,
+    spec: React.PropTypes.object.isRequired,
     onLayerChanged: React.PropTypes.func,
     onLayerIdChange: React.PropTypes.func,
   }
@@ -146,6 +146,7 @@ export default class LayerEditor extends React.Component {
       case 'properties': return <PropertyGroup
         layer={this.props.layer}
         groupFields={fields}
+        spec={this.props.spec}
         onChange={this.changeProperty.bind(this)}
       />
       case 'jsoneditor': return <JSONEditor

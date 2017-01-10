@@ -9,8 +9,13 @@ import fontStacks from '../../config/fontstacks.json'
 class FontInput extends React.Component {
   static propTypes = {
     value: React.PropTypes.array.isRequired,
+    fonts: React.PropTypes.array,
     style: React.PropTypes.object,
     onChange: React.PropTypes.func.isRequired,
+  }
+
+  static defaultProps = {
+    fonts: []
   }
 
   get values() {
@@ -28,7 +33,7 @@ class FontInput extends React.Component {
       return <AutocompleteInput
         key={i}
         value={value}
-        options={fontStacks.map(f => [f, f])}
+        options={this.props.fonts.map(f => [f, f])}
         onChange={this.changeFont.bind(this, i)}
         wrapperStyle={{
           display: 'block',

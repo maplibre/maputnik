@@ -1,7 +1,6 @@
 import React from 'react'
 import color from 'color'
 
-import GlSpec from 'mapbox-gl-style-spec/reference/latest.min.js'
 import ColorField from './ColorField'
 import NumberInput from '../inputs/NumberInput'
 import CheckboxInput from '../inputs/CheckboxInput'
@@ -10,8 +9,10 @@ import SelectInput from '../inputs/SelectInput'
 import MultiButtonInput from '../inputs/MultiButtonInput'
 import ArrayInput from '../inputs/ArrayInput'
 import FontInput from '../inputs/FontInput'
+import IconInput from '../inputs/IconInput'
 import capitalize from 'lodash.capitalize'
 
+const iconProperties = ['background-pattern', 'fill-pattern', 'line-pattern', 'fill-extrusion-pattern', 'icon-image']
 
 import input from '../../config/input.js'
 
@@ -78,11 +79,17 @@ export default class SpecField extends React.Component {
             options={options}
           />
         }
-      case 'string': return (
-        <StringInput
-          {...commonProps}
-        />
-      )
+      case 'string':
+        if(iconProperties.indexOf(this.props.fieldName) >= 0) {
+          return <IconInput
+            {...commonProps}
+            icons={this.props.fieldSpec.values}
+          />
+        } else {
+          return <StringInput
+            {...commonProps}
+          />
+        }
       case 'color': return (
         <ColorField
           {...commonProps}
@@ -97,6 +104,7 @@ export default class SpecField extends React.Component {
         if(this.props.fieldName === 'text-font') {
           return <FontInput
             {...commonProps}
+            fonts={this.props.fieldSpec.values}
           />
         } else {
           return <ArrayInput
