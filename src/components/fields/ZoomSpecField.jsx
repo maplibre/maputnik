@@ -182,7 +182,7 @@ export default class ZoomSpecField extends React.Component {
           <DocLabel
             label={<FunctionIcon />}
             cursorTargetStyle={{ cursor: 'pointer' }}
-            doc="Turn property into a zoom function to enable a map feature to change with map's zoom level."
+            doc={"Turn property into a zoom function to enable a map feature to change with map's zoom level."}
           />
         </Button>
         }

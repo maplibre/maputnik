@@ -75,9 +75,8 @@ export default class CombiningFilterEditor extends React.Component {
     let filters = filter.slice(1)
 
     const editorBlocks = filters.map((f, idx) => {
-      return <FilterEditorBlock onDelete={this.deleteFilterItem.bind(this, idx)}>
+      return <FilterEditorBlock key={idx} onDelete={this.deleteFilterItem.bind(this, idx)}>
         <SingleFilterEditor
-          key={idx}
           properties={this.props.properties}
           filter={f}
           onChange={this.onFilterPartChanged.bind(this, idx + 1)}

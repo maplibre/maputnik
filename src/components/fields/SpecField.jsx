@@ -76,6 +76,7 @@ export default class SpecField extends React.Component {
         } else {
           return <SelectInput
             {...commonProps}
+            value={this.props.value || this.props.fieldSpec.default}
             options={options}
           />
         }

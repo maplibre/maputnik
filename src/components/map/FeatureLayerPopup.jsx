@@ -16,12 +16,6 @@ const Panel = (props) => {
   }}>{props.children}</div>
 }
 
-function renderFeature(feature) {
-  return <div>
-    <Panel>{feature.layer['source-layer']}</Panel>
-  </div>
-}
-
 function groupFeaturesBySourceLayer(features) {
   const sources = {}
   features.forEach(feature => {
@@ -52,7 +46,7 @@ class FeatureLayerPopup extends React.Component {
           {feature.layer.id}
         </label>
       })
-      return <div>
+      return <div key={vectorLayerId}>
         <Panel>{vectorLayerId}</Panel>
         {layers}
       </div>

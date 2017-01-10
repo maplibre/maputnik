@@ -5,24 +5,19 @@ class StringInput extends React.Component {
   static propTypes = {
     value: React.PropTypes.string,
     style: React.PropTypes.object,
-    default: React.PropTypes.number,
+    default: React.PropTypes.string,
     onChange: React.PropTypes.func,
   }
 
   constructor(props) {
     super(props)
     this.state = {
-      value: props.value
+      value: props.value || ''
     }
   }
 
-  changeValue(newValue) {
-    //TODO: In feature we can try to do validation here as well
-    this.setState({ value: newValue })
-  }
-
   componentWillReceiveProps(nextProps) {
-    this.setState({ value: nextProps.value })
+    this.setState({ value: nextProps.value || '' })
   }
 
   render() {
@@ -33,8 +28,10 @@ class StringInput extends React.Component {
       }}
       value={this.state.value}
       placeholder={this.props.default}
-      onChange={e => this.changeValue(e.target.value)}
-      onBlur={() => this.props.onChange(this.state.value)}
+      onChange={e => this.setState({ value: e.target.value })}
+      onBlur={() => {
+        if(this.state.value) this.props.onChange(this.state.value)
+      }}
     />
   }
 }
