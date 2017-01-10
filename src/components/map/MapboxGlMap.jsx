@@ -37,8 +37,17 @@ function buildInspectStyle(originalMapStyle, coloredLayers, highlightedLayer) {
     coloredLayers.push(layer)
   }
 
+  const sources = {}
+  Object.keys(originalMapStyle.sources).forEach(sourceId => {
+    const source = originalMapStyle.sources[sourceId]
+    if(source.type !== 'raster') {
+      sources[sourceId] = source
+    }
+  })
+
   const inspectStyle = {
     ...originalMapStyle,
+    sources: sources,
     layers: [backgroundLayer].concat(coloredLayers)
   }
   return inspectStyle
