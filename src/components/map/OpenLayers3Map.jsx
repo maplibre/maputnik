@@ -145,6 +145,7 @@ class OpenLayers3Map extends React.Component {
         bottom: 0,
         height: "100%",
         width: "75%",
+        backgroundColor: '#fff',
         ...this.props.style,
       }}>
     </div>
