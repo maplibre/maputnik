@@ -51,6 +51,7 @@ class CheckboxInput extends React.Component {
 
     return <label style={styles.root}>
       <input
+        className="maputnik-checkbox"
         type="checkbox"
         style={{
           ...styles.input,

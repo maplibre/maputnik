@@ -22,15 +22,14 @@ export default class DocLabel extends React.Component {
   render() {
     return <label
       style={{
-        ...input.label,
-        position: 'relative',
-        verticalAlign: 'top',
-        ...this.props.style,
+        ...this.props.style
       }}
+      className="maputnik-doc-wrapper"
     >
       <span
         onMouseOver={e => this.setState({showDoc: true})}
         onMouseOut={e => this.setState({showDoc: false})}
+        className="maputnik-doc-target"
         style={{
           cursor: 'help',
           ...this.props.cursorTargetStyle,
@@ -48,7 +47,9 @@ export default class DocLabel extends React.Component {
         width: 120,
         display: this.state.showDoc ? null : 'none',
         zIndex: 3,
-      }}>
+      }}
+        className="maputnik-doc-popup"
+      >
         {this.props.doc}
       </div>
     </label>

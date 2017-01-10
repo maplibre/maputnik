@@ -50,7 +50,8 @@ class ArrayInput extends React.Component {
       }
     })
 
-    return <div style={{display: 'inline-block', width: '50%'}}>
+    return <div className="maputnik-array"
+      style={{display: 'inline-block', width: '50%'}}>
       {inputs}
     </div>
   }

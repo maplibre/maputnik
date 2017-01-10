@@ -68,8 +68,8 @@ class NumberInput extends React.Component {
 
   render() {
     return <input
+      className="maputnik-number"
       style={{
-        ...input.input,
         ...this.props.style
       }}
       placeholder={this.props.default}

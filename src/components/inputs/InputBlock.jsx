@@ -32,7 +32,9 @@ class InputBlock extends React.Component {
     return <div style={{
       ...input.property,
       ...this.props.style,
-    }}>
+    }}
+      className="maputnik-input-block"
+      >
       {this.props.doc &&
       <DocLabel
         label={this.props.label}

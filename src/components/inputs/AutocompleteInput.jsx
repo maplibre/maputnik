@@ -20,6 +20,7 @@ class AutocompleteInput extends React.Component {
 
   render() {
     return <Autocomplete
+      className="maputnik-autocomplete"
       menuStyle={{
         border: 'none',
         padding: '2px 0',

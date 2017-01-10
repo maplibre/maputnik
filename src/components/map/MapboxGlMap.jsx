@@ -142,16 +142,8 @@ export default class MapboxGlMap extends React.Component {
 
   render() {
     return <div
+      className="maputnik-map"
       ref={x => this.container = x}
-      style={{
-        position: "fixed",
-        top: 0,
-        right: 0,
-        bottom: 0,
-        height: "100%",
-        width: "75%",
-        ...this.props.style,
-      }}>
-    </div>
+    ></div>
   }
 }

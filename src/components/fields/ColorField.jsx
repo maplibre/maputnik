@@ -58,9 +58,10 @@ class ColorField extends React.Component {
   render() {
     const offset = this.calcPickerOffset()
     const picker = <div
+      className="maputnik-color-picker-offset"
       style={{
-        position: 'fixed',
-        zIndex: 1,
+	      position: 'fixed',
+	      zIndex: 1,
         left: offset.left,
         top: offset.top,
       }}>
@@ -69,6 +70,7 @@ class ColorField extends React.Component {
         onChange={c => this.props.onChange(formatColor(c))}
       />
       <div
+        className="maputnik-color-picker-offset"
         onClick={this.togglePicker.bind(this)}
         style={{
           zIndex: -1,
@@ -81,18 +83,13 @@ class ColorField extends React.Component {
       />
     </div>
 
-    return <div style={{
-      position: 'relative',
-      display: 'inline',
-    }}>
+    return <div className="maputnik-color-wrapper">
       {this.state.pickerOpened && picker}
       <input
+        className="maputnik-color"
         ref="colorInput"
         onClick={this.togglePicker.bind(this)}
-        style={{
-          ...input.input,
-          ...this.props.style
-        }}
+        style={this.props.style}
         name={this.props.name}
         placeholder={this.props.default}
         value={this.props.value ? this.props.value : ""}

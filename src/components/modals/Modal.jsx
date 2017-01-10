@@ -15,32 +15,17 @@ class Modal extends React.Component {
 
   render() {
     return <Overlay isOpen={this.props.isOpen}>
-      <div style={{
-        minWidth: 350,
-        maxWidth: 600,
-        backgroundColor: colors.black,
-        boxShadow: '0px 0px 5px 0px rgba(0,0,0,0.3)',
-      }}>
-        <div style={{
-          backgroundColor: colors.gray,
-          display: 'flex',
-          flexDirection: 'row',
-          padding: margins[2],
-          fontSize: fontSizes[4],
-        }}>
-          {this.props.title}
+      <div className="maputnik-modal">
+        <div className="maputnik-modal-header">
+          <span className="maputnik-modal-header-title">{this.props.title}</span>
           <span style={{flexGrow: 1}} />
-          <a
+          <a className="maputnik-modal-header-toggle"
             onClick={() => this.props.onOpenToggle(false)}
             style={{ cursor: 'pointer' }} >
             <CloseIcon />
           </a>
         </div>
-        <div style={{
-          padding: margins[2],
-        }}>
-          {this.props.children}
-        </div>
+        <div className="maputnik-modal-content">{this.props.children}</div>
       </div>
     </Overlay>
   }

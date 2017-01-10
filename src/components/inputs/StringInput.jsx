@@ -22,6 +22,7 @@ class StringInput extends React.Component {
 
   render() {
     return <input
+      className="maputnik-string"
       style={{
         ...input.input,
         ...this.props.style

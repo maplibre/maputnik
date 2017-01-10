@@ -17,6 +17,7 @@ class SelectInput extends React.Component {
     }
 
     return <select
+      className="maputnik-select"
       style={{
         ...input.select,
         ...this.props.style

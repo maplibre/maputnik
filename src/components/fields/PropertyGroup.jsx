@@ -66,7 +66,7 @@ export default class PropertyGroup extends React.Component {
       />
     })
 
-    return <div>
+    return <div className="maputnik-property-group">
       {fields}
     </div>
   }

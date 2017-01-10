@@ -25,51 +25,20 @@ class AppLayout extends React.Component {
   }
 
   render() {
-    return <div style={{
-      fontFamily: theme.fontFamily,
-      color: theme.color,
-      fontWeight: 300
-    }}>
+    return <div className="maputnik-layout">
       {this.props.toolbar}
-      <div style={{
-        position: 'fixed',
-        bottom: 0,
-        height: "100%",
-        top: 40,
-        left: 0,
-        zIndex: 1,
-        width: 200,
-        overflow: "hidden",
-        backgroundColor: colors.black
-      }}>
+      <div className="maputnik-layout-list">
         <ScrollContainer>
           {this.props.layerList}
         </ScrollContainer>
       </div>
-      <div style={{
-        position: 'fixed',
-        bottom: 0,
-        height: "100%",
-        top: 40,
-        left: 200,
-        zIndex: 1,
-        width: 350,
-        backgroundColor: colors.black
-      }}>
+      <div className="maputnik-layout-drawer">
         <ScrollContainer>
           {this.props.layerEditor}
         </ScrollContainer>
       </div>
       {this.props.map}
-      {this.props.bottom && <div style={{
-          position: 'fixed',
-          height: 50,
-          bottom: 0,
-          left: 550,
-          zIndex: 1,
-          width: '100%',
-          backgroundColor: colors.black
-        }}>
+      {this.props.bottom && <div className="maputnik-layout-bottom">
           {this.props.bottom}
         </div>
       }

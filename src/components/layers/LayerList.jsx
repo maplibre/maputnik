@@ -69,11 +69,7 @@ class LayerListContainer extends React.Component {
         onLayerVisibilityToggle={this.onLayerVisibilityToggle.bind(this)}
       />
     })
-    return <ul style={{
-      padding: 0,
-      margin: 0,
-      paddingBottom: margins[4]
-    }}>
+    return <ul className="maputnik-layer-list-container">
       {layerPanels}
     </ul>
   }

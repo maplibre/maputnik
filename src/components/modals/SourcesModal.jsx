@@ -27,7 +27,7 @@ class PublicSource extends React.Component {
   }
 
   render() {
-    return <div style={{
+    return <div className="maputnik-public-source" style={{
         verticalAlign: 'top',
         marginTop: margins[2],
         marginRight: margins[2],
@@ -83,7 +83,8 @@ class ActiveSourceTypeEditor extends React.Component {
     const inputProps = { }
     return <div style={{
     }}>
-      <div style={{
+      <div className="maputnik-active-source-type-editor"
+      style={{
         backgroundColor: colors.gray,
         color: colors.lowgray,
         padding: margins[1],

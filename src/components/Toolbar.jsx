@@ -30,22 +30,14 @@ const IconText = props => <span style={{ paddingLeft: margins[0] }}>
   {props.children}
 </span>
 
-const actionStyle = {
-  display: "inline-block",
-  padding: 10,
-  fontSize: fontSizes[4],
-  cursor: "pointer",
-  color: colors.white,
-  textDecoration: 'none',
-}
-
 const ToolbarLink = props => <a
+  className='maputnik-toolbar-link'
   href={props.href}
   target={"blank"}
   style={{
-    ...actionStyle,
     ...props.style,
-  }}>
+  }}
+  >
   {props.children}
 </a>
 
@@ -54,20 +46,12 @@ class ToolbarAction extends React.Component {
     onClick: React.PropTypes.func.isRequired,
   }
 
-  constructor(props) {
-    super(props)
-    this.state = { hover: false }
-  }
-
   render() {
     return <a
+      className='maputnik-toolbar-action'
       onClick={this.props.onClick}
-      onMouseOver={e => this.setState({hover: true})}
-      onMouseOut={e => this.setState({hover: false})}
       style={{
-        ...actionStyle,
         ...this.props.style,
-        backgroundColor: this.state.hover ? colors.gray : null,
       }}>
       {this.props.children}
     </a>
@@ -116,15 +100,7 @@ export default class Toolbar extends React.Component {
   }
 
   render() {
-    return <div style={{
-      position: "fixed",
-      height: 40,
-      width: '100%',
-      zIndex: 100,
-      left: 0,
-      top: 0,
-      backgroundColor: colors.black
-    }}>
+    return <div className='maputnik-toolbar'>
       <SettingsModal
         mapStyle={this.props.mapStyle}
         onStyleChanged={this.props.onStyleChanged}

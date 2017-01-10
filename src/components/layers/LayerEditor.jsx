@@ -172,7 +172,8 @@ export default class LayerEditor extends React.Component {
       </LayerEditorGroup>
     })
 
-    return <div>
+    return <div className="maputnik-layer-editor"
+      >
       {groups}
     </div>
   }

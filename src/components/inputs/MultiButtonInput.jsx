@@ -37,7 +37,9 @@ class MultiButtonInput extends React.Component {
     return <div style={{
       display: 'inline-block',
       ...this.props.style,
-    }}>
+    }}
+      className="maputnik-multibutton"
+    >
       {buttons}
     </div>
   }

@@ -11,17 +11,8 @@ class Button extends React.Component {
   render() {
     return <a
       onClick={this.props.onClick}
-      style={{
-        cursor: 'pointer',
-        backgroundColor: colors.midgray,
-        color: colors.lowgray,
-        fontSize: fontSizes[5],
-        padding: margins[1],
-        userSelect: 'none',
-        borderRadius: 2,
-        boxSizing: 'border-box',
-        ...this.props.style,
-      }}>
+      className="maputnik-button"
+      style={this.props.style}>
       {this.props.children}
     </a>
   }

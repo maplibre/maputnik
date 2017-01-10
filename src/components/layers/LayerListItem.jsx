@@ -66,11 +66,8 @@ class IconAction extends React.Component {
 
   render() {
     return <a
-      style={{
-        display: "inline",
-        marginLeft: margins[0],
-        ...this.props.style
-      }}
+      className="maputnik-icon-action"
+      style={this.props.style}
       onClick={this.props.onClick}
       onMouseOver={e => this.setState({hover: true})}
       onMouseOut={e => this.setState({hover: false})}
@@ -121,25 +118,7 @@ class LayerListItem extends React.Component {
 
   render() {
     const itemStyle = {
-      fontWeight: 400,
-      color: this.props.isSelected ? colors.white : colors.lowgray,
-      fontSize: fontSizes[5],
-      borderLeft: 0,
-      borderTop: 0,
-      borderBottom: 1,
-      borderRight: 0,
-      borderStyle: "solid",
-      userSelect: 'none',
-      listStyle: 'none',
-      zIndex: 2000,
-      cursor: 'pointer',
-      position: 'relative',
-      padding: margins[1],
-      paddingLeft: margins[2],
-      paddingRight: margins[2],
-      borderColor: Color(colors.black).lighten(0.10).string(),
       backgroundColor: colors.black,
-      lineHeight: 1.3,
     }
 
     if(this.state.hover) {
@@ -159,18 +138,10 @@ class LayerListItem extends React.Component {
       onClick={e => this.props.onLayerSelect(this.props.layerId)}
       onMouseOver={e => this.setState({hover: true})}
       onMouseOut={e => this.setState({hover: false})}
-      style={itemStyle}>
-      <div style={{
-        display: 'flex',
-        flexDirection: 'row'
-      }}>
+      className="maputnik-layer-list-item"
+      >
         <LayerTypeDragHandle type={this.props.layerType} />
-        <span style={{
-          width: 115,
-          whiteSpace: 'nowrap',
-          overflow: 'hidden',
-          textOverflow: 'ellipsis'
-        }}>{this.props.layerId}</span>
+        <span className="maputnik-layer-list-item-id">{this.props.layerId}</span>
         <span style={{flexGrow: 1}} />
         <IconAction {...iconProps}
           action={'delete'}
@@ -185,7 +156,6 @@ class LayerListItem extends React.Component {
           action={this.props.visibility === 'visible' ? 'hide' : 'show'}
           onClick={e => this.props.onLayerVisibilityToggle(this.props.layerId)}
         />
-      </div>
     </li>
   }
 }

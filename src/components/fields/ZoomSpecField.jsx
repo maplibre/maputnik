@@ -105,6 +105,7 @@ export default class ZoomSpecField extends React.Component {
         if(idx === 1) {
           label = <label style={{...input.label, width: '41%'}}>
             <Button
+              className="maputnik-add-stop"
               style={{fontSize: fontSizes[5]}}
               onClick={this.addStop.bind(this)}
             >
@@ -123,6 +124,7 @@ export default class ZoomSpecField extends React.Component {
           }}>
           {label}
           <Button
+           className="maputnik-delete-stop"
             style={{backgroundColor: null, verticalAlign: 'top'}}
             onClick={this.deleteStop.bind(this, idx)}
           >
@@ -160,7 +162,9 @@ export default class ZoomSpecField extends React.Component {
 
       }
 
-      return <div style={input.property}>
+      return <div style={input.property}
+         className="maputnik-zoom-spec-field"
+        >
         <DocLabel
           label={labelFromFieldName(this.props.fieldName)}
           doc={this.props.fieldSpec.doc}
@@ -170,6 +174,7 @@ export default class ZoomSpecField extends React.Component {
         />
         {this.props.fieldSpec['zoom-function'] &&
         <Button
+           className="maputnik-make-zoom-function"
           style={{
             verticalAlign: 'top',
             backgroundColor: null,
