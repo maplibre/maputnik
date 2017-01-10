@@ -66,7 +66,7 @@ class AddModal extends React.Component {
     if(!this.state.source && sourceIds.length > 0) {
       this.setState({
         source: sourceIds[0],
-        'source-layer': this.state['source-layer'] || nextProps.sources[sourceIds[0]][0]
+        'source-layer': this.state['source-layer'] || (nextProps.sources[sourceIds[0]] || [])[0]
       })
     }
   }

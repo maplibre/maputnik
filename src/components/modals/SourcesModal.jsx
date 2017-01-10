@@ -105,7 +105,6 @@ class ActiveSourceTypeEditor extends React.Component {
         borderWidth: 2,
         borderStyle: 'solid',
         padding: margins[1],
-        height: 50
       }}>
         <SourceTypeEditor
           onChange={this.props.onChange}
