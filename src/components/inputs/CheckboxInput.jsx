@@ -5,7 +5,7 @@ import { margins } from '../../config/scales'
 
 class CheckboxInput extends React.Component {
   static propTypes = {
-    value: React.PropTypes.string,
+    value: React.PropTypes.bool.isRequired,
     style: React.PropTypes.object,
     onChange: React.PropTypes.func,
   }
@@ -56,7 +56,7 @@ class CheckboxInput extends React.Component {
           ...styles.input,
           ...this.props.style,
         }}
-        onChange={e => {this.props.onChange(!this.props.value)}}
+        onChange={e => this.props.onChange(!this.props.value)}
         checked={this.props.value}
       />
       <div style={styles.box}>

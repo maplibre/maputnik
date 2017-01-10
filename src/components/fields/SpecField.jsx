@@ -51,8 +51,8 @@ export default class SpecField extends React.Component {
   render() {
     const commonProps = {
       style: this.props.style,
-      default: this.props.fieldSpec.default,
       value: this.props.value,
+      default: this.props.fieldSpec.default,
       name: this.props.fieldName,
       onChange: newValue => this.props.onChange(this.props.fieldName, newValue)
     }
@@ -70,13 +70,11 @@ export default class SpecField extends React.Component {
         if(options.length <= 3 && optionsLabelLength(options) <= 20) {
           return <MultiButtonInput
             {...commonProps}
-            value={this.props.value || this.props.fieldSpec.default}
             options={options}
           />
         } else {
           return <SelectInput
             {...commonProps}
-            value={this.props.value || this.props.fieldSpec.default}
             options={options}
           />
         }
