@@ -1,4 +1,5 @@
 import React from 'react'
+import classnames from 'classnames'
 import cloneDeep from 'lodash.clonedeep'
 
 import Button from '../Button'
@@ -31,6 +32,7 @@ class LayerListContainer extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
+      collapsedGroups: {},
       isOpen: {
         add: false,
       }
@@ -92,37 +94,42 @@ class LayerListContainer extends React.Component {
   }
 
   toggleLayerGroup(groupPrefix) {
-    groupedLayers().forEach(layers => {
-      if(groupPrefix === layerPrefix(layers[0].id)) {
-        layers.forEach(layer => {
-          //HACK
-          //In this case it is ok to modify the metadata
-          //because no one else depends on it
-          layer.metadata = {
-            ...layer.metadata,
-            'maputnik:visible': false
-          }
-        })
-      }
+    const newGroups = { ...this.state.collapsedGroups }
+    if(groupPrefix in this.state.collapsedGroups) {
+      newGroups[groupPrefix] = !this.state.collapsedGroups[groupPrefix]
+    } else {
+      newGroups[groupPrefix] = true
+    }
+    this.setState({
+      collapsedGroups: newGroups
     })
   }
 
   render() {
+    const isCollapsed = groupPrefix => {
+      const collapsed = this.state.collapsedGroups[groupPrefix]
+      return collapsed === undefined ? false : collapsed
+    }
+
     const listItems = []
     let idx = 0
     this.groupedLayers().forEach(layers => {
+      const groupPrefix = layerPrefix(layers[0].id)
       if(layers.length > 1) {
-        const groupPrefix = layerPrefix(layers[0].id)
         const grp = <LayerListGroup
-          key={'group-'+groupPrefix}
+          key={'group-' + groupPrefix + '-' + idx}
           title={groupPrefix}
-          isActive={true}
+          isActive={!isCollapsed(groupPrefix)}
+          onActiveToggle={this.toggleLayerGroup.bind(this, groupPrefix)}
         />
         listItems.push(grp)
       }
 
       layers.forEach(layer => {
         const listItem = <LayerListItem
+          className={classnames({
+            'maputnik-layer-list-item-collapsed': isCollapsed(groupPrefix)
+          })}
           index={idx}
           key={layer.id}
           layerId={layer.id}

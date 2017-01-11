@@ -61,6 +61,7 @@ class LayerListItem extends React.Component {
     layerType: React.PropTypes.string.isRequired,
     isSelected: React.PropTypes.bool,
     visibility: React.PropTypes.string,
+    className: React.PropTypes.string,
 
     onLayerSelect: React.PropTypes.func.isRequired,
     onLayerCopy: React.PropTypes.func,
@@ -93,6 +94,7 @@ class LayerListItem extends React.Component {
       className={classnames({
         "maputnik-layer-list-item": true,
         "maputnik-layer-list-item-selected": this.props.isSelected,
+        [this.props.className]: true,
       })}>
         <LayerTypeDragHandle type={this.props.layerType} />
         <span className="maputnik-layer-list-item-id">{this.props.layerId}</span>

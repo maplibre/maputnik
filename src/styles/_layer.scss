@@ -62,6 +62,12 @@
     color: $color-white;
   }
 
+  &-item-collapsed {
+    height: 0;
+    overflow: hidden;
+    padding: 0;
+  }
+
   &-item-id {
     width: 115px;
     white-space: nowrap;
