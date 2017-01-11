@@ -239,6 +239,7 @@ export default class App extends React.Component {
       onLayerSelect={this.onLayerSelect.bind(this)}
       selectedLayerIndex={this.state.selectedLayerIndex}
       layers={layers}
+      sources={this.state.sources}
     />
 
     const layerEditor = selectedLayer ? <LayerEditor

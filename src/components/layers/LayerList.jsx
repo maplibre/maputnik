@@ -4,6 +4,7 @@ import cloneDeep from 'lodash.clonedeep'
 import Button from '../Button'
 import LayerListItem from './LayerListItem'
 import AddIcon from 'react-icons/lib/md/add-circle-outline'
+import AddModal from '../modals/AddModal'
 
 import style from '../../libs/style.js'
 import {SortableContainer, SortableHandle, arrayMove} from 'react-sortable-hoc';
@@ -13,6 +14,7 @@ const layerListPropTypes = {
   selectedLayerIndex: React.PropTypes.number.isRequired,
   onLayersChange: React.PropTypes.func.isRequired,
   onLayerSelect: React.PropTypes.func,
+  sources: React.PropTypes.object.isRequired,
 }
 
 // List of collapsible layer editors
@@ -21,6 +23,15 @@ class LayerListContainer extends React.Component {
   static propTypes = {...layerListPropTypes}
   static defaultProps = {
     onLayerSelect: () => {},
+  }
+
+  constructor(props) {
+    super(props)
+    this.state = {
+      isOpen: {
+        add: false,
+      }
+    }
   }
 
   onLayerDestroy(layerId) {
@@ -53,6 +64,15 @@ class LayerListContainer extends React.Component {
     this.props.onLayersChange(changedLayers)
   }
 
+  toggleModal(modalName) {
+    this.setState({
+      isOpen: {
+        ...this.state.isOpen,
+        [modalName]: !this.state.isOpen[modalName]
+      }
+    })
+  }
+
   render() {
     const layerPanels = this.props.layers.map((layer, index) => {
       const layerId = layer.id
@@ -70,10 +90,21 @@ class LayerListContainer extends React.Component {
       />
     })
     return <div className="maputnik-layer-list">
+      <AddModal
+          layers={this.props.layers}
+          sources={this.props.sources}
+          isOpen={this.state.isOpen.add}
+          onOpenToggle={this.toggleModal.bind(this, 'add')}
+          onLayersChange={this.props.onLayersChange}
+      />
       <header className="maputnik-layer-list-header">
         <span>Layers</span>
         <span className="maputnik-space" />
-        <Button className="maputnik-add-layer">Add Layer</Button>
+        <Button
+          onClick={this.toggleModal.bind(this, 'add')}
+          className="maputnik-add-layer">
+      Add Layer
+      </Button>
       </header>
       <ul className="maputnik-layer-list-container">
         {layerPanels}

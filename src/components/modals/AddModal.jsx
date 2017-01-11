@@ -13,8 +13,8 @@ import LayerSourceLayerBlock from '../layers/LayerSourceLayerBlock'
 
 class AddModal extends React.Component {
   static propTypes = {
-    mapStyle: React.PropTypes.object.isRequired,
-    onStyleChange: React.PropTypes.func.isRequired,
+    layers: React.PropTypes.array.isRequired,
+    onLayersChange: React.PropTypes.func.isRequired,
     isOpen: React.PropTypes.bool.isRequired,
     onOpenToggle: React.PropTypes.func.isRequired,
 
@@ -23,7 +23,7 @@ class AddModal extends React.Component {
   }
 
   addLayer() {
-    const changedLayers = this.props.mapStyle.layers.slice(0)
+    const changedLayers = this.props.layers.slice(0)
     const layer = {
       id: this.state.id,
       type: this.state.type,
@@ -38,12 +38,7 @@ class AddModal extends React.Component {
 
     changedLayers.push(layer)
 
-    const changedStyle = {
-      ...this.props.mapStyle,
-      layers: changedLayers,
-    }
-
-    this.props.onStyleChange(changedStyle)
+    this.props.onLayersChange(changedLayers)
     this.props.onOpenToggle(false)
   }
 

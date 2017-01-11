@@ -15,10 +15,8 @@ import MdInsertEmoticon from 'react-icons/lib/md/insert-emoticon'
 import MdFontDownload from 'react-icons/lib/md/font-download'
 import HelpIcon from 'react-icons/lib/md/help-outline'
 import InspectionIcon from 'react-icons/lib/md/find-in-page'
-import AddIcon from 'react-icons/lib/md/add-circle-outline'
 
 import logoImage from '../img/maputnik.png'
-import AddModal from './modals/AddModal'
 import SettingsModal from './modals/SettingsModal'
 import SourcesModal from './modals/SourcesModal'
 import OpenModal from './modals/OpenModal'
@@ -108,13 +106,6 @@ export default class Toolbar extends React.Component {
           isOpen={this.state.isOpen.sources}
           onOpenToggle={this.toggleModal.bind(this, 'sources')}
       />
-      <AddModal
-          mapStyle={this.props.mapStyle}
-          sources={this.props.sources}
-          isOpen={this.state.isOpen.add}
-          onOpenToggle={this.toggleModal.bind(this, 'add')}
-          onStyleChange={this.props.onStyleChanged}
-      />
       <ToolbarLink
         href={"https://github.com/maputnik/editor"}
         className="maputnik-toolbar-logo"
@@ -127,10 +118,6 @@ export default class Toolbar extends React.Component {
         <IconText>Open</IconText>
       </ToolbarAction>
       {this.downloadButton()}
-      <ToolbarAction onClick={this.toggleModal.bind(this, 'add')}>
-        <AddIcon />
-        <IconText>Add Layer</IconText>
-      </ToolbarAction>
       <ToolbarAction onClick={this.toggleModal.bind(this, 'sources')}>
         <SourcesIcon />
         <IconText>Sources</IconText>
