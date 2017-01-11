@@ -175,7 +175,7 @@ class LayerListContainer extends React.Component {
           onLayersChange={this.props.onLayersChange}
       />
       <header className="maputnik-layer-list-header">
-        <span>Layers</span>
+        <span className="maputnik-layer-list-header-title">Layers</span>
         <span className="maputnik-space" />
         <Button
           onClick={this.toggleModal.bind(this, 'add')}
