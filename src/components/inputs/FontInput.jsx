@@ -1,7 +1,5 @@
 import React from 'react'
 import AutocompleteInput from './AutocompleteInput'
-import input from '../../config/input.js'
-import { margins } from '../../config/scales.js'
 
 //TODO: Query available font stack dynamically
 import fontStacks from '../../config/fontstacks.json'
@@ -35,17 +33,10 @@ class FontInput extends React.Component {
         value={value}
         options={this.props.fonts.map(f => [f, f])}
         onChange={this.changeFont.bind(this, i)}
-        wrapperStyle={{
-          display: 'block',
-          marginBottom: i == this.values.length - 1 ? 0 : margins[2],
-        }}
       />
     })
 
-    return <div style={{
-      display: 'inline-block',
-      ...this.props.style
-    }}>
+    return <div className="maputnik-font">
       {inputs}
     </div>
   }

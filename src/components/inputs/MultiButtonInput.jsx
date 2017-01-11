@@ -1,16 +1,11 @@
-
 import React from 'react'
+import classnames from 'classnames'
 import Button from '../Button'
-
-import colors from '../../config/colors'
-import { margins } from '../../config/scales'
-import input from '../../config/input.js'
 
 class MultiButtonInput extends React.Component {
   static propTypes = {
     value: React.PropTypes.string.isRequired,
     options: React.PropTypes.array.isRequired,
-    style: React.PropTypes.object,
     onChange: React.PropTypes.func.isRequired,
   }
 
@@ -25,21 +20,13 @@ class MultiButtonInput extends React.Component {
       return <Button
         key={val}
         onClick={e => this.props.onChange(val)}
-        style={{
-          marginRight: margins[0],
-          backgroundColor: val === selectedValue ? colors.midgray : colors.gray,
-        }}
+        className={classnames({"maputnik-button-selected": val === selectedValue})}
       >
         {label}
       </Button>
     })
 
-    return <div style={{
-      display: 'inline-block',
-      ...this.props.style,
-    }}
-      className="maputnik-multibutton"
-    >
+    return <div className="maputnik-multibutton">
       {buttons}
     </div>
   }

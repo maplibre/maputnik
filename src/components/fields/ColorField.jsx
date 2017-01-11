@@ -2,8 +2,6 @@ import React from 'react'
 import Color from 'color'
 import ChromePicker from 'react-color/lib/components/chrome/Chrome'
 
-import input from '../../config/input.js'
-
 function formatColor(color) {
   const rgb = color.rgb
   return `rgba(${rgb.r}, ${rgb.g}, ${rgb.b}, ${rgb.a})`

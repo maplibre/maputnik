@@ -1,8 +1,7 @@
 import React from 'react'
+import classnames from 'classnames'
 import Autocomplete from 'react-autocomplete'
-import input from '../../config/input'
-import colors from '../../config/colors'
-import { margins, fontSizes } from '../../config/scales'
+
 
 class AutocompleteInput extends React.Component {
   static propTypes = {
@@ -17,20 +16,15 @@ class AutocompleteInput extends React.Component {
   }
 
   render() {
+
+    const AutocompleteMenu = (items, value, style) => <div className={"maputnik-autocomplete-menu"} children={props.items} />
+
     return <Autocomplete
       wrapperProps={{
         className: "maputnik-autocomplete",
         style: null
       }}
-      menuStyle={{
-        border: 'none',
-        padding: '2px 0',
-        position: 'fixed',
-        overflow: 'auto',
-        maxHeight: '50%',
-        background: colors.gray,
-        zIndex: 3,
-      }}
+      renderMenu={AutocompleteMenu}
       inputProps={{
         className: "maputnik-string"
       }}
@@ -42,15 +36,10 @@ class AutocompleteInput extends React.Component {
       renderItem={(item, isHighlighted) => (
         <div
           key={item[0]}
-          style={{
-            userSelect: 'none',
-            color: colors.lowgray,
-            cursor: 'default',
-            background: isHighlighted ? colors.midgray : colors.gray,
-            padding: margins[0],
-            fontSize: fontSizes[5],
-            zIndex: 3,
-          }}
+          className={classnames({
+            "maputnik-autocomplete-menu-item": true,
+            "maputnik-autocomplete-menu-item-selected": isHighlighted,
+          })}
         >
          {item[1]}
         </div>

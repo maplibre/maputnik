@@ -14,8 +14,6 @@ import capitalize from 'lodash.capitalize'
 
 const iconProperties = ['background-pattern', 'fill-pattern', 'line-pattern', 'fill-extrusion-pattern', 'icon-image']
 
-import input from '../../config/input.js'
-
 function labelFromFieldName(fieldName) {
   let label = fieldName.split('-').slice(1).join(' ')
   if(label.length > 0) {

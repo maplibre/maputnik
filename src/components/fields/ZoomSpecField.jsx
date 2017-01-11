@@ -12,8 +12,6 @@ import DeleteIcon from 'react-icons/lib/md/delete'
 import FunctionIcon from 'react-icons/lib/md/functions'
 
 import capitalize from 'lodash.capitalize'
-import input from '../../config/input.js'
-import colors from '../../config/colors.js'
 
 function isZoomField(value) {
   return typeof value === 'object' && value.stops

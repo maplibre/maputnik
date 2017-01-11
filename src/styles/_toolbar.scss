@@ -45,3 +45,12 @@
 .maputnik-toolbar-action {
   @extend .maputnik-toolbar-link;
 }
+
+.maputnik-icon-text {
+  padding-left: $margin-1;
+}
+
+.maputnik-icon-action {
+  display: inline;
+  margin-left: $margin-1;
+}

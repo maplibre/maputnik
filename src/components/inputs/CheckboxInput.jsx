@@ -1,5 +1,4 @@
 import React from 'react'
-import input from '../../config/input.js'
 
 class CheckboxInput extends React.Component {
   static propTypes = {

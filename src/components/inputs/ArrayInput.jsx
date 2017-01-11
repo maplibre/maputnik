@@ -1,5 +1,4 @@
 import React from 'react'
-import input from '../../config/input.js'
 import StringInput from './StringInput'
 import NumberInput from './NumberInput'
 

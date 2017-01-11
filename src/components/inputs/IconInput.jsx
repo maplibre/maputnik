@@ -1,7 +1,5 @@
 import React from 'react'
 import AutocompleteInput from './AutocompleteInput'
-import input from '../../config/input.js'
-import { margins } from '../../config/scales.js'
 
 
 class IconInput extends React.Component {

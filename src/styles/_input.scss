@@ -52,6 +52,16 @@
   height: 24px;
 }
 
+// MULTIBUTTON
+.maputnik-multibutton {
+  @extend .maputnik-input;
+  margin-right: $margin-1;
+}
+
+.maputnik-button-selected {
+  background-color: $color-midgray;
+}
+
 // CHECKBOX
 .maputnik-checkbox {
   position: absolute;
@@ -94,5 +104,34 @@
 
 // AUTOCOMPLETE
 .maputnik-autocomplete {
+  &-menu {
+    border: none;
+    padding: 2px 0;
+    position: fixed;
+    overflow: auto;
+    max-height: 50%;
+    background: $color-gray;
+    z-index: 3,
+  }
+
+  &-menu-item {
+    user-select: none;
+    color: $color-lowgray;
+    cursor: default;
+    padding: $margin-1;
+    font-size: $font-size-6;
+    z-index: 3;
+    background: $color-gray;
+  }
+
+  &-menu-item-selected {
+    background: $color-midgray;
+  }
 }
 
+// FONT
+.maputnik-font {
+  .maputnik-autocomplete:not(:last-child) {
+    margin-bottom: $margin-3;
+  }
+}

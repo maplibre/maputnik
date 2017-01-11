@@ -1,7 +1,4 @@
 import React from 'react'
-import input from '../../config/input.js'
-import colors from '../../config/colors.js'
-import { margins, fontSizes } from '../../config/scales.js'
 
 export default class DocLabel extends React.Component {
   static propTypes = {
@@ -10,45 +7,16 @@ export default class DocLabel extends React.Component {
       React.PropTypes.string
     ]).isRequired,
     doc: React.PropTypes.string.isRequired,
-    style: React.PropTypes.object,
-    cursorTargetStyle: React.PropTypes.object,
-  }
-
-  constructor(props) {
-    super(props)
-    this.state = { showDoc: false }
   }
 
   render() {
-    return <label
-      style={{
-        ...this.props.style
-      }}
-      className="maputnik-doc-wrapper"
-    >
-      <span
-        onMouseOver={e => this.setState({showDoc: true})}
-        onMouseOut={e => this.setState({showDoc: false})}
-        className="maputnik-doc-target"
-        style={this.props.cursorTargetStyle}
-      >
-        {this.props.label}
-      </span>
-      <div style={{
-        backgroundColor: colors.gray,
-        padding: margins[1],
-        fontSize: 10,
-        position: 'absolute',
-        top: 20,
-        left: 0,
-        width: 120,
-        display: this.state.showDoc ? null : 'none',
-        zIndex: 3,
-      }}
-        className="maputnik-doc-popup"
-      >
-        {this.props.doc}
-      </div>
+    return <label className="maputnik-doc-wrapper">
+      <div className="maputnik-doc-target">
+        <span>{this.props.label}</span>
+        <div className="maputnik-doc-popup">
+          {this.props.doc}
+        </div>
+      </div >
     </label>
   }
 }

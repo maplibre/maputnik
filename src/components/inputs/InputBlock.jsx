@@ -1,6 +1,5 @@
 import React from 'react'
 import classnames from 'classnames'
-import input from '../../config/input'
 import DocLabel from '../fields/DocLabel'
 
 /** Wrap a component with a label */

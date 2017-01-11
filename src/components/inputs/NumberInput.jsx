@@ -1,5 +1,4 @@
 import React from 'react'
-import input from '../../config/input.js'
 
 class NumberInput extends React.Component {
   static propTypes = {
