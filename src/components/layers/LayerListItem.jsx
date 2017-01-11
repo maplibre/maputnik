@@ -80,10 +80,6 @@ class LayerListItem extends React.Component {
     reactIconBase: React.PropTypes.object
   }
 
-  constructor(props) {
-    super(props)
-  }
-
   getChildContext() {
     return {
       reactIconBase: { size: 14 }

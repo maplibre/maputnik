@@ -2,12 +2,15 @@ import React from 'react'
 import cloneDeep from 'lodash.clonedeep'
 
 import Button from '../Button'
+import LayerListGroup from './LayerListGroup'
 import LayerListItem from './LayerListItem'
 import AddIcon from 'react-icons/lib/md/add-circle-outline'
 import AddModal from '../modals/AddModal'
 
 import style from '../../libs/style.js'
 import {SortableContainer, SortableHandle, arrayMove} from 'react-sortable-hoc';
+
+const layerPrefix = name => name.replace(' ', '-').replace('_', '-').split('-')[0]
 
 const layerListPropTypes = {
   layers: React.PropTypes.array.isRequired,
@@ -73,22 +76,69 @@ class LayerListContainer extends React.Component {
     })
   }
 
-  render() {
-    const layerPanels = this.props.layers.map((layer, index) => {
-      const layerId = layer.id
-      return <LayerListItem
-        index={index}
-        key={layerId}
-        layerId={layerId}
-        layerType={layer.type}
-        visibility={(layer.layout || {}).visibility}
-        isSelected={index === this.props.selectedLayerIndex}
-        onLayerSelect={this.props.onLayerSelect}
-        onLayerDestroy={this.onLayerDestroy.bind(this)}
-        onLayerCopy={this.onLayerCopy.bind(this)}
-        onLayerVisibilityToggle={this.onLayerVisibilityToggle.bind(this)}
-      />
+  groupedLayers() {
+    const groups = []
+    for (let i = 0; i < this.props.layers.length; i++) {
+      const previousLayer = this.props.layers[i-1]
+      const layer = this.props.layers[i]
+      if(previousLayer && layerPrefix(previousLayer.id) == layerPrefix(layer.id)) {
+        const lastGroup = groups[groups.length - 1]
+        lastGroup.push(layer)
+      } else {
+        groups.push([layer])
+      }
+    }
+    return groups
+  }
+
+  toggleLayerGroup(groupPrefix) {
+    groupedLayers().forEach(layers => {
+      if(groupPrefix === layerPrefix(layers[0].id)) {
+        layers.forEach(layer => {
+          //HACK
+          //In this case it is ok to modify the metadata
+          //because no one else depends on it
+          layer.metadata = {
+            ...layer.metadata,
+            'maputnik:visible': false
+          }
+        })
+      }
     })
+  }
+
+  render() {
+    const listItems = []
+    let idx = 0
+    this.groupedLayers().forEach(layers => {
+      if(layers.length > 1) {
+        const groupPrefix = layerPrefix(layers[0].id)
+        const grp = <LayerListGroup
+          key={'group-'+groupPrefix}
+          title={groupPrefix}
+          isActive={true}
+        />
+        listItems.push(grp)
+      }
+
+      layers.forEach(layer => {
+        const listItem = <LayerListItem
+          index={idx}
+          key={layer.id}
+          layerId={layer.id}
+          layerType={layer.type}
+          visibility={(layer.layout || {}).visibility}
+          isSelected={idx === this.props.selectedLayerIndex}
+          onLayerSelect={this.props.onLayerSelect}
+          onLayerDestroy={this.onLayerDestroy.bind(this)}
+          onLayerCopy={this.onLayerCopy.bind(this)}
+          onLayerVisibilityToggle={this.onLayerVisibilityToggle.bind(this)}
+        />
+        listItems.push(listItem)
+        idx += 1
+      })
+    })
+
     return <div className="maputnik-layer-list">
       <AddModal
           layers={this.props.layers}
@@ -107,7 +157,7 @@ class LayerListContainer extends React.Component {
       </Button>
       </header>
       <ul className="maputnik-layer-list-container">
-        {layerPanels}
+        {listItems}
       </ul>
     </div>
   }
