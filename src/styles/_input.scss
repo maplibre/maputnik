@@ -54,8 +54,11 @@
 
 // MULTIBUTTON
 .maputnik-multibutton {
-  @extend .maputnik-input;
-  margin-right: $margin-1;
+  padding: 0;
+
+  .maputnik-button {
+    margin-right: $margin-1;
+  }
 }
 
 .maputnik-button-selected {
