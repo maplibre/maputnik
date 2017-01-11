@@ -41,10 +41,11 @@
     max-height: 50px;
     display: flex;
     display: -ms-flexbox;
-    @include vendor-prefix(flex-direction, row)
+    @include vendor-prefix(flex-direction, row);
+     opacity: 1;
 
-    transition: max-height 0.1s ease-in;
-    transition: padding 0.05s ease-in;
+    -webkit-transition: opacity 600ms, visibility 600ms;
+    transition: opacity 600ms, visibility 600ms;
   }
 
   &-icon-action svg {
@@ -71,8 +72,8 @@
     max-height: 0px;
     overflow: hidden;
     padding: 0px;
-    transition: max-height 0.1s ease-out;
-    transition: padding 0.1s ease-out;
+    opacity: 0;
+    visibility: hidden;
   }
 
   &-item-group-last {
