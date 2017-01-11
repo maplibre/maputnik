@@ -11,14 +11,31 @@ import AddModal from '../modals/AddModal'
 import style from '../../libs/style.js'
 import {SortableContainer, SortableHandle, arrayMove} from 'react-sortable-hoc';
 
-const layerPrefix = name => name.replace(' ', '-').replace('_', '-').split('-')[0]
-
 const layerListPropTypes = {
   layers: React.PropTypes.array.isRequired,
   selectedLayerIndex: React.PropTypes.number.isRequired,
   onLayersChange: React.PropTypes.func.isRequired,
   onLayerSelect: React.PropTypes.func,
   sources: React.PropTypes.object.isRequired,
+}
+
+function layerPrefix(name) {
+  return name.replace(' ', '-').replace('_', '-').split('-')[0]
+}
+
+function findClosestCommonPrefix(layers, idx) {
+  console.log('find prefix', idx, layers)
+  const currentLayerPrefix = layerPrefix(layers[idx].id)
+  let closestIdx = idx
+  for (let i = idx; i > 0; i--) {
+    const previousLayerPrefix = layerPrefix(layers[i-1].id)
+    if(previousLayerPrefix === currentLayerPrefix) {
+      closestIdx = i - 1
+    } else {
+      return closestIdx
+    }
+  }
+  return closestIdx
 }
 
 // List of collapsible layer editors
@@ -93,23 +110,27 @@ class LayerListContainer extends React.Component {
     return groups
   }
 
-  toggleLayerGroup(groupPrefix) {
+  toggleLayerGroup(groupPrefix, idx) {
+    const lookupKey = [groupPrefix, idx].join('-')
     const newGroups = { ...this.state.collapsedGroups }
-    if(groupPrefix in this.state.collapsedGroups) {
-      newGroups[groupPrefix] = !this.state.collapsedGroups[groupPrefix]
+    if(lookupKey in this.state.collapsedGroups) {
+      newGroups[lookupKey] = !this.state.collapsedGroups[lookupKey]
     } else {
-      newGroups[groupPrefix] = true
+      newGroups[lookupKey] = true
     }
+    console.log(newGroups)
     this.setState({
       collapsedGroups: newGroups
     })
   }
 
+  isCollapsed(groupPrefix, idx) {
+    console.log('is collapsed', groupPrefix, idx)
+    const collapsed = this.state.collapsedGroups[[groupPrefix, idx].join('-')]
+    return collapsed === undefined ? false : collapsed
+  }
+
   render() {
-    const isCollapsed = groupPrefix => {
-      const collapsed = this.state.collapsedGroups[groupPrefix]
-      return collapsed === undefined ? false : collapsed
-    }
 
     const listItems = []
     let idx = 0
@@ -117,18 +138,20 @@ class LayerListContainer extends React.Component {
       const groupPrefix = layerPrefix(layers[0].id)
       if(layers.length > 1) {
         const grp = <LayerListGroup
-          key={'group-' + groupPrefix + '-' + idx}
+          key={[groupPrefix, idx].join('-')}
           title={groupPrefix}
-          isActive={!isCollapsed(groupPrefix)}
-          onActiveToggle={this.toggleLayerGroup.bind(this, groupPrefix)}
+          isActive={!this.isCollapsed(groupPrefix, idx)}
+          onActiveToggle={this.toggleLayerGroup.bind(this, groupPrefix, idx)}
         />
         listItems.push(grp)
       }
 
-      layers.forEach(layer => {
+      layers.forEach((layer, idxInGroup) => {
+        const groupIdx = findClosestCommonPrefix(this.props.layers, idx)
         const listItem = <LayerListItem
           className={classnames({
-            'maputnik-layer-list-item-collapsed': isCollapsed(groupPrefix)
+            'maputnik-layer-list-item-collapsed': this.isCollapsed(groupPrefix, groupIdx),
+            'maputnik-layer-list-item-collapsed-last': idxInGroup == layers.length - 1 && layers.length > 1
           })}
           index={idx}
           key={layer.id}

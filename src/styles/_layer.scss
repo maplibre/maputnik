@@ -38,9 +38,13 @@
     position: relative;
     padding: 5px 10px;
     line-height: 1.3;
+    max-height: 50px;
     display: flex;
     display: -ms-flexbox;
     @include vendor-prefix(flex-direction, row)
+
+    transition: max-height 0.1s ease-in;
+    transition: padding 0.05s ease-in;
   }
 
   &-icon-action svg {
@@ -63,9 +67,16 @@
   }
 
   &-item-collapsed {
-    height: 0;
+    max-height: 0;
     overflow: hidden;
     padding: 0;
+
+    transition: max-height 0.1s ease-out;
+    transition: padding 0.1s ease-out;
+  }
+
+  &-item-collapsed-last {
+    border-bottom: 2px solid $color-gray;
   }
 
   &-item-id {
