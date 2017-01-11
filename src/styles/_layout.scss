@@ -1,0 +1,46 @@
+//SCROLLING
+.maputnik-scroll-container {
+  overflow-x: visible;
+  overflow-y: scroll;
+  bottom: 0px;
+  left: 0px;
+  right: 0px;
+  top: 1px;
+  position: absolute;
+}
+
+//APP LAYOUT
+.maputnik-layout {
+  font-family: $font-family;
+  color: $color-white;
+}
+.maputnik-layout-list {
+  position: fixed;
+  bottom: 0px;
+  height: 100%;
+  top: 40px;
+  left: 0px;
+  z-index: 1;
+  width: 200px;
+  overflow: hidden;
+  background-color: $color-black;
+}
+.maputnik-layout-drawer {
+  position: fixed;
+  bottom: 0px;
+  height: 100%;
+  top: 40px;
+  left: 200px;
+  z-index: 1;
+  width: 350px;
+  background-color: $color-black;
+}
+.maputnik-layout-bottom {
+  position: fixed;
+  height: 50px;
+  bottom: 0px;
+  left: 550px;
+  z-index: 1;
+  width: 100%;
+  background-color: $color-black;
+}

@@ -30,7 +30,6 @@ class InputBlock extends React.Component {
 
   render() {
     return <div style={{
-      ...input.property,
       ...this.props.style,
     }}
       className="maputnik-input-block"

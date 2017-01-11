@@ -1,5 +1,6 @@
 import React from 'react'
 import Color from 'color'
+import classnames from 'classnames'
 
 import CopyIcon from 'react-icons/lib/md/content-copy'
 import VisibilityIcon from 'react-icons/lib/md/visibility'
@@ -34,32 +35,15 @@ class LayerTypeDragHandle extends React.Component {
 class IconAction extends React.Component {
   static propTypes = {
     action: React.PropTypes.string.isRequired,
-    active: React.PropTypes.bool,
     onClick: React.PropTypes.func.isRequired,
   }
 
-  constructor(props) {
-    super(props)
-    this.state = { hover: false }
-  }
-
   renderIcon() {
-    const iconStyle = {
-      fill: colors.black
-    }
-
-    if(this.props.active) {
-      iconStyle.fill = colors.midgray
-    }
-    if(this.state.hover) {
-      iconStyle.fill = colors.lowgray
-    }
-
     switch(this.props.action) {
-      case 'copy': return <CopyIcon style={iconStyle} />
-      case 'show': return <VisibilityIcon style={iconStyle} />
-      case 'hide': return <VisibilityOffIcon style={iconStyle} />
-      case 'delete': return <DeleteIcon style={iconStyle} />
+      case 'copy': return <CopyIcon />
+      case 'show': return <VisibilityIcon />
+      case 'hide': return <VisibilityOffIcon />
+      case 'delete': return <DeleteIcon />
       default: return null
     }
   }
@@ -67,10 +51,7 @@ class IconAction extends React.Component {
   render() {
     return <a
       className="maputnik-icon-action"
-      style={this.props.style}
       onClick={this.props.onClick}
-      onMouseOver={e => this.setState({hover: true})}
-      onMouseOut={e => this.setState({hover: false})}
     >
       {this.renderIcon()}
     </a>
@@ -105,9 +86,6 @@ class LayerListItem extends React.Component {
 
   constructor(props) {
     super(props)
-    this.state = {
-      hover: false
-    }
   }
 
   getChildContext() {
@@ -117,42 +95,25 @@ class LayerListItem extends React.Component {
   }
 
   render() {
-    const itemStyle = {
-      backgroundColor: colors.black,
-    }
-
-    if(this.state.hover) {
-      itemStyle.backgroundColor = Color(colors.black).lighten(0.10).string()
-    }
-
-    if(this.props.isSelected) {
-      itemStyle.backgroundColor = Color(colors.black).lighten(0.15).string()
-    }
-
-    const iconProps = {
-      active: this.state.hover || this.props.isSelected
-    }
-
     return <li
       key={this.props.layerId}
       onClick={e => this.props.onLayerSelect(this.props.layerId)}
-      onMouseOver={e => this.setState({hover: true})}
-      onMouseOut={e => this.setState({hover: false})}
-      className="maputnik-layer-list-item"
-      >
+      className={classnames({
+        "maputnik-layer-list-item": true,
+        "maputnik-layer-list-item-selected": this.props.isSelected,
+      })}>
         <LayerTypeDragHandle type={this.props.layerType} />
         <span className="maputnik-layer-list-item-id">{this.props.layerId}</span>
         <span style={{flexGrow: 1}} />
-        <IconAction {...iconProps}
+        <IconAction
           action={'delete'}
           onClick={e => this.props.onLayerDestroy(this.props.layerId)}
         />
-        <IconAction {...iconProps}
+        <IconAction
           action={'copy'}
           onClick={e => this.props.onLayerCopy(this.props.layerId)}
         />
-        <IconAction {...iconProps}
-          active={this.state.hover || this.props.isSelected || this.props.visibility === 'none'}
+        <IconAction
           action={this.props.visibility === 'visible' ? 'hide' : 'show'}
           onClick={e => this.props.onLayerVisibilityToggle(this.props.layerId)}
         />

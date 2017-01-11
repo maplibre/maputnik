@@ -1,5 +1,6 @@
 import React from 'react'
 import FileReaderInput from 'react-file-reader-input'
+import classnames from 'classnames'
 
 import MdFileDownload from 'react-icons/lib/md/file-download'
 import MdFileUpload from 'react-icons/lib/md/file-upload'
@@ -23,39 +24,28 @@ import SourcesModal from './modals/SourcesModal'
 import OpenModal from './modals/OpenModal'
 
 import style from '../libs/style'
-import colors from '../config/colors'
-import { margins, fontSizes } from '../config/scales'
 
-const IconText = props => <span style={{ paddingLeft: margins[0] }}>
-  {props.children}
-</span>
+function IconText(props) {
+  return <span className="maputnik-icon-text">{props.children}</span>
+}
 
-const ToolbarLink = props => <a
-  className='maputnik-toolbar-link'
-  href={props.href}
-  target={"blank"}
-  style={{
-    ...props.style,
-  }}
+function ToolbarLink(props) {
+  return <a
+    className={classnames('maputnik-toolbar-link', props.className)}
+    href={props.href}
+    target={"blank"}
   >
-  {props.children}
-</a>
+    {props.children}
+  </a>
+}
 
-class ToolbarAction extends React.Component {
-  static propTypes = {
-    onClick: React.PropTypes.func.isRequired,
-  }
-
-  render() {
-    return <a
-      className='maputnik-toolbar-action'
-      onClick={this.props.onClick}
-      style={{
-        ...this.props.style,
-      }}>
-      {this.props.children}
-    </a>
-  }
+function ToolbarAction(props) {
+  return <a
+    className='maputnik-toolbar-action'
+    onClick={props.onClick}
+  >
+    {props.children}
+  </a>
 }
 
 export default class Toolbar extends React.Component {
@@ -127,15 +117,10 @@ export default class Toolbar extends React.Component {
       />
       <ToolbarLink
         href={"https://github.com/maputnik/editor"}
-        style={{
-          width: 180,
-          textAlign: 'left',
-          backgroundColor: colors.black,
-          padding: 5,
-        }}
+        className="maputnik-toolbar-logo"
       >
-        <img src={logoImage} alt="Maputnik" style={{width: 30, height: 30, paddingRight: 5, verticalAlign: 'middle'}}/>
-        <span style={{fontSize: 20, verticalAlign: 'middle' }}>Maputnik</span>
+        <img src={logoImage} alt="Maputnik" />
+        <h1>Maputnik</h1>
       </ToolbarLink>
       <ToolbarAction onClick={this.toggleModal.bind(this, 'open')}>
         <OpenIcon />

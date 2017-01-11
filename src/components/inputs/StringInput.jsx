@@ -23,10 +23,7 @@ class StringInput extends React.Component {
   render() {
     return <input
       className="maputnik-string"
-      style={{
-        ...input.input,
-        ...this.props.style
-      }}
+      style={this.props.style}
       value={this.state.value}
       placeholder={this.props.default}
       onChange={e => this.setState({ value: e.target.value })}

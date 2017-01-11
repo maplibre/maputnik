@@ -100,7 +100,7 @@ class AddModal extends React.Component {
         onChange={v => this.setState({ 'source-layer': v })}
       />
       }
-      <Button onClick={this.addLayer.bind(this)}>
+      <Button className="maputnik-add-layer-button" onClick={this.addLayer.bind(this)}>
         Add Layer
       </Button>
     </Modal>

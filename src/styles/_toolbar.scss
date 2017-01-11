@@ -1,0 +1,47 @@
+// TOOLBAR
+.maputnik-toolbar {
+  position: fixed;
+  height: $toolbar-height;
+  width: 100%;
+  z-index: 100;
+  left: 0;
+  top: 0;
+  background-color: $color-black;
+}
+
+.maputnik-toolbar-logo {
+  width: 180px;
+  text-align: left;
+  background-color: $color-black;
+  padding: $margin-2;
+  height: $toolbar-height;
+
+  h1 {
+    display: inline; 
+  }
+
+  img {
+    width: 30px;
+    height: 30px;
+    padding-right: $margin-2;
+    vertical-align: middle;
+  }
+}
+
+.maputnik-toolbar-link {
+  vertical-align: top;
+  height: $toolbar-height;
+  display: inline-block;
+  padding: $margin-3;
+  font-size: $font-size-5;
+  cursor: pointer;
+  color: $color-white;
+  text-decoration: none;
+  &:hover {
+    background-color: $color-midgray;
+  }
+}
+
+.maputnik-toolbar-action {
+  @extend .maputnik-toolbar-link;
+}

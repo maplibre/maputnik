@@ -1,0 +1,34 @@
+.maputnik-base {
+  display: inline-block;
+  box-sizing: border-box;
+  font-size: $font-size-6;
+  line-height: 2;
+  padding-left: $margin-2;
+  padding-right: $margin-2;
+}
+.maputnik-input {
+  @extend .maputnik-base;
+  border: none;
+  background-color: $color-gray;
+  color: $color-lowgray;
+}
+.maputnik-string {
+  @extend .maputnik-input;
+  width: 50%;
+}
+.maputnik-number {
+  @extend .maputnik-input;
+}
+
+//COLOR PICKER
+.maputnik-color {
+  @extend .maputnik-input;
+}
+.maputnik-color-wrapper {
+  position: relative;
+  display: inline;
+}
+.maputnik-color-picker-offset {
+}
+.maputnik-color-picker-overlay {
+}

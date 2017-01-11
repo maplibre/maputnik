@@ -10,8 +10,6 @@ import FileUploadIcon from 'react-icons/lib/md/file-upload'
 import AddIcon from 'react-icons/lib/md/add-circle-outline'
 
 import style from '../../libs/style.js'
-import colors from '../../config/colors'
-import { margins, fontSizes } from '../../config/scales'
 import publicStyles from '../../config/styles.json'
 
 class PublicStyle extends React.Component {
@@ -23,38 +21,18 @@ class PublicStyle extends React.Component {
   }
 
   render() {
-    return <div style={{
-        verticalAlign: 'top',
-        marginTop: margins[2],
-        marginRight: margins[2],
-        backgroundColor: colors.gray,
-        display: 'inline-block',
-        width: 180,
-        fontSize: fontSizes[4],
-        color: colors.lowgray,
-    }}>
+    return <div className="maputnik-public-style">
       <Button
+        className="maputnik-public-style-button"
         onClick={() => this.props.onSelect(this.props.url)}
-        style={{
-          backgroundColor: 'transparent',
-          padding: margins[2],
-          display: 'block',
-        }}
       >
-        <div style={{
-          display: 'flex',
-          flexDirection: 'row',
-        }}>
-          <span style={{fontWeight: 700}}>{this.props.title}</span>
-          <span style={{flexGrow: 1}} />
+        <header className="maputnik-public-style-header">
+          <h4>{this.props.title}</h4>
+          <span className="maputnik-space" />
           <AddIcon />
-        </div>
+        </header>
         <img
-          style={{
-            display: 'block',
-            marginTop: margins[1],
-            maxWidth: '100%',
-          }}
+          className="maputnik-public-style-thumbnail"
           src={this.props.thumbnailUrl}
           alt={this.props.title}
         />
@@ -113,22 +91,20 @@ class OpenModal extends React.Component {
       onOpenToggle={this.props.onOpenToggle}
       title={'Open Style'}
     >
-      <Heading level={4}>Upload Style</Heading>
-      <Paragraph>
-        Upload a JSON style from your computer.
-      </Paragraph>
-      <FileReaderInput onChange={this.onUpload.bind(this)}>
-        <Button>
-          <FileUploadIcon />
-          Upload
-        </Button>
-      </FileReaderInput>
-
-      <Heading level={4}>Gallery Styles</Heading>
-      <Paragraph>
-        Open one of the publicly available styles to start from.
-      </Paragraph>
-      {styleOptions}
+      <section className="maputnik-modal-section">
+        <h2>Upload Style</h2>
+        <p>Upload a JSON style from your computer.</p>
+        <FileReaderInput onChange={this.onUpload.bind(this)}>
+          <Button className="maputnik-upload-button"><FileUploadIcon /> Upload</Button>
+        </FileReaderInput>
+      </section>
+      <section className="maputnik-modal-section">
+        <h2>Gallery Styles</h2>
+        <p>
+          Open one of the publicly available styles to start from.
+        </p>
+        {styleOptions}
+      </section>
     </Modal>
   }
 }

@@ -1,0 +1,57 @@
+
+.maputnik-icon-text {
+  padding-left: $margin-1;
+}
+
+.maputnik-icon-action {
+  display: inline;
+  margin-left: $margin-1;
+}
+.maputnik-map {
+  position: fixed !important;
+  top: 40px;
+  right: 0px;
+  bottom: 0px;
+  height: 100%;
+  width: 75%;
+}
+.maputnik-doc-wrapper {
+  display: inline-block;
+  box-sizing: border-box;
+  font-size: $font-size-6;
+  line-height: 2;
+  color: $color-lowgray;
+  user-select: none;
+  position: relative;
+  vertical-align: top;
+  width: 50%;
+}
+.maputnik-button {
+  cursor: pointer;
+  background-color: $color-midgray;
+  color: $color-lowgray;
+  font-size: $font-size-6;
+  padding: $margin-2;
+  user-select: none;
+  border-radius: 2px;
+  box-sizing: border-box;
+
+  &:hover {
+    background-color: lighten($color-midgray, 6);
+    color: $color-white;
+  }
+}
+
+.maputnik-big-button {
+  margin-top: $margin-3;
+  display: inline-block;
+  padding: $margin-3;
+  font-size: $font-size-5;
+}
+.maputnik-input-block {
+  margin: $margin-3;
+}
+
+.maputnik-space {
+	flex-grow: 1;
+}
