@@ -1,10 +1,6 @@
 import React from 'react'
 import ScrollContainer from './ScrollContainer'
 
-import theme from '../config/theme'
-import colors from '../config/colors'
-import { fontSizes } from '../config/scales'
-
 class AppLayout extends React.Component {
   static propTypes = {
     toolbar: React.PropTypes.element.isRequired,
@@ -20,7 +16,7 @@ class AppLayout extends React.Component {
 
   getChildContext() {
     return {
-      reactIconBase: { size: fontSizes[3] }
+      reactIconBase: { size: 14 }
     }
   }
 

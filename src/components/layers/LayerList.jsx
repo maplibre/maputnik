@@ -4,8 +4,6 @@ import cloneDeep from 'lodash.clonedeep'
 import LayerListItem from './LayerListItem'
 
 import style from '../../libs/style.js'
-import { margins } from '../../config/scales.js'
-
 import {SortableContainer, SortableHandle, arrayMove} from 'react-sortable-hoc';
 
 const layerListPropTypes = {

@@ -115,3 +115,12 @@
 .maputnik-space {
 	flex-grow: 1;
 }
+
+// MESSAGE PANEL
+.maputnik-message-panel {
+  padding: $margin-2;
+
+  &-error  {
+    color: $color-red;
+  }
+}

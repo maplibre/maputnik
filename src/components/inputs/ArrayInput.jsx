@@ -2,8 +2,6 @@ import React from 'react'
 import StringInput from './StringInput'
 import NumberInput from './NumberInput'
 
-import { margins } from '../../config/scales.js'
-
 class ArrayInput extends React.Component {
   static propTypes = {
     value: React.PropTypes.array,

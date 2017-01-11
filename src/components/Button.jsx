@@ -1,7 +1,5 @@
 import React from 'react'
 import classnames from 'classnames'
-import colors from '../config/colors'
-import { margins, fontSizes } from '../config/scales'
 
 class Button extends React.Component {
   static propTypes = {

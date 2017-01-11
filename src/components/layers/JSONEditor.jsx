@@ -5,9 +5,6 @@ import InputBlock from '../inputs/InputBlock'
 import StringInput from '../inputs/StringInput'
 import SelectInput from '../inputs/SelectInput'
 
-import colors from '../../config/colors'
-import { margins } from '../../config/scales'
-
 import 'codemirror/mode/javascript/javascript'
 import 'codemirror/lib/codemirror.css'
 import '../../codemirror-maputnik.css'

@@ -1,7 +1,4 @@
 import React from 'react'
-import Paragraph from './Paragraph'
-import colors from '../config/colors'
-import { fontSizes, margins } from '../config/scales'
 
 class MessagePanel extends React.Component {
   static propTypes = {
@@ -10,30 +7,15 @@ class MessagePanel extends React.Component {
   }
 
   render() {
-    const paragraphStyle = {
-      margin: 0,
-      lineHeight: 1.2,
-    }
-
     const errors = this.props.errors.map((m, i) => {
-      return <Paragraph key={i}
-        style={{
-          ...paragraphStyle,
-          color: colors.red,
-        }}>{m}</Paragraph>
+      return <p className="maputnik-message-panel-error">{m}</p>
     })
 
     const infos = this.props.infos.map((m, i) => {
-      return <Paragraph key={i}
-        style={{
-          ...paragraphStyle,
-          color: colors.lowgray,
-        }}>{m}</Paragraph>
+      return <p key={i}>{m}</p>
     })
 
-    return <div style={{
-      padding: margins[1],
-    }}>
+    return <div className="maputnik-message-panel">
       {errors}
       {infos}
     </div>

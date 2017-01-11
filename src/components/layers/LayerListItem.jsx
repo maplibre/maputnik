@@ -11,10 +11,6 @@ import LayerIcon from '../icons/LayerIcon'
 import LayerEditor from './LayerEditor'
 import {SortableElement, SortableHandle} from 'react-sortable-hoc'
 
-import colors from '../../config/colors.js'
-import { fontSizes, margins } from '../../config/scales.js'
-
-
 @SortableHandle
 class LayerTypeDragHandle extends React.Component {
   static propTypes = LayerIcon.propTypes
@@ -24,9 +20,9 @@ class LayerTypeDragHandle extends React.Component {
       {...this.props}
       style={{
         cursor: 'move',
-        width: fontSizes[4],
-        height: fontSizes[4],
-        paddingRight: margins[0],
+        width: 14,
+        height: 14,
+        paddingRight: 3,
       }}
     />
   }
@@ -90,7 +86,7 @@ class LayerListItem extends React.Component {
 
   getChildContext() {
     return {
-      reactIconBase: { size: fontSizes[4] }
+      reactIconBase: { size: 14 }
     }
   }
 

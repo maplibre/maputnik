@@ -1,9 +1,6 @@
 import React from 'react'
 
 import ZoomSpecField from './ZoomSpecField'
-import colors from '../../config/colors'
-import { margins } from '../../config/scales'
-
 const iconProperties = ['background-pattern', 'fill-pattern', 'line-pattern', 'fill-extrusion-pattern', 'icon-image']
 
 /** Extract field spec by {@fieldName} from the {@layerType} in the

@@ -1,8 +1,6 @@
 import React from 'react'
 import Modal from './Modal'
-import Heading from '../Heading'
 import Button from '../Button'
-import Paragraph from '../Paragraph'
 import FileReaderInput from 'react-file-reader-input'
 import request from 'request'
 

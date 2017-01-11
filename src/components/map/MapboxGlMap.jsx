@@ -5,7 +5,6 @@ import MapboxInspect from 'mapbox-gl-inspect'
 import FeatureLayerPopup from './FeatureLayerPopup'
 import FeaturePropertyPopup from './FeaturePropertyPopup'
 import validateColor from 'mapbox-gl-style-spec/lib/validate/validate_color'
-import colors from '../../config/colors'
 import style from '../../libs/style.js'
 import { colorHighlightedLayer } from '../../libs/highlight'
 import 'mapbox-gl/dist/mapbox-gl.css'
@@ -28,7 +27,7 @@ function buildInspectStyle(originalMapStyle, coloredLayers, highlightedLayer) {
     "id": "background",
     "type": "background",
     "paint": {
-      "background-color": colors.black,
+      "background-color": '#1c1f24',
     }
   }
 
