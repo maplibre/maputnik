@@ -19,7 +19,6 @@
     box-sizing: border-box;
     font-size: $font-size-6;
     line-height: 2;
-    color: $color-lowgray;
     user-select: none;
     position: relative;
     vertical-align: top;
@@ -86,8 +85,8 @@
   margin: $margin-3;
 
   &-label {
-    display: inline-block;
     color: $color-lowgray;
+    display: inline-block;
     user-select: none;
     width: 50%;
     vertical-align: top;
@@ -124,3 +123,4 @@
     color: $color-red;
   }
 }
+

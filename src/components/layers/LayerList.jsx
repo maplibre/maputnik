@@ -1,7 +1,9 @@
 import React from 'react'
 import cloneDeep from 'lodash.clonedeep'
 
+import Button from '../Button'
 import LayerListItem from './LayerListItem'
+import AddIcon from 'react-icons/lib/md/add-circle-outline'
 
 import style from '../../libs/style.js'
 import {SortableContainer, SortableHandle, arrayMove} from 'react-sortable-hoc';
@@ -67,9 +69,16 @@ class LayerListContainer extends React.Component {
         onLayerVisibilityToggle={this.onLayerVisibilityToggle.bind(this)}
       />
     })
-    return <ul className="maputnik-layer-list-container">
-      {layerPanels}
-    </ul>
+    return <div className="maputnik-layer-list">
+      <header className="maputnik-layer-list-header">
+        <span>Layers</span>
+        <span className="maputnik-space" />
+        <Button className="maputnik-add-layer">Add Layer</Button>
+      </header>
+      <ul className="maputnik-layer-list-container">
+        {layerPanels}
+      </ul>
+    </div>
   }
 }
 

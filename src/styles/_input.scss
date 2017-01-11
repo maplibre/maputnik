@@ -10,7 +10,7 @@
   padding-right: $margin-2;
   border: none;
   background-color: $color-gray;
-  color: $color-lowgray;
+  color: lighten($color-lowgray, 12);
 }
 
 .maputnik-string {

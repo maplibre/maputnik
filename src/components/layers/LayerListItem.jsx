@@ -46,7 +46,7 @@ class IconAction extends React.Component {
 
   render() {
     return <a
-      className="maputnik-icon-action"
+      className="maputnik-layer-list-icon-action"
       onClick={this.props.onClick}
     >
       {this.renderIcon()}
