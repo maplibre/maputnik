@@ -67,15 +67,15 @@
   }
 
   &-item-collapsed {
-    max-height: 0;
+    position: absolute;
+    max-height: 0px;
     overflow: hidden;
-    padding: 0;
-
+    padding: 0px;
     transition: max-height 0.1s ease-out;
     transition: padding 0.1s ease-out;
   }
 
-  &-item-collapsed-last {
+  &-item-group-last {
     border-bottom: 2px solid $color-gray;
   }
 

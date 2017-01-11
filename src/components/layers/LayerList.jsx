@@ -24,7 +24,6 @@ function layerPrefix(name) {
 }
 
 function findClosestCommonPrefix(layers, idx) {
-  console.log('find prefix', idx, layers)
   const currentLayerPrefix = layerPrefix(layers[idx].id)
   let closestIdx = idx
   for (let i = idx; i > 0; i--) {
@@ -118,14 +117,12 @@ class LayerListContainer extends React.Component {
     } else {
       newGroups[lookupKey] = true
     }
-    console.log(newGroups)
     this.setState({
       collapsedGroups: newGroups
     })
   }
 
   isCollapsed(groupPrefix, idx) {
-    console.log('is collapsed', groupPrefix, idx)
     const collapsed = this.state.collapsedGroups[[groupPrefix, idx].join('-')]
     return collapsed === undefined ? false : collapsed
   }
@@ -151,7 +148,7 @@ class LayerListContainer extends React.Component {
         const listItem = <LayerListItem
           className={classnames({
             'maputnik-layer-list-item-collapsed': this.isCollapsed(groupPrefix, groupIdx),
-            'maputnik-layer-list-item-collapsed-last': idxInGroup == layers.length - 1 && layers.length > 1
+            'maputnik-layer-list-item-group-last': idxInGroup == layers.length - 1 && layers.length > 1
           })}
           index={idx}
           key={layer.id}
