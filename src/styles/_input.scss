@@ -62,7 +62,9 @@
 }
 
 .maputnik-button-selected {
-  background-color: $color-midgray;
+  background-color: lighten($color-midgray, 12);
+  outline: 1px $color-white;
+  color: white;
 }
 
 // CHECKBOX

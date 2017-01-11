@@ -43,10 +43,9 @@
 }
 
 // BUTTON
-
 .maputnik-button {
   cursor: pointer;
-  background-color: $color-midgray;
+  background-color: $color-gray;
   color: $color-lowgray;
   font-size: $font-size-6;
   padding: $margin-2;
@@ -55,7 +54,7 @@
   box-sizing: border-box;
 
   &:hover {
-    background-color: lighten($color-midgray, 6);
+    background-color: lighten($color-midgray, 12);
     color: $color-white;
   }
 }
