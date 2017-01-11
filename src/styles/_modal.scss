@@ -13,7 +13,8 @@
 .maputnik-modal-header {
   background-color: $color-gray;
   display: flex;
-  flex-direction: row;
+  display: -ms-flexbox;
+  @include vendor-prefix(flex-direction, row)
   padding: $margin-3;
 }
 .maputnik-modal-header-title {
@@ -50,8 +51,9 @@
     bottom: 0px;
     left: 0px;
     position: fixed;
+    display: -ms-flexbox;
     display: flex;
-    flex-direction: column;
+    @include vendor-prefix(flex-direction, column)
     align-items: center;
     justify-content: center;
 }
@@ -81,7 +83,8 @@
 }
 .maputnik-public-style-header {
 	display: flex;
-	flex-direction: row;
+  display: -ms-flexbox;
+  @include vendor-prefix(flex-direction, row)
 }
 
 .maputnik-public-style-thumbnail {
@@ -119,7 +122,8 @@
 	font-size: $font-size-5;
 	color: $color-lowgray;
 	display: flex;
-	flex-direction: row;
+  display: -ms-flexbox;
+  @include vendor-prefix(flex-direction, row)
   background-color: transparent;
 }
 
@@ -135,11 +139,12 @@
   min-width: 500px;
 }
 .maputnik-active-source-type-editor-header {
-    background-color: $color-gray;
-    color: $color-lowgray;
-    padding: $margin-2;
-    display: flex;
-    flex-direction: row;
+  background-color: $color-gray;
+  color: $color-lowgray;
+  padding: $margin-2;
+  display: flex;
+  display: -ms-flexbox;
+  @include vendor-prefix(flex-direction, row)
 }
 .maputnik-active-source-type-editor-header-id {
   font-weight: 700;
