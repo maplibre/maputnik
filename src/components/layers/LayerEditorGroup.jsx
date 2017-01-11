@@ -26,16 +26,9 @@ export default class LayerEditorGroup extends React.Component {
     onActiveToggle: React.PropTypes.func.isRequired
   }
 
-  constructor(props) {
-    super(props)
-    this.state = { hover: false }
-  }
-
   render() {
     return <div>
       <div className="maputnik-layer-editor-group"
-        onMouseOver={e => this.setState({hover: true})}
-        onMouseOut={e => this.setState({hover: false})}
         onClick={e => this.props.onActiveToggle(!this.props.isActive)}
       >
         <span>{this.props.title}</span>

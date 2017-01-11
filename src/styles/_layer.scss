@@ -7,7 +7,7 @@
     padding: $margin-2;
     font-weight: bold;
     font-size: $font-size-5;
-    color: $color-lowgray;
+    color: $color-white;
     display: flex;
     display: -ms-flexbox;
     @include vendor-prefix(flex-direction, row)
@@ -77,7 +77,7 @@
   font-weight: bold;
   font-size: $font-size-5;
   background-color: lighten($color-black, 2);
-  color: $color-lowgray;
+  color: $color-white;
   cursor: pointer;
   user-select: none;
   padding: $margin-2;
