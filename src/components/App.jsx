@@ -227,6 +227,7 @@ export default class App extends React.Component {
 
     const toolbar = <Toolbar
       mapStyle={this.state.mapStyle}
+      inspectModeEnabled={this.state.inspectModeEnabled}
       sources={this.state.sources}
       onStyleChanged={this.onStyleChanged.bind(this)}
       onStyleOpen={this.onStyleChanged.bind(this)}

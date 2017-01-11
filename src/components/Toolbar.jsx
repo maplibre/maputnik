@@ -49,6 +49,7 @@ function ToolbarAction(props) {
 export default class Toolbar extends React.Component {
   static propTypes = {
     mapStyle: React.PropTypes.object.isRequired,
+    inspectModeEnabled: React.PropTypes.bool.isRequired,
     onStyleChanged: React.PropTypes.func.isRequired,
     // A new style has been uploaded
     onStyleOpen: React.PropTypes.func.isRequired,
@@ -128,7 +129,10 @@ export default class Toolbar extends React.Component {
       </ToolbarAction>
       <ToolbarAction onClick={this.props.onInspectModeToggle}>
         <InspectionIcon />
-        <IconText>Inspect</IconText>
+        <IconText>
+          { this.props.inspectModeEnabled && <span>Map Mode</span> }
+          { !this.props.inspectModeEnabled && <span>Inspect Mode</span> }
+        </IconText>
       </ToolbarAction>
       <ToolbarLink href={"https://github.com/maputnik/editor/wiki"}>
         <HelpIcon />
