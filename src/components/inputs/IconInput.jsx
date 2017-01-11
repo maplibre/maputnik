@@ -6,7 +6,7 @@ import { margins } from '../../config/scales.js'
 
 class IconInput extends React.Component {
   static propTypes = {
-    value: React.PropTypes.array.isRequired,
+    value: React.PropTypes.array,
     icons: React.PropTypes.array,
     style: React.PropTypes.object,
     onChange: React.PropTypes.func.isRequired,

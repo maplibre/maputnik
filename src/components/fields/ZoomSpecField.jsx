@@ -5,6 +5,7 @@ import Button from '../Button'
 import SpecField from './SpecField'
 import NumberInput from '../inputs/NumberInput'
 import DocLabel from './DocLabel'
+import InputBlock from '../inputs/InputBlock'
 
 import AddIcon from 'react-icons/lib/md/add-circle-outline'
 import DeleteIcon from 'react-icons/lib/md/delete'
@@ -85,46 +86,36 @@ export default class ZoomSpecProperty  extends React.Component {
   }
 
   renderZoomProperty() {
-    const label = <div className="maputnik-zoom-spec-property-label">
-      <DocLabel
-        label={labelFromFieldName(this.props.fieldName)}
-        doc={this.props.fieldSpec.doc}
-      />
-    </div>
-
     const zoomFields = this.props.value.stops.map((stop, idx) => {
       const zoomLevel = stop[0]
       const value = stop[1]
+      const deleteStopBtn= <DeleteStopButton onClick={this.deleteStop.bind(this, idx)} />
 
-      return <div key={zoomLevel} className="maputnik-zoom-spec-property-stop-item">
-        {label}
-        <Button
-          className="maputnik-delete-stop"
-          onClick={this.deleteStop.bind(this, idx)}
-        >
-          <DocLabel
-            label={<DeleteIcon />}
-            doc={"Remove zoom level stop."}
-          />
-
-        </Button>
-        <div className="maputnik-zoom-spec-property-stop-edit">
-          <NumberInput
-            value={zoomLevel}
-            onChange={changedStop => this.changeStop(idx, changedStop, value)}
-            min={0}
-            max={22}
-          />
+      return <InputBlock
+        key={zoomLevel}
+        doc={this.props.fieldSpec.doc}
+        label={labelFromFieldName(this.props.fieldName)}
+        action={deleteStopBtn}
+      >
+        <div>
+          <div className="maputnik-zoom-spec-property-stop-edit">
+            <NumberInput
+              value={zoomLevel}
+              onChange={changedStop => this.changeStop(idx, changedStop, value)}
+              min={0}
+              max={22}
+            />
+          </div>
+          <div className="maputnik-zoom-spec-property-stop-value">
+            <SpecField
+              fieldName={this.props.fieldName}
+              fieldSpec={this.props.fieldSpec}
+              value={value}
+              onChange={(_, newValue) => this.changeStop(idx, zoomLevel, newValue)}
+            />
+          </div>
         </div>
-        <div className="maputnik-zoom-spec-property-stop-value">
-          <SpecField
-            fieldName={this.props.fieldName}
-            fieldSpec={this.props.fieldSpec}
-            value={value}
-            onChange={(_, newValue) => this.changeStop(idx, zoomLevel, newValue)}
-          />
-        </div>
-      </div>
+      </InputBlock>
     })
 
     return <div className="maputnik-zoom-spec-property">
@@ -139,28 +130,18 @@ export default class ZoomSpecProperty  extends React.Component {
   }
 
   renderProperty() {
-    return <div className="maputnik-zoom-spec-property">
-      <DocLabel
-        label={labelFromFieldName(this.props.fieldName)}
-        doc={this.props.fieldSpec.doc}
-        style={{
-          width: this.props.fieldSpec['zoom-function'] ? '41%' : '50%',
-        }}
-      />
-      {this.props.fieldSpec['zoom-function'] &&
-      <Button
-        className="maputnik-make-zoom-function"
-        onClick={this.makeZoomFunction.bind(this)}
-      >
-        <DocLabel
-          label={<FunctionIcon />}
-          cursorTargetStyle={{ cursor: 'pointer' }}
-          doc={"Turn property into a zoom function to enable a map feature to change with map's zoom level."}
-        />
-      </Button>
-      }
-      <SpecField {...this.props} style={{ width: '50%' } }/>
-    </div>
+    let zoomBtn = null
+    if(this.props.fieldSpec['zoom-function']) {
+      zoomBtn = <MakeZoomFunctionButton onClick={this.makeZoomFunction.bind(this)} />
+    }
+
+    return <InputBlock
+      doc={this.props.fieldSpec.doc}
+      label={labelFromFieldName(this.props.fieldName)}
+      action={zoomBtn}
+    >
+      <SpecField {...this.props} />
+    </InputBlock>
   }
 
   render() {
@@ -170,6 +151,31 @@ export default class ZoomSpecProperty  extends React.Component {
       return this.renderProperty();
     }
   }
+}
+
+function MakeZoomFunctionButton(props) {
+  return <Button
+    className="maputnik-make-zoom-function"
+    onClick={props.onClick}
+  >
+    <DocLabel
+      label={<FunctionIcon />}
+      cursorTargetStyle={{ cursor: 'pointer' }}
+      doc={"Turn property into a zoom function to enable a map feature to change with map's zoom level."}
+    />
+  </Button>
+}
+
+function DeleteStopButton(props) {
+  return <Button
+    className="maputnik-delete-stop"
+    onClick={props.onClick}
+  >
+    <DocLabel
+      label={<DeleteIcon />}
+      doc={"Remove zoom level stop."}
+    />
+  </Button>
 }
 
 function labelFromFieldName(fieldName) {

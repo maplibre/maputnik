@@ -4,7 +4,6 @@ import input from '../../config/input.js'
 class NumberInput extends React.Component {
   static propTypes = {
     value: React.PropTypes.number,
-    style: React.PropTypes.object,
     default: React.PropTypes.number,
     min: React.PropTypes.number,
     max: React.PropTypes.number,
@@ -69,7 +68,6 @@ class NumberInput extends React.Component {
   render() {
     return <input
       className="maputnik-number"
-      style={this.props.style}
       placeholder={this.props.default}
       value={this.state.value}
       onChange={e => this.changeValue(e.target.value)}

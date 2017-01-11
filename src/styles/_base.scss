@@ -50,13 +50,11 @@ h4 {
   margin-bottom: $margin-3;
 }
 
-input {
-  height: 24px;
-}
 input:focus, select:focus {
   color: $color-white !important;
   outline: #8e8e8e auto 1px !important;
 }
+
 label:hover {
   color: $color-white;
 }

@@ -1,5 +1,5 @@
 .maputnik-popup-layer {
-  @extend .maputnik-base ;
+  display: inline-block;
   color: $color-lowgray;
   user-select: none;
   padding-left: 0;

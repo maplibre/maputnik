@@ -11,7 +11,6 @@ class ArrayInput extends React.Component {
     type: React.PropTypes.string,
     length: React.PropTypes.number,
     default: React.PropTypes.array,
-    style: React.PropTypes.object,
     onChange: React.PropTypes.func,
   }
 
@@ -27,31 +26,23 @@ class ArrayInput extends React.Component {
   }
 
   render() {
-    const commonStyle = {
-      width: '48%',
-      marginRight: '2%',
-      marginBottom: '2%'
-    }
     const inputs = this.values.map((v, i) => {
       if(this.props.type === 'number') {
         return <NumberInput
           key={i}
           value={v}
-          style={commonStyle}
           onChange={this.changeValue.bind(this, i)}
         />
       } else {
         return <StringInput
           key={i}
           value={v}
-          style={commonStyle}
           onChange={this.changeValue.bind(this, i)}
         />
       }
     })
 
-    return <div className="maputnik-array"
-      style={{display: 'inline-block', width: '50%'}}>
+    return <div className="maputnik-array">
       {inputs}
     </div>
   }

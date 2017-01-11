@@ -1,21 +1,22 @@
-.maputnik-base {
-  display: inline-block;
+//INPUT
+.maputnik-input {
+  height: 24px;
+  width: 100%;
+  display: block;
   box-sizing: border-box;
   font-size: $font-size-6;
   line-height: 2;
   padding-left: $margin-2;
   padding-right: $margin-2;
-}
-.maputnik-input {
-  @extend .maputnik-base;
   border: none;
   background-color: $color-gray;
   color: $color-lowgray;
 }
+
 .maputnik-string {
   @extend .maputnik-input;
-  width: 50%;
 }
+
 .maputnik-number {
   @extend .maputnik-input;
 }
@@ -29,107 +30,69 @@
   position: relative;
   display: inline;
 }
+
 .maputnik-color-picker-offset {
+
 }
 .maputnik-color-picker-overlay {
+
 }
 
-.maputnik-checkbox-wrapper {
-  display: inline-block;
-  box-sizing: border-box;
-  padding: 0px;
-  position: relative;
-  text-align: center;
-  vertical-align: middle;
-  cursor: pointer;
+// ARRAY
+
+.maputnik-array {
+  > * {
+    margin-bottom: $margin-3;
+  }
 }
 
+// SELECT
+.maputnik-select {
+  @extend .maputnik-input;
+  height: 24px;
+}
+
+// CHECKBOX
 .maputnik-checkbox {
   position: absolute;
   z-index: -1;
   opacity: 0;
   width: 50%;
-}
-.maputnik-checkbox-box {
-  display: inline-block;
-  text-align: center;
-  height: 24px;
-  width: 24px;
-  margin-right: $margin-2;
-  background-color: $color-gray;
-  border-radius: 2px;
-  border-style: solid;
-  border-width: 2px;
-  border-color: $color-gray;
-  transition: background-color 0.1s ease-out;
-}
-.maputnik-checkbox-icon {
-  width: 50%;
-  height: 50%;
-  margin-top: 1px;
-  fill: $color-lowgray;
-}
 
-.maputnik-zoom-spec-property {
-  @extend .clearfix;
-  display: block;
-  margin: $margin-3;
-}
-
-.maputnik-zoom-spec-property-label {
-  display: inline-block;
-  width: 41%;
-}
-
-.maputnik-zoom-spec-property-stop-item {
-  margin-bottom: $margin-2;
-  margin-top: $margin-2;
-}
-
-.maputnik-zoom-spec-property-stop-edit {
-  display: inline-block;
-  width: 7%;
-  margin-right: 1.5%;
-  > * {
-    width: 100%;
-  }
-}
-
-.maputnik-zoom-spec-property-stop-value {
-  display: inline-block;
-  width: 41.5%;
-  > * {
-    width: 100%;
-  }
-}
-
-.maputnik-delete-stop {
-  background-color: transparent;
-  vertical-align: top;
-
-  .maputnik-doc-wrapper {
-    width: auto;
-  }
-  .maputnik-doc-target {
+  &-wrapper {
+    @extend .maputnik-input;
+    padding-left: 0;
+    padding-right: 0;
+    position: relative;
+    text-align: center;
+    vertical-align: middle;
     cursor: pointer;
+    max-width: 24px;
   }
 
-  &:hover {
-    background-color: transparent;
-    svg {
-      fill: $color-white;
-    }
+  &-box {
+    display: inline-block;
+    text-align: center;
+    height: 24px;
+    width: 24px;
+    margin-right: $margin-2;
+    background-color: $color-gray;
+    border-radius: 2px;
+    border-style: solid;
+    border-width: 2px;
+    border-color: $color-gray;
+    transition: background-color 0.1s ease-out;
+  }
+
+  &-icon {
+    width: 50%;
+    height: 50%;
+    margin-top: 1px;
+    fill: $color-lowgray;
   }
 }
 
-.maputnik-add-stop {
-  display: inline-block;
-  float: right;
-  margin-right: $margin-2;
+// AUTOCOMPLETE
+.maputnik-autocomplete {
 }
 
-.maputnik-select {
-  @extend .maputnik-input;
-  height: 2.15em;
-  width: 50%;
-}

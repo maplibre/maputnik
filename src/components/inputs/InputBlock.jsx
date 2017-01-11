@@ -1,12 +1,17 @@
 import React from 'react'
+import classnames from 'classnames'
 import input from '../../config/input'
 import DocLabel from '../fields/DocLabel'
 
 /** Wrap a component with a label */
 class InputBlock extends React.Component {
   static propTypes = {
-    label: React.PropTypes.string.isRequired,
+    label: React.PropTypes.oneOfType([
+      React.PropTypes.string,
+      React.PropTypes.element,
+    ]).isRequired,
     doc: React.PropTypes.string,
+    action: React.PropTypes.element,
     children: React.PropTypes.element.isRequired,
     style: React.PropTypes.object,
   }
@@ -16,36 +21,34 @@ class InputBlock extends React.Component {
     return this.props.onChange(value === "" ? null: value)
   }
 
-  renderChildren() {
-    return React.Children.map(this.props.children, child => {
-      return React.cloneElement(child, {
-        style: {
-          ...child.props.style,
-          width: '50%',
-        }
-      })
-    })
-  }
-
   render() {
     return <div style={this.props.style}
-      className="maputnik-input-block"
+      className={classnames({
+        "maputnik-input-block": true,
+        "maputnik-action-block": this.props.action
+      })}
       >
       {this.props.doc &&
-      <DocLabel
-        label={this.props.label}
-        doc={this.props.doc}
-        style={{
-          width: '50%',
-        }}
-      />
+      <div className="maputnik-input-block-label">
+        <DocLabel
+          label={this.props.label}
+          doc={this.props.doc}
+        />
+      </div>
       }
       {!this.props.doc &&
       <label className="maputnik-input-block-label">
         {this.props.label}
       </label>
       }
-      {this.renderChildren()}
+      {this.props.action &&
+      <div className="maputnik-input-block-action">
+        {this.props.action}
+      </div>
+      }
+      <div className="maputnik-input-block-content">
+        {this.props.children}
+      </div>
     </div>
   }
 }

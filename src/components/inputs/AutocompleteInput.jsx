@@ -8,8 +8,6 @@ class AutocompleteInput extends React.Component {
   static propTypes = {
     value: React.PropTypes.string,
     options: React.PropTypes.array,
-    wrapperStyle: React.PropTypes.object,
-    inputStyle: React.PropTypes.object,
     onChange: React.PropTypes.func,
   }
 
@@ -20,7 +18,10 @@ class AutocompleteInput extends React.Component {
 
   render() {
     return <Autocomplete
-      className="maputnik-autocomplete"
+      wrapperProps={{
+        className: "maputnik-autocomplete",
+        style: null
+      }}
       menuStyle={{
         border: 'none',
         padding: '2px 0',
@@ -30,16 +31,8 @@ class AutocompleteInput extends React.Component {
         background: colors.gray,
         zIndex: 3,
       }}
-      wrapperStyle={{
-        display: 'inline-block',
-        ...this.props.wrapperStyle
-      }}
       inputProps={{
-        style: {
-          ...input.input,
-          width: '100%',
-          ...this.props.inputStyle,
-        }
+        className: "maputnik-string"
       }}
       value={this.props.value}
       items={this.props.options}
