@@ -210,26 +210,26 @@ class SourcesModal extends React.Component {
       title={'Sources'}
     >
       <div className="maputnik-modal-section">
-      <h4>Active Sources</h4>
-      {activeSources}
+        <h4>Active Sources</h4>
+        {activeSources}
       </div>
+
+      <div className="maputnik-modal-section">
+        <h4>Choose Public Source</h4>
+        <p>
+          Add one of the publicly availble sources to your style.
+        </p>
+        <div style={{maxwidth: 500}}>
+        {tilesetOptions}
+        </div>
+      </div>
+
       <div className="maputnik-modal-section">
 				<h4>Add New Source</h4>
 				<p>Add a new source to your style. You can only choose the source type and id at creation time!</p>
 				<AddSource
 					onAdd={(sourceId, source) => this.props.onStyleChanged(addSource(mapStyle, sourceId, source))}
 				/>
-      </div>
-
-      <div className="maputnik-modal-section">
-      <h4>Choose Public Source</h4>
-      <p>
-        Add one of the publicly availble sources to your style.
-      </p>
-      </div>
-
-      <div style={{maxwidth: 500}}>
-      {tilesetOptions}
       </div>
     </Modal>
   }
