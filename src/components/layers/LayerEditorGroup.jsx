@@ -1,7 +1,4 @@
 import React from 'react'
-import Color from 'color'
-import colors from '../../config/colors'
-import { margins, fontSizes } from '../../config/scales'
 
 import Collapse from 'react-collapse'
 import CollapseOpenIcon from 'react-icons/lib/md/arrow-drop-down'

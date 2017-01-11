@@ -1,8 +1,4 @@
 import React from 'react'
-
-import input from '../../config/input.js'
-import colors from '../../config/colors.js'
-import { margins, fontSizes } from '../../config/scales.js'
 import { combiningFilterOps } from '../../libs/filterops.js'
 
 import GlSpec from 'mapbox-gl-style-spec/reference/latest.js'
@@ -86,41 +82,28 @@ export default class CombiningFilterEditor extends React.Component {
 
     //TODO: Implement support for nested filter
     if(hasNestedCombiningFilter(filter)) {
-      return <div style={{
-        fontSize: fontSizes[5],
-        color: colors.midgray,
-      }}>
+      return <div className="maputnik-filter-editor-unsupported">
         Nested filters are not supported.
       </div>
     }
 
-    return <div>
-      <div className="maputnik-filter-editor-compound-select" style={{ marginBottom: margins[1] }}>
+    return <div className="maputnik-filter-editor">
+      <div className="maputnik-filter-editor-compound-select">
         <DocLabel
           label={"Compound Filter"}
           doc={GlSpec.layer.filter.doc + " Combine multiple filters together by using a compound filter."}
-          style={{
-            display: 'inline-block',
-            width: '49%',
-          }}
         />
         <SelectInput
           value={combiningOp}
           onChange={this.onFilterPartChanged.bind(this, 0)}
           options={[["all", "every filter matches"], ["none", "no filter matches"], ["any", "any filter matches"]]}
-          style={{
-            display: 'inline-block',
-            width: '50%',
-          }}
         />
       </div>
       {editorBlocks}
-      <div className="maputnik-filter-editor-add-wrapper" style={{marginTop: margins[1]}}>
-        <Button onClick={this.addFilterItem.bind(this)} style={{
-          display: 'inline-block',
-          marginLeft: '79%',
-          width: '20%',
-        }}>
+      <div className="maputnik-filter-editor-add-wrapper">
+        <Button
+          className="maputnik-add-filter"
+          onClick={this.addFilterItem.bind(this)}>
           Add filter
         </Button>
       </div>

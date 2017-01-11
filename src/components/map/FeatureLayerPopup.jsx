@@ -2,19 +2,7 @@ import React from 'react'
 import InputBlock from '../inputs/InputBlock'
 import StringInput from '../inputs/StringInput'
 import LayerIcon from '../icons/LayerIcon'
-import input from '../../config/input'
 
-import colors from '../../config/colors'
-import { margins, fontSizes } from '../../config/scales'
-
-const Panel = (props) => {
-  return <div style={{
-    backgroundColor: colors.gray,
-    padding: margins[0],
-    fontSize: fontSizes[5],
-    lineHeight: 1.2,
-  }}>{props.children}</div>
-}
 
 function groupFeaturesBySourceLayer(features) {
   const sources = {}
@@ -33,26 +21,23 @@ class FeatureLayerPopup extends React.Component {
       const layers = sources[vectorLayerId].map((feature, idx) => {
         return <label
           key={idx}
-          style={{
-            ...input.label,
-            display: 'block',
-            width: 'auto',
-          }}>
+          className="maputnik-popup-layer"
+        >
           <LayerIcon type={feature.layer.type} style={{
-            width: fontSizes[4],
-            height: fontSizes[4],
-            paddingRight: margins[0],
+            width: 14,
+            height: 14,
+            paddingRight: 3
           }}/>
           {feature.layer.id}
         </label>
       })
       return <div key={vectorLayerId}>
-        <Panel>{vectorLayerId}</Panel>
+        <div className="maputnik-popup-layer-id">{vectorLayerId}</div>
         {layers}
       </div>
     })
 
-    return <div>
+    return <div className="maputnik-feature-layer-popup">
       {items}
     </div>
   }

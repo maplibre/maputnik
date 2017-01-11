@@ -13,7 +13,6 @@ import FunctionIcon from 'react-icons/lib/md/functions'
 import capitalize from 'lodash.capitalize'
 import input from '../../config/input.js'
 import colors from '../../config/colors.js'
-import { margins, fontSizes } from '../../config/scales.js'
 
 function isZoomField(value) {
   return typeof value === 'object' && value.stops
@@ -22,7 +21,7 @@ function isZoomField(value) {
 /** Supports displaying spec field for zoom function objects
  * https://www.mapbox.com/mapbox-gl-style-spec/#types-function-zoom-property
  */
-export default class ZoomSpecField extends React.Component {
+export default class ZoomSpecProperty  extends React.Component {
   static propTypes = {
       onChange: React.PropTypes.func.isRequired,
       fieldName: React.PropTypes.string.isRequired,
@@ -85,114 +84,90 @@ export default class ZoomSpecField extends React.Component {
     this.props.onChange(this.props.fieldName, changedValue)
   }
 
-  render() {
-    if(isZoomField(this.props.value)) {
-      let label = <DocLabel
+  renderZoomProperty() {
+    const label = <div className="maputnik-zoom-spec-property-label">
+      <DocLabel
         label={labelFromFieldName(this.props.fieldName)}
         doc={this.props.fieldSpec.doc}
-        style={{
-          width: '50%',
-        }}
       />
+    </div>
 
-      const zoomFields = this.props.value.stops.map((stop, idx) => {
-        label = <DocLabel
-          doc={this.props.fieldSpec.doc}
-          style={{ width: '41%'}}
-          label={idx > 0 ? "" : labelFromFieldName(this.props.fieldName)}
-        />
+    const zoomFields = this.props.value.stops.map((stop, idx) => {
+      const zoomLevel = stop[0]
+      const value = stop[1]
 
-        if(idx === 1) {
-          label = <label style={{...input.label, width: '41%'}}>
-            <Button
-              className="maputnik-add-stop"
-              style={{fontSize: fontSizes[5]}}
-              onClick={this.addStop.bind(this)}
-            >
-              Add stop
-            </Button>
-          </label>
-        }
+      return <div key={zoomLevel} className="maputnik-zoom-spec-property-stop-item">
+        {label}
+        <Button
+          className="maputnik-delete-stop"
+          onClick={this.deleteStop.bind(this, idx)}
+        >
+          <DocLabel
+            label={<DeleteIcon />}
+            doc={"Remove zoom level stop."}
+          />
 
-        const zoomLevel = stop[0]
-        const value = stop[1]
-
-        return <div key={zoomLevel} style={{
-            ...input.property,
-            marginLeft: 0,
-            marginRight: 0
-          }}>
-          {label}
-          <Button
-           className="maputnik-delete-stop"
-            style={{backgroundColor: null, verticalAlign: 'top'}}
-            onClick={this.deleteStop.bind(this, idx)}
-          >
-            <DeleteIcon />
-          </Button>
+        </Button>
+        <div className="maputnik-zoom-spec-property-stop-edit">
           <NumberInput
-            style={{
-              width: '7.5%',
-              verticalAlign: 'top',
-            }}
             value={zoomLevel}
             onChange={changedStop => this.changeStop(idx, changedStop, value)}
             min={0}
             max={22}
           />
+        </div>
+        <div className="maputnik-zoom-spec-property-stop-value">
           <SpecField
             fieldName={this.props.fieldName}
             fieldSpec={this.props.fieldSpec}
             value={value}
             onChange={(_, newValue) => this.changeStop(idx, zoomLevel, newValue)}
-            style={{
-              width: '41%',
-              marginLeft: '1.5%',
-            }}
           />
         </div>
-      })
-
-      return <div style={input.property}>
-        {zoomFields}
       </div>
-    } else {
+    })
 
-      if(this.props.fieldSpec['zoom-function']) {
+    return <div className="maputnik-zoom-spec-property">
+      {zoomFields}
+      <Button
+        className="maputnik-add-stop"
+        onClick={this.addStop.bind(this)}
+      >
+        Add stop
+      </Button>
+    </div>
+  }
 
-      }
-
-      return <div style={input.property}
-         className="maputnik-zoom-spec-field"
-        >
+  renderProperty() {
+    return <div className="maputnik-zoom-spec-property">
+      <DocLabel
+        label={labelFromFieldName(this.props.fieldName)}
+        doc={this.props.fieldSpec.doc}
+        style={{
+          width: this.props.fieldSpec['zoom-function'] ? '41%' : '50%',
+        }}
+      />
+      {this.props.fieldSpec['zoom-function'] &&
+      <Button
+        className="maputnik-make-zoom-function"
+        onClick={this.makeZoomFunction.bind(this)}
+      >
         <DocLabel
-          label={labelFromFieldName(this.props.fieldName)}
-          doc={this.props.fieldSpec.doc}
-          style={{
-            width: this.props.fieldSpec['zoom-function'] ? '41%' : '50%',
-          }}
+          label={<FunctionIcon />}
+          cursorTargetStyle={{ cursor: 'pointer' }}
+          doc={"Turn property into a zoom function to enable a map feature to change with map's zoom level."}
         />
-        {this.props.fieldSpec['zoom-function'] &&
-        <Button
-           className="maputnik-make-zoom-function"
-          style={{
-            verticalAlign: 'top',
-            backgroundColor: null,
-            display: 'inline-block',
-            paddingBottom: 0,
-            paddingTop: 0,
-          }}
-          onClick={this.makeZoomFunction.bind(this)}
-        >
-          <DocLabel
-            label={<FunctionIcon />}
-            cursorTargetStyle={{ cursor: 'pointer' }}
-            doc={"Turn property into a zoom function to enable a map feature to change with map's zoom level."}
-          />
-        </Button>
-        }
-        <SpecField {...this.props} style={{ width: '50%' } }/>
-      </div>
+      </Button>
+      }
+      <SpecField {...this.props} style={{ width: '50%' } }/>
+    </div>
+  }
+
+  render() {
+    if(isZoomField(this.props.value)) {
+      return this.renderZoomProperty();
+    } else {
+      return this.renderProperty();
     }
   }
 }

@@ -12,11 +12,8 @@ import LayerSourceLayerBlock from './LayerSourceLayerBlock'
 import InputBlock from '../inputs/InputBlock'
 import MultiButtonInput from '../inputs/MultiButtonInput'
 
-import input from '../../config/input.js'
 import { changeType, changeProperty } from '../../libs/layer'
 import layout from '../../config/layout.json'
-import { margins, fontSizes } from '../../config/scales'
-import colors from '../../config/colors'
 
 class UnsupportedLayer extends React.Component {
   render() {
@@ -90,8 +87,8 @@ export default class LayerEditor extends React.Component {
   getChildContext () {
     return {
       reactIconBase: {
-        size: fontSizes[4],
-        color: colors.lowgray,
+        size: 14,
+        color: '#8e8e8e',
       }
     }
   }
@@ -135,7 +132,7 @@ export default class LayerEditor extends React.Component {
         }
       </div>
       case 'filter': return <div>
-        <div style={input.property}>
+        <div className="maputnik-filter-editor-wrapper">
           <FilterEditor
             filter={this.props.layer.filter}
             properties={this.props.vectorLayers[this.props.layer['source-layer']]}

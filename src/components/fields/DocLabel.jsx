@@ -30,10 +30,7 @@ export default class DocLabel extends React.Component {
         onMouseOver={e => this.setState({showDoc: true})}
         onMouseOut={e => this.setState({showDoc: false})}
         className="maputnik-doc-target"
-        style={{
-          cursor: 'help',
-          ...this.props.cursorTargetStyle,
-        }}
+        style={this.props.cursorTargetStyle}
       >
         {this.props.label}
       </span>

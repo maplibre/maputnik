@@ -1,7 +1,6 @@
 import React from 'react'
 import GlSpec from 'mapbox-gl-style-spec/reference/latest.js'
 import Modal from './Modal'
-import Heading from '../Heading'
 import Button from '../Button'
 import Paragraph from '../Paragraph'
 import InputBlock from '../inputs/InputBlock'
@@ -12,8 +11,6 @@ import SourceTypeEditor from '../sources/SourceTypeEditor'
 import style from '../../libs/style'
 import { deleteSource, addSource, changeSource } from '../../libs/source'
 import publicSources from '../../config/tilesets.json'
-import colors from '../../config/colors'
-import { margins, fontSizes } from '../../config/scales'
 
 import AddIcon from 'react-icons/lib/md/add-circle-outline'
 import DeleteIcon from 'react-icons/lib/md/delete'
@@ -27,33 +24,18 @@ class PublicSource extends React.Component {
   }
 
   render() {
-    return <div className="maputnik-public-source" style={{
-        verticalAlign: 'top',
-        marginTop: margins[2],
-        marginRight: margins[2],
-        backgroundColor: colors.gray,
-        display: 'inline-block',
-        width: 240,
-        fontSize: fontSizes[4],
-        color: colors.lowgray,
-    }}>
-      <Button
-        onClick={() => this.props.onSelect(this.props.id)}
-        style={{
-          backgroundColor: 'transparent',
-          padding: margins[2],
-          display: 'flex',
-          flexDirection: 'row',
-        }}
-      >
-        <div>
-          <span style={{fontWeight: 700}}>{this.props.title}</span>
-          <br/>
-          <span style={{fontSize: fontSizes[5]}}>#{this.props.id}</span>
-        </div>
-        <span style={{flexGrow: 1}} />
-        <AddIcon />
-      </Button>
+    return <div className="maputnik-public-source">
+			<Button
+        className="maputnik-public-source-select"
+				onClick={() => this.props.onSelect(this.props.id)}
+			>
+				<div className="maputnik-public-source-info">
+					<p className="maputnik-public-source-name">{this.props.title}</p>
+					<p className="maputnik-public-source-id">#{this.props.id}</p>
+				</div>
+				<span className="maputnik-space" />
+				<AddIcon />
+			</Button>
     </div>
   }
 }
@@ -81,32 +63,19 @@ class ActiveSourceTypeEditor extends React.Component {
 
   render() {
     const inputProps = { }
-    return <div style={{
-    }}>
-      <div className="maputnik-active-source-type-editor"
-      style={{
-        backgroundColor: colors.gray,
-        color: colors.lowgray,
-        padding: margins[1],
-        display: 'flex',
-        fontSize: fontSizes[4],
-        flexDirection: 'row',
-      }}>
-        <span style={{fontWeight: 700, fontSize: fontSizes[4], lineHeight: 2}}>#{this.props.sourceId}</span>
-        <span style={{flexGrow: 1}} />
+    return <div className="maputnik-active-source-type-editor">
+      <div className="maputnik-active-source-type-editor-header">
+        <span className="maputnik-active-source-type-editor-header-id">#{this.props.sourceId}</span>
+        <span className="maputnik-space" />
         <Button
+          className="maputnik-active-source-type-editor-header-delete"
           onClick={()=> this.props.onDelete(this.props.sourceId)}
           style={{backgroundColor: 'transparent'}}
         >
           <DeleteIcon />
         </Button>
       </div>
-      <div style={{
-        borderColor: colors.gray,
-        borderWidth: 2,
-        borderStyle: 'solid',
-        padding: margins[1],
-      }}>
+      <div className="maputnik-active-source-type-editor-content">
         <SourceTypeEditor
           onChange={this.props.onChange}
           mode={editorMode(this.props.source)}
@@ -163,7 +132,7 @@ class AddSource extends React.Component {
   }
 
   render() {
-    return <div>
+    return <div className="maputnik-add-source">
       <InputBlock label={"Source ID"} doc={"Unique ID that identifies the source and is used in the layer to reference the source."}>
         <StringInput
           value={this.state.sourceId}
@@ -188,7 +157,9 @@ class AddSource extends React.Component {
         mode={this.state.mode}
         source={this.state.source}
       />
-      <Button onClick={() => this.props.onAdd(this.state.sourceId, this.state.source)}>
+      <Button
+        className="maputnik-add-source-button"
+				onClick={() => this.props.onAdd(this.state.sourceId, this.state.source)}>
         Add Source
       </Button>
     </div>
@@ -239,21 +210,25 @@ class SourcesModal extends React.Component {
       onOpenToggle={this.props.onOpenToggle}
       title={'Sources'}
     >
-      <Heading level={4}>Active Sources</Heading>
+      <div className="maputnik-modal-section">
+      <h4>Active Sources</h4>
       {activeSources}
-
-      <Heading level={4}>Add New Source</Heading>
-      <div style={{maxWidth: 300}}>
-        <p style={{color: colors.lowgray, fontSize: fontSizes[5]}}>Add a new source to your style. You can only choose the source type and id at creation time!</p>
-        <AddSource
-          onAdd={(sourceId, source) => this.props.onStyleChanged(addSource(mapStyle, sourceId, source))}
-        />
+      </div>
+      <div className="maputnik-modal-section">
+				<h4>Add New Source</h4>
+				<p>Add a new source to your style. You can only choose the source type and id at creation time!</p>
+				<AddSource
+					onAdd={(sourceId, source) => this.props.onStyleChanged(addSource(mapStyle, sourceId, source))}
+				/>
       </div>
 
-      <Heading level={4}>Choose Public Source</Heading>
-      <Paragraph>
+      <div className="maputnik-modal-section">
+      <h4>Choose Public Source</h4>
+      <p>
         Add one of the publicly availble sources to your style.
-      </Paragraph>
+      </p>
+      </div>
+
       <div style={{maxwidth: 500}}>
       {tilesetOptions}
       </div>

@@ -90,6 +90,9 @@
   max-width: 100%;
 }
 
+.maputnik-add-layer{
+  @extend .clearfix;
+}
 //ADD MODAL
 .maputnik-add-layer-button {
   margin-right: $margin-3;
@@ -99,4 +102,66 @@
   margin-bottom: $margin-3;
   text-align: right;
   @extend .maputnik-big-button;
+}
+
+//SOURCE MODAL
+.maputnik-public-source {
+	vertical-align: top;
+	margin-top: 1.5%;
+	margin-right: 1.5%;
+	background-color: $color-gray;
+	width: 48.5%;
+  display: inline-block;
+}
+
+.maputnik-public-source-select {
+  padding: $margin-3;
+	font-size: $font-size-5;
+	color: $color-lowgray;
+	display: flex;
+	flex-direction: row;
+  background-color: transparent;
+}
+
+.maputnik-public-source-name {
+  font-weight: 700;
+}
+
+.maputnik-public-source-id {
+  font-weight: 400;
+}
+
+.maputnik-active-source-type-editor {
+  min-width: 500px;
+}
+.maputnik-active-source-type-editor-header {
+    background-color: $color-gray;
+    color: $color-lowgray;
+    padding: $margin-2;
+    display: flex;
+    flex-direction: row;
+}
+.maputnik-active-source-type-editor-header-id {
+  font-weight: 700;
+  line-height: 2;
+  font-size: $font-size-5;
+}
+
+.maputnik-active-source-type-editor-content {
+    border-color: $color-gray;
+    border-width: 2px;
+    border-style: solid;
+    padding: $margin-2;
+}
+
+.maputnik-add-source {
+  @extend .clearfix;
+}
+
+.maputnik-add-source-button {
+  @extend .maputnik-big-button;
+  display: inline-block;
+  margin-top: 0;
+  margin-right: $margin-3;
+  float: right;
 }

@@ -5,6 +5,7 @@
   margin: 0;
   padding-bottom: $margin-5;
 }
+
 .maputnik-layer-list-item {
   font-weight: 400;
   color: $color-lowgray;
@@ -29,7 +30,7 @@
 }
 
 .maputnik-layer-list-item:hover, .maputnik-layer-list-item-selected {
-  background-color: lighten($color-black, 0.8);
+  background-color: lighten($color-black, 2);
 
   .maputnik-icon-action svg {
     fill: $color-midgray;
@@ -38,6 +39,11 @@
     }
   }
 }
+
+.maputnik-layer-list-item-selected {
+  color: $color-white;
+}
+
 .maputnik-layer-list-item-id {
   width: 115px;
   white-space: nowrap;
@@ -49,7 +55,8 @@
 .maputnik-layer-editor-group {
   font-weight: bold;
   font-size: $font-size-5;
-  background-color: darken($color-gray, 1.5);
+  background-color: lighten($color-black, 2);
+
   color: $color-lowgray;
   cursor: pointer;
   user-select: none;
@@ -57,18 +64,107 @@
   display: flex;
   flex-direction: row;
   line-height: 20px;
+
+  &:hover {
+    background-color: $color-gray;
+  }
 }
+
+.maputnik-filter-editor-wrapper {
+  padding: $margin-3;
+}
+
 .maputnik-filter-editor-property {
   display: inline-block;
   width: '22%';
 }
+
 .maputnik-filter-editor-operator {
   display: inline-block;
   width: 19%;
   margin-left: 2%;
 }
+
 .maputnik-filter-editor-args {
   display: inline-block;
   width: 54%;
   margin-left: 2%;
+}
+
+.maputnik-make-zoom-function {
+  background-color: transparent;
+ display: inline-block;
+  padding-bottom: 0px;
+  padding-top: 0px;
+
+  &:hover {
+    background-color: transparent;
+    svg {
+      fill: $color-white;
+    }
+  }
+}
+
+.maputnik-filter-editor-compound-select {
+  margin-bottom: $margin-2;
+}
+
+.maputnik-filter-editor-unsupported {
+  color: $color-midgray;
+}
+
+.maputnik-filter-editor {
+  @extend .clearfix;
+}
+
+.maputnik-add-filter {
+  display: inline-block;
+  float: right;
+  margin-top: $margin-2;
+}
+.maputnik-delete-filter {
+  background-color: transparent;
+  &:hover {
+    background-color: transparent;
+    svg {
+      fill: $color-white;
+    }
+  }
+}
+
+.maputnik-filter-editor-block-action {
+  margin-top: $margin-2;
+  margin-bottom: $margin-2;
+}
+.maputnik-filter-editor-block-action {
+  display: inline-block;
+  width: 8%;
+  margin-right: 1.5%;
+}
+
+.maputnik-filter-editor-block-content {
+  display: inline-block;
+  width: 90.5%;
+}
+
+.maputnik-filter-editor-property {
+  display: inline-block;
+  width: 25%;
+}
+
+.maputnik-filter-editor-operator {
+  display: inline-block;
+  width: 17%;
+  .maputnik-select {
+    width: 100%;
+  }
+}
+
+.maputnik-filter-editor-args {
+  display: inline-block;
+  width: 54%;
+
+  .maputnik-string, .maputnik-number {
+    width: 100%;
+  }
 }

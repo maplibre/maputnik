@@ -18,10 +18,7 @@ class SelectInput extends React.Component {
 
     return <select
       className="maputnik-select"
-      style={{
-        ...input.select,
-        ...this.props.style
-      }}
+      style={this.props.style}
       value={this.props.value}
       onChange={e => this.props.onChange(e.target.value)}
     >

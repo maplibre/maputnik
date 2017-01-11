@@ -1,6 +1,5 @@
 import React from 'react'
 
-import { margins, fontSizes } from '../../config/scales.js'
 import { otherFilterOps } from '../../libs/filterops.js'
 import StringInput from '../inputs/StringInput'
 import AutocompleteInput from '../inputs/AutocompleteInput'
@@ -11,7 +10,6 @@ class SingleFilterEditor extends React.Component {
     filter: React.PropTypes.array.isRequired,
     onChange: React.PropTypes.func.isRequired,
     properties: React.PropTypes.object,
-    style: React.PropTypes.object,
   }
 
   static defaultProps = {
@@ -29,12 +27,7 @@ class SingleFilterEditor extends React.Component {
     const propertyName = f[1]
     const filterArgs = f.slice(2)
 
-    return <div className="maputnik-filter-editor-single"
-    style={{
-      marginTop: margins[1],
-      marginBottom: margins[1],
-      ...this.props.style
-    }}>
+    return <div className="maputnik-filter-editor-single">
       <div className="maputnik-filter-editor-property">
         <AutocompleteInput
           value={propertyName}

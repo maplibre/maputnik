@@ -5,7 +5,6 @@ import InputBlock from '../inputs/InputBlock'
 import StringInput from '../inputs/StringInput'
 import SelectInput from '../inputs/SelectInput'
 import Modal from './Modal'
-import colors from '../../config/colors'
 
 class SettingsModal extends React.Component {
   static propTypes = {

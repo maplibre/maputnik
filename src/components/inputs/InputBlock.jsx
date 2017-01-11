@@ -1,7 +1,6 @@
 import React from 'react'
 import input from '../../config/input'
 import DocLabel from '../fields/DocLabel'
-import { margins } from '../../config/scales'
 
 /** Wrap a component with a label */
 class InputBlock extends React.Component {
@@ -29,9 +28,7 @@ class InputBlock extends React.Component {
   }
 
   render() {
-    return <div style={{
-      ...this.props.style,
-    }}
+    return <div style={this.props.style}
       className="maputnik-input-block"
       >
       {this.props.doc &&
@@ -44,11 +41,7 @@ class InputBlock extends React.Component {
       />
       }
       {!this.props.doc &&
-      <label
-        style={{
-          ...input.label,
-          width: '50%',
-      }}>
+      <label className="maputnik-input-block-label">
         {this.props.label}
       </label>
       }

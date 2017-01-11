@@ -10,15 +10,15 @@ class FilterEditorBlock extends React.Component {
 
   render() {
     return <div className="maputnik-filter-editor-block">
-      <div className="maputnik-filter-editor-block-action" style={{display: 'inline-block', width: '8%'}}>
+      <div className="maputnik-filter-editor-block-action">
         <Button
-          style={{backgroundColor: null}}
+          className="maputnik-delete-filter"
           onClick={this.props.onDelete}
         >
           <DeleteIcon />
         </Button>
       </div>
-      <div className="maputnik-filter-editor-block-content" style={{display: 'inline-block', width: '92%'}}>
+      <div className="maputnik-filter-editor-block-content">
         {this.props.children}
       </div>
     </div>

@@ -24,9 +24,10 @@ html {
 
 p {
   font-size: $font-size-6;
-  padding-top: $margin-2;
-  padding-bottom: $margin-2;
+  margin-top: $margin-2;
+  margin-bottom: $margin-2;
   color: $color-lowgray;
+  line-height: 1.3;
 }
 
 h1 {
@@ -49,10 +50,21 @@ h4 {
   margin-bottom: $margin-3;
 }
 
-input:focus {
+input {
+  height: 24px;
+}
+input:focus, select:focus {
   color: $color-white !important;
   outline: #8e8e8e auto 1px !important;
 }
 label:hover {
   color: $color-white;
+}
+
+.clearfix {
+  &:after {
+    content: "";
+    display: table;
+    clear: both;
+  }
 }

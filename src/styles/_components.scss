@@ -15,6 +15,10 @@
   height: 100%;
   width: 75%;
 }
+
+.maputnik-doc-target {
+  cursor: help;
+}
 .maputnik-doc-wrapper {
   display: inline-block;
   box-sizing: border-box;
@@ -50,6 +54,14 @@
 }
 .maputnik-input-block {
   margin: $margin-3;
+}
+
+.maputnik-input-block-label {
+  display: inline-block;
+  line-height: 2;
+  color: $color-lowgray;
+  user-select: none;
+  width: 50%;
 }
 
 .maputnik-space {
