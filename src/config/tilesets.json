@@ -4,6 +4,11 @@
     "url": "mapbox://mapbox.mapbox-streets-v7",
     "title": "Mapbox Streets"
   },
+  "openmaptiles": {
+    "type": "vector",
+    "url": "https://free.tilehosting.com/data/v3.json?key=25ItXg7aI5wurYDtttD",
+    "title": "OpenMapTiles"
+  },
   "tilezen": {
     "type": "vector",
     "tiles": [
@@ -12,15 +17,5 @@
     "minZoom": 0,
     "maxZoom": 15,
     "title": "Mapzen Vector Tile Service"
-  },
-  "openmaptiles": {
-    "type": "vector",
-    "url": "https://free.tilehosting.com/data/v3.json?key=25ItXg7aI5wurYDtttD",
-    "title": "OpenMapTiles CDN"
-  },
-  "naturalearth-airports": {
-    "type": "geojson",
-    "data": "https://d2ad6b4ur7yvpq.cloudfront.net/naturalearth-3.3.0/ne_10m_airports.geojson",
-    "title": "NaturalEarth Airports GeoJSON"
   }
 }
