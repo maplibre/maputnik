@@ -4,7 +4,7 @@
   top: 40px;
   right: 0;
   bottom: 0;
-  height: 100%;
+  height: calc(100% - $toolbar-height);
   width: 75%;
 }
 
@@ -127,4 +127,3 @@
     color: $color-red;
   }
 }
-
