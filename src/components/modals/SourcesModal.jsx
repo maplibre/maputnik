@@ -48,7 +48,7 @@ function editorMode(source) {
     if(source.tiles) return 'tilexyz_vector'
     return 'tilejson_vector'
   }
-  if(source.type === 'geojson') return ' geojson'
+  if(source.type === 'geojson') return 'geojson'
   return null
 }
 
@@ -93,9 +93,9 @@ class AddSource extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      mode: 'tilejson',
+      mode: 'tilejson_vector',
       sourceId: style.generateId(),
-      source: this.defaultSource('tilejson'),
+      source: this.defaultSource('tilejson_vector'),
     }
   }
 
