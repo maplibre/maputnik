@@ -155,6 +155,7 @@
           "type": "properties",
           "fields": [
             "text-color",
+            "text-opacity",
             "text-halo-color",
             "text-halo-width",
             "text-halo-blur",
@@ -166,6 +167,13 @@
           "title": "Icon paint properties",
           "type": "properties",
           "fields": [
+            "icon-color",
+            "icon-opacity",
+            "icon-halo-color",
+            "icon-halo-width",
+            "icon-halo-blur",
+            "icon-translate",
+            "icon-translate-anchor"
           ]
         }
       ]
