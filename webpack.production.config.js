@@ -17,7 +17,6 @@ module.exports = {
         "randomcolor",
         "lodash.clonedeep",
         "lodash.throttle",
-        "lodash.topairs",
         'color',
         'react',
         "react-dom",
