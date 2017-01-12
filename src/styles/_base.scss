@@ -18,7 +18,9 @@ html {
   box-sizing: border-box;
 }
 
-*, *:before, *:after {
+*,
+*::before,
+*::after {
   box-sizing: inherit;
 }
 
@@ -53,7 +55,8 @@ h4 {
   margin-bottom: $margin-3;
 }
 
-input:focus, select:focus {
+input:focus,
+select:focus {
   color: $color-white !important;
   outline: #8e8e8e auto 1px !important;
 }
@@ -63,7 +66,7 @@ label:hover {
 }
 
 .clearfix {
-  &:after {
+  &::after {
     content: "";
     display: table;
     clear: both;

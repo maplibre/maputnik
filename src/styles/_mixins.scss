@@ -5,3 +5,10 @@
   -o-#{$name}: #{$argument};
   #{$name}: #{$argument};
 }
+
+@mixin flex-row {
+  display: flex;
+  display: -ms-flexbox;
+
+  @include vendor-prefix(flex-direction, row);
+}

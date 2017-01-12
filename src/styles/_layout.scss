@@ -2,9 +2,9 @@
 .maputnik-scroll-container {
   overflow-x: visible;
   overflow-y: scroll;
-  bottom: 0px;
-  left: 0px;
-  right: 0px;
+  bottom: 0;
+  left: 0;
+  right: 0;
   top: 1px;
   position: absolute;
 }
@@ -16,29 +16,31 @@
 
   &-list {
     position: fixed;
-    bottom: 0px;
-    height: 100%;
+    bottom: 0;
+    height: calc(100% - $toolbar-height);
     top: 40px;
-    left: 0px;
+    left: 0;
     z-index: 3;
     width: 200px;
     overflow: hidden;
     background-color: $color-black;
   }
+
   &-drawer {
     position: fixed;
-    bottom: 0px;
-    height: 100%;
+    bottom: 0;
+    height: calc(100% - $toolbar-height);
     top: 40px;
     left: 200px;
     z-index: 1;
     width: 350px;
     background-color: $color-black;
   }
+
   &-bottom {
     position: fixed;
     height: 50px;
-    bottom: 0px;
+    bottom: 0;
     left: 550px;
     z-index: 1;
     width: 100%;

@@ -2,9 +2,9 @@
 .maputnik-map {
   position: fixed !important;
   top: 40px;
-  right: 0px;
-  bottom: 0px;
-  height: 100%;
+  right: 0;
+  bottom: 0;
+  height: calc(100% - $toolbar-height);
   width: 75%;
 }
 
@@ -14,7 +14,7 @@
     cursor: help;
   }
 
-  &-wrapper{
+  &-wrapper {
     display: inline-block;
     box-sizing: border-box;
     font-size: $font-size-6;
@@ -32,7 +32,7 @@
     font-size: 10px;
     position: absolute;
     top: 20px;
-    left: 0px;
+    left: 0;
     width: 120px;
     z-index: 3;
   }
@@ -68,11 +68,15 @@
 
 .maputnik-icon-button {
   background-color: transparent;
+
   &:hover {
     background-color: transparent;
-    label, svg {
+
+    label,
+    svg {
       cursor: pointer;
     }
+
     svg {
       fill: $color-white;
     }
@@ -102,6 +106,7 @@
     display: inline-block;
     width: 43%;
   }
+
   .maputnik-input-block-action {
     vertical-align: top;
     display: inline-block;
@@ -111,15 +116,14 @@
 
 // SPACE HELPER
 .maputnik-space {
-	flex-grow: 1;
+  @include vendor-prefix(flex-grow, 1);
 }
 
 // MESSAGE PANEL
 .maputnik-message-panel {
   padding: $margin-2;
 
-  &-error  {
+  &-error {
     color: $color-red;
   }
 }
-

@@ -9,7 +9,8 @@
     "test": "karma start --single-run",
     "test-watch": "karma start",
     "start": "webpack-dev-server --progress --profile --colors --watch-poll",
-    "lint": "eslint --ext js --ext jsx {src,test}"
+    "lint": "eslint --ext js --ext jsx {src,test}",
+    "lint-styles": "stylelint 'src/styles/*.scss'"
   },
   "repository": {
     "type": "git",
@@ -27,12 +28,11 @@
     "lodash.clonedeep": "^4.5.0",
     "lodash.isequal": "^4.4.0",
     "lodash.throttle": "^4.1.1",
-    "lodash.topairs": "^4.3.0",
-    "mapbox-gl": "^0.29.0",
-    "mapbox-gl-inspect": "^1.0.9",
+    "mapbox-gl": "^0.31.0",
+    "mapbox-gl-inspect": "^1.1.1",
     "mapbox-gl-style-spec": "^8.11.0",
     "mousetrap": "^1.6.0",
-    "ol-mapbox-style": "0.0.14",
+    "ol-mapbox-style": "1.0.1",
     "openlayers": "^3.19.1",
     "randomcolor": "^0.4.4",
     "react": "^15.4.0",
@@ -64,6 +64,9 @@
   "jshintConfig": {
     "esversion": 6
   },
+  "stylelint": {
+    "extends": "stylelint-config-standard"
+  },
   "eslintConfig": {
     "plugins": [
       "react"
@@ -88,18 +91,18 @@
     }
   },
   "devDependencies": {
-    "babel-core": "6.14.0",
-    "babel-eslint": "^6.1.2",
-    "babel-loader": "6.2.4",
+    "babel-core": "6.21.0",
+    "babel-eslint": "^7.1.1",
+    "babel-loader": "6.2.10",
     "babel-plugin-transform-class-properties": "^6.11.5",
     "babel-plugin-transform-decorators-legacy": "^1.3.4",
     "babel-plugin-transform-flow-strip-types": "^6.21.0",
     "babel-plugin-transform-object-rest-spread": "^6.8.0",
     "babel-plugin-transform-runtime": "^6.15.0",
-    "babel-preset-es2015": "6.14.0",
-    "babel-preset-react": "6.11.1",
+    "babel-preset-es2015": "6.18.0",
+    "babel-preset-react": "6.16.0",
     "babel-runtime": "^6.11.6",
-    "css-loader": "0.25.0",
+    "css-loader": "0.26.1",
     "eslint": "^3.5.0",
     "eslint-plugin-react": "^6.2.0",
     "extract-text-webpack-plugin": "^1.0.1",
@@ -110,18 +113,19 @@
     "karma-chrome-launcher": "^2.0.0",
     "karma-firefox-launcher": "^1.0.0",
     "karma-mocha": "^1.3.0",
-    "karma-webpack": "^1.8.0",
+    "karma-webpack": "^2.0.1",
     "mocha": "^3.1.2",
     "mocha-loader": "^1.0.0",
-    "node-sass": "^3.9.2",
+    "node-sass": "^4.2.0",
     "react-hot-loader": "^3.0.0-beta.6",
     "sass-loader": "^4.0.1",
     "style-loader": "0.13.1",
+    "stylelint": "^7.7.1",
+    "stylelint-config-standard": "^15.0.1",
     "transform-loader": "^0.2.3",
     "url-loader": "0.5.7",
-    "webpack": "1.13.2",
-    "webpack-cleanup-plugin": "^0.3.0",
-    "webpack-dev-server": "1.15.1",
-    "webworkify-webpack": "^1.1.3"
+    "webpack": "1.14.0",
+    "webpack-cleanup-plugin": "^0.4.1",
+    "webpack-dev-server": "1.16.2"
   }
 }

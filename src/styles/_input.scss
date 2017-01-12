@@ -24,18 +24,13 @@
 //COLOR PICKER
 .maputnik-color {
   @extend .maputnik-input;
+
   height: 26px;
 }
+
 .maputnik-color-wrapper {
   position: relative;
   display: inline;
-}
-
-.maputnik-color-picker-offset {
-
-}
-.maputnik-color-picker-overlay {
-
 }
 
 // ARRAY
@@ -49,6 +44,7 @@
 // SELECT
 .maputnik-select {
   @extend .maputnik-input;
+
   height: 24px;
 }
 
@@ -76,6 +72,7 @@
 
   &-wrapper {
     @extend .maputnik-input;
+
     padding-left: 0;
     padding-right: 0;
     position: relative;
@@ -116,7 +113,7 @@
     overflow: auto;
     max-height: 50%;
     background: $color-gray;
-    z-index: 3,
+    z-index: 3;
   }
 
   &-menu-item {
