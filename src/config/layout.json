@@ -10,6 +10,7 @@
             "line-width",
             "line-offset",
             "line-blur",
+            "line-dasharray",
             "line-pattern",
             "line-translate",
             "line-translate-anchor",
@@ -23,8 +24,7 @@
             "line-cap",
             "line-join",
             "line-miter-limit",
-            "line-round-limit",
-            "line-dasharray"
+            "line-round-limit"
           ]
         }
       ]
