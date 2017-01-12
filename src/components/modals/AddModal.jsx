@@ -31,7 +31,7 @@ class AddModal extends React.Component {
 
     if(this.state.type !== 'background') {
       layer.source = this.state.source
-      if(this.state.type !== 'raster') {
+      if(this.state.type !== 'raster' && this.state['source-layer']) {
         layer['source-layer'] = this.state['source-layer']
       }
     }
