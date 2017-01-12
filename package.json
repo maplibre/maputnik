@@ -9,7 +9,8 @@
     "test": "karma start --single-run",
     "test-watch": "karma start",
     "start": "webpack-dev-server --progress --profile --colors --watch-poll",
-    "lint": "eslint --ext js --ext jsx {src,test}"
+    "lint": "eslint --ext js --ext jsx {src,test}",
+    "lint-styles": "stylelint 'src/styles/*.scss'"
   },
   "repository": {
     "type": "git",
@@ -62,6 +63,9 @@
   },
   "jshintConfig": {
     "esversion": 6
+  },
+  "stylelint": {
+    "extends": "stylelint-config-standard"
   },
   "eslintConfig": {
     "plugins": [
@@ -116,6 +120,7 @@
     "react-hot-loader": "^3.0.0-beta.6",
     "sass-loader": "^4.0.1",
     "style-loader": "0.13.1",
+    "stylelint-config-standard": "^15.0.1",
     "transform-loader": "^0.2.3",
     "url-loader": "0.5.7",
     "webpack": "1.13.2",

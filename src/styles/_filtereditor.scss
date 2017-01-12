@@ -54,6 +54,7 @@
   margin-top: $margin-2;
   margin-bottom: $margin-2;
 }
+
 .maputnik-filter-editor-block-action {
   display: inline-block;
   width: 6%;
@@ -73,6 +74,7 @@
 .maputnik-filter-editor-operator {
   display: inline-block;
   width: 17%;
+
   .maputnik-select {
     width: 100%;
   }
@@ -82,7 +84,8 @@
   display: inline-block;
   width: 54%;
 
-  .maputnik-string, .maputnik-number {
+  .maputnik-string,
+  .maputnik-number {
     width: 100%;
   }
 }

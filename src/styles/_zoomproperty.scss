@@ -2,9 +2,10 @@
 .maputnik-make-zoom-function {
   background-color: transparent;
   display: inline-block;
-  padding-bottom: 0px;
-  padding-top: 0px;
+  padding-bottom: 0;
+  padding-top: 0;
   vertical-align: middle;
+
   @extend .maputnik-icon-button;
 }
 
@@ -28,6 +29,7 @@
   vertical-align: top;
   width: 16%;
   margin-right: 3%;
+
   > * {
     width: 100%;
   }
@@ -36,6 +38,7 @@
 .maputnik-zoom-spec-property-stop-value {
   display: inline-block;
   width: 81%;
+
   > * {
     width: 100%;
   }
@@ -43,11 +46,13 @@
 
 .maputnik-delete-stop {
   @extend .maputnik-icon-button;
+
   vertical-align: top;
 
   .maputnik-doc-wrapper {
     width: auto;
   }
+
   .maputnik-doc-target {
     cursor: pointer;
   }

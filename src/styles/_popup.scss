@@ -2,8 +2,6 @@
   display: inline-block;
   color: $color-lowgray;
   user-select: none;
-  padding-left: 0;
-  padding-right: $margin-1;
   line-height: 1.2;
   padding-left: $margin-2;
   padding-right: $margin-2;
@@ -14,9 +12,6 @@
   padding-right: $margin-2;
   background-color: $color-midgray;
   color: $color-white;
-}
-
-.maputnik-property-layer-popup {
 }
 
 .maputnik-feature-property-popup {

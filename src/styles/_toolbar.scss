@@ -17,7 +17,7 @@
   height: $toolbar-height;
 
   h1 {
-    display: inline; 
+    display: inline;
   }
 
   img {
@@ -37,6 +37,7 @@
   cursor: pointer;
   color: $color-white;
   text-decoration: none;
+
   &:hover {
     background-color: $color-midgray;
   }

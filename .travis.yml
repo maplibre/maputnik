@@ -18,4 +18,5 @@ script:
   - mkdir public
   - node --stack_size=100000 $(which npm) run build
   - npm run lint
+  - npm run lint-styles
   - npm run test
