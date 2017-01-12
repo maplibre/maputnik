@@ -18,6 +18,7 @@ import InspectionIcon from 'react-icons/lib/md/find-in-page'
 
 import logoImage from '../img/maputnik.png'
 import SettingsModal from './modals/SettingsModal'
+import ExportModal from './modals/ExportModal'
 import SourcesModal from './modals/SourcesModal'
 import OpenModal from './modals/OpenModal'
 
@@ -68,6 +69,7 @@ export default class Toolbar extends React.Component {
         sources: false,
         open: false,
         add: false,
+        export: false,
       }
     }
   }
@@ -96,6 +98,12 @@ export default class Toolbar extends React.Component {
         isOpen={this.state.isOpen.settings}
         onOpenToggle={this.toggleModal.bind(this, 'settings')}
       />
+      <ExportModal
+        mapStyle={this.props.mapStyle}
+        onStyleDownload={this.props.onStyleDownload}
+        isOpen={this.state.isOpen.export}
+        onOpenToggle={this.toggleModal.bind(this, 'export')}
+      />
       <OpenModal
         isOpen={this.state.isOpen.open}
         onStyleOpen={this.props.onStyleOpen}
@@ -118,7 +126,10 @@ export default class Toolbar extends React.Component {
         <OpenIcon />
         <IconText>Open</IconText>
       </ToolbarAction>
-      {this.downloadButton()}
+      <ToolbarAction onClick={this.toggleModal.bind(this, 'export')}>
+        <MdFileDownload />
+        <IconText>Export</IconText>
+      </ToolbarAction>
       <ToolbarAction onClick={this.toggleModal.bind(this, 'sources')}>
         <SourcesIcon />
         <IconText>Sources</IconText>
