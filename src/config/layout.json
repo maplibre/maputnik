@@ -2,7 +2,7 @@
     "line": {
       "groups": [
         {
-          "title": "Paint properties”,
+          "title": "Paint properties",
           "type": "properties",
           "fields": [
             "line-opacity",
@@ -10,14 +10,14 @@
             "line-width",
             "line-offset",
             "line-blur",
-            "line-pattern”,
+            "line-pattern",
             "line-translate",
-            "line-translate-anchor”,
+            "line-translate-anchor",
             "line-gap-width"
           ]
         },
         {
-          "title": “Layout properties",
+          "title": "Layout properties",
           "type": "properties",
           "fields": [
             "line-cap",
@@ -32,7 +32,7 @@
     "background": {
       "groups": [
         {
-          "title": “Paint properties",
+          "title": "Paint properties",
           "type": "properties",
           "fields": [
             "background-color",
@@ -45,7 +45,7 @@
     "fill": {
       "groups": [
         {
-          "title": “Paint properties",
+          "title": "Paint properties",
           "type": "properties",
           "fields": [
             "fill-opacity",
@@ -79,17 +79,17 @@
     "circle": {
       "groups": [
         {
-          "title": “Paint properties",
+          "title": "Paint properties",
           "type": "properties",
           "fields": [
             "circle-color",
             "circle-opacity",
             "circle-stroke-color",
             "circle-stroke-opacity",
-            "circle-blur”,
+            "circle-blur",
             "circle-radius",
             "circle-stroke-width",
-            "circle-pitch-scale”,
+            "circle-pitch-scale",
             "circle-translate",
             "circle-translate-anchor"
           ]
@@ -99,7 +99,7 @@
     "symbol": {
       "groups": [
         {
-          "title": “General layout properties”,
+          "title": "General layout properties",
           "type": "properties",
           "fields": [
             "symbol-placement",
@@ -108,7 +108,7 @@
           ]
         },
         {
-          "title": “Text layout properties”,
+          "title": "Text layout properties",
           "type": "properties",
           "fields": [
             "text-field",
@@ -133,7 +133,7 @@
           ]
         },
         {
-          "title": “Icon layout properties”,
+          "title": "Icon layout properties",
           "type": "properties",
           "fields": [
             "icon-allow-overlap",
@@ -151,19 +151,19 @@
           ]
         },
         {
-          "title": “Text paint properties”,
+          "title": "Text paint properties",
           "type": "properties",
           "fields": [
             "text-color",
             "text-halo-color",
             "text-halo-width",
-            "text-halo-blur”,
+            "text-halo-blur",
             "text-translate",
-            "text-translate-anchor”
+            "text-translate-anchor"
           ]
         },
         {
-          "title": “Icon paint properties”,
+          "title": "Icon paint properties",
           "type": "properties",
           "fields": [
           ""
@@ -174,7 +174,7 @@
     "raster": {
       "groups": [
         {
-          "title": “Paint properties",
+          "title": "Paint properties",
           "type": "properties",
           "fields": [
             "raster-opacity",
