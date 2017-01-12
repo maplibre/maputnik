@@ -2,7 +2,7 @@
     "line": {
       "groups": [
         {
-          "title": "Paint",
+          "title": "Paint properties”,
           "type": "properties",
           "fields": [
             "line-opacity",
@@ -10,21 +10,21 @@
             "line-width",
             "line-offset",
             "line-blur",
-            "line-pattern"
+            "line-pattern”,
+            "line-translate",
+            "line-translate-anchor”,
+            "line-gap-width"
           ]
         },
         {
-          "title": "Secondary",
+          "title": “Layout properties",
           "type": "properties",
           "fields": [
-            "line-translate",
-            "line-translate-anchor",
             "line-cap",
             "line-join",
             "line-miter-limit",
             "line-round-limit",
-            "line-dasharray",
-            "line-gap-width"
+            "line-dasharray"
           ]
         }
       ]
@@ -32,7 +32,7 @@
     "background": {
       "groups": [
         {
-          "title": "Basic",
+          "title": “Paint properties",
           "type": "properties",
           "fields": [
             "background-color",
@@ -45,7 +45,7 @@
     "fill": {
       "groups": [
         {
-          "title": "Basic",
+          "title": “Paint properties",
           "type": "properties",
           "fields": [
             "fill-opacity",
@@ -62,7 +62,7 @@
     "fill-extrusion": {
       "groups": [
         {
-          "title": "Basic",
+          "title": "Paint properties",
           "type": "properties",
           "fields": [
             "fill-extrusion-opacity",
@@ -79,29 +79,17 @@
     "circle": {
       "groups": [
         {
-          "title": "Basic",
+          "title": “Paint properties",
           "type": "properties",
           "fields": [
             "circle-color",
             "circle-opacity",
             "circle-stroke-color",
             "circle-stroke-opacity",
-            "circle-blur"
-          ]
-        },
-        {
-          "title": "Scale",
-          "type": "properties",
-          "fields": [
+            "circle-blur”,
             "circle-radius",
             "circle-stroke-width",
-            "circle-pitch-scale"
-          ]
-        },
-        {
-          "title": "Position",
-          "type": "properties",
-          "fields": [
+            "circle-pitch-scale”,
             "circle-translate",
             "circle-translate-anchor"
           ]
@@ -111,37 +99,25 @@
     "symbol": {
       "groups": [
         {
-          "title": "Basic",
-          "type": "properties",
-          "fields": [
-            "text-field",
-            "text-font",
-            "text-color",
-            "text-size",
-            "text-line-height",
-            "text-halo-color",
-            "text-halo-width",
-            "text-halo-blur"
-          ]
-        },
-        {
-          "title": "Placement",
+          "title": “General layout properties”,
           "type": "properties",
           "fields": [
             "symbol-placement",
             "symbol-spacing",
-            "text-padding",
-            "symbol-avoid-edges",
-            "text-allow-overlap",
-            "text-ignore-placement",
-            "text-translate",
-            "text-translate-anchor"
+            "symbol-avoid-edges"
           ]
         },
         {
-          "title": "Text",
+          "title": “Text layout properties”,
           "type": "properties",
           "fields": [
+            "text-field",
+            "text-font",
+            "text-size",
+            "text-line-height",
+            "text-padding",
+            "text-allow-overlap",
+            "text-ignore-placement",
             "text-pitch-alignment",
             "text-rotation-alignment",
             "text-max-width",
@@ -157,7 +133,7 @@
           ]
         },
         {
-          "title": "Icon",
+          "title": “Icon layout properties”,
           "type": "properties",
           "fields": [
             "icon-allow-overlap",
@@ -171,7 +147,26 @@
             "icon-rotate",
             "icon-padding",
             "icon-keep-upright",
-            "icon-offset"
+            "icon-offset" 
+          ]
+        },
+        {
+          "title": “Text paint properties”,
+          "type": "properties",
+          "fields": [
+            "text-color",
+            "text-halo-color",
+            "text-halo-width",
+            "text-halo-blur”,
+            "text-translate",
+            "text-translate-anchor”
+          ]
+        },
+        {
+          "title": “Icon paint properties”,
+          "type": "properties",
+          "fields": [
+          ""
           ]
         }
       ]
@@ -179,7 +174,7 @@
     "raster": {
       "groups": [
         {
-          "title": "Basic",
+          "title": “Paint properties",
           "type": "properties",
           "fields": [
             "raster-opacity",
