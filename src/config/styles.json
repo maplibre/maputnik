@@ -32,7 +32,7 @@
   {
     "id": "empty-style",
     "title": "Empty Style",
-    "url": "https://rawgit.com/maputnik/editor/master/src/config/styles.json",
+    "url": "https://rawgit.com/maputnik/editor/master/src/config/empty-style.json",
     "thumbnail": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAYAAAAECAQAAAAHDYbIAAAAEUlEQVR42mP8/58BDhiJ4wAA974H/U5Xe1oAAAAASUVORK5CYII="
   }
 ]
