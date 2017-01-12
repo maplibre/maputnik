@@ -30,9 +30,9 @@
     "thumbnail": "https://cdn.rawgit.com/lukasmartinelli/osm-liberty/gh-pages/thumbnail.png"
   },
   {
-    "id": "fiord-color",
-    "title": "Fiord Color",
-    "url": "https://rawgit.com/openmaptiles/fiord-color-gl-style/gh-pages/style-cdn.json",
-    "thumbnail": "https://camo.githubusercontent.com/d884dbd7b8c531c58788eac3857dc4ebf79b7729/68747470733a2f2f6170692e6d6170626f782e636f6d2f7374796c65732f76312f6f70656e6d617074696c65732f6369776775693378353030317732706e7668633063327767302f7374617469632f382e3534303538372c34372e3337303535352c31342e30382c302e30302c302e30302f363030783430303f6163636573735f746f6b656e3d706b2e65794a31496a6f696233426c626d3168634852706247567a4969776959534936496d4e70646e593365544a785a7a41774d474d796233427064574a6d616a63784e7a636966512e685031427863786c644968616b4d6350534a4c513151"
+    "id": "empty-style",
+    "title": "Empty Style",
+    "url": "https://rawgit.com/maputnik/editor/master/src/config/styles.json",
+    "thumbnail": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAYAAAAECAQAAAAHDYbIAAAAEUlEQVR42mP8/58BDhiJ4wAA974H/U5Xe1oAAAAASUVORK5CYII="
   }
 ]

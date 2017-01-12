@@ -1,0 +1,15 @@
+{
+  "version": 8,
+  "name": "Empty Style",
+  "metadata": {
+    "mapbox:autocomposite": false,
+    "mapbox:type": "template",
+    "maputnik:renderer": "mbgljs",
+    "openmaptiles:version": "3.x"
+  },
+  "sources": { },
+  "glyphs": "https://demo.tileserver.org/fonts/{fontstack}/{range}.pbf",
+  "sprites": "https://demo.tileserver.org/fonts/{fontstack}/{range}.pbf",
+  "layers": [],
+  "id": "empty-style"
+}
