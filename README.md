@@ -3,33 +3,32 @@
 <img width="200" align="right" alt="Maputnik" src="src/img/maputnik.png" />
 
 A free and open visual editor for the [Mapbox GL styles](https://www.mapbox.com/mapbox-gl-style-spec/)
-targeted at developers and map designers. Creating your own custom map is easy with **Maputnik**.
+targeted at developers and map designers.
 
-:link: Check it out at **http://maputnik.com/editor/**
+- :link: Design your maps online at **http://maputnik.com/editor/** (all in local storage)
+- :link: Use the [Maputnik CLI](https://github.com/maputnik/editor/wiki/Maputnik-CLI) for local style development
 
 ## Documentation
 
 The documentation can be found in the [Wiki](https://github.com/maputnik/editor/wiki). You are welcome to collaborate!
 
-- [Use the Maputnik CLI for editing a Style JSON](https://github.com/maputnik/editor/wiki/Maputnik-CLI)
+- :link: Study the [Maputnik Wiki](https://github.com/maputnik/editor/wiki)
+- :video_camera: Design a map from Scratch https://youtu.be/XoDh0gEnBQo
 
-## Videos
+[![Design Map from Scratch](https://j.gifs.com/k5g8OJ.gif)](https://youtu.be/XoDh0gEnBQo)
 
-### Editing a local Style JSON
+## Reasons for building a Map Designer
 
-**:video_camera: https://youtu.be/vCFsrwocE9s**
-
-[![Edit local Style JSON with Maputnik](https://j.gifs.com/JZK8yg.gif)](https://youtu.be/vCFsrwocE9s)
-
-### Latest Status Update Video
-
-**:video_camera: https://youtu.be/z9MVwvzshiE**
-
-[![Latest Status Update for  Maputnik v0.2.2](https://j.gifs.com/g5XMgl.gif)](https://www.youtube.com/watch?v=z9MVwvzshiE)
+- Mapbox has built one of the best and most amazing OSS ecosystems. A key component to ensure longevity and independance is an OSS style editor.
+- Maputnik solves the problem for people who are serving their own vector tiles and want to design a map style for these tiles.
+- It allows working with resources in your internal network in sensitive industries.
+- It gives full power to developers familiar with the Mapbox GL style specification thanks to the JSON editing mode.
+- It allows hacking and extending the editor by the community to come up with new ideas for a map designer!
+- It allows plugging in other renderers like Open Layers 3
 
 ## Develop
 
-Maputnik is written in ES6 and is using [React](https://github.com/facebook/react), [Immutable.js](https://facebook.github.io/immutable-js/) and [Mapbox GL JS](https://www.mapbox.com/mapbox-gl-js/api/).
+Maputnik is written in ES6 and is using [React](https://github.com/facebook/react) and [Mapbox GL JS](https://www.mapbox.com/mapbox-gl-js/api/).
 
 We ensure building and developing Maputnik works with
 
@@ -58,19 +57,7 @@ Lint the JavaScript code.
 npm install --save-dev eslint eslint-plugin-react
 # run linter
 npm run lint
-```
-
-## Docker
-
-Start a container using the official Docker image.
-```
-docker run --name maputnik -p 8888:8888 -d maputnik/editor
-```
-
-Stop the container
-
-```
-docker stop maputnik
+npm run lint-styles
 ```
 
 ## Sponsors
@@ -79,18 +66,23 @@ Thanks to the supporters of the **[Kickstarter campaign](https://www.kickstarter
 
 ### Gold
 
-[![Wemap](media/sponsors/wemap.jpg)](https://getwemap.com/)
+<a href="https://getwemap.com/">
+  <img width="48%" alt="Wemap" style="display:inline-block" src="media/sponsors/wemap.jpg" />
+</a>
 
-[![Terranodo](media/sponsors/terranodo.png)](http://terranodo.io/)
+<a href="htts://terranodo.io/">
+  <img width="48%" alt="Terranodo" style="display:inline-block" src="media/sponsors/terranodo.png" />
+</a>
 
 ### Silver
 
 <a href="https://www.klokantech.com/">
-  <img alt="Klokan Technologies" style="display:inline" src="media/sponsors/klokantech.png" />
+  <img width="22%" alt="Klokan Technologies" style="display:inline-block" src="media/sponsors/klokantech.png" />
 </a>
 <a href="https://www.dreipol.ch/">
-  <img alt="Dreipol" style="display:inline" src="media/sponsors/dreipol.png" />
+  <img width="22%" alt="Dreipol" style="display:inline-block" src="media/sponsors/dreipol.png" />
 </a>
+
 <br/>
 
 ### Individuals
