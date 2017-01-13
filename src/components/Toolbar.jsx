@@ -54,8 +54,6 @@ export default class Toolbar extends React.Component {
     onStyleChanged: React.PropTypes.func.isRequired,
     // A new style has been uploaded
     onStyleOpen: React.PropTypes.func.isRequired,
-    // Current style is requested for download
-    onStyleDownload: React.PropTypes.func.isRequired,
     // A dict of source id's and the available source layers
     sources: React.PropTypes.object.isRequired,
     onInspectModeToggle: React.PropTypes.func.isRequired
@@ -72,13 +70,6 @@ export default class Toolbar extends React.Component {
         export: false,
       }
     }
-  }
-
-  downloadButton() {
-    return <ToolbarAction onClick={this.props.onStyleDownload}>
-      <MdFileDownload />
-      <IconText>Download</IconText>
-    </ToolbarAction>
   }
 
   toggleModal(modalName) {
@@ -100,7 +91,6 @@ export default class Toolbar extends React.Component {
       />
       <ExportModal
         mapStyle={this.props.mapStyle}
-        onStyleDownload={this.props.onStyleDownload}
         isOpen={this.state.isOpen.export}
         onOpenToggle={this.toggleModal.bind(this, 'export')}
       />

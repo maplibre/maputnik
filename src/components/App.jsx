@@ -1,5 +1,4 @@
 import React from 'react'
-import { saveAs } from 'file-saver'
 import Mousetrap from 'mousetrap'
 
 import MapboxGlMap from './map/MapboxGlMap'
@@ -88,12 +87,6 @@ export default class App extends React.Component {
   onReset() {
     this.styleStore.purge()
     loadDefaultStyle(mapStyle => this.onStyleOpen(mapStyle))
-  }
-
-  onStyleDownload() {
-    const mapStyle = this.state.mapStyle
-    const blob = new Blob([formatStyle(mapStyle)], {type: "application/json;charset=utf-8"});
-    saveAs(blob, mapStyle.id + ".json");
   }
 
   saveStyle(snapshotStyle) {
@@ -228,7 +221,6 @@ export default class App extends React.Component {
       sources={this.state.sources}
       onStyleChanged={this.onStyleChanged.bind(this)}
       onStyleOpen={this.onStyleChanged.bind(this)}
-      onStyleDownload={this.onStyleDownload.bind(this)}
       onInspectModeToggle={this.changeInspectMode.bind(this)}
     />
 
