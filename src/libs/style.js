@@ -19,6 +19,20 @@ function ensureHasId(style) {
   return style
 }
 
+function ensureHasNoInteractive(style) {
+  const changedLayers = style.layers.map(layer => {
+    const changedLayer = { ...layer }
+    delete changedLayer.interactive
+    return changedLayer
+  })
+
+  const nonInteractiveStyle = {
+    ...style,
+    layers: changedLayers
+  }
+  return nonInteractiveStyle
+}
+
 function ensureHasNoRefs(style) {
   const derefedStyle = {
     ...style,
@@ -28,7 +42,7 @@ function ensureHasNoRefs(style) {
 }
 
 function ensureStyleValidity(style) {
-  return ensureHasNoRefs(ensureHasId(style))
+  return ensureHasNoInteractive(ensureHasNoRefs(ensureHasId(style)))
 }
 
 function indexOfLayer(layers, layerId) {
