@@ -1,6 +1,7 @@
 import React from 'react';
 import spec from 'mapbox-gl-style-spec/reference/latest.min.js'
 import derefLayers from 'mapbox-gl-style-spec/lib/deref'
+import tokens from '../config/tokens.json'
 
 // Empty style is always used if no style could be restored or fetched
 const emptyStyle = ensureStyleValidity({
@@ -19,6 +20,20 @@ function ensureHasId(style) {
   return style
 }
 
+function ensureHasNoInteractive(style) {
+  const changedLayers = style.layers.map(layer => {
+    const changedLayer = { ...layer }
+    delete changedLayer.interactive
+    return changedLayer
+  })
+
+  const nonInteractiveStyle = {
+    ...style,
+    layers: changedLayers
+  }
+  return nonInteractiveStyle
+}
+
 function ensureHasNoRefs(style) {
   const derefedStyle = {
     ...style,
@@ -28,7 +43,7 @@ function ensureHasNoRefs(style) {
 }
 
 function ensureStyleValidity(style) {
-  return ensureHasNoRefs(ensureHasId(style))
+  return ensureHasNoInteractive(ensureHasNoRefs(ensureHasId(style)))
 }
 
 function indexOfLayer(layers, layerId) {
@@ -40,9 +55,32 @@ function indexOfLayer(layers, layerId) {
   return null
 }
 
+function replaceAccessToken(mapStyle) {
+  const omtSource = mapStyle.sources.openmaptiles
+  if(!omtSource) return mapStyle
+
+  const metadata = mapStyle.metadata || {}
+  const accessToken = metadata['maputnik:openmaptiles_access_token'] || tokens.openmaptiles
+  const changedSources = {
+    ...mapStyle.sources,
+    openmaptiles: {
+      ...omtSource,
+      url: omtSource.url.replace('{key}', accessToken)
+    }
+  }
+  const changedStyle = {
+    ...mapStyle,
+    glyphs: mapStyle.glyphs.replace('{key}', accessToken),
+    sources: changedSources
+  }
+
+  return changedStyle
+}
+
 export default {
   ensureStyleValidity,
   emptyStyle,
   indexOfLayer,
   generateId,
+  replaceAccessToken,
 }

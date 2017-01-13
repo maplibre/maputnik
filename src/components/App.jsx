@@ -1,5 +1,4 @@
 import React from 'react'
-import { saveAs } from 'file-saver'
 import Mousetrap from 'mousetrap'
 
 import MapboxGlMap from './map/MapboxGlMap'
@@ -21,6 +20,7 @@ import { loadDefaultStyle, StyleStore } from '../libs/stylestore'
 import { ApiStyleStore } from '../libs/apistore'
 import { RevisionStore } from '../libs/revisions'
 import LayerWatcher from '../libs/layerwatcher'
+import tokens from '../config/tokens.json'
 
 function updateRootSpec(spec, fieldName, newValues) {
   return {
@@ -89,18 +89,14 @@ export default class App extends React.Component {
     loadDefaultStyle(mapStyle => this.onStyleOpen(mapStyle))
   }
 
-  onStyleDownload() {
-    const mapStyle = this.state.mapStyle
-    const blob = new Blob([formatStyle(mapStyle)], {type: "application/json;charset=utf-8"});
-    saveAs(blob, mapStyle.id + ".json");
-  }
-
   saveStyle(snapshotStyle) {
     this.styleStore.save(snapshotStyle)
   }
 
   updateFonts(urlTemplate) {
-    downloadGlyphsMetadata(urlTemplate, fonts => {
+    const metadata = this.state.mapStyle.metadata || {}
+    const accessToken = metadata['maputnik:openmaptiles_access_token'] || tokens.openmaptiles
+    downloadGlyphsMetadata(urlTemplate.replace('{key}', accessToken), fonts => {
       this.setState({ spec: updateRootSpec(this.state.spec, 'glyphs', fonts)})
     })
   }
@@ -189,20 +185,14 @@ export default class App extends React.Component {
   }
 
   mapRenderer() {
-    const metadata = this.state.mapStyle.metadata || {}
     const mapProps = {
-      mapStyle: this.state.mapStyle,
-      accessToken: metadata['maputnik:access_token'],
+      mapStyle: style.replaceAccessToken(this.state.mapStyle),
       onDataChange: (e) => {
         this.layerWatcher.analyzeMap(e.map)
       },
-      //TODO: This would actually belong to the layout component
-      style:{
-        top: 40,
-        //left: 500,
-      }
     }
 
+    const metadata = this.state.mapStyle.metadata || {}
     const renderer = metadata['maputnik:renderer'] || 'mbgljs'
 
     // Check if OL3 code has been loaded?
@@ -231,7 +221,6 @@ export default class App extends React.Component {
       sources={this.state.sources}
       onStyleChanged={this.onStyleChanged.bind(this)}
       onStyleOpen={this.onStyleChanged.bind(this)}
-      onStyleDownload={this.onStyleDownload.bind(this)}
       onInspectModeToggle={this.changeInspectMode.bind(this)}
     />
 

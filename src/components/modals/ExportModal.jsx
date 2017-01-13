@@ -1,4 +1,5 @@
 import React from 'react'
+import { saveAs } from 'file-saver'
 
 import GlSpec from 'mapbox-gl-style-spec/reference/latest.js'
 import InputBlock from '../inputs/InputBlock'
@@ -103,24 +104,30 @@ class Gist extends React.Component {
   }
 }
 
-
+function stripAccessTokens(mapStyle) {
+  const changedMetadata = { ...mapStyle.metadata }
+  delete changedMetadata['maputnik:mapbox_access_token']
+  delete changedMetadata['maputnik:openmaptiles_access_token']
+  return {
+    ...mapStyle,
+    metadata: changedMetadata
+  }
+}
 
 class ExportModal extends React.Component {
   static propTypes = {
     mapStyle: React.PropTypes.object.isRequired,
     isOpen: React.PropTypes.bool.isRequired,
     onOpenToggle: React.PropTypes.func.isRequired,
-    // Current style is requested for download
-    onStyleDownload: React.PropTypes.func.isRequired,
   }
 
   constructor(props) {
     super(props);
   }
 
-  onStyleDownload() {
-    const blob = new Blob([formatStyle(mapStyle)], {type: "application/json;charset=utf-8"});
-    saveAs(blob, mapStyle.id + ".json");
+  downloadStyle() {
+    const blob = new Blob([formatStyle(stripAccessTokens(this.props.mapStyle))], {type: "application/json;charset=utf-8"});
+    saveAs(blob, this.props.mapStyle.id + ".json");
   }
 
   render() {
@@ -135,7 +142,7 @@ class ExportModal extends React.Component {
         <p>
           Download a JSON style to your computer.
         </p>
-        <Button onClick={this.props.onStyleDownload}>
+        <Button onClick={this.downloadStyle.bind(this)}>
           <MdFileDownload />
           Download
         </Button>

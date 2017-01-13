@@ -6,6 +6,7 @@ import FeatureLayerPopup from './FeatureLayerPopup'
 import FeaturePropertyPopup from './FeaturePropertyPopup'
 import validateColor from 'mapbox-gl-style-spec/lib/validate/validate_color'
 import style from '../../libs/style.js'
+import tokens from '../../config/tokens.json'
 import { colorHighlightedLayer } from '../../libs/highlight'
 import 'mapbox-gl/dist/mapbox-gl.css'
 import '../../mapboxgl.css'
@@ -56,8 +57,6 @@ export default class MapboxGlMap extends React.Component {
   static propTypes = {
     onDataChange: React.PropTypes.func,
     mapStyle: React.PropTypes.object.isRequired,
-    accessToken: React.PropTypes.string,
-    style: React.PropTypes.object,
     inspectModeEnabled: React.PropTypes.bool.isRequired,
     highlightedLayer: React.PropTypes.object,
   }
@@ -65,11 +64,12 @@ export default class MapboxGlMap extends React.Component {
   static defaultProps = {
     onMapLoaded: () => {},
     onDataChange: () => {},
+    mapboxAccessToken: tokens.mapbox,
   }
 
   constructor(props) {
     super(props)
-    MapboxGl.accessToken = props.accessToken
+    MapboxGl.accessToken = tokens.mapbox
     this.state = {
       map: null,
       inspect: null,
@@ -80,8 +80,9 @@ export default class MapboxGlMap extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    MapboxGl.accessToken = nextProps.accessToken
     if(!this.state.map) return
+    const metadata = nextProps.mapStyle.metadata || {}
+    MapboxGl.accessToken = metadata['maputnik:mapbox_access_token'] || tokens.mapbox
 
     if(!nextProps.inspectModeEnabled) {
       //Mapbox GL now does diffing natively so we don't need to calculate
