@@ -45,6 +45,7 @@ class SettingsModal extends React.Component {
       onOpenToggle={this.props.onOpenToggle}
       title={'Style Settings'}
     >
+      <div style={{minWidth: 350}}>
       <InputBlock label={"Name"} doc={GlSpec.$root.name.doc}>
         <StringInput {...inputProps}
           value={this.props.mapStyle.name}
@@ -71,10 +72,17 @@ class SettingsModal extends React.Component {
         />
       </InputBlock>
 
-      <InputBlock label={"Access Token"} doc={"Public access token for Mapbox GL."}>
+      <InputBlock label={"Mapbox Access Token"} doc={"Public access token for Mapbox services."}>
         <StringInput {...inputProps}
-          value={metadata['maputnik:access_token']}
-          onChange={this.changeMetadataProperty.bind(this, "maputnik:access_token")}
+          value={metadata['maputnik:mapbox_access_token']}
+          onChange={this.changeMetadataProperty.bind(this, "maputnik:mapbox_access_token")}
+        />
+      </InputBlock>
+
+      <InputBlock label={"OpenMapTiles Access Token"} doc={"Public access token for the OpenMapTiles CDN."}>
+        <StringInput {...inputProps}
+          value={metadata['maputnik:openmaptiles_access_token']}
+          onChange={this.changeMetadataProperty.bind(this, "maputnik:openmaptiles_access_token")}
         />
       </InputBlock>
 
@@ -88,6 +96,7 @@ class SettingsModal extends React.Component {
           onChange={this.changeMetadataProperty.bind(this, 'maputnik:renderer')}
         />
       </InputBlock>
+      </div>
     </Modal>
   }
 }
