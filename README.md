@@ -60,14 +60,22 @@ Thanks to the supporters of the **[Kickstarter campaign](https://www.kickstarter
 <a href="https://getwemap.com/">
   <img width="48%" alt="Wemap" style="display:inline" src="media/sponsors/wemap.jpg" />
 </a>
-<a href="htts://terranodo.io/">
+<a href="http://terranodo.io/">
   <img width="48%" alt="Terranodo" style="display:inline" src="media/sponsors/terranodo.png" />
 </a>
+<a href="https://www.orbiconinformatik.dk/">
+  <img width="48%" alt="Terranodo" style="display:inline" src="media/sponsors/orbicon_informatik.png" />
+</a>
+
+<br/>
 
 ### Silver
 
 <a href="https://www.klokantech.com/">
   <img width="22%" alt="Klokan Technologies" style="display:inline-block" src="media/sponsors/klokantech.png" />
+</a>
+<a href="http://www.geofabrik.de/">
+  <img width="22%" alt="Geofabrik" style="display:inline-block" src="media/sponsors/geofabrik.png" />
 </a>
 <a href="https://www.dreipol.ch/">
   <img width="22%" alt="Dreipol" style="display:inline-block" src="media/sponsors/dreipol.png" />
