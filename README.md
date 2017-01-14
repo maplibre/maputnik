@@ -8,6 +8,8 @@ targeted at developers and map designers.
 - :link: Design your maps online at **http://maputnik.com/editor/** (all in local storage)
 - :link: Use the [Maputnik CLI](https://github.com/maputnik/editor/wiki/Maputnik-CLI) for local style development
 
+Mapbox has built one of the best and most amazing OSS ecosystems. A key component to ensure its longevity and independance is an OSS map designer.
+
 ## Documentation
 
 The documentation can be found in the [Wiki](https://github.com/maputnik/editor/wiki). You are welcome to collaborate!
@@ -16,8 +18,6 @@ The documentation can be found in the [Wiki](https://github.com/maputnik/editor/
 - :video_camera: Design a map from Scratch https://youtu.be/XoDh0gEnBQo
 
 [![Design Map from Scratch](https://j.gifs.com/g5XMgl.gif)](https://youtu.be/XoDh0gEnBQo)
-
-Mapbox has built one of the best and most amazing OSS ecosystems. A key component to ensure its longevity and independance is an OSS map designer.
 
 ## Develop
 
