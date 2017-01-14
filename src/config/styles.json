@@ -52,5 +52,11 @@
     "title": "Mapbox Basic",
     "url": "https://rawgit.com/mapbox/mapbox-gl-styles/master/styles/basic-v9.json",
     "thumbnail": "http://maputnik.com/thumbnails/mapbox-basic.png"
+  },
+  {
+    "id": "tilezen",
+    "title": "Tilezen",
+    "url": "https://rawgit.com/lukasmartinelli/tilezen-gl-style/master/style.json",
+    "thumbnail": "http://maputnik.com/thumbnails/tilezen.png"
   }
 ]
