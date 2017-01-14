@@ -10,6 +10,5 @@
   "sources": { },
   "glyphs": "https://demo.tileserver.org/fonts/{fontstack}/{range}.pbf",
   "sprites": "https://demo.tileserver.org/fonts/{fontstack}/{range}.pbf",
-  "layers": [],
-  "id": "empty-style"
+  "layers": []
 }
