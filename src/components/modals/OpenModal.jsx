@@ -101,7 +101,9 @@ class OpenModal extends React.Component {
         <p>
           Open one of the publicly available styles to start from.
         </p>
+        <div className="maputnik-style-gallery-container">
         {styleOptions}
+        </div>
       </section>
     </Modal>
   }

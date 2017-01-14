@@ -65,6 +65,11 @@
   @extend .maputnik-big-button;
 }
 
+.maputnik-style-gallery-container {
+  max-height: 400px;
+  overflow-y: scroll;
+}
+
 .maputnik-public-style {
   vertical-align: top;
   margin-top: 10px;

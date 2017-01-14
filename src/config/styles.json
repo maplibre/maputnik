@@ -3,25 +3,25 @@
     "id": "klokantech-basic",
     "title": "Klokantech Basic",
     "url": "https://rawgit.com/openmaptiles/klokantech-basic-gl-style/gh-pages/style-cdn.json",
-    "thumbnail": "https://camo.githubusercontent.com/08dcb3dd384c6083b02e6692c939d68c4114eb33/687474703a2f2f64656d6f2e74696c657365727665722e6f72672f7374796c65732f6b6c6f6b616e746563682d62617369632f7374617469632f382e3631393138342c34372e3333363230332c31302e30372f363030783430304032782e706e67"
+    "thumbnail": "http://maputnik.com/thumbnails/klokantech-basic.png"
   },
   {
     "id": "dark-matter",
     "title": "Dark Matter",
     "url": "https://rawgit.com/openmaptiles/dark-matter-gl-style/gh-pages/style-cdn.json",
-    "thumbnail": "https://camo.githubusercontent.com/258db708523e523782addeecdcc8697368a24df9/687474703a2f2f64656d6f2e74696c657365727665722e6f72672f7374796c65732f6461726b2d6d61747465722f7374617469632f382e3534303538372c34372e3337303535352c31352e30382f363030783430304032782e706e67"
+    "thumbnail": "http://maputnik.com/thumbnails/dark-matter.png"
   },
   {
     "id": "positron",
     "title": "Positron",
     "url": "https://rawgit.com/openmaptiles/positron-gl-style/gh-pages/style-cdn.json",
-    "thumbnail": "https://camo.githubusercontent.com/56df86562b6c36b7cc44ee6e8b91eb4d8e593b66/687474703a2f2f64656d6f2e74696c657365727665722e6f72672f7374796c65732f706f736974726f6e2f7374617469632f31302e3938373235382c34362e3435333135302c342e30322f363030783430304032782e706e67"
+    "thumbnail": "http://maputnik.com/thumbnails/positron.png"
   },
   {
     "id": "osm-bright",
     "title": "OSM Bright",
     "url": "https://rawgit.com/openmaptiles/osm-bright-gl-style/gh-pages/style-cdn.json",
-    "thumbnail": "https://camo.githubusercontent.com/0fdf9922c6b632f903e47b3dfbcfb65e62b25046/687474703a2f2f64656d6f2e74696c657365727665722e6f72672f7374796c65732f6f736d2d6272696768742f7374617469632f382e3234333936372c34362e3931363331352c372e32312f363030783430304032782e706e67"
+    "thumbnail": "http://maputnik.com/thumbnails/osm-bright.png"
   },
   {
     "id": "osm-liberty",
@@ -34,5 +34,23 @@
     "title": "Empty Style",
     "url": "https://rawgit.com/maputnik/editor/master/src/config/empty-style.json",
     "thumbnail": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAYAAAAECAQAAAAHDYbIAAAAEUlEQVR42mP8/58BDhiJ4wAA974H/U5Xe1oAAAAASUVORK5CYII="
+  },
+  {
+    "id": "mapbox-satellite",
+    "title": "Mapbox Satellite",
+    "url": "https://rawgit.com/mapbox/mapbox-gl-styles/master/styles/satellite-v9.json",
+    "thumbnail": "http://maputnik.com/thumbnails/mapbox-satellite.png"
+  },
+  {
+    "id": "mapbox-bright",
+    "title": "Mapbox Bright",
+    "url": "https://rawgit.com/mapbox/mapbox-gl-styles/master/styles/bright-v9.json",
+    "thumbnail": "http://maputnik.com/thumbnails/mapbox-bright.png"
+  },
+  {
+    "id": "mapbox-basic",
+    "title": "Mapbox Basic",
+    "url": "https://rawgit.com/mapbox/mapbox-gl-styles/master/styles/basic-v9.json",
+    "thumbnail": "http://maputnik.com/thumbnails/mapbox-basic.png"
   }
 ]
