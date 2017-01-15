@@ -6,6 +6,8 @@ import PropertyGroup from '../fields/PropertyGroup'
 import LayerEditorGroup from './LayerEditorGroup'
 import LayerTypeBlock from './LayerTypeBlock'
 import LayerIdBlock from './LayerIdBlock'
+import MinZoomBlock from './MinZoomBlock'
+import MaxZoomBlock from './MaxZoomBlock'
 import LayerSourceBlock from './LayerSourceBlock'
 import LayerSourceLayerBlock from './LayerSourceLayerBlock'
 
@@ -130,6 +132,14 @@ export default class LayerEditor extends React.Component {
           onChange={v => this.changeProperty(null, 'source-layer', v)}
         />
         }
+        <MinZoomBlock
+          value={this.props.layer.minzoom}
+          onChange={v => this.changeProperty(null, 'minzoom', v)}
+        />
+        <MaxZoomBlock
+          value={this.props.layer.maxzoom}
+          onChange={v => this.changeProperty(null, 'maxzoom', v)}
+        />
       </div>
       case 'filter': return <div>
         <div className="maputnik-filter-editor-wrapper">
