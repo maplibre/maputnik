@@ -132,7 +132,6 @@ export default class ZoomSpecProperty  extends React.Component {
     if(this.props.fieldSpec['zoom-function']) {
       zoomBtn = <MakeZoomFunctionButton onClick={this.makeZoomFunction.bind(this)} />
     }
-
     return <InputBlock
       doc={this.props.fieldSpec.doc}
       label={labelFromFieldName(this.props.fieldName)}
@@ -143,11 +142,10 @@ export default class ZoomSpecProperty  extends React.Component {
   }
 
   render() {
-    if(isZoomField(this.props.value)) {
-      return this.renderZoomProperty();
-    } else {
-      return this.renderProperty();
-    }
+    const propClass = this.props.fieldSpec.default === this.props.value ? "maputnik-default-property" : "maputnik-modified-property"
+    return <div className={propClass}>
+      {isZoomField(this.props.value) ? this.renderZoomProperty() : this.renderProperty()}
+    </div>
   }
 }
 
