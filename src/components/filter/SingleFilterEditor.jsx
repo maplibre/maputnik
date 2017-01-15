@@ -5,6 +5,12 @@ import StringInput from '../inputs/StringInput'
 import AutocompleteInput from '../inputs/AutocompleteInput'
 import SelectInput from '../inputs/SelectInput'
 
+function tryParseInt(v) {
+  if (v === '') return v
+  if (isNaN(v)) return v
+  return parseFloat(v)
+}
+
 class SingleFilterEditor extends React.Component {
   static propTypes = {
     filter: React.PropTypes.array.isRequired,
@@ -17,8 +23,7 @@ class SingleFilterEditor extends React.Component {
   }
 
   onFilterPartChanged(filterOp, propertyName, filterArgs) {
-    let newFilter = [filterOp, propertyName, ...filterArgs]
-    console.log('filter changed', filterOp, propertyName, filterArgs)
+    let newFilter = [filterOp, propertyName, ...filterArgs.map(tryParseInt)]
     if(filterOp === 'has' || filterOp === '!has') {
       newFilter = [filterOp, propertyName]
     } else if(filterArgs.length === 0) {
