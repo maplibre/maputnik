@@ -17,7 +17,13 @@ class SingleFilterEditor extends React.Component {
   }
 
   onFilterPartChanged(filterOp, propertyName, filterArgs) {
-    const newFilter = [filterOp, propertyName, ...filterArgs]
+    let newFilter = [filterOp, propertyName, ...filterArgs]
+    console.log('filter changed', filterOp, propertyName, filterArgs)
+    if(filterOp === 'has' || filterOp === '!has') {
+      newFilter = [filterOp, propertyName]
+    } else if(filterArgs.length === 0) {
+      newFilter = [filterOp, propertyName, '']
+    }
     this.props.onChange(newFilter)
   }
 
@@ -42,12 +48,14 @@ class SingleFilterEditor extends React.Component {
           options={otherFilterOps}
         />
       </div>
+      {filterArgs.length > 0 &&
       <div className="maputnik-filter-editor-args">
         <StringInput
           value={filterArgs.join(',')}
           onChange={ v=> this.onFilterPartChanged(filterOp, propertyName, v.split(','))}
         />
       </div>
+      }
     </div>
   }
 
