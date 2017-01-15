@@ -29,6 +29,15 @@ class TileURLSourceEditor extends React.Component {
     onChange: React.PropTypes.func.isRequired,
   }
 
+  changeTileUrl(idx, value) {
+    const tiles = this.props.source.tiles.slice(0)
+    tiles[idx] = value
+    this.props.onChange({
+      ...this.props.source,
+      tiles: tiles
+    })
+  }
+
   renderTileUrls() {
     const prefix = ['1st', '2nd', '3rd', '4th', '5th', '6th', '7th']
     const tiles = this.props.source.tiles || []
@@ -36,6 +45,7 @@ class TileURLSourceEditor extends React.Component {
       return <InputBlock key={tileIndex} label={prefix[tileIndex] + " Tile URL"} doc={GlSpec.source_tile.tiles.doc}>
         <StringInput
           value={tileUrl}
+          onChange={this.changeTileUrl.bind(this, tileIndex)}
         />
       </InputBlock>
     })
