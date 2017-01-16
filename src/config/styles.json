@@ -2,25 +2,25 @@
   {
     "id": "klokantech-basic",
     "title": "Klokantech Basic",
-    "url": "https://rawgit.com/openmaptiles/klokantech-basic-gl-style/gh-pages/style-cdn.json",
+    "url": "https://rawgit.com/openmaptiles/klokantech-basic-gl-style/master/style.json",
     "thumbnail": "http://maputnik.com/thumbnails/klokantech-basic.png"
   },
   {
     "id": "dark-matter",
     "title": "Dark Matter",
-    "url": "https://rawgit.com/openmaptiles/dark-matter-gl-style/gh-pages/style-cdn.json",
+    "url": "https://rawgit.com/openmaptiles/dark-matter-gl-style/master/style.json",
     "thumbnail": "http://maputnik.com/thumbnails/dark-matter.png"
   },
   {
     "id": "positron",
     "title": "Positron",
-    "url": "https://rawgit.com/openmaptiles/positron-gl-style/gh-pages/style-cdn.json",
+    "url": "https://rawgit.com/openmaptiles/positron-gl-style/master/style.json",
     "thumbnail": "http://maputnik.com/thumbnails/positron.png"
   },
   {
     "id": "osm-bright",
     "title": "OSM Bright",
-    "url": "https://rawgit.com/openmaptiles/osm-bright-gl-style/gh-pages/style-cdn.json",
+    "url": "https://rawgit.com/openmaptiles/osm-bright-gl-style/master/style.json",
     "thumbnail": "http://maputnik.com/thumbnails/osm-bright.png"
   },
   {
