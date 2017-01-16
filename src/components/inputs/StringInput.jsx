@@ -27,7 +27,7 @@ class StringInput extends React.Component {
       placeholder={this.props.default}
       onChange={e => this.setState({ value: e.target.value })}
       onBlur={() => {
-        if(this.state.value) this.props.onChange(this.state.value)
+        if(this.state.value!==this.props.value) this.props.onChange(this.state.value)
       }}
     />
   }
