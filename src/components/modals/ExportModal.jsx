@@ -32,7 +32,7 @@ class Gist extends React.Component {
   componentWillReceiveProps(nextProps) {
     this.setState({
       ...this.state,
-      preview: !!nextProps.mapStyle.metadata['maputnik:openmaptiles_access_token']
+      preview: !!(nextProps.mapStyle.metadata || {})['maputnik:openmaptiles_access_token']
     })
   }
 
@@ -41,7 +41,7 @@ class Gist extends React.Component {
       ...this.state,
       saving: true
     });
-    const preview = this.state.preview && this.props.mapStyle.metadata['maputnik:openmaptiles_access_token'];
+    const preview = this.state.preview && (this.props.mapStyle.metadata || {})['maputnik:openmaptiles_access_token'];
 
     const mapStyleStr = preview ?
         formatStyle(stripAccessTokens(style.replaceAccessToken(this.props.mapStyle))) :
@@ -163,7 +163,7 @@ class Gist extends React.Component {
             <InputBlock
                 label={"OpenMapTiles Access Token: "}>
               <StringInput
-                  value={this.props.mapStyle.metadata['maputnik:openmaptiles_access_token']}
+                  value={(this.props.mapStyle.metadata || {})['maputnik:openmaptiles_access_token']}
                   onChange={this.changeMetadataProperty.bind(this, "maputnik:openmaptiles_access_token")}/>
             </InputBlock>
             <a target="_blank" href="https://openmaptiles.com/hosting/">Get your free access token</a>
