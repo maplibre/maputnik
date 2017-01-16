@@ -156,7 +156,8 @@ class Gist extends React.Component {
         value={this.state.preview}
         name='gist-style-preview'
         onChange={this.onPreviewChange.bind(this)}
-      /> including preview
+      />
+      <span> Include preview</span>
       {this.state.preview ?
           <div>
             <InputBlock
@@ -165,7 +166,7 @@ class Gist extends React.Component {
                   value={this.props.mapStyle.metadata['maputnik:openmaptiles_access_token']}
                   onChange={this.changeMetadataProperty.bind(this, "maputnik:openmaptiles_access_token")}/>
             </InputBlock>
-            <a target="_blank" href="https://openmaptiles.com/hosting/">Get access token for free</a>
+            <a target="_blank" href="https://openmaptiles.com/hosting/">Get your free access token</a>
           </div>
       : null}
       {this.renderLatestGist()}
