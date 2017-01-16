@@ -184,6 +184,8 @@
 
 //EXPORT MODAL
 .maputnik-export-gist {
+  font-size: $font-size-6;
+
   .maputnik-input-block {
     margin-left: 0;
     margin-right: 0;
@@ -192,7 +194,7 @@
       vertical-align: middle;
     }
   }
-  font-size: $font-size-6;
+
   span {
     color: $color-lowgray;
   }
