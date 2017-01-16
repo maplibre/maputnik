@@ -91,6 +91,7 @@ export default class Toolbar extends React.Component {
       />
       <ExportModal
         mapStyle={this.props.mapStyle}
+        onStyleChanged={this.props.onStyleChanged}
         isOpen={this.state.isOpen.export}
         onOpenToggle={this.toggleModal.bind(this, 'export')}
       />
