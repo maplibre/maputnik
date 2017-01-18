@@ -23,6 +23,9 @@ function renderProperties(feature) {
 function renderFeature(feature) {
   return <div key={feature.id}>
     <div className="maputnik-popup-layer-id">{feature.layer['source-layer']}</div>
+    <InputBlock key={"property-type"} label={"$type"}>
+      <StringInput value={feature.geometry.type} style={{backgroundColor: 'transparent'}} />
+    </InputBlock>
     {renderProperties(feature)}
   </div>
 }
