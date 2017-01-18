@@ -6,7 +6,7 @@
   },
   "openmaptiles": {
     "type": "vector",
-    "url": "https://free.tilehosting.com/data/v3.json?key=25ItXg7aI5wurYDtttD",
+    "url": "https://free.tilehosting.com/data/v3.json?key={key}",
     "title": "OpenMapTiles"
   },
   "tilezen": {
