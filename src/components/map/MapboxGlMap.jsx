@@ -112,10 +112,11 @@ export default class MapboxGlMap extends React.Component {
 
     const inspect = new MapboxInspect({
       popup: new MapboxGl.Popup({
-        closeButton: false,
         closeOnClick: false
       }),
       showMapPopup: true,
+      showMapPopupOnHover: false,
+      showInspectMapPopupOnHover: true,
       showInspectButton: false,
       buildInspectStyle: (originalMapStyle, coloredLayers) => buildInspectStyle(originalMapStyle, coloredLayers, this.props.highlightedLayer),
       renderPopup: features => {
