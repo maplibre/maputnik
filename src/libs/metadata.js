@@ -21,7 +21,12 @@ function loadJSON(url, defaultValue, cb) {
 
 export function downloadGlyphsMetadata(urlTemplate, cb) {
   if(!urlTemplate) return cb([])
-  const url = urlTemplate.replace('{fontstack}/{range}.pbf', 'fontstacks.json')
+
+  // Special handling because Tileserver GL serves the fontstacks metadata differently
+  // https://github.com/klokantech/tileserver-gl/pull/104
+  let url = urlTemplate.replace('/fonts/{fontstack}/{range}.pbf', '/fontstacks.json')
+  url = url.replace('{fontstack}/{range}.pbf', 'fontstacks.json')
+
   loadJSON(url, [], cb)
 }
 
