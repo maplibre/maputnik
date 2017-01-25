@@ -115,7 +115,7 @@ class LayerListContainer extends React.Component {
     if(lookupKey in this.state.collapsedGroups) {
       newGroups[lookupKey] = !this.state.collapsedGroups[lookupKey]
     } else {
-      newGroups[lookupKey] = true
+      newGroups[lookupKey] = false
     }
     this.setState({
       collapsedGroups: newGroups
@@ -124,7 +124,7 @@ class LayerListContainer extends React.Component {
 
   isCollapsed(groupPrefix, idx) {
     const collapsed = this.state.collapsedGroups[[groupPrefix, idx].join('-')]
-    return collapsed === undefined ? false : collapsed
+    return collapsed === undefined ? true : collapsed
   }
 
   render() {
@@ -147,7 +147,7 @@ class LayerListContainer extends React.Component {
         const groupIdx = findClosestCommonPrefix(this.props.layers, idx)
         const listItem = <LayerListItem
           className={classnames({
-            'maputnik-layer-list-item-collapsed': this.isCollapsed(groupPrefix, groupIdx),
+            'maputnik-layer-list-item-collapsed': layers.length > 1 && this.isCollapsed(groupPrefix, groupIdx),
             'maputnik-layer-list-item-group-last': idxInGroup == layers.length - 1 && layers.length > 1
           })}
           index={idx}
