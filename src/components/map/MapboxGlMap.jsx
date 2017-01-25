@@ -7,6 +7,8 @@ import FeaturePropertyPopup from './FeaturePropertyPopup'
 import validateColor from 'mapbox-gl-style-spec/lib/validate/validate_color'
 import style from '../../libs/style.js'
 import tokens from '../../config/tokens.json'
+import colors from 'mapbox-gl-inspect/lib/colors'
+import Color from 'color'
 import { colorHighlightedLayer } from '../../libs/highlight'
 import 'mapbox-gl/dist/mapbox-gl.css'
 import '../../mapboxgl.css'
@@ -118,6 +120,9 @@ export default class MapboxGlMap extends React.Component {
       showMapPopupOnHover: false,
       showInspectMapPopupOnHover: true,
       showInspectButton: false,
+      assignLayerColor: (layerId, alpha) => {
+        return Color(colors.brightColor(layerId, alpha)).desaturate(0.5).string()
+      },
       buildInspectStyle: (originalMapStyle, coloredLayers) => buildInspectStyle(originalMapStyle, coloredLayers, this.props.highlightedLayer),
       renderPopup: features => {
         if(this.props.inspectModeEnabled) {

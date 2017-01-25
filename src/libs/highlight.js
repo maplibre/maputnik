@@ -1,6 +1,3 @@
-import randomColor from 'randomcolor'
-import Color from 'color'
-
 import stylegen from 'mapbox-gl-inspect/lib/stylegen'
 import colors from 'mapbox-gl-inspect/lib/colors'
 
@@ -8,6 +5,12 @@ export function colorHighlightedLayer(layer) {
   if(!layer || layer.type === 'background' || layer.type === 'raster') return null
 
   function changeLayer(l) {
+    if(l.type === 'circle') {
+      l.paint['circle-radius'] = 3
+    } else if(l.type === 'line') {
+      l.paint['line-width'] = 2
+    }
+
     if(layer.filter) {
       l.filter = layer.filter
     } else {
@@ -17,7 +20,8 @@ export function colorHighlightedLayer(layer) {
     return l
   }
 
-  const color = colors.brightColor(layer.id, 1)
+  const sourceLayerId = layer['source-layer'] || ''
+  const color = colors.brightColor(sourceLayerId, 1)
   const layers = []
 
   if(layer.type === "fill" || layer.type === 'fill-extrusion') {

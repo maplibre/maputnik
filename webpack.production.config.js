@@ -14,7 +14,6 @@ module.exports = {
         'mapbox-gl/dist/mapbox-gl.js',
         //TODO: Build failure because cannot resolve migrations file
         //"mapbox-gl-style-spec",
-        "randomcolor",
         "lodash.clonedeep",
         "lodash.throttle",
         'color',
