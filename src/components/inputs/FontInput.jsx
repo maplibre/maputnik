@@ -1,9 +1,6 @@
 import React from 'react'
 import AutocompleteInput from './AutocompleteInput'
 
-//TODO: Query available font stack dynamically
-import fontStacks from '../../config/fontstacks.json'
-
 class FontInput extends React.Component {
   static propTypes = {
     value: React.PropTypes.array.isRequired,
