@@ -132,5 +132,31 @@
 
 // PROPERTY
 .maputnik-default-property {
-  opacity: 0.4;
+  .maputnik-input-block-label {
+    color: darken($color-lowgray, 25%);
+  }
+  .maputnik-string,
+  .maputnik-number,
+  .maputnik-color,
+  .maputnik-select,
+  .maputnik-checkbox-wrapper {
+    background-color: darken($color-gray, 2%);
+    color: darken($color-lowgray, 25%);
+  }
+  .maputnik-make-zoom-function svg {
+    opacity: 0.4;
+  }
+  .maputnik-multibutton .maputnik-button {
+    background-color: darken($color-midgray, 10%);
+    color: darken($color-lowgray, 25%);
+
+    &:hover {
+      background-color: lighten($color-midgray, 12);
+      color: $color-white;
+    }
+  }
+  .maputnik-multibutton .maputnik-button-selected {
+    background-color: darken($color-midgray, 2%);
+    color: $color-lowgray;
+  }
 }
