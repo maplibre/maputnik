@@ -1,10 +1,10 @@
 // MAP
 .maputnik-map {
   position: fixed !important;
-  top: 40px;
+  top: $toolbar-height + $toolbar-offset;
   right: 0;
   bottom: 0;
-  height: calc(100% - $toolbar-height);
+  height: calc(100% - #{$toolbar-height + $toolbar-offset});
   width: 75%;
 }
 

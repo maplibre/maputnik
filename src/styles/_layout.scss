@@ -17,8 +17,8 @@
   &-list {
     position: fixed;
     bottom: 0;
-    height: calc(100% - $toolbar-height);
-    top: 40px;
+    height: calc(100% - #{$toolbar-height + $toolbar-offset});
+    top: $toolbar-height + $toolbar-offset;
     left: 0;
     z-index: 3;
     width: 200px;
@@ -29,8 +29,8 @@
   &-drawer {
     position: fixed;
     bottom: 0;
-    height: calc(100% - $toolbar-height);
-    top: 40px;
+    height: calc(100% - #{$toolbar-height + $toolbar-offset});
+    top: $toolbar-height + $toolbar-offset;
     left: 200px;
     z-index: 1;
     width: 350px;
