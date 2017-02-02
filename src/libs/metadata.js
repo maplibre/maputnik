@@ -1,4 +1,5 @@
 import request from 'request'
+import npmurl from 'url'
 
 function loadJSON(url, defaultValue, cb) {
   request({
@@ -23,9 +24,15 @@ export function downloadGlyphsMetadata(urlTemplate, cb) {
   if(!urlTemplate) return cb([])
 
   // Special handling because Tileserver GL serves the fontstacks metadata differently
-  // https://github.com/klokantech/tileserver-gl/pull/104
-  let url = urlTemplate.replace('/fonts/{fontstack}/{range}.pbf', '/fontstacks.json')
-  url = url.replace('{fontstack}/{range}.pbf', 'fontstacks.json')
+  // https://github.com/klokantech/tileserver-gl/pull/104#issuecomment-274444087
+  let urlObj = npmurl.parse(urlTemplate);
+  const normPathPart = '/%7Bfontstack%7D/%7Brange%7D.pbf';
+  if(urlObj.pathname === normPathPart) {
+    urlObj.pathname = '/fontstacks.json';
+  } else {
+    urlObj.pathname = urlObj.pathname.replace(normPathPart, '.json');
+  }
+  let url = npmurl.format(urlObj);
 
   loadJSON(url, [], cb)
 }
