@@ -30,7 +30,12 @@
 
 .maputnik-color-wrapper {
   position: relative;
-  display: inline;
+  @include flex-row;
+}
+
+.maputnik-color-swatch {
+  height: 26px;
+  width: 3px;
 }
 
 // ARRAY

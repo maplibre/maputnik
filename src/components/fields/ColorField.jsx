@@ -81,8 +81,13 @@ class ColorField extends React.Component {
       />
     </div>
 
+    var swatchStyle = {
+      "background-color": this.props.value
+    };
+
     return <div className="maputnik-color-wrapper">
       {this.state.pickerOpened && picker}
+      <div className="maputnik-color-swatch" style={swatchStyle}></div>
       <input
         className="maputnik-color"
         ref="colorInput"
