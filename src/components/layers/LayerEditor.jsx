@@ -8,6 +8,7 @@ import LayerTypeBlock from './LayerTypeBlock'
 import LayerIdBlock from './LayerIdBlock'
 import MinZoomBlock from './MinZoomBlock'
 import MaxZoomBlock from './MaxZoomBlock'
+import CommentBlock from './CommentBlock'
 import LayerSourceBlock from './LayerSourceBlock'
 import LayerSourceLayerBlock from './LayerSourceLayerBlock'
 
@@ -110,6 +111,11 @@ export default class LayerEditor extends React.Component {
   }
 
   renderGroupType(type, fields) {
+    let comment = ""
+    if(this.props.layer.metadata) {
+      comment = this.props.layer.metadata['maputnik:comment']
+    }
+
     switch(type) {
       case 'layer': return <div>
         <LayerIdBlock
@@ -139,6 +145,10 @@ export default class LayerEditor extends React.Component {
         <MaxZoomBlock
           value={this.props.layer.maxzoom}
           onChange={v => this.changeProperty(null, 'maxzoom', v)}
+        />
+        <CommentBlock
+          value={comment}
+          onChange={v => this.changeProperty('metadata', 'maputnik:comment', v == ""  ? undefined : v)}
         />
       </div>
       case 'filter': return <div>
