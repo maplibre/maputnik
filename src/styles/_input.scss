@@ -37,6 +37,8 @@
 .maputnik-color-swatch {
   height: 26px;
   width: 3px;
+  flex-shrink: 0;
+  flex-grow: 0;
 }
 
 // ARRAY
