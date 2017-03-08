@@ -4,10 +4,18 @@
 }
 
 .cm-s-maputnik.CodeMirror, .cm-s-maputnik .CodeMirror-gutters {
-  background: transparent;
   color: #8e8e8e;
   border: none;
 }
+
+.cm-s-maputnik.CodeMirror {
+  background: transparent;
+}
+
+.cm-s-maputnik .CodeMirror-gutters {
+  background: #212328;
+}
+
 .cm-s-maputnik .CodeMirror-cursor {
     border-left: solid thin #8e8e8e !important;
 }

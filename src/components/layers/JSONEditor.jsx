@@ -6,8 +6,14 @@ import StringInput from '../inputs/StringInput'
 import SelectInput from '../inputs/SelectInput'
 
 import 'codemirror/mode/javascript/javascript'
+import 'codemirror/addon/lint/lint'
 import 'codemirror/lib/codemirror.css'
+import 'codemirror/addon/lint/lint.css'
 import '../../codemirror-maputnik.css'
+import jsonlint from 'jsonlint'
+
+// This is mainly because of this issue <https://github.com/zaach/jsonlint/issues/57> also the API has changed, see comment in file
+import '../../vendor/codemirror/addon/lint/json-lint'
 
 
 class JSONEditor extends React.Component {
@@ -66,7 +72,9 @@ class JSONEditor extends React.Component {
       tabSize: 2,
       theme: 'maputnik',
       viewportMargin: Infinity,
-      lineNumbers: false,
+      lineNumbers: true,
+      lint: true,
+      gutters: ["CodeMirror-lint-markers"],
       scrollbarStyle: "null",
     }
 
