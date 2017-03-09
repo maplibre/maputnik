@@ -46,7 +46,20 @@ class OpenModal extends React.Component {
     onStyleOpen: React.PropTypes.func.isRequired,
   }
 
+  constructor(props) {
+    super(props);
+    this.state = {};
+  }
+
+  clearError() {
+    this.setState({
+      error: null
+    })
+  }
+
   onStyleSelect(styleUrl) {
+    this.clearError();
+
     request({
       url: styleUrl,
       withCredentials: false,
@@ -64,9 +77,21 @@ class OpenModal extends React.Component {
   onUpload(_, files) {
     const [e, file] = files[0];
     const reader = new FileReader();
+
+    this.clearError();
+
     reader.readAsText(file, "UTF-8");
     reader.onload = e => {
-      let mapStyle = JSON.parse(e.target.result)
+      let mapStyle;
+      try {
+        mapStyle = JSON.parse(e.target.result)
+      }
+      catch(err) {
+        this.setState({
+          error: err.toString()
+        });
+        return;
+      }
       mapStyle = style.ensureStyleValidity(mapStyle)
       this.props.onStyleOpen(mapStyle);
     }
@@ -84,11 +109,22 @@ class OpenModal extends React.Component {
       />
     })
 
+    let errorElement;
+    if(this.state.error) {
+      errorElement = (
+        <div className="maputnik-modal-error">
+          {this.state.error}
+          <a href="#" onClick={() => this.clearError()} className="maputnik-modal-error-close">×</a>
+        </div>
+      );
+    }
+
     return <Modal
       isOpen={this.props.isOpen}
       onOpenToggle={this.props.onOpenToggle}
       title={'Open Style'}
     >
+      {errorElement}
       <section className="maputnik-modal-section">
         <h2>Upload Style</h2>
         <p>Upload a JSON style from your computer.</p>

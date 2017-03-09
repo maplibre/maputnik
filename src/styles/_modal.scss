@@ -199,3 +199,18 @@
     color: $color-lowgray;
   }
 }
+
+.maputnik-modal-error {
+  border: solid 2px #EF5350;
+  color: #EF5350;
+  padding: 8px;
+  padding-right: 32px;
+  position: relative;
+}
+
+.maputnik-modal-error-close {
+  position: absolute;
+  right: 8px;
+  text-decoration: none;
+  color: #ef5350;
+}
