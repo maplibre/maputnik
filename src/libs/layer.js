@@ -27,18 +27,41 @@ export function changeType(layer, newType) {
  * to a {@newValue}.
  */
 export function changeProperty(layer, group, property, newValue) {
-  if(group) {
-    return {
-      ...layer,
-      [group]: {
-        ...layer[group],
+  // Remove the property if undefined
+  if(newValue === undefined) {
+    if(group) {
+      const newLayer = {
+        ...layer
+      };
+      delete newLayer[group][property];
+
+      // Remove the group if it is now empty
+      if(Object.keys(newLayer[group]).length < 1) {
+        delete newLayer[group];
+      }
+      return newLayer;
+    } else {
+      const newLayer = {
+        ...layer
+      };
+      delete newLayer[property];
+      return newLayer;
+    }
+  }
+  else {
+    if(group) {
+      return {
+        ...layer,
+        [group]: {
+          ...layer[group],
+          [property]: newValue
+        }
+      }
+    } else {
+      return {
+        ...layer,
         [property]: newValue
       }
-    }
-  } else {
-    return {
-      ...layer,
-      [property]: newValue
     }
   }
 }

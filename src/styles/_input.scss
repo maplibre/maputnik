@@ -15,6 +15,11 @@
 
 .maputnik-string {
   @extend .maputnik-input;
+
+  &--multi {
+    resize: vertical;
+    height: 78px;
+  }
 }
 
 .maputnik-number {
