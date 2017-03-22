@@ -1,7 +1,7 @@
 import React from 'react'
 import { combiningFilterOps } from '../../libs/filterops.js'
 
-import GlSpec from 'mapbox-gl-style-spec/reference/latest.js'
+import GlSpec from 'mapbox-gl/src/style-spec/reference/latest'
 import DocLabel from '../fields/DocLabel'
 import SelectInput from '../inputs/SelectInput'
 import SingleFilterEditor from './SingleFilterEditor'

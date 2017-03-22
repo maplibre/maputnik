@@ -1,5 +1,5 @@
 import React from 'react'
-import GlSpec from 'mapbox-gl-style-spec/reference/latest.js'
+import GlSpec from 'mapbox-gl/src/style-spec/reference/latest'
 import Modal from './Modal'
 import Button from '../Button'
 import InputBlock from '../inputs/InputBlock'

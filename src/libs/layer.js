@@ -1,4 +1,4 @@
-import GlSpec from 'mapbox-gl-style-spec/reference/latest.js'
+import GlSpec from 'mapbox-gl/src/style-spec/reference/latest'
 
 export function changeType(layer, newType) {
   const changedPaintProps = { ...layer.paint }

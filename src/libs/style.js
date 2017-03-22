@@ -1,6 +1,6 @@
 import React from 'react';
-import spec from 'mapbox-gl-style-spec/reference/latest.min.js'
-import derefLayers from 'mapbox-gl-style-spec/lib/deref'
+import spec from 'mapbox-gl/src/style-spec/reference/latest'
+import derefLayers from 'mapbox-gl/src/style-spec/deref'
 import tokens from '../config/tokens.json'
 
 // Empty style is always used if no style could be restored or fetched

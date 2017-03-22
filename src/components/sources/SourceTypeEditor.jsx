@@ -1,5 +1,5 @@
 import React from 'react'
-import GlSpec from 'mapbox-gl-style-spec/reference/latest.js'
+import GlSpec from 'mapbox-gl/src/style-spec/reference/latest'
 import InputBlock from '../inputs/InputBlock'
 import StringInput from '../inputs/StringInput'
 import NumberInput from '../inputs/NumberInput'
