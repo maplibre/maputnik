@@ -31,7 +31,7 @@
     "lodash.isequal": "^4.4.0",
     "lodash.throttle": "^4.1.1",
     "mapbox-gl": "^0.34.0",
-    "mapbox-gl-inspect": "^1.2.2",
+    "mapbox-gl-inspect": "orangemug/mapbox-gl-inspect#fix/update-peer-dep",
     "mousetrap": "^1.6.0",
     "ol-mapbox-style": "1.0.1",
     "openlayers": "^3.19.1",
