@@ -70,7 +70,7 @@ function replaceAccessToken(mapStyle) {
   }
   const changedStyle = {
     ...mapStyle,
-    glyphs: mapStyle.glyphs.replace('{key}', accessToken),
+    glyphs: mapStyle.glyphs ? mapStyle.glyphs.replace('{key}', accessToken) : mapStyle.glyphs,
     sources: changedSources
   }
 
