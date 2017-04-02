@@ -11,7 +11,6 @@
   padding-top: $margin-3;
   padding-bottom: $margin-3;
   @include flex-column;
-  flex-direction: column;
   flex-shrink: 0;
   /* Bug fix: <http://stackoverflow.com/questions/28636832/firefox-overflow-y-not-working-with-nested-flexbox> */
   min-height: 0;
@@ -40,7 +39,6 @@
 .maputnik-modal-content {
   padding: $margin-3;
   @include flex-column;
-  flex-direction: column;
   max-height: 90vh;
 }
 
