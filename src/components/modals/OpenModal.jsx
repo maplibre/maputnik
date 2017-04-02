@@ -132,7 +132,7 @@ class OpenModal extends React.Component {
           <Button className="maputnik-upload-button"><FileUploadIcon /> Upload</Button>
         </FileReaderInput>
       </section>
-      <section className="maputnik-modal-section">
+      <section className="maputnik-modal-section maputnik-modal-section--shrink">
         <h2>Gallery Styles</h2>
         <p>
           Open one of the publicly available styles to start from.
