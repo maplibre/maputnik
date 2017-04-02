@@ -98,6 +98,11 @@ class OpenModal extends React.Component {
     reader.onerror = e => console.log(e.target);
   }
 
+  onOpenToggle() {
+    this.clearError();
+    this.props.onOpenToggle();
+  }
+
   render() {
     const styleOptions = publicStyles.map(style => {
       return <PublicStyle
@@ -121,7 +126,7 @@ class OpenModal extends React.Component {
 
     return <Modal
       isOpen={this.props.isOpen}
-      onOpenToggle={this.props.onOpenToggle}
+      onOpenToggle={() => this.onOpenToggle()}
       title={'Open Style'}
     >
       {errorElement}
