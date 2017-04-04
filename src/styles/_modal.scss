@@ -10,6 +10,17 @@
 .maputnik-modal-section {
   padding-top: $margin-3;
   padding-bottom: $margin-3;
+
+  /* Bug fix: <http://stackoverflow.com/questions/28636832/firefox-overflow-y-not-working-with-nested-flexbox> */
+  min-height: 0;
+
+  @include flex-column;
+
+  flex-shrink: 0;
+}
+
+.maputnik-modal-section--shrink {
+  flex-shrink: 1;
 }
 
 .maputnik-modal-header {
@@ -30,6 +41,9 @@
 
 .maputnik-modal-content {
   padding: $margin-3;
+  max-height: 90vh;
+
+  @include flex-column;
 }
 
 .maputnik-modal-header-space {
@@ -66,8 +80,8 @@
 }
 
 .maputnik-style-gallery-container {
-  max-height: 400px;
   overflow-y: scroll;
+  flex-shrink: 1;
 }
 
 .maputnik-public-style {
@@ -198,4 +212,20 @@
   span {
     color: $color-lowgray;
   }
+}
+
+.maputnik-modal-error {
+  border: solid 2px #ef5350;
+  color: #ef5350;
+  padding: 8px;
+  padding-right: 32px;
+  position: relative;
+}
+
+.maputnik-modal-error-close {
+  position: absolute;
+  right: 8px;
+  top: 8px;
+  text-decoration: none;
+  color: #ef5350;
 }
