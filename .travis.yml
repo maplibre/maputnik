@@ -1,9 +1,11 @@
 language: node_js
 addons:
   firefox: latest
-os:
-  - linux
-  - osx
+matrix:
+  - include:
+    - os: linux
+      env: CXX=g++-4.8
+    - os: osx
 node_js:
   - "4"
   - "5"
@@ -21,8 +23,6 @@ script:
   - npm run lint
   - npm run lint-styles
   - npm run test
-env:
-  - CXX=g++-4.8
 addons:
   apt:
     sources:
