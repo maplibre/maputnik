@@ -1,5 +1,5 @@
 var assert = require('assert');
-var config = require("./config");
+var config = require("../config/specs");
 
 
 describe('maputnik', function() {
