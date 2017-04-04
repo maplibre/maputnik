@@ -4,11 +4,11 @@
   "description": "A MapboxGL visual style editor",
   "main": "''",
   "scripts": {
-    "stats": "webpack --config webpack.production.config.js --profile --json > stats.json",
-    "build": "webpack --config webpack.production.config.js --progress --profile --colors",
-    "test": "karma start --single-run",
-    "test-watch": "karma start",
-    "start": "webpack-dev-server --progress --profile --colors --watch-poll",
+    "stats": "webpack --config config/webpack.production.config.js --profile --json > stats.json",
+    "build": "webpack --config config/webpack.production.config.js --progress --profile --colors",
+    "test": "wdio config/wdio.conf.js",
+    "test-watch": "wdio config/wdio.conf.js --watch",
+    "start": "webpack-dev-server --progress --profile --colors --watch-poll --config config/webpack.config.js",
     "lint": "eslint --ext js --ext jsx {src,test}",
     "lint-styles": "stylelint 'src/styles/*.scss'"
   },
@@ -125,6 +125,10 @@
     "stylelint-config-standard": "^15.0.1",
     "transform-loader": "^0.2.3",
     "url-loader": "0.5.7",
+    "wdio-mocha-framework": "^0.5.9",
+    "wdio-phantomjs-service": "^0.2.2",
+    "wdio-spec-reporter": "^0.1.0",
+    "webdriverio": "^4.6.2",
     "webpack": "1.14.0",
     "webpack-cleanup-plugin": "^0.4.1",
     "webpack-dev-server": "1.16.2"
