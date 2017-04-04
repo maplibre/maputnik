@@ -1,11 +1,8 @@
 language: node_js
 addons:
   firefox: latest
-os:
-  - linux
-  - osx
 matrix:
-  - include:
+  include:
     - os: linux
       env: CXX=g++-4.8
     - os: osx
