@@ -4,13 +4,23 @@ addons:
 matrix:
   include:
     - os: linux
+      node_js: "4"
+    - os: linux
       env: CXX=g++-4.8
+      node_js: "5"
+    - os: linux
+      node_js: "6"
+    - os: linux
+      env: CXX=g++-4.8
+      node_js: "7"
     - os: osx
-node_js:
-  - "4"
-  - "5"
-  - "6"
-  - "7"
+      node_js: "4"
+    - os: osx
+      node_js: "5"
+    - os: osx
+      node_js: "6"
+    - os: osx
+      node_js: "7"
 before_install:
   - export CHROME_BIN=chromium-browser
   - export DISPLAY=:99.0
