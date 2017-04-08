@@ -1,11 +1,15 @@
 environment:
   matrix:
-    - nodejs_version: "4.6"
-    - nodejs_version: "5.11"
-    - nodejs_version: "6.1"
+    - nodejs_version: "4"
+    - nodejs_version: "6"
+    - nodejs_version: "7"
+platform:
+  - x86
+  - x64
 install:
   - ps: Install-Product node $env:nodejs_version
   - md public
+  - npm install --global --production windows-build-tools
   - npm install
 build_script:
   - npm run build
