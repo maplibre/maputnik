@@ -1,6 +1,5 @@
 import React from 'react';
-import spec from 'mapbox-gl/src/style-spec/reference/latest'
-import derefLayers from 'mapbox-gl/src/style-spec/deref'
+import deref from '@mapbox/mapbox-gl-style-spec/deref'
 import tokens from '../config/tokens.json'
 
 // Empty style is always used if no style could be restored or fetched
@@ -37,7 +36,7 @@ function ensureHasNoInteractive(style) {
 function ensureHasNoRefs(style) {
   const derefedStyle = {
     ...style,
-    layers: derefLayers(style.layers)
+    layers: deref(style.layers)
   }
   return derefedStyle
 }

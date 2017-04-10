@@ -10,9 +10,7 @@ import AppLayout from './AppLayout'
 import MessagePanel from './MessagePanel'
 
 import { downloadGlyphsMetadata, downloadSpriteMetadata } from '../libs/metadata'
-import GlSpec from 'mapbox-gl/src/style-spec/reference/latest'
-import validateStyleMin from 'mapbox-gl/src/style-spec/validate_style.min'
-import formatStyle from 'mapbox-gl/src/style-spec/format'
+import styleSpec from '@mapbox/mapbox-gl-style-spec'
 import style from '../libs/style.js'
 import { initialStyleUrl, loadStyleUrl } from '../libs/urlopen'
 import { undoMessages, redoMessages } from '../libs/diffmessage'
@@ -65,7 +63,7 @@ export default class App extends React.Component {
       sources: {},
       vectorLayers: {},
       inspectModeEnabled: false,
-      spec: GlSpec,
+      spec: styleSpec.latest,
     }
 
     this.layerWatcher = new LayerWatcher({
@@ -115,7 +113,7 @@ export default class App extends React.Component {
       this.updateIcons(newStyle.sprite)
     }
 
-    const errors = validateStyleMin(newStyle, GlSpec)
+    const errors = styleSpec.validate(newStyle, styleSpec.latest)
     if(errors.length === 0) {
       this.revisionStore.addRevision(newStyle)
       if(save) this.saveStyle(newStyle)

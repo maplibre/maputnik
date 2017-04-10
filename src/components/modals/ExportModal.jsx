@@ -1,7 +1,7 @@
 import React from 'react'
 import { saveAs } from 'file-saver'
 
-import GlSpec from 'mapbox-gl/src/style-spec/reference/latest'
+import styleSpec from '@mapbox/mapbox-gl-style-spec'
 import InputBlock from '../inputs/InputBlock'
 import StringInput from '../inputs/StringInput'
 import SelectInput from '../inputs/SelectInput'
@@ -10,7 +10,6 @@ import Button from '../Button'
 import Modal from './Modal'
 import MdFileDownload from 'react-icons/lib/md/file-download'
 import style from '../../libs/style.js'
-import formatStyle from 'mapbox-gl/src/style-spec/format'
 import GitHub from 'github-api'
 
 
@@ -44,8 +43,8 @@ class Gist extends React.Component {
     const preview = this.state.preview && (this.props.mapStyle.metadata || {})['maputnik:openmaptiles_access_token'];
 
     const mapStyleStr = preview ?
-        formatStyle(stripAccessTokens(style.replaceAccessToken(this.props.mapStyle))) :
-        formatStyle(stripAccessTokens(this.props.mapStyle));
+        styleSpec.format(stripAccessTokens(style.replaceAccessToken(this.props.mapStyle))) :
+        styleSpec.format(stripAccessTokens(this.props.mapStyle));
     const styleTitle = this.props.mapStyle.name || 'Style';
     const htmlStr = `
   <!DOCTYPE html>
@@ -197,7 +196,7 @@ class ExportModal extends React.Component {
   }
 
   downloadStyle() {
-    const blob = new Blob([formatStyle(stripAccessTokens(this.props.mapStyle))], {type: "application/json;charset=utf-8"});
+    const blob = new Blob([styleSpec.format(stripAccessTokens(this.props.mapStyle))], {type: "application/json;charset=utf-8"});
     saveAs(blob, this.props.mapStyle.id + ".json");
   }
 

@@ -1,6 +1,6 @@
 import React from 'react'
 
-import GlSpec from 'mapbox-gl/src/style-spec/reference/latest'
+import styleSpec from '@mapbox/mapbox-gl-style-spec'
 import InputBlock from '../inputs/InputBlock'
 import StringInput from '../inputs/StringInput'
 
@@ -11,7 +11,7 @@ class LayerIdBlock extends React.Component {
   }
 
   render() {
-    return <InputBlock label={"ID"} doc={GlSpec.layer.id.doc}>
+    return <InputBlock label={"ID"} doc={styleSpec.latest.layer.id.doc}>
       <StringInput
         value={this.props.value}
         onChange={this.props.onChange}

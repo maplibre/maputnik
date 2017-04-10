@@ -6,7 +6,7 @@ module.exports = [
   },
   {
     test: /\.jsx?$/,
-    exclude: /(node_modules|bower_components|public)/,
+    exclude: /(.*node_modules(?!\/@mapbox\/mapbox-gl-style-spec)|bower_components|public)/,
     loader: 'babel',
     query: {
       presets: ['es2015', 'react'],

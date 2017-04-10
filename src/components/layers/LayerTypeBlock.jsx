@@ -1,6 +1,6 @@
 import React from 'react'
 
-import GlSpec from 'mapbox-gl/src/style-spec/reference/latest'
+import styleSpec from '@mapbox/mapbox-gl-style-spec'
 import InputBlock from '../inputs/InputBlock'
 import SelectInput from '../inputs/SelectInput'
 
@@ -11,7 +11,7 @@ class LayerTypeBlock extends React.Component {
   }
 
   render() {
-    return <InputBlock label={"Type"} doc={GlSpec.layer.type.doc}>
+    return <InputBlock label={"Type"} doc={styleSpec.latest.layer.type.doc}>
       <SelectInput
         options={[
           ['background', 'Background'],
