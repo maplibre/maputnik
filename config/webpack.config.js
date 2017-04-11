@@ -49,6 +49,6 @@ module.exports = {
     new HtmlWebpackPlugin({
       title: 'Maputnik',
       template: './src/template.html'
-    }),
+    })
   ]
 };
