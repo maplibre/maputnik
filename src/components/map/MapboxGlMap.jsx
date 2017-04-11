@@ -12,8 +12,7 @@ import Color from 'color'
 import { colorHighlightedLayer } from '../../libs/highlight'
 import 'mapbox-gl/dist/mapbox-gl.css'
 import '../../mapboxgl.css'
-
-MapboxGl.setRTLTextPlugin("/mapbox-gl/plugins/mapbox-gl-rtl-text.js");
+import '../../libs/mapbox-rtl'
 
 function renderLayerPopup(features) {
   var mountNode = document.createElement('div');

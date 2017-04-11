@@ -3,7 +3,6 @@ var webpack = require('webpack');
 var path = require('path');
 var loaders = require('./webpack.loaders');
 var HtmlWebpackPlugin = require('html-webpack-plugin');
-var CopyWebpackPlugin = require('copy-webpack-plugin');
 
 const HOST = process.env.HOST || "127.0.0.1";
 const PORT = process.env.PORT || "8888";
@@ -50,12 +49,6 @@ module.exports = {
     new HtmlWebpackPlugin({
       title: 'Maputnik',
       template: './src/template.html'
-    }),
-    new CopyWebpackPlugin([
-      {
-        from: "node_modules/@mapbox/mapbox-gl-rtl-text/mapbox-gl-rtl-text.js",
-        to: "mapbox-gl/plugins/mapbox-gl-rtl-text.js"
-      }
-    ]),
+    })
   ]
 };

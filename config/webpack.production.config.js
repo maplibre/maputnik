@@ -5,7 +5,6 @@ var loaders = require('./webpack.loaders');
 var ExtractTextPlugin = require('extract-text-webpack-plugin');
 var HtmlWebpackPlugin = require('html-webpack-plugin');
 var WebpackCleanupPlugin = require('webpack-cleanup-plugin');
-var CopyWebpackPlugin = require('copy-webpack-plugin');
 
 module.exports = {
   entry: {
@@ -71,12 +70,6 @@ module.exports = {
       template: './src/template.html',
       title: 'Maputnik'
     }),
-    new webpack.optimize.DedupePlugin(),
-    new CopyWebpackPlugin([
-      {
-        from: "node_modules/@mapbox/mapbox-gl-rtl-text/mapbox-gl-rtl-text.js",
-        to: "mapbox-gl/plugins/mapbox-gl-rtl-text.js"
-      }
-    ]),
+    new webpack.optimize.DedupePlugin()
   ]
 };
