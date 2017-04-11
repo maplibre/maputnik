@@ -20,6 +20,7 @@
   "license": "MIT",
   "homepage": "https://github.com/maputnik/editor#readme",
   "dependencies": {
+    "@mapbox/mapbox-gl-rtl-text": "^0.1.0",
     "classnames": "^2.2.5",
     "codemirror": "^5.18.2",
     "color": "^1.0.3",
@@ -103,6 +104,7 @@
     "babel-preset-es2015": "6.18.0",
     "babel-preset-react": "6.16.0",
     "babel-runtime": "^6.11.6",
+    "copy-webpack-plugin": "^4.0.1",
     "css-loader": "0.26.1",
     "eslint": "^3.5.0",
     "eslint-plugin-react": "^6.2.0",
