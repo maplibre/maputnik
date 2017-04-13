@@ -20,7 +20,7 @@
   "license": "MIT",
   "homepage": "https://github.com/maputnik/editor#readme",
   "dependencies": {
-    "@mapbox/mapbox-gl-style-spec": "^8.11.0",
+    "@mapbox/mapbox-gl-style-spec": "^9.0.0",
     "classnames": "^2.2.5",
     "codemirror": "^5.18.2",
     "color": "^1.0.3",
