@@ -71,6 +71,7 @@ class AddModal extends React.Component {
       isOpen={this.props.isOpen}
       onOpenToggle={this.props.onOpenToggle}
       title={'Add Layer'}
+      data-wd-key="modal:add-layer"
     >
       <div className="maputnik-add-layer">
       <LayerIdBlock
@@ -95,7 +96,9 @@ class AddModal extends React.Component {
         onChange={v => this.setState({ 'source-layer': v })}
       />
       }
-      <Button className="maputnik-add-layer-button" onClick={this.addLayer.bind(this)}>
+      <Button className="maputnik-add-layer-button" onClick={this.addLayer.bind(this)}
+        data-wd-key="add-layer"
+      >
         Add Layer
       </Button>
       </div>

@@ -19,7 +19,9 @@ class LayerSourceLayer extends React.Component {
   }
 
   render() {
-    return <InputBlock label={"Source Layer"} doc={GlSpec.layer['source-layer'].doc}>
+    return <InputBlock label={"Source Layer"} doc={GlSpec.layer['source-layer'].doc}
+      data-wd-key="layer-source-layer"
+    >
       <AutocompleteInput
         value={this.props.value}
         onChange={this.props.onChange}

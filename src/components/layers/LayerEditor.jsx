@@ -180,7 +180,7 @@ export default class LayerEditor extends React.Component {
       return !(layerType === 'background' && group.type === 'source')
     }).map(group => {
       return <LayerEditorGroup
-        key={group.title}
+        data-wd-key={group.title}
         title={group.title}
         isActive={this.state.editorGroups[group.title]}
         onActiveToggle={this.onGroupToggle.bind(this, group.title)}

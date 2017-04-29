@@ -88,7 +88,7 @@ export default class CombiningFilterEditor extends React.Component {
     }
 
     return <div className="maputnik-filter-editor">
-      <div className="maputnik-filter-editor-compound-select">
+      <div className="maputnik-filter-editor-compound-select" data-wd-key="layer-filter">
         <DocLabel
           label={"Compound Filter"}
           doc={GlSpec.layer.filter.doc + " Combine multiple filters together by using a compound filter."}
@@ -102,6 +102,7 @@ export default class CombiningFilterEditor extends React.Component {
       {editorBlocks}
       <div className="maputnik-filter-editor-add-wrapper">
         <Button
+          data-wd-key="layer-filter-button"
           className="maputnik-add-filter"
           onClick={this.addFilterItem.bind(this)}>
           Add filter

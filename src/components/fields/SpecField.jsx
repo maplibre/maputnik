@@ -55,63 +55,72 @@ export default class SpecField extends React.Component {
       name: this.props.fieldName,
       onChange: newValue => this.props.onChange(this.props.fieldName, newValue)
     }
-    switch(this.props.fieldSpec.type) {
-      case 'number': return (
-        <NumberInput
-          {...commonProps}
-          min={this.props.fieldSpec.minimum}
-          max={this.props.fieldSpec.maximum}
-        />
-      )
-      case 'enum':
-        const options = Object.keys(this.props.fieldSpec.values).map(v => [v, capitalize(v)])
 
-        if(options.length <= 3 && optionsLabelLength(options) <= 20) {
-          return <MultiButtonInput
+    function childNodes() {
+      switch(this.props.fieldSpec.type) {
+        case 'number': return (
+          <NumberInput
             {...commonProps}
-            options={options}
+            min={this.props.fieldSpec.minimum}
+            max={this.props.fieldSpec.maximum}
           />
-        } else {
-          return <SelectInput
+        )
+        case 'enum':
+          const options = Object.keys(this.props.fieldSpec.values).map(v => [v, capitalize(v)])
+
+          if(options.length <= 3 && optionsLabelLength(options) <= 20) {
+            return <MultiButtonInput
+              {...commonProps}
+              options={options}
+            />
+          } else {
+            return <SelectInput
+              {...commonProps}
+              options={options}
+            />
+          }
+        case 'string':
+          if(iconProperties.indexOf(this.props.fieldName) >= 0) {
+            return <IconInput
+              {...commonProps}
+              icons={this.props.fieldSpec.values}
+            />
+          } else {
+            return <StringInput
+              {...commonProps}
+            />
+          }
+        case 'color': return (
+          <ColorField
             {...commonProps}
-            options={options}
           />
-        }
-      case 'string':
-        if(iconProperties.indexOf(this.props.fieldName) >= 0) {
-          return <IconInput
-            {...commonProps}
-            icons={this.props.fieldSpec.values}
-          />
-        } else {
-          return <StringInput
+        )
+        case 'boolean': return (
+          <CheckboxInput
             {...commonProps}
           />
-        }
-      case 'color': return (
-        <ColorField
-          {...commonProps}
-        />
-      )
-      case 'boolean': return (
-        <CheckboxInput
-          {...commonProps}
-        />
-      )
-      case 'array':
-        if(this.props.fieldName === 'text-font') {
-          return <FontInput
-            {...commonProps}
-            fonts={this.props.fieldSpec.values}
-          />
-        } else {
-          return <ArrayInput
-            {...commonProps}
-            type={this.props.fieldSpec.value}
-            length={this.props.fieldSpec.length}
-          />
-        }
-      default: return null
+        )
+        case 'array':
+          if(this.props.fieldName === 'text-font') {
+            return <FontInput
+              {...commonProps}
+              fonts={this.props.fieldSpec.values}
+            />
+          } else {
+            return <ArrayInput
+              {...commonProps}
+              type={this.props.fieldSpec.value}
+              length={this.props.fieldSpec.length}
+            />
+          }
+        default: return null
+      }
     }
+
+    return (
+      <div data-wd-key={"spec-field:"+this.props.fieldName}>
+        {childNodes.call(this)}
+      </div>
+    );
   }
 }
