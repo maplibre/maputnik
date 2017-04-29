@@ -43,9 +43,6 @@ describe('maputnik', function() {
       browser.waitForExist(wd.$('modal:add-layer'));
       browser.isVisible(wd.$('modal:add-layer'));
       browser.isVisibleWithinViewport(wd.$('modal:add-layer'));
-
-      browser.isVisible(wd.$('modal:add-layer'));
-      browser.isVisibleWithinViewport(wd.$('modal:add-layer'));
     });
 
     it('background', function () {
