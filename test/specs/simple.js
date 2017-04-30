@@ -48,7 +48,7 @@ describe('maputnik', function() {
     it('background', function () {
       var id = uuid();
 
-      browser.waitForExist(wd.$("layer-id", "input"));
+      browser.waitForVisible(wd.$("layer-id", "input"));
       browser.setValue(wd.$("layer-id", "input"), "background:"+id);
       browser.selectByValue(wd.$("layer-type", "select"), "background");
 
@@ -66,7 +66,7 @@ describe('maputnik', function() {
     it('fill', function () {
       var id = uuid();
 
-      browser.waitForExist(wd.$("layer-id", "input"));
+      browser.waitForVisible(wd.$("layer-id", "input"));
       browser.setValue(wd.$("layer-id", "input"), "fill:"+id);
       browser.selectByValue(wd.$("layer-type", "select"), "fill");
       browser.setValue(wd.$("layer-source-block", "input"), "example");
