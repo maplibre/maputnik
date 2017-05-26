@@ -41,7 +41,7 @@
     "react-addons-pure-render-mixin": "^15.4.0",
     "react-autocomplete": "^1.4.0",
     "react-codemirror": "^0.3.0",
-    "react-collapse": "^2.3.3",
+    "react-collapse": "^4.0.2",
     "react-color": "^2.10.0",
     "react-dom": "^15.4.0",
     "react-file-reader-input": "^1.1.0",
