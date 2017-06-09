@@ -2,6 +2,7 @@ import React from 'react'
 import style from '../../libs/style.js'
 import isEqual from 'lodash.isequal'
 import { loadJSON } from '../../libs/urlopen'
+import 'openlayers/dist/ol.css'
 
 function suitableVectorSource(mapStyle) {
   const sources = Object.keys(mapStyle.sources)
@@ -11,7 +12,7 @@ function suitableVectorSource(mapStyle) {
         source: mapStyle.sources[sourceId]
       }
     })
-    .filter(({source}) => source.type === 'vector')
+    .filter(({source}) => (source.type === 'vector' || source.type === 'geojson'))
   return sources[0]
 }
 
@@ -28,12 +29,25 @@ function toVectorLayer(source, tilegrid, cb) {
     })
   }
 
-  if(!source.tiles) {
-    sourceFromTileJSON(source.url, tileSource => {
-      cb(newMVTLayer(tileSource.tiles[0]))
+  function newGeoJSONLayer(sourceUrl) {
+    const ol = require('openlayers')
+    return new ol.layer.Vector({
+      source: new ol.source.Vector({
+        format: new ol.format.GeoJSON(),
+        url: sourceUrl
+      })
     })
-  } else {
-    cb(newMVTLayer(source.tiles[0]))
+  }
+  if (source.type === 'vector') {
+    if(!source.tiles) {
+      sourceFromTileJSON(source.url, tileSource => {
+        cb(newMVTLayer(tileSource.tiles[0]))
+      })
+    } else {
+      cb(newMVTLayer(source.tiles[0]))
+    }
+  } else if (source.type === 'geojson') {
+    cb(newGeoJSONLayer(source.data))
   }
 }
 
@@ -91,10 +105,11 @@ class OpenLayers3Map extends React.Component {
       }
 
       if(!this.layer) {
+        var self = this
         toVectorLayer(newSource.source, this.tilegrid, vectorLayer => {
-          this.layer = vectorLayer
-          this.map.addLayer(this.layer)
-          setStyleFunc(this.map, this.layer)
+          self.layer = vectorLayer
+          self.map.addLayer(self.layer)
+          setStyleFunc(self.map, self.layer)
         })
       } else {
         setStyleFunc(this.map, this.layer)
@@ -140,10 +155,10 @@ class OpenLayers3Map extends React.Component {
       ref={x => this.container = x}
       style={{
         position: "fixed",
-        top: 0,
+        top: 40,
         right: 0,
         bottom: 0,
-        height: "100%",
+        height: 'calc(100% - 40px)',
         width: "75%",
         backgroundColor: '#fff',
         ...this.props.style,
