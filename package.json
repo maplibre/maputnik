@@ -53,15 +53,6 @@
     "request": "^2.79.0",
     "url": "^0.11.0"
   },
-  "babel": {
-    "presets": [
-      "es2015",
-      "react"
-    ],
-    "plugins": [
-      "transform-object-rest-spread"
-    ]
-  },
   "jshintConfig": {
     "esversion": 6
   },
