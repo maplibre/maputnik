@@ -91,7 +91,7 @@ class ColorField extends React.Component {
     </div>
 
     var swatchStyle = {
-      "background-color": this.props.value
+      backgroundColor: this.props.value
     };
 
     return <div className="maputnik-color-wrapper">
