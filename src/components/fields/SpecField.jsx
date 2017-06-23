@@ -8,6 +8,7 @@ import StringInput from '../inputs/StringInput'
 import SelectInput from '../inputs/SelectInput'
 import MultiButtonInput from '../inputs/MultiButtonInput'
 import ArrayInput from '../inputs/ArrayInput'
+import DynamicArrayInput from '../inputs/DynamicArrayInput'
 import FontInput from '../inputs/FontInput'
 import IconInput from '../inputs/IconInput'
 import capitalize from 'lodash.capitalize'
@@ -105,11 +106,18 @@ export default class SpecField extends React.Component {
             fonts={this.props.fieldSpec.values}
           />
         } else {
-          return <ArrayInput
-            {...commonProps}
-            type={this.props.fieldSpec.value}
-            length={this.props.fieldSpec.length}
-          />
+          if (this.props.fieldSpec.length) {
+            return <ArrayInput
+              {...commonProps}
+              type={this.props.fieldSpec.value}
+              length={this.props.fieldSpec.length}
+            />
+          } else {
+            return <DynamicArrayInput
+              {...commonProps}
+              type={this.props.fieldSpec.value}
+            />
+          }
         }
       default: return null
     }
