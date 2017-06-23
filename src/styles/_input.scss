@@ -122,7 +122,8 @@
   &-menu {
     border: none;
     padding: 2px 0;
-    position: fixed;
+    margin-right: 10px;
+    position: absolute;
     overflow: auto;
     max-height: 50%;
     background: $color-gray;
