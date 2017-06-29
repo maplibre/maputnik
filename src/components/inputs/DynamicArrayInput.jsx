@@ -49,18 +49,17 @@ class DynamicArrayInput extends React.Component {
       const deleteValueBtn= <DeleteValueButton onClick={this.deleteValue.bind(this, i)} />
       const input = this.props.type === 'number' 
         ? <NumberInput
-          key={i}
           value={v}
           onChange={this.changeValue.bind(this, i)}
         />
         : <StringInput
-          key={i}
           value={v}
           onChange={this.changeValue.bind(this, i)}
         />
 
       return <div
         style={this.props.style}
+        key={i}
         className="maputnik-array-block"
         >
         <div className="maputnik-array-block-action">
