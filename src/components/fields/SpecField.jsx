@@ -43,6 +43,7 @@ export default class SpecField extends React.Component {
       React.PropTypes.string,
       React.PropTypes.number,
       React.PropTypes.array,
+      React.PropTypes.bool
     ]),
     /** Override the style of the field */
     style: React.PropTypes.object,
