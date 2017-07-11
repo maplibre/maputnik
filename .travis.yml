@@ -1,7 +1,4 @@
 language: node_js
-addons:
-  firefox: latest
-  chrome: stable
 matrix:
   include:
     - os: linux
@@ -35,6 +32,8 @@ script:
   - npm run lint-styles
   - npm run test
 addons:
+  firefox: latest
+  chrome: stable
   apt:
     sources:
       - ubuntu-toolchain-r-test
