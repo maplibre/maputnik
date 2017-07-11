@@ -52,6 +52,25 @@
   > * {
     margin-bottom: $margin-3;
   }
+
+  .maputnik-array-block {
+    .maputnik-array-block-action {
+      vertical-align: top;
+      display: inline-block;
+      width: 14%;
+    }
+
+    .maputnik-array-block-content {
+      vertical-align: top;
+      display: inline-block;
+      width: 86%;
+    }
+  }
+
+  .maputnik-array-add-value {
+    display: inline-block;
+    float: right;
+  }
 }
 
 // SELECT
@@ -122,7 +141,8 @@
   &-menu {
     border: none;
     padding: 2px 0;
-    position: fixed;
+    margin-right: 10px;
+    position: absolute;
     overflow: auto;
     max-height: 50%;
     background: $color-gray;

@@ -41,11 +41,11 @@
     "react-addons-pure-render-mixin": "^15.4.0",
     "react-autocomplete": "^1.4.0",
     "react-codemirror": "^0.3.0",
-    "react-collapse": "^2.3.3",
+    "react-collapse": "^4.0.2",
     "react-color": "^2.10.0",
     "react-dom": "^15.4.0",
     "react-file-reader-input": "^1.1.0",
-    "react-height": "^2.1.1",
+    "react-height": "^3.0.0",
     "react-icon-base": "^2.0.4",
     "react-icons": "^2.2.1",
     "react-motion": "^0.4.7",
@@ -53,15 +53,6 @@
     "reconnecting-websocket": "^3.0.3",
     "request": "^2.79.0",
     "url": "^0.11.0"
-  },
-  "babel": {
-    "presets": [
-      "es2015",
-      "react"
-    ],
-    "plugins": [
-      "transform-object-rest-spread"
-    ]
   },
   "jshintConfig": {
     "esversion": 6

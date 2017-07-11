@@ -31,6 +31,7 @@ export default class ZoomSpecProperty  extends React.Component {
       React.PropTypes.string,
       React.PropTypes.number,
       React.PropTypes.bool,
+      React.PropTypes.array
     ]),
   }
 
