@@ -1,6 +1,7 @@
 language: node_js
 addons:
   firefox: latest
+  chrome: stable
 matrix:
   include:
     - os: linux
