@@ -6,6 +6,14 @@ var ExtractTextPlugin = require('extract-text-webpack-plugin');
 var HtmlWebpackPlugin = require('html-webpack-plugin');
 var WebpackCleanupPlugin = require('webpack-cleanup-plugin');
 
+var OUTPATH;
+if(process.env.CIRCLE_ARTIFACTS) {
+  OUTPATH = path.join(process.env.CIRCLE_ARTIFACTS, "build");
+}
+else {
+  OUTPATH = path.join(__dirname, '..', 'public');
+}
+
 module.exports = {
   entry: {
     app: './src/index.jsx',
@@ -32,7 +40,7 @@ module.exports = {
     ]
   },
   output: {
-    path: path.join(__dirname, '..', 'public'),
+    path: OUTPATH,
     filename: '[name].[chunkhash].js',
     chunkFilename: '[chunkhash].js'
   },
