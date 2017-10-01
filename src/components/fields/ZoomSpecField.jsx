@@ -4,17 +4,24 @@ import Color from 'color'
 import Button from '../Button'
 import SpecField from './SpecField'
 import NumberInput from '../inputs/NumberInput'
+import StringInput from '../inputs/StringInput'
+import SelectInput from '../inputs/SelectInput'
 import DocLabel from './DocLabel'
 import InputBlock from '../inputs/InputBlock'
 
 import AddIcon from 'react-icons/lib/md/add-circle-outline'
 import DeleteIcon from 'react-icons/lib/md/delete'
 import FunctionIcon from 'react-icons/lib/md/functions'
+import MdInsertChart from 'react-icons/lib/md/insert-chart'
 
 import capitalize from 'lodash.capitalize'
 
 function isZoomField(value) {
-  return typeof value === 'object' && value.stops
+  return typeof value === 'object' && value.stops && typeof value.property === 'undefined'
+}
+
+function isDataField(value) {
+  return typeof value === 'object' && value.stops && typeof value.property !== 'undefined'
 }
 
 /** Supports displaying spec field for zoom function objects
@@ -38,7 +45,15 @@ export default class ZoomSpecProperty  extends React.Component {
   addStop() {
     const stops = this.props.value.stops.slice(0)
     const lastStop = stops[stops.length - 1]
-    stops.push([lastStop[0] + 1, lastStop[1]])
+    if (typeof lastStop[0] === "object") {
+      stops.push([
+        {zoom: lastStop[0].zoom, value: lastStop[0].value},
+        lastStop[1]
+      ])
+    }
+    else {
+      stops.push([lastStop[0] + 1, lastStop[1]])
+    }
 
     const changedValue = {
       ...this.props.value,
@@ -74,14 +89,131 @@ export default class ZoomSpecProperty  extends React.Component {
     this.props.onChange(this.props.fieldName, zoomFunc)
   }
 
-  changeStop(changeIdx, zoomLevel, value) {
+  makeDataFunction() {
+    const dataFunc = {
+      property: "",
+      type: "exponential",
+      stops: [
+        [{zoom: 6, value: 0}, this.props.value],
+        [{zoom: 10, value: 0}, this.props.value]
+      ]
+    }
+    this.props.onChange(this.props.fieldName, dataFunc)
+  }
+
+  changeStop(changeIdx, stopData, value) {
     const stops = this.props.value.stops.slice(0)
-    stops[changeIdx] = [zoomLevel, value]
+    stops[changeIdx] = [stopData, value]
     const changedValue = {
       ...this.props.value,
       stops: stops,
     }
     this.props.onChange(this.props.fieldName, changedValue)
+  }
+
+  changeDataProperty(propName, propVal) {
+    this.props.value[propName] = propVal
+    this.props.onChange(this.props.fieldName, this.props.value)
+  }
+
+  getDataInput(value, dataLevel, zoomLevel) {
+    const dataProps = {
+      label: "Data value",
+      value: dataLevel,
+      onChange: newData => this.changeStop(idx, { zoom: zoomLevel, value: newData }, value)
+    }
+    if (this.props.value.type === "categorical") {
+      return <StringInput {...dataProps} />
+    }
+    else {
+      return <NumberInput {...dataProps} />
+    }
+  }
+
+  renderDataProperty() {
+    const dataFields = this.props.value.stops.map((stop, idx) => {
+      const zoomLevel = stop[0].zoom
+      const dataLevel = stop[0].value
+      const value = stop[1]
+      const deleteStopBtn = <DeleteStopButton onClick={this.deleteStop.bind(this, idx)} />
+      return <InputBlock key={idx} action={deleteStopBtn}>
+        <div className="maputnik-data-spec-property-stop-edit">
+          <NumberInput
+            value={zoomLevel}
+            onChange={newZoom => this.changeStop(idx, {zoom: newZoom, value: dataLevel}, value)}
+            min={0}
+            max={22}
+          />
+        </div>
+        <div className="maputnik-data-spec-property-stop-data">
+          {this.getDataInput(value, dataLevel, zoomLevel)}
+        </div>
+        <div className="maputnik-data-spec-property-stop-value">
+          <SpecField
+            fieldName={this.props.fieldName}
+            fieldSpec={this.props.fieldSpec}
+            value={value}
+            onChange={(_, newValue) => this.changeStop(idx, {zoom: zoomLevel, value: dataLevel}, newValue)}
+          />
+        </div>
+      </InputBlock>
+    })
+
+    return <div className="maputnik-data-spec-block">
+    <div className="maputnik-data-spec-property">
+      <InputBlock
+        doc={this.props.fieldSpec.doc}
+        label={labelFromFieldName(this.props.fieldName)}
+      >
+        <div className="maputnik-data-spec-property-group">
+          <DocLabel
+            label="Property"
+            doc={"Input a data property to base styles off of."}
+          />
+          <div className="maputnik-data-spec-property-input">
+            <StringInput
+              value={this.props.value.property}
+              onChange={propVal => this.changeDataProperty("property", propVal)}
+            />
+          </div>
+        </div>
+        <div className="maputnik-data-spec-property-group">
+          <DocLabel
+            label="Type"
+            doc={"Select a type of data scale (default is 'exponential')."}
+          />
+          <div className="maputnik-data-spec-property-input">
+            <SelectInput
+              value={this.props.value.type || "exponential"}
+              onChange={propVal => this.changeDataProperty("type", propVal)}
+              options={["exponential", "interval", "categorical", "identity"]}
+            />
+          </div>
+        </div>
+        <div className="maputnik-data-spec-property-group">
+          <DocLabel
+            label="Default"
+            doc={"Input a default value for data if not covered by the scales."}
+          />
+          <div className="maputnik-data-spec-property-input">
+            <SpecField
+              fieldName={this.props.fieldName}
+              fieldSpec={this.props.fieldSpec}
+              value={this.props.value.default}
+              onChange={(_, newValue) => this.changeStop(idx, { zoom: zoomLevel, value: dataLevel }, newValue)}
+            />
+          </div>
+        </div>
+      </InputBlock>
+    </div>
+      {dataFields}
+      <Button
+        className="maputnik-add-stop"
+        onClick={this.addStop.bind(this)}
+      >
+        Add stop
+      </Button>
+    </div>
   }
 
   renderZoomProperty() {
@@ -129,14 +261,17 @@ export default class ZoomSpecProperty  extends React.Component {
   }
 
   renderProperty() {
-    let zoomBtn = null
+    let functionBtn = null
     if(this.props.fieldSpec['zoom-function']) {
-      zoomBtn = <MakeZoomFunctionButton onClick={this.makeZoomFunction.bind(this)} />
+      functionBtn = <MakeFunctionButtons
+        onZoomClick={this.makeZoomFunction.bind(this)}
+        onDataClick={this.makeDataFunction.bind(this)} 
+      />
     }
     return <InputBlock
       doc={this.props.fieldSpec.doc}
       label={labelFromFieldName(this.props.fieldName)}
-      action={zoomBtn}
+      action={functionBtn}
     >
       <SpecField {...this.props} />
     </InputBlock>
@@ -144,23 +279,45 @@ export default class ZoomSpecProperty  extends React.Component {
 
   render() {
     const propClass = this.props.fieldSpec.default === this.props.value ? "maputnik-default-property" : "maputnik-modified-property"
+    let specField
+    if (isZoomField(this.props.value)) {
+      specField = this.renderZoomProperty()
+    }
+    else if (isDataField(this.props.value)) {
+      specField = this.renderDataProperty()
+    }
+    else {
+      specField = this.renderProperty()
+    }
     return <div className={propClass}>
-      {isZoomField(this.props.value) ? this.renderZoomProperty() : this.renderProperty()}
+      {specField}
     </div>
   }
 }
 
-function MakeZoomFunctionButton(props) {
-  return <Button
-    className="maputnik-make-zoom-function"
-    onClick={props.onClick}
-  >
-    <DocLabel
-      label={<FunctionIcon />}
-      cursorTargetStyle={{ cursor: 'pointer' }}
-      doc={"Turn property into a zoom function to enable a map feature to change with map's zoom level."}
-    />
-  </Button>
+function MakeFunctionButtons(props) {
+  return <div>
+    <Button
+      className="maputnik-make-zoom-function"
+      onClick={props.onZoomClick}
+    >
+      <DocLabel
+        label={<FunctionIcon />}
+        cursorTargetStyle={{ cursor: 'pointer' }}
+        doc={"Turn property into a zoom function to enable a map feature to change with map's zoom level."}
+      />
+    </Button>
+    <Button
+      className="maputnik-make-data-function"
+      onClick={props.onDataClick}
+    >
+      <DocLabel
+        label={<MdInsertChart />}
+        cursorTargetStyle={{ cursor: 'pointer' }}
+        doc={"Turn property into a data function to enable a map feature to change according to data properties and the map's zoom level."}
+      />
+    </Button>
+  </div>
 }
 
 function DeleteStopButton(props) {
