@@ -83,6 +83,7 @@
 .maputnik-data-spec-block {
   overflow: auto;
 }
+
 .maputnik-data-spec-property {
   .maputnik-input-block-label {
     width: 30%;
@@ -91,6 +92,7 @@
   .maputnik-input-block-content {
     width: 70%;
   }
+
   .maputnik-data-spec-property-group {
     margin-bottom: 3%;
 
@@ -98,9 +100,11 @@
       width: 25%;
       color: $color-lowgray;
     }
+
     .maputnik-doc-wrapper:hover {
       color: inherit;
     }
+
     .maputnik-data-spec-property-input {
       width: 75%;
       display: inline-block;
@@ -123,6 +127,7 @@
     width: 18%;
     margin-right: 3%;
   }
+
   .maputnik-data-spec-property-stop-data {
     width: 78%;
   }
