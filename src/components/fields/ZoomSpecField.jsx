@@ -190,20 +190,6 @@ export default class ZoomSpecProperty  extends React.Component {
             />
           </div>
         </div>
-        <div className="maputnik-data-spec-property-group">
-          <DocLabel
-            label="Default"
-            doc={"Input a default value for data if not covered by the scales."}
-          />
-          <div className="maputnik-data-spec-property-input">
-            <SpecField
-              fieldName={this.props.fieldName}
-              fieldSpec={this.props.fieldSpec}
-              value={this.props.value.default}
-              onChange={(_, newValue) => this.changeStop(idx, { zoom: zoomLevel, value: dataLevel }, newValue)}
-            />
-          </div>
-        </div>
       </InputBlock>
     </div>
       {dataFields}
