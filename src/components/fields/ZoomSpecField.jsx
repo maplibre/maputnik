@@ -144,7 +144,7 @@ export default class ZoomSpecProperty  extends React.Component {
 
   render() {
     const propClass = this.props.fieldSpec.default === this.props.value ? "maputnik-default-property" : "maputnik-modified-property"
-    return <div className={propClass}>
+    return <div className={propClass} data-wd-key={"spec-field:"+this.props.fieldName}>
       {isZoomField(this.props.value) ? this.renderZoomProperty() : this.renderProperty()}
     </div>
   }

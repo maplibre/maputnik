@@ -15,7 +15,7 @@ exports.config = {
   maxInstances: 10,
   capabilities: [{
     maxInstances: 5,
-    browserName: 'firefox'
+    browserName: 'phantomjs'
   }],
   sync: true,
   logLevel: 'silent',
@@ -26,7 +26,7 @@ exports.config = {
   waitforTimeout: 10000,
   connectionRetryTimeout: 90000,
   connectionRetryCount: 3,
-  services: ['phantomjs'],
+  services: ['selenium-standalone'],
   framework: 'mocha',
   reporters: ['spec'],
   mochaOpts: {

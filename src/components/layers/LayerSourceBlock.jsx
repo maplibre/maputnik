@@ -19,7 +19,9 @@ class LayerSourceBlock extends React.Component {
   }
 
   render() {
-    return <InputBlock label={"Source"} doc={GlSpec.layer.source.doc}>
+    return <InputBlock label={"Source"} doc={GlSpec.layer.source.doc}
+      data-wd-key="layer-source-block"
+    >
       <AutocompleteInput
         value={this.props.value}
         onChange={this.props.onChange}

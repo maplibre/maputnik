@@ -1,6 +1,4 @@
 language: node_js
-addons:
-  firefox: latest
 matrix:
   include:
     - os: linux
@@ -22,7 +20,6 @@ matrix:
     - os: osx
       node_js: "7"
 before_install:
-  - export CHROME_BIN=chromium-browser
   - export DISPLAY=:99.0
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sh -e /etc/init.d/xvfb start; fi
 install:
@@ -34,8 +31,11 @@ script:
   - npm run lint-styles
   - npm run test
 addons:
+  firefox: latest
+  chrome: stable
   apt:
     sources:
       - ubuntu-toolchain-r-test
     packages:
       - g++-4.8
+      - oracle-java8-set-default

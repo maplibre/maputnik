@@ -10,7 +10,7 @@ class MetadataBlock extends React.Component {
   }
 
   render() {
-    return <InputBlock label={"Comments"}>
+    return <InputBlock label={"Comments"} data-wd-key="layer-comment">
       <StringInput
         multi={true}
         value={this.props.value}
