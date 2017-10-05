@@ -20,8 +20,6 @@ module.exports = {
     vendor: [
         'file-saver',
         'mapbox-gl/dist/mapbox-gl.js',
-        //TODO: Build failure because cannot resolve migrations file
-        //"mapbox-gl-style-spec",
         "lodash.clonedeep",
         "lodash.throttle",
         'color',

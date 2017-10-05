@@ -1,5 +1,5 @@
 import React from 'react'
-import GlSpec from 'mapbox-gl-style-spec/reference/latest.js'
+import styleSpec from '@mapbox/mapbox-gl-style-spec'
 import Modal from './Modal'
 import Button from '../Button'
 import InputBlock from '../inputs/InputBlock'
@@ -138,7 +138,7 @@ class AddSource extends React.Component {
           onChange={v => this.setState({ sourceId: v})}
         />
       </InputBlock>
-      <InputBlock label={"Source Type"} doc={GlSpec.source_tile.type.doc}>
+      <InputBlock label={"Source Type"} doc={styleSpec.latest.source_tile.type.doc}>
         <SelectInput
           options={[
             ['geojson', 'GeoJSON'],
