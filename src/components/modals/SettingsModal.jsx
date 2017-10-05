@@ -1,6 +1,6 @@
 import React from 'react'
 
-import GlSpec from 'mapbox-gl-style-spec/reference/latest.js'
+import styleSpec from '@mapbox/mapbox-gl-style-spec'
 import InputBlock from '../inputs/InputBlock'
 import StringInput from '../inputs/StringInput'
 import SelectInput from '../inputs/SelectInput'
@@ -46,7 +46,7 @@ class SettingsModal extends React.Component {
       title={'Style Settings'}
     >
       <div style={{minWidth: 350}}>
-      <InputBlock label={"Name"} doc={GlSpec.$root.name.doc}>
+      <InputBlock label={"Name"} doc={styleSpec.latest.$root.name.doc}>
         <StringInput {...inputProps}
           value={this.props.mapStyle.name}
           onChange={this.changeStyleProperty.bind(this, "name")}
@@ -58,14 +58,14 @@ class SettingsModal extends React.Component {
           onChange={this.changeStyleProperty.bind(this, "owner")}
         />
       </InputBlock>
-      <InputBlock label={"Sprite URL"} doc={GlSpec.$root.sprite.doc}>
+      <InputBlock label={"Sprite URL"} doc={styleSpec.latest.$root.sprite.doc}>
         <StringInput {...inputProps}
           value={this.props.mapStyle.sprite}
           onChange={this.changeStyleProperty.bind(this, "sprite")}
         />
       </InputBlock>
 
-      <InputBlock label={"Glyphs URL"} doc={GlSpec.$root.glyphs.doc}>
+      <InputBlock label={"Glyphs URL"} doc={styleSpec.latest.$root.glyphs.doc}>
         <StringInput {...inputProps}
           value={this.props.mapStyle.glyphs}
           onChange={this.changeStyleProperty.bind(this, "glyphs")}

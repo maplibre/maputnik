@@ -1,6 +1,6 @@
 import React from 'react'
 
-import GlSpec from 'mapbox-gl-style-spec/reference/latest.js'
+import styleSpec from '@mapbox/mapbox-gl-style-spec'
 import InputBlock from '../inputs/InputBlock'
 import StringInput from '../inputs/StringInput'
 import SelectInput from '../inputs/SelectInput'
@@ -19,7 +19,7 @@ class LayerSourceLayer extends React.Component {
   }
 
   render() {
-    return <InputBlock label={"Source Layer"} doc={GlSpec.layer['source-layer'].doc}>
+    return <InputBlock label={"Source Layer"} doc={styleSpec.latest.layer['source-layer'].doc}>
       <AutocompleteInput
         value={this.props.value}
         onChange={this.props.onChange}

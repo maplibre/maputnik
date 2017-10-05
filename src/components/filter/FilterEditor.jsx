@@ -1,7 +1,7 @@
 import React from 'react'
 import { combiningFilterOps } from '../../libs/filterops.js'
 
-import GlSpec from 'mapbox-gl-style-spec/reference/latest.js'
+import styleSpec from '@mapbox/mapbox-gl-style-spec'
 import DocLabel from '../fields/DocLabel'
 import SelectInput from '../inputs/SelectInput'
 import SingleFilterEditor from './SingleFilterEditor'
@@ -91,7 +91,7 @@ export default class CombiningFilterEditor extends React.Component {
       <div className="maputnik-filter-editor-compound-select">
         <DocLabel
           label={"Compound Filter"}
-          doc={GlSpec.layer.filter.doc + " Combine multiple filters together by using a compound filter."}
+          doc={styleSpec.latest.layer.filter.doc + " Combine multiple filters together by using a compound filter."}
         />
         <SelectInput
           value={combiningOp}
