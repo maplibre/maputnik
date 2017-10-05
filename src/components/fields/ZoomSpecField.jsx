@@ -261,13 +261,11 @@ export default class ZoomSpecProperty  extends React.Component {
   }
 
   renderProperty() {
-    let functionBtn = null
-    if(this.props.fieldSpec['zoom-function']) {
-      functionBtn = <MakeFunctionButtons
-        onZoomClick={this.makeZoomFunction.bind(this)}
-        onDataClick={this.makeDataFunction.bind(this)} 
-      />
-    }
+    const functionBtn = <MakeFunctionButtons
+      fieldSpec={this.props.fieldSpec}
+      onZoomClick={this.makeZoomFunction.bind(this)}
+      onDataClick={this.makeDataFunction.bind(this)} 
+    />
     return <InputBlock
       doc={this.props.fieldSpec.doc}
       label={labelFromFieldName(this.props.fieldName)}
@@ -296,8 +294,9 @@ export default class ZoomSpecProperty  extends React.Component {
 }
 
 function MakeFunctionButtons(props) {
-  return <div>
-    <Button
+  let makeZoomButton, makeDataButton
+  if (props.fieldSpec['zoom-function']) {
+    makeZoomButton = <Button
       className="maputnik-make-zoom-function"
       onClick={props.onZoomClick}
     >
@@ -307,17 +306,24 @@ function MakeFunctionButtons(props) {
         doc={"Turn property into a zoom function to enable a map feature to change with map's zoom level."}
       />
     </Button>
-    <Button
-      className="maputnik-make-data-function"
-      onClick={props.onDataClick}
-    >
-      <DocLabel
-        label={<MdInsertChart />}
-        cursorTargetStyle={{ cursor: 'pointer' }}
-        doc={"Turn property into a data function to enable a map feature to change according to data properties and the map's zoom level."}
-      />
-    </Button>
-  </div>
+
+    if (props.fieldSpec['property-function']) {
+      makeDataButton = <Button
+        className="maputnik-make-data-function"
+        onClick={props.onDataClick}
+      >
+        <DocLabel
+          label={<MdInsertChart />}
+          cursorTargetStyle={{ cursor: 'pointer' }}
+          doc={"Turn property into a data function to enable a map feature to change according to data properties and the map's zoom level."}
+        />
+      </Button>
+    }
+    return <div>{makeZoomButton}{makeDataButton}</div>
+  }
+  else {
+    return null
+  }
 }
 
 function DeleteStopButton(props) {
