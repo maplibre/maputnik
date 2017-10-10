@@ -47,7 +47,7 @@ export default class ZoomSpecProperty  extends React.Component {
     const lastStop = stops[stops.length - 1]
     if (typeof lastStop[0] === "object") {
       stops.push([
-        {zoom: lastStop[0].zoom, value: lastStop[0].value},
+        {zoom: lastStop[0].zoom + 1, value: lastStop[0].value},
         lastStop[1]
       ])
     }
@@ -89,10 +89,19 @@ export default class ZoomSpecProperty  extends React.Component {
     this.props.onChange(this.props.fieldName, zoomFunc)
   }
 
+  getDataFunctionTypes(functionType) {
+    if (functionType === "interpolated") {
+      return ["categorical", "interval", "exponential"]
+    }
+    else {
+      return ["categorical", "interval"]
+    }
+  }
+
   makeDataFunction() {
     const dataFunc = {
       property: "",
-      type: "exponential",
+      type: "categorical",
       stops: [
         [{zoom: 6, value: 0}, this.props.value],
         [{zoom: 10, value: 0}, this.props.value]
@@ -180,13 +189,13 @@ export default class ZoomSpecProperty  extends React.Component {
         <div className="maputnik-data-spec-property-group">
           <DocLabel
             label="Type"
-            doc={"Select a type of data scale (default is 'exponential')."}
+            doc={"Select a type of data scale (default is 'categorical')."}
           />
           <div className="maputnik-data-spec-property-input">
             <SelectInput
-              value={this.props.value.type || "exponential"}
+              value={this.props.value.type}
               onChange={propVal => this.changeDataProperty("type", propVal)}
-              options={["exponential", "interval", "categorical", "identity"]}
+              options={this.getDataFunctionTypes(this.props.fieldSpec.function)}
             />
           </div>
         </div>
@@ -307,7 +316,7 @@ function MakeFunctionButtons(props) {
       />
     </Button>
 
-    if (props.fieldSpec['property-function']) {
+    if (props.fieldSpec['property-function'] && ['piecewise-constant', 'interpolated'].indexOf(props.fieldSpec['function']) !== -1) {
       makeDataButton = <Button
         className="maputnik-make-data-function"
         onClick={props.onDataClick}
@@ -319,7 +328,7 @@ function MakeFunctionButtons(props) {
         />
       </Button>
     }
-    return <div>{makeZoomButton}{makeDataButton}</div>
+    return <div>{makeDataButton}{makeZoomButton}</div>
   }
   else {
     return null

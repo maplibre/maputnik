@@ -40,6 +40,7 @@
 
 .maputnik-doc-target:hover .maputnik-doc-popup {
   display: block;
+  text-align: left;
 }
 
 // BUTTON
@@ -111,6 +112,10 @@
     vertical-align: top;
     display: inline-block;
     width: 15%;
+  }
+
+  .maputnik-input-block-action > div {
+    text-align: right;
   }
 }
 
