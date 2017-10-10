@@ -10,7 +10,7 @@ class MetadataBlock extends React.Component {
   }
 
   render() {
-    return <InputBlock label={"Comments"}>
+    return <InputBlock label={"Comments"} doc={"Comments for the current layer. This is non-standard and not in the spec."}>
       <StringInput
         multi={true}
         value={this.props.value}
