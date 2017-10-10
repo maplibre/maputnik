@@ -27,7 +27,7 @@ function isDataField(value) {
 /** Supports displaying spec field for zoom function objects
  * https://www.mapbox.com/mapbox-gl-style-spec/#types-function-zoom-property
  */
-export default class ZoomSpecProperty  extends React.Component {
+export default class FunctionSpecProperty  extends React.Component {
   static propTypes = {
       onChange: React.PropTypes.func.isRequired,
       fieldName: React.PropTypes.string.isRequired,
