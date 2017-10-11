@@ -16,7 +16,7 @@ import MdFontDownload from 'react-icons/lib/md/font-download'
 import HelpIcon from 'react-icons/lib/md/help-outline'
 import InspectionIcon from 'react-icons/lib/md/find-in-page'
 
-import logoImage from '../img/maputnik.png'
+import logoImage from 'maputnik-design/logos/logo-color.svg'
 import SettingsModal from './modals/SettingsModal'
 import ExportModal from './modals/ExportModal'
 import SourcesModal from './modals/SourcesModal'
