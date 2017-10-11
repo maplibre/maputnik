@@ -34,6 +34,7 @@
     "lodash.throttle": "^4.1.1",
     "mapbox-gl": "^0.34.0",
     "mapbox-gl-inspect": "^1.2.3",
+    "maputnik-design": "github:maputnik/design",
     "mousetrap": "^1.6.0",
     "ol-mapbox-style": "1.0.1",
     "openlayers": "^3.19.1",
