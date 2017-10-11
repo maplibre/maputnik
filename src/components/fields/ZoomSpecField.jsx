@@ -13,6 +13,11 @@ import FunctionIcon from 'react-icons/lib/md/functions'
 
 import capitalize from 'lodash.capitalize'
 
+let REF = 0;
+function getUniqueRef() {
+  return "r"+REF++;
+}
+
 function isZoomField(value) {
   return typeof value === 'object' && value.stops
 }
@@ -33,6 +38,58 @@ export default class ZoomSpecProperty  extends React.Component {
       React.PropTypes.bool,
       React.PropTypes.array
     ]),
+  }
+
+  constructor() {
+    super()
+    this.state = {
+      refs: {}
+    }
+  }
+
+  /**
+   * We cache a reference to the zoom level to use as a key in the react dom.
+   *
+   * We update the reference when a stop changed its zoom level. This way input focus is maintained.
+   */
+  _setStopRefs(props) {
+    // This is initialsed below only if required to improved performance.
+    let newRefs;
+
+    if(props.value && props.value.stops) {
+      props.value.stops.forEach((val) => {
+        const zoomKey = val[0];
+
+        if(!this.state.refs.hasOwnProperty(zoomKey)) {
+          if(!newRefs) {
+            newRefs = {...this.state.refs};
+          }
+          newRefs[zoomKey] = getUniqueRef();
+        }
+      })
+    }
+
+    if(newRefs) {
+      this.setState({
+        refs: newRefs
+      })
+    }
+  }
+
+  _transferStopRef(oldZoomLevel, newZoomLevel) {
+    let refs = this.state.refs;
+    let oldRef = refs[oldZoomLevel];
+    delete refs[oldZoomLevel];
+
+    refs[newZoomLevel] = oldRef;
+    this.setState({
+      refs: refs
+    })
+  }
+
+
+  componentWillReceiveProps(nextProps) {
+    this._setStopRefs(nextProps);
   }
 
   addStop() {
@@ -74,12 +131,31 @@ export default class ZoomSpecProperty  extends React.Component {
     this.props.onChange(this.props.fieldName, zoomFunc)
   }
 
-  changeStop(changeIdx, zoomLevel, value) {
+  sortNumerically(a, b) {
+    a = parseFloat(a, 10);
+    b = parseFloat(b, 10);
+
+    if(a < b) {
+      return -1
+    }
+    else if(a > b) {
+      return 1
+    }
+    else {
+      return 0;
+    }
+  }
+
+  changeStop(changeIdx, newZoomLevel, value) {
     const stops = this.props.value.stops.slice(0)
-    stops[changeIdx] = [zoomLevel, value]
+    const oldZoomLevel = stops[changeIdx][0];
+
+    this._transferStopRef(oldZoomLevel, newZoomLevel);
+
+    stops[changeIdx] = [newZoomLevel, value]
     const changedValue = {
       ...this.props.value,
-      stops: stops,
+      stops: stops.sort((a, b) => this.sortNumerically(a[0], b[0]))
     }
     this.props.onChange(this.props.fieldName, changedValue)
   }
@@ -87,11 +163,12 @@ export default class ZoomSpecProperty  extends React.Component {
   renderZoomProperty() {
     const zoomFields = this.props.value.stops.map((stop, idx) => {
       const zoomLevel = stop[0]
+      const key  = this.state.refs[zoomLevel];
       const value = stop[1]
       const deleteStopBtn= <DeleteStopButton onClick={this.deleteStop.bind(this, idx)} />
 
       return <InputBlock
-        key={zoomLevel}
+        key={key}
         doc={this.props.fieldSpec.doc}
         label={labelFromFieldName(this.props.fieldName)}
         action={deleteStopBtn}
