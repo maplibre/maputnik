@@ -67,3 +67,68 @@
 .maputnik-zoom-spec-property .maputnik-input-block:not(:first-child) .maputnik-input-block-label {
   visibility: hidden;
 }
+
+// DATA FUNC
+.maputnik-make-data-function {
+  background-color: transparent;
+  display: inline-block;
+  padding-bottom: 0;
+  padding-top: 0;
+  vertical-align: middle;
+
+  @extend .maputnik-icon-button;
+}
+
+// DATA PROPERTY
+.maputnik-data-spec-block {
+  overflow: auto;
+}
+
+.maputnik-data-spec-property {
+  .maputnik-input-block-label {
+    width: 30%;
+  }
+
+  .maputnik-input-block-content {
+    width: 70%;
+  }
+
+  .maputnik-data-spec-property-group {
+    margin-bottom: 3%;
+
+    .maputnik-doc-wrapper {
+      width: 25%;
+      color: $color-lowgray;
+    }
+
+    .maputnik-doc-wrapper:hover {
+      color: inherit;
+    }
+
+    .maputnik-data-spec-property-input {
+      width: 75%;
+      display: inline-block;
+
+      .maputnik-string {
+        margin-bottom: 3%;
+      }
+    }
+  }
+}
+
+.maputnik-data-spec-block {
+  .maputnik-data-spec-property-stop-edit,
+  .maputnik-data-spec-property-stop-data {
+    display: inline-block;
+    margin-bottom: 3%;
+  }
+
+  .maputnik-data-spec-property-stop-edit {
+    width: 18%;
+    margin-right: 3%;
+  }
+
+  .maputnik-data-spec-property-stop-data {
+    width: 78%;
+  }
+}

@@ -20,8 +20,8 @@
   "license": "MIT",
   "homepage": "https://github.com/maputnik/editor#readme",
   "dependencies": {
-    "@mapbox/mapbox-gl-style-spec": "^9.0.0",
     "@mapbox/mapbox-gl-rtl-text": "^0.1.0",
+    "@mapbox/mapbox-gl-style-spec": "^9.0.1",
     "classnames": "^2.2.5",
     "codemirror": "^5.18.2",
     "color": "^1.0.3",
@@ -32,7 +32,7 @@
     "lodash.clonedeep": "^4.5.0",
     "lodash.isequal": "^4.4.0",
     "lodash.throttle": "^4.1.1",
-    "mapbox-gl": "^0.34.0",
+    "mapbox-gl": "^0.40.1",
     "mapbox-gl-inspect": "^1.2.3",
     "maputnik-design": "github:maputnik/design",
     "mousetrap": "^1.6.0",
