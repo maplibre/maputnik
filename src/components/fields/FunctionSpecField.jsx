@@ -130,26 +130,20 @@ export default class FunctionSpecProperty  extends React.Component {
     this.props.onChange(this.props.fieldName, this.props.value)
   }
 
-  getDataInput(value, dataLevel, zoomLevel) {
-    const dataProps = {
-      label: "Data value",
-      value: dataLevel,
-      onChange: newData => this.changeStop(idx, { zoom: zoomLevel, value: newData }, value)
-    }
-    if (this.props.value.type === "categorical") {
-      return <StringInput {...dataProps} />
-    }
-    else {
-      return <NumberInput {...dataProps} />
-    }
-  }
-
   renderDataProperty() {
     const dataFields = this.props.value.stops.map((stop, idx) => {
       const zoomLevel = stop[0].zoom
       const dataLevel = stop[0].value
       const value = stop[1]
       const deleteStopBtn = <DeleteStopButton onClick={this.deleteStop.bind(this, idx)} />
+
+      const dataProps = {
+        label: "Data value",
+        value: dataLevel,
+        onChange: newData => this.changeStop(idx, { zoom: zoomLevel, value: newData }, value)
+      }
+      const dataInput = this.props.value.type === "categorical" ? <StringInput {...dataProps} /> : <NumberInput {...dataProps} />
+
       return <InputBlock key={idx} action={deleteStopBtn}>
         <div className="maputnik-data-spec-property-stop-edit">
           <NumberInput
@@ -160,7 +154,7 @@ export default class FunctionSpecProperty  extends React.Component {
           />
         </div>
         <div className="maputnik-data-spec-property-stop-data">
-          {this.getDataInput(value, dataLevel, zoomLevel)}
+          {dataInput}
         </div>
         <div className="maputnik-data-spec-property-stop-value">
           <SpecField
