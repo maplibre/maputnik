@@ -121,7 +121,12 @@ export default class FunctionSpecProperty  extends React.Component {
   }
 
   changeDataProperty(propName, propVal) {
-    this.props.value[propName] = propVal
+    if (propVal) {
+      this.props.value[propName] = propVal
+    }
+    else {
+      delete this.props.value[propName]
+    }
     this.props.onChange(this.props.fieldName, this.props.value)
   }
 
@@ -209,7 +214,7 @@ export default class FunctionSpecProperty  extends React.Component {
               fieldName={this.props.fieldName}
               fieldSpec={this.props.fieldSpec}
               value={this.props.value.default}
-              onChange={propVal => this.changeDataProperty("default", propVal)}
+              onChange={(_, propVal) => this.changeDataProperty("default", propVal)}
             />
           </div>
         </div>
