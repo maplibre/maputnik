@@ -41,7 +41,7 @@
 }
 
 .maputnik-modal-scroller {
-  max-height: 90vh;
+  max-height: calc(100vh - 35px);
   overflow-y: auto;
 }
 
@@ -85,7 +85,6 @@
 }
 
 .maputnik-style-gallery-container {
-  overflow-y: scroll;
   flex-shrink: 1;
 }
 
