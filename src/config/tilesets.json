@@ -12,7 +12,7 @@
   "tilezen": {
     "type": "vector",
     "tiles": [
-      "http://tile.mapzen.com/mapzen/vector/v1/{layers}/{z}/{x}/{y}.pbf?api_key=mapzen-RVcyVL7"
+      "https://tile.mapzen.com/mapzen/vector/v1/all/{z}/{x}/{y}.mvt?api_key=mapzen-RVcyVL7"
     ],
     "minZoom": 0,
     "maxZoom": 15,
