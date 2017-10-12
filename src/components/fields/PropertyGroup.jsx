@@ -1,6 +1,6 @@
 import React from 'react'
 
-import ZoomSpecField from './ZoomSpecField'
+import FunctionSpecField from './FunctionSpecField'
 const iconProperties = ['background-pattern', 'fill-pattern', 'line-pattern', 'fill-extrusion-pattern', 'icon-image']
 
 /** Extract field spec by {@fieldName} from the {@layerType} in the
@@ -54,7 +54,7 @@ export default class PropertyGroup extends React.Component {
       const layout = this.props.layer.layout || {}
       const fieldValue = fieldName in paint ? paint[fieldName] : layout[fieldName]
 
-      return <ZoomSpecField
+      return <FunctionSpecField
         onChange={this.onPropertyChange.bind(this)}
         key={fieldName}
         fieldName={fieldName}

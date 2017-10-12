@@ -11,6 +11,29 @@ function tryParseInt(v) {
   return parseFloat(v)
 }
 
+function tryParseBool(v) {
+  const isString = (typeof(v) === "string");
+  if(!isString) {
+    return v;
+  }
+
+  if(v.match(/^\s*true\s*$/)) {
+    return true;
+  }
+  else if(v.match(/^\s*false\s*$/)) {
+    return false;
+  }
+  else {
+    return v;
+  }
+}
+
+function parseFilter(v) {
+  v = tryParseInt(v);
+  v = tryParseBool(v);
+  return v;
+}
+
 class SingleFilterEditor extends React.Component {
   static propTypes = {
     filter: React.PropTypes.array.isRequired,
@@ -23,7 +46,7 @@ class SingleFilterEditor extends React.Component {
   }
 
   onFilterPartChanged(filterOp, propertyName, filterArgs) {
-    let newFilter = [filterOp, propertyName, ...filterArgs.map(tryParseInt)]
+    let newFilter = [filterOp, propertyName, ...filterArgs.map(parseFilter)]
     if(filterOp === 'has' || filterOp === '!has') {
       newFilter = [filterOp, propertyName]
     } else if(filterArgs.length === 0) {
