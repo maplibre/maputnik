@@ -21,7 +21,9 @@ class Modal extends React.Component {
             <CloseIcon />
           </a>
         </header>
-        <div className="maputnik-modal-content">{this.props.children}</div>
+        <div className="maputnik-modal-scroller">
+          <div className="maputnik-modal-content">{this.props.children}</div>
+        </div>
       </div>
     </Overlay>
   }

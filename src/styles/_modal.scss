@@ -2,6 +2,7 @@
 .maputnik-modal {
   min-width: 350px;
   max-width: 600px;
+  overflow: hidden;
   background-color: $color-black;
   box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.3);
   z-index: 3;
@@ -39,9 +40,13 @@
   cursor: pointer;
 }
 
+.maputnik-modal-scroller {
+  max-height: calc(100vh - 35px);
+  overflow-y: auto;
+}
+
 .maputnik-modal-content {
   padding: $margin-3;
-  max-height: 90vh;
 
   @include flex-column;
 }
@@ -80,7 +85,6 @@
 }
 
 .maputnik-style-gallery-container {
-  overflow-y: scroll;
   flex-shrink: 1;
 }
 
