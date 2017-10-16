@@ -5,7 +5,7 @@
 A free and open visual editor for the [Mapbox GL styles](https://www.mapbox.com/mapbox-gl-style-spec/)
 targeted at developers and map designers.
 
-- :link: Design your maps online at **http://maputnik.com/editor/** (all in local storage)
+- :link: Design your maps online at **<https://maputnik.github.io/editor/>** (all in local storage)
 - :link: Use the [Maputnik CLI](https://github.com/maputnik/editor/wiki/Maputnik-CLI) for local style development
 
 Mapbox has built one of the best and most amazing OSS ecosystems. A key component to ensure its longevity and independance is an OSS map designer.
