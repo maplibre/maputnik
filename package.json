@@ -44,6 +44,7 @@
     "react-codemirror": "^0.3.0",
     "react-collapse": "^4.0.3",
     "react-color": "^2.10.0",
+    "react-copy-to-clipboard": "^5.0.1",
     "react-dom": "^15.4.0",
     "react-file-reader-input": "^1.1.0",
     "react-height": "^3.0.0",

@@ -9,8 +9,10 @@ import CheckboxInput from '../inputs/CheckboxInput'
 import Button from '../Button'
 import Modal from './Modal'
 import MdFileDownload from 'react-icons/lib/md/file-download'
+import TiClipboard from 'react-icons/lib/ti/clipboard'
 import style from '../../libs/style.js'
 import GitHub from 'github-api'
+import { CopyToClipboard } from 'react-copy-to-clipboard'
 
 
 class Gist extends React.Component {
@@ -136,11 +138,21 @@ class Gist extends React.Component {
       return <p>Saving...</p>
     } else if(gist) {
       const user = gist.user || 'anonymous';
-      return <p>
-        Latest saved gist:{' '}
-        {this.renderPreviewLink(this)}
-        <a target="_blank" href={"https://gist.github.com/"+user+"/"+gist.id}>Source</a>
-      </p>
+      const rawGistLink = "https://gist.githubusercontent.com/" + user + "/" + gist.id + "/raw/" + gist.history[0].version + "/style.json"
+      const maputnikStyleLink = "https://maputnik.github.io/editor/?style=" + rawGistLink
+      return <div className="maputnik-render-gist">
+        <p>
+          Latest saved gist:{' '}
+          {this.renderPreviewLink(this)}
+          <a target="_blank" href={"https://gist.github.com/" + user + "/" + gist.id}>Source</a>
+        </p>
+        <p>
+          <CopyToClipboard text={maputnikStyleLink}>
+            <span>Share this style: <Button><TiClipboard size={18} /></Button></span>
+          </CopyToClipboard>
+          <StringInput value={maputnikStyleLink} />
+        </p>
+      </div>
     }
   }
 
