@@ -32,7 +32,8 @@ function ToolbarLink(props) {
   return <a
     className={classnames('maputnik-toolbar-link', props.className)}
     href={props.href}
-    target={"blank"}
+    rel="noopener noreferrer"
+    target={"_blank"}
   >
     {props.children}
   </a>
