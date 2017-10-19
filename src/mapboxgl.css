@@ -25,6 +25,13 @@
   color: white;
 }
 
+.mapboxgl-ctrl-zoom {
+  color: rgb(138, 138, 138);
+  font-weight: bold;
+  padding: 4px 8px;
+  user-select: none;
+}
+
 .mapboxgl-ctrl-group {
   background: rgb(28, 31, 36);
 }
