@@ -49,6 +49,7 @@ class LayerListContainer extends React.Component {
     super(props)
     this.state = {
       collapsedGroups: {},
+      areAllGroupsExpanded: false,
       isOpen: {
         add: false,
       }
@@ -91,6 +92,31 @@ class LayerListContainer extends React.Component {
         ...this.state.isOpen,
         [modalName]: !this.state.isOpen[modalName]
       }
+    })
+  }
+
+  toggleLayers() {
+    let idx=0
+
+    let newGroups=[]
+
+    this.groupedLayers().forEach(layers => {
+      const groupPrefix = layerPrefix(layers[0].id)
+      const lookupKey = [groupPrefix, idx].join('-')
+      
+
+      if (layers.length > 1) {
+        newGroups[lookupKey] = this.state.areAllGroupsExpanded
+      }
+      
+      layers.forEach((layer) => {
+        idx += 1
+      })
+    });
+
+    this.setState({
+      collapsedGroups: newGroups,
+      areAllGroupsExpanded: !this.state.areAllGroupsExpanded
     })
   }
 
@@ -176,12 +202,25 @@ class LayerListContainer extends React.Component {
       />
       <header className="maputnik-layer-list-header">
         <span className="maputnik-layer-list-header-title">Layers</span>
+        <div className="maputnik-default-property">
+          <div className="maputnik-multibutton">
+            <a 
+              onClick={this.toggleLayers.bind(this)}
+              className="maputnik-button">
+              {this.state.areAllGroupsExpanded === true ? "Collapse" : "Expand"}
+            </a>
+          </div>
+        </div>
         <span className="maputnik-space" />
-        <Button
-          onClick={this.toggleModal.bind(this, 'add')}
-          className="maputnik-add-layer">
-      Add Layer
-      </Button>
+        <div className="maputnik-default-property">
+          <div className="maputnik-multibutton">
+            <a
+              onClick={this.toggleModal.bind(this, 'add')}
+              className="maputnik-button maputnik-button-selected">
+             Add Layer
+            </a>
+          </div>
+        </div>
       </header>
       <ul className="maputnik-layer-list-container">
         {listItems}
