@@ -112,7 +112,23 @@ export default class MapboxGlMap extends React.Component {
     const nav = new MapboxGl.NavigationControl();
     map.addControl(nav, 'top-right');
 
-    const inspect = new MapboxInspect({
+    map.on("style.load", () => {
+      const inspect = this.generateInspectControl()
+      map.addControl(inspect)
+
+      this.setState({ map, inspect })
+    })
+
+    map.on("data", e => {
+      if(e.dataType !== 'tile') return
+      this.props.onDataChange({
+        map: this.state.map
+      })
+    })
+  }
+
+  generateInspectControl = () => {
+    return new MapboxInspect({
       popup: new MapboxGl.Popup({
         closeOnClick: false
       }),
@@ -131,18 +147,6 @@ export default class MapboxGlMap extends React.Component {
           return renderLayerPopup(features)
         }
       }
-    })
-    map.addControl(inspect)
-
-    map.on("style.load", () => {
-      this.setState({ map, inspect });
-    })
-
-    map.on("data", e => {
-      if(e.dataType !== 'tile') return
-      this.props.onDataChange({
-        map: this.state.map
-      })
     })
   }
 
