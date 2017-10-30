@@ -113,6 +113,10 @@ export default class MapboxGlMap extends React.Component {
     map.addControl(nav, 'top-right');
 
     map.on("style.load", () => {
+      if(this.state.inspect) {
+        map.removeControl(this.state.inspect)
+      }
+
       const inspect = this.generateInspectControl()
       map.addControl(inspect)
 
