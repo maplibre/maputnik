@@ -1,4 +1,16 @@
-# Maputnik [![Build Status](https://travis-ci.org/maputnik/editor.svg?branch=master)](https://travis-ci.org/maputnik/editor) [![Windows Build Status](https://ci.appveyor.com/api/projects/status/anelbgv6jdb3qnh9/branch/master?svg=true)](https://ci.appveyor.com/project/lukasmartinelli/editor) [![License](https://img.shields.io/badge/license-MIT-blue.svg)](https://tldrlegal.com/license/mit-license)
+# Maputnik
+
+[![Build Status](https://travis-ci.org/maputnik/editor.svg?branch=master)][travis]
+[![Windows Build Status](https://ci.appveyor.com/api/projects/status/anelbgv6jdb3qnh9/branch/master?svg=true)][appveyor]
+[![Dependency Status](https://david-dm.org/maputnik/editor.svg)][dm-prod]
+[![Dev Dependency Status](https://david-dm.org/maputnik/editor/dev-status.svg)][dm-dev]
+[![License](https://img.shields.io/badge/license-MIT-blue.svg)][license]
+
+[travis]:      https://travis-ci.org/maputnik/editor
+[appveyor]:    https://ci.appveyor.com/project/lukasmartinelli/editor
+[dm-prod]:     https://david-dm.org/maputnik/editor
+[dm-dev]:      https://david-dm.org/maputnik/editor#info=devDependencies
+[license]:     https://tldrlegal.com/license/mit-license
 
 <img width="200" align="right" alt="Maputnik" src="src/img/maputnik.png" />
 
