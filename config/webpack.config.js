@@ -46,8 +46,7 @@ module.exports = {
       // Disabled polling by default as it causes lots of CPU usage and hence drains laptop batteries. To enable polling add WEBPACK_DEV_SERVER_POLLING to your environment
       // See <https://webpack.js.org/configuration/watch/#watchoptions-poll> for details
       poll: (!!process.env.WEBPACK_DEV_SERVER_POLLING ? true : false),
-      watch: false,
-      ignored: /node_modules/
+      watch: false
     }
   },
   plugins: [
