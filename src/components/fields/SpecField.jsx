@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import color from 'color'
 
 import ColorField from './ColorField'
@@ -36,17 +37,17 @@ function optionsLabelLength(options) {
  * to display @{value}. */
 export default class SpecField extends React.Component {
   static propTypes = {
-    onChange: React.PropTypes.func.isRequired,
-    fieldName: React.PropTypes.string.isRequired,
-    fieldSpec: React.PropTypes.object.isRequired,
-    value: React.PropTypes.oneOfType([
-      React.PropTypes.string,
-      React.PropTypes.number,
-      React.PropTypes.array,
-      React.PropTypes.bool
+    onChange: PropTypes.func.isRequired,
+    fieldName: PropTypes.string.isRequired,
+    fieldSpec: PropTypes.object.isRequired,
+    value: PropTypes.oneOfType([
+      PropTypes.string,
+      PropTypes.number,
+      PropTypes.array,
+      PropTypes.bool
     ]),
     /** Override the style of the field */
-    style: React.PropTypes.object,
+    style: PropTypes.object,
   }
 
   render() {

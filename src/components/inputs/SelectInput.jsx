@@ -1,11 +1,12 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 
 class SelectInput extends React.Component {
   static propTypes = {
-    value: React.PropTypes.string.isRequired,
-    options: React.PropTypes.array.isRequired,
-    style: React.PropTypes.object,
-    onChange: React.PropTypes.func.isRequired,
+    value: PropTypes.string.isRequired,
+    options: PropTypes.array.isRequired,
+    style: PropTypes.object,
+    onChange: PropTypes.func.isRequired,
   }
 
 

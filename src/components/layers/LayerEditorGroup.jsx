@@ -1,13 +1,14 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import Collapse from 'react-collapse'
 import Collapser from './Collapser'
 
 export default class LayerEditorGroup extends React.Component {
   static propTypes = {
-    title: React.PropTypes.string.isRequired,
-    isActive: React.PropTypes.bool.isRequired,
-    children: React.PropTypes.element.isRequired,
-    onActiveToggle: React.PropTypes.func.isRequired
+    title: PropTypes.string.isRequired,
+    isActive: PropTypes.bool.isRequired,
+    children: PropTypes.element.isRequired,
+    onActiveToggle: PropTypes.func.isRequired
   }
 
   render() {

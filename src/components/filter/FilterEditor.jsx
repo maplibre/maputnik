@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import { combiningFilterOps } from '../../libs/filterops.js'
 
 import styleSpec from '@mapbox/mapbox-gl-style-spec'
@@ -26,9 +27,9 @@ function hasNestedCombiningFilter(filter) {
 export default class CombiningFilterEditor extends React.Component {
   static propTypes = {
     /** Properties of the vector layer and the available fields */
-    properties: React.PropTypes.object,
-    filter: React.PropTypes.array,
-    onChange: React.PropTypes.func.isRequired,
+    properties: PropTypes.object,
+    filter: PropTypes.array,
+    onChange: PropTypes.func.isRequired,
   }
 
   // Convert filter to combining filter

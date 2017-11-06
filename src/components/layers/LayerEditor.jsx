@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 
 import JSONEditor from './JSONEditor'
 import FilterEditor from '../filter/FilterEditor'
@@ -43,12 +44,12 @@ function layoutGroups(layerType) {
 /** Layer editor supporting multiple types of layers. */
 export default class LayerEditor extends React.Component {
   static propTypes = {
-    layer: React.PropTypes.object.isRequired,
-    sources: React.PropTypes.object,
-    vectorLayers: React.PropTypes.object,
-    spec: React.PropTypes.object.isRequired,
-    onLayerChanged: React.PropTypes.func,
-    onLayerIdChange: React.PropTypes.func,
+    layer: PropTypes.object.isRequired,
+    sources: PropTypes.object,
+    vectorLayers: PropTypes.object,
+    spec: PropTypes.object.isRequired,
+    onLayerChanged: PropTypes.func,
+    onLayerIdChange: PropTypes.func,
   }
 
   static defaultProps = {
@@ -58,7 +59,7 @@ export default class LayerEditor extends React.Component {
   }
 
   static childContextTypes = {
-    reactIconBase: React.PropTypes.object
+    reactIconBase: PropTypes.object
   }
 
   constructor(props) {

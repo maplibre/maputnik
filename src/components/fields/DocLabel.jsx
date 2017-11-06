@@ -1,12 +1,13 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 
 export default class DocLabel extends React.Component {
   static propTypes = {
-    label: React.PropTypes.oneOfType([
-      React.PropTypes.object,
-      React.PropTypes.string
+    label: PropTypes.oneOfType([
+      PropTypes.object,
+      PropTypes.string
     ]).isRequired,
-    doc: React.PropTypes.string.isRequired,
+    doc: PropTypes.string.isRequired,
   }
 
   render() {

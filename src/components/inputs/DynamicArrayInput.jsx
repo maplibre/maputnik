@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import StringInput from './StringInput'
 import NumberInput from './NumberInput'
 import Button from '../Button'
@@ -8,10 +9,10 @@ import DocLabel from '../fields/DocLabel'
 
 class DynamicArrayInput extends React.Component {
   static propTypes = {
-    value: React.PropTypes.array,
-    type: React.PropTypes.string,
-    default: React.PropTypes.array,
-    onChange: React.PropTypes.func,
+    value: PropTypes.array,
+    type: PropTypes.string,
+    default: PropTypes.array,
+    onChange: PropTypes.func,
   }
 
   changeValue(idx, newValue) {

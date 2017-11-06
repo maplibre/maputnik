@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 
 import styleSpec from '@mapbox/mapbox-gl-style-spec'
 import InputBlock from '../inputs/InputBlock'
@@ -8,10 +9,10 @@ import Modal from './Modal'
 
 class SettingsModal extends React.Component {
   static propTypes = {
-    mapStyle: React.PropTypes.object.isRequired,
-    onStyleChanged: React.PropTypes.func.isRequired,
-    isOpen: React.PropTypes.bool.isRequired,
-    onOpenToggle: React.PropTypes.func.isRequired,
+    mapStyle: PropTypes.object.isRequired,
+    onStyleChanged: PropTypes.func.isRequired,
+    isOpen: PropTypes.bool.isRequired,
+    onOpenToggle: PropTypes.func.isRequired,
   }
 
   constructor(props) {

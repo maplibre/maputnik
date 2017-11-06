@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import styleSpec from '@mapbox/mapbox-gl-style-spec'
 import InputBlock from '../inputs/InputBlock'
 import StringInput from '../inputs/StringInput'
@@ -6,8 +7,8 @@ import NumberInput from '../inputs/NumberInput'
 
 class TileJSONSourceEditor extends React.Component {
   static propTypes = {
-    source: React.PropTypes.object.isRequired,
-    onChange: React.PropTypes.func.isRequired,
+    source: PropTypes.object.isRequired,
+    onChange: PropTypes.func.isRequired,
   }
 
   render() {
@@ -25,8 +26,8 @@ class TileJSONSourceEditor extends React.Component {
 
 class TileURLSourceEditor extends React.Component {
   static propTypes = {
-    source: React.PropTypes.object.isRequired,
-    onChange: React.PropTypes.func.isRequired,
+    source: PropTypes.object.isRequired,
+    onChange: PropTypes.func.isRequired,
   }
 
   changeTileUrl(idx, value) {
@@ -79,8 +80,8 @@ class TileURLSourceEditor extends React.Component {
 
 class GeoJSONSourceEditor extends React.Component {
   static propTypes = {
-    source: React.PropTypes.object.isRequired,
-    onChange: React.PropTypes.func.isRequired,
+    source: PropTypes.object.isRequired,
+    onChange: PropTypes.func.isRequired,
   }
 
   render() {
@@ -98,9 +99,9 @@ class GeoJSONSourceEditor extends React.Component {
 
 class SourceTypeEditor extends React.Component {
   static propTypes = {
-    mode: React.PropTypes.string.isRequired,
-    source: React.PropTypes.object.isRequired,
-    onChange: React.PropTypes.func.isRequired,
+    mode: PropTypes.string.isRequired,
+    source: PropTypes.object.isRequired,
+    onChange: PropTypes.func.isRequired,
   }
 
   render() {

@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import classnames from 'classnames'
 import cloneDeep from 'lodash.clonedeep'
 
@@ -12,11 +13,11 @@ import style from '../../libs/style.js'
 import {SortableContainer, SortableHandle, arrayMove} from 'react-sortable-hoc';
 
 const layerListPropTypes = {
-  layers: React.PropTypes.array.isRequired,
-  selectedLayerIndex: React.PropTypes.number.isRequired,
-  onLayersChange: React.PropTypes.func.isRequired,
-  onLayerSelect: React.PropTypes.func,
-  sources: React.PropTypes.object.isRequired,
+  layers: PropTypes.array.isRequired,
+  selectedLayerIndex: PropTypes.number.isRequired,
+  onLayersChange: PropTypes.func.isRequired,
+  onLayerSelect: PropTypes.func,
+  sources: PropTypes.object.isRequired,
 }
 
 function layerPrefix(name) {

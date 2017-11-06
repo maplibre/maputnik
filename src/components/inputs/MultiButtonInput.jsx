@@ -1,12 +1,13 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import classnames from 'classnames'
 import Button from '../Button'
 
 class MultiButtonInput extends React.Component {
   static propTypes = {
-    value: React.PropTypes.string.isRequired,
-    options: React.PropTypes.array.isRequired,
-    onChange: React.PropTypes.func.isRequired,
+    value: PropTypes.string.isRequired,
+    options: PropTypes.array.isRequired,
+    onChange: PropTypes.func.isRequired,
   }
 
   render() {

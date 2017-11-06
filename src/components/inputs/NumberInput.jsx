@@ -1,12 +1,13 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 
 class NumberInput extends React.Component {
   static propTypes = {
-    value: React.PropTypes.number,
-    default: React.PropTypes.number,
-    min: React.PropTypes.number,
-    max: React.PropTypes.number,
-    onChange: React.PropTypes.func,
+    value: PropTypes.number,
+    default: PropTypes.number,
+    min: PropTypes.number,
+    max: PropTypes.number,
+    onChange: PropTypes.func,
   }
 
   constructor(props) {

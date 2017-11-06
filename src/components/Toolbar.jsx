@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import FileReaderInput from 'react-file-reader-input'
 import classnames from 'classnames'
 
@@ -49,14 +50,14 @@ function ToolbarAction(props) {
 
 export default class Toolbar extends React.Component {
   static propTypes = {
-    mapStyle: React.PropTypes.object.isRequired,
-    inspectModeEnabled: React.PropTypes.bool.isRequired,
-    onStyleChanged: React.PropTypes.func.isRequired,
+    mapStyle: PropTypes.object.isRequired,
+    inspectModeEnabled: PropTypes.bool.isRequired,
+    onStyleChanged: PropTypes.func.isRequired,
     // A new style has been uploaded
-    onStyleOpen: React.PropTypes.func.isRequired,
+    onStyleOpen: PropTypes.func.isRequired,
     // A dict of source id's and the available source layers
-    sources: React.PropTypes.object.isRequired,
-    onInspectModeToggle: React.PropTypes.func.isRequired
+    sources: PropTypes.object.isRequired,
+    onInspectModeToggle: PropTypes.func.isRequired
   }
 
   constructor(props) {

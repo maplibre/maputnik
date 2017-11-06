@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 
 import Button from '../Button'
 import InputBlock from '../inputs/InputBlock'
@@ -13,13 +14,13 @@ import LayerSourceLayerBlock from '../layers/LayerSourceLayerBlock'
 
 class AddModal extends React.Component {
   static propTypes = {
-    layers: React.PropTypes.array.isRequired,
-    onLayersChange: React.PropTypes.func.isRequired,
-    isOpen: React.PropTypes.bool.isRequired,
-    onOpenToggle: React.PropTypes.func.isRequired,
+    layers: PropTypes.array.isRequired,
+    onLayersChange: PropTypes.func.isRequired,
+    isOpen: PropTypes.bool.isRequired,
+    onOpenToggle: PropTypes.func.isRequired,
 
     // A dict of source id's and the available source layers
-    sources: React.PropTypes.object.isRequired,
+    sources: PropTypes.object.isRequired,
   }
 
   addLayer() {

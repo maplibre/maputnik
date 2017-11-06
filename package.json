@@ -38,6 +38,7 @@
     "mousetrap": "^1.6.0",
     "ol-mapbox-style": "1.0.1",
     "openlayers": "^3.19.1",
+    "prop-types": "^15.6.0",
     "react": "^15.4.0",
     "react-addons-pure-render-mixin": "^15.4.0",
     "react-autocomplete": "^1.4.0",

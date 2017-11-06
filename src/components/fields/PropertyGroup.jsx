@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 
 import FunctionSpecField from './FunctionSpecField'
 const iconProperties = ['background-pattern', 'fill-pattern', 'line-pattern', 'fill-extrusion-pattern', 'icon-image']
@@ -35,10 +36,10 @@ function getGroupName(spec, layerType, fieldName) {
 
 export default class PropertyGroup extends React.Component {
   static propTypes = {
-    layer: React.PropTypes.object.isRequired,
-    groupFields: React.PropTypes.array.isRequired,
-    onChange: React.PropTypes.func.isRequired,
-    spec: React.PropTypes.object.isRequired,
+    layer: PropTypes.object.isRequired,
+    groupFields: PropTypes.array.isRequired,
+    onChange: PropTypes.func.isRequired,
+    spec: PropTypes.object.isRequired,
   }
 
   onPropertyChange(property, newValue) {

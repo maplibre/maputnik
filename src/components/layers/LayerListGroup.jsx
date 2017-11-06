@@ -1,11 +1,12 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import Collapser from './Collapser'
 
 export default class LayerListGroup extends React.Component {
   static propTypes = {
-    title: React.PropTypes.string.isRequired,
-    isActive: React.PropTypes.bool.isRequired,
-    onActiveToggle: React.PropTypes.func.isRequired
+    title: PropTypes.string.isRequired,
+    isActive: PropTypes.bool.isRequired,
+    onActiveToggle: PropTypes.func.isRequired
   }
 
   render() {

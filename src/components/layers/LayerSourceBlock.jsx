@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 
 import styleSpec from '@mapbox/mapbox-gl-style-spec'
 import InputBlock from '../inputs/InputBlock'
@@ -8,9 +9,9 @@ import AutocompleteInput from '../inputs/AutocompleteInput'
 
 class LayerSourceBlock extends React.Component {
   static propTypes = {
-    value: React.PropTypes.string,
-    onChange: React.PropTypes.func,
-    sourceIds: React.PropTypes.array,
+    value: PropTypes.string,
+    onChange: PropTypes.func,
+    sourceIds: PropTypes.array,
   }
 
   static defaultProps = {
