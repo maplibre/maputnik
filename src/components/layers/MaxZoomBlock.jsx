@@ -6,7 +6,7 @@ import NumberInput from '../inputs/NumberInput'
 
 class MaxZoomBlock extends React.Component {
   static propTypes = {
-    value: React.PropTypes.number.isRequired,
+    value: React.PropTypes.number,
     onChange: React.PropTypes.func.isRequired,
   }
 
