@@ -107,40 +107,44 @@ export default class Toolbar extends React.Component {
           isOpen={this.state.isOpen.sources}
           onOpenToggle={this.toggleModal.bind(this, 'sources')}
       />
-      <ToolbarLink
-        href={"https://github.com/maputnik/editor"}
-        className="maputnik-toolbar-logo"
-      >
-        <img src={logoImage} alt="Maputnik" />
-        <h1>Maputnik</h1>
-      </ToolbarLink>
-      <ToolbarAction onClick={this.toggleModal.bind(this, 'open')}>
-        <OpenIcon />
-        <IconText>Open</IconText>
-      </ToolbarAction>
-      <ToolbarAction onClick={this.toggleModal.bind(this, 'export')}>
-        <MdFileDownload />
-        <IconText>Export</IconText>
-      </ToolbarAction>
-      <ToolbarAction onClick={this.toggleModal.bind(this, 'sources')}>
-        <SourcesIcon />
-        <IconText>Sources</IconText>
-      </ToolbarAction>
-      <ToolbarAction onClick={this.toggleModal.bind(this, 'settings')}>
-        <SettingsIcon />
-        <IconText>Style Settings</IconText>
-      </ToolbarAction>
-      <ToolbarAction onClick={this.props.onInspectModeToggle}>
-        <InspectionIcon />
-        <IconText>
-          { this.props.inspectModeEnabled && <span>Map Mode</span> }
-          { !this.props.inspectModeEnabled && <span>Inspect Mode</span> }
-        </IconText>
-      </ToolbarAction>
-      <ToolbarLink href={"https://github.com/maputnik/editor/wiki"}>
-        <HelpIcon />
-        <IconText>Help</IconText>
-      </ToolbarLink>
+      <div className="maputnik-toolbar__inner">
+        <ToolbarLink
+          href={"https://github.com/maputnik/editor"}
+          className="maputnik-toolbar-logo"
+        >
+          <img src={logoImage} alt="Maputnik" />
+          <h1>Maputnik</h1>
+        </ToolbarLink>
+        <div className="maputnik-toolbar__actions">
+          <ToolbarAction onClick={this.toggleModal.bind(this, 'open')}>
+            <OpenIcon />
+            <IconText>Open</IconText>
+          </ToolbarAction>
+          <ToolbarAction onClick={this.toggleModal.bind(this, 'export')}>
+            <MdFileDownload />
+            <IconText>Export</IconText>
+          </ToolbarAction>
+          <ToolbarAction onClick={this.toggleModal.bind(this, 'sources')}>
+            <SourcesIcon />
+            <IconText>Sources</IconText>
+          </ToolbarAction>
+          <ToolbarAction onClick={this.toggleModal.bind(this, 'settings')}>
+            <SettingsIcon />
+            <IconText>Style Settings</IconText>
+          </ToolbarAction>
+          <ToolbarAction onClick={this.props.onInspectModeToggle}>
+            <InspectionIcon />
+            <IconText>
+              { this.props.inspectModeEnabled && <span>Map Mode</span> }
+              { !this.props.inspectModeEnabled && <span>Inspect Mode</span> }
+            </IconText>
+          </ToolbarAction>
+          <ToolbarLink href={"https://github.com/maputnik/editor/wiki"}>
+            <HelpIcon />
+            <IconText>Help</IconText>
+          </ToolbarLink>
+        </div>
+      </div>
     </div>
   }
 }
