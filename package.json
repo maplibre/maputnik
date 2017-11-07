@@ -125,6 +125,7 @@
     "wdio-spec-reporter": "^0.1.2",
     "webdriverio": "^4.8.0",
     "webpack": "^3.8.1",
+    "webpack-bundle-analyzer": "^2.9.0",
     "webpack-cleanup-plugin": "^0.5.1",
     "webpack-dev-server": "^2.9.4"
   }
