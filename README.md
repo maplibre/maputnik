@@ -49,7 +49,12 @@ npm install
 npm start
 ```
 
-Build a production package for distribution.
+The build process will watch for changes to the filesystem, rebuild and autoreload the editor. However note this from the webpack-dev-server docs
+
+> webpack uses the file system to get notified of file changes. In some cases this does not work. For example, when using Network File System (NFS). Vagrant also has a lot of problems with this. 
+Snippet from <https://webpack.js.org/configuration/dev-server/#devserver-watchoptions->
+
+To enable polling add `export WEBPACK_DEV_SERVER_POLLING=1` to your enviroment.
 
 ```
 npm run build
