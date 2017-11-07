@@ -1,6 +1,6 @@
 var webpack          = require("webpack");
 var WebpackDevServer = require("webpack-dev-server");
-var webpackConfig    = require("./webpack.config");
+var webpackConfig    = require("./webpack.production.config");
 var testConfig       = require("../test/config/specs");
 
 
@@ -18,7 +18,7 @@ exports.config = {
     browserName: 'firefox'
   }],
   sync: true,
-  logLevel: 'silent',
+  logLevel: 'verbose',
   coloredLogs: true,
   bail: 0,
   screenshotPath: './errorShots/',
@@ -36,9 +36,7 @@ exports.config = {
   },
   onPrepare: function (config, capabilities) {
     var compiler = webpack(webpackConfig);
-    server = new WebpackDevServer(compiler, {
-      stats: "minimal"
-    });
+    server = new WebpackDevServer(compiler, {});
     server.listen(testConfig.port);
   },
   onComplete: function(exitCode) {
