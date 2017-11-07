@@ -14,6 +14,7 @@ import DeleteIcon from 'react-icons/lib/md/delete'
 import FunctionIcon from 'react-icons/lib/md/functions'
 import MdInsertChart from 'react-icons/lib/md/insert-chart'
 
+import PropTypes from 'prop-types'
 import capitalize from 'lodash.capitalize'
 
 function isZoomField(value) {
@@ -29,16 +30,16 @@ function isDataField(value) {
  */
 export default class FunctionSpecProperty  extends React.Component {
   static propTypes = {
-      onChange: React.PropTypes.func.isRequired,
-      fieldName: React.PropTypes.string.isRequired,
-      fieldSpec: React.PropTypes.object.isRequired,
+      onChange: PropTypes.func.isRequired,
+      fieldName: PropTypes.string.isRequired,
+      fieldSpec: PropTypes.object.isRequired,
 
-      value: React.PropTypes.oneOfType([
-      React.PropTypes.object,
-      React.PropTypes.string,
-      React.PropTypes.number,
-      React.PropTypes.bool,
-      React.PropTypes.array
+      value: PropTypes.oneOfType([
+      PropTypes.object,
+      PropTypes.string,
+      PropTypes.number,
+      PropTypes.bool,
+      PropTypes.array
     ]),
   }
 

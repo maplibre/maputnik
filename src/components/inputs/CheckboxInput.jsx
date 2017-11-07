@@ -1,10 +1,11 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 
 class CheckboxInput extends React.Component {
   static propTypes = {
-    value: React.PropTypes.bool.isRequired,
-    style: React.PropTypes.object,
-    onChange: React.PropTypes.func,
+    value: PropTypes.bool.isRequired,
+    style: PropTypes.object,
+    onChange: PropTypes.func,
   }
 
   render() {

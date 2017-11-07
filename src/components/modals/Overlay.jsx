@@ -1,10 +1,11 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 
 
 class Overlay extends React.Component {
   static propTypes = {
-    isOpen: React.PropTypes.bool.isRequired,
-    children: React.PropTypes.element.isRequired
+    isOpen: PropTypes.bool.isRequired,
+    children: PropTypes.element.isRequired
   }
 
   render() {

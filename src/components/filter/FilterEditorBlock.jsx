@@ -1,11 +1,12 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import Button from '../Button'
 import DeleteIcon from 'react-icons/lib/md/delete'
 
 class FilterEditorBlock extends React.Component {
   static propTypes = {
-    onDelete: React.PropTypes.func.isRequired,
-    children: React.PropTypes.element.isRequired,
+    onDelete: PropTypes.func.isRequired,
+    children: PropTypes.element.isRequired,
   }
 
   render() {

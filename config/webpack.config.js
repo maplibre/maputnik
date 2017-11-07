@@ -23,7 +23,11 @@ module.exports = {
     extensions: ['', '.js', '.jsx']
   },
   module: {
-    loaders
+    noParse: [
+      /mapbox-gl\/dist\/mapbox-gl.js/,
+      /openlayers\/dist\/ol.js/
+    ],
+    loaders: loaders
   },
   node: {
     fs: "empty",

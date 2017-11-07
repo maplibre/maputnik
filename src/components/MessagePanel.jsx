@@ -1,9 +1,10 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 
 class MessagePanel extends React.Component {
   static propTypes = {
-    errors: React.PropTypes.array,
-    infos: React.PropTypes.array,
+    errors: PropTypes.array,
+    infos: PropTypes.array,
   }
 
   render() {

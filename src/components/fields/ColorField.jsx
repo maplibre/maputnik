@@ -1,6 +1,7 @@
 import React from 'react'
 import Color from 'color'
 import ChromePicker from 'react-color/lib/components/chrome/Chrome'
+import PropTypes from 'prop-types'
 
 function formatColor(color) {
   const rgb = color.rgb
@@ -10,12 +11,12 @@ function formatColor(color) {
 /*** Number fields with support for min, max and units and documentation*/
 class ColorField extends React.Component {
   static propTypes = {
-    onChange: React.PropTypes.func.isRequired,
-    name: React.PropTypes.string.isRequired,
-    value: React.PropTypes.string,
-    doc: React.PropTypes.string,
-    style: React.PropTypes.object,
-    default: React.PropTypes.string,
+    onChange: PropTypes.func.isRequired,
+    name: PropTypes.string.isRequired,
+    value: PropTypes.string,
+    doc: PropTypes.string,
+    style: PropTypes.object,
+    default: PropTypes.string,
   }
 
   constructor(props) {
@@ -37,7 +38,6 @@ class ColorField extends React.Component {
         left: pos.left + 196,
       }
     } else {
-      console.warn('Color field has no element to adjust position')
       return {
         top: 160,
         left: 555,

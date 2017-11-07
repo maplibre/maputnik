@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import { saveAs } from 'file-saver'
 
 import styleSpec from '@mapbox/mapbox-gl-style-spec'
@@ -17,8 +18,8 @@ import { CopyToClipboard } from 'react-copy-to-clipboard'
 
 class Gist extends React.Component {
   static propTypes = {
-    mapStyle: React.PropTypes.object.isRequired,
-    onStyleChanged: React.PropTypes.func.isRequired,
+    mapStyle: PropTypes.object.isRequired,
+    onStyleChanged: PropTypes.func.isRequired,
   }
 
   constructor(props) {
@@ -197,10 +198,10 @@ function stripAccessTokens(mapStyle) {
 
 class ExportModal extends React.Component {
   static propTypes = {
-    mapStyle: React.PropTypes.object.isRequired,
-    onStyleChanged: React.PropTypes.func.isRequired,
-    isOpen: React.PropTypes.bool.isRequired,
-    onOpenToggle: React.PropTypes.func.isRequired,
+    mapStyle: PropTypes.object.isRequired,
+    onStyleChanged: PropTypes.func.isRequired,
+    isOpen: PropTypes.bool.isRequired,
+    onOpenToggle: PropTypes.func.isRequired,
   }
 
   constructor(props) {

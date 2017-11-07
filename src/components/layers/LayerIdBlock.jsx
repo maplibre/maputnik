@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 
 import styleSpec from '@mapbox/mapbox-gl-style-spec'
 import InputBlock from '../inputs/InputBlock'
@@ -6,8 +7,8 @@ import StringInput from '../inputs/StringInput'
 
 class LayerIdBlock extends React.Component {
   static propTypes = {
-    value: React.PropTypes.string.isRequired,
-    onChange: React.PropTypes.func.isRequired,
+    value: PropTypes.string.isRequired,
+    onChange: PropTypes.func.isRequired,
   }
 
   render() {

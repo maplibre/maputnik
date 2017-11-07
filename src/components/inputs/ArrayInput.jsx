@@ -1,14 +1,15 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import StringInput from './StringInput'
 import NumberInput from './NumberInput'
 
 class ArrayInput extends React.Component {
   static propTypes = {
-    value: React.PropTypes.array,
-    type: React.PropTypes.string,
-    length: React.PropTypes.number,
-    default: React.PropTypes.array,
-    onChange: React.PropTypes.func,
+    value: PropTypes.array,
+    type: PropTypes.string,
+    length: PropTypes.number,
+    default: PropTypes.array,
+    onChange: PropTypes.func,
   }
 
   changeValue(idx, newValue) {

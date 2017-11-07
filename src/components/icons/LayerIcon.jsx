@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 
 import LineIcon from './LineIcon.jsx'
 import FillIcon from './FillIcon.jsx'
@@ -8,8 +9,8 @@ import CircleIcon from './CircleIcon.jsx'
 
 class LayerIcon extends React.Component {
   static propTypes = {
-    type: React.PropTypes.string.isRequired,
-    style: React.PropTypes.object,
+    type: PropTypes.string.isRequired,
+    style: PropTypes.object,
   }
 
   render() {

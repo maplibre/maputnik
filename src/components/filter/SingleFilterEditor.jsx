@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 
 import { otherFilterOps } from '../../libs/filterops.js'
 import StringInput from '../inputs/StringInput'
@@ -36,9 +37,9 @@ function parseFilter(v) {
 
 class SingleFilterEditor extends React.Component {
   static propTypes = {
-    filter: React.PropTypes.array.isRequired,
-    onChange: React.PropTypes.func.isRequired,
-    properties: React.PropTypes.object,
+    filter: PropTypes.array.isRequired,
+    onChange: PropTypes.func.isRequired,
+    properties: PropTypes.object,
   }
 
   static defaultProps = {

@@ -1,11 +1,12 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import classnames from 'classnames'
 
 class Button extends React.Component {
   static propTypes = {
-    onClick: React.PropTypes.func,
-    style: React.PropTypes.object,
-    className: React.PropTypes.string,
+    onClick: PropTypes.func,
+    style: PropTypes.object,
+    className: PropTypes.string,
   }
 
   render() {

@@ -1,13 +1,14 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import AutocompleteInput from './AutocompleteInput'
 
 
 class IconInput extends React.Component {
   static propTypes = {
-    value: React.PropTypes.array,
-    icons: React.PropTypes.array,
-    style: React.PropTypes.object,
-    onChange: React.PropTypes.func.isRequired,
+    value: PropTypes.array,
+    icons: PropTypes.array,
+    style: PropTypes.object,
+    onChange: PropTypes.func.isRequired,
   }
 
   static defaultProps = {

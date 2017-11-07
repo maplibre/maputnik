@@ -1,13 +1,14 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import classnames from 'classnames'
 import Autocomplete from 'react-autocomplete'
 
 
 class AutocompleteInput extends React.Component {
   static propTypes = {
-    value: React.PropTypes.string,
-    options: React.PropTypes.array,
-    onChange: React.PropTypes.func,
+    value: PropTypes.string,
+    options: PropTypes.array,
+    onChange: PropTypes.func,
   }
 
   static defaultProps = {

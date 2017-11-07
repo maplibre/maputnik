@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import style from '../../libs/style.js'
 import isEqual from 'lodash.isequal'
 import { loadJSON } from '../../libs/urlopen'
@@ -65,9 +66,9 @@ function sourceFromTileJSON(url, cb) {
 
 class OpenLayers3Map extends React.Component {
   static propTypes = {
-    onDataChange: React.PropTypes.func,
-    mapStyle: React.PropTypes.object.isRequired,
-    accessToken: React.PropTypes.string,
+    onDataChange: PropTypes.func,
+    mapStyle: PropTypes.object.isRequired,
+    accessToken: PropTypes.string,
   }
 
   static defaultProps = {

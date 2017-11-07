@@ -1,11 +1,12 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import CollapseOpenIcon from 'react-icons/lib/md/arrow-drop-down'
 import CollapseCloseIcon from 'react-icons/lib/md/arrow-drop-up'
 
 export default class Collapser extends React.Component {
   static propTypes = {
-    isCollapsed: React.PropTypes.bool.isRequired,
-    style: React.PropTypes.object,
+    isCollapsed: PropTypes.bool.isRequired,
+    style: PropTypes.object,
   }
 
   render() {
