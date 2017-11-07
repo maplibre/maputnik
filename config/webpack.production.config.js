@@ -43,9 +43,13 @@ module.exports = {
     chunkFilename: '[chunkhash].js'
   },
   resolve: {
-    extensions: ['', '.js', '.jsx']
+    extensions: ['.js', '.jsx']
   },
   module: {
+    noParse: [
+      /mapbox-gl\/dist\/mapbox-gl.js/,
+      /openlayers\/dist\/ol.js/
+    ],
     loaders
   },
   node: {
@@ -55,7 +59,7 @@ module.exports = {
   },
   plugins: [
     new webpack.NoErrorsPlugin(),
-    new webpack.optimize.CommonsChunkPlugin('vendor', '[chunkhash].vendor.js'),
+    new webpack.optimize.CommonsChunkPlugin({ name: 'vendor', filename: '[chunkhash].vendor.js' }),
     new WebpackCleanupPlugin(),
     new webpack.DefinePlugin({
       'process.env': {
@@ -68,7 +72,6 @@ module.exports = {
         screw_ie8: true,
       }
     }),
-    new webpack.optimize.OccurenceOrderPlugin(),
     new ExtractTextPlugin('[contenthash].css', {
       allChunks: true
     }),
