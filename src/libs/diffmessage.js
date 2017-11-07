@@ -1,4 +1,4 @@
-import styleSpec from '@mapbox/mapbox-gl-style-spec'
+import styleSpec from '@mapbox/mapbox-gl-style-spec/style-spec'
 
 export function diffMessages(beforeStyle, afterStyle) {
   const changes = styleSpec.diff(beforeStyle, afterStyle)

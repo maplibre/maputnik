@@ -2,7 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { saveAs } from 'file-saver'
 
-import styleSpec from '@mapbox/mapbox-gl-style-spec'
+import styleSpec from '@mapbox/mapbox-gl-style-spec/style-spec'
 import InputBlock from '../inputs/InputBlock'
 import StringInput from '../inputs/StringInput'
 import SelectInput from '../inputs/SelectInput'

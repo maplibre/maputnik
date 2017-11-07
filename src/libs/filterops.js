@@ -1,4 +1,4 @@
-import styleSpec from '@mapbox/mapbox-gl-style-spec'
+import styleSpec from '@mapbox/mapbox-gl-style-spec/style-spec'
 export const combiningFilterOps = ['all', 'any', 'none']
 export const setFilterOps = ['in', '!in']
 export const otherFilterOps = Object
