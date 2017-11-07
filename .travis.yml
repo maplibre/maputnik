@@ -3,8 +3,8 @@ addons:
   firefox: latest
 matrix:
   include:
-    - os: linux
-      node_js: "4"
+    # - os: linux
+    #   node_js: "4"
     - os: linux
       env: CXX=g++-4.8
       node_js: "5"
@@ -13,8 +13,8 @@ matrix:
     - os: linux
       env: CXX=g++-4.8
       node_js: "7"
-    - os: osx
-      node_js: "4"
+    # - os: osx
+    #   node_js: "4"
     - os: osx
       node_js: "5"
     - os: osx
