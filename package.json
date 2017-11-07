@@ -124,8 +124,8 @@
     "wdio-phantomjs-service": "^0.2.2",
     "wdio-spec-reporter": "^0.1.2",
     "webdriverio": "^4.8.0",
-    "webpack": "^1.14.0",
-    "webpack-cleanup-plugin": "^0.4.2",
-    "webpack-dev-server": "^1.16.2"
+    "webpack": "^3.8.1",
+    "webpack-cleanup-plugin": "^0.5.1",
+    "webpack-dev-server": "^2.9.4"
   }
 }
