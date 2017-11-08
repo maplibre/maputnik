@@ -67,9 +67,9 @@ export default class App extends React.Component {
     }
 
     this.layerWatcher = new LayerWatcher({
-      onSourcesChange: v => this.setState({ sources: v }),
       onVectorLayersChange: v => this.setState({ vectorLayers: v })
     })
+    this.fetchSources();
   }
 
   componentDidMount() {
@@ -126,6 +126,8 @@ export default class App extends React.Component {
         errors: errors.map(err => err.message)
       })
     }
+
+    this.fetchSources();
   }
 
   onUndo() {
@@ -182,11 +184,49 @@ export default class App extends React.Component {
     })
   }
 
+  fetchSources() {
+    const sourceList = {...this.state.sources};
+
+    for(let [key, val] of Object.entries(this.state.mapStyle.sources)) {
+      sourceList[key] = sourceList[key] || [];
+
+      if(val.type === "vector") {
+        const url = val.url;
+        fetch(url)
+          .then((response) => {
+            return response.json();
+          })
+          .then((json) => {
+            const sourceList = {...this.state.sources};
+            sourceList[key] = [];
+
+            for(let layer of json.vector_layers) {
+              sourceList[key].push(layer.id)
+            }
+
+            this.setState({
+              sources: sourceList
+            });
+          })
+          .catch((err) => {
+            console.error("Failed to process sources for '%s'", url, err);
+          })
+      }
+    }
+
+    // Note: Each source will be missing layers initially until the fetch is complete
+    this.setState({
+      sources: sourceList
+    })
+
+  }
+
   mapRenderer() {
     const mapProps = {
       mapStyle: style.replaceAccessToken(this.state.mapStyle),
       onDataChange: (e) => {
         this.layerWatcher.analyzeMap(e.map)
+        this.fetchSources();
       },
     }
 
