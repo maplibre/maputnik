@@ -67,7 +67,7 @@
     "plugins": [
       "react"
     ],
-    "extend": [
+    "extends": [
       "plugin:react/recommended"
     ],
     "env": {

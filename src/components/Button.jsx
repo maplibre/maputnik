@@ -7,6 +7,7 @@ class Button extends React.Component {
     onClick: PropTypes.func,
     style: PropTypes.object,
     className: PropTypes.string,
+    children: PropTypes.node
   }
 
   render() {
