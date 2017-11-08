@@ -306,6 +306,7 @@ class MakeFunctionButtons extends React.Component {
   static propTypes = {
     fieldSpec: PropTypes.object,
     onZoomClick: PropTypes.func,
+    onDataClick: PropTypes.func,
   }
 
   render() {
