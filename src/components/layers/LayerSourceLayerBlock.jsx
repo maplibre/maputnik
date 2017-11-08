@@ -22,6 +22,7 @@ class LayerSourceLayer extends React.Component {
   render() {
     return <InputBlock label={"Source Layer"} doc={styleSpec.latest.layer['source-layer'].doc}>
       <AutocompleteInput
+        keepMenuWithinWindowBounds={true}
         value={this.props.value}
         onChange={this.props.onChange}
         options={this.props.sourceLayerIds.map(l => [l, l])}

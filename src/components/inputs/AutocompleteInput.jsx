@@ -4,11 +4,68 @@ import classnames from 'classnames'
 import Autocomplete from 'react-autocomplete'
 
 
+class AutocompleteMenu extends React.Component {
+  static propTypes = {
+    keepMenuWithinWindowBounds: PropTypes.bool,
+    style: PropTypes.object,
+    children: PropTypes.none
+  }
+
+  calcMaxHeight() {
+    if(this.props.keepMenuWithinWindowBounds) {
+      const maxHeight = window.innerHeight - this.autocompleteMenuEl.getBoundingClientRect().top;
+      if(maxHeight != this.state.maxHeight) {
+        this.setState({
+          maxHeight: maxHeight
+        })
+      }
+    }
+  }
+  componentDidMount() {
+    this.calcMaxHeight();
+  }
+
+  componentDidUpdate() {
+    this.calcMaxHeight();
+  }
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      maxHeight: 90
+    };
+  }
+
+  static defaultProps = {
+    style: {}
+  }
+
+  render() {
+    const maxHeight = this.state.maxHeight - this.props.style.marginBottom || 0;
+    const style = {
+      maxHeight: maxHeight+"px"
+    }
+
+    return (
+      <div
+        ref={(el) => {
+          this.autocompleteMenuEl = el;
+        }}
+        className={"maputnik-autocomplete-menu"}
+        style={style}
+      >
+        {this.props.children}
+      </div>
+    )
+  }
+}
+
 class AutocompleteInput extends React.Component {
   static propTypes = {
     value: PropTypes.string,
     options: PropTypes.array,
     onChange: PropTypes.func,
+    keepMenuWithinWindowBounds: PropTypes.bool
   }
 
   static defaultProps = {
@@ -17,14 +74,16 @@ class AutocompleteInput extends React.Component {
   }
 
   render() {
-    const AutocompleteMenu = (items, value, style) => <div className={"maputnik-autocomplete-menu"}>{items}</div>
-
     return <Autocomplete
       wrapperProps={{
         className: "maputnik-autocomplete",
         style: null
       }}
-      renderMenu={AutocompleteMenu}
+      renderMenu={(items) => {
+        return <AutocompleteMenu keepMenuWithinWindowBounds={this.props.keepMenuWithinWindowBounds} style={{marginBottom: 4}}>
+          {items}
+        </AutocompleteMenu>
+      }}
       inputProps={{
         className: "maputnik-string"
       }}
