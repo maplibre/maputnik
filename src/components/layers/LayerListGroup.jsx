@@ -10,7 +10,7 @@ export default class LayerListGroup extends React.Component {
   }
 
   render() {
-    return <div className="maputnik-layer-list-group">
+    return <li className="maputnik-layer-list-group">
       <div className="maputnik-layer-list-group-header"
         onClick={e => this.props.onActiveToggle(!this.props.isActive)}
       >
@@ -21,6 +21,6 @@ export default class LayerListGroup extends React.Component {
           isCollapsed={this.props.isActive}
         />
       </div>
-    </div>
+    </li>
   }
 }
