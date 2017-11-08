@@ -1,11 +1,23 @@
-# Maputnik [![Build Status](https://travis-ci.org/maputnik/editor.svg?branch=master)](https://travis-ci.org/maputnik/editor) [![Windows Build Status](https://ci.appveyor.com/api/projects/status/anelbgv6jdb3qnh9/branch/master?svg=true)](https://ci.appveyor.com/project/lukasmartinelli/editor) [![License](https://img.shields.io/badge/license-MIT-blue.svg)](https://tldrlegal.com/license/mit-license)
+# Maputnik
+
+[![Build Status](https://travis-ci.org/maputnik/editor.svg?branch=master)][travis]
+[![Windows Build Status](https://ci.appveyor.com/api/projects/status/anelbgv6jdb3qnh9/branch/master?svg=true)][appveyor]
+[![Dependency Status](https://david-dm.org/maputnik/editor.svg)][dm-prod]
+[![Dev Dependency Status](https://david-dm.org/maputnik/editor/dev-status.svg)][dm-dev]
+[![License](https://img.shields.io/badge/license-MIT-blue.svg)][license]
+
+[travis]:      https://travis-ci.org/maputnik/editor
+[appveyor]:    https://ci.appveyor.com/project/lukasmartinelli/editor
+[dm-prod]:     https://david-dm.org/maputnik/editor
+[dm-dev]:      https://david-dm.org/maputnik/editor#info=devDependencies
+[license]:     https://tldrlegal.com/license/mit-license
 
 <img width="200" align="right" alt="Maputnik" src="src/img/maputnik.png" />
 
 A free and open visual editor for the [Mapbox GL styles](https://www.mapbox.com/mapbox-gl-style-spec/)
 targeted at developers and map designers.
 
-- :link: Design your maps online at **http://maputnik.com/editor/** (all in local storage)
+- :link: Design your maps online at **<https://maputnik.github.io/editor/>** (all in local storage)
 - :link: Use the [Maputnik CLI](https://github.com/maputnik/editor/wiki/Maputnik-CLI) for local style development
 
 Mapbox has built one of the best and most amazing OSS ecosystems. A key component to ensure its longevity and independance is an OSS map designer.
@@ -37,7 +49,12 @@ npm install
 npm start
 ```
 
-Build a production package for distribution.
+The build process will watch for changes to the filesystem, rebuild and autoreload the editor. However note this from the webpack-dev-server docs
+
+> webpack uses the file system to get notified of file changes. In some cases this does not work. For example, when using Network File System (NFS). Vagrant also has a lot of problems with this. 
+Snippet from <https://webpack.js.org/configuration/dev-server/#devserver-watchoptions->
+
+To enable polling add `export WEBPACK_DEV_SERVER_POLLING=1` to your enviroment.
 
 ```
 npm run build

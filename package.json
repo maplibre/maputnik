@@ -8,7 +8,7 @@
     "build": "webpack --config config/webpack.production.config.js --progress --profile --colors",
     "test": "wdio config/wdio.conf.js",
     "test-watch": "wdio config/wdio.conf.js --watch",
-    "start": "webpack-dev-server --progress --profile --colors --watch-poll --config config/webpack.config.js",
+    "start": "webpack-dev-server --progress --profile --colors --config config/webpack.config.js",
     "lint": "eslint --ext js --ext jsx {src,test}",
     "lint-styles": "stylelint 'src/styles/*.scss'"
   },

@@ -90,6 +90,16 @@ export default class FunctionSpecProperty  extends React.Component {
     this.props.onChange(this.props.fieldName, zoomFunc)
   }
 
+  getFieldFunctionType(fieldSpec) {
+    if (fieldSpec.function === "interpolated") {
+      return "exponential"
+    }
+    if (fieldSpec.type === "number") {
+      return "interval"
+    }
+    return "categorical"
+  }
+
   getDataFunctionTypes(functionType) {
     if (functionType === "interpolated") {
       return ["categorical", "interval", "exponential"]
@@ -132,6 +142,9 @@ export default class FunctionSpecProperty  extends React.Component {
   }
 
   renderDataProperty() {
+    if (typeof this.props.value.type === "undefined") {
+      this.props.value.type = this.getFieldFunctionType(this.props.fieldSpec)
+    }
     const dataFields = this.props.value.stops.map((stop, idx) => {
       const zoomLevel = stop[0].zoom
       const dataLevel = stop[0].value
