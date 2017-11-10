@@ -3,9 +3,20 @@ var WebpackDevServer = require("webpack-dev-server");
 var webpackConfig    = require("./webpack.config");
 var testConfig       = require("../test/config/specs");
 var isDocker         = require("is-docker");
+var path             = require("path");
 
 
 var server;
+
+var SCREENSHOT_PATH;
+if(process.env.CIRCLE_ARTIFACTS) {
+  SCREENSHOT_PATH = path.join(process.env.CIRCLE_ARTIFACTS, "screenshots");
+}
+else {
+  SCREENSHOT_PATH = path.join(__dirname, '..', 'screenshots');
+}
+
+console.log("isDocker", isDocker())
 
 exports.config = {
   specs: [
@@ -22,13 +33,12 @@ exports.config = {
   logLevel: 'verbose',
   coloredLogs: true,
   bail: 0,
-  screenshotPath: './errorShots/',
+  screenshotPath: SCREENSHOT_PATH,
   host: (isDocker() ? process.env.DOCKER_HOST : "127.0.0.1"),
   baseUrl: 'http://localhost',
   waitforTimeout: 10000,
   connectionRetryTimeout: 90000,
   connectionRetryCount: 3,
-  services: ['phantomjs'],
   framework: 'mocha',
   reporters: ['spec'],
   mochaOpts: {
