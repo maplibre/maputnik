@@ -181,6 +181,7 @@ export default class LayerEditor extends React.Component {
       return !(layerType === 'background' && group.type === 'source')
     }).map(group => {
       return <LayerEditorGroup
+        data-wd-key={group.title}
         key={group.title}
         title={group.title}
         isActive={this.state.editorGroups[group.title]}

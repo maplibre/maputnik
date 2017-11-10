@@ -12,7 +12,9 @@ class LayerTypeBlock extends React.Component {
   }
 
   render() {
-    return <InputBlock label={"Type"} doc={styleSpec.latest.layer.type.doc}>
+    return <InputBlock label={"Type"} doc={styleSpec.latest.layer.type.doc}
+      data-wd-key="layer-type"
+    >
       <SelectInput
         options={[
           ['background', 'Background'],

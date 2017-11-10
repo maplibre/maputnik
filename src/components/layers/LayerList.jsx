@@ -136,6 +136,7 @@ class LayerListContainer extends React.Component {
       const groupPrefix = layerPrefix(layers[0].id)
       if(layers.length > 1) {
         const grp = <LayerListGroup
+          data-wd-key={[groupPrefix, idx].join('-')}
           key={[groupPrefix, idx].join('-')}
           title={groupPrefix}
           isActive={!this.isCollapsed(groupPrefix, idx)}
@@ -180,6 +181,7 @@ class LayerListContainer extends React.Component {
         <span className="maputnik-space" />
         <Button
           onClick={this.toggleModal.bind(this, 'add')}
+          data-wd-key="layer-list:add-layer"
           className="maputnik-add-layer">
       Add Layer
       </Button>

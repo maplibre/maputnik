@@ -5,6 +5,7 @@ import Collapser from './Collapser'
 
 export default class LayerEditorGroup extends React.Component {
   static propTypes = {
+    "data-wd-key": PropTypes.string,
     title: PropTypes.string.isRequired,
     isActive: PropTypes.bool.isRequired,
     children: PropTypes.element.isRequired,
@@ -14,6 +15,7 @@ export default class LayerEditorGroup extends React.Component {
   render() {
     return <div>
       <div className="maputnik-layer-editor-group"
+        data-wd-key={"layer-editor-group:"+this.props["data-wd-key"]}
         onClick={e => this.props.onActiveToggle(!this.props.isActive)}
       >
         <span>{this.props.title}</span>

@@ -1,27 +1,29 @@
 var webpack          = require("webpack");
 var WebpackDevServer = require("webpack-dev-server");
-var webpackConfig    = require("./webpack.production.config");
+var webpackConfig    = require("./webpack.config");
 var testConfig       = require("../test/config/specs");
+var isDocker         = require("is-docker");
 
 
 var server;
 
 exports.config = {
   specs: [
-    './test/specs/**/*.js'
+    './test/functional/**/*.js'
   ],
   exclude: [
   ],
   maxInstances: 10,
   capabilities: [{
     maxInstances: 5,
-    browserName: 'firefox'
+    browserName: 'chrome'
   }],
   sync: true,
   logLevel: 'verbose',
   coloredLogs: true,
   bail: 0,
   screenshotPath: './errorShots/',
+  host: (isDocker() ? process.env.DOCKER_HOST : "127.0.0.1"),
   baseUrl: 'http://localhost',
   waitforTimeout: 10000,
   connectionRetryTimeout: 90000,
