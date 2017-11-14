@@ -3,6 +3,17 @@ var config    = require("../config/specs");
 var uuid      = require('uuid/v1');
 var geoServer = require("../geojson-server");
 var wd        = require("../wd-helper");
+var fs        = require("fs");
+var path      = require("path");
+
+
+var BUILD_PATH;
+if(process.env.CIRCLE_ARTIFACTS) {
+  BUILD_PATH = path.join(process.env.CIRCLE_ARTIFACTS);
+}
+else {
+  BUILD_PATH = path.join(__dirname, '..', '..', 'build');
+}
 
 
 describe('maputnik', function() {
@@ -84,6 +95,16 @@ describe('maputnik', function() {
     });
 
   });
+
+  after(function() {
+    // Code coverage
+    var results = browser.execute(function() {
+      return window.__coverage__;
+    });
+
+    var jsonStr = JSON.stringify(results.value, null, 2);
+    fs.writeFileSync(BUILD_PATH+"/coverage.json", jsonStr);
+  })
 
 
 });
