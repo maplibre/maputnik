@@ -55,3 +55,9 @@ exports.config = {
     server.close();
   }
 }
+
+if(!isDocker()) {
+  exports.config.services = [
+    'selenium-standalone'
+  ]
+}
