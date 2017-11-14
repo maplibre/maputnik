@@ -9,11 +9,13 @@ var path      = require("path");
 
 var BUILD_PATH;
 if(process.env.CIRCLE_ARTIFACTS) {
-  BUILD_PATH = path.join(process.env.CIRCLE_ARTIFACTS);
+  BUILD_PATH = path.join(process.env.CIRCLE_ARTIFACTS, "coverage");
 }
 else {
-  BUILD_PATH = path.join(__dirname, '..', '..', 'build');
+  BUILD_PATH = path.join(__dirname, '..', '..', 'build', "coverage");
 }
+
+mkdirp.sync(BUILD_PATH);
 
 
 describe('maputnik', function() {
