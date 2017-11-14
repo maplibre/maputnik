@@ -9,4 +9,4 @@ test:
     - rm google-chrome.deb
   post:
     - npm run build
-    - ./node_modules/.bin/istanbul report --dir build/coverage html lcov
+    - ./node_modules/.bin/istanbul report --dir $CIRCLE_ARTIFACTS/coverage html lcov
