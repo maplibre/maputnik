@@ -5,6 +5,7 @@ var geoServer = require("../geojson-server");
 var wd        = require("../wd-helper");
 var fs        = require("fs");
 var path      = require("path");
+var mkdirp    = require("mkdirp");
 
 
 var BUILD_PATH;
