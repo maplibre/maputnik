@@ -1,10 +1,10 @@
-
 var webpack = require('webpack');
 var path = require('path');
 var loaders = require('./webpack.loaders');
 var ExtractTextPlugin = require('extract-text-webpack-plugin');
 var HtmlWebpackPlugin = require('html-webpack-plugin');
 var WebpackCleanupPlugin = require('webpack-cleanup-plugin');
+var artifacts = require("../test/artifacts");
 
 var OUTPATH = artifacts.pathSync("/");
 
