@@ -41,6 +41,9 @@ exports.config = {
   connectionRetryCount: 3,
   framework: 'mocha',
   reporters: ['spec'],
+  phantomjsOpts: {
+    webdriverLogfile: 'phantomjs.log'
+  },
   mochaOpts: {
     ui: 'bdd',
     // Because we don't know how long the initial build will take...
