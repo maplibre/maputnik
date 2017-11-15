@@ -6,17 +6,9 @@ var wd        = require("../wd-helper");
 var fs        = require("fs");
 var path      = require("path");
 var mkdirp    = require("mkdirp");
+var artifacts = require("../artifacts");
 
-
-var BUILD_PATH;
-if(process.env.CIRCLE_ARTIFACTS) {
-  BUILD_PATH = path.join(process.env.CIRCLE_ARTIFACTS, "coverage");
-}
-else {
-  BUILD_PATH = path.join(__dirname, '..', '..', 'build', "coverage");
-}
-
-mkdirp.sync(BUILD_PATH);
+var BUILD_PATH = artifacts.pathSync("coverage");
 
 
 describe('maputnik', function() {

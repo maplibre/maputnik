@@ -6,13 +6,7 @@ var ExtractTextPlugin = require('extract-text-webpack-plugin');
 var HtmlWebpackPlugin = require('html-webpack-plugin');
 var WebpackCleanupPlugin = require('webpack-cleanup-plugin');
 
-var OUTPATH;
-if(process.env.CIRCLE_ARTIFACTS) {
-  OUTPATH = path.join(process.env.CIRCLE_ARTIFACTS, "build");
-}
-else {
-  OUTPATH = path.join(__dirname, '..', 'public');
-}
+var OUTPATH = artifacts.pathSync("/");
 
 module.exports = {
   entry: {

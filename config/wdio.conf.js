@@ -7,14 +7,7 @@ var path             = require("path");
 
 
 var server;
-
-var SCREENSHOT_PATH;
-if(process.env.CIRCLE_ARTIFACTS) {
-  SCREENSHOT_PATH = path.join(process.env.CIRCLE_ARTIFACTS, "screenshots");
-}
-else {
-  SCREENSHOT_PATH = path.join(__dirname, '..', 'screenshots');
-}
+var SCREENSHOT_PATH = artifacts.pathSync("screenshots");
 
 console.log("isDocker", isDocker())
 
