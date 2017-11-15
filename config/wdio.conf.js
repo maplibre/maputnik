@@ -4,6 +4,7 @@ var webpackConfig    = require("./webpack.config");
 var testConfig       = require("../test/config/specs");
 var isDocker         = require("is-docker");
 var path             = require("path");
+var artifacts        = require("../test/artifacts");
 
 
 var server;
