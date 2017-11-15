@@ -10,7 +10,7 @@ function genPath(subPath) {
     buildPath = path.join(process.env.CIRCLE_ARTIFACTS, subPath);
   }
   else {
-    buildPath = path.join(__dirname, '..', '..', 'build', subPath);
+    buildPath = path.join(__dirname, '..', 'build', subPath);
   }
 
   return buildPath;
