@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import InputBlock from '../inputs/InputBlock'
 import StringInput from '../inputs/StringInput'
 import LayerIcon from '../icons/LayerIcon'
@@ -14,6 +15,10 @@ function groupFeaturesBySourceLayer(features) {
 }
 
 class FeatureLayerPopup extends React.Component {
+  static propTypes = {
+    features: PropTypes.array
+  }
+
   render() {
     const sources = groupFeaturesBySourceLayer(this.props.features)
 

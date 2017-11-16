@@ -9,11 +9,11 @@ class MessagePanel extends React.Component {
 
   render() {
     const errors = this.props.errors.map((m, i) => {
-      return <p className="maputnik-message-panel-error">{m}</p>
+      return <p key={"error-"+i} className="maputnik-message-panel-error">{m}</p>
     })
 
     const infos = this.props.infos.map((m, i) => {
-      return <p key={i}>{m}</p>
+      return <p key={"info-"+i}>{m}</p>
     })
 
     return <div className="maputnik-message-panel">

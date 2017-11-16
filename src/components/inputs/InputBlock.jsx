@@ -14,6 +14,7 @@ class InputBlock extends React.Component {
     action: PropTypes.element,
     children: PropTypes.element.isRequired,
     style: PropTypes.object,
+    onChange: PropTypes.func,
   }
 
   onChange(e) {

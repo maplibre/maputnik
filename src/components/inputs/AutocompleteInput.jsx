@@ -17,7 +17,7 @@ class AutocompleteInput extends React.Component {
   }
 
   render() {
-    const AutocompleteMenu = (items, value, style) => <div className={"maputnik-autocomplete-menu"} children={items} />
+    const AutocompleteMenu = (items, value, style) => <div className={"maputnik-autocomplete-menu"}>{items}</div>
 
     return <Autocomplete
       wrapperProps={{

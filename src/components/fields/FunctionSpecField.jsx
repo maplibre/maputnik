@@ -315,49 +315,63 @@ export default class FunctionSpecProperty  extends React.Component {
   }
 }
 
-function MakeFunctionButtons(props) {
-  let makeZoomButton, makeDataButton
-  if (props.fieldSpec['zoom-function']) {
-    makeZoomButton = <Button
-      className="maputnik-make-zoom-function"
-      onClick={props.onZoomClick}
-    >
-      <DocLabel
-        label={<FunctionIcon />}
-        cursorTargetStyle={{ cursor: 'pointer' }}
-        doc={"Turn property into a zoom function to enable a map feature to change with map's zoom level."}
-      />
-    </Button>
+class MakeFunctionButtons extends React.Component {
+  static propTypes = {
+    fieldSpec: PropTypes.object,
+    onZoomClick: PropTypes.func,
+    onDataClick: PropTypes.func,
+  }
 
-    if (props.fieldSpec['property-function'] && ['piecewise-constant', 'interpolated'].indexOf(props.fieldSpec['function']) !== -1) {
-      makeDataButton = <Button
-        className="maputnik-make-data-function"
-        onClick={props.onDataClick}
+  render() {
+    let makeZoomButton, makeDataButton
+    if (this.props.fieldSpec['zoom-function']) {
+      makeZoomButton = <Button
+        className="maputnik-make-zoom-function"
+        onClick={this.props.onZoomClick}
       >
         <DocLabel
-          label={<MdInsertChart />}
+          label={<FunctionIcon />}
           cursorTargetStyle={{ cursor: 'pointer' }}
-          doc={"Turn property into a data function to enable a map feature to change according to data properties and the map's zoom level."}
+          doc={"Turn property into a zoom function to enable a map feature to change with map's zoom level."}
         />
       </Button>
+
+      if (this.props.fieldSpec['property-function'] && ['piecewise-constant', 'interpolated'].indexOf(this.props.fieldSpec['function']) !== -1) {
+        makeDataButton = <Button
+          className="maputnik-make-data-function"
+          onClick={this.props.onDataClick}
+        >
+          <DocLabel
+            label={<MdInsertChart />}
+            cursorTargetStyle={{ cursor: 'pointer' }}
+            doc={"Turn property into a data function to enable a map feature to change according to data properties and the map's zoom level."}
+          />
+        </Button>
+      }
+      return <div>{makeDataButton}{makeZoomButton}</div>
     }
-    return <div>{makeDataButton}{makeZoomButton}</div>
-  }
-  else {
-    return null
+    else {
+      return null
+    }
   }
 }
 
-function DeleteStopButton(props) {
-  return <Button
-    className="maputnik-delete-stop"
-    onClick={props.onClick}
-  >
-    <DocLabel
-      label={<DeleteIcon />}
-      doc={"Remove zoom level stop."}
-    />
-  </Button>
+class DeleteStopButton extends React.Component {
+  static propTypes = {
+    onClick: PropTypes.func,
+  }
+
+  render() {
+    return <Button
+      className="maputnik-delete-stop"
+      onClick={this.props.onClick}
+    >
+      <DocLabel
+        label={<DeleteIcon />}
+        doc={"Remove zoom level stop."}
+      />
+    </Button>
+  }
 }
 
 function labelFromFieldName(fieldName) {

@@ -13,6 +13,7 @@ class DynamicArrayInput extends React.Component {
     type: PropTypes.string,
     default: PropTypes.array,
     onChange: PropTypes.func,
+    style: PropTypes.object,
   }
 
   changeValue(idx, newValue) {
@@ -84,10 +85,15 @@ class DynamicArrayInput extends React.Component {
   }
 }
 
-function DeleteValueButton(props) {
+class DeleteValueButton extends React.Component {
+  static propTypes = {
+    onClick: PropTypes.func,
+  }
+
+  render() {
     return <Button
       className="maputnik-delete-stop"
-      onClick={props.onClick}
+      onClick={this.props.onClick}
     >
       <DocLabel
         label={<DeleteIcon />}
@@ -95,5 +101,6 @@ function DeleteValueButton(props) {
       />
     </Button>
   }
+}
 
 export default DynamicArrayInput

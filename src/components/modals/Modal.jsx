@@ -8,6 +8,7 @@ class Modal extends React.Component {
     isOpen: PropTypes.bool.isRequired,
     title: PropTypes.string.isRequired,
     onOpenToggle: PropTypes.func.isRequired,
+    children: PropTypes.node,
   }
 
   render() {

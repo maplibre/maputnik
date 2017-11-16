@@ -1,6 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import styleSpec from '@mapbox/mapbox-gl-style-spec'
+import styleSpec from '@mapbox/mapbox-gl-style-spec/style-spec'
 import InputBlock from '../inputs/InputBlock'
 import StringInput from '../inputs/StringInput'
 import NumberInput from '../inputs/NumberInput'
@@ -12,7 +12,7 @@ class TileJSONSourceEditor extends React.Component {
   }
 
   render() {
-    return <InputBlock label={"TileJSON URL"} doc={styleSpec.latest.source_tile.url.doc}>
+    return <InputBlock label={"TileJSON URL"} doc={styleSpec.latest.source_vector.url.doc}>
       <StringInput
         value={this.props.source.url}
         onChange={url => this.props.onChange({
@@ -43,7 +43,7 @@ class TileURLSourceEditor extends React.Component {
     const prefix = ['1st', '2nd', '3rd', '4th', '5th', '6th', '7th']
     const tiles = this.props.source.tiles || []
     return tiles.map((tileUrl, tileIndex) => {
-      return <InputBlock key={tileIndex} label={prefix[tileIndex] + " Tile URL"} doc={styleSpec.latest.source_tile.tiles.doc}>
+      return <InputBlock key={tileIndex} label={prefix[tileIndex] + " Tile URL"} doc={styleSpec.latest.source_vector.tiles.doc}>
         <StringInput
           value={tileUrl}
           onChange={this.changeTileUrl.bind(this, tileIndex)}
@@ -55,7 +55,7 @@ class TileURLSourceEditor extends React.Component {
   render() {
     return <div>
       {this.renderTileUrls()}
-      <InputBlock label={"Min Zoom"} doc={styleSpec.latest.source_tile.minzoom.doc}>
+      <InputBlock label={"Min Zoom"} doc={styleSpec.latest.source_vector.minzoom.doc}>
         <NumberInput
           value={this.props.source.minzoom || 0}
           onChange={minzoom => this.props.onChange({
@@ -64,7 +64,7 @@ class TileURLSourceEditor extends React.Component {
           })}
         />
       </InputBlock>
-      <InputBlock label={"Max Zoom"} doc={styleSpec.latest.source_tile.maxzoom.doc}>
+      <InputBlock label={"Max Zoom"} doc={styleSpec.latest.source_vector.maxzoom.doc}>
         <NumberInput
           value={this.props.source.maxzoom || 22}
           onChange={maxzoom => this.props.onChange({

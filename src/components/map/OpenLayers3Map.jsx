@@ -69,6 +69,7 @@ class OpenLayers3Map extends React.Component {
     onDataChange: PropTypes.func,
     mapStyle: PropTypes.object.isRequired,
     accessToken: PropTypes.string,
+    style: PropTypes.object,
   }
 
   static defaultProps = {
