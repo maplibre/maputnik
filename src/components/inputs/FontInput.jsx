@@ -5,6 +5,7 @@ import AutocompleteInput from './AutocompleteInput'
 class FontInput extends React.Component {
   static propTypes = {
     value: PropTypes.array.isRequired,
+    default: PropTypes.array,
     fonts: PropTypes.array,
     style: PropTypes.object,
     onChange: PropTypes.func.isRequired,

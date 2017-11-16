@@ -77,7 +77,7 @@ class OpenModal extends React.Component {
   }
 
   onOpenUrl() {
-    const url = this.refs.styleUrl.value;
+    const url = this.styleUrlElement.value;
     this.onStyleSelect(url);
   }
 
@@ -151,7 +151,7 @@ class OpenModal extends React.Component {
         <p>
           Load from a URL. Note that the URL must have <a href="https://enable-cors.org" target="_blank" rel="noopener noreferrer">CORS enabled</a>.
         </p>
-        <input type="text" ref="styleUrl" className="maputnik-input" placeholder="Enter URL..."/>
+        <input type="text" ref={(input) => this.styleUrlElement = input} className="maputnik-input" placeholder="Enter URL..."/>
         <div>
           <Button className="maputnik-big-button" onClick={this.onOpenUrl.bind(this)}>Open URL</Button>
         </div>

@@ -25,28 +25,49 @@ import OpenModal from './modals/OpenModal'
 
 import style from '../libs/style'
 
-function IconText(props) {
-  return <span className="maputnik-icon-text">{props.children}</span>
+class IconText extends React.Component {
+  static propTypes = {
+    children: PropTypes.node,
+  }
+
+  render() {
+    return <span className="maputnik-icon-text">{this.props.children}</span>
+  }
 }
 
-function ToolbarLink(props) {
-  return <a
-    className={classnames('maputnik-toolbar-link', props.className)}
-    href={props.href}
-    rel="noopener noreferrer"
-    target="_blank"
-  >
-    {props.children}
-  </a>
+class ToolbarLink extends React.Component {
+  static propTypes = {
+    className: PropTypes.string,
+    children: PropTypes.node,
+    href: PropTypes.string,
+  }
+
+  render() {
+    return <a
+      className={classnames('maputnik-toolbar-link', this.props.className)}
+      href={this.props.href}
+      rel="noopener noreferrer"
+      target="_blank"
+    >
+      {this.props.children}
+    </a>
+  }
 }
 
-function ToolbarAction(props) {
-  return <a
-    className='maputnik-toolbar-action'
-    onClick={props.onClick}
-  >
-    {props.children}
-  </a>
+class ToolbarAction extends React.Component {
+  static propTypes = {
+    children: PropTypes.node,
+    onClick: PropTypes.func
+  }
+
+  render() {
+    return <a
+      className='maputnik-toolbar-action'
+      onClick={this.props.onClick}
+    >
+      {this.props.children}
+    </a>
+  }
 }
 
 export default class Toolbar extends React.Component {
@@ -58,7 +79,8 @@ export default class Toolbar extends React.Component {
     onStyleOpen: PropTypes.func.isRequired,
     // A dict of source id's and the available source layers
     sources: PropTypes.object.isRequired,
-    onInspectModeToggle: PropTypes.func.isRequired
+    onInspectModeToggle: PropTypes.func.isRequired,
+    children: PropTypes.node
   }
 
   constructor(props) {

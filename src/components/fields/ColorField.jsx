@@ -30,7 +30,7 @@ class ColorField extends React.Component {
   //but I am too stupid to get it to work together with fixed position
   //and scrollbars so I have to fallback to JavaScript
   calcPickerOffset() {
-    const elem = this.refs.colorInput
+    const elem = this.colorInput
     if(elem) {
       const pos = elem.getBoundingClientRect()
       return {
@@ -99,7 +99,7 @@ class ColorField extends React.Component {
       <div className="maputnik-color-swatch" style={swatchStyle}></div>
       <input
         className="maputnik-color"
-        ref="colorInput"
+        ref={(input) => this.colorInput = input}
         onClick={this.togglePicker.bind(this)}
         style={this.props.style}
         name={this.props.name}

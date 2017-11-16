@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import InputBlock from '../inputs/InputBlock'
 import StringInput from '../inputs/StringInput'
 
@@ -31,6 +32,9 @@ function renderFeature(feature) {
 }
 
 class FeaturePropertyPopup extends React.Component {
+  static propTypes = {
+    features: PropTypes.array
+  }
 
   render() {
     const features = this.props.features

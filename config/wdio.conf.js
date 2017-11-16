@@ -1,6 +1,6 @@
 var webpack          = require("webpack");
 var WebpackDevServer = require("webpack-dev-server");
-var webpackConfig    = require("./webpack.config");
+var webpackConfig    = require("./webpack.production.config");
 var testConfig       = require("../test/config/specs");
 
 
@@ -18,7 +18,7 @@ exports.config = {
     browserName: 'firefox'
   }],
   sync: true,
-  logLevel: 'silent',
+  logLevel: 'verbose',
   coloredLogs: true,
   bail: 0,
   screenshotPath: './errorShots/',
@@ -29,6 +29,9 @@ exports.config = {
   services: ['phantomjs'],
   framework: 'mocha',
   reporters: ['spec'],
+  phantomjsOpts: {
+    webdriverLogfile: 'phantomjs.log'
+  },
   mochaOpts: {
     ui: 'bdd',
     // Because we don't know how long the initial build will take...
@@ -36,9 +39,7 @@ exports.config = {
   },
   onPrepare: function (config, capabilities) {
     var compiler = webpack(webpackConfig);
-    server = new WebpackDevServer(compiler, {
-      stats: "minimal"
-    });
+    server = new WebpackDevServer(compiler, {});
     server.listen(testConfig.port);
   },
   onComplete: function(exitCode) {
