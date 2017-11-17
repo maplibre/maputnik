@@ -1,24 +1,10 @@
 import React from 'react'
-import Color from 'color'
-
-import Button from '../Button'
-import SpecField from './SpecField'
-import NumberInput from '../inputs/NumberInput'
-import StringInput from '../inputs/StringInput'
-import SelectInput from '../inputs/SelectInput'
-import DocLabel from './DocLabel'
-import InputBlock from '../inputs/InputBlock'
-
-import AddIcon from 'react-icons/lib/md/add-circle-outline'
-import DeleteIcon from 'react-icons/lib/md/delete'
-import FunctionIcon from 'react-icons/lib/md/functions'
-import MdInsertChart from 'react-icons/lib/md/insert-chart'
-
 import PropTypes from 'prop-types'
-import capitalize from 'lodash.capitalize'
 
-import docUid from '../../libs/document-uid'
-import sortNumerically from '../../libs/sort-numerically'
+import SpecProperty from './_SpecProperty'
+import DataProperty from './_DataProperty'
+import ZoomProperty from './_ZoomProperty'
+
 
 function isZoomField(value) {
   return typeof value === 'object' && value.stops && typeof value.property === 'undefined'
@@ -44,70 +30,6 @@ export default class FunctionSpecProperty  extends React.Component {
       PropTypes.bool,
       PropTypes.array
     ]),
-  }
-
-	constructor() {
-		super()
-		this.state = {
-			refs: {}
-		}
-	}
-
-	/**
-	 * We cache a reference for each stop by its index.
-   *
-   * When the stops are reordered the references are also updated (see this.orderStops) this allows React to use the same key for the element and keep keyboard focus.
-	 */
-	setStopRefs(props) {
-		// This is initialsed below only if required to improved performance.
-		let newRefs;
-
-		if(props.value && props.value.stops) {
-			props.value.stops.forEach((val, idx) => {
-				if(!this.state.refs.hasOwnProperty(idx)) {
-					if(!newRefs) {
-						newRefs = {...this.state.refs};
-					}
-					newRefs[idx] = docUid("stop-");
-				}
-			})
-		}
-
-		if(newRefs) {
-			this.setState({
-				refs: newRefs
-			})
-		}
-	}
-
-	componentWillReceiveProps(nextProps) {
-		this.setStopRefs(nextProps);
-	}
-
-  // Order the stops altering the refs to reflect their new position.
-  orderStopsByZoom(stops) {
-    const mappedWithRef = stops
-      .map((stop, idx) => {
-        return {
-          ref: this.state.refs[idx],
-          data: stop
-        }
-      })
-      // Sort by zoom
-      .sort((a, b) => sortNumerically(a.data[0], b.data[0]));
-
-    // Fetch the new position of the stops
-    const newRefs = {};
-    mappedWithRef
-      .forEach((stop, idx) =>{
-        newRefs[idx] = stop.ref;
-      })
-
-    this.setState({
-      refs: newRefs
-    });
-
-    return mappedWithRef.map((item) => item.data);
   }
 
   addStop() {
@@ -157,25 +79,6 @@ export default class FunctionSpecProperty  extends React.Component {
     this.props.onChange(this.props.fieldName, zoomFunc)
   }
 
-  getFieldFunctionType(fieldSpec) {
-    if (fieldSpec.function === "interpolated") {
-      return "exponential"
-    }
-    if (fieldSpec.type === "number") {
-      return "interval"
-    }
-    return "categorical"
-  }
-
-  getDataFunctionTypes(functionType) {
-    if (functionType === "interpolated") {
-      return ["categorical", "interval", "exponential"]
-    }
-    else {
-      return ["categorical", "interval"]
-    }
-  }
-
   makeDataFunction() {
     const dataFunc = {
       property: "",
@@ -188,264 +91,50 @@ export default class FunctionSpecProperty  extends React.Component {
     this.props.onChange(this.props.fieldName, dataFunc)
   }
 
-  changeStop(changeIdx, stopData, value) {
-    const stops = this.props.value.stops.slice(0);
-    stops[changeIdx] = [stopData, value];
-
-    const orderedStops = this.orderStopsByZoom(stops);
-
-    const changedValue = {
-      ...this.props.value,
-      stops: orderedStops
-    }
-    this.props.onChange(this.props.fieldName, changedValue)
-  }
-
-  changeDataProperty(propName, propVal) {
-    if (propVal) {
-      this.props.value[propName] = propVal
-    }
-    else {
-      delete this.props.value[propName]
-    }
-    this.props.onChange(this.props.fieldName, this.props.value)
-  }
-
-  renderDataProperty() {
-    if (typeof this.props.value.type === "undefined") {
-      this.props.value.type = this.getFieldFunctionType(this.props.fieldSpec)
-    }
-    const dataFields = this.props.value.stops.map((stop, idx) => {
-      const zoomLevel = stop[0].zoom
-      const dataLevel = stop[0].value
-      const value = stop[1]
-      const deleteStopBtn = <DeleteStopButton onClick={this.deleteStop.bind(this, idx)} />
-
-      const dataProps = {
-        label: "Data value",
-        value: dataLevel,
-        onChange: newData => this.changeStop(idx, { zoom: zoomLevel, value: newData }, value)
-      }
-      const dataInput = this.props.value.type === "categorical" ? <StringInput {...dataProps} /> : <NumberInput {...dataProps} />
-
-      return <InputBlock key={idx} action={deleteStopBtn}>
-        <div className="maputnik-data-spec-property-stop-edit">
-          <NumberInput
-            value={zoomLevel}
-            onChange={newZoom => this.changeStop(idx, {zoom: newZoom, value: dataLevel}, value)}
-            min={0}
-            max={22}
-          />
-        </div>
-        <div className="maputnik-data-spec-property-stop-data">
-          {dataInput}
-        </div>
-        <div className="maputnik-data-spec-property-stop-value">
-          <SpecField
-            fieldName={this.props.fieldName}
-            fieldSpec={this.props.fieldSpec}
-            value={value}
-            onChange={(_, newValue) => this.changeStop(idx, {zoom: zoomLevel, value: dataLevel}, newValue)}
-          />
-        </div>
-      </InputBlock>
-    })
-
-    return <div className="maputnik-data-spec-block">
-    <div className="maputnik-data-spec-property">
-      <InputBlock
-        doc={this.props.fieldSpec.doc}
-        label={labelFromFieldName(this.props.fieldName)}
-      >
-        <div className="maputnik-data-spec-property-group">
-          <DocLabel
-            label="Property"
-            doc={"Input a data property to base styles off of."}
-          />
-          <div className="maputnik-data-spec-property-input">
-            <StringInput
-              value={this.props.value.property}
-              onChange={propVal => this.changeDataProperty("property", propVal)}
-            />
-          </div>
-        </div>
-        <div className="maputnik-data-spec-property-group">
-          <DocLabel
-            label="Type"
-            doc={"Select a type of data scale (default is 'categorical')."}
-          />
-          <div className="maputnik-data-spec-property-input">
-            <SelectInput
-              value={this.props.value.type}
-              onChange={propVal => this.changeDataProperty("type", propVal)}
-              options={this.getDataFunctionTypes(this.props.fieldSpec.function)}
-            />
-          </div>
-        </div>
-        <div className="maputnik-data-spec-property-group">
-          <DocLabel
-            label="Default"
-            doc={"Input a default value for data if not covered by the scales."}
-          />
-          <div className="maputnik-data-spec-property-input">
-            <SpecField
-              fieldName={this.props.fieldName}
-              fieldSpec={this.props.fieldSpec}
-              value={this.props.value.default}
-              onChange={(_, propVal) => this.changeDataProperty("default", propVal)}
-            />
-          </div>
-        </div>
-      </InputBlock>
-    </div>
-      {dataFields}
-      <Button
-        className="maputnik-add-stop"
-        onClick={this.addStop.bind(this)}
-      >
-        Add stop
-      </Button>
-    </div>
-  }
-
-  renderZoomProperty() {
-    const zoomFields = this.props.value.stops.map((stop, idx) => {
-      const zoomLevel = stop[0]
-      const key  = this.state.refs[idx];
-      const value = stop[1]
-      const deleteStopBtn= <DeleteStopButton onClick={this.deleteStop.bind(this, idx)} />
-
-      return <InputBlock
-        key={key}
-        doc={this.props.fieldSpec.doc}
-        label={labelFromFieldName(this.props.fieldName)}
-        action={deleteStopBtn}
-      >
-        <div>
-          <div className="maputnik-zoom-spec-property-stop-edit">
-            <NumberInput
-              value={zoomLevel}
-              onChange={changedStop => this.changeStop(idx, changedStop, value)}
-              min={0}
-              max={22}
-            />
-          </div>
-          <div className="maputnik-zoom-spec-property-stop-value">
-            <SpecField
-              fieldName={this.props.fieldName}
-              fieldSpec={this.props.fieldSpec}
-              value={value}
-              onChange={(_, newValue) => this.changeStop(idx, zoomLevel, newValue)}
-            />
-          </div>
-        </div>
-      </InputBlock>
-    })
-
-    return <div className="maputnik-zoom-spec-property">
-      {zoomFields}
-      <Button
-        className="maputnik-add-stop"
-        onClick={this.addStop.bind(this)}
-      >
-        Add stop
-      </Button>
-    </div>
-  }
-
-  renderProperty() {
-    const functionBtn = <MakeFunctionButtons
-      fieldSpec={this.props.fieldSpec}
-      onZoomClick={this.makeZoomFunction.bind(this)}
-      onDataClick={this.makeDataFunction.bind(this)} 
-    />
-    return <InputBlock
-      doc={this.props.fieldSpec.doc}
-      label={labelFromFieldName(this.props.fieldName)}
-      action={functionBtn}
-    >
-      <SpecField {...this.props} />
-    </InputBlock>
-  }
-
   render() {
     const propClass = this.props.fieldSpec.default === this.props.value ? "maputnik-default-property" : "maputnik-modified-property"
-    let specField
+    let specField;
+
     if (isZoomField(this.props.value)) {
-      specField = this.renderZoomProperty()
+      specField = (
+        <ZoomProperty
+          onChange={this.props.onChange.bind(this)}
+          fieldName={this.props.fieldName}
+          fieldSpec={this.props.fieldSpec}
+          value={this.props.value}
+          onDeleteStop={this.deleteStop.bind(this)}
+          onAddStop={this.addStop.bind(this)}
+        />
+      )
     }
     else if (isDataField(this.props.value)) {
-      specField = this.renderDataProperty()
+      specField = (
+        <DataProperty
+          onChange={this.props.onChange.bind(this)}
+          fieldName={this.props.fieldName}
+          fieldSpec={this.props.fieldSpec}
+          value={this.props.value}
+          onDeleteStop={this.deleteStop.bind(this)}
+          onAddStop={this.addStop.bind(this)}
+        />
+      )
     }
     else {
-      specField = this.renderProperty()
+      specField = (
+        <SpecProperty
+          onChange={this.props.onChange.bind(this)}
+          fieldName={this.props.fieldName}
+          fieldSpec={this.props.fieldSpec}
+          value={this.props.value}
+          onZoomClick={this.makeZoomFunction.bind(this)}
+          onDataClick={this.makeDataFunction.bind(this)} 
+        />
+      )
     }
+
     return <div className={propClass}>
       {specField}
     </div>
   }
 }
 
-class MakeFunctionButtons extends React.Component {
-  static propTypes = {
-    fieldSpec: PropTypes.object,
-    onZoomClick: PropTypes.func,
-    onDataClick: PropTypes.func,
-  }
-
-  render() {
-    let makeZoomButton, makeDataButton
-    if (this.props.fieldSpec['zoom-function']) {
-      makeZoomButton = <Button
-        className="maputnik-make-zoom-function"
-        onClick={this.props.onZoomClick}
-      >
-        <DocLabel
-          label={<FunctionIcon />}
-          cursorTargetStyle={{ cursor: 'pointer' }}
-          doc={"Turn property into a zoom function to enable a map feature to change with map's zoom level."}
-        />
-      </Button>
-
-      if (this.props.fieldSpec['property-function'] && ['piecewise-constant', 'interpolated'].indexOf(this.props.fieldSpec['function']) !== -1) {
-        makeDataButton = <Button
-          className="maputnik-make-data-function"
-          onClick={this.props.onDataClick}
-        >
-          <DocLabel
-            label={<MdInsertChart />}
-            cursorTargetStyle={{ cursor: 'pointer' }}
-            doc={"Turn property into a data function to enable a map feature to change according to data properties and the map's zoom level."}
-          />
-        </Button>
-      }
-      return <div>{makeDataButton}{makeZoomButton}</div>
-    }
-    else {
-      return null
-    }
-  }
-}
-
-class DeleteStopButton extends React.Component {
-  static propTypes = {
-    onClick: PropTypes.func,
-  }
-
-  render() {
-    return <Button
-      className="maputnik-delete-stop"
-      onClick={this.props.onClick}
-    >
-      <DocLabel
-        label={<DeleteIcon />}
-        doc={"Remove zoom level stop."}
-      />
-    </Button>
-  }
-}
-
-function labelFromFieldName(fieldName) {
-  let label = fieldName.split('-').slice(1).join(' ')
-  return capitalize(label)
-}
