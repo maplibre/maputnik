@@ -8,7 +8,7 @@ var path      = require("path");
 var mkdirp    = require("mkdirp");
 var artifacts = require("../artifacts");
 
-var BUILD_PATH = artifacts.pathSync("coverage");
+var BUILD_PATH = artifacts.pathSync(".");
 
 
 /**
