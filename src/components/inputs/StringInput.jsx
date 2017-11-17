@@ -7,6 +7,7 @@ class StringInput extends React.Component {
     style: PropTypes.object,
     default: PropTypes.string,
     onChange: PropTypes.func,
+    multi: PropTypes.bool,
   }
 
   constructor(props) {

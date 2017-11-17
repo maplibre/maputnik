@@ -59,7 +59,7 @@ module.exports = {
     tls: 'empty'
   },
   plugins: [
-    new webpack.NoErrorsPlugin(),
+    new webpack.NoEmitOnErrorsPlugin(),
     new webpack.optimize.CommonsChunkPlugin({ name: 'vendor', filename: '[chunkhash].vendor.js' }),
     new WebpackCleanupPlugin(),
     new webpack.DefinePlugin({
@@ -80,7 +80,6 @@ module.exports = {
       template: './src/template.html',
       title: 'Maputnik'
     }),
-    new webpack.optimize.DedupePlugin(),
     new BundleAnalyzerPlugin({
       analyzerMode: 'static',
       defaultSizes: 'gzip',
@@ -88,6 +87,6 @@ module.exports = {
       generateStatsFile: true,
       reportFilename: 'bundle-stats.html',
       statsFilename: 'bundle-stats.json',
-    }),
+    })
   ]
 };

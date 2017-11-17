@@ -54,3 +54,17 @@
   display: inline;
   margin-left: $margin-1;
 }
+
+.maputnik-toolbar-logo {
+  flex: 0 0 140px;
+}
+
+.maputnik-toolbar__inner {
+  display: flex;
+}
+
+.maputnik-toolbar__actions {
+  white-space: nowrap;
+  flex: 1;
+  overflow-y: auto;
+}

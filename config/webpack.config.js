@@ -45,7 +45,13 @@ module.exports = {
     // serve index.html in place of 404 responses to allow HTML5 history
     historyApiFallback: true,
     port: PORT,
-    host: HOST
+    host: HOST,
+    watchOptions: {
+      // Disabled polling by default as it causes lots of CPU usage and hence drains laptop batteries. To enable polling add WEBPACK_DEV_SERVER_POLLING to your environment
+      // See <https://webpack.js.org/configuration/watch/#watchoptions-poll> for details
+      poll: (!!process.env.WEBPACK_DEV_SERVER_POLLING ? true : false),
+      watch: false
+    }
   },
   plugins: [
     new webpack.NoEmitOnErrorsPlugin(),

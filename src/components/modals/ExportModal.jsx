@@ -127,7 +127,7 @@ class Gist extends React.Component {
     const user = gist.user || 'anonymous';
     const preview = !!gist.files['index.html'];
     if(preview) {
-      return <span><a target="_blank" href={"https://bl.ocks.org/"+user+"/"+gist.id}>Preview</a>,{' '}</span>
+      return <span><a target="_blank" rel="noopener noreferrer" href={"https://bl.ocks.org/"+user+"/"+gist.id}>Preview</a>,{' '}</span>
     }
     return null;
   }
@@ -145,7 +145,7 @@ class Gist extends React.Component {
         <p>
           Latest saved gist:{' '}
           {this.renderPreviewLink(this)}
-          <a target="_blank" href={"https://gist.github.com/" + user + "/" + gist.id}>Source</a>
+          <a target="_blank" rel="noopener noreferrer" href={"https://gist.github.com/" + user + "/" + gist.id}>Source</a>
         </p>
         <p>
           <CopyToClipboard text={maputnikStyleLink}>
@@ -178,7 +178,7 @@ class Gist extends React.Component {
                   value={(this.props.mapStyle.metadata || {})['maputnik:openmaptiles_access_token']}
                   onChange={this.changeMetadataProperty.bind(this, "maputnik:openmaptiles_access_token")}/>
             </InputBlock>
-            <a target="_blank" href="https://openmaptiles.com/hosting/">Get your free access token</a>
+            <a target="_blank" rel="noopener noreferrer" href="https://openmaptiles.com/hosting/">Get your free access token</a>
           </div>
       : null}
       {this.renderLatestGist()}

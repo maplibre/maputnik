@@ -8,7 +8,7 @@
     "build": "webpack --config config/webpack.production.config.js --progress --profile --colors",
     "test": "wdio config/wdio.conf.js",
     "test-watch": "wdio config/wdio.conf.js --watch",
-    "start": "webpack-dev-server --progress --profile --colors --watch-poll --config config/webpack.config.js",
+    "start": "webpack-dev-server --progress --profile --colors --config config/webpack.config.js",
     "lint": "eslint --ext js --ext jsx {src,test}",
     "lint-styles": "stylelint 'src/styles/*.scss'"
   },
@@ -39,14 +39,14 @@
     "ol-mapbox-style": "^1.0.1",
     "openlayers": "^4.4.2",
     "prop-types": "^15.6.0",
-    "react": "^16.0.0",
+    "react": "16.0.0",
     "react-addons-pure-render-mixin": "^15.6.2",
     "react-autocomplete": "^1.7.2",
     "react-codemirror": "^1.0.0",
     "react-collapse": "^4.0.3",
     "react-color": "^2.13.8",
     "react-copy-to-clipboard": "^5.0.1",
-    "react-dom": "^16.0.0",
+    "react-dom": "16.0.0",
     "react-file-reader-input": "^1.1.4",
     "react-height": "^3.0.0",
     "react-icon-base": "^2.1.1",
@@ -67,7 +67,7 @@
     "plugins": [
       "react"
     ],
-    "extend": [
+    "extends": [
       "plugin:react/recommended"
     ],
     "env": {

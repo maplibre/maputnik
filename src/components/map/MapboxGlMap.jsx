@@ -9,6 +9,7 @@ import style from '../../libs/style.js'
 import tokens from '../../config/tokens.json'
 import colors from 'mapbox-gl-inspect/lib/colors'
 import Color from 'color'
+import ZoomControl from '../../libs/zoomcontrol'
 import { colorHighlightedLayer } from '../../libs/highlight'
 import 'mapbox-gl/dist/mapbox-gl.css'
 import '../../mapboxgl.css'
@@ -109,6 +110,9 @@ export default class MapboxGlMap extends React.Component {
       style: this.props.mapStyle,
       hash: true,
     })
+
+    const zoom = new ZoomControl;
+    map.addControl(zoom, 'top-right');
 
     const nav = new MapboxGl.NavigationControl();
     map.addControl(nav, 'top-right');
