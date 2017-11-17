@@ -69,10 +69,10 @@ export default class App extends React.Component {
     this.layerWatcher = new LayerWatcher({
       onVectorLayersChange: v => this.setState({ vectorLayers: v })
     })
-    this.fetchSources();
   }
 
   componentDidMount() {
+    this.fetchSources();
     Mousetrap.bind(['ctrl+z'], this.onUndo.bind(this));
     Mousetrap.bind(['ctrl+y'], this.onRedo.bind(this));
   }
@@ -185,7 +185,7 @@ export default class App extends React.Component {
   }
 
   fetchSources() {
-    const sourceList = {...this.state.sources};
+    const sourceList = {};
 
     for(let [key, val] of Object.entries(this.state.mapStyle.sources)) {
       sourceList[key] = sourceList[key] || [];
@@ -197,6 +197,7 @@ export default class App extends React.Component {
             return response.json();
           })
           .then((json) => {
+            // Create new objects before setState
             const sourceList = {...this.state.sources};
             sourceList[key] = [];
 
