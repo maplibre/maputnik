@@ -18,12 +18,12 @@ export default class ZoomProperty extends React.Component {
   }
 
 
-	constructor() {
-		super()
-		this.state = {
-			refs: {}
-		}
-	}
+  constructor() {
+    super()
+    this.state = {
+      refs: {}
+    }
+  }
 
   componentWillMount() {
     this.setState({
@@ -31,37 +31,37 @@ export default class ZoomProperty extends React.Component {
     })
   }
 
-	/**
-	 * We cache a reference for each stop by its index.
+  /**
+   * We cache a reference for each stop by its index.
    *
    * When the stops are reordered the references are also updated (see this.orderStops) this allows React to use the same key for the element and keep keyboard focus.
-	 */
-	setStopRefs(props) {
-		// This is initialsed below only if required to improved performance.
-		let newRefs;
+   */
+  setStopRefs(props) {
+    // This is initialsed below only if required to improved performance.
+    let newRefs;
 
-		if(props.value && props.value.stops) {
-			props.value.stops.forEach((val, idx) => {
-				if(!this.state.refs.hasOwnProperty(idx)) {
-					if(!newRefs) {
-						newRefs = {...this.state.refs};
-					}
-					newRefs[idx] = docUid("stop-");
-				}
-			})
-		}
+    if(props.value && props.value.stops) {
+      props.value.stops.forEach((val, idx) => {
+        if(!this.state.refs.hasOwnProperty(idx)) {
+          if(!newRefs) {
+            newRefs = {...this.state.refs};
+          }
+          newRefs[idx] = docUid("stop-");
+        }
+      })
+    }
 
     return newRefs;
-	}
+  }
 
-	componentWillReceiveProps(nextProps) {
-		const newRefs = this.setStopRefs(nextProps);
+  componentWillReceiveProps(nextProps) {
+    const newRefs = this.setStopRefs(nextProps);
     if(newRefs) {
-			this.setState({
-				refs: newRefs
-			})
+      this.setState({
+        refs: newRefs
+      })
     }
-	}
+  }
 
   // Order the stops altering the refs to reflect their new position.
   orderStopsByZoom(stops) {
@@ -72,7 +72,7 @@ export default class ZoomProperty extends React.Component {
           data: stop
         }
       })
-      // Sort by zoom
+    // Sort by zoom
       .sort((a, b) => sortNumerically(a.data[0], b.data[0]));
 
     // Fetch the new position of the stops
