@@ -10,8 +10,6 @@ var artifacts        = require("../test/artifacts");
 var server;
 var SCREENSHOT_PATH = artifacts.pathSync("screenshots");
 
-console.log("isDocker", isDocker())
-
 exports.config = {
   specs: [
     './test/functional/**/*.js'

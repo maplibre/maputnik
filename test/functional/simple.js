@@ -11,6 +11,26 @@ var artifacts = require("../artifacts");
 var BUILD_PATH = artifacts.pathSync("coverage");
 
 
+/**
+ * Sometimes chrome driver can result in the wrong text.
+ *
+ * See <https://github.com/webdriverio/webdriverio/issues/1886>
+ */
+browser.addCommand('setValueSafe', function(selector, text) {
+  for(var i=0; i<10; i++) {
+    browser.setValue(selector, text);
+    var browserText = browser.getValue(selector);
+
+    if(browserText == text) {
+      return;
+    }
+    else {
+      console.error("Warning: setValue failed, trying again.");
+    }
+  }
+})
+
+
 describe('maputnik', function() {
   var geoserver;
 
@@ -54,9 +74,9 @@ describe('maputnik', function() {
     it('background', function () {
       var id = uuid();
 
-      browser.waitForVisible(wd.$("layer-id", "input"));
-      browser.setValue(wd.$("layer-id", "input"), "background:"+id);
       browser.selectByValue(wd.$("layer-type", "select"), "background");
+      browser.waitForVisible(wd.$("layer-id", "input"));
+      browser.setValueSafe(wd.$("layer-id", "input"), "background:"+id);
 
       browser.click(wd.$("add-layer"));
 
@@ -72,10 +92,10 @@ describe('maputnik', function() {
     it('fill', function () {
       var id = uuid();
 
-      browser.waitForVisible(wd.$("layer-id", "input"));
-      browser.setValue(wd.$("layer-id", "input"), "fill:"+id);
       browser.selectByValue(wd.$("layer-type", "select"), "fill");
-      browser.setValue(wd.$("layer-source-block", "input"), "example");
+      browser.waitForVisible(wd.$("layer-id", "input"));
+      browser.setValueSafe(wd.$("layer-id", "input"), "fill:"+id);
+      browser.setValueSafe(wd.$("layer-source-block", "input"), "example");
 
       browser.click(wd.$("add-layer"));
 
