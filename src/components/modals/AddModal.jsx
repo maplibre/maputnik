@@ -56,18 +56,54 @@ class AddModal extends React.Component {
     }
   }
 
-  componentWillReceiveProps(nextProps) {
-    const sourceIds = Object.keys(nextProps.sources)
-    if(!this.state.source && sourceIds.length > 0) {
+  componentWillUpdate(nextProps, nextState) {
+    // Check if source is valid for new type
+    const availableSources = this.getSources(nextState.type);
+    if(
+      this.state.source !== ""
+      && availableSources.indexOf(this.state.source) < 0
+    ) {
       this.setState({
-        source: sourceIds[0],
-        'source-layer': this.state['source-layer'] || (nextProps.sources[sourceIds[0]] || [])[0]
-      })
+        source: ""
+      });
     }
+  }
+
+  getLayersForSource(source) {
+    const sourceObj = this.props.sources[source] || {};
+    return sourceObj.layers || [];
+  }
+
+  getSources(type) {
+    const sources = [];
+
+    const types = {
+      vector: [
+        "fill",
+        "line",
+        "symbol",
+        "circle",
+        "fill-extrusion"
+      ],
+      raster: [
+        "raster"
+      ]
+    }
+
+    for(let [key, val] of Object.entries(this.props.sources)) {
+      if(types[val.type].indexOf(type) > -1) {
+        sources.push(key);
+      }
+    }
+
+    return sources;
   }
 
 
   render() {
+    const sources = this.getSources(this.state.type);
+    const layers = this.getLayersForSource(this.state.source);
+
     return <Modal
       isOpen={this.props.isOpen}
       onOpenToggle={this.props.onOpenToggle}
@@ -84,14 +120,14 @@ class AddModal extends React.Component {
       />
       {this.state.type !== 'background' &&
       <LayerSourceBlock
-        sourceIds={Object.keys(this.props.sources)}
+        sourceIds={sources}
         value={this.state.source}
         onChange={v => this.setState({ source: v })}
       />
       }
       {this.state.type !== 'background' && this.state.type !== 'raster' &&
       <LayerSourceLayerBlock
-        sourceLayerIds={this.props.sources[this.state.source] || []}
+        sourceLayerIds={layers}
         value={this.state['source-layer']}
         onChange={v => this.setState({ 'source-layer': v })}
       />

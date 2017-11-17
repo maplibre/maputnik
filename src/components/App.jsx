@@ -188,7 +188,10 @@ export default class App extends React.Component {
     const sourceList = {};
 
     for(let [key, val] of Object.entries(this.state.mapStyle.sources)) {
-      sourceList[key] = sourceList[key] || [];
+      sourceList[key] = {
+        type: val.type,
+        layers: []
+      };
 
       if(val.type === "vector") {
         const url = val.url;
@@ -199,10 +202,10 @@ export default class App extends React.Component {
           .then((json) => {
             // Create new objects before setState
             const sourceList = {...this.state.sources};
-            sourceList[key] = [];
+            sourceList[key] = {...sourceList[key]};
 
             for(let layer of json.vector_layers) {
-              sourceList[key].push(layer.id)
+              sourceList[key].layers.push(layer.id)
             }
 
             this.setState({
