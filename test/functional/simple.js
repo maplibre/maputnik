@@ -8,7 +8,7 @@ var path      = require("path");
 var mkdirp    = require("mkdirp");
 var artifacts = require("../artifacts");
 
-var BUILD_PATH = artifacts.pathSync("/coverage");
+var COVERAGE_PATH = artifacts.pathSync("/coverage");
 
 
 /**
@@ -118,7 +118,7 @@ describe('maputnik', function() {
     });
 
     var jsonStr = JSON.stringify(results.value, null, 2);
-    fs.writeFileSync(BUILD_PATH+"/coverage.json", jsonStr);
+    fs.writeFileSync(COVERAGE_PATH+"/coverage.json", jsonStr);
   })
 
 
