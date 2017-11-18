@@ -2,11 +2,6 @@ machine:
   node:
     version: 6
 test:
-  pre:
-    - curl -L -o google-chrome.deb https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
-    - sudo dpkg -i google-chrome.deb
-    - sudo sed -i 's|HERE/chrome\"|HERE/chrome\" --disable-setuid-sandbox|g' /opt/google/chrome/google-chrome
-    - rm google-chrome.deb
   post:
     - npm run build
     - ./node_modules/.bin/istanbul report --include $CIRCLE_ARTIFACTS/coverage/coverage.json --dir $CIRCLE_ARTIFACTS/coverage html lcov
