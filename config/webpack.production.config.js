@@ -6,7 +6,7 @@ var HtmlWebpackPlugin = require('html-webpack-plugin');
 var WebpackCleanupPlugin = require('webpack-cleanup-plugin');
 var artifacts = require("../test/artifacts");
 
-var OUTPATH = artifacts.pathSync("/");
+var OUTPATH = artifacts.pathSync("/build");
 
 module.exports = {
   entry: {
