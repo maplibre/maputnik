@@ -30,6 +30,16 @@ browser.addCommand('setValueSafe', function(selector, text) {
   }
 })
 
+browser.addCommand('flushReactUpdates', function() {
+  browser.executeAsync(function(done) {
+    // For any events to propogate
+    setImmediate(function() {
+      // For the DOM to be updated.
+      setImmediate(done);
+    })
+  })
+})
+
 
 describe('maputnik', function() {
   var geoserver;
@@ -75,7 +85,7 @@ describe('maputnik', function() {
       var id = uuid();
 
       browser.selectByValue(wd.$("layer-type", "select"), "background");
-      browser.waitForVisible(wd.$("layer-id", "input"));
+      browser.flushReactUpdates();
       browser.setValueSafe(wd.$("layer-id", "input"), "background:"+id);
 
       browser.click(wd.$("add-layer"));
@@ -93,7 +103,7 @@ describe('maputnik', function() {
       var id = uuid();
 
       browser.selectByValue(wd.$("layer-type", "select"), "fill");
-      browser.waitForVisible(wd.$("layer-id", "input"));
+      browser.flushReactUpdates();
       browser.setValueSafe(wd.$("layer-id", "input"), "fill:"+id);
       browser.setValueSafe(wd.$("layer-source-block", "input"), "example");
 
