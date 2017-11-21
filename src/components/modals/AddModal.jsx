@@ -77,6 +77,7 @@ class AddModal extends React.Component {
       <div className="maputnik-add-layer">
       <LayerIdBlock
         value={this.state.id}
+        wdKey="add-layer.layer-id"
         onChange={v => this.setState({ id: v })}
       />
       <LayerTypeBlock

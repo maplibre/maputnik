@@ -86,7 +86,7 @@ describe('maputnik', function() {
 
       browser.selectByValue(wd.$("layer-type", "select"), "background");
       browser.flushReactUpdates();
-      browser.setValueSafe(wd.$("layer-id", "input"), "background:"+id);
+      browser.setValueSafe(wd.$("add-layer.layer-id", "input"), "background:"+id);
 
       browser.click(wd.$("add-layer"));
 
@@ -104,7 +104,7 @@ describe('maputnik', function() {
 
       browser.selectByValue(wd.$("layer-type", "select"), "fill");
       browser.flushReactUpdates();
-      browser.setValueSafe(wd.$("layer-id", "input"), "fill:"+id);
+      browser.setValueSafe(wd.$("add-layer.layer-id", "input"), "fill:"+id);
       browser.setValueSafe(wd.$("layer-source-block", "input"), "example");
 
       browser.click(wd.$("add-layer"));

@@ -13,7 +13,7 @@ class LayerIdBlock extends React.Component {
 
   render() {
     return <InputBlock label={"ID"} doc={styleSpec.latest.layer.id.doc}
-      data-wd-key="layer-id"
+      data-wd-key={this.props.wdKey}
     >
       <StringInput
         value={this.props.value}

@@ -121,6 +121,7 @@ export default class LayerEditor extends React.Component {
       case 'layer': return <div>
         <LayerIdBlock
           value={this.props.layer.id}
+          wdKey="layer-editor.layer-id"
           onChange={newId => this.props.onLayerIdChange(this.props.layer.id, newId)}
         />
         <LayerTypeBlock
