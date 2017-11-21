@@ -92,6 +92,7 @@ class LayerListItem extends React.Component {
     return <li
       key={this.props.layerId}
       onClick={e => this.props.onLayerSelect(this.props.layerId)}
+      data-wd-key={"layer-list-item:"+this.props.layerId}
       className={classnames({
         "maputnik-layer-list-item": true,
         "maputnik-layer-list-item-selected": this.props.isSelected,

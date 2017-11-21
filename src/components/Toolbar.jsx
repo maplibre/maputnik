@@ -139,23 +139,23 @@ export default class Toolbar extends React.Component {
           <h1>Maputnik</h1>
         </ToolbarLink>
         <div className="maputnik-toolbar__actions">
-          <ToolbarAction onClick={this.toggleModal.bind(this, 'open')}>
+          <ToolbarAction data-wd-key="nav:open" onClick={this.toggleModal.bind(this, 'open')}>
             <OpenIcon />
             <IconText>Open</IconText>
           </ToolbarAction>
-          <ToolbarAction onClick={this.toggleModal.bind(this, 'export')}>
+          <ToolbarAction data-wd-key="nav:export" onClick={this.toggleModal.bind(this, 'export')}>
             <MdFileDownload />
             <IconText>Export</IconText>
           </ToolbarAction>
-          <ToolbarAction onClick={this.toggleModal.bind(this, 'sources')}>
+          <ToolbarAction data-wd-key="nav:sources" onClick={this.toggleModal.bind(this, 'sources')}>
             <SourcesIcon />
             <IconText>Sources</IconText>
           </ToolbarAction>
-          <ToolbarAction onClick={this.toggleModal.bind(this, 'settings')}>
+          <ToolbarAction data-wd-key="nav:settings" onClick={this.toggleModal.bind(this, 'settings')}>
             <SettingsIcon />
             <IconText>Style Settings</IconText>
           </ToolbarAction>
-          <ToolbarAction onClick={this.props.onInspectModeToggle}>
+          <ToolbarAction data-wd-key="nav:inspect" onClick={this.props.onInspectModeToggle}>
             <InspectionIcon />
             <IconText>
               { this.props.inspectModeEnabled && <span>Map Mode</span> }

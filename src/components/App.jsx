@@ -19,6 +19,7 @@ import { ApiStyleStore } from '../libs/apistore'
 import { RevisionStore } from '../libs/revisions'
 import LayerWatcher from '../libs/layerwatcher'
 import tokens from '../config/tokens.json'
+import Debug from '../libs/debug'
 
 function updateRootSpec(spec, fieldName, newValues) {
   return {
@@ -52,7 +53,15 @@ export default class App extends React.Component {
           this.styleStore = new StyleStore()
         }
         this.styleStore.latestStyle(mapStyle => this.onStyleChanged(mapStyle))
+
+        if(Debug.enabled()) {
+          Debug.set("maputnik", "styleStore", this.styleStore);
+        }
       })
+    }
+
+    if(Debug.enabled()) {
+      Debug.set("maputnik", "styleStore", this.styleStore);
     }
 
     this.state = {

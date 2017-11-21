@@ -2,13 +2,15 @@ var webpack          = require("webpack");
 var WebpackDevServer = require("webpack-dev-server");
 var webpackConfig    = require("./webpack.production.config");
 var testConfig       = require("../test/config/specs");
+var artifacts        = require("../test/artifacts");
 
 
 var server;
+var SCREENSHOT_PATH = artifacts.pathSync("screenshots");
 
 exports.config = {
   specs: [
-    './test/specs/**/*.js'
+    './test/functional/**/*.js'
   ],
   exclude: [
   ],
@@ -21,13 +23,13 @@ exports.config = {
   logLevel: 'verbose',
   coloredLogs: true,
   bail: 0,
-  screenshotPath: './errorShots/',
+  screenshotPath: SCREENSHOT_PATH,
   baseUrl: 'http://localhost',
   waitforTimeout: 10000,
   connectionRetryTimeout: 90000,
   connectionRetryCount: 3,
-  services: ['phantomjs'],
   framework: 'mocha',
+  services: ['phantomjs'],
   reporters: ['spec'],
   phantomjsOpts: {
     webdriverLogfile: 'phantomjs.log'
@@ -43,6 +45,6 @@ exports.config = {
     server.listen(testConfig.port);
   },
   onComplete: function(exitCode) {
-    server.close();
+    server.close()
   }
 }
