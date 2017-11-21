@@ -8,6 +8,7 @@ import StringInput from '../inputs/StringInput'
 class LayerIdBlock extends React.Component {
   static propTypes = {
     value: PropTypes.string.isRequired,
+    wdKey: PropTypes.string.isRequired,
     onChange: PropTypes.func.isRequired,
   }
 
