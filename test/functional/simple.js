@@ -88,6 +88,8 @@ describe('maputnik', function() {
       browser.flushReactUpdates();
       browser.setValueSafe(wd.$("add-layer.layer-id", "input"), "background:"+id);
 
+      // Wait for change events to fire and state updated
+      browser.flushReactUpdates();
       browser.click(wd.$("add-layer"));
 
       var styleObj = getStyleStore(browser);
@@ -107,6 +109,8 @@ describe('maputnik', function() {
       browser.setValueSafe(wd.$("add-layer.layer-id", "input"), "fill:"+id);
       browser.setValueSafe(wd.$("layer-source-block", "input"), "example");
 
+      // Wait for change events to fire and state updated
+      browser.flushReactUpdates();
       browser.click(wd.$("add-layer"));
 
       var styleObj = getStyleStore(browser);
