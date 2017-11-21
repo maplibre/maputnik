@@ -76,15 +76,22 @@ describe('maputnik', function() {
   describe("layers", function() {
     beforeEach(function() {
       browser.click(wd.$('layer-list:add-layer'))
+
+      // Wait for events
+      browser.flushReactUpdates();
+
       browser.waitForExist(wd.$('modal:add-layer'));
       browser.isVisible(wd.$('modal:add-layer'));
       browser.isVisibleWithinViewport(wd.$('modal:add-layer'));
+
+      // Wait for events
+      browser.flushReactUpdates();
     });
 
     it('background', function () {
       var id = uuid();
 
-      browser.selectByValue(wd.$("layer-type", "select"), "background");
+      browser.selectByValue(wd.$("add-layer.layer-type", "select"), "background");
       browser.flushReactUpdates();
       browser.setValueSafe(wd.$("add-layer.layer-id", "input"), "background:"+id);
 
@@ -104,10 +111,10 @@ describe('maputnik', function() {
     it('fill', function () {
       var id = uuid();
 
-      browser.selectByValue(wd.$("layer-type", "select"), "fill");
+      browser.selectByValue(wd.$("add-layer.layer-type", "select"), "fill");
       browser.flushReactUpdates();
       browser.setValueSafe(wd.$("add-layer.layer-id", "input"), "fill:"+id);
-      browser.setValueSafe(wd.$("layer-source-block", "input"), "example");
+      browser.setValueSafe(wd.$("add-layer.layer-source-block", "input"), "example");
 
       // Wait for change events to fire and state updated
       browser.flushReactUpdates();

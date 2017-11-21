@@ -82,11 +82,13 @@ class AddModal extends React.Component {
       />
       <LayerTypeBlock
         value={this.state.type}
+        wdKey="add-layer.layer-type"
         onChange={v => this.setState({ type: v })}
       />
       {this.state.type !== 'background' &&
       <LayerSourceBlock
         sourceIds={Object.keys(this.props.sources)}
+        wdKey="add-layer.layer-source-block"
         value={this.state.source}
         onChange={v => this.setState({ source: v })}
       />
