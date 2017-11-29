@@ -99,6 +99,7 @@
     "babel-preset-react": "^6.24.1",
     "babel-runtime": "^6.26.0",
     "base64-loader": "^1.0.0",
+    "copy-webpack-plugin": "^4.2.0",
     "css-loader": "^0.28.7",
     "eslint": "^4.10.0",
     "eslint-plugin-react": "^7.4.0",
