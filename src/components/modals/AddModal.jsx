@@ -127,6 +127,7 @@ class AddModal extends React.Component {
       }
       {this.state.type !== 'background' && this.state.type !== 'raster' &&
       <LayerSourceLayerBlock
+        isFixed={true}
         sourceLayerIds={layers}
         value={this.state['source-layer']}
         onChange={v => this.setState({ 'source-layer': v })}
