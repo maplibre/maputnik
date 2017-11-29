@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 
-import CodeMirror from 'react-codemirror'
+import {Controlled as CodeMirror} from 'react-codemirror2'
 import InputBlock from '../inputs/InputBlock'
 import StringInput from '../inputs/StringInput'
 import SelectInput from '../inputs/SelectInput'
@@ -81,7 +81,7 @@ class JSONEditor extends React.Component {
 
     return <CodeMirror
       value={this.state.code}
-      onChange={this.onCodeUpdate.bind(this)}
+      onBeforeChange={(editor, data, value) => this.onCodeUpdate(value)}
       onFocusChange={focused => focused ? true : this.resetValue()}
       options={codeMirrorOptions}
     />
