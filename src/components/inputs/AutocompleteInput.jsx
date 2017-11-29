@@ -8,7 +8,7 @@ class AutocompleteMenu extends React.Component {
   static propTypes = {
     keepMenuWithinWindowBounds: PropTypes.bool,
     style: PropTypes.object,
-    children: PropTypes.none
+    children: PropTypes.node
   }
 
   calcMaxHeight() {
