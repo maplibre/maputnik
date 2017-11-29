@@ -139,7 +139,7 @@ class AddSource extends React.Component {
           onChange={v => this.setState({ sourceId: v})}
         />
       </InputBlock>
-      <InputBlock label={"Source Type"} doc={styleSpec.latest.source_tile.type.doc}>
+      <InputBlock label={"Source Type"} doc={styleSpec.latest.source_vector.type.doc}>
         <SelectInput
           options={[
             ['geojson', 'GeoJSON'],
