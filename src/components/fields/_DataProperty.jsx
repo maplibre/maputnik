@@ -15,7 +15,12 @@ import DeleteStopButton from './_DeleteStopButton'
 
 export default class DataProperty extends React.Component {
   static propTypes = {
-      value: PropTypes.oneOfType([
+    onChange: PropTypes.func,
+    onDeleteStop: PropTypes.func,
+    onAddStop: PropTypes.func,
+    fieldName: PropTypes.string,
+    fieldSpec: PropTypes.object,
+    value: PropTypes.oneOfType([
       PropTypes.object,
       PropTypes.string,
       PropTypes.number,

@@ -15,6 +15,18 @@ import sortNumerically from '../../libs/sort-numerically'
 
 export default class ZoomProperty extends React.Component {
   static propTypes = {
+    onChange: PropTypes.func,
+    onDeleteStop: PropTypes.func,
+    onAddStop: PropTypes.func,
+    fieldName: PropTypes.string,
+    fieldSpec: PropTypes.object,
+    value: PropTypes.oneOfType([
+      PropTypes.object,
+      PropTypes.string,
+      PropTypes.number,
+      PropTypes.bool,
+      PropTypes.array
+    ]),
   }
 
 

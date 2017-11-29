@@ -11,7 +11,9 @@ import labelFromFieldName from './_labelFromFieldName'
 export default class SpecProperty extends React.Component {
   static propTypes = {
     onZoomClick: PropTypes.func.isRequired,
-    onDataClick: PropTypes.func.isRequired
+    onDataClick: PropTypes.func.isRequired,
+    fieldName: PropTypes.string,
+    fieldSpec: PropTypes.object
   }
 
   render() {
