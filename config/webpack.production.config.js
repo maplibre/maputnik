@@ -5,6 +5,7 @@ var loaders = require('./webpack.loaders');
 var ExtractTextPlugin = require('extract-text-webpack-plugin');
 var HtmlWebpackPlugin = require('html-webpack-plugin');
 var WebpackCleanupPlugin = require('webpack-cleanup-plugin');
+var BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 
 var OUTPATH;
 if(process.env.CIRCLE_ARTIFACTS) {
@@ -78,6 +79,14 @@ module.exports = {
     new HtmlWebpackPlugin({
       template: './src/template.html',
       title: 'Maputnik'
+    }),
+    new BundleAnalyzerPlugin({
+      analyzerMode: 'static',
+      defaultSizes: 'gzip',
+      openAnalyzer: false,
+      generateStatsFile: true,
+      reportFilename: 'bundle-stats.html',
+      statsFilename: 'bundle-stats.json',
     })
   ]
 };
