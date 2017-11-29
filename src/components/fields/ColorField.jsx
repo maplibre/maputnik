@@ -50,16 +50,14 @@ class ColorField extends React.Component {
   }
 
   get color() {
-    let color = Color("rgb(255,255,255)");
-
     // Catch invalid color.
     try {
       return Color(this.props.value).rgb()
     }
     catch(err) {
       console.warn("Error parsing color: ", err);
+      return Color("rgb(255,255,255)");
     }
-    return color;
   }
 
   render() {
