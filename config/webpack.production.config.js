@@ -6,6 +6,7 @@ var ExtractTextPlugin = require('extract-text-webpack-plugin');
 var HtmlWebpackPlugin = require('html-webpack-plugin');
 var WebpackCleanupPlugin = require('webpack-cleanup-plugin');
 var BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
+var CopyWebpackPlugin = require('copy-webpack-plugin');
 
 var OUTPATH;
 if(process.env.CIRCLE_ARTIFACTS) {
@@ -80,6 +81,12 @@ module.exports = {
       template: './src/template.html',
       title: 'Maputnik'
     }),
+    new CopyWebpackPlugin([
+      {
+        from: './src/manifest.json',
+        to: 'manifest.json'
+      }
+    ]),
     new BundleAnalyzerPlugin({
       analyzerMode: 'static',
       defaultSizes: 'gzip',
