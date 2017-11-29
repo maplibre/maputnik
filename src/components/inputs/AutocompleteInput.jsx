@@ -4,6 +4,8 @@ import classnames from 'classnames'
 import Autocomplete from 'react-autocomplete'
 
 
+const MAX_HEIGHT = 140;
+
 class AutocompleteMenu extends React.Component {
   static propTypes = {
     keepMenuWithinWindowBounds: PropTypes.bool,
@@ -14,9 +16,11 @@ class AutocompleteMenu extends React.Component {
   calcMaxHeight() {
     if(this.props.keepMenuWithinWindowBounds) {
       const maxHeight = window.innerHeight - this.autocompleteMenuEl.getBoundingClientRect().top;
-      if(maxHeight != this.state.maxHeight) {
+      const limitedMaxHeight = Math.min(maxHeight, MAX_HEIGHT);
+
+      if(limitedMaxHeight != this.state.maxHeight) {
         this.setState({
-          maxHeight: maxHeight
+          maxHeight: limitedMaxHeight
         })
       }
     }
@@ -32,7 +36,7 @@ class AutocompleteMenu extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      maxHeight: 90
+      maxHeight: MAX_HEIGHT
     };
   }
 
