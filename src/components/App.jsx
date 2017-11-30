@@ -19,6 +19,7 @@ import { ApiStyleStore } from '../libs/apistore'
 import { RevisionStore } from '../libs/revisions'
 import LayerWatcher from '../libs/layerwatcher'
 import tokens from '../config/tokens.json'
+import isEqual from 'lodash.isequal'
 
 function updateRootSpec(spec, fieldName, newValues) {
   return {
@@ -185,15 +186,19 @@ export default class App extends React.Component {
   }
 
   fetchSources() {
-    const sourceList = {};
+    const sourceList = {...this.state.sources};
 
     for(let [key, val] of Object.entries(this.state.mapStyle.sources)) {
+      if(sourceList.hasOwnProperty(key)) {
+        continue;
+      }
+
       sourceList[key] = {
         type: val.type,
         layers: []
       };
 
-      if(val.type === "vector") {
+      if(!this.state.sources.hasOwnProperty(key) && val.type === "vector") {
         const url = val.url;
         fetch(url)
           .then((response) => {
@@ -201,15 +206,15 @@ export default class App extends React.Component {
           })
           .then((json) => {
             // Create new objects before setState
-            const sourceList = {...this.state.sources};
-            sourceList[key] = {...sourceList[key]};
+            const sources = Object.assign({}, this.state.sources);
 
             for(let layer of json.vector_layers) {
-              sourceList[key].layers.push(layer.id)
+              sources[key].layers.push(layer.id)
             }
 
+            console.debug("Updating source: "+key);
             this.setState({
-              sources: sourceList
+              sources: sources
             });
           })
           .catch((err) => {
@@ -218,11 +223,12 @@ export default class App extends React.Component {
       }
     }
 
-    // Note: Each source will be missing layers initially until the fetch is complete
-    this.setState({
-      sources: sourceList
-    })
-
+    if(!isEqual(this.state.sources, sourceList)) {
+      console.debug("Setting sources");
+      this.setState({
+        sources: sourceList
+      })
+    }
   }
 
   mapRenderer() {
