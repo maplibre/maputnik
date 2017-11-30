@@ -202,6 +202,7 @@ class LayerListContainer extends React.Component {
       />
       <header className="maputnik-layer-list-header">
         <span className="maputnik-layer-list-header-title">Layers</span>
+        <span className="maputnik-space" />
         <div className="maputnik-default-property">
           <div className="maputnik-multibutton">
             <a 
@@ -211,7 +212,6 @@ class LayerListContainer extends React.Component {
             </a>
           </div>
         </div>
-        <span className="maputnik-space" />
         <div className="maputnik-default-property">
           <div className="maputnik-multibutton">
             <a
