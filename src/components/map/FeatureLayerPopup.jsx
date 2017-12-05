@@ -4,13 +4,26 @@ import InputBlock from '../inputs/InputBlock'
 import StringInput from '../inputs/StringInput'
 import LayerIcon from '../icons/LayerIcon'
 
-
 function groupFeaturesBySourceLayer(features) {
   const sources = {}
+
+  let returnedFeatures = {};
+
   features.forEach(feature => {
-    sources[feature.layer['source-layer']] = sources[feature.layer['source-layer']] || []
-    sources[feature.layer['source-layer']].push(feature)
+    if(returnedFeatures.hasOwnProperty(feature.layer.id)) {
+      returnedFeatures[feature.layer.id]++
+      
+      const featureObject = sources[feature.layer['source-layer']].find(f => f.layer.id === feature.layer.id)
+
+      featureObject.counter = returnedFeatures[feature.layer.id]
+    } else {
+      sources[feature.layer['source-layer']] = sources[feature.layer['source-layer']] || []
+      sources[feature.layer['source-layer']].push(feature)
+
+      returnedFeatures[feature.layer.id] = 1
+    }
   })
+
   return sources
 }
 
@@ -34,6 +47,7 @@ class FeatureLayerPopup extends React.Component {
             paddingRight: 3
           }}/>
           {feature.layer.id}
+          {feature.counter && <span> × {feature.counter}</span>}
         </label>
       })
       return <div key={vectorLayerId}>
