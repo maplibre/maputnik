@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Maputnik</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="manifest" href="manifest.json">
+  <style>
+    html {
+      background-color: rgb(28, 31, 36);
+    }
+    #loader,
+    #loader:before,
+    #loader:after {
+      border-radius: 50%;
+      width: 2.5em;
+      height: 2.5em;
+      -webkit-animation-fill-mode: both;
+      animation-fill-mode: both;
+      -webkit-animation: pulseload 1.8s infinite ease-in-out;
+      animation: pulseload 1.8s infinite ease-in-out;
+    }
+    #loader {
+      color: #ffffff;
+      font-size: 10px;
+      margin: 80px auto;
+      position: relative;
+      text-indent: -9999em;
+      -webkit-transform: translateZ(0);
+      -ms-transform: translateZ(0);
+      transform: translateZ(0);
+      -webkit-animation-delay: -0.16s;
+      animation-delay: -0.16s;
+    }
+    #loader:before,
+    #loader:after {
+      content: '';
+      position: absolute;
+      top: 0;
+    }
+    #loader:before {
+      left: -3.5em;
+      -webkit-animation-delay: -0.32s;
+      animation-delay: -0.32s;
+    }
+    #loader:after {
+      left: 3.5em;
+    }
+    @-webkit-keyframes pulseload {
+      0%,
+      80%,
+      100% {
+        box-shadow: 0 2.5em 0 -1.3em;
+      }
+      40% {
+        box-shadow: 0 2.5em 0 0;
+      }
+    }
+    @keyframes pulseload {
+      0%,
+      80%,
+      100% {
+        box-shadow: 0 2.5em 0 -1.3em;
+      }
+      40% {
+        box-shadow: 0 2.5em 0 0;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div id="app">
+    <div id="loader">Loading...</div>
+  </div>
+<script type="text/javascript" src="a1b7d712ef8b78ce4076.vendor.js"></script><script type="text/javascript" src="app.cd504f5aef39de3f668f.js"></script></body>
+</html>

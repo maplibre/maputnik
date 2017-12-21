@@ -13,7 +13,7 @@ if(process.env.CIRCLE_ARTIFACTS) {
   OUTPATH = path.join(process.env.CIRCLE_ARTIFACTS, "build");
 }
 else {
-  OUTPATH = path.join(__dirname, '..', 'public');
+  OUTPATH = path.join(__dirname, '..', 'docs');
 }
 
 module.exports = {
