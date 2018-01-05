@@ -36,3 +36,15 @@ $toolbar-offset: 0;
 @import 'zoomproperty';
 @import 'popup';
 @import 'map';
+
+
+/**
+ * Hacks for webdriverio isVisibleWithinViewport
+ */
+#app {
+  height: 100vh;
+}
+
+.maputnik-layout {
+  height: 100vh;
+}

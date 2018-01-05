@@ -4,7 +4,6 @@ import PropTypes from 'prop-types'
 import styleSpec from '@mapbox/mapbox-gl-style-spec/style-spec'
 import InputBlock from '../inputs/InputBlock'
 import StringInput from '../inputs/StringInput'
-import SelectInput from '../inputs/SelectInput'
 import AutocompleteInput from '../inputs/AutocompleteInput'
 
 class LayerSourceLayer extends React.Component {
@@ -22,7 +21,9 @@ class LayerSourceLayer extends React.Component {
   }
 
   render() {
-    return <InputBlock label={"Source Layer"} doc={styleSpec.latest.layer['source-layer'].doc}>
+    return <InputBlock label={"Source Layer"} doc={styleSpec.latest.layer['source-layer'].doc}
+      data-wd-key="layer-source-layer"
+    >
       <AutocompleteInput
         keepMenuWithinWindowBounds={!!this.props.isFixed}
         value={this.props.value}

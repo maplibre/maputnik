@@ -19,11 +19,6 @@ import MultiButtonInput from '../inputs/MultiButtonInput'
 import { changeType, changeProperty } from '../../libs/layer'
 import layout from '../../config/layout.json'
 
-class UnsupportedLayer extends React.Component {
-  render() {
-    return <div></div>
-  }
-}
 
 function layoutGroups(layerType) {
   const layerGroup = {
@@ -121,6 +116,7 @@ export default class LayerEditor extends React.Component {
       case 'layer': return <div>
         <LayerIdBlock
           value={this.props.layer.id}
+          wdKey="layer-editor.layer-id"
           onChange={newId => this.props.onLayerIdChange(this.props.layer.id, newId)}
         />
         <LayerTypeBlock
@@ -171,7 +167,6 @@ export default class LayerEditor extends React.Component {
         layer={this.props.layer}
         onChange={this.props.onLayerChanged}
       />
-      default: return null
     }
   }
 
@@ -181,6 +176,7 @@ export default class LayerEditor extends React.Component {
       return !(layerType === 'background' && group.type === 'source')
     }).map(group => {
       return <LayerEditorGroup
+        data-wd-key={group.title}
         key={group.title}
         title={group.title}
         isActive={this.state.editorGroups[group.title]}

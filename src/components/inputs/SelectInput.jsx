@@ -4,6 +4,7 @@ import PropTypes from 'prop-types'
 class SelectInput extends React.Component {
   static propTypes = {
     value: PropTypes.string.isRequired,
+    "data-wd-key": PropTypes.string.isRequired,
     options: PropTypes.array.isRequired,
     style: PropTypes.object,
     onChange: PropTypes.func.isRequired,
@@ -18,6 +19,7 @@ class SelectInput extends React.Component {
 
     return <select
       className="maputnik-select"
+      data-wd-key={this.props["data-wd-key"]}
       style={this.props.style}
       value={this.props.value}
       onChange={e => this.props.onChange(e.target.value)}

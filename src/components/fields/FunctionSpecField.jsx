@@ -131,8 +131,7 @@ export default class FunctionSpecProperty  extends React.Component {
         />
       )
     }
-
-    return <div className={propClass}>
+    return <div className={propClass} data-wd-key={"spec-field:"+this.props.fieldName}>
       {specField}
     </div>
   }

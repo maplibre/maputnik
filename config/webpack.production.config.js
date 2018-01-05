@@ -1,4 +1,3 @@
-
 var webpack = require('webpack');
 var path = require('path');
 var loaders = require('./webpack.loaders');
@@ -7,14 +6,9 @@ var HtmlWebpackPlugin = require('html-webpack-plugin');
 var WebpackCleanupPlugin = require('webpack-cleanup-plugin');
 var BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 var CopyWebpackPlugin = require('copy-webpack-plugin');
+var artifacts = require("../test/artifacts");
 
-var OUTPATH;
-if(process.env.CIRCLE_ARTIFACTS) {
-  OUTPATH = path.join(process.env.CIRCLE_ARTIFACTS, "build");
-}
-else {
-  OUTPATH = path.join(__dirname, '..', 'public');
-}
+var OUTPATH = artifacts.pathSync("/build");
 
 module.exports = {
   entry: {

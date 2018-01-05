@@ -20,6 +20,7 @@ import { RevisionStore } from '../libs/revisions'
 import LayerWatcher from '../libs/layerwatcher'
 import tokens from '../config/tokens.json'
 import isEqual from 'lodash.isequal'
+import Debug from '../libs/debug'
 
 function updateRootSpec(spec, fieldName, newValues) {
   return {
@@ -53,7 +54,17 @@ export default class App extends React.Component {
           this.styleStore = new StyleStore()
         }
         this.styleStore.latestStyle(mapStyle => this.onStyleChanged(mapStyle))
+
+        if(Debug.enabled()) {
+          Debug.set("maputnik", "styleStore", this.styleStore);
+          Debug.set("maputnik", "revisionStore", this.revisionStore);
+        }
       })
+    }
+
+    if(Debug.enabled()) {
+      Debug.set("maputnik", "revisionStore", this.revisionStore);
+      Debug.set("maputnik", "styleStore", this.styleStore);
     }
 
     this.state = {
@@ -70,22 +81,28 @@ export default class App extends React.Component {
     this.layerWatcher = new LayerWatcher({
       onVectorLayersChange: v => this.setState({ vectorLayers: v })
     })
+
+    this.onKeyDown = this.onKeyDown.bind(this);
+  }
+
+  onKeyDown(e) {
+    console.log("??? keyCode ctrlKey="+e.ctrlKey+", keyCode="+e.keyCode)
+    // Control + Z
+    if(e.ctrlKey && e.keyCode === 90) {
+      this.onUndo(e);
+    }
+    else if(e.ctrlKey && e.keyCode === 89) {
+      this.onRedo(e);
+    }
   }
 
   componentDidMount() {
     this.fetchSources();
-    Mousetrap.bind(['ctrl+z'], this.onUndo.bind(this));
-    Mousetrap.bind(['ctrl+y'], this.onRedo.bind(this));
+    document.addEventListener("keydown", this.onKeyDown);
   }
 
   componentWillUnmount() {
-    Mousetrap.unbind(['ctrl+z'], this.onUndo.bind(this));
-    Mousetrap.unbind(['ctrl+y'], this.onRedo.bind(this));
-  }
-
-  onReset() {
-    this.styleStore.purge()
-    loadDefaultStyle(mapStyle => this.onStyleOpen(mapStyle))
+    document.removeEventListener("keydown", this.onKeyDown);
   }
 
   saveStyle(snapshotStyle) {

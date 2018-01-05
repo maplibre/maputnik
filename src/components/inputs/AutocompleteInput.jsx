@@ -94,8 +94,14 @@ class AutocompleteInput extends React.Component {
       value={this.props.value}
       items={this.props.options}
       getItemValue={(item) => item[0]}
-      onSelect={v => this.props.onChange(v)}
-      onChange={(e, v) => this.props.onChange(v)}
+      onSelect={v => {
+        console.log("@@ onSelect", v)
+        this.props.onChange(v)
+      }}
+      onChange={(e, v) => {
+        console.log("@@ onChange", v)
+        this.props.onChange(v)
+      }}
       renderItem={(item, isHighlighted) => (
         <div
           key={item[0]}

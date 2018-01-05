@@ -6,6 +6,7 @@ import DocLabel from '../fields/DocLabel'
 /** Wrap a component with a label */
 class InputBlock extends React.Component {
   static propTypes = {
+    "data-wd-key": PropTypes.string,
     label: PropTypes.oneOfType([
       PropTypes.string,
       PropTypes.element,
@@ -24,6 +25,7 @@ class InputBlock extends React.Component {
 
   render() {
     return <div style={this.props.style}
+      data-wd-key={this.props["data-wd-key"]}
       className={classnames({
         "maputnik-input-block": true,
         "maputnik-action-block": this.props.action

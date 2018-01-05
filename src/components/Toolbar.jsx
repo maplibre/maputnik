@@ -63,6 +63,7 @@ class ToolbarAction extends React.Component {
   render() {
     return <a
       className='maputnik-toolbar-action'
+      data-wd-key={this.props.wdKey}
       onClick={this.props.onClick}
     >
       {this.props.children}
@@ -139,23 +140,23 @@ export default class Toolbar extends React.Component {
           <h1>Maputnik</h1>
         </ToolbarLink>
         <div className="maputnik-toolbar__actions">
-          <ToolbarAction onClick={this.toggleModal.bind(this, 'open')}>
+          <ToolbarAction wdKey="nav:open" onClick={this.toggleModal.bind(this, 'open')}>
             <OpenIcon />
             <IconText>Open</IconText>
           </ToolbarAction>
-          <ToolbarAction onClick={this.toggleModal.bind(this, 'export')}>
+          <ToolbarAction wdKey="nav:export" onClick={this.toggleModal.bind(this, 'export')}>
             <MdFileDownload />
             <IconText>Export</IconText>
           </ToolbarAction>
-          <ToolbarAction onClick={this.toggleModal.bind(this, 'sources')}>
+          <ToolbarAction wdKey="nav:sources" onClick={this.toggleModal.bind(this, 'sources')}>
             <SourcesIcon />
             <IconText>Sources</IconText>
           </ToolbarAction>
-          <ToolbarAction onClick={this.toggleModal.bind(this, 'settings')}>
+          <ToolbarAction wdKey="nav:settings" onClick={this.toggleModal.bind(this, 'settings')}>
             <SettingsIcon />
             <IconText>Style Settings</IconText>
           </ToolbarAction>
-          <ToolbarAction onClick={this.props.onInspectModeToggle}>
+          <ToolbarAction wdKey="nav:inspect" onClick={this.props.onInspectModeToggle}>
             <InspectionIcon />
             <IconText>
               { this.props.inspectModeEnabled && <span>Map Mode</span> }
