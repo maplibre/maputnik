@@ -33,7 +33,7 @@
     "lodash.isequal": "^4.5.0",
     "lodash.throttle": "^4.1.1",
     "mapbox-gl": "^0.41.0",
-    "mapbox-gl-inspect": "^1.2.4",
+    "mapbox-gl-inspect": "^1.2.5",
     "maputnik-design": "github:maputnik/design",
     "mousetrap": "^1.6.1",
     "ol-mapbox-style": "^1.0.1",

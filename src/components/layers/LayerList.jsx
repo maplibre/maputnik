@@ -164,7 +164,7 @@ class LayerListContainer extends React.Component {
         const grp = <LayerListGroup
           key={[groupPrefix, idx].join('-')}
           title={groupPrefix}
-          isActive={!this.isCollapsed(groupPrefix, idx)}
+          isActive={!this.isCollapsed(groupPrefix, idx) || idx === this.props.selectedLayerIndex}
           onActiveToggle={this.toggleLayerGroup.bind(this, groupPrefix, idx)}
         />
         listItems.push(grp)
@@ -172,9 +172,10 @@ class LayerListContainer extends React.Component {
 
       layers.forEach((layer, idxInGroup) => {
         const groupIdx = findClosestCommonPrefix(this.props.layers, idx)
+
         const listItem = <LayerListItem
           className={classnames({
-            'maputnik-layer-list-item-collapsed': layers.length > 1 && this.isCollapsed(groupPrefix, groupIdx),
+            'maputnik-layer-list-item-collapsed': layers.length > 1 && this.isCollapsed(groupPrefix, groupIdx) && idx !== this.props.selectedLayerIndex,
             'maputnik-layer-list-item-group-last': idxInGroup == layers.length - 1 && layers.length > 1
           })}
           index={idx}
