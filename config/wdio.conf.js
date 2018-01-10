@@ -11,7 +11,7 @@ var SCREENSHOT_PATH = artifacts.pathSync("screenshots");
 
 exports.config = {
   specs: [
-    './test/functional/advanced.js'
+    './test/functional/index.js'
   ],
   exclude: [
   ],
