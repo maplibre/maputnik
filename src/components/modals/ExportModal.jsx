@@ -56,8 +56,8 @@ class Gist extends React.Component {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>`+styleTitle+` Preview</title>
-    <link rel="stylesheet" type="text/css" href="https://api.mapbox.com/mapbox-gl-js/v0.28.0/mapbox-gl.css" />
-    <script src="https://api.mapbox.com/mapbox-gl-js/v0.28.0/mapbox-gl.js"></script>
+    <link rel="stylesheet" type="text/css" href="https://api.mapbox.com/mapbox-gl-js/v0.43.0/mapbox-gl.css" />
+    <script src="https://api.mapbox.com/mapbox-gl-js/v0.43.0/mapbox-gl.js"></script>
     <style>
       body { margin:0; padding:0; }
       #map { position:absolute; top:0; bottom:0; width:100%; }
