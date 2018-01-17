@@ -9,20 +9,15 @@ browser.timeoutsImplicitWait(20*1000);
 try {
   browser.addCommand('setValueSafe', function(selector, text) {
     for(var i=0; i<10; i++) {
-      console.log(">>>> waiting for visible");
       browser.waitForVisible(selector);
 
       var elements = browser.elements(selector);
       if(elements.length > 1) {
-        console.error(">>> Too many elements found");
         throw "Too many elements found";
       }
 
-      console.log(">>>> setting value");
       browser.setValue(selector, text);
       var browserText = browser.getValue(selector);
-
-      console.log("browserText='%s' test='%s'", browserText, text);
 
       if(browserText == text) {
         return;

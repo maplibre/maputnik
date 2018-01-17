@@ -8,16 +8,13 @@ var helper = require("../helper");
 
 // TODO: Is this needed?
 function closeModal(wdKey) {
-  console.log(">> A");
   browser.waitUntil(function() {
     return browser.isVisibleWithinViewport(wd.$(wdKey));
   });
 
-  console.log(">> B");
   var closeBtnSelector = wd.$(wdKey+".close-modal");
   browser.click(closeBtnSelector);
 
-  console.log(">> C");
   browser.waitUntil(function() {
     return !browser.isVisibleWithinViewport(wd.$(wdKey));
   });
@@ -47,7 +44,6 @@ describe("modals", function() {
       browser.chooseFile("*[type='file']", styleFilePath);
 
       var styleObj = helper.getStyleStore(browser);
-      console.log("styleObj", styleObj);
       assert.deepEqual(styleFileData, styleObj);
     });
 
@@ -57,7 +53,6 @@ describe("modals", function() {
       browser.setValueSafe(wd.$("open-modal.url.input"), styleFileUrl);
 
       var selector = wd.$("open-modal.url.button");
-      console.log("selector", selector);
       browser.click(selector);
 
       // Allow the network request to happen
@@ -65,8 +60,6 @@ describe("modals", function() {
       browser.pause(300);
 
       var styleObj = helper.getStyleStore(browser);
-      console.log("styleObj", styleObj);
-      console.log("styleFileData", styleFileData);
       assert.deepEqual(styleFileData, styleObj);
     });
 
@@ -129,7 +122,6 @@ describe("modals", function() {
       browser.flushReactUpdates();
 
       var styleObj = helper.getStyleStore(browser);
-      console.log("styleObj", styleObj);
       assert.equal(styleObj.name, "foobar");
     })
     it("owner", function() {
@@ -138,7 +130,6 @@ describe("modals", function() {
       browser.flushReactUpdates();
 
       var styleObj = helper.getStyleStore(browser);
-      console.log("styleObj", styleObj);
       assert.equal(styleObj.owner, "foobar");
     })
     it("sprite url", function() {
@@ -147,7 +138,6 @@ describe("modals", function() {
       browser.flushReactUpdates();
 
       var styleObj = helper.getStyleStore(browser);
-      console.log("styleObj", styleObj);
       assert.equal(styleObj.sprite, "http://example.com");
     })
     it("glyphs url", function() {
@@ -157,7 +147,6 @@ describe("modals", function() {
       browser.flushReactUpdates();
 
       var styleObj = helper.getStyleStore(browser);
-      console.log("styleObj", styleObj);
       assert.equal(styleObj.glyphs, glyphsUrl);
     })
 
@@ -168,7 +157,6 @@ describe("modals", function() {
       browser.flushReactUpdates();
 
       var styleObj = helper.getStyleStore(browser);
-      console.log("styleObj", styleObj);
       browser.waitUntil(function() {
         return styleObj.metadata["maputnik:mapbox_access_token"] == apiKey;
       })
@@ -181,7 +169,6 @@ describe("modals", function() {
       browser.flushReactUpdates();
 
       var styleObj = helper.getStyleStore(browser);
-      console.log("styleObj", styleObj);
       assert.equal(styleObj.metadata["maputnik:openmaptiles_access_token"], apiKey);
     })
 
@@ -192,7 +179,6 @@ describe("modals", function() {
       browser.flushReactUpdates();
 
       var styleObj = helper.getStyleStore(browser);
-      console.log("styleObj", styleObj);
       assert.equal(styleObj.metadata["maputnik:renderer"], "ol3");
     })
   })

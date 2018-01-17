@@ -51,8 +51,6 @@ describe.skip("history", function() {
       }
     ]);
 
-    console.log(">>> LOGS", JSON.stringify(browser.log("browser"), null, 2))
-
     browser
       .keys(['Control', 'z'])
       .keys(['Control']);
@@ -64,16 +62,12 @@ describe.skip("history", function() {
       }
     ]);
 
-    console.log(">>> LOGS", JSON.stringify(browser.log("browser"), null, 2))
-
     browser
       .keys(['Control', 'z'])
       .keys(['Control']);
     styleObj = helper.getStyleStore(browser);
     assert.deepEqual(styleObj.layers, [
     ]);
-
-    console.log(">>> LOGS", JSON.stringify(browser.log("browser"), null, 2))
 
     browser
       .keys(['Control', 'y'])
@@ -85,8 +79,6 @@ describe.skip("history", function() {
         "type": 'background'
       }
     ]);
-
-    console.log(">>> LOGS", JSON.stringify(browser.log("browser"), null, 2))
 
     browser
       .keys(['Control', 'y'])
@@ -103,7 +95,6 @@ describe.skip("history", function() {
       }
     ]);
 
-    console.log(">>> LOGS", JSON.stringify(browser.log("browser"), null, 2))
   });
 
 
@@ -123,7 +114,6 @@ describe.skip("history", function() {
   //   helper.modalCommands.addLayer.open(browser);
 
   //   styleObj = helper.helper.getStyleStore(browser);
-  //   console.log("styleObj", styleObj);
   //   assert.deepEqual(styleObj.layers, []);
 
   //   helper.modalCommands.addLayer.fill(browser, {

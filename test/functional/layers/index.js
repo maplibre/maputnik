@@ -194,7 +194,6 @@ describe("layers", function() {
           browser.click(wd.$("layer-editor.layer-id", "input"));
 
           var styleObj = helper.getStyleStore(browser);
-          console.log("styleObj", styleObj);
           assert.deepEqual(styleObj.layers, [
             {
               "id": 'background:'+bgId,
@@ -208,7 +207,6 @@ describe("layers", function() {
           // browser.click(wd.$("max-zoom", "input"));
 
           // var styleObj = helper.getStyleStore(browser);
-          // console.log("styleObj", styleObj);
 
           // assert.deepEqual(styleObj.layers, [
           //   {
@@ -226,7 +224,6 @@ describe("layers", function() {
           browser.click(wd.$("layer-editor.layer-id", "input"));
 
           var styleObj = helper.getStyleStore(browser);
-          console.log("styleObj", styleObj);
           assert.deepEqual(styleObj.layers, [
             {
               "id": 'background:'+bgId,
@@ -245,7 +242,6 @@ describe("layers", function() {
           browser.click(wd.$("layer-editor.layer-id", "input"));
 
           var styleObj = helper.getStyleStore(browser);
-          console.log("styleObj", styleObj);
           assert.deepEqual(styleObj.layers, [
             {
               "id": 'background:'+bgId,
@@ -263,7 +259,6 @@ describe("layers", function() {
           // browser.flushReactUpdates();
 
           // var styleObj = helper.getStyleStore(browser);
-          // console.log("styleObj", styleObj);
           // assert.deepEqual(styleObj.layers, [
           //   {
           //     "id": 'background:'+bgId,
@@ -282,7 +277,6 @@ describe("layers", function() {
           // browser.debug();
 
           var styleObj = helper.getStyleStore(browser);
-          console.log("styleObj", styleObj);
           assert.deepEqual(styleObj.layers, [
             {
               "id": 'background:'+bgId,
@@ -340,7 +334,6 @@ describe("layers", function() {
       });
 
       var styleObj = helper.getStyleStore(browser);
-      console.log("STYLEOBJ", styleObj);
       assert.deepEqual(styleObj.layers, [
         {
           "id": id,
