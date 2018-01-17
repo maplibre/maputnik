@@ -1,5 +1,5 @@
-browser.timeoutsAsyncScript(10*1000);
-browser.timeoutsImplicitWait(10*1000);
+browser.timeoutsAsyncScript(20*1000);
+browser.timeoutsImplicitWait(20*1000);
 
 /**
  * Sometimes chrome driver can result in the wrong text.
