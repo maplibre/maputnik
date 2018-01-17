@@ -3,8 +3,6 @@ var config    = require("../../config/specs");
 var helper    = require("../helper");
 var wd        = require("../../wd-helper");
 
-var SCREENSHOTS_PATH = artifacts.pathSync("/screenshots");
-
 
 describe('screenshots', function() {
 

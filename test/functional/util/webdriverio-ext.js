@@ -1,5 +1,12 @@
+var artifacts = require("../../artifacts");
+var fs        = require("fs");
+var path      = require("path");
+
+
 browser.timeoutsAsyncScript(20*1000);
 browser.timeoutsImplicitWait(20*1000);
+
+var SCREENSHOTS_PATH = artifacts.pathSync("/screenshots");
 
 /**
  * Sometimes chrome driver can result in the wrong text.

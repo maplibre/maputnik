@@ -26,7 +26,7 @@ describe('maputnik', function() {
   require("./layers");
   require("./map");
   require("./modals");
-  // require("./screenshots");
+  require("./screenshots");
   // ------------------------
 
 });
