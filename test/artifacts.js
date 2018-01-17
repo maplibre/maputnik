@@ -6,8 +6,8 @@ function genPath(subPath) {
   subPath = subPath || ".";
   var buildPath;
 
-  if(process.env.CIRCLE_ARTIFACTS) {
-    buildPath = path.join(process.env.CIRCLE_ARTIFACTS, subPath);
+  if(process.env.CIRCLECI) {
+    buildPath = path.join("/tmp/artifacts", subPath);
   }
   else {
     buildPath = path.join(__dirname, '..', 'build', subPath);

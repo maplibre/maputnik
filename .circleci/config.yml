@@ -25,3 +25,5 @@ jobs:
       - run: DOCKER_HOST=localhost npm test
       - run: npm run build
       - run: ./node_modules/.bin/istanbul report --include /tmp/artifacts/coverage/coverage.json --dir /tmp/artifacts/coverage html lcov
+      - store_artifacts:
+          path: /tmp/artifacts
