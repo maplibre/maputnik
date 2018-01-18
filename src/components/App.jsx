@@ -249,7 +249,8 @@ export default class App extends React.Component {
     } else {
       return  <MapboxGlMap {...mapProps}
         inspectModeEnabled={this.state.inspectModeEnabled}
-        highlightedLayer={this.state.mapStyle.layers[this.state.selectedLayerIndex]} />
+        highlightedLayer={this.state.mapStyle.layers[this.state.selectedLayerIndex]}
+        onLayerSelect={this.onLayerSelect.bind(this)} />
     }
   }
 
