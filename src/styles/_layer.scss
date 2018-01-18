@@ -1,7 +1,7 @@
 // LAYER LIST
 .maputnik-layer-list {
   &-header {
-    padding: $margin-2;
+    padding: $margin-2 $margin-2 $margin-3;
 
     @include flex-row;
 
