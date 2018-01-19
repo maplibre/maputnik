@@ -58,11 +58,22 @@ class AddModal extends React.Component {
 
   componentWillUpdate(nextProps, nextState) {
     // Check if source is valid for new type
-    const availableSources = this.getSources(nextState.type);
+    const oldType = this.state.type;
+    const newType = nextState.type;
+
+    const availableSourcesOld = this.getSources(oldType);
+    const availableSourcesNew = this.getSources(newType);
+
     if(
-      this.state.source !== ""
-      && availableSources.indexOf(this.state.source) < 0
+      // Type has changed
+      oldType !== newType
+      && this.state.source !== ""
+      // Was a valid source previously
+      && availableSourcesOld.indexOf(this.state.source) > -1
+      // And is not a valid source now
+      && availableSourcesNew.indexOf(nextState.source) < 0
     ) {
+      // Clear the source
       this.setState({
         source: ""
       });
