@@ -70,6 +70,9 @@ class AutocompleteInput extends React.Component {
         getItemValue={(item) => item[0]}
         onSelect={v => this.props.onChange(v)}
         onChange={(e, v) => this.props.onChange(v)}
+        shouldItemRender={(item, value) => {
+          return item[0].toLowerCase().indexOf(value.toLowerCase()) > -1
+        }}
         renderItem={(item, isHighlighted) => (
           <div
             key={item[0]}
