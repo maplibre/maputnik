@@ -30,21 +30,21 @@ jobs:
       # specify the version you desire here
       - image: node:6
       - image: selenium/standalone-chrome:3.1.0
-    working_directory: ~/repo
+    working_directory: ~/repo-linux-node-v6
     steps: *steps
   build-linux-node-v8:
     docker:
       # specify the version you desire here
       - image: node:8
       - image: selenium/standalone-chrome:3.1.0
-    working_directory: ~/repo
+    working_directory: ~/repo-linux-node-v8
     steps: *steps
   build-linux-node-v9:
     docker:
       # specify the version you desire here
       - image: node:9
       - image: selenium/standalone-chrome:3.1.0
-    working_directory: ~/repo
+    working_directory: ~/repo-linux-node-v9
     steps: *steps
 
 workflows:
