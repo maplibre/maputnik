@@ -51,7 +51,7 @@ workflows:
   version: 2
   build:
     jobs:
-      - build-linux-node-v6
       - build-linux-node-v8
-      - build-linux-node-v9
+      # - build-linux-node-v6
+      # - build-linux-node-v9
 
