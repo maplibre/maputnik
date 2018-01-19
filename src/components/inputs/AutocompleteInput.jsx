@@ -6,11 +6,24 @@ import Autocomplete from 'react-autocomplete'
 
 const MAX_HEIGHT = 140;
 
-class AutocompleteMenu extends React.Component {
+class AutocompleteInput extends React.Component {
   static propTypes = {
-    keepMenuWithinWindowBounds: PropTypes.bool,
-    style: PropTypes.object,
-    children: PropTypes.node
+    value: PropTypes.string,
+    options: PropTypes.array,
+    onChange: PropTypes.func,
+    keepMenuWithinWindowBounds: PropTypes.bool
+  }
+
+  static defaultProps = {
+    onChange: () => {},
+    options: [],
+  }
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      maxHeight: MAX_HEIGHT
+    };
   }
 
   calcMaxHeight() {
@@ -33,81 +46,43 @@ class AutocompleteMenu extends React.Component {
     this.calcMaxHeight();
   }
 
-  constructor(props) {
-    super(props);
-    this.state = {
-      maxHeight: MAX_HEIGHT
-    };
-  }
-
-  static defaultProps = {
-    style: {}
-  }
-
   render() {
-    const maxHeight = this.state.maxHeight - this.props.style.marginBottom || 0;
-    const style = {
-      maxHeight: maxHeight+"px"
-    }
-
-    return (
-      <div
-        ref={(el) => {
-          this.autocompleteMenuEl = el;
+    return <div
+      ref={(el) => {
+        this.autocompleteMenuEl = el;
+      }}
+    >
+      <Autocomplete
+        menuStyle={{
+          position: "absolute",
+          overflow: "auto",
+          maxHeight: this.state.maxHeight
         }}
-        className={"maputnik-autocomplete-menu"}
-        style={style}
-      >
-        {this.props.children}
-      </div>
-    )
-  }
-}
-
-class AutocompleteInput extends React.Component {
-  static propTypes = {
-    value: PropTypes.string,
-    options: PropTypes.array,
-    onChange: PropTypes.func,
-    keepMenuWithinWindowBounds: PropTypes.bool
-  }
-
-  static defaultProps = {
-    onChange: () => {},
-    options: [],
-  }
-
-  render() {
-    return <Autocomplete
-      wrapperProps={{
-        className: "maputnik-autocomplete",
-        style: null
-      }}
-      renderMenu={(items) => {
-        return <AutocompleteMenu keepMenuWithinWindowBounds={this.props.keepMenuWithinWindowBounds} style={{marginBottom: 4}}>
-          {items}
-        </AutocompleteMenu>
-      }}
-      inputProps={{
-        className: "maputnik-string"
-      }}
-      value={this.props.value}
-      items={this.props.options}
-      getItemValue={(item) => item[0]}
-      onSelect={v => this.props.onChange(v)}
-      onChange={(e, v) => this.props.onChange(v)}
-      renderItem={(item, isHighlighted) => (
-        <div
-          key={item[0]}
-          className={classnames({
-            "maputnik-autocomplete-menu-item": true,
-            "maputnik-autocomplete-menu-item-selected": isHighlighted,
-          })}
-        >
-         {item[1]}
-        </div>
-      )}
-    />
+        wrapperProps={{
+          className: "maputnik-autocomplete",
+          style: null
+        }}
+        inputProps={{
+          className: "maputnik-string"
+        }}
+        value={this.props.value}
+        items={this.props.options}
+        getItemValue={(item) => item[0]}
+        onSelect={v => this.props.onChange(v)}
+        onChange={(e, v) => this.props.onChange(v)}
+        renderItem={(item, isHighlighted) => (
+          <div
+            key={item[0]}
+            className={classnames({
+              "maputnik-autocomplete-menu-item": true,
+              "maputnik-autocomplete-menu-item-selected": isHighlighted,
+            })}
+          >
+           {item[1]}
+          </div>
+        )}
+      />
+    </div>
   }
 }
 
