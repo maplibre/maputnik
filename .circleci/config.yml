@@ -25,10 +25,24 @@ templates:
         path: /tmp/artifacts
         destination: /artifacts
 jobs:
+  build-linux-node-v6:
+    docker:
+      # specify the version you desire here
+      - image: node:6
+      - image: selenium/standalone-chrome:3.1.0
+    working_directory: ~/repo
+    steps: *steps
   build-linux-node-v8:
     docker:
       # specify the version you desire here
       - image: node:8
+      - image: selenium/standalone-chrome:3.1.0
+    working_directory: ~/repo
+    steps: *steps
+  build-linux-node-v9:
+    docker:
+      # specify the version you desire here
+      - image: node:9
       - image: selenium/standalone-chrome:3.1.0
     working_directory: ~/repo
     steps: *steps
@@ -37,4 +51,7 @@ workflows:
   version: 2
   build:
     jobs:
+      - build-linux-node-v6
       - build-linux-node-v8
+      - build-linux-node-v9
+
