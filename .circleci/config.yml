@@ -4,7 +4,7 @@ jobs:
     docker:
       # specify the version you desire here
       - image: node:8
-      - image: selenium/standalone-chrome:3.1.0
+      - image: selenium/standalone-chrome:3.8.1
     working_directory: ~/repo
     steps:
       - checkout
