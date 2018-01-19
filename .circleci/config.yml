@@ -37,7 +37,7 @@ jobs:
       # specify the version you desire here
       - image: node:8
       - image: selenium/standalone-chrome:3.1.0
-    working_directory: ~/repo-linux-node-v8
+    working_directory: ~/repo
     steps: *steps
   build-linux-node-v9:
     docker:
