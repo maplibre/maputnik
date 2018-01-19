@@ -1,32 +1,34 @@
 version: 2
+templates:
+  steps: &steps
+    - checkout
+    - run:
+        name: "Create artifacts directory"
+        command: mkdir /tmp/artifacts
+    - restore_cache:
+        key: v1-dependencies-{{ checksum "package.json" }}
+
+    - run: npm install
+
+    - save_cache:
+        paths:
+          - node_modules
+        key: v1-dependencies-{{ checksum "package.json" }}
+
+    - run: mkdir -p /tmp/artifacts/logs
+    - run: npm run build
+    - run: npm run lint
+    - run: npm run lint-styles
+    - run: DOCKER_HOST=localhost npm test
+    - run: ./node_modules/.bin/istanbul report --include /tmp/artifacts/coverage/coverage.json --dir /tmp/artifacts/coverage html lcov
+    - store_artifacts:
+        path: /tmp/artifacts
+        destination: /artifacts
 jobs:
-  build:
+  build-linux-node-v8:
     docker:
       # specify the version you desire here
       - image: node:8
       - image: selenium/standalone-chrome:3.1.0
     working_directory: ~/repo
-    steps:
-      - checkout
-      - run:
-          name: "Create artifacts directory"
-          command: mkdir /tmp/artifacts
-      - restore_cache:
-          key: v1-dependencies-{{ checksum "package.json" }}
-
-      - run: npm install
-
-      - save_cache:
-          paths:
-            - node_modules
-          key: v1-dependencies-{{ checksum "package.json" }}
-
-      - run: mkdir -p /tmp/artifacts/logs
-      - run: npm run build
-      - run: npm run lint
-      - run: npm run lint-styles
-      - run: DOCKER_HOST=localhost npm test
-      - run: ./node_modules/.bin/istanbul report --include /tmp/artifacts/coverage/coverage.json --dir /tmp/artifacts/coverage html lcov
-      - store_artifacts:
-          path: /tmp/artifacts
-          destination: /artifacts
+    steps: *steps
