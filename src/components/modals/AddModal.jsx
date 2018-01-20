@@ -102,7 +102,7 @@ class AddModal extends React.Component {
     }
 
     for(let [key, val] of Object.entries(this.props.sources)) {
-      if(types[val.type].indexOf(type) > -1) {
+      if(types[val.type] && types[val.type].indexOf(type) > -1) {
         sources.push(key);
       }
     }
