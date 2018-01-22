@@ -29,6 +29,7 @@ function groupFeaturesBySourceLayer(features) {
 
 class FeatureLayerPopup extends React.Component {
   static propTypes = {
+    onLayerSelect: PropTypes.func.isRequired,
     features: PropTypes.array
   }
 
@@ -40,6 +41,9 @@ class FeatureLayerPopup extends React.Component {
         return <label
           key={idx}
           className="maputnik-popup-layer"
+          onClick={() => {
+            this.props.onLayerSelect(feature.layer.id)
+          }}
         >
           <LayerIcon type={feature.layer.type} style={{
             width: 14,
