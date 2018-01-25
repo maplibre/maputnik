@@ -21,6 +21,10 @@ import LayerWatcher from '../libs/layerwatcher'
 import tokens from '../config/tokens.json'
 import isEqual from 'lodash.isequal'
 
+import MapboxGl from 'mapbox-gl'
+import mapboxUtil from 'mapbox-gl/src/util/mapbox'
+
+
 function updateRootSpec(spec, fieldName, newValues) {
   return {
     ...spec,
@@ -199,7 +203,8 @@ export default class App extends React.Component {
       };
 
       if(!this.state.sources.hasOwnProperty(key) && val.type === "vector") {
-        const url = val.url;
+        const url = mapboxUtil.normalizeSourceURL(val.url, MapboxGl.accessToken);
+
         fetch(url)
           .then((response) => {
             return response.json();
