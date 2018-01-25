@@ -8,7 +8,7 @@ module.exports = [
   // We have to include this for access to `normalizeSourceURL`. We should
   // remove this ASAP, see <https://github.com/mapbox/mapbox-gl-js/issues/2416>
   {
-    test: /.*node_modules[\/\\]mapbox-gl[\/\\]src[\///]util[\/\\].*\.js/,
+    test: /.*node_modules[\/\\]mapbox-gl[\/\\]src[\/\\]util[\/\\].*\.js/,
     loader: 'babel-loader',
     query: {
       presets: ['env', 'react', 'flow'],
