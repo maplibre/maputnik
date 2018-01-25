@@ -203,7 +203,12 @@ export default class App extends React.Component {
       };
 
       if(!this.state.sources.hasOwnProperty(key) && val.type === "vector") {
-        const url = mapboxUtil.normalizeSourceURL(val.url, MapboxGl.accessToken);
+        let url = val.url;
+        try {
+          url = mapboxUtil.normalizeSourceURL(url, MapboxGl.accessToken);
+        } catch(err) {
+          console.warn("Failed to normalizeSourceURL: ", err);
+        }
 
         fetch(url)
           .then((response) => {
