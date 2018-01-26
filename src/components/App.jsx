@@ -21,6 +21,10 @@ import LayerWatcher from '../libs/layerwatcher'
 import tokens from '../config/tokens.json'
 import isEqual from 'lodash.isequal'
 
+import MapboxGl from 'mapbox-gl'
+import mapboxUtil from 'mapbox-gl/src/util/mapbox'
+
+
 function updateRootSpec(spec, fieldName, newValues) {
   return {
     ...spec,
@@ -199,7 +203,13 @@ export default class App extends React.Component {
       };
 
       if(!this.state.sources.hasOwnProperty(key) && val.type === "vector") {
-        const url = val.url;
+        let url = val.url;
+        try {
+          url = mapboxUtil.normalizeSourceURL(url, MapboxGl.accessToken);
+        } catch(err) {
+          console.warn("Failed to normalizeSourceURL: ", err);
+        }
+
         fetch(url)
           .then((response) => {
             return response.json();
