@@ -117,6 +117,11 @@ export default class LayerEditor extends React.Component {
       comment = this.props.layer.metadata['maputnik:comment']
     }
 
+    let sourceLayerIds;
+    if(this.props.sources.hasOwnProperty(this.props.layer.source)) {
+      sourceLayerIds = this.props.sources[this.props.layer.source].layers;
+    }
+
     switch(type) {
       case 'layer': return <div>
         <LayerIdBlock
@@ -134,7 +139,7 @@ export default class LayerEditor extends React.Component {
         />
         }
         {this.props.layer.type !== 'raster' && this.props.layer.type !== 'background' && <LayerSourceLayerBlock
-          sourceLayerIds={this.props.sources[this.props.layer.source].layers}
+          sourceLayerIds={sourceLayerIds}
           value={this.props.layer['source-layer']}
           onChange={v => this.changeProperty(null, 'source-layer', v)}
         />
