@@ -111,6 +111,16 @@ export default class App extends React.Component {
   }
 
   onStyleChanged(newStyle, save=true) {
+
+    if(newStyle.glyphs === undefined){
+      let error = "Failed because no glyphs property found in style";
+      this.setState({
+        errors:[error]
+      })
+      console.error(error)
+      return
+    }
+    
     if(newStyle.glyphs !== this.state.mapStyle.glyphs) {
       this.updateFonts(newStyle.glyphs)
     }
