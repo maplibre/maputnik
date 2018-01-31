@@ -117,10 +117,9 @@ export default class App extends React.Component {
       this.setState({
         errors:[error]
       })
-      console.error(error)
       return
     }
-    
+
     if(newStyle.glyphs !== this.state.mapStyle.glyphs) {
       this.updateFonts(newStyle.glyphs)
     }
