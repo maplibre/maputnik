@@ -37,9 +37,20 @@
   color: $color-white;
   text-decoration: none;
 
+  h1 {
+    position: relative;
+  }
+
   &:hover {
     background-color: $color-midgray;
   }
+}
+
+.maputnik-toolbar-version {
+  position: absolute;
+  font-size: 10px;
+  bottom: 0;
+  margin-left: 4px;
 }
 
 .maputnik-toolbar-action {
@@ -56,7 +67,7 @@
 }
 
 .maputnik-toolbar-logo {
-  flex: 0 0 140px;
+  flex: 0 0 170px;
 }
 
 .maputnik-toolbar__inner {
