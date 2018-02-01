@@ -202,7 +202,7 @@ export default class App extends React.Component {
         layers: []
       };
 
-      if(!this.state.sources.hasOwnProperty(key) && val.type === "vector") {
+      if(!this.state.sources.hasOwnProperty(key) && val.type === "vector" && val.hasOwnProperty("url")) {
         let url = val.url;
         try {
           url = mapboxUtil.normalizeSourceURL(url, MapboxGl.accessToken);
@@ -215,6 +215,10 @@ export default class App extends React.Component {
             return response.json();
           })
           .then((json) => {
+            if(!json.hasOwnProperty("vector_layers")) {
+              return;
+            }
+
             // Create new objects before setState
             const sources = Object.assign({}, this.state.sources);
 
