@@ -57,6 +57,7 @@ function indexOfLayer(layers, layerId) {
 function replaceAccessToken(mapStyle) {
   const omtSource = mapStyle.sources.openmaptiles
   if(!omtSource) return mapStyle
+  if(!omtSource.hasOwnProperty("url")) return mapStyle
 
   const metadata = mapStyle.metadata || {}
   const accessToken = metadata['maputnik:openmaptiles_access_token'] || tokens.openmaptiles
