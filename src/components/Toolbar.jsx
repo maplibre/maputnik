@@ -22,6 +22,7 @@ import SettingsModal from './modals/SettingsModal'
 import ExportModal from './modals/ExportModal'
 import SourcesModal from './modals/SourcesModal'
 import OpenModal from './modals/OpenModal'
+import pkgJson from '../../package.json'
 
 import style from '../libs/style'
 
@@ -136,7 +137,9 @@ export default class Toolbar extends React.Component {
           className="maputnik-toolbar-logo"
         >
           <img src={logoImage} alt="Maputnik" />
-          <h1>Maputnik</h1>
+          <h1>Maputnik
+            <span className="maputnik-toolbar-version">v{pkgJson.version}</span>
+          </h1>
         </ToolbarLink>
         <div className="maputnik-toolbar__actions">
           <ToolbarAction onClick={this.toggleModal.bind(this, 'open')}>
