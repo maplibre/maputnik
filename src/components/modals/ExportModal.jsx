@@ -43,7 +43,10 @@ class Gist extends React.Component {
       ...this.state,
       saving: true
     });
-    const preview = this.state.preview && (this.props.mapStyle.metadata || {})['maputnik:openmaptiles_access_token'];
+
+    const preview = this.state.preview;
+    
+    const mapboxToken = (this.props.mapStyle.metadata || {})['maputnik:mapbox_access_token'];
 
     const mapStyleStr = preview ?
         styleSpec.format(stripAccessTokens(style.replaceAccessToken(this.props.mapStyle))) :
@@ -66,6 +69,7 @@ class Gist extends React.Component {
   <body>
     <div id='map'></div>
     <script>
+        mapboxgl.accessToken = '${mapboxToken}';
         var map = new mapboxgl.Map({
           container: 'map',
           style: 'style.json',
@@ -177,6 +181,12 @@ class Gist extends React.Component {
               <StringInput
                   value={(this.props.mapStyle.metadata || {})['maputnik:openmaptiles_access_token']}
                   onChange={this.changeMetadataProperty.bind(this, "maputnik:openmaptiles_access_token")}/>
+            </InputBlock>
+            <InputBlock
+                label={"Mapbox Access Token: "}>
+              <StringInput
+                  value={(this.props.mapStyle.metadata || {})['maputnik:mapbox_access_token']}
+                  onChange={this.changeMetadataProperty.bind(this, "maputnik:mapbox_access_token")}/>
             </InputBlock>
             <a target="_blank" rel="noopener noreferrer" href="https://openmaptiles.com/hosting/">Get your free access token</a>
           </div>
