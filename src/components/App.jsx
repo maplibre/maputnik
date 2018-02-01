@@ -99,7 +99,9 @@ export default class App extends React.Component {
   updateFonts(urlTemplate) {
     const metadata = this.state.mapStyle.metadata || {}
     const accessToken = metadata['maputnik:openmaptiles_access_token'] || tokens.openmaptiles
-    downloadGlyphsMetadata(urlTemplate.replace('{key}', accessToken), fonts => {
+
+    let glyphUrl = (typeof urlTemplate === 'string')? urlTemplate.replace('{key}', accessToken): urlTemplate;
+    downloadGlyphsMetadata(glyphUrl, fonts => {
       this.setState({ spec: updateRootSpec(this.state.spec, 'glyphs', fonts)})
     })
   }
@@ -112,23 +114,16 @@ export default class App extends React.Component {
 
   onStyleChanged(newStyle, save=true) {
 
-    if(newStyle.glyphs === undefined){
-      let error = "Failed because no glyphs property found in style";
-      this.setState({
-        errors:[error]
-      })
-      return
-    }
-
-    if(newStyle.glyphs !== this.state.mapStyle.glyphs) {
-      this.updateFonts(newStyle.glyphs)
-    }
-    if(newStyle.sprite !== this.state.mapStyle.sprite) {
-      this.updateIcons(newStyle.sprite)
-    }
-
     const errors = styleSpec.validate(newStyle, styleSpec.latest)
     if(errors.length === 0) {
+
+      if(newStyle.glyphs !== this.state.mapStyle.glyphs) {
+        this.updateFonts(newStyle.glyphs)
+      }
+      if(newStyle.sprite !== this.state.mapStyle.sprite) {
+        this.updateIcons(newStyle.sprite)
+      }
+
       this.revisionStore.addRevision(newStyle)
       if(save) this.saveStyle(newStyle)
       this.setState({
