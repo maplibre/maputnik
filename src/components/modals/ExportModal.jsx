@@ -26,6 +26,7 @@ class Gist extends React.Component {
     super(props);
     this.state = {
       preview: false,
+      public: false,
       saving: false,
       latestGist: null,
     }
@@ -94,7 +95,7 @@ class Gist extends React.Component {
     const gh = new GitHub();
     let gist = gh.getGist(); // not a gist yet
     gist.create({
-      public: true,
+      public: this.state.public,
       description: styleTitle,
       files: files
     }).then(function({data}) {
@@ -112,6 +113,13 @@ class Gist extends React.Component {
     this.setState({
       ...this.state,
       preview: value
+    })
+  }
+
+  onPublicChange(value) {
+    this.setState({
+      ...this.state,
+      public: value
     })
   }
 
@@ -167,13 +175,22 @@ class Gist extends React.Component {
         <MdFileDownload />
         Save to Gist (anonymous)
       </Button>
-      {' '}
-      <CheckboxInput
-        value={this.state.preview}
-        name='gist-style-preview'
-        onChange={this.onPreviewChange.bind(this)}
-      />
-      <span> Include preview</span>
+      <div className="maputnik-modal-sub-section">
+        <CheckboxInput
+          value={this.state.public}
+          name='gist-style-public'
+          onChange={this.onPublicChange.bind(this)}
+        />
+        <span> Public gist</span>
+      </div>
+      <div className="maputnik-modal-sub-section">
+        <CheckboxInput
+          value={this.state.preview}
+          name='gist-style-preview'
+          onChange={this.onPreviewChange.bind(this)}
+        />
+        <span> Include preview</span>
+      </div>
       {this.state.preview ?
           <div>
             <InputBlock
