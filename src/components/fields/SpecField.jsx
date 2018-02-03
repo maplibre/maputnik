@@ -1,6 +1,5 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import color from 'color'
 
 import ColorField from './ColorField'
 import NumberInput from '../inputs/NumberInput'
