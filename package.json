@@ -10,7 +10,8 @@
     "test-watch": "wdio config/wdio.conf.js --watch",
     "start": "webpack-dev-server --progress --profile --colors --config config/webpack.config.js",
     "lint": "eslint --ext js --ext jsx {src,test}",
-    "lint-styles": "stylelint 'src/styles/*.scss'"
+    "lint-styles": "stylelint 'src/styles/*.scss'",
+    "nsp": "nsp check --reporter summary"
   },
   "repository": {
     "type": "git",
@@ -116,6 +117,7 @@
     "mocha": "^4.0.1",
     "mocha-loader": "^1.1.1",
     "node-sass": "^4.6.0",
+    "nsp": "^3.1.0",
     "react-hot-loader": "^3.1.1",
     "sass-loader": "^6.0.6",
     "style-loader": "^0.19.0",
