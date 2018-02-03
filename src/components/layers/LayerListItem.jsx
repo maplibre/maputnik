@@ -1,6 +1,5 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import Color from 'color'
 import classnames from 'classnames'
 
 import CopyIcon from 'react-icons/lib/md/content-copy'
