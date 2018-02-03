@@ -251,7 +251,7 @@ export default class App extends React.Component {
 
   mapRenderer() {
     const mapProps = {
-      mapStyle: style.replaceAccessToken(this.state.mapStyle),
+      mapStyle: style.replaceAccessToken(this.state.mapStyle, {allowFallback: true}),
       onDataChange: (e) => {
         this.layerWatcher.analyzeMap(e.map)
         this.fetchSources();
