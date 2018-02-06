@@ -7,6 +7,7 @@ var HtmlWebpackPlugin = require('html-webpack-plugin');
 var WebpackCleanupPlugin = require('webpack-cleanup-plugin');
 var BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 var CopyWebpackPlugin = require('copy-webpack-plugin');
+var UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 
 var OUTPATH;
 if(process.env.CIRCLE_ARTIFACTS) {
@@ -49,8 +50,7 @@ module.exports = {
   },
   module: {
     noParse: [
-      /mapbox-gl\/dist\/mapbox-gl.js/,
-      /openlayers\/dist\/ol.js/
+      /mapbox-gl\/dist\/mapbox-gl.js/
     ],
     loaders
   },
@@ -68,12 +68,7 @@ module.exports = {
         NODE_ENV: '"production"'
       }
     }),
-    new webpack.optimize.UglifyJsPlugin({
-      compress: {
-        warnings: false,
-        screw_ie8: true,
-      }
-    }),
+    new UglifyJsPlugin(),
     new ExtractTextPlugin('[contenthash].css', {
       allChunks: true
     }),
