@@ -17,7 +17,8 @@ module.exports = [
   },
   {
     test: /\.jsx?$/,
-    exclude: /(.*node_modules(?![\/\\]@mapbox[\/\\]mapbox-gl-style-spec)|bower_components|public)/,
+    // Note: These modules aren't ES5 therefore we much compile them.
+    exclude: /(.*node_modules(?![\/\\](@mapbox[\/\\]mapbox-gl-style-spec|ol|mapbox-to-ol-style))|bower_components|public)/,
     loader: 'babel-loader',
     query: {
       presets: ['env', 'react'],

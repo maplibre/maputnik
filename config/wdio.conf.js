@@ -35,7 +35,7 @@ exports.config = {
   mochaOpts: {
     ui: 'bdd',
     // Because we don't know how long the initial build will take...
-    timeout: 2*60*1000
+    timeout: 4*60*1000
   },
   onPrepare: function (config, capabilities) {
     var compiler = webpack(webpackConfig);
