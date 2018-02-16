@@ -132,11 +132,11 @@ class AddSource extends React.Component {
         maxzoom: source.maxzoom || 14
       }
       case 'tilejson_raster-dem': return {
-        type: 'raster',
+        type: 'raster-dem',
         url: source.url || 'http://localhost:3000/tilejson.json'
       }
       case 'tilexyz_raster-dem': return {
-        type: 'raster',
+        type: 'raster-dem',
         tiles: source.tiles || ['http://localhost:3000/{x}/{y}/{z}.pbf'],
         minzoom: source.minzoom || 0,
         maxzoom: source.maxzoom || 14
