@@ -115,6 +115,8 @@ class SourceTypeEditor extends React.Component {
       case 'tilexyz_vector': return <TileURLSourceEditor {...commonProps} />
       case 'tilejson_raster': return <TileJSONSourceEditor {...commonProps} />
       case 'tilexyz_raster': return <TileURLSourceEditor {...commonProps} />
+      case 'tilejson_raster-dem': return <TileJSONSourceEditor {...commonProps} />
+      case 'tilexyz_raster-dem': return <TileURLSourceEditor {...commonProps} />
       default: return null
     }
   }

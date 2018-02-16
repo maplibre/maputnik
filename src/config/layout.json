@@ -194,5 +194,21 @@
           ]
         }
       ]
+    },
+    "hillshade": {
+      "groups": [
+        {
+          "title": "Paint properties",
+          "type": "properties",
+          "fields": [
+            "hillshade-illumination-direction",
+            "hillshade-illumination-anchor",
+            "hillshade-exaggeration",
+            "hillshade-shadow-color",
+            "hillshade-highlight-color",
+            "hillshade-accent-color"
+          ]
+        }
+      ]
     }
 }
