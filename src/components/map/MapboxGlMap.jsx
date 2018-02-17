@@ -38,7 +38,7 @@ function buildInspectStyle(originalMapStyle, coloredLayers, highlightedLayer) {
   const sources = {}
   Object.keys(originalMapStyle.sources).forEach(sourceId => {
     const source = originalMapStyle.sources[sourceId]
-    if(source.type !== 'raster') {
+    if(source.type !== 'raster' && source.type !== 'raster-dem') {
       sources[sourceId] = source
     }
   })
