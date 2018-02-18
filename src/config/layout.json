@@ -91,7 +91,8 @@
             "circle-stroke-width",
             "circle-pitch-scale",
             "circle-translate",
-            "circle-translate-anchor"
+            "circle-translate-anchor",
+            "circle-pitch-alignment"
           ]
         }
       ]
@@ -147,7 +148,9 @@
             "icon-rotate",
             "icon-padding",
             "icon-keep-upright",
-            "icon-offset" 
+            "icon-offset",
+            "icon-anchor",
+            "icon-pitch-alignment"
           ]
         },
         {
