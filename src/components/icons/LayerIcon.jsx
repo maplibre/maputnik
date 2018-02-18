@@ -19,6 +19,7 @@ class LayerIcon extends React.Component {
       case 'fill-extrusion': return <BackgroundIcon {...iconProps} />
       case 'raster': return <FillIcon {...iconProps} />
       case 'hillshade': return <FillIcon {...iconProps} />
+      case 'heatmap': return <FillIcon {...iconProps} />
       case 'fill': return <FillIcon {...iconProps} />
       case 'background': return <BackgroundIcon {...iconProps} />
       case 'line': return <LineIcon {...iconProps} />
