@@ -45,6 +45,10 @@ function editorMode(source) {
     if(source.tiles) return 'tilexyz_raster'
     return 'tilejson_raster'
   }
+  if(source.type === 'raster-dem') {
+    if(source.tiles) return 'tilexyz_raster-dem'
+    return 'tilejson_raster-dem'
+  }
   if(source.type === 'vector') {
     if(source.tiles) return 'tilexyz_vector'
     return 'tilejson_vector'
@@ -127,6 +131,16 @@ class AddSource extends React.Component {
         minzoom: source.minzoom || 0,
         maxzoom: source.maxzoom || 14
       }
+      case 'tilejson_raster-dem': return {
+        type: 'raster-dem',
+        url: source.url || 'http://localhost:3000/tilejson.json'
+      }
+      case 'tilexyz_raster-dem': return {
+        type: 'raster-dem',
+        tiles: source.tiles || ['http://localhost:3000/{x}/{y}/{z}.pbf'],
+        minzoom: source.minzoom || 0,
+        maxzoom: source.maxzoom || 14
+      }
       default: return {}
     }
   }
@@ -147,6 +161,8 @@ class AddSource extends React.Component {
             ['tilexyz_vector', 'Vector (XYZ URLs)'],
             ['tilejson_raster', 'Raster (TileJSON URL)'],
             ['tilexyz_raster', 'Raster (XYZ URL)'],
+            ['tilejson_raster-dem', 'Raster DEM (TileJSON URL)'],
+            ['tilexyz_raster-dem', 'Raster DEM (XYZ URLs)'],
           ]}
           onChange={mode => this.setState({mode: mode, source: this.defaultSource(mode)})}
           value={this.state.mode}
