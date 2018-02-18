@@ -210,5 +210,19 @@
           ]
         }
       ]
+    },
+    "heatmap": {
+      "groups": [
+        {
+          "title": "Paint properties",
+          "type": "properties",
+          "fields": [
+            "heatmap-radius",
+            "heatmap-weight",
+            "heatmap-intensity",
+            "heatmap-opacity"
+          ]
+        }
+      ]
     }
 }
