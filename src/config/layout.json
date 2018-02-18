@@ -220,7 +220,6 @@
             "heatmap-radius",
             "heatmap-weight",
             "heatmap-intensity",
-            "heatmap-color",
             "heatmap-opacity"
           ]
         }
