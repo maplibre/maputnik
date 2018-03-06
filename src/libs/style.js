@@ -54,12 +54,23 @@ function indexOfLayer(layers, layerId) {
   return null
 }
 
-function replaceAccessToken(mapStyle) {
+function replaceAccessToken(mapStyle, opts={}) {
   const omtSource = mapStyle.sources.openmaptiles
   if(!omtSource) return mapStyle
+  if(!omtSource.hasOwnProperty("url")) return mapStyle
 
   const metadata = mapStyle.metadata || {}
-  const accessToken = metadata['maputnik:openmaptiles_access_token'] || tokens.openmaptiles
+  let accessToken = metadata['maputnik:openmaptiles_access_token'];
+
+  if(opts.allowFallback && !accessToken) {
+    accessToken = tokens.openmaptiles;
+  }
+
+  if(!accessToken) {
+    // Early exit.
+    return mapStyle;
+  }
+
   const changedSources = {
     ...mapStyle.sources,
     openmaptiles: {

@@ -25,8 +25,7 @@ module.exports = {
   },
   module: {
     noParse: [
-      /mapbox-gl\/dist\/mapbox-gl.js/,
-      /openlayers\/dist\/ol.js/
+      /mapbox-gl\/dist\/mapbox-gl.js/
     ],
     loaders: loaders
   },

@@ -22,6 +22,10 @@ import tokens from '../config/tokens.json'
 import isEqual from 'lodash.isequal'
 import Debug from '../libs/debug'
 
+import MapboxGl from 'mapbox-gl'
+import mapboxUtil from 'mapbox-gl/src/util/mapbox'
+
+
 function updateRootSpec(spec, fieldName, newValues) {
   return {
     ...spec,
@@ -112,7 +116,9 @@ export default class App extends React.Component {
   updateFonts(urlTemplate) {
     const metadata = this.state.mapStyle.metadata || {}
     const accessToken = metadata['maputnik:openmaptiles_access_token'] || tokens.openmaptiles
-    downloadGlyphsMetadata(urlTemplate.replace('{key}', accessToken), fonts => {
+
+    let glyphUrl = (typeof urlTemplate === 'string')? urlTemplate.replace('{key}', accessToken): urlTemplate;
+    downloadGlyphsMetadata(glyphUrl, fonts => {
       this.setState({ spec: updateRootSpec(this.state.spec, 'glyphs', fonts)})
     })
   }
@@ -124,15 +130,17 @@ export default class App extends React.Component {
   }
 
   onStyleChanged(newStyle, save=true) {
-    if(newStyle.glyphs !== this.state.mapStyle.glyphs) {
-      this.updateFonts(newStyle.glyphs)
-    }
-    if(newStyle.sprite !== this.state.mapStyle.sprite) {
-      this.updateIcons(newStyle.sprite)
-    }
 
     const errors = styleSpec.validate(newStyle, styleSpec.latest)
     if(errors.length === 0) {
+
+      if(newStyle.glyphs !== this.state.mapStyle.glyphs) {
+        this.updateFonts(newStyle.glyphs)
+      }
+      if(newStyle.sprite !== this.state.mapStyle.sprite) {
+        this.updateIcons(newStyle.sprite)
+      }
+
       this.revisionStore.addRevision(newStyle)
       if(save) this.saveStyle(newStyle)
       this.setState({
@@ -215,13 +223,23 @@ export default class App extends React.Component {
         layers: []
       };
 
-      if(!this.state.sources.hasOwnProperty(key) && val.type === "vector") {
-        const url = val.url;
+      if(!this.state.sources.hasOwnProperty(key) && val.type === "vector" && val.hasOwnProperty("url")) {
+        let url = val.url;
+        try {
+          url = mapboxUtil.normalizeSourceURL(url, MapboxGl.accessToken);
+        } catch(err) {
+          console.warn("Failed to normalizeSourceURL: ", err);
+        }
+
         fetch(url)
           .then((response) => {
             return response.json();
           })
           .then((json) => {
+            if(!json.hasOwnProperty("vector_layers")) {
+              return;
+            }
+
             // Create new objects before setState
             const sources = Object.assign({}, this.state.sources);
 
@@ -250,7 +268,7 @@ export default class App extends React.Component {
 
   mapRenderer() {
     const mapProps = {
-      mapStyle: style.replaceAccessToken(this.state.mapStyle),
+      mapStyle: style.replaceAccessToken(this.state.mapStyle, {allowFallback: true}),
       onDataChange: (e) => {
         this.layerWatcher.analyzeMap(e.map)
         this.fetchSources();

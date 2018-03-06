@@ -46,6 +46,7 @@
 
 // BUTTON
 .maputnik-button {
+  display: inline-block;
   cursor: pointer;
   background-color: $color-midgray;
   color: $color-lowgray;

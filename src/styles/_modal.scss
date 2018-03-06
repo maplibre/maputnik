@@ -6,6 +6,7 @@
   background-color: $color-black;
   box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.3);
   z-index: 3;
+  position: relative;
 }
 
 .maputnik-modal-section {
@@ -18,6 +19,10 @@
   @include flex-column;
 
   flex-shrink: 0;
+}
+
+.maputnik-modal-sub-section {
+  margin-top: $margin-1;
 }
 
 .maputnik-modal-section--shrink {
@@ -75,6 +80,7 @@
   position: fixed;
   align-items: center;
   justify-content: center;
+  z-index: 9;
 
   @include flex-row;
 }

@@ -4,9 +4,21 @@ module.exports = [
     exclude: /(node_modules|bower_components|public)/,
     loaders: ['react-hot-loader/webpack']
   },
+  // HACK: This is a massive hack and reaches into the mapbox-gl private API.
+  // We have to include this for access to `normalizeSourceURL`. We should
+  // remove this ASAP, see <https://github.com/mapbox/mapbox-gl-js/issues/2416>
+  {
+    test: /.*node_modules[\/\\]mapbox-gl[\/\\]src[\/\\]util[\/\\].*\.js/,
+    loader: 'babel-loader',
+    query: {
+      presets: ['env', 'react', 'flow'],
+      plugins: ['transform-runtime', 'transform-decorators-legacy', 'transform-class-properties'],
+    }
+  },
   {
     test: /\.jsx?$/,
-    exclude: /(.*node_modules(?![\/\\]@mapbox[\/\\]mapbox-gl-style-spec)|bower_components|public)/,
+    // Note: These modules aren't ES5 therefore we much compile them.
+    exclude: /(.*node_modules(?![\/\\](@mapbox[\/\\]mapbox-gl-style-spec|ol|mapbox-to-ol-style))|bower_components|public)/,
     loader: 'babel-loader',
     query: {
       presets: ['env', 'react'],

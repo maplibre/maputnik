@@ -1,6 +1,6 @@
 {
   "name": "maputnik",
-  "version": "1.1.0-beta3",
+  "version": "1.1.0",
   "description": "A MapboxGL visual style editor",
   "main": "''",
   "scripts": {
@@ -10,7 +10,8 @@
     "test-watch": "cross-env NODE_ENV=test wdio config/wdio.conf.js --watch",
     "start": "webpack-dev-server --progress --profile --colors --config config/webpack.config.js",
     "lint": "eslint --ext js --ext jsx {src,test}",
-    "lint-styles": "stylelint 'src/styles/*.scss'"
+    "lint-styles": "stylelint 'src/styles/*.scss'",
+    "nsp": "nsp check --reporter summary"
   },
   "repository": {
     "type": "git",
@@ -21,7 +22,7 @@
   "homepage": "https://github.com/maputnik/editor#readme",
   "dependencies": {
     "@mapbox/mapbox-gl-rtl-text": "^0.1.1",
-    "@mapbox/mapbox-gl-style-spec": "^10.0.1",
+    "@mapbox/mapbox-gl-style-spec": "^11.1.1",
     "classnames": "^2.2.5",
     "codemirror": "^5.32.0",
     "color": "^2.0.0",
@@ -32,12 +33,12 @@
     "lodash.clonedeep": "^4.5.0",
     "lodash.isequal": "^4.5.0",
     "lodash.throttle": "^4.1.1",
-    "mapbox-gl": "^0.43.0",
-    "mapbox-gl-inspect": "^1.2.6",
+    "mapbox-gl": "^0.44.1",
+    "mapbox-gl-inspect": "^1.3.0",
     "maputnik-design": "github:maputnik/design",
     "mousetrap": "^1.6.1",
-    "ol-mapbox-style": "^1.0.1",
-    "openlayers": "^4.4.2",
+    "ol-mapbox-style": "^2.10.1",
+    "ol": "^4.6.4",
     "prop-types": "^15.6.0",
     "react": "^16.2.0",
     "react-addons-pure-render-mixin": "^15.6.2",
@@ -97,6 +98,8 @@
     "babel-plugin-transform-object-rest-spread": "^6.26.0",
     "babel-plugin-transform-runtime": "^6.23.0",
     "babel-preset-env": "^1.6.1",
+    "babel-preset-es2015": "^6.24.1",
+    "babel-preset-flow": "^6.23.0",
     "babel-preset-react": "^6.24.1",
     "babel-register": "^6.26.0",
     "babel-runtime": "^6.26.0",
@@ -118,6 +121,7 @@
     "mkdirp": "^0.5.1",
     "mocha": "^4.0.1",
     "node-sass": "^4.6.0",
+    "nsp": "^3.1.0",
     "react-hot-loader": "^3.1.1",
     "sass-loader": "^6.0.6",
     "selenium-standalone": "^6.11.0",
@@ -126,6 +130,7 @@
     "stylelint-config-standard": "^15.0.1",
     "transform-loader": "^0.2.4",
     "uuid": "^3.1.0",
+    "uglifyjs-webpack-plugin": "^1.1.8",
     "wdio-mocha-framework": "^0.5.11",
     "wdio-phantomjs-service": "^0.2.2",
     "wdio-selenium-standalone-service": "0.0.9",
