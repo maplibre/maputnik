@@ -1,6 +1,6 @@
 var webpack          = require("webpack");
 var WebpackDevServer = require("webpack-dev-server");
-var webpackConfig    = require("./webpack.production.config");
+var webpackConfig    = require("./webpack.config");
 var testConfig       = require("../test/config/specs");
 var artifacts        = require("../test/artifacts");
 var isDocker         = require("is-docker");
