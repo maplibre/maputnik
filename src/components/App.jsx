@@ -76,12 +76,16 @@ export default class App extends React.Component {
 
   componentDidMount() {
     Mousetrap.bind(['ctrl+z'], this.onUndo.bind(this));
+    Mousetrap.bind(['command+z'], this.onUndo.bind(this));
     Mousetrap.bind(['ctrl+y'], this.onRedo.bind(this));
+    Mousetrap.bind(['command+shift+z'], this.onRedo.bind(this));
   }
 
   componentWillUnmount() {
     Mousetrap.unbind(['ctrl+z'], this.onUndo.bind(this));
+    Mousetrap.unbind(['command+z'], this.onUndo.bind(this));
     Mousetrap.unbind(['ctrl+y'], this.onRedo.bind(this));
+    Mousetrap.unbind(['command+shift+z'], this.onRedo.bind(this));
   }
 
   onReset() {
