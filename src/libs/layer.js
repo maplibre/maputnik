@@ -1,16 +1,16 @@
-import GlSpec from 'mapbox-gl-style-spec/reference/latest.js'
+import styleSpec from '@mapbox/mapbox-gl-style-spec/style-spec'
 
 export function changeType(layer, newType) {
   const changedPaintProps = { ...layer.paint }
   Object.keys(changedPaintProps).forEach(propertyName => {
-    if(!(propertyName in GlSpec['paint_' + newType])) {
+    if(!(propertyName in styleSpec.latest['paint_' + newType])) {
       delete changedPaintProps[propertyName]
     }
   })
 
   const changedLayoutProps = { ...layer.layout }
   Object.keys(changedLayoutProps).forEach(propertyName => {
-    if(!(propertyName in GlSpec['layout_' + newType])) {
+    if(!(propertyName in styleSpec.latest['layout_' + newType])) {
       delete changedLayoutProps[propertyName]
     }
   })

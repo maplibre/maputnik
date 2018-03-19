@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 
 import Button from '../Button'
 import InputBlock from '../inputs/InputBlock'
@@ -13,13 +14,13 @@ import LayerSourceLayerBlock from '../layers/LayerSourceLayerBlock'
 
 class AddModal extends React.Component {
   static propTypes = {
-    layers: React.PropTypes.array.isRequired,
-    onLayersChange: React.PropTypes.func.isRequired,
-    isOpen: React.PropTypes.bool.isRequired,
-    onOpenToggle: React.PropTypes.func.isRequired,
+    layers: PropTypes.array.isRequired,
+    onLayersChange: PropTypes.func.isRequired,
+    isOpen: PropTypes.bool.isRequired,
+    onOpenToggle: PropTypes.func.isRequired,
 
     // A dict of source id's and the available source layers
-    sources: React.PropTypes.object.isRequired,
+    sources: PropTypes.object.isRequired,
   }
 
   addLayer() {
@@ -55,18 +56,65 @@ class AddModal extends React.Component {
     }
   }
 
-  componentWillReceiveProps(nextProps) {
-    const sourceIds = Object.keys(nextProps.sources)
-    if(!this.state.source && sourceIds.length > 0) {
+  componentWillUpdate(nextProps, nextState) {
+    // Check if source is valid for new type
+    const oldType = this.state.type;
+    const newType = nextState.type;
+
+    const availableSourcesOld = this.getSources(oldType);
+    const availableSourcesNew = this.getSources(newType);
+
+    if(
+      // Type has changed
+      oldType !== newType
+      && this.state.source !== ""
+      // Was a valid source previously
+      && availableSourcesOld.indexOf(this.state.source) > -1
+      // And is not a valid source now
+      && availableSourcesNew.indexOf(nextState.source) < 0
+    ) {
+      // Clear the source
       this.setState({
-        source: sourceIds[0],
-        'source-layer': this.state['source-layer'] || (nextProps.sources[sourceIds[0]] || [])[0]
-      })
+        source: ""
+      });
     }
+  }
+
+  getLayersForSource(source) {
+    const sourceObj = this.props.sources[source] || {};
+    return sourceObj.layers || [];
+  }
+
+  getSources(type) {
+    const sources = [];
+
+    const types = {
+      vector: [
+        "fill",
+        "line",
+        "symbol",
+        "circle",
+        "fill-extrusion"
+      ],
+      raster: [
+        "raster"
+      ]
+    }
+
+    for(let [key, val] of Object.entries(this.props.sources)) {
+      if(types[val.type] && types[val.type].indexOf(type) > -1) {
+        sources.push(key);
+      }
+    }
+
+    return sources;
   }
 
 
   render() {
+    const sources = this.getSources(this.state.type);
+    const layers = this.getLayersForSource(this.state.source);
+
     return <Modal
       isOpen={this.props.isOpen}
       onOpenToggle={this.props.onOpenToggle}
@@ -83,14 +131,15 @@ class AddModal extends React.Component {
       />
       {this.state.type !== 'background' &&
       <LayerSourceBlock
-        sourceIds={Object.keys(this.props.sources)}
+        sourceIds={sources}
         value={this.state.source}
         onChange={v => this.setState({ source: v })}
       />
       }
-      {this.state.type !== 'background' && this.state.type !== 'raster' &&
+      {['background', 'raster', 'hillshade', 'heatmap'].indexOf(this.state.type) < 0 &&
       <LayerSourceLayerBlock
-        sourceLayerIds={this.props.sources[this.state.source] || []}
+        isFixed={true}
+        sourceLayerIds={layers}
         value={this.state['source-layer']}
         onChange={v => this.setState({ 'source-layer': v })}
       />

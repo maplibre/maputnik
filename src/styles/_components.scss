@@ -35,15 +35,18 @@
     left: 0;
     width: 120px;
     z-index: 10;
+    pointer-events: none;
   }
 }
 
 .maputnik-doc-target:hover .maputnik-doc-popup {
   display: block;
+  text-align: left;
 }
 
 // BUTTON
 .maputnik-button {
+  display: inline-block;
   cursor: pointer;
   background-color: $color-midgray;
   color: $color-lowgray;
@@ -104,13 +107,17 @@
 .maputnik-action-block {
   .maputnik-input-block-label {
     display: inline-block;
-    width: 43%;
+    width: 35%;
   }
 
   .maputnik-input-block-action {
     vertical-align: top;
     display: inline-block;
-    width: 7%;
+    width: 15%;
+  }
+
+  .maputnik-input-block-action > div {
+    text-align: right;
   }
 }
 

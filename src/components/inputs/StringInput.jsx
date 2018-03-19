@@ -1,11 +1,13 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 
 class StringInput extends React.Component {
   static propTypes = {
-    value: React.PropTypes.string,
-    style: React.PropTypes.object,
-    default: React.PropTypes.string,
-    onChange: React.PropTypes.func,
+    value: PropTypes.string,
+    style: PropTypes.object,
+    default: PropTypes.string,
+    onChange: PropTypes.func,
+    multi: PropTypes.bool,
   }
 
   constructor(props) {

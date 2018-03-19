@@ -1,6 +1,7 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 
-import GlSpec from 'mapbox-gl-style-spec/reference/latest.js'
+import styleSpec from '@mapbox/mapbox-gl-style-spec/style-spec'
 import InputBlock from '../inputs/InputBlock'
 import StringInput from '../inputs/StringInput'
 import SelectInput from '../inputs/SelectInput'
@@ -8,10 +9,10 @@ import Modal from './Modal'
 
 class SettingsModal extends React.Component {
   static propTypes = {
-    mapStyle: React.PropTypes.object.isRequired,
-    onStyleChanged: React.PropTypes.func.isRequired,
-    isOpen: React.PropTypes.bool.isRequired,
-    onOpenToggle: React.PropTypes.func.isRequired,
+    mapStyle: PropTypes.object.isRequired,
+    onStyleChanged: PropTypes.func.isRequired,
+    isOpen: PropTypes.bool.isRequired,
+    onOpenToggle: PropTypes.func.isRequired,
   }
 
   constructor(props) {
@@ -46,7 +47,7 @@ class SettingsModal extends React.Component {
       title={'Style Settings'}
     >
       <div style={{minWidth: 350}}>
-      <InputBlock label={"Name"} doc={GlSpec.$root.name.doc}>
+      <InputBlock label={"Name"} doc={styleSpec.latest.$root.name.doc}>
         <StringInput {...inputProps}
           value={this.props.mapStyle.name}
           onChange={this.changeStyleProperty.bind(this, "name")}
@@ -58,14 +59,14 @@ class SettingsModal extends React.Component {
           onChange={this.changeStyleProperty.bind(this, "owner")}
         />
       </InputBlock>
-      <InputBlock label={"Sprite URL"} doc={GlSpec.$root.sprite.doc}>
+      <InputBlock label={"Sprite URL"} doc={styleSpec.latest.$root.sprite.doc}>
         <StringInput {...inputProps}
           value={this.props.mapStyle.sprite}
           onChange={this.changeStyleProperty.bind(this, "sprite")}
         />
       </InputBlock>
 
-      <InputBlock label={"Glyphs URL"} doc={GlSpec.$root.glyphs.doc}>
+      <InputBlock label={"Glyphs URL"} doc={styleSpec.latest.$root.glyphs.doc}>
         <StringInput {...inputProps}
           value={this.props.mapStyle.glyphs}
           onChange={this.changeStyleProperty.bind(this, "glyphs")}

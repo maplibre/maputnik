@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import classnames from 'classnames'
 import cloneDeep from 'lodash.clonedeep'
 
@@ -12,11 +13,11 @@ import style from '../../libs/style.js'
 import {SortableContainer, SortableHandle, arrayMove} from 'react-sortable-hoc';
 
 const layerListPropTypes = {
-  layers: React.PropTypes.array.isRequired,
-  selectedLayerIndex: React.PropTypes.number.isRequired,
-  onLayersChange: React.PropTypes.func.isRequired,
-  onLayerSelect: React.PropTypes.func,
-  sources: React.PropTypes.object.isRequired,
+  layers: PropTypes.array.isRequired,
+  selectedLayerIndex: PropTypes.number.isRequired,
+  onLayersChange: PropTypes.func.isRequired,
+  onLayerSelect: PropTypes.func,
+  sources: PropTypes.object.isRequired,
 }
 
 function layerPrefix(name) {
@@ -49,6 +50,7 @@ class LayerListContainer extends React.Component {
     super(props)
     this.state = {
       collapsedGroups: {},
+      areAllGroupsExpanded: false,
       isOpen: {
         add: false,
       }
@@ -91,6 +93,31 @@ class LayerListContainer extends React.Component {
         ...this.state.isOpen,
         [modalName]: !this.state.isOpen[modalName]
       }
+    })
+  }
+
+  toggleLayers() {
+    let idx=0
+
+    let newGroups=[]
+
+    this.groupedLayers().forEach(layers => {
+      const groupPrefix = layerPrefix(layers[0].id)
+      const lookupKey = [groupPrefix, idx].join('-')
+      
+
+      if (layers.length > 1) {
+        newGroups[lookupKey] = this.state.areAllGroupsExpanded
+      }
+      
+      layers.forEach((layer) => {
+        idx += 1
+      })
+    });
+
+    this.setState({
+      collapsedGroups: newGroups,
+      areAllGroupsExpanded: !this.state.areAllGroupsExpanded
     })
   }
 
@@ -137,7 +164,7 @@ class LayerListContainer extends React.Component {
         const grp = <LayerListGroup
           key={[groupPrefix, idx].join('-')}
           title={groupPrefix}
-          isActive={!this.isCollapsed(groupPrefix, idx)}
+          isActive={!this.isCollapsed(groupPrefix, idx) || idx === this.props.selectedLayerIndex}
           onActiveToggle={this.toggleLayerGroup.bind(this, groupPrefix, idx)}
         />
         listItems.push(grp)
@@ -145,9 +172,10 @@ class LayerListContainer extends React.Component {
 
       layers.forEach((layer, idxInGroup) => {
         const groupIdx = findClosestCommonPrefix(this.props.layers, idx)
+
         const listItem = <LayerListItem
           className={classnames({
-            'maputnik-layer-list-item-collapsed': layers.length > 1 && this.isCollapsed(groupPrefix, groupIdx),
+            'maputnik-layer-list-item-collapsed': layers.length > 1 && this.isCollapsed(groupPrefix, groupIdx) && idx !== this.props.selectedLayerIndex,
             'maputnik-layer-list-item-group-last': idxInGroup == layers.length - 1 && layers.length > 1
           })}
           index={idx}
@@ -177,11 +205,24 @@ class LayerListContainer extends React.Component {
       <header className="maputnik-layer-list-header">
         <span className="maputnik-layer-list-header-title">Layers</span>
         <span className="maputnik-space" />
-        <Button
-          onClick={this.toggleModal.bind(this, 'add')}
-          className="maputnik-add-layer">
-      Add Layer
-      </Button>
+        <div className="maputnik-default-property">
+          <div className="maputnik-multibutton">
+            <a 
+              onClick={this.toggleLayers.bind(this)}
+              className="maputnik-button">
+              {this.state.areAllGroupsExpanded === true ? "Collapse" : "Expand"}
+            </a>
+          </div>
+        </div>
+        <div className="maputnik-default-property">
+          <div className="maputnik-multibutton">
+            <a
+              onClick={this.toggleModal.bind(this, 'add')}
+              className="maputnik-button maputnik-button-selected">
+             Add Layer
+            </a>
+          </div>
+        </div>
       </header>
       <ul className="maputnik-layer-list-container">
         {listItems}

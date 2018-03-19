@@ -1,24 +1,19 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import ReactDOM from 'react-dom'
-import MapboxGl from 'mapbox-gl/dist/mapbox-gl.js'
+import MapboxGl from 'mapbox-gl'
 import MapboxInspect from 'mapbox-gl-inspect'
 import FeatureLayerPopup from './FeatureLayerPopup'
 import FeaturePropertyPopup from './FeaturePropertyPopup'
-import validateColor from 'mapbox-gl-style-spec/lib/validate/validate_color'
 import style from '../../libs/style.js'
 import tokens from '../../config/tokens.json'
 import colors from 'mapbox-gl-inspect/lib/colors'
 import Color from 'color'
+import ZoomControl from '../../libs/zoomcontrol'
 import { colorHighlightedLayer } from '../../libs/highlight'
 import 'mapbox-gl/dist/mapbox-gl.css'
 import '../../mapboxgl.css'
 import '../../libs/mapbox-rtl'
-
-function renderLayerPopup(features) {
-  var mountNode = document.createElement('div');
-  ReactDOM.render(<FeatureLayerPopup features={features} />, mountNode)
-  return mountNode.innerHTML;
-}
 
 function renderPropertyPopup(features) {
   var mountNode = document.createElement('div');
@@ -43,7 +38,7 @@ function buildInspectStyle(originalMapStyle, coloredLayers, highlightedLayer) {
   const sources = {}
   Object.keys(originalMapStyle.sources).forEach(sourceId => {
     const source = originalMapStyle.sources[sourceId]
-    if(source.type !== 'raster') {
+    if(source.type !== 'raster' && source.type !== 'raster-dem') {
       sources[sourceId] = source
     }
   })
@@ -58,15 +53,17 @@ function buildInspectStyle(originalMapStyle, coloredLayers, highlightedLayer) {
 
 export default class MapboxGlMap extends React.Component {
   static propTypes = {
-    onDataChange: React.PropTypes.func,
-    mapStyle: React.PropTypes.object.isRequired,
-    inspectModeEnabled: React.PropTypes.bool.isRequired,
-    highlightedLayer: React.PropTypes.object,
+    onDataChange: PropTypes.func,
+    onLayerSelect: PropTypes.func.isRequired,
+    mapStyle: PropTypes.object.isRequired,
+    inspectModeEnabled: PropTypes.bool.isRequired,
+    highlightedLayer: PropTypes.object,
   }
 
   static defaultProps = {
     onMapLoaded: () => {},
     onDataChange: () => {},
+    onLayerSelect: () => {},
     mapboxAccessToken: tokens.mapbox,
   }
 
@@ -110,6 +107,9 @@ export default class MapboxGlMap extends React.Component {
       hash: true,
     })
 
+    const zoom = new ZoomControl;
+    map.addControl(zoom, 'top-right');
+
     const nav = new MapboxGl.NavigationControl();
     map.addControl(nav, 'top-right');
 
@@ -129,7 +129,9 @@ export default class MapboxGlMap extends React.Component {
         if(this.props.inspectModeEnabled) {
           return renderPropertyPopup(features)
         } else {
-          return renderLayerPopup(features)
+          var mountNode = document.createElement('div');
+          ReactDOM.render(<FeatureLayerPopup features={features} onLayerSelect={this.props.onLayerSelect} />, mountNode)
+          return mountNode
         }
       }
     })

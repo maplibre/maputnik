@@ -1,5 +1,6 @@
 import React from 'react'
-import GlSpec from 'mapbox-gl-style-spec/reference/latest.js'
+import PropTypes from 'prop-types'
+import styleSpec from '@mapbox/mapbox-gl-style-spec/style-spec'
 import Modal from './Modal'
 import Button from '../Button'
 import InputBlock from '../inputs/InputBlock'
@@ -16,10 +17,10 @@ import DeleteIcon from 'react-icons/lib/md/delete'
 
 class PublicSource extends React.Component {
   static propTypes = {
-    id: React.PropTypes.string.isRequired,
-    type: React.PropTypes.string.isRequired,
-    title: React.PropTypes.string.isRequired,
-    onSelect: React.PropTypes.func.isRequired,
+    id: PropTypes.string.isRequired,
+    type: PropTypes.string.isRequired,
+    title: PropTypes.string.isRequired,
+    onSelect: PropTypes.func.isRequired,
   }
 
   render() {
@@ -44,6 +45,10 @@ function editorMode(source) {
     if(source.tiles) return 'tilexyz_raster'
     return 'tilejson_raster'
   }
+  if(source.type === 'raster-dem') {
+    if(source.tiles) return 'tilexyz_raster-dem'
+    return 'tilejson_raster-dem'
+  }
   if(source.type === 'vector') {
     if(source.tiles) return 'tilexyz_vector'
     return 'tilejson_vector'
@@ -54,10 +59,10 @@ function editorMode(source) {
 
 class ActiveSourceTypeEditor extends React.Component {
   static propTypes = {
-    sourceId: React.PropTypes.string.isRequired,
-    source: React.PropTypes.object.isRequired,
-    onDelete: React.PropTypes.func.isRequired,
-    onChange: React.PropTypes.func.isRequired,
+    sourceId: PropTypes.string.isRequired,
+    source: PropTypes.object.isRequired,
+    onDelete: PropTypes.func.isRequired,
+    onChange: PropTypes.func.isRequired,
   }
 
   render() {
@@ -87,7 +92,7 @@ class ActiveSourceTypeEditor extends React.Component {
 
 class AddSource extends React.Component {
   static propTypes = {
-    onAdd: React.PropTypes.func.isRequired,
+    onAdd: PropTypes.func.isRequired,
   }
 
   constructor(props) {
@@ -126,6 +131,16 @@ class AddSource extends React.Component {
         minzoom: source.minzoom || 0,
         maxzoom: source.maxzoom || 14
       }
+      case 'tilejson_raster-dem': return {
+        type: 'raster-dem',
+        url: source.url || 'http://localhost:3000/tilejson.json'
+      }
+      case 'tilexyz_raster-dem': return {
+        type: 'raster-dem',
+        tiles: source.tiles || ['http://localhost:3000/{x}/{y}/{z}.pbf'],
+        minzoom: source.minzoom || 0,
+        maxzoom: source.maxzoom || 14
+      }
       default: return {}
     }
   }
@@ -138,7 +153,7 @@ class AddSource extends React.Component {
           onChange={v => this.setState({ sourceId: v})}
         />
       </InputBlock>
-      <InputBlock label={"Source Type"} doc={GlSpec.source_tile.type.doc}>
+      <InputBlock label={"Source Type"} doc={styleSpec.latest.source_vector.type.doc}>
         <SelectInput
           options={[
             ['geojson', 'GeoJSON'],
@@ -146,6 +161,8 @@ class AddSource extends React.Component {
             ['tilexyz_vector', 'Vector (XYZ URLs)'],
             ['tilejson_raster', 'Raster (TileJSON URL)'],
             ['tilexyz_raster', 'Raster (XYZ URL)'],
+            ['tilejson_raster-dem', 'Raster DEM (TileJSON URL)'],
+            ['tilexyz_raster-dem', 'Raster DEM (XYZ URLs)'],
           ]}
           onChange={mode => this.setState({mode: mode, source: this.defaultSource(mode)})}
           value={this.state.mode}
@@ -167,10 +184,10 @@ class AddSource extends React.Component {
 
 class SourcesModal extends React.Component {
   static propTypes = {
-    mapStyle: React.PropTypes.object.isRequired,
-    isOpen: React.PropTypes.bool.isRequired,
-    onOpenToggle: React.PropTypes.func.isRequired,
-    onStyleChanged: React.PropTypes.func.isRequired,
+    mapStyle: PropTypes.object.isRequired,
+    isOpen: PropTypes.bool.isRequired,
+    onOpenToggle: PropTypes.func.isRequired,
+    onStyleChanged: PropTypes.func.isRequired,
   }
 
   stripTitle(source) {

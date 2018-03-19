@@ -1,6 +1,7 @@
 import React from 'react'
 import Color from 'color'
 import ChromePicker from 'react-color/lib/components/chrome/Chrome'
+import PropTypes from 'prop-types'
 
 function formatColor(color) {
   const rgb = color.rgb
@@ -10,12 +11,12 @@ function formatColor(color) {
 /*** Number fields with support for min, max and units and documentation*/
 class ColorField extends React.Component {
   static propTypes = {
-    onChange: React.PropTypes.func.isRequired,
-    name: React.PropTypes.string.isRequired,
-    value: React.PropTypes.string,
-    doc: React.PropTypes.string,
-    style: React.PropTypes.object,
-    default: React.PropTypes.string,
+    onChange: PropTypes.func.isRequired,
+    name: PropTypes.string.isRequired,
+    value: PropTypes.string,
+    doc: PropTypes.string,
+    style: PropTypes.object,
+    default: PropTypes.string,
   }
 
   constructor(props) {
@@ -29,7 +30,7 @@ class ColorField extends React.Component {
   //but I am too stupid to get it to work together with fixed position
   //and scrollbars so I have to fallback to JavaScript
   calcPickerOffset() {
-    const elem = this.refs.colorInput
+    const elem = this.colorInput
     if(elem) {
       const pos = elem.getBoundingClientRect()
       return {
@@ -37,7 +38,6 @@ class ColorField extends React.Component {
         left: pos.left + 196,
       }
     } else {
-      console.warn('Color field has no element to adjust position')
       return {
         top: 160,
         left: 555,
@@ -50,7 +50,14 @@ class ColorField extends React.Component {
   }
 
   get color() {
-    return Color(this.props.value || '#fff').rgb()
+    // Catch invalid color.
+    try {
+      return Color(this.props.value).rgb()
+    }
+    catch(err) {
+      console.warn("Error parsing color: ", err);
+      return Color("rgb(255,255,255)");
+    }
   }
 
   render() {
@@ -91,7 +98,7 @@ class ColorField extends React.Component {
     </div>
 
     var swatchStyle = {
-      "background-color": this.props.value
+      backgroundColor: this.props.value
     };
 
     return <div className="maputnik-color-wrapper">
@@ -99,7 +106,7 @@ class ColorField extends React.Component {
       <div className="maputnik-color-swatch" style={swatchStyle}></div>
       <input
         className="maputnik-color"
-        ref="colorInput"
+        ref={(input) => this.colorInput = input}
         onClick={this.togglePicker.bind(this)}
         style={this.props.style}
         name={this.props.name}

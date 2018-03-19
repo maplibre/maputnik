@@ -1,17 +1,18 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import ScrollContainer from './ScrollContainer'
 
 class AppLayout extends React.Component {
   static propTypes = {
-    toolbar: React.PropTypes.element.isRequired,
-    layerList: React.PropTypes.element.isRequired,
-    layerEditor: React.PropTypes.element,
-    map: React.PropTypes.element.isRequired,
-    bottom: React.PropTypes.element,
+    toolbar: PropTypes.element.isRequired,
+    layerList: PropTypes.element.isRequired,
+    layerEditor: PropTypes.element,
+    map: PropTypes.element.isRequired,
+    bottom: PropTypes.element,
   }
 
   static childContextTypes = {
-    reactIconBase: React.PropTypes.object
+    reactIconBase: PropTypes.object
   }
 
   getChildContext() {

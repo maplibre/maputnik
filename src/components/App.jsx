@@ -10,9 +10,7 @@ import AppLayout from './AppLayout'
 import MessagePanel from './MessagePanel'
 
 import { downloadGlyphsMetadata, downloadSpriteMetadata } from '../libs/metadata'
-import GlSpec from 'mapbox-gl-style-spec/reference/latest.js'
-import validateStyleMin from 'mapbox-gl-style-spec/lib/validate_style.min'
-import formatStyle from 'mapbox-gl-style-spec/lib/format'
+import styleSpec from '@mapbox/mapbox-gl-style-spec/style-spec'
 import style from '../libs/style.js'
 import { initialStyleUrl, loadStyleUrl } from '../libs/urlopen'
 import { undoMessages, redoMessages } from '../libs/diffmessage'
@@ -21,6 +19,11 @@ import { ApiStyleStore } from '../libs/apistore'
 import { RevisionStore } from '../libs/revisions'
 import LayerWatcher from '../libs/layerwatcher'
 import tokens from '../config/tokens.json'
+import isEqual from 'lodash.isequal'
+
+import MapboxGl from 'mapbox-gl'
+import mapboxUtil from 'mapbox-gl/src/util/mapbox'
+
 
 function updateRootSpec(spec, fieldName, newValues) {
   return {
@@ -65,11 +68,10 @@ export default class App extends React.Component {
       sources: {},
       vectorLayers: {},
       inspectModeEnabled: false,
-      spec: GlSpec,
+      spec: styleSpec.latest,
     }
 
     this.layerWatcher = new LayerWatcher({
-      onSourcesChange: v => this.setState({ sources: v }),
       onVectorLayersChange: v => this.setState({ vectorLayers: v })
     })
   }
@@ -96,7 +98,9 @@ export default class App extends React.Component {
   updateFonts(urlTemplate) {
     const metadata = this.state.mapStyle.metadata || {}
     const accessToken = metadata['maputnik:openmaptiles_access_token'] || tokens.openmaptiles
-    downloadGlyphsMetadata(urlTemplate.replace('{key}', accessToken), fonts => {
+
+    let glyphUrl = (typeof urlTemplate === 'string')? urlTemplate.replace('{key}', accessToken): urlTemplate;
+    downloadGlyphsMetadata(glyphUrl, fonts => {
       this.setState({ spec: updateRootSpec(this.state.spec, 'glyphs', fonts)})
     })
   }
@@ -108,15 +112,17 @@ export default class App extends React.Component {
   }
 
   onStyleChanged(newStyle, save=true) {
-    if(newStyle.glyphs !== this.state.mapStyle.glyphs) {
-      this.updateFonts(newStyle.glyphs)
-    }
-    if(newStyle.sprite !== this.state.mapStyle.sprite) {
-      this.updateIcons(newStyle.sprite)
-    }
 
-    const errors = validateStyleMin(newStyle, GlSpec)
+    const errors = styleSpec.validate(newStyle, styleSpec.latest)
     if(errors.length === 0) {
+
+      if(newStyle.glyphs !== this.state.mapStyle.glyphs) {
+        this.updateFonts(newStyle.glyphs)
+      }
+      if(newStyle.sprite !== this.state.mapStyle.sprite) {
+        this.updateIcons(newStyle.sprite)
+      }
+
       this.revisionStore.addRevision(newStyle)
       if(save) this.saveStyle(newStyle)
       this.setState({
@@ -128,6 +134,8 @@ export default class App extends React.Component {
         errors: errors.map(err => err.message)
       })
     }
+
+    this.fetchSources();
   }
 
   onUndo() {
@@ -184,11 +192,68 @@ export default class App extends React.Component {
     })
   }
 
+  fetchSources() {
+    const sourceList = {...this.state.sources};
+
+    for(let [key, val] of Object.entries(this.state.mapStyle.sources)) {
+      if(sourceList.hasOwnProperty(key)) {
+        continue;
+      }
+
+      sourceList[key] = {
+        type: val.type,
+        layers: []
+      };
+
+      if(!this.state.sources.hasOwnProperty(key) && val.type === "vector" && val.hasOwnProperty("url")) {
+        let url = val.url;
+        try {
+          url = mapboxUtil.normalizeSourceURL(url, MapboxGl.accessToken);
+        } catch(err) {
+          console.warn("Failed to normalizeSourceURL: ", err);
+        }
+
+        fetch(url)
+          .then((response) => {
+            return response.json();
+          })
+          .then((json) => {
+            if(!json.hasOwnProperty("vector_layers")) {
+              return;
+            }
+
+            // Create new objects before setState
+            const sources = Object.assign({}, this.state.sources);
+
+            for(let layer of json.vector_layers) {
+              sources[key].layers.push(layer.id)
+            }
+
+            console.debug("Updating source: "+key);
+            this.setState({
+              sources: sources
+            });
+          })
+          .catch((err) => {
+            console.error("Failed to process sources for '%s'", url, err);
+          })
+      }
+    }
+
+    if(!isEqual(this.state.sources, sourceList)) {
+      console.debug("Setting sources");
+      this.setState({
+        sources: sourceList
+      })
+    }
+  }
+
   mapRenderer() {
     const mapProps = {
-      mapStyle: style.replaceAccessToken(this.state.mapStyle),
+      mapStyle: style.replaceAccessToken(this.state.mapStyle, {allowFallback: true}),
       onDataChange: (e) => {
         this.layerWatcher.analyzeMap(e.map)
+        this.fetchSources();
       },
     }
 
@@ -201,7 +266,8 @@ export default class App extends React.Component {
     } else {
       return  <MapboxGlMap {...mapProps}
         inspectModeEnabled={this.state.inspectModeEnabled}
-        highlightedLayer={this.state.mapStyle.layers[this.state.selectedLayerIndex]} />
+        highlightedLayer={this.state.mapStyle.layers[this.state.selectedLayerIndex]}
+        onLayerSelect={this.onLayerSelect.bind(this)} />
     }
   }
 

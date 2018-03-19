@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import Modal from './Modal'
 import Button from '../Button'
 import FileReaderInput from 'react-file-reader-input'
@@ -12,10 +13,10 @@ import publicStyles from '../../config/styles.json'
 
 class PublicStyle extends React.Component {
   static propTypes = {
-    url: React.PropTypes.string.isRequired,
-    thumbnailUrl: React.PropTypes.string.isRequired,
-    title: React.PropTypes.string.isRequired,
-    onSelect: React.PropTypes.func.isRequired,
+    url: PropTypes.string.isRequired,
+    thumbnailUrl: PropTypes.string.isRequired,
+    title: PropTypes.string.isRequired,
+    onSelect: PropTypes.func.isRequired,
   }
 
   render() {
@@ -41,9 +42,9 @@ class PublicStyle extends React.Component {
 
 class OpenModal extends React.Component {
   static propTypes = {
-    isOpen: React.PropTypes.bool.isRequired,
-    onOpenToggle: React.PropTypes.func.isRequired,
-    onStyleOpen: React.PropTypes.func.isRequired,
+    isOpen: PropTypes.bool.isRequired,
+    onOpenToggle: PropTypes.func.isRequired,
+    onStyleOpen: PropTypes.func.isRequired,
   }
 
   constructor(props) {
@@ -68,10 +69,16 @@ class OpenModal extends React.Component {
           const mapStyle = style.ensureStyleValidity(JSON.parse(body))
           console.log('Loaded style ', mapStyle.id)
           this.props.onStyleOpen(mapStyle)
+          this.onOpenToggle()
         } else {
           console.warn('Could not open the style URL', styleUrl)
         }
     })
+  }
+
+  onOpenUrl() {
+    const url = this.styleUrlElement.value;
+    this.onStyleSelect(url);
   }
 
   onUpload(_, files) {
@@ -94,6 +101,7 @@ class OpenModal extends React.Component {
       }
       mapStyle = style.ensureStyleValidity(mapStyle)
       this.props.onStyleOpen(mapStyle);
+      this.onOpenToggle();
     }
     reader.onerror = e => console.log(e.target);
   }
@@ -137,6 +145,18 @@ class OpenModal extends React.Component {
           <Button className="maputnik-upload-button"><FileUploadIcon /> Upload</Button>
         </FileReaderInput>
       </section>
+
+      <section className="maputnik-modal-section">
+        <h2>Load from URL</h2>
+        <p>
+          Load from a URL. Note that the URL must have <a href="https://enable-cors.org" target="_blank" rel="noopener noreferrer">CORS enabled</a>.
+        </p>
+        <input type="text" ref={(input) => this.styleUrlElement = input} className="maputnik-input" placeholder="Enter URL..."/>
+        <div>
+          <Button className="maputnik-big-button" onClick={this.onOpenUrl.bind(this)}>Open URL</Button>
+        </div>
+      </section>
+
       <section className="maputnik-modal-section maputnik-modal-section--shrink">
         <h2>Gallery Styles</h2>
         <p>

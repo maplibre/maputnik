@@ -1,7 +1,8 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import { saveAs } from 'file-saver'
 
-import GlSpec from 'mapbox-gl-style-spec/reference/latest.js'
+import styleSpec from '@mapbox/mapbox-gl-style-spec/style-spec'
 import InputBlock from '../inputs/InputBlock'
 import StringInput from '../inputs/StringInput'
 import SelectInput from '../inputs/SelectInput'
@@ -9,21 +10,23 @@ import CheckboxInput from '../inputs/CheckboxInput'
 import Button from '../Button'
 import Modal from './Modal'
 import MdFileDownload from 'react-icons/lib/md/file-download'
+import TiClipboard from 'react-icons/lib/ti/clipboard'
 import style from '../../libs/style.js'
-import formatStyle from 'mapbox-gl-style-spec/lib/format'
 import GitHub from 'github-api'
+import { CopyToClipboard } from 'react-copy-to-clipboard'
 
 
 class Gist extends React.Component {
   static propTypes = {
-    mapStyle: React.PropTypes.object.isRequired,
-    onStyleChanged: React.PropTypes.func.isRequired,
+    mapStyle: PropTypes.object.isRequired,
+    onStyleChanged: PropTypes.func.isRequired,
   }
 
   constructor(props) {
     super(props);
     this.state = {
       preview: false,
+      public: false,
       saving: false,
       latestGist: null,
     }
@@ -41,11 +44,14 @@ class Gist extends React.Component {
       ...this.state,
       saving: true
     });
-    const preview = this.state.preview && (this.props.mapStyle.metadata || {})['maputnik:openmaptiles_access_token'];
+
+    const preview = this.state.preview;
+    
+    const mapboxToken = (this.props.mapStyle.metadata || {})['maputnik:mapbox_access_token'];
 
     const mapStyleStr = preview ?
-        formatStyle(stripAccessTokens(style.replaceAccessToken(this.props.mapStyle))) :
-        formatStyle(stripAccessTokens(this.props.mapStyle));
+        styleSpec.format(stripAccessTokens(style.replaceAccessToken(this.props.mapStyle))) :
+        styleSpec.format(stripAccessTokens(this.props.mapStyle));
     const styleTitle = this.props.mapStyle.name || 'Style';
     const htmlStr = `
   <!DOCTYPE html>
@@ -54,8 +60,8 @@ class Gist extends React.Component {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>`+styleTitle+` Preview</title>
-    <link rel="stylesheet" type="text/css" href="https://api.mapbox.com/mapbox-gl-js/v0.28.0/mapbox-gl.css" />
-    <script src="https://api.mapbox.com/mapbox-gl-js/v0.28.0/mapbox-gl.js"></script>
+    <link rel="stylesheet" type="text/css" href="https://api.mapbox.com/mapbox-gl-js/v0.44.0/mapbox-gl.css" />
+    <script src="https://api.mapbox.com/mapbox-gl-js/v0.44.0/mapbox-gl.js"></script>
     <style>
       body { margin:0; padding:0; }
       #map { position:absolute; top:0; bottom:0; width:100%; }
@@ -64,6 +70,7 @@ class Gist extends React.Component {
   <body>
     <div id='map'></div>
     <script>
+        mapboxgl.accessToken = '${mapboxToken}';
         var map = new mapboxgl.Map({
           container: 'map',
           style: 'style.json',
@@ -88,7 +95,7 @@ class Gist extends React.Component {
     const gh = new GitHub();
     let gist = gh.getGist(); // not a gist yet
     gist.create({
-      public: true,
+      public: this.state.public,
       description: styleTitle,
       files: files
     }).then(function({data}) {
@@ -109,6 +116,13 @@ class Gist extends React.Component {
     })
   }
 
+  onPublicChange(value) {
+    this.setState({
+      ...this.state,
+      public: value
+    })
+  }
+
   changeMetadataProperty(property, value) {
     const changedStyle = {
       ...this.props.mapStyle,
@@ -125,7 +139,7 @@ class Gist extends React.Component {
     const user = gist.user || 'anonymous';
     const preview = !!gist.files['index.html'];
     if(preview) {
-      return <span><a target="_blank" href={"https://bl.ocks.org/"+user+"/"+gist.id}>Preview</a>,{' '}</span>
+      return <span><a target="_blank" rel="noopener noreferrer" href={"https://bl.ocks.org/"+user+"/"+gist.id}>Preview</a>,{' '}</span>
     }
     return null;
   }
@@ -137,11 +151,21 @@ class Gist extends React.Component {
       return <p>Saving...</p>
     } else if(gist) {
       const user = gist.user || 'anonymous';
-      return <p>
-        Latest saved gist:{' '}
-        {this.renderPreviewLink(this)}
-        <a target="_blank" href={"https://gist.github.com/"+user+"/"+gist.id}>Source</a>
-      </p>
+      const rawGistLink = "https://gist.githubusercontent.com/" + user + "/" + gist.id + "/raw/" + gist.history[0].version + "/style.json"
+      const maputnikStyleLink = "https://maputnik.github.io/editor/?style=" + rawGistLink
+      return <div className="maputnik-render-gist">
+        <p>
+          Latest saved gist:{' '}
+          {this.renderPreviewLink(this)}
+          <a target="_blank" rel="noopener noreferrer" href={"https://gist.github.com/" + user + "/" + gist.id}>Source</a>
+        </p>
+        <p>
+          <CopyToClipboard text={maputnikStyleLink}>
+            <span>Share this style: <Button><TiClipboard size={18} /></Button></span>
+          </CopyToClipboard>
+          <StringInput value={maputnikStyleLink} />
+        </p>
+      </div>
     }
   }
 
@@ -151,13 +175,22 @@ class Gist extends React.Component {
         <MdFileDownload />
         Save to Gist (anonymous)
       </Button>
-      {' '}
-      <CheckboxInput
-        value={this.state.preview}
-        name='gist-style-preview'
-        onChange={this.onPreviewChange.bind(this)}
-      />
-      <span> Include preview</span>
+      <div className="maputnik-modal-sub-section">
+        <CheckboxInput
+          value={this.state.public}
+          name='gist-style-public'
+          onChange={this.onPublicChange.bind(this)}
+        />
+        <span> Public gist</span>
+      </div>
+      <div className="maputnik-modal-sub-section">
+        <CheckboxInput
+          value={this.state.preview}
+          name='gist-style-preview'
+          onChange={this.onPreviewChange.bind(this)}
+        />
+        <span> Include preview</span>
+      </div>
       {this.state.preview ?
           <div>
             <InputBlock
@@ -166,7 +199,13 @@ class Gist extends React.Component {
                   value={(this.props.mapStyle.metadata || {})['maputnik:openmaptiles_access_token']}
                   onChange={this.changeMetadataProperty.bind(this, "maputnik:openmaptiles_access_token")}/>
             </InputBlock>
-            <a target="_blank" href="https://openmaptiles.com/hosting/">Get your free access token</a>
+            <InputBlock
+                label={"Mapbox Access Token: "}>
+              <StringInput
+                  value={(this.props.mapStyle.metadata || {})['maputnik:mapbox_access_token']}
+                  onChange={this.changeMetadataProperty.bind(this, "maputnik:mapbox_access_token")}/>
+            </InputBlock>
+            <a target="_blank" rel="noopener noreferrer" href="https://openmaptiles.com/hosting/">Get your free access token</a>
           </div>
       : null}
       {this.renderLatestGist()}
@@ -186,10 +225,10 @@ function stripAccessTokens(mapStyle) {
 
 class ExportModal extends React.Component {
   static propTypes = {
-    mapStyle: React.PropTypes.object.isRequired,
-    onStyleChanged: React.PropTypes.func.isRequired,
-    isOpen: React.PropTypes.bool.isRequired,
-    onOpenToggle: React.PropTypes.func.isRequired,
+    mapStyle: PropTypes.object.isRequired,
+    onStyleChanged: PropTypes.func.isRequired,
+    isOpen: PropTypes.bool.isRequired,
+    onOpenToggle: PropTypes.func.isRequired,
   }
 
   constructor(props) {
@@ -197,7 +236,7 @@ class ExportModal extends React.Component {
   }
 
   downloadStyle() {
-    const blob = new Blob([formatStyle(stripAccessTokens(this.props.mapStyle))], {type: "application/json;charset=utf-8"});
+    const blob = new Blob([styleSpec.format(stripAccessTokens(this.props.mapStyle))], {type: "application/json;charset=utf-8"});
     saveAs(blob, this.props.mapStyle.id + ".json");
   }
 

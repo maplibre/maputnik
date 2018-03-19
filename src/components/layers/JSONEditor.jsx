@@ -1,6 +1,7 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 
-import CodeMirror from 'react-codemirror'
+import {Controlled as CodeMirror} from 'react-codemirror2'
 import InputBlock from '../inputs/InputBlock'
 import StringInput from '../inputs/StringInput'
 import SelectInput from '../inputs/SelectInput'
@@ -18,8 +19,8 @@ import '../../vendor/codemirror/addon/lint/json-lint'
 
 class JSONEditor extends React.Component {
   static propTypes = {
-    layer: React.PropTypes.object.isRequired,
-    onChange: React.PropTypes.func,
+    layer: PropTypes.object.isRequired,
+    onChange: PropTypes.func,
   }
 
   constructor(props) {
@@ -80,7 +81,7 @@ class JSONEditor extends React.Component {
 
     return <CodeMirror
       value={this.state.code}
-      onChange={this.onCodeUpdate.bind(this)}
+      onBeforeChange={(editor, data, value) => this.onCodeUpdate(value)}
       onFocusChange={focused => focused ? true : this.resetValue()}
       options={codeMirrorOptions}
     />

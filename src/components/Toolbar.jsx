@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import FileReaderInput from 'react-file-reader-input'
 import classnames from 'classnames'
 
@@ -16,47 +17,71 @@ import MdFontDownload from 'react-icons/lib/md/font-download'
 import HelpIcon from 'react-icons/lib/md/help-outline'
 import InspectionIcon from 'react-icons/lib/md/find-in-page'
 
-import logoImage from '../img/maputnik.png'
+import logoImage from 'maputnik-design/logos/logo-color.svg'
 import SettingsModal from './modals/SettingsModal'
 import ExportModal from './modals/ExportModal'
 import SourcesModal from './modals/SourcesModal'
 import OpenModal from './modals/OpenModal'
+import pkgJson from '../../package.json'
 
 import style from '../libs/style'
 
-function IconText(props) {
-  return <span className="maputnik-icon-text">{props.children}</span>
+class IconText extends React.Component {
+  static propTypes = {
+    children: PropTypes.node,
+  }
+
+  render() {
+    return <span className="maputnik-icon-text">{this.props.children}</span>
+  }
 }
 
-function ToolbarLink(props) {
-  return <a
-    className={classnames('maputnik-toolbar-link', props.className)}
-    href={props.href}
-    target={"blank"}
-  >
-    {props.children}
-  </a>
+class ToolbarLink extends React.Component {
+  static propTypes = {
+    className: PropTypes.string,
+    children: PropTypes.node,
+    href: PropTypes.string,
+  }
+
+  render() {
+    return <a
+      className={classnames('maputnik-toolbar-link', this.props.className)}
+      href={this.props.href}
+      rel="noopener noreferrer"
+      target="_blank"
+    >
+      {this.props.children}
+    </a>
+  }
 }
 
-function ToolbarAction(props) {
-  return <a
-    className='maputnik-toolbar-action'
-    onClick={props.onClick}
-  >
-    {props.children}
-  </a>
+class ToolbarAction extends React.Component {
+  static propTypes = {
+    children: PropTypes.node,
+    onClick: PropTypes.func
+  }
+
+  render() {
+    return <a
+      className='maputnik-toolbar-action'
+      onClick={this.props.onClick}
+    >
+      {this.props.children}
+    </a>
+  }
 }
 
 export default class Toolbar extends React.Component {
   static propTypes = {
-    mapStyle: React.PropTypes.object.isRequired,
-    inspectModeEnabled: React.PropTypes.bool.isRequired,
-    onStyleChanged: React.PropTypes.func.isRequired,
+    mapStyle: PropTypes.object.isRequired,
+    inspectModeEnabled: PropTypes.bool.isRequired,
+    onStyleChanged: PropTypes.func.isRequired,
     // A new style has been uploaded
-    onStyleOpen: React.PropTypes.func.isRequired,
+    onStyleOpen: PropTypes.func.isRequired,
     // A dict of source id's and the available source layers
-    sources: React.PropTypes.object.isRequired,
-    onInspectModeToggle: React.PropTypes.func.isRequired
+    sources: PropTypes.object.isRequired,
+    onInspectModeToggle: PropTypes.func.isRequired,
+    children: PropTypes.node
   }
 
   constructor(props) {
@@ -106,40 +131,46 @@ export default class Toolbar extends React.Component {
           isOpen={this.state.isOpen.sources}
           onOpenToggle={this.toggleModal.bind(this, 'sources')}
       />
-      <ToolbarLink
-        href={"https://github.com/maputnik/editor"}
-        className="maputnik-toolbar-logo"
-      >
-        <img src={logoImage} alt="Maputnik" />
-        <h1>Maputnik</h1>
-      </ToolbarLink>
-      <ToolbarAction onClick={this.toggleModal.bind(this, 'open')}>
-        <OpenIcon />
-        <IconText>Open</IconText>
-      </ToolbarAction>
-      <ToolbarAction onClick={this.toggleModal.bind(this, 'export')}>
-        <MdFileDownload />
-        <IconText>Export</IconText>
-      </ToolbarAction>
-      <ToolbarAction onClick={this.toggleModal.bind(this, 'sources')}>
-        <SourcesIcon />
-        <IconText>Sources</IconText>
-      </ToolbarAction>
-      <ToolbarAction onClick={this.toggleModal.bind(this, 'settings')}>
-        <SettingsIcon />
-        <IconText>Style Settings</IconText>
-      </ToolbarAction>
-      <ToolbarAction onClick={this.props.onInspectModeToggle}>
-        <InspectionIcon />
-        <IconText>
-          { this.props.inspectModeEnabled && <span>Map Mode</span> }
-          { !this.props.inspectModeEnabled && <span>Inspect Mode</span> }
-        </IconText>
-      </ToolbarAction>
-      <ToolbarLink href={"https://github.com/maputnik/editor/wiki"}>
-        <HelpIcon />
-        <IconText>Help</IconText>
-      </ToolbarLink>
+      <div className="maputnik-toolbar__inner">
+        <ToolbarLink
+          href={"https://github.com/maputnik/editor"}
+          className="maputnik-toolbar-logo"
+        >
+          <img src={logoImage} alt="Maputnik" />
+          <h1>Maputnik
+            <span className="maputnik-toolbar-version">v{pkgJson.version}</span>
+          </h1>
+        </ToolbarLink>
+        <div className="maputnik-toolbar__actions">
+          <ToolbarAction onClick={this.toggleModal.bind(this, 'open')}>
+            <OpenIcon />
+            <IconText>Open</IconText>
+          </ToolbarAction>
+          <ToolbarAction onClick={this.toggleModal.bind(this, 'export')}>
+            <MdFileDownload />
+            <IconText>Export</IconText>
+          </ToolbarAction>
+          <ToolbarAction onClick={this.toggleModal.bind(this, 'sources')}>
+            <SourcesIcon />
+            <IconText>Sources</IconText>
+          </ToolbarAction>
+          <ToolbarAction onClick={this.toggleModal.bind(this, 'settings')}>
+            <SettingsIcon />
+            <IconText>Style Settings</IconText>
+          </ToolbarAction>
+          <ToolbarAction onClick={this.props.onInspectModeToggle}>
+            <InspectionIcon />
+            <IconText>
+              { this.props.inspectModeEnabled && <span>Map Mode</span> }
+              { !this.props.inspectModeEnabled && <span>Inspect Mode</span> }
+            </IconText>
+          </ToolbarAction>
+          <ToolbarLink href={"https://github.com/maputnik/editor/wiki"}>
+            <HelpIcon />
+            <IconText>Help</IconText>
+          </ToolbarLink>
+        </div>
+      </div>
     </div>
   }
 }

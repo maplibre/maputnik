@@ -1,12 +1,14 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import AutocompleteInput from './AutocompleteInput'
 
 class FontInput extends React.Component {
   static propTypes = {
-    value: React.PropTypes.array.isRequired,
-    fonts: React.PropTypes.array,
-    style: React.PropTypes.object,
-    onChange: React.PropTypes.func.isRequired,
+    value: PropTypes.array.isRequired,
+    default: PropTypes.array,
+    fonts: PropTypes.array,
+    style: PropTypes.object,
+    onChange: PropTypes.func.isRequired,
   }
 
   static defaultProps = {

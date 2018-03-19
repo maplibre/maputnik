@@ -1,12 +1,14 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import CloseIcon from 'react-icons/lib/md/close'
 import Overlay from './Overlay'
 
 class Modal extends React.Component {
   static propTypes = {
-    isOpen: React.PropTypes.bool.isRequired,
-    title: React.PropTypes.string.isRequired,
-    onOpenToggle: React.PropTypes.func.isRequired,
+    isOpen: PropTypes.bool.isRequired,
+    title: PropTypes.string.isRequired,
+    onOpenToggle: PropTypes.func.isRequired,
+    children: PropTypes.node,
   }
 
   render() {
@@ -21,7 +23,9 @@ class Modal extends React.Component {
             <CloseIcon />
           </a>
         </header>
-        <div className="maputnik-modal-content">{this.props.children}</div>
+        <div className="maputnik-modal-scroller">
+          <div className="maputnik-modal-content">{this.props.children}</div>
+        </div>
       </div>
     </Overlay>
   }

@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 
 import JSONEditor from './JSONEditor'
 import FilterEditor from '../filter/FilterEditor'
@@ -43,12 +44,12 @@ function layoutGroups(layerType) {
 /** Layer editor supporting multiple types of layers. */
 export default class LayerEditor extends React.Component {
   static propTypes = {
-    layer: React.PropTypes.object.isRequired,
-    sources: React.PropTypes.object,
-    vectorLayers: React.PropTypes.object,
-    spec: React.PropTypes.object.isRequired,
-    onLayerChanged: React.PropTypes.func,
-    onLayerIdChange: React.PropTypes.func,
+    layer: PropTypes.object.isRequired,
+    sources: PropTypes.object,
+    vectorLayers: PropTypes.object,
+    spec: PropTypes.object.isRequired,
+    onLayerChanged: PropTypes.func,
+    onLayerIdChange: PropTypes.func,
   }
 
   static defaultProps = {
@@ -58,7 +59,7 @@ export default class LayerEditor extends React.Component {
   }
 
   static childContextTypes = {
-    reactIconBase: React.PropTypes.object
+    reactIconBase: PropTypes.object
   }
 
   constructor(props) {
@@ -116,6 +117,11 @@ export default class LayerEditor extends React.Component {
       comment = this.props.layer.metadata['maputnik:comment']
     }
 
+    let sourceLayerIds;
+    if(this.props.sources.hasOwnProperty(this.props.layer.source)) {
+      sourceLayerIds = this.props.sources[this.props.layer.source].layers;
+    }
+
     switch(type) {
       case 'layer': return <div>
         <LayerIdBlock
@@ -132,8 +138,9 @@ export default class LayerEditor extends React.Component {
           onChange={v => this.changeProperty(null, 'source', v)}
         />
         }
-        {this.props.layer.type !== 'raster' && this.props.layer.type !== 'background' && <LayerSourceLayerBlock
-          sourceLayerIds={this.props.sources[this.props.layer.source]}
+        {['background', 'raster', 'hillshade', 'heatmap'].indexOf(this.state.type) < 0 &&
+        <LayerSourceLayerBlock
+          sourceLayerIds={sourceLayerIds}
           value={this.props.layer['source-layer']}
           onChange={v => this.changeProperty(null, 'source-layer', v)}
         />

@@ -1,16 +1,16 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import Collapser from './Collapser'
 
-export default class LayerEditorGroup extends React.Component {
+export default class LayerListGroup extends React.Component {
   static propTypes = {
-    title: React.PropTypes.string.isRequired,
-    children: React.PropTypes.element.isRequired,
-    isActive: React.PropTypes.bool.isRequired,
-    onActiveToggle: React.PropTypes.func.isRequired
+    title: PropTypes.string.isRequired,
+    isActive: PropTypes.bool.isRequired,
+    onActiveToggle: PropTypes.func.isRequired
   }
 
   render() {
-    return <div className="maputnik-layer-list-group">
+    return <li className="maputnik-layer-list-group">
       <div className="maputnik-layer-list-group-header"
         onClick={e => this.props.onActiveToggle(!this.props.isActive)}
       >
@@ -21,6 +21,6 @@ export default class LayerEditorGroup extends React.Component {
           isCollapsed={this.props.isActive}
         />
       </div>
-    </div>
+    </li>
   }
 }

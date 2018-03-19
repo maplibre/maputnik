@@ -1,0 +1,22 @@
+//OPENLAYERS
+.maputnik-layout {
+  .ol-zoom {
+    top: 10px;
+    right: 10px;
+    left: auto;
+  }
+
+  .ol-attribution.ol-logo-only {
+    height: 20px;
+  }
+
+  .ol-control {
+    button {
+      background-color: rgb(28, 31, 36);
+    }
+
+    button:hover {
+      background-color: rgb(86, 83, 83);
+    }
+  }
+}

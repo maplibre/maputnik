@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import Color from 'color'
 import classnames from 'classnames'
 
@@ -30,8 +31,8 @@ class LayerTypeDragHandle extends React.Component {
 
 class IconAction extends React.Component {
   static propTypes = {
-    action: React.PropTypes.string.isRequired,
-    onClick: React.PropTypes.func.isRequired,
+    action: PropTypes.string.isRequired,
+    onClick: PropTypes.func.isRequired,
   }
 
   renderIcon() {
@@ -57,16 +58,16 @@ class IconAction extends React.Component {
 @SortableElement
 class LayerListItem extends React.Component {
   static propTypes = {
-    layerId: React.PropTypes.string.isRequired,
-    layerType: React.PropTypes.string.isRequired,
-    isSelected: React.PropTypes.bool,
-    visibility: React.PropTypes.string,
-    className: React.PropTypes.string,
+    layerId: PropTypes.string.isRequired,
+    layerType: PropTypes.string.isRequired,
+    isSelected: PropTypes.bool,
+    visibility: PropTypes.string,
+    className: PropTypes.string,
 
-    onLayerSelect: React.PropTypes.func.isRequired,
-    onLayerCopy: React.PropTypes.func,
-    onLayerDestroy: React.PropTypes.func,
-    onLayerVisibilityToggle: React.PropTypes.func,
+    onLayerSelect: PropTypes.func.isRequired,
+    onLayerCopy: PropTypes.func,
+    onLayerDestroy: PropTypes.func,
+    onLayerVisibilityToggle: PropTypes.func,
   }
 
   static defaultProps = {
@@ -78,7 +79,7 @@ class LayerListItem extends React.Component {
   }
 
   static childContextTypes = {
-    reactIconBase: React.PropTypes.object
+    reactIconBase: PropTypes.object
   }
 
   getChildContext() {

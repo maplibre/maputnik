@@ -1,17 +1,18 @@
 import React from 'react'
-import GlSpec from 'mapbox-gl-style-spec/reference/latest.js'
+import PropTypes from 'prop-types'
+import styleSpec from '@mapbox/mapbox-gl-style-spec/style-spec'
 import InputBlock from '../inputs/InputBlock'
 import StringInput from '../inputs/StringInput'
 import NumberInput from '../inputs/NumberInput'
 
 class TileJSONSourceEditor extends React.Component {
   static propTypes = {
-    source: React.PropTypes.object.isRequired,
-    onChange: React.PropTypes.func.isRequired,
+    source: PropTypes.object.isRequired,
+    onChange: PropTypes.func.isRequired,
   }
 
   render() {
-    return <InputBlock label={"TileJSON URL"} doc={GlSpec.source_tile.url.doc}>
+    return <InputBlock label={"TileJSON URL"} doc={styleSpec.latest.source_vector.url.doc}>
       <StringInput
         value={this.props.source.url}
         onChange={url => this.props.onChange({
@@ -25,8 +26,8 @@ class TileJSONSourceEditor extends React.Component {
 
 class TileURLSourceEditor extends React.Component {
   static propTypes = {
-    source: React.PropTypes.object.isRequired,
-    onChange: React.PropTypes.func.isRequired,
+    source: PropTypes.object.isRequired,
+    onChange: PropTypes.func.isRequired,
   }
 
   changeTileUrl(idx, value) {
@@ -42,7 +43,7 @@ class TileURLSourceEditor extends React.Component {
     const prefix = ['1st', '2nd', '3rd', '4th', '5th', '6th', '7th']
     const tiles = this.props.source.tiles || []
     return tiles.map((tileUrl, tileIndex) => {
-      return <InputBlock key={tileIndex} label={prefix[tileIndex] + " Tile URL"} doc={GlSpec.source_tile.tiles.doc}>
+      return <InputBlock key={tileIndex} label={prefix[tileIndex] + " Tile URL"} doc={styleSpec.latest.source_vector.tiles.doc}>
         <StringInput
           value={tileUrl}
           onChange={this.changeTileUrl.bind(this, tileIndex)}
@@ -54,7 +55,7 @@ class TileURLSourceEditor extends React.Component {
   render() {
     return <div>
       {this.renderTileUrls()}
-      <InputBlock label={"Min Zoom"} doc={GlSpec.source_tile.minzoom.doc}>
+      <InputBlock label={"Min Zoom"} doc={styleSpec.latest.source_vector.minzoom.doc}>
         <NumberInput
           value={this.props.source.minzoom || 0}
           onChange={minzoom => this.props.onChange({
@@ -63,7 +64,7 @@ class TileURLSourceEditor extends React.Component {
           })}
         />
       </InputBlock>
-      <InputBlock label={"Max Zoom"} doc={GlSpec.source_tile.maxzoom.doc}>
+      <InputBlock label={"Max Zoom"} doc={styleSpec.latest.source_vector.maxzoom.doc}>
         <NumberInput
           value={this.props.source.maxzoom || 22}
           onChange={maxzoom => this.props.onChange({
@@ -79,12 +80,12 @@ class TileURLSourceEditor extends React.Component {
 
 class GeoJSONSourceEditor extends React.Component {
   static propTypes = {
-    source: React.PropTypes.object.isRequired,
-    onChange: React.PropTypes.func.isRequired,
+    source: PropTypes.object.isRequired,
+    onChange: PropTypes.func.isRequired,
   }
 
   render() {
-    return <InputBlock label={"GeoJSON Data"} doc={GlSpec.source_geojson.data.doc}>
+    return <InputBlock label={"GeoJSON Data"} doc={styleSpec.latest.source_geojson.data.doc}>
       <StringInput
         value={this.props.source.data}
         onChange={data => this.props.onChange({
@@ -98,9 +99,9 @@ class GeoJSONSourceEditor extends React.Component {
 
 class SourceTypeEditor extends React.Component {
   static propTypes = {
-    mode: React.PropTypes.string.isRequired,
-    source: React.PropTypes.object.isRequired,
-    onChange: React.PropTypes.func.isRequired,
+    mode: PropTypes.string.isRequired,
+    source: PropTypes.object.isRequired,
+    onChange: PropTypes.func.isRequired,
   }
 
   render() {
@@ -114,6 +115,8 @@ class SourceTypeEditor extends React.Component {
       case 'tilexyz_vector': return <TileURLSourceEditor {...commonProps} />
       case 'tilejson_raster': return <TileJSONSourceEditor {...commonProps} />
       case 'tilexyz_raster': return <TileURLSourceEditor {...commonProps} />
+      case 'tilejson_raster-dem': return <TileJSONSourceEditor {...commonProps} />
+      case 'tilexyz_raster-dem': return <TileURLSourceEditor {...commonProps} />
       default: return null
     }
   }

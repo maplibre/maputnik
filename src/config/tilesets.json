@@ -8,14 +8,5 @@
     "type": "vector",
     "url": "https://free.tilehosting.com/data/v3.json?key={key}",
     "title": "OpenMapTiles"
-  },
-  "tilezen": {
-    "type": "vector",
-    "tiles": [
-      "http://tile.mapzen.com/mapzen/vector/v1/{layers}/{z}/{x}/{y}.pbf?api_key=mapzen-RVcyVL7"
-    ],
-    "minZoom": 0,
-    "maxZoom": 15,
-    "title": "Mapzen Vector Tile Service"
   }
 }

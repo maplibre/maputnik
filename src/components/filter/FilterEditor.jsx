@@ -1,7 +1,8 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import { combiningFilterOps } from '../../libs/filterops.js'
 
-import GlSpec from 'mapbox-gl-style-spec/reference/latest.js'
+import styleSpec from '@mapbox/mapbox-gl-style-spec/style-spec'
 import DocLabel from '../fields/DocLabel'
 import SelectInput from '../inputs/SelectInput'
 import SingleFilterEditor from './SingleFilterEditor'
@@ -26,9 +27,9 @@ function hasNestedCombiningFilter(filter) {
 export default class CombiningFilterEditor extends React.Component {
   static propTypes = {
     /** Properties of the vector layer and the available fields */
-    properties: React.PropTypes.object,
-    filter: React.PropTypes.array,
-    onChange: React.PropTypes.func.isRequired,
+    properties: PropTypes.object,
+    filter: PropTypes.array,
+    onChange: PropTypes.func.isRequired,
   }
 
   // Convert filter to combining filter
@@ -91,7 +92,7 @@ export default class CombiningFilterEditor extends React.Component {
       <div className="maputnik-filter-editor-compound-select">
         <DocLabel
           label={"Compound Filter"}
-          doc={GlSpec.layer.filter.doc + " Combine multiple filters together by using a compound filter."}
+          doc={styleSpec.latest.layer.filter.doc + " Combine multiple filters together by using a compound filter."}
         />
         <SelectInput
           value={combiningOp}

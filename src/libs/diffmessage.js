@@ -1,7 +1,7 @@
-import diffStyles from 'mapbox-gl-style-spec/lib/diff'
+import styleSpec from '@mapbox/mapbox-gl-style-spec/style-spec'
 
 export function diffMessages(beforeStyle, afterStyle) {
-  const changes = diffStyles(beforeStyle, afterStyle)
+  const changes = styleSpec.diff(beforeStyle, afterStyle)
   return changes.map(cmd => cmd.command + ' ' + cmd.args.join(' '))
 }
 

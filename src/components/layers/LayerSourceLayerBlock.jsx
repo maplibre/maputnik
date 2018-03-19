@@ -1,6 +1,7 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 
-import GlSpec from 'mapbox-gl-style-spec/reference/latest.js'
+import styleSpec from '@mapbox/mapbox-gl-style-spec/style-spec'
 import InputBlock from '../inputs/InputBlock'
 import StringInput from '../inputs/StringInput'
 import SelectInput from '../inputs/SelectInput'
@@ -8,19 +9,22 @@ import AutocompleteInput from '../inputs/AutocompleteInput'
 
 class LayerSourceLayer extends React.Component {
   static propTypes = {
-    value: React.PropTypes.string,
-    onChange: React.PropTypes.func,
-    sourceLayerIds: React.PropTypes.array,
+    value: PropTypes.string,
+    onChange: PropTypes.func,
+    sourceLayerIds: PropTypes.array,
+    isFixed: PropTypes.bool,
   }
 
   static defaultProps = {
     onChange: () => {},
     sourceLayerIds: [],
+    isFixed: false
   }
 
   render() {
-    return <InputBlock label={"Source Layer"} doc={GlSpec.layer['source-layer'].doc}>
+    return <InputBlock label={"Source Layer"} doc={styleSpec.latest.layer['source-layer'].doc}>
       <AutocompleteInput
+        keepMenuWithinWindowBounds={!!this.props.isFixed}
         value={this.props.value}
         onChange={this.props.onChange}
         options={this.props.sourceLayerIds.map(l => [l, l])}

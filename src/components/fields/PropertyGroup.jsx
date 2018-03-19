@@ -1,6 +1,7 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 
-import ZoomSpecField from './ZoomSpecField'
+import FunctionSpecField from './FunctionSpecField'
 const iconProperties = ['background-pattern', 'fill-pattern', 'line-pattern', 'fill-extrusion-pattern', 'icon-image']
 
 /** Extract field spec by {@fieldName} from the {@layerType} in the
@@ -35,10 +36,10 @@ function getGroupName(spec, layerType, fieldName) {
 
 export default class PropertyGroup extends React.Component {
   static propTypes = {
-    layer: React.PropTypes.object.isRequired,
-    groupFields: React.PropTypes.array.isRequired,
-    onChange: React.PropTypes.func.isRequired,
-    spec: React.PropTypes.object.isRequired,
+    layer: PropTypes.object.isRequired,
+    groupFields: PropTypes.array.isRequired,
+    onChange: PropTypes.func.isRequired,
+    spec: PropTypes.object.isRequired,
   }
 
   onPropertyChange(property, newValue) {
@@ -54,7 +55,7 @@ export default class PropertyGroup extends React.Component {
       const layout = this.props.layer.layout || {}
       const fieldValue = fieldName in paint ? paint[fieldName] : layout[fieldName]
 
-      return <ZoomSpecField
+      return <FunctionSpecField
         onChange={this.onPropertyChange.bind(this)}
         key={fieldName}
         fieldName={fieldName}

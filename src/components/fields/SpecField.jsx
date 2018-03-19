@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import color from 'color'
 
 import ColorField from './ColorField'
@@ -8,6 +9,7 @@ import StringInput from '../inputs/StringInput'
 import SelectInput from '../inputs/SelectInput'
 import MultiButtonInput from '../inputs/MultiButtonInput'
 import ArrayInput from '../inputs/ArrayInput'
+import DynamicArrayInput from '../inputs/DynamicArrayInput'
 import FontInput from '../inputs/FontInput'
 import IconInput from '../inputs/IconInput'
 import capitalize from 'lodash.capitalize'
@@ -35,16 +37,17 @@ function optionsLabelLength(options) {
  * to display @{value}. */
 export default class SpecField extends React.Component {
   static propTypes = {
-    onChange: React.PropTypes.func.isRequired,
-    fieldName: React.PropTypes.string.isRequired,
-    fieldSpec: React.PropTypes.object.isRequired,
-    value: React.PropTypes.oneOfType([
-      React.PropTypes.string,
-      React.PropTypes.number,
-      React.PropTypes.array,
+    onChange: PropTypes.func.isRequired,
+    fieldName: PropTypes.string.isRequired,
+    fieldSpec: PropTypes.object.isRequired,
+    value: PropTypes.oneOfType([
+      PropTypes.string,
+      PropTypes.number,
+      PropTypes.array,
+      PropTypes.bool
     ]),
     /** Override the style of the field */
-    style: React.PropTypes.object,
+    style: PropTypes.object,
   }
 
   render() {
@@ -105,11 +108,18 @@ export default class SpecField extends React.Component {
             fonts={this.props.fieldSpec.values}
           />
         } else {
-          return <ArrayInput
-            {...commonProps}
-            type={this.props.fieldSpec.value}
-            length={this.props.fieldSpec.length}
-          />
+          if (this.props.fieldSpec.length) {
+            return <ArrayInput
+              {...commonProps}
+              type={this.props.fieldSpec.value}
+              length={this.props.fieldSpec.length}
+            />
+          } else {
+            return <DynamicArrayInput
+              {...commonProps}
+              type={this.props.fieldSpec.value}
+            />
+          }
         }
       default: return null
     }

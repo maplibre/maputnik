@@ -1,6 +1,5 @@
 import React from 'react';
-import spec from 'mapbox-gl-style-spec/reference/latest.min.js'
-import derefLayers from 'mapbox-gl-style-spec/lib/deref'
+import deref from '@mapbox/mapbox-gl-style-spec/deref'
 import tokens from '../config/tokens.json'
 
 // Empty style is always used if no style could be restored or fetched
@@ -37,7 +36,7 @@ function ensureHasNoInteractive(style) {
 function ensureHasNoRefs(style) {
   const derefedStyle = {
     ...style,
-    layers: derefLayers(style.layers)
+    layers: deref(style.layers)
   }
   return derefedStyle
 }
@@ -55,12 +54,23 @@ function indexOfLayer(layers, layerId) {
   return null
 }
 
-function replaceAccessToken(mapStyle) {
+function replaceAccessToken(mapStyle, opts={}) {
   const omtSource = mapStyle.sources.openmaptiles
   if(!omtSource) return mapStyle
+  if(!omtSource.hasOwnProperty("url")) return mapStyle
 
   const metadata = mapStyle.metadata || {}
-  const accessToken = metadata['maputnik:openmaptiles_access_token'] || tokens.openmaptiles
+  let accessToken = metadata['maputnik:openmaptiles_access_token'];
+
+  if(opts.allowFallback && !accessToken) {
+    accessToken = tokens.openmaptiles;
+  }
+
+  if(!accessToken) {
+    // Early exit.
+    return mapStyle;
+  }
+
   const changedSources = {
     ...mapStyle.sources,
     openmaptiles: {

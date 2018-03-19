@@ -9,7 +9,7 @@ describe('maputnik', function() {
     browser.waitForExist(".maputnik-toolbar-link");
 
     var src = browser.getAttribute(".maputnik-toolbar-link img", "src");
-    assert.equal(src, config.baseUrl+'/img/maputnik.png');
+    assert.equal(src, config.baseUrl+'/img/logo-color.svg');
   });
 
 });

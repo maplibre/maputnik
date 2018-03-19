@@ -1,17 +1,18 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 
-import GlSpec from 'mapbox-gl-style-spec/reference/latest.js'
+import styleSpec from '@mapbox/mapbox-gl-style-spec/style-spec'
 import InputBlock from '../inputs/InputBlock'
 import SelectInput from '../inputs/SelectInput'
 
 class LayerTypeBlock extends React.Component {
   static propTypes = {
-    value: React.PropTypes.string.isRequired,
-    onChange: React.PropTypes.func.isRequired,
+    value: PropTypes.string.isRequired,
+    onChange: PropTypes.func.isRequired,
   }
 
   render() {
-    return <InputBlock label={"Type"} doc={GlSpec.layer.type.doc}>
+    return <InputBlock label={"Type"} doc={styleSpec.latest.layer.type.doc}>
       <SelectInput
         options={[
           ['background', 'Background'],
@@ -21,6 +22,8 @@ class LayerTypeBlock extends React.Component {
           ['raster', 'Raster'],
           ['circle', 'Circle'],
           ['fill-extrusion', 'Fill Extrusion'],
+          ['hillshade', 'Hillshade'],
+          ['heatmap', 'Heatmap'],
         ]}
         onChange={this.props.onChange}
         value={this.props.value}

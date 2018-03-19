@@ -3,25 +3,25 @@
     "id": "klokantech-basic",
     "title": "Klokantech Basic",
     "url": "https://rawgit.com/openmaptiles/klokantech-basic-gl-style/master/style.json",
-    "thumbnail": "http://maputnik.com/thumbnails/klokantech-basic.png"
+    "thumbnail": "https://maputnik.github.io/thumbnails/klokantech-basic.png"
   },
   {
     "id": "dark-matter",
     "title": "Dark Matter",
     "url": "https://rawgit.com/openmaptiles/dark-matter-gl-style/master/style.json",
-    "thumbnail": "http://maputnik.com/thumbnails/dark-matter.png"
+    "thumbnail": "https://maputnik.github.io/thumbnails/dark-matter.png"
   },
   {
     "id": "positron",
     "title": "Positron",
     "url": "https://rawgit.com/openmaptiles/positron-gl-style/master/style.json",
-    "thumbnail": "http://maputnik.com/thumbnails/positron.png"
+    "thumbnail": "https://maputnik.github.io/thumbnails/positron.png"
   },
   {
     "id": "osm-bright",
     "title": "OSM Bright",
     "url": "https://rawgit.com/openmaptiles/osm-bright-gl-style/master/style.json",
-    "thumbnail": "http://maputnik.com/thumbnails/osm-bright.png"
+    "thumbnail": "https://maputnik.github.io/thumbnails/osm-bright.png"
   },
   {
     "id": "osm-liberty",
@@ -39,24 +39,18 @@
     "id": "mapbox-satellite",
     "title": "Mapbox Satellite",
     "url": "https://rawgit.com/mapbox/mapbox-gl-styles/master/styles/satellite-v9.json",
-    "thumbnail": "http://maputnik.com/thumbnails/mapbox-satellite.png"
+    "thumbnail": "https://maputnik.github.io/thumbnails/mapbox-satellite.png"
   },
   {
     "id": "mapbox-bright",
     "title": "Mapbox Bright",
     "url": "https://rawgit.com/mapbox/mapbox-gl-styles/master/styles/bright-v9.json",
-    "thumbnail": "http://maputnik.com/thumbnails/mapbox-bright.png"
+    "thumbnail": "https://maputnik.github.io/thumbnails/mapbox-bright.png"
   },
   {
     "id": "mapbox-basic",
     "title": "Mapbox Basic",
     "url": "https://rawgit.com/mapbox/mapbox-gl-styles/master/styles/basic-v9.json",
-    "thumbnail": "http://maputnik.com/thumbnails/mapbox-basic.png"
-  },
-  {
-    "id": "tilezen",
-    "title": "Tilezen",
-    "url": "https://rawgit.com/lukasmartinelli/tilezen-gl-style/master/style.json",
-    "thumbnail": "http://maputnik.com/thumbnails/tilezen.png"
+    "thumbnail": "https://maputnik.github.io/thumbnails/mapbox-basic.png"
   }
 ]
