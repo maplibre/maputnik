@@ -38,9 +38,22 @@ exports.config = {
     timeout: 4*60*1000
   },
   onPrepare: function (config, capabilities) {
-    var compiler = webpack(webpackConfig);
-    server = new WebpackDevServer(compiler, {});
-    server.listen(testConfig.port);
+    return new Promise(function(resolve, reject) {
+      var compiler = webpack(webpackConfig);
+      server = new WebpackDevServer(compiler, {
+        stats: {
+          colors: true
+        }
+      });
+      server.listen(testConfig.port, "127.0.0.1", function(err) {
+        if(err) {
+          reject();
+        }
+        else {
+          resolve();
+        }
+      });
+    })
   },
   onComplete: function(exitCode) {
     server.close()
