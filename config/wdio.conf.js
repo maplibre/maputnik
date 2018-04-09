@@ -26,7 +26,7 @@ exports.config = {
   bail: 0,
   screenshotPath: SCREENSHOT_PATH,
   // Note: This is here because @orangemug currently runs Maputnik inside a docker container.
-  host: (isDocker() ? "host.docker.internal" : "0.0.0.0"),
+  host: process.env.DOCKER_HOST || "0.0.0.0",
   baseUrl: 'http://localhost',
   waitforTimeout: 10000,
   connectionRetryTimeout: 90000,
