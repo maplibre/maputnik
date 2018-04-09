@@ -25,7 +25,8 @@ exports.config = {
   coloredLogs: true,
   bail: 0,
   screenshotPath: SCREENSHOT_PATH,
-  host: (isDocker() ? process.env.DOCKER_HOST : "127.0.0.1"),
+  // Note: This is here because @orangemug currently runs Maputnik inside a docker container.
+  host: (isDocker() ? "host.docker.internal" : "0.0.0.0"),
   baseUrl: 'http://localhost',
   waitforTimeout: 10000,
   connectionRetryTimeout: 90000,
@@ -45,9 +46,9 @@ exports.config = {
           colors: true
         }
       });
-      server.listen(testConfig.port, "127.0.0.1", function(err) {
+      server.listen(testConfig.port, (isDocker() ? "0.0.0.0" : "localhost"), function(err) {
         if(err) {
-          reject();
+          reject(err);
         }
         else {
           resolve();
