@@ -24,7 +24,7 @@ templates:
         path: /tmp/artifacts
         destination: /artifacts
   # Test in webdriver
-  wdio-steps: &steps
+  wdio-steps: &wdio-steps
     - checkout
     - run:
         name: "Create artifacts directory"
