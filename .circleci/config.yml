@@ -51,20 +51,17 @@ templates:
 jobs:
   build-linux-node-v6:
     docker:
-      # specify the version you desire here
       - image: node:6
     working_directory: ~/repo-linux-node-v6
     steps: *build-steps
   build-linux-node-v8:
     docker:
-      # specify the version you desire here
       - image: node:8
       - image: selenium/standalone-chrome:3.8.1
     working_directory: ~/repo-linux-node-v8
     steps: *wdio-steps
   build-linux-node-v9:
     docker:
-      # specify the version you desire here
       - image: node:9
     working_directory: ~/repo-linux-node-v9
     steps: *build-steps
