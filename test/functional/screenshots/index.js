@@ -4,6 +4,8 @@ var helper    = require("../helper");
 var wd        = require("../../wd-helper");
 
 
+// These will get used in the marketing material. They are also useful to do a quick manual check of the styling across browsers
+// NOTE: These duplicate some of the tests, however this is indended becuase it's likely these will change for aesthetic reasons over time
 describe('screenshots', function() {
 
   beforeEach(function() {
