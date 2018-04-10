@@ -85,28 +85,17 @@ export default class App extends React.Component {
     this.layerWatcher = new LayerWatcher({
       onVectorLayersChange: v => this.setState({ vectorLayers: v })
     })
-
-    this.onKeyDown = this.onKeyDown.bind(this);
-  }
-
-  onKeyDown(e) {
-    console.log("??? keyCode ctrlKey="+e.ctrlKey+", keyCode="+e.keyCode)
-    // Control + Z
-    if(e.ctrlKey && e.keyCode === 90) {
-      this.onUndo(e);
-    }
-    else if(e.ctrlKey && e.keyCode === 89) {
-      this.onRedo(e);
-    }
   }
 
   componentDidMount() {
     this.fetchSources();
-    document.addEventListener("keydown", this.onKeyDown);
+    Mousetrap.bind(['ctrl+z'], this.onUndo.bind(this));
+    Mousetrap.bind(['ctrl+y'], this.onRedo.bind(this));
   }
 
   componentWillUnmount() {
-    document.removeEventListener("keydown", this.onKeyDown);
+    Mousetrap.unbind(['ctrl+z'], this.onUndo.bind(this));
+    Mousetrap.unbind(['ctrl+y'], this.onRedo.bind(this));
   }
 
   saveStyle(snapshotStyle) {
