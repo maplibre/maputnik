@@ -125,7 +125,6 @@ class AddModal extends React.Component {
         value={this.state.id}
         wdKey="add-layer.layer-id"
         onChange={v => {
-          console.log("@@ upper_id_change", JSON.stringify(v))
           this.setState({ id: v })
         }}
       />
