@@ -5,8 +5,6 @@ var config = require("../../config/specs");
 var helper = require("../helper");
 
 
-
-// TODO: Is this needed?
 function closeModal(wdKey) {
   browser.waitUntil(function() {
     return browser.isVisibleWithinViewport(wd.$(wdKey));
@@ -85,6 +83,7 @@ describe("modals", function() {
 
     // TODO: Work out how to download a file and check the contents
     it("download")
+
     // TODO: Work out how to mock the end git points
     it("save to gist")
   })

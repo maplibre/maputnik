@@ -55,9 +55,6 @@ app.get("/styles/empty/:sources", function(req, res) {
   var reqSources = req.params.sources.split(",");
 
   var sources = {};
-  // reqSources.forEach(function(key) {
-  //   sources[key] = buildGeoJSONSource(sourceData[key]);
-  // });
   reqSources.forEach(function(key) {
     var parts = key.split(":");
     var type = parts[0];

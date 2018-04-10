@@ -3,9 +3,7 @@ var uuid = require('uuid/v1');
 var geoServer = require("../geojson-server");
 
 
-// This should be sync...
 var geoserver = geoServer.listen(9002);
-
 
 module.exports = {
   getStyleUrl: function(styles) {
