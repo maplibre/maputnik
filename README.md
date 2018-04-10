@@ -68,6 +68,25 @@ npm run lint
 npm run lint-styles
 ```
 
+
+## Tests
+For testing we use [webdriverio](http://webdriver.io) and [selenium-standalone](https://github.com/vvo/selenium-standalone)
+
+[selenium-standalone](https://github.com/vvo/selenium-standalone) starts a server that will launch browsers on your local machine. We use chrome so you **must** have chrome installed on your machine. Now open and terminal and run
+
+```
+./node_modules/.bin/selenium-standalone
+```
+
+Then open another terminal and run
+
+```
+npm test
+```
+
+After some time you should see a browser launch which will be automated by the test runner.
+
+
 ## Related Projects
 
 - [maputnik-dev-server](https://github.com/nycplanning/labs-maputnik-dev-server) - An express.js server that allows for quickly loading the style from any mapboxGL map into mapuntnik. 
