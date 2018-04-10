@@ -1,30 +1,12 @@
 language: node_js
-addons:
-  firefox: latest
 matrix:
   include:
-    - os: linux
-      node_js: "6"
-    - os: linux
-      env: CXX=g++-4.8
-      node_js: "7"
-    - os: linux
-      node_js: "8"
-    - os: linux
-      env: CXX=g++-4.8
-      node_js: "9"
     - os: osx
       node_js: "6"
-    - os: osx
-      node_js: "7"
     - os: osx
       node_js: "8"
     - os: osx
       node_js: "9"
-before_install:
-  - export CHROME_BIN=chromium-browser
-  - export DISPLAY=:99.0
-  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sh -e /etc/init.d/xvfb start; fi
 install:
   - npm install
 script:
@@ -32,7 +14,6 @@ script:
   - node --stack_size=100000 $(which npm) run build
   - npm run lint
   - npm run lint-styles
-  - npm run test
 addons:
   apt:
     sources:
