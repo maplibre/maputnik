@@ -70,13 +70,6 @@ jobs:
       - image: selenium/standalone-chrome:3.8.1
     working_directory: ~/repo-linux-node-v9
     steps: *build-steps
-  build-linux-node-v10:
-    docker:
-      # specify the version you desire here
-      - image: node:10
-      - image: selenium/standalone-chrome:3.8.1
-    working_directory: ~/repo-linux-node-v10
-    steps: *build-steps
 
 workflows:
   version: 2
@@ -85,5 +78,4 @@ workflows:
       - build-linux-node-v6
       - build-linux-node-v8
       - build-linux-node-v9
-      - build-linux-node-v10
 
