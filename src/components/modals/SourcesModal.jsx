@@ -234,7 +234,7 @@ class SourcesModal extends React.Component {
       <div className="maputnik-modal-section">
         <h4>Choose Public Source</h4>
         <p>
-          Add one of the publicly availble sources to your style.
+          Add one of the publicly available sources to your style.
         </p>
         <div style={{maxwidth: 500}}>
         {tilesetOptions}
