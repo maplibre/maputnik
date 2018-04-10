@@ -1,6 +1,30 @@
 version: 2
 templates:
-  steps: &steps
+  # Test the build **only** no webdriver
+  build-steps: &build-steps
+    - checkout
+    - run:
+        name: "Create artifacts directory"
+        command: mkdir /tmp/artifacts
+    - restore_cache:
+        key: v1-dependencies-{{ checksum "package.json" }}
+
+    - run: npm install
+
+    - save_cache:
+        paths:
+          - node_modules
+        key: v1-dependencies-{{ checksum "package.json" }}
+
+    - run: mkdir -p /tmp/artifacts/logs
+    - run: npm run build
+    - run: npm run lint
+    - run: npm run lint-styles
+    - store_artifacts:
+        path: /tmp/artifacts
+        destination: /artifacts
+  # Test in webdriver
+  wdio-steps: &steps
     - checkout
     - run:
         name: "Create artifacts directory"
@@ -31,27 +55,35 @@ jobs:
       - image: node:6
       - image: selenium/standalone-chrome:3.8.1
     working_directory: ~/repo-linux-node-v6
-    steps: *steps
+    steps: *build-steps
   build-linux-node-v8:
     docker:
       # specify the version you desire here
       - image: node:8
       - image: selenium/standalone-chrome:3.8.1
     working_directory: ~/repo-linux-node-v8
-    steps: *steps
+    steps: *wdio-steps
   build-linux-node-v9:
     docker:
       # specify the version you desire here
       - image: node:9
       - image: selenium/standalone-chrome:3.8.1
     working_directory: ~/repo-linux-node-v9
-    steps: *steps
+    steps: *build-steps
+  build-linux-node-v10:
+    docker:
+      # specify the version you desire here
+      - image: node:10
+      - image: selenium/standalone-chrome:3.8.1
+    working_directory: ~/repo-linux-node-v10
+    steps: *build-steps
 
 workflows:
   version: 2
   build:
     jobs:
-      - build-linux-node-v8
       - build-linux-node-v6
+      - build-linux-node-v8
       - build-linux-node-v9
+      - build-linux-node-v10
 
