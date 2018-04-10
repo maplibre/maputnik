@@ -23,8 +23,8 @@ function buildStyle(opts) {
       "maputnik:renderer": "mbgljs"
     },
     "sources": opts.sources,
-    "glyphs": "https://demo.tileserver.org/fonts/{fontstack}/{range}.pbf",
-    "sprites": "https://demo.tileserver.org/fonts/{fontstack}/{range}.pbf",
+    "glyphs": "https://example.local/fonts/{fontstack}/{range}.pbf",
+    "sprites": "https://example.local/fonts/{fontstack}/{range}.pbf",
     "layers": []
   }
 }
