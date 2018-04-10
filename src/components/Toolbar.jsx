@@ -58,7 +58,8 @@ class ToolbarLink extends React.Component {
 class ToolbarAction extends React.Component {
   static propTypes = {
     children: PropTypes.node,
-    onClick: PropTypes.func
+    onClick: PropTypes.func,
+    wdKey: PropTypes.string
   }
 
   render() {
