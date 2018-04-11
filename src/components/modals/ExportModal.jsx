@@ -50,7 +50,7 @@ class Gist extends React.Component {
     const mapboxToken = (this.props.mapStyle.metadata || {})['maputnik:mapbox_access_token'];
 
     const mapStyleStr = preview ?
-        styleSpec.format(stripAccessTokens(style.replaceAccessToken(this.props.mapStyle))) :
+        styleSpec.format(stripAccessTokens(style.replaceAccessTokens(this.props.mapStyle))) :
         styleSpec.format(stripAccessTokens(this.props.mapStyle));
     const styleTitle = this.props.mapStyle.name || 'Style';
     const htmlStr = `
