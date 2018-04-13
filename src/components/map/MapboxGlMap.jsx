@@ -121,6 +121,7 @@ export default class MapboxGlMap extends React.Component {
       showMapPopupOnHover: false,
       showInspectMapPopupOnHover: true,
       showInspectButton: false,
+      blockHoverPopupOnClick: true,
       assignLayerColor: (layerId, alpha) => {
         return Color(colors.brightColor(layerId, alpha)).desaturate(0.5).string()
       },
