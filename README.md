@@ -72,10 +72,18 @@ npm run lint-styles
 ## Tests
 For testing we use [webdriverio](http://webdriver.io) and [selenium-standalone](https://github.com/vvo/selenium-standalone)
 
-[selenium-standalone](https://github.com/vvo/selenium-standalone) starts a server that will launch browsers on your local machine. We use chrome so you **must** have chrome installed on your machine. Now open and terminal and run
+[selenium-standalone](https://github.com/vvo/selenium-standalone) starts a server that will launch browsers on your local machine. We use chrome so you **must** have chrome installed on your machine.
+
+Now open and terminal and run the following. This will install the drivers on your local machine
 
 ```
-./node_modules/.bin/selenium-standalone
+./node_modules/.bin/selenium-standalone install
+```
+
+Now start the standalone server
+
+```
+./node_modules/.bin/selenium-standalone start
 ```
 
 Then open another terminal and run
