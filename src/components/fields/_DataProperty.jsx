@@ -51,7 +51,8 @@ export default class DataProperty extends React.Component {
 
   changeStop(changeIdx, stopData, value) {
     const stops = this.props.value.stops.slice(0)
-    stops[changeIdx] = [stopData, value]
+    const changedStop = stopData.zoom === undefined ? stopData.value : stopData
+    stops[changeIdx] = [changedStop, value]
     const changedValue = {
       ...this.props.value,
       stops: stops,
@@ -75,8 +76,8 @@ export default class DataProperty extends React.Component {
     }
 
     const dataFields = this.props.value.stops.map((stop, idx) => {
-      const zoomLevel = stop[0].zoom
-      const dataLevel = stop[0].value
+      const zoomLevel = typeof stop[0] === 'object' ? stop[0].zoom : undefined;
+      const dataLevel = typeof stop[0] === 'object' ? stop[0].value : stop[0];
       const value = stop[1]
       const deleteStopBtn = <DeleteStopButton onClick={this.props.onDeleteStop.bind(this, idx)} />
 
@@ -94,8 +95,9 @@ export default class DataProperty extends React.Component {
         dataInput = <NumberInput {...dataProps} />
       }
 
-      return <InputBlock key={idx} action={deleteStopBtn} label="">
-        <div className="maputnik-data-spec-property-stop-edit">
+      let zoomInput = null;
+      if(zoomLevel !== undefined) {
+        zoomInput = <div className="maputnik-data-spec-property-stop-edit">
           <NumberInput
             value={zoomLevel}
             onChange={newZoom => this.changeStop(idx, {zoom: newZoom, value: dataLevel}, value)}
@@ -103,6 +105,10 @@ export default class DataProperty extends React.Component {
             max={22}
           />
         </div>
+      }
+
+      return <InputBlock key={idx} action={deleteStopBtn} label="">
+        {zoomInput}
         <div className="maputnik-data-spec-property-stop-data">
           {dataInput}
         </div>

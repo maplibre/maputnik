@@ -129,6 +129,9 @@
   }
 
   .maputnik-data-spec-property-stop-data {
+    width: 100%;
+  }
+  .maputnik-data-spec-property-stop-edit + .maputnik-data-spec-property-stop-data {
     width: 78%;
   }
 }
