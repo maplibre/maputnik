@@ -1,5 +1,10 @@
 # Maputnik Desktop [![Build Status](https://travis-ci.org/maputnik/desktop.svg?branch=master)](https://travis-ci.org/maputnik/desktop) [![Windows Build Status](https://ci.appveyor.com/api/projects/status/sepe9jhfs123dwk9?svg=true)](https://ci.appveyor.com/project/lukasmartinelli/desktop)
 
+> :warning: The desktop build of Maputnik is no longer maintained.
+
+![](https://camo.githubusercontent.com/ea32c1383049053bd0ceba2b31834841f229bf64/68747470733a2f2f63312e737461746963666c69636b722e636f6d2f352f343339362f33363730343333373739315f343236383236313038395f6e2e6a7067)
+
+---
 
 A Golang based cross platform executable for integrating Maputnik locally.
 This binary packages up the JavaScript and CSS bundle produced by [maputnik/editor](https://github.com/maputnik/desktop)
