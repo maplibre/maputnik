@@ -54,7 +54,7 @@ class AutocompleteInput extends React.Component {
     >
       <Autocomplete
         menuStyle={{
-          position: "absolute",
+          position: "fixed",
           overflow: "auto",
           maxHeight: this.state.maxHeight
         }}
