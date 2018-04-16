@@ -20,6 +20,7 @@ import { RevisionStore } from '../libs/revisions'
 import LayerWatcher from '../libs/layerwatcher'
 import tokens from '../config/tokens.json'
 import isEqual from 'lodash.isequal'
+import Debug from '../libs/debug'
 
 import MapboxGl from 'mapbox-gl'
 import mapboxUtil from 'mapbox-gl/src/util/mapbox'
@@ -57,7 +58,17 @@ export default class App extends React.Component {
           this.styleStore = new StyleStore()
         }
         this.styleStore.latestStyle(mapStyle => this.onStyleChanged(mapStyle))
+
+        if(Debug.enabled()) {
+          Debug.set("maputnik", "styleStore", this.styleStore);
+          Debug.set("maputnik", "revisionStore", this.revisionStore);
+        }
       })
+    }
+
+    if(Debug.enabled()) {
+      Debug.set("maputnik", "revisionStore", this.revisionStore);
+      Debug.set("maputnik", "styleStore", this.styleStore);
     }
 
     this.state = {
@@ -84,11 +95,6 @@ export default class App extends React.Component {
   componentWillUnmount() {
     Mousetrap.unbind(['mod+z'], this.onUndo.bind(this));
     Mousetrap.unbind(['mod+y', 'mod+shift+z'], this.onRedo.bind(this));
-  }
-
-  onReset() {
-    this.styleStore.purge()
-    loadDefaultStyle(mapStyle => this.onStyleOpen(mapStyle))
   }
 
   saveStyle(snapshotStyle) {

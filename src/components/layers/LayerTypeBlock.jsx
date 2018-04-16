@@ -8,11 +8,14 @@ import SelectInput from '../inputs/SelectInput'
 class LayerTypeBlock extends React.Component {
   static propTypes = {
     value: PropTypes.string.isRequired,
+    wdKey: PropTypes.string.isRequired,
     onChange: PropTypes.func.isRequired,
   }
 
   render() {
-    return <InputBlock label={"Type"} doc={styleSpec.latest.layer.type.doc}>
+    return <InputBlock label={"Type"} doc={styleSpec.latest.layer.type.doc}
+      data-wd-key={this.props.wdKey}
+    >
       <SelectInput
         options={[
           ['background', 'Background'],

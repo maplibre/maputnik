@@ -37,3 +37,14 @@ $toolbar-offset: 0;
 @import 'popup';
 @import 'map';
 @import 'react-collapse';
+
+/**
+ * Hacks for webdriverio isVisibleWithinViewport
+ */
+#app {
+  height: 100vh;
+}
+
+.maputnik-layout {
+  height: 100vh;
+}

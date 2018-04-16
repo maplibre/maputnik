@@ -1,0 +1,84 @@
+version: 2
+templates:
+  # Test the build **only** no webdriver
+  build-steps: &build-steps
+    - checkout
+    - run:
+        name: "Create artifacts directory"
+        command: mkdir /tmp/artifacts
+    - restore_cache:
+        key: v1-dependencies-{{ checksum "package.json" }}
+
+    - run: npm install
+
+    - save_cache:
+        paths:
+          - node_modules
+        key: v1-dependencies-{{ checksum "package.json" }}
+
+    - run: mkdir -p /tmp/artifacts/logs
+    - run: npm run build
+    - run: npm run lint
+    - run: npm run lint-styles
+    - store_artifacts:
+        path: /tmp/artifacts
+        destination: /artifacts
+  # Test in webdriver
+  wdio-steps: &wdio-steps
+    - checkout
+    - run:
+        name: "Create artifacts directory"
+        command: mkdir /tmp/artifacts
+    - restore_cache:
+        key: v1-dependencies-{{ checksum "package.json" }}
+
+    - run: npm install
+
+    - save_cache:
+        paths:
+          - node_modules
+        key: v1-dependencies-{{ checksum "package.json" }}
+
+    - run: mkdir -p /tmp/artifacts/logs
+    - run: npm run build
+    - run: npm run lint
+    - run: npm run lint-styles
+    - run: DOCKER_HOST=localhost npm test
+    - run: ./node_modules/.bin/istanbul report --include /tmp/artifacts/coverage/coverage.json --dir /tmp/artifacts/coverage html lcov
+    - store_artifacts:
+        path: /tmp/artifacts
+        destination: /artifacts
+jobs:
+  build-linux-node-v6:
+    docker:
+      - image: node:6
+    working_directory: ~/repo-linux-node-v6
+    steps: *build-steps
+  build-linux-node-v8:
+    docker:
+      - image: node:8
+      - image: selenium/standalone-chrome:3.8.1
+    working_directory: ~/repo-linux-node-v8
+    steps: *wdio-steps
+  build-linux-node-v9:
+    docker:
+      - image: node:9
+    working_directory: ~/repo-linux-node-v9
+    steps: *build-steps
+  build-osx-node-v9:
+    macos:
+      xcode: "9.0"
+    dependencies:
+      override:
+        - brew install node@9
+    working_directory: ~/repo-linux-node-v9
+    steps: *build-steps
+
+workflows:
+  version: 2
+  build:
+    jobs:
+      - build-linux-node-v6
+      - build-linux-node-v8
+      - build-linux-node-v9
+

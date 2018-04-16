@@ -4,12 +4,12 @@ import PropTypes from 'prop-types'
 import styleSpec from '@mapbox/mapbox-gl-style-spec/style-spec'
 import InputBlock from '../inputs/InputBlock'
 import StringInput from '../inputs/StringInput'
-import SelectInput from '../inputs/SelectInput'
 import AutocompleteInput from '../inputs/AutocompleteInput'
 
 class LayerSourceBlock extends React.Component {
   static propTypes = {
     value: PropTypes.string,
+    wdKey: PropTypes.string,
     onChange: PropTypes.func,
     sourceIds: PropTypes.array,
   }
@@ -20,7 +20,9 @@ class LayerSourceBlock extends React.Component {
   }
 
   render() {
-    return <InputBlock label={"Source"} doc={styleSpec.latest.layer.source.doc}>
+    return <InputBlock label={"Source"} doc={styleSpec.latest.layer.source.doc}
+      data-wd-key={this.props.wdKey}
+    >
       <AutocompleteInput
         value={this.props.value}
         onChange={this.props.onChange}

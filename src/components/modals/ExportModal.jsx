@@ -5,7 +5,6 @@ import { saveAs } from 'file-saver'
 import styleSpec from '@mapbox/mapbox-gl-style-spec/style-spec'
 import InputBlock from '../inputs/InputBlock'
 import StringInput from '../inputs/StringInput'
-import SelectInput from '../inputs/SelectInput'
 import CheckboxInput from '../inputs/CheckboxInput'
 import Button from '../Button'
 import Modal from './Modal'
@@ -242,6 +241,7 @@ class ExportModal extends React.Component {
 
   render() {
     return <Modal
+      data-wd-key="export-modal"
       isOpen={this.props.isOpen}
       onOpenToggle={this.props.onOpenToggle}
       title={'Export Style'}
