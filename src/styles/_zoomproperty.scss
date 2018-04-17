@@ -64,10 +64,6 @@
   margin-right: $margin-3;
 }
 
-.maputnik-zoom-spec-property .maputnik-input-block:not(:first-child) .maputnik-input-block-label {
-  visibility: hidden;
-}
-
 // DATA FUNC
 .maputnik-make-data-function {
   background-color: transparent;
@@ -79,14 +75,13 @@
   @extend .maputnik-icon-button;
 }
 
-// DATA PROPERTY
-.maputnik-data-spec-block {
-  overflow: auto;
-}
-
 .maputnik-data-spec-property {
   .maputnik-input-block-label {
     width: 30%;
+  }
+
+  .maputnik-input-block:not(:first-child) .maputnik-input-block-label {
+    visibility: hidden;
   }
 
   .maputnik-input-block-content {
@@ -117,6 +112,8 @@
 }
 
 .maputnik-data-spec-block {
+  overflow: auto;
+
   .maputnik-data-spec-property-stop-edit,
   .maputnik-data-spec-property-stop-data {
     display: inline-block;
