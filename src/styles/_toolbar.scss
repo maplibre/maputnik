@@ -10,7 +10,7 @@
 }
 
 .maputnik-toolbar-logo {
-  flex: 0 0 170px;
+  flex: 0 0 180px;
   width: 180px;
   text-align: left;
   background-color: $color-black;
@@ -53,6 +53,7 @@
   font-size: 10px;
   bottom: -2px;
   margin-left: 4px;
+  white-space: nowrap;
 }
 
 .maputnik-toolbar-action {
