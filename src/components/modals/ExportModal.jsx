@@ -258,7 +258,7 @@ class ExportModal extends React.Component {
         </Button>
       </div>
 
-      <div className="maputnik-modal-section">
+      <div className="maputnik-modal-section hide">
         <h4>Save style</h4>
         <Gist mapStyle={this.props.mapStyle} onStyleChanged={this.props.onStyleChanged}/>
       </div>
