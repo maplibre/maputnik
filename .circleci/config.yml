@@ -81,4 +81,5 @@ workflows:
       - build-linux-node-v6
       - build-linux-node-v8
       - build-linux-node-v9
+      - build-osx-node-v9
 
