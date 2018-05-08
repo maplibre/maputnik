@@ -1,6 +1,6 @@
 {
   "name": "maputnik",
-  "version": "1.2.0-beta2",
+  "version": "1.2.0",
   "description": "A MapboxGL visual style editor",
   "main": "''",
   "scripts": {
