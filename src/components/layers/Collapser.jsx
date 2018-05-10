@@ -15,7 +15,15 @@ export default class Collapser extends React.Component {
       height: 20,
       ...this.props.style,
     }
-    return this.props.isCollapsed ? <CollapseCloseIcon style={iconStyle}/> : <CollapseOpenIcon style={iconStyle} />
+
+    const ariaProps = {
+      "aria-hidden": true,
+      focusable: false
+    };
+
+    return this.props.isCollapsed
+      ? <CollapseCloseIcon {...ariaProps} style={iconStyle}/>
+      : <CollapseOpenIcon {...ariaProps} style={iconStyle} />
   }
 }
 
