@@ -208,21 +208,21 @@ class LayerListContainer extends React.Component {
         <span className="maputnik-space" />
         <div className="maputnik-default-property">
           <div className="maputnik-multibutton">
-            <a 
+            <button
               onClick={this.toggleLayers.bind(this)}
               className="maputnik-button">
               {this.state.areAllGroupsExpanded === true ? "Collapse" : "Expand"}
-            </a>
+            </button>
           </div>
         </div>
         <div className="maputnik-default-property">
           <div className="maputnik-multibutton">
-            <a
+            <button
               onClick={this.toggleModal.bind(this, 'add')}
               data-wd-key="layer-list:add-layer"
               className="maputnik-button maputnik-button-selected">
              Add Layer
-            </a>
+            </button>
           </div>
         </div>
       </header>

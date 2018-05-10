@@ -63,13 +63,13 @@ class ToolbarAction extends React.Component {
   }
 
   render() {
-    return <a
+    return <button
       className='maputnik-toolbar-action'
       data-wd-key={this.props.wdKey}
       onClick={this.props.onClick}
     >
       {this.props.children}
-    </a>
+    </button>
   }
 }
 

@@ -57,6 +57,8 @@
 }
 
 .maputnik-toolbar-action {
+  background: inherit;
+  border-width: 0;
   @extend .maputnik-toolbar-link;
 }
 
