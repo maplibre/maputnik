@@ -1,7 +1,8 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import Collapse from 'react-collapse'
 import Collapser from './Collapser'
+import CollapseReducedMotion from './CollapseReducedMotion'
+
 
 export default class LayerEditorGroup extends React.Component {
   static propTypes = {
@@ -22,11 +23,11 @@ export default class LayerEditorGroup extends React.Component {
         <span style={{flexGrow: 1}} />
         <Collapser isCollapsed={this.props.isActive} />
       </div>
-      <Collapse isOpened={this.props.isActive}>
+      <CollapseReducedMotion isActive={this.props.isActive}>
         <div className="react-collapse-container">
           {this.props.children}
         </div>
-      </Collapse>
+      </CollapseReducedMotion>
     </div>
   }
 }

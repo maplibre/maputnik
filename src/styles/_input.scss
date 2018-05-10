@@ -126,6 +126,10 @@
     border-width: 2px;
     border-color: $color-gray;
     transition: background-color 0.1s ease-out;
+
+    @media screen and (prefers-reduced-motion: reduce) {
+      transition-duration: 0ms;
+    }
   }
 
   &-icon {
