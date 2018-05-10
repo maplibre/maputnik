@@ -4,7 +4,7 @@ import Collapse from 'react-collapse'
 import lodash from 'lodash'
 
 
-// Wait 3 seconds so when a use enables it they don't have to refresh the page.
+// Wait 3 seconds so when a user enables it they don't have to refresh the page.
 const isReduceMotionEnabled = lodash.throttle(() => {
   return window.matchMedia("(prefers-reduced-motion: reduce)").matches
 }, 3000);
