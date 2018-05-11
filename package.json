@@ -42,6 +42,7 @@
     "prop-types": "^15.6.0",
     "react": "^16.3.2",
     "react-addons-pure-render-mixin": "^15.6.2",
+    "react-aria-modal": "^2.12.1",
     "react-autocomplete": "^1.7.2",
     "react-codemirror2": "^4.2.1",
     "react-collapse": "^4.0.3",
