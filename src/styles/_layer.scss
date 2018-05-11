@@ -114,6 +114,10 @@
 
 // FILTER EDITOR
 .maputnik-layer-editor-group {
+  display: flex;
+  width: 100%;
+  text-align: left;
+  border: none;
   font-weight: bold;
   font-size: $font-size-5;
   background-color: lighten($color-black, 2);
