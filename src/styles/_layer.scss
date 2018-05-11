@@ -43,6 +43,10 @@
     -webkit-transition: opacity 600ms, visibility 600ms;
     transition: opacity 600ms, visibility 600ms;
 
+    @media screen and (prefers-reduced-motion: reduce) {
+      transition-duration: 0;
+    }
+
     @include flex-row;
   }
 
