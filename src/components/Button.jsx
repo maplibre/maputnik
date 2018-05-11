@@ -12,13 +12,13 @@ class Button extends React.Component {
   }
 
   render() {
-    return <a
+    return <button
       onClick={this.props.onClick}
       className={classnames("maputnik-button", this.props.className)}
       data-wd-key={this.props["data-wd-key"]}
       style={this.props.style}>
       {this.props.children}
-    </a>
+    </button>
   }
 }
 

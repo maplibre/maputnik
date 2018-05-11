@@ -7,6 +7,7 @@
   box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.3);
   z-index: 3;
   position: relative;
+  font-family: $font-family;
 }
 
 .maputnik-modal-section {
@@ -58,31 +59,6 @@
 
 .maputnik-modal-header-space {
   @extend .maputnik-space;
-}
-
-//OVERLAY
-.maputnik-overlay-viewport {
-  position: fixed;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  z-index: 2;
-  opacity: 0.875;
-  background-color: rgb(28, 31, 36);
-}
-
-.maputnik-overlay {
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  position: fixed;
-  align-items: center;
-  justify-content: center;
-  z-index: 9;
-
-  @include flex-row;
 }
 
 //OPEN MODAL
