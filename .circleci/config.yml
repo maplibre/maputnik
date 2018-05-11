@@ -60,18 +60,34 @@ jobs:
       - image: selenium/standalone-chrome:3.8.1
     working_directory: ~/repo-linux-node-v8
     steps: *wdio-steps
-  build-linux-node-v9:
+  build-linux-node-v10:
     docker:
-      - image: node:9
-    working_directory: ~/repo-linux-node-v9
+      - image: node:10
+    working_directory: ~/repo-linux-node-v10
     steps: *build-steps
-  build-osx-node-v9:
+  build-osx-node-v6:
     macos:
       xcode: "9.0"
     dependencies:
       override:
-        - brew install node@9
-    working_directory: ~/repo-linux-node-v9
+        - brew install node@6
+    working_directory: ~/repo-linux-node-v6
+    steps: *build-steps
+  build-osx-node-v8:
+    macos:
+      xcode: "9.0"
+    dependencies:
+      override:
+        - brew install node@8
+    working_directory: ~/repo-linux-node-v8
+    steps: *build-steps
+  build-osx-node-v10:
+    macos:
+      xcode: "9.0"
+    dependencies:
+      override:
+        - brew install node@10
+    working_directory: ~/repo-linux-node-v10
     steps: *build-steps
 
 workflows:
@@ -80,5 +96,8 @@ workflows:
     jobs:
       - build-linux-node-v6
       - build-linux-node-v8
-      - build-linux-node-v9
+      - build-linux-node-v10
+      - build-osx-node-v6
+      - build-osx-node-v8
+      - build-osx-node-v10
 
