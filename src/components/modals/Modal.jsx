@@ -22,6 +22,7 @@ class Modal extends React.Component {
       return <AriaModal
         titleText={this.props.title}
         getApplicationNode={this.getApplicationNode}
+        data-wd-key={this.props["data-wd-key"]}
         verticallyCenter={true}
         onExit={() => this.props.onOpenToggle(false)}
       >
