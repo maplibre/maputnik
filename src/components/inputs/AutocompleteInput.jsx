@@ -63,7 +63,8 @@ class AutocompleteInput extends React.Component {
           style: null
         }}
         inputProps={{
-          className: "maputnik-string"
+          className: "maputnik-string",
+          spellCheck: false
         }}
         value={this.props.value}
         items={this.props.options}
