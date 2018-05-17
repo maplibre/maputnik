@@ -1,4 +1,4 @@
-import styleSpec from '@mapbox/mapbox-gl-style-spec/style-spec'
+import * as styleSpec from '@mapbox/mapbox-gl-style-spec/style-spec'
 
 export function changeType(layer, newType) {
   const changedPaintProps = { ...layer.paint }

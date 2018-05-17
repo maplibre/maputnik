@@ -1,26 +1,32 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import styleSpec from '@mapbox/mapbox-gl-style-spec/style-spec'
+import * as styleSpec from '@mapbox/mapbox-gl-style-spec/style-spec'
 import InputBlock from '../inputs/InputBlock'
 import StringInput from '../inputs/StringInput'
 import NumberInput from '../inputs/NumberInput'
+import SelectInput from '../inputs/SelectInput'
+
 
 class TileJSONSourceEditor extends React.Component {
   static propTypes = {
     source: PropTypes.object.isRequired,
     onChange: PropTypes.func.isRequired,
+    children: PropTypes.node,
   }
 
   render() {
-    return <InputBlock label={"TileJSON URL"} doc={styleSpec.latest.source_vector.url.doc}>
-      <StringInput
-        value={this.props.source.url}
-        onChange={url => this.props.onChange({
-          ...this.props.source,
-          url: url
-        })}
-      />
-    </InputBlock>
+    return <div>
+      <InputBlock label={"TileJSON URL"} doc={styleSpec.latest.source_vector.url.doc}>
+        <StringInput
+          value={this.props.source.url}
+          onChange={url => this.props.onChange({
+            ...this.props.source,
+            url: url
+          })}
+        />
+      </InputBlock>
+      {this.props.children}
+    </div>
   }
 }
 
@@ -28,6 +34,7 @@ class TileURLSourceEditor extends React.Component {
   static propTypes = {
     source: PropTypes.object.isRequired,
     onChange: PropTypes.func.isRequired,
+    children: PropTypes.node,
   }
 
   changeTileUrl(idx, value) {
@@ -73,6 +80,7 @@ class TileURLSourceEditor extends React.Component {
           })}
         />
       </InputBlock>
+      {this.props.children}
   </div>
 
   }
@@ -116,7 +124,18 @@ class SourceTypeEditor extends React.Component {
       case 'tilejson_raster': return <TileJSONSourceEditor {...commonProps} />
       case 'tilexyz_raster': return <TileURLSourceEditor {...commonProps} />
       case 'tilejson_raster-dem': return <TileJSONSourceEditor {...commonProps} />
-      case 'tilexyz_raster-dem': return <TileURLSourceEditor {...commonProps} />
+      case 'tilexyz_raster-dem': return <TileURLSourceEditor {...commonProps}>
+        <InputBlock label={"Encoding"} doc={styleSpec.latest.source_raster_dem.encoding.doc}>
+          <SelectInput
+            options={Object.keys(styleSpec.latest.source_raster_dem.encoding.values)}
+            onChange={encoding => this.props.onChange({
+              ...this.props.source,
+              encoding: encoding
+            })}
+            value={this.props.source.encoding || styleSpec.latest.source_raster_dem.encoding.default}
+          />
+        </InputBlock>
+      </TileURLSourceEditor>
       default: return null
     }
   }

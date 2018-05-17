@@ -10,7 +10,7 @@ import AppLayout from './AppLayout'
 import MessagePanel from './MessagePanel'
 
 import { downloadGlyphsMetadata, downloadSpriteMetadata } from '../libs/metadata'
-import styleSpec from '@mapbox/mapbox-gl-style-spec/style-spec'
+import * as styleSpec from '@mapbox/mapbox-gl-style-spec/style-spec'
 import style from '../libs/style.js'
 import { initialStyleUrl, loadStyleUrl } from '../libs/urlopen'
 import { undoMessages, redoMessages } from '../libs/diffmessage'

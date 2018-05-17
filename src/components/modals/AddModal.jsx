@@ -55,7 +55,7 @@ class AddModal extends React.Component {
     }
   }
 
-  componentWillUpdate(nextProps, nextState) {
+  UNSAFE_componentWillUpdate(nextProps, nextState) {
     // Check if source is valid for new type
     const oldType = this.state.type;
     const newType = nextState.type;

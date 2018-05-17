@@ -29,7 +29,7 @@ class OpenLayers3Map extends React.Component {
     const styleFunc = olms.apply(this.map, newMapStyle)
   }
 
-  componentWillReceiveProps(nextProps) {
+  UNSAFE_componentWillReceiveProps(nextProps) {
     require.ensure(["ol", "ol-mapbox-style"], () => {
       if(!this.map) return
       this.updateStyle(nextProps.mapStyle)

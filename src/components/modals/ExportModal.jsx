@@ -2,7 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { saveAs } from 'file-saver'
 
-import styleSpec from '@mapbox/mapbox-gl-style-spec/style-spec'
+import * as styleSpec from '@mapbox/mapbox-gl-style-spec/style-spec'
 import InputBlock from '../inputs/InputBlock'
 import StringInput from '../inputs/StringInput'
 import CheckboxInput from '../inputs/CheckboxInput'
@@ -31,7 +31,7 @@ class Gist extends React.Component {
     }
   }
 
-  componentWillReceiveProps(nextProps) {
+  UNSAFE_componentWillReceiveProps(nextProps) {
     this.setState({
       ...this.state,
       preview: !!(nextProps.mapStyle.metadata || {})['maputnik:openmaptiles_access_token']
