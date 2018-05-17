@@ -22,7 +22,7 @@
   "homepage": "https://github.com/maputnik/editor#readme",
   "dependencies": {
     "@mapbox/mapbox-gl-rtl-text": "^0.1.2",
-    "@mapbox/mapbox-gl-style-spec": "^11.1.1",
+    "@mapbox/mapbox-gl-style-spec": "^12.0.0",
     "classnames": "^2.2.5",
     "codemirror": "^5.37.0",
     "color": "^3.0.0",

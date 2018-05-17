@@ -2,7 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { combiningFilterOps } from '../../libs/filterops.js'
 
-import styleSpec from '@mapbox/mapbox-gl-style-spec/style-spec'
+import * as styleSpec from '@mapbox/mapbox-gl-style-spec/style-spec'
 import DocLabel from '../fields/DocLabel'
 import SelectInput from '../inputs/SelectInput'
 import SingleFilterEditor from './SingleFilterEditor'
