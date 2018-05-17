@@ -69,7 +69,7 @@ export default class LayerEditor extends React.Component {
     this.state = { editorGroups }
   }
 
-  componentWillReceiveProps(nextProps) {
+  UNSAFE_componentWillReceiveProps(nextProps) {
     const additionalGroups = { ...this.state.editorGroups }
 
     layout[nextProps.layer.type].groups.forEach(group => {

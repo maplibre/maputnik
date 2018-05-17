@@ -79,7 +79,7 @@ export default class MapboxGlMap extends React.Component {
     }
   }
 
-  componentWillReceiveProps(nextProps) {
+  UNSAFE_componentWillReceiveProps(nextProps) {
     if(!this.state.map) return
     const metadata = nextProps.mapStyle.metadata || {}
     MapboxGl.accessToken = metadata['maputnik:mapbox_access_token'] || tokens.mapbox

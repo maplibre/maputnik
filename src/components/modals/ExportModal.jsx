@@ -31,7 +31,7 @@ class Gist extends React.Component {
     }
   }
 
-  componentWillReceiveProps(nextProps) {
+  UNSAFE_componentWillReceiveProps(nextProps) {
     this.setState({
       ...this.state,
       preview: !!(nextProps.mapStyle.metadata || {})['maputnik:openmaptiles_access_token']
