@@ -11,6 +11,7 @@ class TileJSONSourceEditor extends React.Component {
   static propTypes = {
     source: PropTypes.object.isRequired,
     onChange: PropTypes.func.isRequired,
+    children: PropTypes.node,
   }
 
   render() {
@@ -33,6 +34,7 @@ class TileURLSourceEditor extends React.Component {
   static propTypes = {
     source: PropTypes.object.isRequired,
     onChange: PropTypes.func.isRequired,
+    children: PropTypes.node,
   }
 
   changeTileUrl(idx, value) {
