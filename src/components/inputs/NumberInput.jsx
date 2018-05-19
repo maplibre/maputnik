@@ -67,6 +67,7 @@ class NumberInput extends React.Component {
 
   render() {
     return <input
+      spellCheck="false"
       className="maputnik-number"
       placeholder={this.props.default}
       value={this.state.value}
