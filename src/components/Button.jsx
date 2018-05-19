@@ -5,6 +5,7 @@ import classnames from 'classnames'
 class Button extends React.Component {
   static propTypes = {
     "data-wd-key": PropTypes.string,
+    "aria-label": PropTypes.string,
     onClick: PropTypes.func,
     style: PropTypes.object,
     className: PropTypes.string,
@@ -14,6 +15,7 @@ class Button extends React.Component {
   render() {
     return <button
       onClick={this.props.onClick}
+      aria-label={this.props["aria-label"]}
       className={classnames("maputnik-button", this.props.className)}
       data-wd-key={this.props["data-wd-key"]}
       style={this.props.style}>

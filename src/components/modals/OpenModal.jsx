@@ -23,6 +23,7 @@ class PublicStyle extends React.Component {
     return <div className="maputnik-public-style">
       <Button
         className="maputnik-public-style-button"
+        aria-label={this.props.title}
         onClick={() => this.props.onSelect(this.props.url)}
       >
         <header className="maputnik-public-style-header">
@@ -30,11 +31,12 @@ class PublicStyle extends React.Component {
           <span className="maputnik-space" />
           <AddIcon />
         </header>
-        <img
+        <div
           className="maputnik-public-style-thumbnail"
-          src={this.props.thumbnailUrl}
-          alt={this.props.title}
-        />
+          style={{
+            backgroundImage: `url(${this.props.thumbnailUrl})`
+          }}
+        ></div>
       </Button>
     </div>
   }
