@@ -50,13 +50,24 @@
     @include flex-row;
   }
 
-  &-icon-action svg {
-    fill: $color-black;
+  &-icon-action {
+    display: none;
+
+    svg {
+      fill: $color-black;
+    }
   }
 
   .maputnik-layer-list-item:hover,
   .maputnik-layer-list-item-selected {
     background-color: lighten($color-black, 2);
+
+    .maputnik-layer-list-icon-action {
+      display: block;
+      background: initial;
+      border: none;
+      padding: 0 2px;
+    }
 
     .maputnik-layer-list-icon-action svg {
       fill: darken($color-lowgray, 0.5);
@@ -166,5 +177,40 @@
   .maputnik-multibutton .maputnik-button-selected {
     background-color: darken($color-midgray, 2%);
     color: $color-lowgray;
+  }
+}
+
+.more-menu {
+  position: relative;
+
+  &__button {
+  }
+
+  &__menu {
+    position: absolute;
+    z-index: 9999;
+    background: $color-black;
+    border: solid 1px $color-midgray;
+    right: 0;
+    min-width: 120px;
+  }
+
+  &__menu__item {
+    padding: 4px;
+  }
+}
+
+.layer-header {
+  display: flex;
+  padding: 6px;
+  background: $color-black;
+  border-bottom: solid 1px $color-midgray;
+
+  &__title {
+    flex: 1;
+  }
+
+  &__info {
+    min-width: 28px;
   }
 }

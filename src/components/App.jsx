@@ -1,5 +1,8 @@
 import React from 'react'
 import Mousetrap from 'mousetrap'
+import cloneDeep from 'lodash.clonedeep'
+import clamp from 'lodash.clamp'
+import {arrayMove} from 'react-sortable-hoc';
 
 import MapboxGlMap from './map/MapboxGlMap'
 import OpenLayers3Map from './map/OpenLayers3Map'
@@ -164,6 +167,24 @@ export default class App extends React.Component {
     })
   }
 
+  onSortEnd(move) {
+    let { oldIndex, newIndex } = move;
+    let layers = this.state.mapStyle.layers;
+    oldIndex = clamp(oldIndex, 0, layers.length-1);
+    newIndex = clamp(newIndex, 0, layers.length-1);
+    if(oldIndex === newIndex) return;
+
+    if (oldIndex === this.state.selectedLayerIndex) {
+      this.setState({
+        selectedLayerIndex: newIndex
+      });
+    }
+
+    layers = layers.slice(0);
+    layers = arrayMove(layers, oldIndex, newIndex);
+    this.onLayersChange(layers);
+  }
+
   onLayersChange(changedLayers) {
     const changedStyle = {
       ...this.state.mapStyle,
@@ -171,6 +192,40 @@ export default class App extends React.Component {
     }
     this.onStyleChanged(changedStyle)
   }
+
+  onLayerDestroy(layerId) {
+    let layers = this.state.mapStyle.layers;
+    const remainingLayers = layers.slice(0);
+    const idx = style.indexOfLayer(remainingLayers, layerId)
+    remainingLayers.splice(idx, 1);
+    this.onLayersChange(remainingLayers);
+  }
+
+  onLayerCopy(layerId) {
+    let layers = this.state.mapStyle.layers;
+    const changedLayers = layers.slice(0)
+    const idx = style.indexOfLayer(changedLayers, layerId)
+
+    const clonedLayer = cloneDeep(changedLayers[idx])
+    clonedLayer.id = clonedLayer.id + "-copy"
+    changedLayers.splice(idx, 0, clonedLayer)
+    this.onLayersChange(changedLayers)
+  }
+
+  onLayerVisibilityToggle(layerId) {
+    let layers = this.state.mapStyle.layers;
+    const changedLayers = layers.slice(0)
+    const idx = style.indexOfLayer(changedLayers, layerId)
+
+    const layer = { ...changedLayers[idx] }
+    const changedLayout = 'layout' in layer ? {...layer.layout} : {}
+    changedLayout.visibility = changedLayout.visibility === 'none' ? 'visible' : 'none'
+
+    layer.layout = changedLayout
+    changedLayers[idx] = layer
+    this.onLayersChange(changedLayers)
+  }
+
 
   onLayerIdChange(oldId, newId) {
     const changedLayers = this.state.mapStyle.layers.slice(0)
@@ -297,6 +352,10 @@ export default class App extends React.Component {
     />
 
     const layerList = <LayerList
+      onSortEnd={this.onSortEnd.bind(this)}
+      onLayerDestroy={this.onLayerDestroy.bind(this)}
+      onLayerCopy={this.onLayerCopy.bind(this)}
+      onLayerVisibilityToggle={this.onLayerVisibilityToggle.bind(this)}
       onLayersChange={this.onLayersChange.bind(this)}
       onLayerSelect={this.onLayerSelect.bind(this)}
       selectedLayerIndex={this.state.selectedLayerIndex}
@@ -306,10 +365,17 @@ export default class App extends React.Component {
 
     const layerEditor = selectedLayer ? <LayerEditor
       layer={selectedLayer}
+      layerIndex={this.state.selectedLayerIndex}
+      isFirstLayer={this.state.selectedLayerIndex < 1}
+      isLastLayer={this.state.selectedLayerIndex === this.state.mapStyle.layers.length-1}
       sources={this.state.sources}
       vectorLayers={this.state.vectorLayers}
       spec={this.state.spec}
+      onSortEnd={this.onSortEnd.bind(this)}
       onLayerChanged={this.onLayerChanged.bind(this)}
+      onLayerDestroy={this.onLayerDestroy.bind(this)}
+      onLayerCopy={this.onLayerCopy.bind(this)}
+      onLayerVisibilityToggle={this.onLayerVisibilityToggle.bind(this)}
       onLayerIdChange={this.onLayerIdChange.bind(this)}
     /> : null
 
