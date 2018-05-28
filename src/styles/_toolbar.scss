@@ -16,6 +16,8 @@
   background-color: $color-black;
   padding: $margin-2;
   height: $toolbar-height;
+  position: relative;
+  overflow: hidden;
 
   h1 {
     display: inline;
@@ -80,3 +82,23 @@
   flex: 1;
   overflow-y: auto;
 }
+
+.maputnik-toolbar-skip {
+  position: absolute;
+  overflow: hidden;
+  width: 0px;
+  height: 100%;
+  text-align: center;
+  display: block;
+  background-color: $color-black;
+  z-index: 999;
+  line-height: 40px;
+  left: 0;
+  top: 0;
+
+  &:active,
+  &:focus {
+    width: 100%;
+  }
+}
+

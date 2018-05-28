@@ -209,6 +209,7 @@ class LayerListContainer extends React.Component {
         <div className="maputnik-default-property">
           <div className="maputnik-multibutton">
             <button
+              id="skip-menu"
               onClick={this.toggleLayers.bind(this)}
               className="maputnik-button">
               {this.state.areAllGroupsExpanded === true ? "Collapse" : "Expand"}
