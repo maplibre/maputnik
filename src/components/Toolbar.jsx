@@ -135,9 +135,13 @@ export default class Toolbar extends React.Component {
       />
       <div className="maputnik-toolbar__inner">
         <ToolbarLink
+          tabIndex="2"
           href={"https://github.com/maputnik/editor"}
           className="maputnik-toolbar-logo"
         >
+          <a tabIndex="1" className="maputnik-toolbar-skip" href="#skip-menu">
+            Skip the menu
+          </a>
           <img src={logoImage} alt="Maputnik" />
           <h1>Maputnik
             <span className="maputnik-toolbar-version">v{pkgJson.version}</span>
