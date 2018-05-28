@@ -167,7 +167,7 @@ export default class App extends React.Component {
     })
   }
 
-  onSortEnd(move) {
+  onMoveLayer(move) {
     let { oldIndex, newIndex } = move;
     let layers = this.state.mapStyle.layers;
     oldIndex = clamp(oldIndex, 0, layers.length-1);
@@ -352,7 +352,7 @@ export default class App extends React.Component {
     />
 
     const layerList = <LayerList
-      onSortEnd={this.onSortEnd.bind(this)}
+      onMoveLayer={this.onMoveLayer.bind(this)}
       onLayerDestroy={this.onLayerDestroy.bind(this)}
       onLayerCopy={this.onLayerCopy.bind(this)}
       onLayerVisibilityToggle={this.onLayerVisibilityToggle.bind(this)}
@@ -371,7 +371,7 @@ export default class App extends React.Component {
       sources={this.state.sources}
       vectorLayers={this.state.vectorLayers}
       spec={this.state.spec}
-      onSortEnd={this.onSortEnd.bind(this)}
+      onMoveLayer={this.onMoveLayer.bind(this)}
       onLayerChanged={this.onLayerChanged.bind(this)}
       onLayerDestroy={this.onLayerDestroy.bind(this)}
       onLayerCopy={this.onLayerCopy.bind(this)}

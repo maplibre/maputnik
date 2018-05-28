@@ -208,7 +208,7 @@ export default class LayerList extends React.Component {
   render() {
     return <LayerListContainer
       {...this.props}
-      onSortEnd={this.props.onSortEnd.bind(this)}
+      onSortEnd={this.props.onMoveLayer.bind(this)}
       useDragHandle={true}
     />
   }

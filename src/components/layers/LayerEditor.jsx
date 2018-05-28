@@ -1,7 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { Wrapper, Button, Menu, MenuItem } from 'react-aria-menubutton'
-import classnames from 'classnames'
 
 import JSONEditor from './JSONEditor'
 import FilterEditor from '../filter/FilterEditor'
@@ -181,7 +180,7 @@ export default class LayerEditor extends React.Component {
   }
 
   moveLayer(offset) {
-    this.props.onSortEnd({
+    this.props.onMoveLayer({
       oldIndex: this.props.layerIndex,
       newIndex: this.props.layerIndex+offset
     })
@@ -250,7 +249,7 @@ export default class LayerEditor extends React.Component {
               closeOnSelection={false}
             >
               <Button className='more-menu__button'>
-                <MoreVertIcon width="22px" height="22px" />
+                <MoreVertIcon className="more-menu__button__svg" />
               </Button>
               <Menu>
                 <ul className="more-menu__menu">
