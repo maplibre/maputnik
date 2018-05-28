@@ -48,6 +48,13 @@ export default class LayerEditor extends React.Component {
     spec: PropTypes.object.isRequired,
     onLayerChanged: PropTypes.func,
     onLayerIdChange: PropTypes.func,
+    onMoveLayer: PropTypes.func,
+    onLayerDestroy: PropTypes.func,
+    onLayerCopy: PropTypes.func,
+    onLayerVisibilityToggle: PropTypes.func,
+    isFirstLayer: PropTypes.bool,
+    isLastLayer: PropTypes.bool,
+    layerIndex: PropTypes.number,
   }
 
   static defaultProps = {
