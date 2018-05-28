@@ -7,14 +7,14 @@ templates:
         name: "Create artifacts directory"
         command: mkdir /tmp/artifacts
     - restore_cache:
-        key: v1-dependencies-{{ checksum "package.json" }}
+        key: v1-dependencies-{{ arch }}-{{ checksum "package.json" }}
 
     - run: npm install
 
     - save_cache:
         paths:
           - node_modules
-        key: v1-dependencies-{{ checksum "package.json" }}
+        key: v1-dependencies-{{ arch }}-{{ checksum "package.json" }}
 
     - run: mkdir -p /tmp/artifacts/logs
     - run: npm run build
@@ -30,14 +30,14 @@ templates:
         name: "Create artifacts directory"
         command: mkdir /tmp/artifacts
     - restore_cache:
-        key: v1-dependencies-{{ checksum "package.json" }}
+        key: v1-dependencies-{{ arch }}-{{ checksum "package.json" }}
 
     - run: npm install
 
     - save_cache:
         paths:
           - node_modules
-        key: v1-dependencies-{{ checksum "package.json" }}
+        key: v1-dependencies-{{ arch }}-{{ checksum "package.json" }}
 
     - run: mkdir -p /tmp/artifacts/logs
     - run: npm run build
