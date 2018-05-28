@@ -50,6 +50,43 @@ export default class App extends React.Component {
       onLocalStyleChange: mapStyle => this.onStyleChanged(mapStyle, false)
     })
 
+    document.body.addEventListener("keyup", (e) => {
+      if(e.keyCode === 27) {
+        e.target.blur();
+        document.body.focus();
+      }
+      else if(document.activeElement === document.body) {
+        console.log(">>> e", e.keyCode);
+        if(e.keyCode === 191) {
+          console.log("TODO: SHORTCUTS");
+        }
+        else if(e.keyCode === 79) {
+          console.log("TODO: OPEN");
+        }
+        else if(e.keyCode === 69) {
+          console.log("TODO: EXPORT");
+        }
+        else if(e.keyCode === 83) {
+          console.log("TODO: SOURCES");
+        }
+        else if(e.keyCode === 80) {
+          console.log("TODO: METADATA");
+        }
+        else if(e.keyCode === 73) {
+          console.log("TODO: INSPECT");
+        }
+        else if(e.keyCode === 76) {
+          console.log("TODO: LAYER LIST");
+        }
+        else if(e.keyCode === 67) {
+          console.log("TODO: CURRENT LAYER");
+        }
+        else if(e.keyCode === 77) {
+          console.log("TODO: MAP");
+        }
+      }
+    })
+
     const styleUrl = initialStyleUrl()
     if(styleUrl) {
       this.styleStore = new StyleStore()
