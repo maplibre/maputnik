@@ -39,6 +39,7 @@ class AppLayout extends React.Component {
           {this.props.bottom}
         </div>
       }
+      {this.props.modals}
     </div>
   }
 }
