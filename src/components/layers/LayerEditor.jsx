@@ -220,7 +220,7 @@ export default class LayerEditor extends React.Component {
         handler: () => this.props.onLayerCopy(this.props.layer.id)
       },
       hide: {
-        text: "Hide",
+        text: (this.props.layer.layout.visibility === "visible") ? "Hide" : "Show",
         handler: () => this.props.onLayerVisibilityToggle(this.props.layer.id)
       },
       moveLayerUp: {
