@@ -43,7 +43,10 @@
 }
 
 .maputnik-modal-header-toggle {
-  cursor: pointer;
+  border: none;
+  background: initial;
+  color: white;
+  padding: 0;
 }
 
 .maputnik-modal-scroller {
