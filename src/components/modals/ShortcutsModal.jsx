@@ -62,11 +62,6 @@ class ShortcutsModal extends React.Component {
             </li>
           })}
         </ul>
-        <p>
-          <Button onClick={() => this.props.onOpenToggle()}>
-            Close
-          </Button>
-        </p>
       </div>
     </Modal>
   }
