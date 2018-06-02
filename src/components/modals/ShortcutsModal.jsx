@@ -19,7 +19,7 @@ class ShortcutsModal extends React.Component {
     const help = [
       {
         key: "?",
-        text: "Show shortcuts menu"
+        text: "Shortcuts menu"
       },
       {
         key: "o",
@@ -35,11 +35,11 @@ class ShortcutsModal extends React.Component {
       },
       {
         key: "p",
-        text: "Source settings modal"
+        text: "Style settings modal"
       },
       {
         key: "i",
-        text: "Toggle map"
+        text: "Toggle inspect"
       },
       {
         key: "m",
@@ -54,7 +54,10 @@ class ShortcutsModal extends React.Component {
       onOpenToggle={this.props.onOpenToggle}
       title={'Shortcuts'}
     >
-      <div className="maputnik-modal-section">
+      <div className="maputnik-modal-section maputnik-modal-shortcuts">
+        <p>
+          Press <code>ESC</code> to lose focus of any active elements, then press one of:
+        </p>
         <ul>
           {help.map((item) => {
             return <li>
