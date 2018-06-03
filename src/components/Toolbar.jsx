@@ -118,7 +118,7 @@ export default class Toolbar extends React.Component {
           </ToolbarAction>
           <ToolbarAction wdKey="nav:sources" onClick={this.props.onToggleModal.bind(this, 'sources')}>
             <SourcesIcon />
-            <IconText>Sources</IconText>
+            <IconText>Data Sources</IconText>
           </ToolbarAction>
           <ToolbarAction wdKey="nav:settings" onClick={this.props.onToggleModal.bind(this, 'settings')}>
             <SettingsIcon />

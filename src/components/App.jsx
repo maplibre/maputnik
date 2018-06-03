@@ -63,7 +63,7 @@ export default class App extends React.Component {
       "o": 79,
       "e": 69,
       "s": 83,
-      "p": 80,
+      "d": 68,
       "i": 73,
       "m": 77,
     }
@@ -88,13 +88,13 @@ export default class App extends React.Component {
         }
       },
       {
-        keyCode: keyCodes["s"],
+        keyCode: keyCodes["d"],
         handler: () => {
           this.toggleModal("sources");
         }
       },
       {
-        keyCode: keyCodes["p"],
+        keyCode: keyCodes["s"],
         handler: () => {
           this.toggleModal("settings");
         }

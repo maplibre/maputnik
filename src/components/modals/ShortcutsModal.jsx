@@ -30,12 +30,12 @@ class ShortcutsModal extends React.Component {
         text: "Export modal"
       },
       {
-        key: "s",
-        text: "Sources modal"
+        key: "d",
+        text: "Data Sources modal"
       },
       {
-        key: "p",
-        text: "Style settings modal"
+        key: "s",
+        text: "Style Settings modal"
       },
       {
         key: "i",
