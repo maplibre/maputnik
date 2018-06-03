@@ -172,6 +172,9 @@ export default class App extends React.Component {
         shortcuts: false,
         export: false,
       },
+      mapOptions: {
+        showTileBoundaries: !!queryObj.showTileBoundaries
+      },
       mapFilter: queryObj["color-blindness-emulation"],
     }
 
@@ -402,6 +405,7 @@ export default class App extends React.Component {
   mapRenderer() {
     const mapProps = {
       mapStyle: style.replaceAccessToken(this.state.mapStyle, {allowFallback: true}),
+      options: this.state.mapOptions,
       onDataChange: (e) => {
         this.layerWatcher.analyzeMap(e.map)
         this.fetchSources();

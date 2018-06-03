@@ -58,6 +58,7 @@ export default class MapboxGlMap extends React.Component {
     mapStyle: PropTypes.object.isRequired,
     inspectModeEnabled: PropTypes.bool.isRequired,
     highlightedLayer: PropTypes.object,
+    options: PropTypes.object,
   }
 
   static defaultProps = {
@@ -101,11 +102,18 @@ export default class MapboxGlMap extends React.Component {
   }
 
   componentDidMount() {
-    const map = new MapboxGl.Map({
+    const mapOpts = {
+      ...this.props.options,
       container: this.container,
       style: this.props.mapStyle,
       hash: true,
-    })
+    }
+
+    const map = new MapboxGl.Map(mapOpts);
+
+    if(mapOpts.showTileBoundaries) {
+      map.showTileBoundaries = mapOpts.showTileBoundaries;
+    }
 
     const zoom = new ZoomControl;
     map.addControl(zoom, 'top-right');
