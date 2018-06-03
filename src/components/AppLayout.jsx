@@ -9,6 +9,7 @@ class AppLayout extends React.Component {
     layerEditor: PropTypes.element,
     map: PropTypes.element.isRequired,
     bottom: PropTypes.element,
+    modals: PropTypes.node,
   }
 
   static childContextTypes = {

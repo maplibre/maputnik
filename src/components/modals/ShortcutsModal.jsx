@@ -60,7 +60,7 @@ class ShortcutsModal extends React.Component {
         </p>
         <ul>
           {help.map((item) => {
-            return <li>
+            return <li key={item.key}>
               <code>{item.key}</code> {item.text}
             </li>
           })}

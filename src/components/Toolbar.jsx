@@ -37,6 +37,7 @@ class ToolbarLink extends React.Component {
     className: PropTypes.string,
     children: PropTypes.node,
     href: PropTypes.string,
+    onToggleModal: PropTypes.func,
   }
 
   render() {
