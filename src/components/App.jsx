@@ -31,6 +31,7 @@ import LayerWatcher from '../libs/layerwatcher'
 import tokens from '../config/tokens.json'
 import isEqual from 'lodash.isequal'
 import Debug from '../libs/debug'
+import queryUtil from '../libs/query-util'
 
 import MapboxGl from 'mapbox-gl'
 import mapboxUtil from 'mapbox-gl/src/util/mapbox'
@@ -171,6 +172,9 @@ export default class App extends React.Component {
         open: false,
         shortcuts: false,
         export: false,
+      },
+      mapOptions: {
+        showTileBoundaries: queryUtil.asBool(queryObj, "show-tile-boundaries")
       },
       mapFilter: queryObj["color-blindness-emulation"],
     }
@@ -402,6 +406,7 @@ export default class App extends React.Component {
   mapRenderer() {
     const mapProps = {
       mapStyle: style.replaceAccessToken(this.state.mapStyle, {allowFallback: true}),
+      options: this.state.mapOptions,
       onDataChange: (e) => {
         this.layerWatcher.analyzeMap(e.map)
         this.fetchSources();
@@ -502,13 +507,13 @@ export default class App extends React.Component {
       />
       <SettingsModal
         mapStyle={this.state.mapStyle}
-        onStyleChanged={this.onStyleChanged}
+        onStyleChanged={this.onStyleChanged.bind(this)}
         isOpen={this.state.isOpen.settings}
         onOpenToggle={this.toggleModal.bind(this, 'settings')}
       />
       <ExportModal
         mapStyle={this.state.mapStyle}
-        onStyleChanged={this.onStyleChanged}
+        onStyleChanged={this.onStyleChanged.bind(this)}
         isOpen={this.state.isOpen.export}
         onOpenToggle={this.toggleModal.bind(this, 'export')}
       />
@@ -519,7 +524,7 @@ export default class App extends React.Component {
       />
       <SourcesModal
         mapStyle={this.state.mapStyle}
-        onStyleChanged={this.onStyleChanged}
+        onStyleChanged={this.onStyleChanged.bind(this)}
         isOpen={this.state.isOpen.sources}
         onOpenToggle={this.toggleModal.bind(this, 'sources')}
       />
