@@ -38,7 +38,7 @@ class IconAction extends React.Component {
 
   renderIcon() {
     switch(this.props.action) {
-      case 'copy': return <CopyIcon />
+      case 'duplicate': return <CopyIcon />
       case 'show': return <VisibilityIcon />
       case 'hide': return <VisibilityOffIcon />
       case 'delete': return <DeleteIcon />
@@ -46,13 +46,15 @@ class IconAction extends React.Component {
   }
 
   render() {
-    return <a
+    return <button
+      tabIndex="-1"
+      title={this.props.action}
       className="maputnik-layer-list-icon-action"
       data-wd-key={this.props.wdKey}
       onClick={this.props.onClick}
     >
       {this.renderIcon()}
-    </a>
+    </button>
   }
 }
 
@@ -109,7 +111,7 @@ class LayerListItem extends React.Component {
         />
         <IconAction
           wdKey={"layer-list-item:"+this.props.layerId+":copy"}
-          action={'copy'}
+          action={'duplicate'}
           onClick={e => this.props.onLayerCopy(this.props.layerId)}
         />
         <IconAction

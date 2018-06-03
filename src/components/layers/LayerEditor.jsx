@@ -1,5 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+import { Wrapper, Button, Menu, MenuItem } from 'react-aria-menubutton'
 
 import JSONEditor from './JSONEditor'
 import FilterEditor from '../filter/FilterEditor'
@@ -12,6 +13,8 @@ import MaxZoomBlock from './MaxZoomBlock'
 import CommentBlock from './CommentBlock'
 import LayerSourceBlock from './LayerSourceBlock'
 import LayerSourceLayerBlock from './LayerSourceLayerBlock'
+
+import MoreVertIcon from 'react-icons/lib/md/more-vert'
 
 import InputBlock from '../inputs/InputBlock'
 import MultiButtonInput from '../inputs/MultiButtonInput'
@@ -45,6 +48,13 @@ export default class LayerEditor extends React.Component {
     spec: PropTypes.object.isRequired,
     onLayerChanged: PropTypes.func,
     onLayerIdChange: PropTypes.func,
+    onMoveLayer: PropTypes.func,
+    onLayerDestroy: PropTypes.func,
+    onLayerCopy: PropTypes.func,
+    onLayerVisibilityToggle: PropTypes.func,
+    isFirstLayer: PropTypes.bool,
+    isLastLayer: PropTypes.bool,
+    layerIndex: PropTypes.number,
   }
 
   static defaultProps = {
@@ -176,6 +186,13 @@ export default class LayerEditor extends React.Component {
     }
   }
 
+  moveLayer(offset) {
+    this.props.onMoveLayer({
+      oldIndex: this.props.layerIndex,
+      newIndex: this.props.layerIndex+offset
+    })
+  }
+
   render() {
     const layerType = this.props.layer.type
     const groups = layoutGroups(layerType).filter(group => {
@@ -192,8 +209,73 @@ export default class LayerEditor extends React.Component {
       </LayerEditorGroup>
     })
 
+    const layout = this.props.layer.layout || {}
+
+    const items = {
+      delete: {
+        text: "Delete",
+        handler: () => this.props.onLayerDestroy(this.props.layer.id)
+      },
+      duplicate: {
+        text: "Duplicate",
+        handler: () => this.props.onLayerCopy(this.props.layer.id)
+      },
+      hide: {
+        text: (layout.visibility === "none") ? "Show" : "Hide",
+        handler: () => this.props.onLayerVisibilityToggle(this.props.layer.id)
+      },
+      moveLayerUp: {
+        text: "Move layer up",
+        // Not actually used...
+        disabled: this.props.isFirstLayer,
+        handler: () => this.moveLayer(-1)
+      },
+      moveLayerDown: {
+        text: "Move layer down",
+        // Not actually used...
+        disabled: this.props.isLastLayer,
+        handler: () => this.moveLayer(+1)
+      }
+    }
+
+    function handleSelection(id, event) {
+      event.stopPropagation;
+      items[id].handler();
+    }
+
     return <div className="maputnik-layer-editor"
       >
+      <header>
+        <div className="layer-header">
+          <h2 className="layer-header__title">
+            Layer: {this.props.layer.id}
+          </h2>
+          <div className="layer-header__info">
+            <Wrapper
+              className='more-menu'
+              onSelection={handleSelection}
+              closeOnSelection={false}
+            >
+              <Button className='more-menu__button'>
+                <MoreVertIcon className="more-menu__button__svg" />
+              </Button>
+              <Menu>
+                <ul className="more-menu__menu">
+                  {Object.keys(items).map((id, idx) => {
+                    const item = items[id];
+                    return <li key={id}>
+                      <MenuItem value={id} className='more-menu__menu__item'>
+                        {item.text}
+                      </MenuItem>
+                    </li>
+                  })}
+                </ul>
+              </Menu>
+            </Wrapper>
+          </div>
+        </div>
+
+      </header>
       {groups}
     </div>
   }
