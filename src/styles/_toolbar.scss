@@ -9,7 +9,13 @@
   background-color: $color-black;
 }
 
+.maputnik-toolbar-logo-container {
+  position: relative;
+}
+
 .maputnik-toolbar-logo {
+  text-decoration: none;
+  display: block;
   flex: 0 0 180px;
   width: 180px;
   text-align: left;
@@ -21,6 +27,7 @@
 
   h1 {
     display: inline;
+    line-height: 26px;
   }
 
   img {
@@ -51,9 +58,7 @@
 }
 
 .maputnik-toolbar-version {
-  position: absolute;
   font-size: 10px;
-  bottom: -2px;
   margin-left: 4px;
   white-space: nowrap;
 }

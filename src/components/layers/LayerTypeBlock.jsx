@@ -8,7 +8,7 @@ import SelectInput from '../inputs/SelectInput'
 class LayerTypeBlock extends React.Component {
   static propTypes = {
     value: PropTypes.string.isRequired,
-    wdKey: PropTypes.string.isRequired,
+    wdKey: PropTypes.string,
     onChange: PropTypes.func.isRequired,
   }
 

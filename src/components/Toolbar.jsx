@@ -100,19 +100,23 @@ export default class Toolbar extends React.Component {
   render() {
     return <div className='maputnik-toolbar'>
       <div className="maputnik-toolbar__inner">
-        <ToolbarLink
-          tabIndex="2"
-          href={"https://github.com/maputnik/editor"}
-          className="maputnik-toolbar-logo"
+        <div
+          className="maputnik-toolbar-logo-container"
         >
-          <a tabIndex="1" className="maputnik-toolbar-skip" href="#skip-menu">
+          <a className="maputnik-toolbar-skip" href="#skip-menu">
             Skip navigation
           </a>
-          <img src={logoImage} alt="Maputnik" />
-          <h1>Maputnik
-            <span className="maputnik-toolbar-version">v{pkgJson.version}</span>
-          </h1>
-        </ToolbarLink>
+          <a
+            href="https://github.com/maputnik/editor"
+            target="_blank"
+            className="maputnik-toolbar-logo"
+          >
+            <img src={logoImage} alt="Maputnik" />
+            <h1>Maputnik
+              <span className="maputnik-toolbar-version">v{pkgJson.version}</span>
+            </h1>
+          </a>
+        </div>
         <div className="maputnik-toolbar__actions">
           <ToolbarAction wdKey="nav:open" onClick={this.props.onToggleModal.bind(this, 'open')}>
             <OpenIcon />
