@@ -93,13 +93,16 @@ export default class MapboxGlMap extends React.Component {
   }
 
   componentDidUpdate(prevProps) {
+    const map = this.state.map;
+
     if(this.props.inspectModeEnabled !== prevProps.inspectModeEnabled) {
       this.state.inspect.toggleInspector()
     }
     if(this.props.inspectModeEnabled) {
       this.state.inspect.render()
     }
-    this.state.map.showTileBoundaries = this.props.options.showTileBoundaries;
+
+    map.showTileBoundaries = this.props.options.showTileBoundaries;
   }
 
   componentDidMount() {
