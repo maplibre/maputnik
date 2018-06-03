@@ -1,5 +1,8 @@
 // See <https://github.com/nkbt/react-collapse/commit/4f4fbce7c6c07b082dc62062338c9294c656f9df>
 .react-collapse-container {
-  position: relative;
-  overflow: hidden;
+  display: flex;
+
+  > * {
+    flex: 1;
+  }
 }
