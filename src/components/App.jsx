@@ -507,13 +507,13 @@ export default class App extends React.Component {
       />
       <SettingsModal
         mapStyle={this.state.mapStyle}
-        onStyleChanged={this.onStyleChanged}
+        onStyleChanged={this.onStyleChanged.bind(this)}
         isOpen={this.state.isOpen.settings}
         onOpenToggle={this.toggleModal.bind(this, 'settings')}
       />
       <ExportModal
         mapStyle={this.state.mapStyle}
-        onStyleChanged={this.onStyleChanged}
+        onStyleChanged={this.onStyleChanged.bind(this)}
         isOpen={this.state.isOpen.export}
         onOpenToggle={this.toggleModal.bind(this, 'export')}
       />
@@ -524,7 +524,7 @@ export default class App extends React.Component {
       />
       <SourcesModal
         mapStyle={this.state.mapStyle}
-        onStyleChanged={this.onStyleChanged}
+        onStyleChanged={this.onStyleChanged.bind(this)}
         isOpen={this.state.isOpen.sources}
         onOpenToggle={this.toggleModal.bind(this, 'sources')}
       />
