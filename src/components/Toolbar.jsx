@@ -80,7 +80,8 @@ export default class Toolbar extends React.Component {
     // A dict of source id's and the available source layers
     sources: PropTypes.object.isRequired,
     onInspectModeToggle: PropTypes.func.isRequired,
-    children: PropTypes.node
+    children: PropTypes.node,
+    onToggleModal: PropTypes.func,
   }
 
   constructor(props) {
