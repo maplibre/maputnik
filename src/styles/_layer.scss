@@ -137,6 +137,7 @@
   user-select: none;
   padding: $margin-2;
   line-height: 20px;
+  border-top: solid 1px #36383e;
 
   @include flex-row;
 
@@ -206,10 +207,11 @@
   display: flex;
   padding: 6px;
   background: $color-black;
-  border-bottom: solid 1px $color-midgray;
 
   &__title {
     flex: 1;
+    margin: 0;
+    line-height: 24px;
   }
 
   &__info {

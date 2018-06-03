@@ -139,6 +139,7 @@
   font-size: $font-size-5;
   color: $color-lowgray;
   background-color: transparent;
+  width: 100%;
 
   @include flex-row;
 }

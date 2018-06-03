@@ -48,6 +48,13 @@ export default class LayerEditor extends React.Component {
     spec: PropTypes.object.isRequired,
     onLayerChanged: PropTypes.func,
     onLayerIdChange: PropTypes.func,
+    onMoveLayer: PropTypes.func,
+    onLayerDestroy: PropTypes.func,
+    onLayerCopy: PropTypes.func,
+    onLayerVisibilityToggle: PropTypes.func,
+    isFirstLayer: PropTypes.bool,
+    isLastLayer: PropTypes.bool,
+    layerIndex: PropTypes.number,
   }
 
   static defaultProps = {
@@ -202,6 +209,7 @@ export default class LayerEditor extends React.Component {
       </LayerEditorGroup>
     })
 
+    const layout = this.props.layer.layout || {}
 
     const items = {
       delete: {
@@ -213,7 +221,7 @@ export default class LayerEditor extends React.Component {
         handler: () => this.props.onLayerCopy(this.props.layer.id)
       },
       hide: {
-        text: "Hide",
+        text: (layout.visibility === "none") ? "Show" : "Hide",
         handler: () => this.props.onLayerVisibilityToggle(this.props.layer.id)
       },
       moveLayerUp: {

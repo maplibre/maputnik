@@ -3,6 +3,7 @@ import Mousetrap from 'mousetrap'
 import cloneDeep from 'lodash.clonedeep'
 import clamp from 'lodash.clamp'
 import {arrayMove} from 'react-sortable-hoc';
+import url from 'url'
 
 import MapboxGlMap from './map/MapboxGlMap'
 import OpenLayers3Map from './map/OpenLayers3Map'
@@ -153,6 +154,8 @@ export default class App extends React.Component {
       Debug.set("maputnik", "styleStore", this.styleStore);
     }
 
+    const queryObj = url.parse(window.location.href, true).query;
+
     this.state = {
       errors: [],
       infos: [],
@@ -168,7 +171,8 @@ export default class App extends React.Component {
         open: false,
         shortcuts: false,
         export: false,
-      }
+      },
+      mapFilter: queryObj["color-blindness-emulation"],
     }
 
     this.layerWatcher = new LayerWatcher({
@@ -407,15 +411,25 @@ export default class App extends React.Component {
     const metadata = this.state.mapStyle.metadata || {}
     const renderer = metadata['maputnik:renderer'] || 'mbgljs'
 
+    let mapElement;
+
     // Check if OL3 code has been loaded?
     if(renderer === 'ol3') {
-      return <OpenLayers3Map {...mapProps} />
+      mapElement = <OpenLayers3Map {...mapProps} />
     } else {
-      return  <MapboxGlMap {...mapProps}
+      mapElement = <MapboxGlMap {...mapProps}
         inspectModeEnabled={this.state.inspectModeEnabled}
         highlightedLayer={this.state.mapStyle.layers[this.state.selectedLayerIndex]}
         onLayerSelect={this.onLayerSelect.bind(this)} />
     }
+
+    const elementStyle = {
+      "filter": `url('#${this.state.mapFilter}')`
+    };
+
+    return <div style={elementStyle}>
+      {mapElement}
+    </div>
   }
 
   onLayerSelect(layerId) {
