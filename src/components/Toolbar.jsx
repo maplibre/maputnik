@@ -108,6 +108,7 @@ export default class Toolbar extends React.Component {
           </a>
           <a
             href="https://github.com/maputnik/editor"
+            rel="noopener noreferrer"
             target="_blank"
             className="maputnik-toolbar-logo"
           >
