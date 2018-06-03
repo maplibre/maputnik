@@ -31,6 +31,7 @@ import LayerWatcher from '../libs/layerwatcher'
 import tokens from '../config/tokens.json'
 import isEqual from 'lodash.isequal'
 import Debug from '../libs/debug'
+import queryUtil from '../libs/query-util'
 
 import MapboxGl from 'mapbox-gl'
 import mapboxUtil from 'mapbox-gl/src/util/mapbox'
@@ -173,7 +174,7 @@ export default class App extends React.Component {
         export: false,
       },
       mapOptions: {
-        showTileBoundaries: !!queryObj.showTileBoundaries
+        showTileBoundaries: queryUtil.asBool(queryObj, "show-tile-boundaries")
       },
       mapFilter: queryObj["color-blindness-emulation"],
     }

@@ -99,6 +99,7 @@ export default class MapboxGlMap extends React.Component {
     if(this.props.inspectModeEnabled) {
       this.state.inspect.render()
     }
+    this.state.map.showTileBoundaries = this.props.options.showTileBoundaries;
   }
 
   componentDidMount() {
@@ -111,9 +112,7 @@ export default class MapboxGlMap extends React.Component {
 
     const map = new MapboxGl.Map(mapOpts);
 
-    if(mapOpts.showTileBoundaries) {
-      map.showTileBoundaries = mapOpts.showTileBoundaries;
-    }
+    map.showTileBoundaries = mapOpts.showTileBoundaries;
 
     const zoom = new ZoomControl;
     map.addControl(zoom, 'top-right');
