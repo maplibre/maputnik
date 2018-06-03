@@ -209,6 +209,7 @@ export default class LayerEditor extends React.Component {
       </LayerEditorGroup>
     })
 
+    const layout = this.props.layer.layout || {}
 
     const items = {
       delete: {
@@ -220,7 +221,7 @@ export default class LayerEditor extends React.Component {
         handler: () => this.props.onLayerCopy(this.props.layer.id)
       },
       hide: {
-        text: (this.props.layer.layout.visibility === "visible") ? "Hide" : "Show",
+        text: (layout.visibility === "none") ? "Show" : "Hide",
         handler: () => this.props.onLayerVisibilityToggle(this.props.layer.id)
       },
       moveLayerUp: {
