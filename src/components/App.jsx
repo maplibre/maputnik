@@ -13,6 +13,12 @@ import Toolbar from './Toolbar'
 import AppLayout from './AppLayout'
 import MessagePanel from './MessagePanel'
 
+import SettingsModal from './modals/SettingsModal'
+import ExportModal from './modals/ExportModal'
+import SourcesModal from './modals/SourcesModal'
+import OpenModal from './modals/OpenModal'
+import ShortcutsModal from './modals/ShortcutsModal'
+
 import { downloadGlyphsMetadata, downloadSpriteMetadata } from '../libs/metadata'
 import * as styleSpec from '@mapbox/mapbox-gl-style-spec/style-spec'
 import style from '../libs/style.js'
@@ -51,6 +57,79 @@ export default class App extends React.Component {
       onLocalStyleChange: mapStyle => this.onStyleChanged(mapStyle, false)
     })
 
+    
+    const keyCodes = {
+      "esc": 27,
+      "?": 191,
+      "o": 79,
+      "e": 69,
+      "s": 83,
+      "d": 68,
+      "i": 73,
+      "m": 77,
+    }
+
+    const shortcuts = [
+      {
+        keyCode: keyCodes["?"],
+        handler: () => {
+          this.toggleModal("shortcuts");
+        }
+      },
+      {
+        keyCode: keyCodes["o"],
+        handler: () => {
+          this.toggleModal("open");
+        }
+      },
+      {
+        keyCode: keyCodes["e"],
+        handler: () => {
+          this.toggleModal("export");
+        }
+      },
+      {
+        keyCode: keyCodes["d"],
+        handler: () => {
+          this.toggleModal("sources");
+        }
+      },
+      {
+        keyCode: keyCodes["s"],
+        handler: () => {
+          this.toggleModal("settings");
+        }
+      },
+      {
+        keyCode: keyCodes["i"],
+        handler: () => {
+          this.changeInspectMode();
+        }
+      },
+      {
+        keyCode: keyCodes["m"],
+        handler: () => {
+          document.querySelector(".mapboxgl-canvas").focus();
+        }
+      },
+    ]
+
+    document.body.addEventListener("keyup", (e) => {
+      if(e.keyCode === keyCodes["esc"]) {
+        e.target.blur();
+        document.body.focus();
+      }
+      else if(document.activeElement === document.body) {
+        const shortcut = shortcuts.find((shortcut) => {
+          return (shortcut.keyCode === e.keyCode)
+        })
+
+        if(shortcut) {
+          shortcut.handler(e);
+        }
+      }
+    })
+
     const styleUrl = initialStyleUrl()
     if(styleUrl) {
       this.styleStore = new StyleStore()
@@ -86,6 +165,13 @@ export default class App extends React.Component {
       vectorLayers: {},
       inspectModeEnabled: false,
       spec: styleSpec.latest,
+      isOpen: {
+        settings: false,
+        sources: false,
+        open: false,
+        shortcuts: false,
+        export: false,
+      },
       mapFilter: queryObj["color-blindness-emulation"],
     }
 
@@ -351,6 +437,15 @@ export default class App extends React.Component {
     this.setState({ selectedLayerIndex: idx })
   }
 
+  toggleModal(modalName) {
+    this.setState({
+      isOpen: {
+        ...this.state.isOpen,
+        [modalName]: !this.state.isOpen[modalName]
+      }
+    })
+  }
+
   render() {
     const layers = this.state.mapStyle.layers || []
     const selectedLayer = layers.length > 0 ? layers[this.state.selectedLayerIndex] : null
@@ -363,6 +458,7 @@ export default class App extends React.Component {
       onStyleChanged={this.onStyleChanged.bind(this)}
       onStyleOpen={this.onStyleChanged.bind(this)}
       onInspectModeToggle={this.changeInspectMode.bind(this)}
+      onToggleModal={this.toggleModal.bind(this)}
     />
 
     const layerList = <LayerList
@@ -398,12 +494,44 @@ export default class App extends React.Component {
       infos={this.state.infos}
     /> : null
 
+
+    const modals = <div>
+      <ShortcutsModal
+        isOpen={this.state.isOpen.shortcuts}
+        onOpenToggle={this.toggleModal.bind(this, 'shortcuts')}
+      />
+      <SettingsModal
+        mapStyle={this.state.mapStyle}
+        onStyleChanged={this.onStyleChanged}
+        isOpen={this.state.isOpen.settings}
+        onOpenToggle={this.toggleModal.bind(this, 'settings')}
+      />
+      <ExportModal
+        mapStyle={this.state.mapStyle}
+        onStyleChanged={this.onStyleChanged}
+        isOpen={this.state.isOpen.export}
+        onOpenToggle={this.toggleModal.bind(this, 'export')}
+      />
+      <OpenModal
+        isOpen={this.state.isOpen.open}
+        onStyleOpen={this.onStyleChanged.bind(this)}
+        onOpenToggle={this.toggleModal.bind(this, 'open')}
+      />
+      <SourcesModal
+        mapStyle={this.state.mapStyle}
+        onStyleChanged={this.onStyleChanged}
+        isOpen={this.state.isOpen.sources}
+        onOpenToggle={this.toggleModal.bind(this, 'sources')}
+      />
+    </div>
+
     return <AppLayout
       toolbar={toolbar}
       layerList={layerList}
       layerEditor={layerEditor}
       map={this.mapRenderer()}
       bottom={bottomPanel}
+      modals={modals}
     />
   }
 }

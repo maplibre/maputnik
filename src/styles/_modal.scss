@@ -43,7 +43,10 @@
 }
 
 .maputnik-modal-header-toggle {
-  cursor: pointer;
+  border: none;
+  background: initial;
+  color: white;
+  padding: 0;
 }
 
 .maputnik-modal-scroller {
@@ -219,4 +222,21 @@
   top: 8px;
   text-decoration: none;
   color: #ef5350;
+}
+
+.maputnik-modal-shortcuts {
+  code {
+    color: white;
+    background: #3c3c3c;
+    padding: 2px 6px;
+    display: inline-block;
+    text-align: center;
+    border-radius: 2px;
+    margin-right: 4px;
+    font-family: monospace;
+  }
+
+  li {
+    margin-bottom: 4px;
+  }
 }

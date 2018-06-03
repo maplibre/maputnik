@@ -144,7 +144,7 @@ class OpenModal extends React.Component {
       <section className="maputnik-modal-section">
         <h2>Upload Style</h2>
         <p>Upload a JSON style from your computer.</p>
-        <FileReaderInput onChange={this.onUpload.bind(this)}>
+        <FileReaderInput onChange={this.onUpload.bind(this)} tabIndex="-1">
           <Button className="maputnik-upload-button"><FileUploadIcon /> Upload</Button>
         </FileReaderInput>
       </section>
