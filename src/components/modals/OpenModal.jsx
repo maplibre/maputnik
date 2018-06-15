@@ -60,13 +60,29 @@ class OpenModal extends React.Component {
     })
   }
 
+  onCancelActiveRequest(e) {
+    // Else the click propagates to the underlying modal
+    if(e) e.stopPropagation();
+
+    if(this.state.activeRequest) {
+      this.state.activeRequest.abort();
+      this.setState({
+        activeRequest: null
+      });
+    }
+  }
+
   onStyleSelect(styleUrl) {
     this.clearError();
 
-    request({
+    const activeRequest = request({
       url: styleUrl,
       withCredentials: false,
     }, (error, response, body) => {
+      this.setState({
+        activeRequest: null
+      });
+
         if (!error && response.statusCode == 200) {
           const mapStyle = style.ensureStyleValidity(JSON.parse(body))
           console.log('Loaded style ', mapStyle.id)
@@ -75,6 +91,10 @@ class OpenModal extends React.Component {
         } else {
           console.warn('Could not open the style URL', styleUrl)
         }
+    })
+
+    this.setState({
+      activeRequest: activeRequest
     })
   }
 
@@ -169,6 +189,23 @@ class OpenModal extends React.Component {
         {styleOptions}
         </div>
       </section>
+
+      <Modal
+        data-wd-key="loading-modal"
+        isOpen={this.state.activeRequest}
+        closeable={false}
+        title={'Loading style'}
+        onOpenToggle={() => this.onCancelActiveRequest()}
+      >
+        <p>
+          Loading...
+        </p>
+        <p>
+          <Button onClick={(e) => this.onCancelActiveRequest(e)}>
+            Cancel
+          </Button>
+        </p>
+      </Modal>
     </Modal>
   }
 }
