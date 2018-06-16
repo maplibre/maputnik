@@ -22,6 +22,11 @@ targeted at developers and map designers.
 
 Mapbox has built one of the best and most amazing OSS ecosystems. A key component to ensure its longevity and independance is an OSS map designer.
 
+
+## Donations
+If you or your organisation has seen value from Maputnik, please consider donating at <https://maputnik.github.io/donate>
+
+
 ## Documentation
 
 The documentation can be found in the [Wiki](https://github.com/maputnik/editor/wiki). You are welcome to collaborate!
