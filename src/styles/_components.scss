@@ -141,3 +141,26 @@
     text-align: right;
   }
 }
+
+.map-state-menu {
+  display: inline-block;
+
+  &__menu {
+    position: absolute;
+    z-index: 999999;
+    background: $color-black;
+    display: flex;
+    flex-direction: column;
+    align-content: stretch;
+
+    li {
+      display: flex;
+      flex-direction: column;
+
+      button {
+        width: 100%;
+        text-align: left;
+      }
+    }
+  }
+}

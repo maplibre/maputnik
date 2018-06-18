@@ -104,7 +104,7 @@ export default class App extends React.Component {
       {
         keyCode: keyCodes["i"],
         handler: () => {
-          this.changeInspectMode();
+          this.setMapState("inspect");
         }
       },
       {
@@ -164,7 +164,7 @@ export default class App extends React.Component {
       selectedLayerIndex: 0,
       sources: {},
       vectorLayers: {},
-      inspectModeEnabled: false,
+      mapState: "normal",
       spec: styleSpec.latest,
       isOpen: {
         settings: false,
@@ -176,7 +176,6 @@ export default class App extends React.Component {
       mapOptions: {
         showTileBoundaries: queryUtil.asBool(queryObj, "show-tile-boundaries")
       },
-      mapFilter: queryObj["color-blindness-emulation"],
     }
 
     this.layerWatcher = new LayerWatcher({
@@ -341,9 +340,9 @@ export default class App extends React.Component {
     this.onLayersChange(changedLayers)
   }
 
-  changeInspectMode() {
+  setMapState(newState) {
     this.setState({
-      inspectModeEnabled: !this.state.inspectModeEnabled
+      mapState: newState
     })
   }
 
@@ -423,13 +422,17 @@ export default class App extends React.Component {
       mapElement = <OpenLayers3Map {...mapProps} />
     } else {
       mapElement = <MapboxGlMap {...mapProps}
-        inspectModeEnabled={this.state.inspectModeEnabled}
+        inspectModeEnabled={this.state.mapState === "inspect"}
         highlightedLayer={this.state.mapStyle.layers[this.state.selectedLayerIndex]}
         onLayerSelect={this.onLayerSelect.bind(this)} />
     }
 
+    let filterName = "";
+    if(this.state.mapState.match(/^filter-/)) {
+      filterName = this.state.mapState.replace(/^filter-/, "");
+    }
     const elementStyle = {
-      "filter": `url('#${this.state.mapFilter}')`
+      "filter": `url('#${filterName}')`
     };
 
     return <div style={elementStyle}>
@@ -457,12 +460,13 @@ export default class App extends React.Component {
     const metadata = this.state.mapStyle.metadata || {}
 
     const toolbar = <Toolbar
+      mapState={this.state.mapState}
       mapStyle={this.state.mapStyle}
-      inspectModeEnabled={this.state.inspectModeEnabled}
+      inspectModeEnabled={this.state.mapState === "inspect"}
       sources={this.state.sources}
       onStyleChanged={this.onStyleChanged.bind(this)}
       onStyleOpen={this.onStyleChanged.bind(this)}
-      onInspectModeToggle={this.changeInspectMode.bind(this)}
+      onSetMapState={this.setMapState.bind(this)}
       onToggleModal={this.toggleModal.bind(this)}
     />
 
