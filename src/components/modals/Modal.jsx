@@ -11,6 +11,12 @@ class Modal extends React.Component {
     title: PropTypes.string.isRequired,
     onOpenToggle: PropTypes.func.isRequired,
     children: PropTypes.node,
+    underlayClickExits: PropTypes.bool,
+    underlayProps: PropTypes.object,
+  }
+
+  static defaultProps = {
+    underlayClickExits: true
   }
 
   getApplicationNode() {
@@ -21,6 +27,8 @@ class Modal extends React.Component {
     if(this.props.isOpen) {
       return <AriaModal
         titleText={this.props.title}
+        underlayClickExits={this.props.underlayClickExits}
+        underlayProps={this.props.underlayProps}
         getApplicationNode={this.getApplicationNode}
         data-wd-key={this.props["data-wd-key"]}
         verticallyCenter={true}

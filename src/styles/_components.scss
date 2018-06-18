@@ -135,3 +135,9 @@
     color: $color-red;
   }
 }
+
+.maputnik-dialog {
+  &__buttons {
+    text-align: right;
+  }
+}

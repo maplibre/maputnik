@@ -1,5 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+import LoadingModal from './LoadingModal'
 import Modal from './Modal'
 import Button from '../Button'
 import FileReaderInput from 'react-file-reader-input'
@@ -60,13 +61,33 @@ class OpenModal extends React.Component {
     })
   }
 
+  onCancelActiveRequest(e) {
+    // Else the click propagates to the underlying modal
+    if(e) e.stopPropagation();
+
+    if(this.state.activeRequest) {
+      this.state.activeRequest.abort();
+      this.setState({
+        activeRequest: null,
+        activeRequestUrl: null
+      });
+    }
+  }
+
   onStyleSelect(styleUrl) {
     this.clearError();
 
-    request({
+    const reqOpts = {
       url: styleUrl,
       withCredentials: false,
-    }, (error, response, body) => {
+    }
+
+    const activeRequest = request(reqOpts, (error, response, body) => {
+      this.setState({
+        activeRequest: null,
+        activeRequestUrl: null
+      });
+
         if (!error && response.statusCode == 200) {
           const mapStyle = style.ensureStyleValidity(JSON.parse(body))
           console.log('Loaded style ', mapStyle.id)
@@ -75,6 +96,11 @@ class OpenModal extends React.Component {
         } else {
           console.warn('Could not open the style URL', styleUrl)
         }
+    })
+
+    this.setState({
+      activeRequest: activeRequest,
+      activeRequestUrl: reqOpts.url
     })
   }
 
@@ -169,6 +195,13 @@ class OpenModal extends React.Component {
         {styleOptions}
         </div>
       </section>
+
+      <LoadingModal
+        isOpen={!!this.state.activeRequest}
+        title={'Loading style'}
+        onCancel={(e) => this.onCancelActiveRequest(e)}
+        message={"Loading: "+this.state.activeRequestUrl}
+      />
     </Modal>
   }
 }
