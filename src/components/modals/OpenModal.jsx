@@ -1,5 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+import LoadingModal from './LoadingModal'
 import Modal from './Modal'
 import Button from '../Button'
 import FileReaderInput from 'react-file-reader-input'
@@ -195,22 +196,12 @@ class OpenModal extends React.Component {
         </div>
       </section>
 
-      <Modal
-        data-wd-key="loading-modal"
-        isOpen={this.state.activeRequest}
-        closeable={false}
+      <LoadingModal
+        isOpen={!!this.state.activeRequest}
         title={'Loading style'}
-        onOpenToggle={() => this.onCancelActiveRequest()}
-      >
-        <p>
-          Loading: {this.state.activeRequestUrl}
-        </p>
-        <p className="maputnik-dialog__buttons">
-          <Button onClick={(e) => this.onCancelActiveRequest(e)}>
-            Cancel
-          </Button>
-        </p>
-      </Modal>
+        onCancel={(e) => this.onCancelActiveRequest(e)}
+        message={"Loading: "+this.state.activeRequestUrl}
+      />
     </Modal>
   }
 }
