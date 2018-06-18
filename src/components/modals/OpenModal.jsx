@@ -67,7 +67,8 @@ class OpenModal extends React.Component {
     if(this.state.activeRequest) {
       this.state.activeRequest.abort();
       this.setState({
-        activeRequest: null
+        activeRequest: null,
+        activeRequestUrl: null
       });
     }
   }
@@ -75,12 +76,15 @@ class OpenModal extends React.Component {
   onStyleSelect(styleUrl) {
     this.clearError();
 
-    const activeRequest = request({
+    const reqOpts = {
       url: styleUrl,
       withCredentials: false,
-    }, (error, response, body) => {
+    }
+
+    const activeRequest = request(reqOpts, (error, response, body) => {
       this.setState({
-        activeRequest: null
+        activeRequest: null,
+        activeRequestUrl: null
       });
 
         if (!error && response.statusCode == 200) {
@@ -94,7 +98,8 @@ class OpenModal extends React.Component {
     })
 
     this.setState({
-      activeRequest: activeRequest
+      activeRequest: activeRequest,
+      activeRequestUrl: reqOpts.url
     })
   }
 
@@ -198,9 +203,9 @@ class OpenModal extends React.Component {
         onOpenToggle={() => this.onCancelActiveRequest()}
       >
         <p>
-          Loading...
+          Loading: {this.state.activeRequestUrl}
         </p>
-        <p>
+        <p className="maputnik-dialog__buttons">
           <Button onClick={(e) => this.onCancelActiveRequest(e)}>
             Cancel
           </Button>
