@@ -1,8 +1,10 @@
 import React from 'react'
+import {instanceOf} from 'prop-types';
 import Mousetrap from 'mousetrap'
 import cloneDeep from 'lodash.clonedeep'
 import clamp from 'lodash.clamp'
 import {arrayMove} from 'react-sortable-hoc';
+import {withCookies, Cookies} from 'react-cookie'
 import url from 'url'
 
 import MapboxGlMap from './map/MapboxGlMap'
@@ -18,6 +20,7 @@ import ExportModal from './modals/ExportModal'
 import SourcesModal from './modals/SourcesModal'
 import OpenModal from './modals/OpenModal'
 import ShortcutsModal from './modals/ShortcutsModal'
+import SurveyModal from './modals/SurveyModal'
 
 import { downloadGlyphsMetadata, downloadSpriteMetadata } from '../libs/metadata'
 import * as styleSpec from '@mapbox/mapbox-gl-style-spec/style-spec'
@@ -50,7 +53,11 @@ function updateRootSpec(spec, fieldName, newValues) {
   }
 }
 
-export default class App extends React.Component {
+class App extends React.Component {
+  static propTypes = {
+    cookies: instanceOf(Cookies).isRequired
+  }
+
   constructor(props) {
     super(props)
     this.revisionStore = new RevisionStore()
@@ -172,6 +179,7 @@ export default class App extends React.Component {
         open: false,
         shortcuts: false,
         export: false,
+        survey: this.props.cookies.get('survey') ? false : true
       },
       mapOptions: {
         showTileBoundaries: queryUtil.asBool(queryObj, "show-tile-boundaries")
@@ -449,6 +457,10 @@ export default class App extends React.Component {
         [modalName]: !this.state.isOpen[modalName]
       }
     })
+
+    if(modalName === 'survey') {
+      this.props.cookies.set('survey');
+    }
   }
 
   render() {
@@ -528,6 +540,10 @@ export default class App extends React.Component {
         isOpen={this.state.isOpen.sources}
         onOpenToggle={this.toggleModal.bind(this, 'sources')}
       />
+      <SurveyModal
+        isOpen={this.state.isOpen.survey}
+        onOpenToggle={this.toggleModal.bind(this, 'survey')}
+      />
     </div>
 
     return <AppLayout
@@ -540,3 +556,5 @@ export default class App extends React.Component {
     />
   }
 }
+
+export default withCookies(App)

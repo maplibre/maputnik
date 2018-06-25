@@ -56,6 +56,7 @@
   border-width: 0;
   border-radius: 2px;
   box-sizing: border-box;
+  text-decoration: none;
 
   &:hover {
     background-color: lighten($color-midgray, 12);
@@ -68,6 +69,25 @@
   display: inline-block;
   padding: $margin-3;
   font-size: $font-size-5;
+}
+
+.maputnik-wide-button {
+  padding: $margin-2 $margin-3;
+}
+
+.maputnik-green-button {
+  background-color: $color-green;
+  color: $color-black;
+}
+
+.maputnik-green-hover-button:hover, .maputnik-green-hover-button:focus {
+  background-color: $color-green;
+  color: $color-white;
+}
+
+.maputnik-white-button {
+  background-color: $color-white;
+  color: $color-black;
 }
 
 .maputnik-icon-button {
@@ -133,11 +153,5 @@
 
   &-error {
     color: $color-red;
-  }
-}
-
-.maputnik-dialog {
-  &__buttons {
-    text-align: right;
   }
 }
