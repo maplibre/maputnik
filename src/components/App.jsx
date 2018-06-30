@@ -1,10 +1,8 @@
 import React from 'react'
-import {instanceOf} from 'prop-types';
 import Mousetrap from 'mousetrap'
 import cloneDeep from 'lodash.clonedeep'
 import clamp from 'lodash.clamp'
-import {arrayMove} from 'react-sortable-hoc';
-import {withCookies, Cookies} from 'react-cookie'
+import {arrayMove} from 'react-sortable-hoc'
 import url from 'url'
 
 import MapboxGlMap from './map/MapboxGlMap'
@@ -53,11 +51,7 @@ function updateRootSpec(spec, fieldName, newValues) {
   }
 }
 
-class App extends React.Component {
-  static propTypes = {
-    cookies: instanceOf(Cookies).isRequired
-  }
-
+export default class App extends React.Component {
   constructor(props) {
     super(props)
     this.revisionStore = new RevisionStore()
@@ -179,7 +173,7 @@ class App extends React.Component {
         open: false,
         shortcuts: false,
         export: false,
-        survey: this.props.cookies.get('survey') ? false : true
+        survey: localStorage.hasOwnProperty('survey') ? false : true
       },
       mapOptions: {
         showTileBoundaries: queryUtil.asBool(queryObj, "show-tile-boundaries")
@@ -459,7 +453,7 @@ class App extends React.Component {
     })
 
     if(modalName === 'survey') {
-      this.props.cookies.set('survey');
+      localStorage.setItem('survey', '');
     }
   }
 
@@ -556,5 +550,3 @@ class App extends React.Component {
     />
   }
 }
-
-export default withCookies(App)
