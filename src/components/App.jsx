@@ -2,7 +2,7 @@ import React from 'react'
 import Mousetrap from 'mousetrap'
 import cloneDeep from 'lodash.clonedeep'
 import clamp from 'lodash.clamp'
-import {arrayMove} from 'react-sortable-hoc';
+import {arrayMove} from 'react-sortable-hoc'
 import url from 'url'
 
 import MapboxGlMap from './map/MapboxGlMap'
@@ -18,6 +18,7 @@ import ExportModal from './modals/ExportModal'
 import SourcesModal from './modals/SourcesModal'
 import OpenModal from './modals/OpenModal'
 import ShortcutsModal from './modals/ShortcutsModal'
+import SurveyModal from './modals/SurveyModal'
 
 import { downloadGlyphsMetadata, downloadSpriteMetadata } from '../libs/metadata'
 import * as styleSpec from '@mapbox/mapbox-gl-style-spec/style-spec'
@@ -172,6 +173,7 @@ export default class App extends React.Component {
         open: false,
         shortcuts: false,
         export: false,
+        survey: localStorage.hasOwnProperty('survey') ? false : true
       },
       mapOptions: {
         showTileBoundaries: queryUtil.asBool(queryObj, "show-tile-boundaries")
@@ -449,6 +451,10 @@ export default class App extends React.Component {
         [modalName]: !this.state.isOpen[modalName]
       }
     })
+
+    if(modalName === 'survey') {
+      localStorage.setItem('survey', '');
+    }
   }
 
   render() {
@@ -527,6 +533,10 @@ export default class App extends React.Component {
         onStyleChanged={this.onStyleChanged.bind(this)}
         isOpen={this.state.isOpen.sources}
         onOpenToggle={this.toggleModal.bind(this, 'sources')}
+      />
+      <SurveyModal
+        isOpen={this.state.isOpen.survey}
+        onOpenToggle={this.toggleModal.bind(this, 'survey')}
       />
     </div>
 

@@ -16,6 +16,7 @@ import MdInsertEmoticon from 'react-icons/lib/md/insert-emoticon'
 import MdFontDownload from 'react-icons/lib/md/font-download'
 import HelpIcon from 'react-icons/lib/md/help-outline'
 import InspectionIcon from 'react-icons/lib/md/find-in-page'
+import SurveyIcon from 'react-icons/lib/md/assignment-turned-in'
 
 import logoImage from 'maputnik-design/logos/logo-color.svg'
 import pkgJson from '../../package.json'
@@ -48,6 +49,28 @@ class ToolbarLink extends React.Component {
       target="_blank"
     >
       {this.props.children}
+    </a>
+  }
+}
+
+class ToolbarLinkHighlighted extends React.Component {
+  static propTypes = {
+    className: PropTypes.string,
+    children: PropTypes.node,
+    href: PropTypes.string,
+    onToggleModal: PropTypes.func
+  }
+
+  render() {
+    return <a
+      className={classnames('maputnik-toolbar-link', "maputnik-toolbar-link--highlighted", this.props.className)}
+      href={this.props.href}
+      rel="noopener noreferrer"
+      target="_blank"
+    >
+      <span className="maputnik-toolbar-link-wrapper">
+        {this.props.children}
+      </span>
     </a>
   }
 }
@@ -146,6 +169,10 @@ export default class Toolbar extends React.Component {
             <HelpIcon />
             <IconText>Help</IconText>
           </ToolbarLink>
+          <ToolbarLinkHighlighted href={"https://gregorywolanski.typeform.com/to/cPgaSY"}>
+            <SurveyIcon />
+            <IconText>Take the Maputnik Survey</IconText>
+          </ToolbarLinkHighlighted>
         </div>
       </div>
     </div>
