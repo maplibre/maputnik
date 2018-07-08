@@ -4,7 +4,7 @@ import PropTypes from 'prop-types'
 import Button from '../Button'
 import Modal from './Modal'
 
-import Logo from './../../img/maputnik.png'
+import logoImage from 'maputnik-design/logos/logo-color.svg'
 
 class SurveyModal extends React.Component {
   static propTypes = {
@@ -28,10 +28,10 @@ class SurveyModal extends React.Component {
       title="Maputnik Survey"
     >
       <div className="maputnik-modal-survey">
-        <img className="maputnik-modal-survey__logo" src="./../../img/maputnik.png" alt="" width="128" />
+        <img className="maputnik-modal-survey__logo" src={logoImage} alt="" width="128" />
         <h1>You + Maputnik = Maputnik better for you</h1>
         <p className="maputnik-modal-survey__description">We don’t track you, so we don’t know how you use Maputnik. Help us make Maputnik better for you by completing a 7–minute survey carried out by our contributing designer.</p>
-        <Button onClick={this.onClick} className="maputnik-big-button maputnik-white-button maputnik-green-hover-button maputnik-wide-button">Take the Maputnik Survey</Button>
+        <Button onClick={this.onClick} className="maputnik-big-button maputnik-white-button maputnik-wide-button">Take the Maputnik Survey</Button>
         <p className="maputnik-modal-survey__footnote">It takes 7 minutes, tops! Every question is optional.</p>
       </div>
     </Modal>
