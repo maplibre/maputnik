@@ -63,7 +63,7 @@ class ToolbarLinkHighlighted extends React.Component {
 
   render() {
     return <a
-      className={classnames('maputnik-toolbar-link', "maputnik-toolbar-link--highlighted2", this.props.className)}
+      className={classnames('maputnik-toolbar-link', "maputnik-toolbar-link--highlighted", this.props.className)}
       href={this.props.href}
       rel="noopener noreferrer"
       target="_blank"
