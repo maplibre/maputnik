@@ -75,7 +75,7 @@
   }
 
   &:hover .maputnik-toolbar-link-wrapper {
-    background-color: $color-green;
+    background-color: lighten($color-midgray, 12);
     color: $color-white;
   }
 }
