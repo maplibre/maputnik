@@ -35,7 +35,7 @@ import Debug from '../libs/debug'
 import queryUtil from '../libs/query-util'
 
 import MapboxGl from 'mapbox-gl'
-import mapboxUtil from 'mapbox-gl/src/util/mapbox'
+import { normalizeSourceURL } from 'mapbox-gl/src/util/mapbox'
 
 
 function updateRootSpec(spec, fieldName, newValues) {
@@ -365,7 +365,7 @@ export default class App extends React.Component {
       if(!this.state.sources.hasOwnProperty(key) && val.type === "vector" && val.hasOwnProperty("url")) {
         let url = val.url;
         try {
-          url = mapboxUtil.normalizeSourceURL(url, MapboxGl.accessToken);
+          url = normalizeSourceURL(url, MapboxGl.accessToken);
         } catch(err) {
           console.warn("Failed to normalizeSourceURL: ", err);
         }
