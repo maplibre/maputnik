@@ -5,7 +5,11 @@
   right: 0;
   bottom: 0;
   height: calc(100% - #{$toolbar-height + $toolbar-offset});
-  width: 75%;
+  width: calc(
+    100%
+    - 200px /* layer list */
+    - 350px /* layer editor */
+  );
 }
 
 // DOC LABEL
