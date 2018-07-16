@@ -235,9 +235,23 @@ class ExportModal extends React.Component {
   }
 
   downloadStyle() {
-    const blob = new Blob([styleSpec.format(stripAccessTokens(this.props.mapStyle))], {type: "application/json;charset=utf-8"});
+    const tokenStyle = styleSpec.format(stripAccessTokens(style.replaceAccessToken(this.props.mapStyle)));
+
+    const blob = new Blob([tokenStyle], {type: "application/json;charset=utf-8"});
     saveAs(blob, this.props.mapStyle.id + ".json");
   }
+
+  changeMetadataProperty(property, value) {
+    const changedStyle = {
+      ...this.props.mapStyle,
+      metadata: {
+        ...this.props.mapStyle.metadata,
+        [property]: value
+      }
+    }
+    this.props.onStyleChanged(changedStyle)
+  }
+
 
   render() {
     return <Modal
@@ -252,6 +266,22 @@ class ExportModal extends React.Component {
         <p>
           Download a JSON style to your computer.
         </p>
+
+        <p>
+          <InputBlock label={"OpenMapTiles Access Token: "}>
+            <StringInput
+              value={(this.props.mapStyle.metadata || {})['maputnik:openmaptiles_access_token']}
+              onChange={this.changeMetadataProperty.bind(this, "maputnik:openmaptiles_access_token")}
+            />
+          </InputBlock>
+          <InputBlock label={"Mapbox Access Token: "}>
+            <StringInput
+              value={(this.props.mapStyle.metadata || {})['maputnik:mapbox_access_token']}
+              onChange={this.changeMetadataProperty.bind(this, "maputnik:mapbox_access_token")}
+            />
+          </InputBlock>
+        </p>
+
         <Button onClick={this.downloadStyle.bind(this)}>
           <MdFileDownload />
           Download
