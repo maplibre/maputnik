@@ -66,6 +66,7 @@ export default class MapboxGlMap extends React.Component {
     onDataChange: () => {},
     onLayerSelect: () => {},
     mapboxAccessToken: tokens.mapbox,
+    options: {},
   }
 
   constructor(props) {
