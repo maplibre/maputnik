@@ -105,6 +105,7 @@ class ColorField extends React.Component {
       {this.state.pickerOpened && picker}
       <div className="maputnik-color-swatch" style={swatchStyle}></div>
       <input
+        spellCheck="false"
         className="maputnik-color"
         ref={(input) => this.colorInput = input}
         onClick={this.togglePicker.bind(this)}

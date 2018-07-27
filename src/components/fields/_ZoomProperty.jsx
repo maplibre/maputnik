@@ -37,7 +37,7 @@ export default class ZoomProperty extends React.Component {
     }
   }
 
-  componentWillMount() {
+  componentDidMount() {
     this.setState({
       refs: this.setStopRefs(this.props)
     })
@@ -66,7 +66,7 @@ export default class ZoomProperty extends React.Component {
     return newRefs;
   }
 
-  componentWillReceiveProps(nextProps) {
+  UNSAFE_componentWillReceiveProps(nextProps) {
     const newRefs = this.setStopRefs(nextProps);
     if(newRefs) {
       this.setState({

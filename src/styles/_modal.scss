@@ -7,6 +7,7 @@
   box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.3);
   z-index: 3;
   position: relative;
+  font-family: $font-family;
 }
 
 .maputnik-modal-section {
@@ -42,7 +43,10 @@
 }
 
 .maputnik-modal-header-toggle {
-  cursor: pointer;
+  border: none;
+  background: initial;
+  color: white;
+  padding: 0;
 }
 
 .maputnik-modal-scroller {
@@ -58,31 +62,6 @@
 
 .maputnik-modal-header-space {
   @extend .maputnik-space;
-}
-
-//OVERLAY
-.maputnik-overlay-viewport {
-  position: fixed;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  z-index: 2;
-  opacity: 0.875;
-  background-color: rgb(28, 31, 36);
-}
-
-.maputnik-overlay {
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  position: fixed;
-  align-items: center;
-  justify-content: center;
-  z-index: 9;
-
-  @include flex-row;
 }
 
 //OPEN MODAL
@@ -109,6 +88,7 @@
   background-color: $color-gray;
   padding: $margin-3;
   display: block;
+  width: 100%;
 
   &:hover {
     background-color: $color-midgray;
@@ -123,6 +103,9 @@
   display: block;
   margin-top: $margin-2;
   width: 100%;
+  padding-top: calc(400 / 600 * 100%);
+  background-size: cover;
+  background-color: $color-midgray;
 }
 
 .maputnik-add-layer {
@@ -160,6 +143,7 @@
   font-size: $font-size-5;
   color: $color-lowgray;
   background-color: transparent;
+  width: 100%;
 
   @include flex-row;
 }
@@ -242,4 +226,39 @@
   top: 8px;
   text-decoration: none;
   color: #ef5350;
+}
+
+.maputnik-modal-shortcuts {
+  code {
+    color: white;
+    background: #3c3c3c;
+    padding: 2px 6px;
+    display: inline-block;
+    text-align: center;
+    border-radius: 2px;
+    margin-right: 4px;
+    font-family: monospace;
+  }
+
+  li {
+    margin-bottom: 4px;
+  }
+}
+
+.maputnik-modal-survey {
+  width: 372px;
+}
+
+.maputnik-modal-survey__logo {
+  display: block;
+  margin: 0 auto;
+}
+
+.maputnik-modal-survey__description {
+  line-height: 1.5;
+}
+
+.maputnik-modal-survey__footnote {
+  color: $color-green;
+  margin-top: 16px;
 }

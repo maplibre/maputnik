@@ -2,10 +2,9 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { saveAs } from 'file-saver'
 
-import styleSpec from '@mapbox/mapbox-gl-style-spec/style-spec'
+import * as styleSpec from '@mapbox/mapbox-gl-style-spec/style-spec'
 import InputBlock from '../inputs/InputBlock'
 import StringInput from '../inputs/StringInput'
-import SelectInput from '../inputs/SelectInput'
 import CheckboxInput from '../inputs/CheckboxInput'
 import Button from '../Button'
 import Modal from './Modal'
@@ -32,7 +31,7 @@ class Gist extends React.Component {
     }
   }
 
-  componentWillReceiveProps(nextProps) {
+  UNSAFE_componentWillReceiveProps(nextProps) {
     this.setState({
       ...this.state,
       preview: !!(nextProps.mapStyle.metadata || {})['maputnik:openmaptiles_access_token']
@@ -236,12 +235,27 @@ class ExportModal extends React.Component {
   }
 
   downloadStyle() {
-    const blob = new Blob([styleSpec.format(stripAccessTokens(this.props.mapStyle))], {type: "application/json;charset=utf-8"});
+    const tokenStyle = styleSpec.format(stripAccessTokens(style.replaceAccessToken(this.props.mapStyle)));
+
+    const blob = new Blob([tokenStyle], {type: "application/json;charset=utf-8"});
     saveAs(blob, this.props.mapStyle.id + ".json");
   }
 
+  changeMetadataProperty(property, value) {
+    const changedStyle = {
+      ...this.props.mapStyle,
+      metadata: {
+        ...this.props.mapStyle.metadata,
+        [property]: value
+      }
+    }
+    this.props.onStyleChanged(changedStyle)
+  }
+
+
   render() {
     return <Modal
+      data-wd-key="export-modal"
       isOpen={this.props.isOpen}
       onOpenToggle={this.props.onOpenToggle}
       title={'Export Style'}
@@ -252,13 +266,29 @@ class ExportModal extends React.Component {
         <p>
           Download a JSON style to your computer.
         </p>
+
+        <p>
+          <InputBlock label={"OpenMapTiles Access Token: "}>
+            <StringInput
+              value={(this.props.mapStyle.metadata || {})['maputnik:openmaptiles_access_token']}
+              onChange={this.changeMetadataProperty.bind(this, "maputnik:openmaptiles_access_token")}
+            />
+          </InputBlock>
+          <InputBlock label={"Mapbox Access Token: "}>
+            <StringInput
+              value={(this.props.mapStyle.metadata || {})['maputnik:mapbox_access_token']}
+              onChange={this.changeMetadataProperty.bind(this, "maputnik:mapbox_access_token")}
+            />
+          </InputBlock>
+        </p>
+
         <Button onClick={this.downloadStyle.bind(this)}>
           <MdFileDownload />
           Download
         </Button>
       </div>
 
-      <div className="maputnik-modal-section">
+      <div className="maputnik-modal-section hide">
         <h4>Save style</h4>
         <Gist mapStyle={this.props.mapStyle} onStyleChanged={this.props.onStyleChanged}/>
       </div>

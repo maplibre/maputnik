@@ -22,6 +22,11 @@ targeted at developers and map designers.
 
 Mapbox has built one of the best and most amazing OSS ecosystems. A key component to ensure its longevity and independance is an OSS map designer.
 
+
+## Donations
+If you or your organisation has seen value from Maputnik, please consider donating at <https://maputnik.github.io/donate>
+
+
 ## Documentation
 
 The documentation can be found in the [Wiki](https://github.com/maputnik/editor/wiki). You are welcome to collaborate!
@@ -67,6 +72,33 @@ Lint the JavaScript code.
 npm run lint
 npm run lint-styles
 ```
+
+
+## Tests
+For testing we use [webdriverio](http://webdriver.io) and [selenium-standalone](https://github.com/vvo/selenium-standalone)
+
+[selenium-standalone](https://github.com/vvo/selenium-standalone) starts a server that will launch browsers on your local machine. We use chrome so you **must** have chrome installed on your machine.
+
+Now open and terminal and run the following. This will install the drivers on your local machine
+
+```
+./node_modules/.bin/selenium-standalone install
+```
+
+Now start the standalone server
+
+```
+./node_modules/.bin/selenium-standalone start
+```
+
+Then open another terminal and run
+
+```
+npm test
+```
+
+After some time you should see a browser launch which will be automated by the test runner.
+
 
 ## Related Projects
 

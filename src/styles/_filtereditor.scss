@@ -3,24 +3,34 @@
 }
 
 .maputnik-filter-editor {
+  @extend .clearfix;
   color: $color-lowgray;
 }
 
 .maputnik-filter-editor-property {
   display: inline-block;
-  width: '22%';
+  width: 25%;
 }
 
 .maputnik-filter-editor-operator {
-  display: inline-block;
-  width: 19%;
   margin-left: 2%;
+  display: inline-block;
+  width: 17%;
+
+  .maputnik-select {
+    width: 100%;
+  }
 }
 
 .maputnik-filter-editor-args {
   display: inline-block;
   width: 54%;
   margin-left: 2%;
+
+  .maputnik-string,
+  .maputnik-number {
+    width: 100%;
+  }
 }
 
 .maputnik-filter-editor-compound-select {
@@ -40,10 +50,6 @@
   color: $color-midgray;
 }
 
-.maputnik-filter-editor {
-  @extend .clearfix;
-}
-
 .maputnik-add-filter {
   display: inline-block;
   float: right;
@@ -57,9 +63,6 @@
 .maputnik-filter-editor-block-action {
   margin-top: $margin-2;
   margin-bottom: $margin-2;
-}
-
-.maputnik-filter-editor-block-action {
   display: inline-block;
   width: 6%;
   margin-right: 1.5%;
@@ -68,29 +71,5 @@
 .maputnik-filter-editor-block-content {
   display: inline-block;
   width: 92.5%;
-}
-
-.maputnik-filter-editor-property {
-  display: inline-block;
-  width: 25%;
-}
-
-.maputnik-filter-editor-operator {
-  display: inline-block;
-  width: 17%;
-
-  .maputnik-select {
-    width: 100%;
-  }
-}
-
-.maputnik-filter-editor-args {
-  display: inline-block;
-  width: 54%;
-
-  .maputnik-string,
-  .maputnik-number {
-    width: 100%;
-  }
 }
 

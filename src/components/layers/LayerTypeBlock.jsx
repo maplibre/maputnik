@@ -1,18 +1,21 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 
-import styleSpec from '@mapbox/mapbox-gl-style-spec/style-spec'
+import * as styleSpec from '@mapbox/mapbox-gl-style-spec/style-spec'
 import InputBlock from '../inputs/InputBlock'
 import SelectInput from '../inputs/SelectInput'
 
 class LayerTypeBlock extends React.Component {
   static propTypes = {
     value: PropTypes.string.isRequired,
+    wdKey: PropTypes.string,
     onChange: PropTypes.func.isRequired,
   }
 
   render() {
-    return <InputBlock label={"Type"} doc={styleSpec.latest.layer.type.doc}>
+    return <InputBlock label={"Type"} doc={styleSpec.latest.layer.type.doc}
+      data-wd-key={this.props.wdKey}
+    >
       <SelectInput
         options={[
           ['background', 'Background'],

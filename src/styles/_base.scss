@@ -18,6 +18,11 @@ html {
   box-sizing: border-box;
 }
 
+body {
+  // The UI is 100% height so prevent bounce scroll on OSX
+  overflow: hidden;
+}
+
 *,
 *::before,
 *::after {
@@ -75,4 +80,8 @@ label:hover {
 
 a {
   color: white;
+}
+
+.hide {
+  display: none !important;
 }

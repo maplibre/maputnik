@@ -16,12 +16,9 @@ import MdInsertEmoticon from 'react-icons/lib/md/insert-emoticon'
 import MdFontDownload from 'react-icons/lib/md/font-download'
 import HelpIcon from 'react-icons/lib/md/help-outline'
 import InspectionIcon from 'react-icons/lib/md/find-in-page'
+import SurveyIcon from 'react-icons/lib/md/assignment-turned-in'
 
 import logoImage from 'maputnik-design/logos/logo-color.svg'
-import SettingsModal from './modals/SettingsModal'
-import ExportModal from './modals/ExportModal'
-import SourcesModal from './modals/SourcesModal'
-import OpenModal from './modals/OpenModal'
 import pkgJson from '../../package.json'
 
 import style from '../libs/style'
@@ -41,6 +38,7 @@ class ToolbarLink extends React.Component {
     className: PropTypes.string,
     children: PropTypes.node,
     href: PropTypes.string,
+    onToggleModal: PropTypes.func,
   }
 
   render() {
@@ -55,19 +53,43 @@ class ToolbarLink extends React.Component {
   }
 }
 
-class ToolbarAction extends React.Component {
+class ToolbarLinkHighlighted extends React.Component {
   static propTypes = {
+    className: PropTypes.string,
     children: PropTypes.node,
-    onClick: PropTypes.func
+    href: PropTypes.string,
+    onToggleModal: PropTypes.func
   }
 
   render() {
     return <a
+      className={classnames('maputnik-toolbar-link', "maputnik-toolbar-link--highlighted", this.props.className)}
+      href={this.props.href}
+      rel="noopener noreferrer"
+      target="_blank"
+    >
+      <span className="maputnik-toolbar-link-wrapper">
+        {this.props.children}
+      </span>
+    </a>
+  }
+}
+
+class ToolbarAction extends React.Component {
+  static propTypes = {
+    children: PropTypes.node,
+    onClick: PropTypes.func,
+    wdKey: PropTypes.string
+  }
+
+  render() {
+    return <button
       className='maputnik-toolbar-action'
+      data-wd-key={this.props.wdKey}
       onClick={this.props.onClick}
     >
       {this.props.children}
-    </a>
+    </button>
   }
 }
 
@@ -81,7 +103,8 @@ export default class Toolbar extends React.Component {
     // A dict of source id's and the available source layers
     sources: PropTypes.object.isRequired,
     onInspectModeToggle: PropTypes.func.isRequired,
-    children: PropTypes.node
+    children: PropTypes.node,
+    onToggleModal: PropTypes.func,
   }
 
   constructor(props) {
@@ -97,68 +120,45 @@ export default class Toolbar extends React.Component {
     }
   }
 
-  toggleModal(modalName) {
-    this.setState({
-      isOpen: {
-        ...this.state.isOpen,
-        [modalName]: !this.state.isOpen[modalName]
-      }
-    })
-  }
-
   render() {
     return <div className='maputnik-toolbar'>
-      <SettingsModal
-        mapStyle={this.props.mapStyle}
-        onStyleChanged={this.props.onStyleChanged}
-        isOpen={this.state.isOpen.settings}
-        onOpenToggle={this.toggleModal.bind(this, 'settings')}
-      />
-      <ExportModal
-        mapStyle={this.props.mapStyle}
-        onStyleChanged={this.props.onStyleChanged}
-        isOpen={this.state.isOpen.export}
-        onOpenToggle={this.toggleModal.bind(this, 'export')}
-      />
-      <OpenModal
-        isOpen={this.state.isOpen.open}
-        onStyleOpen={this.props.onStyleOpen}
-        onOpenToggle={this.toggleModal.bind(this, 'open')}
-      />
-      <SourcesModal
-          mapStyle={this.props.mapStyle}
-          onStyleChanged={this.props.onStyleChanged}
-          isOpen={this.state.isOpen.sources}
-          onOpenToggle={this.toggleModal.bind(this, 'sources')}
-      />
       <div className="maputnik-toolbar__inner">
-        <ToolbarLink
-          href={"https://github.com/maputnik/editor"}
-          className="maputnik-toolbar-logo"
+        <div
+          className="maputnik-toolbar-logo-container"
         >
-          <img src={logoImage} alt="Maputnik" />
-          <h1>Maputnik
-            <span className="maputnik-toolbar-version">v{pkgJson.version}</span>
-          </h1>
-        </ToolbarLink>
+          <a className="maputnik-toolbar-skip" href="#skip-menu">
+            Skip navigation
+          </a>
+          <a
+            href="https://github.com/maputnik/editor"
+            rel="noopener noreferrer"
+            target="_blank"
+            className="maputnik-toolbar-logo"
+          >
+            <img src={logoImage} alt="Maputnik" />
+            <h1>Maputnik
+              <span className="maputnik-toolbar-version">v{pkgJson.version}</span>
+            </h1>
+          </a>
+        </div>
         <div className="maputnik-toolbar__actions">
-          <ToolbarAction onClick={this.toggleModal.bind(this, 'open')}>
+          <ToolbarAction wdKey="nav:open" onClick={this.props.onToggleModal.bind(this, 'open')}>
             <OpenIcon />
             <IconText>Open</IconText>
           </ToolbarAction>
-          <ToolbarAction onClick={this.toggleModal.bind(this, 'export')}>
+          <ToolbarAction wdKey="nav:export" onClick={this.props.onToggleModal.bind(this, 'export')}>
             <MdFileDownload />
             <IconText>Export</IconText>
           </ToolbarAction>
-          <ToolbarAction onClick={this.toggleModal.bind(this, 'sources')}>
+          <ToolbarAction wdKey="nav:sources" onClick={this.props.onToggleModal.bind(this, 'sources')}>
             <SourcesIcon />
-            <IconText>Sources</IconText>
+            <IconText>Data Sources</IconText>
           </ToolbarAction>
-          <ToolbarAction onClick={this.toggleModal.bind(this, 'settings')}>
+          <ToolbarAction wdKey="nav:settings" onClick={this.props.onToggleModal.bind(this, 'settings')}>
             <SettingsIcon />
             <IconText>Style Settings</IconText>
           </ToolbarAction>
-          <ToolbarAction onClick={this.props.onInspectModeToggle}>
+          <ToolbarAction wdKey="nav:inspect" onClick={this.props.onInspectModeToggle}>
             <InspectionIcon />
             <IconText>
               { this.props.inspectModeEnabled && <span>Map Mode</span> }
@@ -169,6 +169,10 @@ export default class Toolbar extends React.Component {
             <HelpIcon />
             <IconText>Help</IconText>
           </ToolbarLink>
+          <ToolbarLinkHighlighted href={"https://gregorywolanski.typeform.com/to/cPgaSY"}>
+            <SurveyIcon />
+            <IconText>Take the Maputnik Survey</IconText>
+          </ToolbarLinkHighlighted>
         </div>
       </div>
     </div>

@@ -33,25 +33,28 @@ class IconAction extends React.Component {
   static propTypes = {
     action: PropTypes.string.isRequired,
     onClick: PropTypes.func.isRequired,
+    wdKey: PropTypes.string
   }
 
   renderIcon() {
     switch(this.props.action) {
-      case 'copy': return <CopyIcon />
+      case 'duplicate': return <CopyIcon />
       case 'show': return <VisibilityIcon />
       case 'hide': return <VisibilityOffIcon />
       case 'delete': return <DeleteIcon />
-      default: return null
     }
   }
 
   render() {
-    return <a
+    return <button
+      tabIndex="-1"
+      title={this.props.action}
       className="maputnik-layer-list-icon-action"
+      data-wd-key={this.props.wdKey}
       onClick={this.props.onClick}
     >
       {this.renderIcon()}
-    </a>
+    </button>
   }
 }
 
@@ -92,6 +95,7 @@ class LayerListItem extends React.Component {
     return <li
       key={this.props.layerId}
       onClick={e => this.props.onLayerSelect(this.props.layerId)}
+      data-wd-key={"layer-list-item:"+this.props.layerId}
       className={classnames({
         "maputnik-layer-list-item": true,
         "maputnik-layer-list-item-selected": this.props.isSelected,
@@ -101,14 +105,17 @@ class LayerListItem extends React.Component {
         <span className="maputnik-layer-list-item-id">{this.props.layerId}</span>
         <span style={{flexGrow: 1}} />
         <IconAction
+          wdKey={"layer-list-item:"+this.props.layerId+":delete"}
           action={'delete'}
           onClick={e => this.props.onLayerDestroy(this.props.layerId)}
         />
         <IconAction
-          action={'copy'}
+          wdKey={"layer-list-item:"+this.props.layerId+":copy"}
+          action={'duplicate'}
           onClick={e => this.props.onLayerCopy(this.props.layerId)}
         />
         <IconAction
+          wdKey={"layer-list-item:"+this.props.layerId+":toggle-visibility"}
           action={this.props.visibility === 'visible' ? 'hide' : 'show'}
           onClick={e => this.props.onLayerVisibilityToggle(this.props.layerId)}
         />

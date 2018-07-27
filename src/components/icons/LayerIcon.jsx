@@ -25,7 +25,6 @@ class LayerIcon extends React.Component {
       case 'line': return <LineIcon {...iconProps} />
       case 'symbol': return <SymbolIcon {...iconProps} />
       case 'circle': return <CircleIcon {...iconProps} />
-      default: return null
     }
   }
 }

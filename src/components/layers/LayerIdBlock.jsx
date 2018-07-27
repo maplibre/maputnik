@@ -1,18 +1,21 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 
-import styleSpec from '@mapbox/mapbox-gl-style-spec/style-spec'
+import * as styleSpec from '@mapbox/mapbox-gl-style-spec/style-spec'
 import InputBlock from '../inputs/InputBlock'
 import StringInput from '../inputs/StringInput'
 
 class LayerIdBlock extends React.Component {
   static propTypes = {
     value: PropTypes.string.isRequired,
+    wdKey: PropTypes.string.isRequired,
     onChange: PropTypes.func.isRequired,
   }
 
   render() {
-    return <InputBlock label={"ID"} doc={styleSpec.latest.layer.id.doc}>
+    return <InputBlock label={"ID"} doc={styleSpec.latest.layer.id.doc}
+      data-wd-key={this.props.wdKey}
+    >
       <StringInput
         value={this.props.value}
         onChange={this.props.onChange}

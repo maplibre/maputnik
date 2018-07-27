@@ -1,7 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import classnames from 'classnames'
-import cloneDeep from 'lodash.clonedeep'
 
 import Button from '../Button'
 import LayerListGroup from './LayerListGroup'
@@ -10,7 +9,7 @@ import AddIcon from 'react-icons/lib/md/add-circle-outline'
 import AddModal from '../modals/AddModal'
 
 import style from '../../libs/style.js'
-import {SortableContainer, SortableHandle, arrayMove} from 'react-sortable-hoc';
+import {SortableContainer, SortableHandle} from 'react-sortable-hoc';
 
 const layerListPropTypes = {
   layers: PropTypes.array.isRequired,
@@ -55,36 +54,6 @@ class LayerListContainer extends React.Component {
         add: false,
       }
     }
-  }
-
-  onLayerDestroy(layerId) {
-    const remainingLayers = this.props.layers.slice(0)
-    const idx = style.indexOfLayer(remainingLayers, layerId)
-    remainingLayers.splice(idx, 1);
-    this.props.onLayersChange(remainingLayers)
-  }
-
-  onLayerCopy(layerId) {
-    const changedLayers = this.props.layers.slice(0)
-    const idx = style.indexOfLayer(changedLayers, layerId)
-
-    const clonedLayer = cloneDeep(changedLayers[idx])
-    clonedLayer.id = clonedLayer.id + "-copy"
-    changedLayers.splice(idx, 0, clonedLayer)
-    this.props.onLayersChange(changedLayers)
-  }
-
-  onLayerVisibilityToggle(layerId) {
-    const changedLayers = this.props.layers.slice(0)
-    const idx = style.indexOfLayer(changedLayers, layerId)
-
-    const layer = { ...changedLayers[idx] }
-    const changedLayout = 'layout' in layer ? {...layer.layout} : {}
-    changedLayout.visibility = changedLayout.visibility === 'none' ? 'visible' : 'none'
-
-    layer.layout = changedLayout
-    changedLayers[idx] = layer
-    this.props.onLayersChange(changedLayers)
   }
 
   toggleModal(modalName) {
@@ -162,6 +131,7 @@ class LayerListContainer extends React.Component {
       const groupPrefix = layerPrefix(layers[0].id)
       if(layers.length > 1) {
         const grp = <LayerListGroup
+          data-wd-key={[groupPrefix, idx].join('-')}
           key={[groupPrefix, idx].join('-')}
           title={groupPrefix}
           isActive={!this.isCollapsed(groupPrefix, idx) || idx === this.props.selectedLayerIndex}
@@ -185,9 +155,9 @@ class LayerListContainer extends React.Component {
           visibility={(layer.layout || {}).visibility}
           isSelected={idx === this.props.selectedLayerIndex}
           onLayerSelect={this.props.onLayerSelect}
-          onLayerDestroy={this.onLayerDestroy.bind(this)}
-          onLayerCopy={this.onLayerCopy.bind(this)}
-          onLayerVisibilityToggle={this.onLayerVisibilityToggle.bind(this)}
+          onLayerDestroy={this.props.onLayerDestroy.bind(this)}
+          onLayerCopy={this.props.onLayerCopy.bind(this)}
+          onLayerVisibilityToggle={this.props.onLayerVisibilityToggle.bind(this)}
         />
         listItems.push(listItem)
         idx += 1
@@ -207,20 +177,22 @@ class LayerListContainer extends React.Component {
         <span className="maputnik-space" />
         <div className="maputnik-default-property">
           <div className="maputnik-multibutton">
-            <a 
+            <button
+              id="skip-menu"
               onClick={this.toggleLayers.bind(this)}
               className="maputnik-button">
               {this.state.areAllGroupsExpanded === true ? "Collapse" : "Expand"}
-            </a>
+            </button>
           </div>
         </div>
         <div className="maputnik-default-property">
           <div className="maputnik-multibutton">
-            <a
+            <button
               onClick={this.toggleModal.bind(this, 'add')}
+              data-wd-key="layer-list:add-layer"
               className="maputnik-button maputnik-button-selected">
              Add Layer
-            </a>
+            </button>
           </div>
         </div>
       </header>
@@ -234,18 +206,10 @@ class LayerListContainer extends React.Component {
 export default class LayerList extends React.Component {
   static propTypes = {...layerListPropTypes}
 
-  onSortEnd(move) {
-    const { oldIndex, newIndex } = move
-    if(oldIndex === newIndex) return
-    let layers = this.props.layers.slice(0)
-    layers = arrayMove(layers, oldIndex, newIndex)
-    this.props.onLayersChange(layers)
-  }
-
   render() {
     return <LayerListContainer
       {...this.props}
-      onSortEnd={this.onSortEnd.bind(this)}
+      onSortEnd={this.props.onMoveLayer.bind(this)}
       useDragHandle={true}
     />
   }

@@ -1,5 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+import LoadingModal from './LoadingModal'
 import Modal from './Modal'
 import Button from '../Button'
 import FileReaderInput from 'react-file-reader-input'
@@ -23,6 +24,7 @@ class PublicStyle extends React.Component {
     return <div className="maputnik-public-style">
       <Button
         className="maputnik-public-style-button"
+        aria-label={this.props.title}
         onClick={() => this.props.onSelect(this.props.url)}
       >
         <header className="maputnik-public-style-header">
@@ -30,11 +32,12 @@ class PublicStyle extends React.Component {
           <span className="maputnik-space" />
           <AddIcon />
         </header>
-        <img
+        <div
           className="maputnik-public-style-thumbnail"
-          src={this.props.thumbnailUrl}
-          alt={this.props.title}
-        />
+          style={{
+            backgroundImage: `url(${this.props.thumbnailUrl})`
+          }}
+        ></div>
       </Button>
     </div>
   }
@@ -58,13 +61,33 @@ class OpenModal extends React.Component {
     })
   }
 
+  onCancelActiveRequest(e) {
+    // Else the click propagates to the underlying modal
+    if(e) e.stopPropagation();
+
+    if(this.state.activeRequest) {
+      this.state.activeRequest.abort();
+      this.setState({
+        activeRequest: null,
+        activeRequestUrl: null
+      });
+    }
+  }
+
   onStyleSelect(styleUrl) {
     this.clearError();
 
-    request({
+    const reqOpts = {
       url: styleUrl,
       withCredentials: false,
-    }, (error, response, body) => {
+    }
+
+    const activeRequest = request(reqOpts, (error, response, body) => {
+      this.setState({
+        activeRequest: null,
+        activeRequestUrl: null
+      });
+
         if (!error && response.statusCode == 200) {
           const mapStyle = style.ensureStyleValidity(JSON.parse(body))
           console.log('Loaded style ', mapStyle.id)
@@ -73,6 +96,11 @@ class OpenModal extends React.Component {
         } else {
           console.warn('Could not open the style URL', styleUrl)
         }
+    })
+
+    this.setState({
+      activeRequest: activeRequest,
+      activeRequestUrl: reqOpts.url
     })
   }
 
@@ -133,6 +161,7 @@ class OpenModal extends React.Component {
     }
 
     return <Modal
+      data-wd-key="open-modal"
       isOpen={this.props.isOpen}
       onOpenToggle={() => this.onOpenToggle()}
       title={'Open Style'}
@@ -141,7 +170,7 @@ class OpenModal extends React.Component {
       <section className="maputnik-modal-section">
         <h2>Upload Style</h2>
         <p>Upload a JSON style from your computer.</p>
-        <FileReaderInput onChange={this.onUpload.bind(this)}>
+        <FileReaderInput onChange={this.onUpload.bind(this)} tabIndex="-1">
           <Button className="maputnik-upload-button"><FileUploadIcon /> Upload</Button>
         </FileReaderInput>
       </section>
@@ -151,9 +180,9 @@ class OpenModal extends React.Component {
         <p>
           Load from a URL. Note that the URL must have <a href="https://enable-cors.org" target="_blank" rel="noopener noreferrer">CORS enabled</a>.
         </p>
-        <input type="text" ref={(input) => this.styleUrlElement = input} className="maputnik-input" placeholder="Enter URL..."/>
+        <input data-wd-key="open-modal.url.input" type="text" ref={(input) => this.styleUrlElement = input} className="maputnik-input" placeholder="Enter URL..."/>
         <div>
-          <Button className="maputnik-big-button" onClick={this.onOpenUrl.bind(this)}>Open URL</Button>
+          <Button data-wd-key="open-modal.url.button" className="maputnik-big-button" onClick={this.onOpenUrl.bind(this)}>Open URL</Button>
         </div>
       </section>
 
@@ -166,6 +195,13 @@ class OpenModal extends React.Component {
         {styleOptions}
         </div>
       </section>
+
+      <LoadingModal
+        isOpen={!!this.state.activeRequest}
+        title={'Loading style'}
+        onCancel={(e) => this.onCancelActiveRequest(e)}
+        message={"Loading: "+this.state.activeRequestUrl}
+      />
     </Modal>
   }
 }

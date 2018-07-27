@@ -58,6 +58,7 @@ export default class MapboxGlMap extends React.Component {
     mapStyle: PropTypes.object.isRequired,
     inspectModeEnabled: PropTypes.bool.isRequired,
     highlightedLayer: PropTypes.object,
+    options: PropTypes.object,
   }
 
   static defaultProps = {
@@ -65,6 +66,7 @@ export default class MapboxGlMap extends React.Component {
     onDataChange: () => {},
     onLayerSelect: () => {},
     mapboxAccessToken: tokens.mapbox,
+    options: {},
   }
 
   constructor(props) {
@@ -79,7 +81,7 @@ export default class MapboxGlMap extends React.Component {
     }
   }
 
-  componentWillReceiveProps(nextProps) {
+  UNSAFE_componentWillReceiveProps(nextProps) {
     if(!this.state.map) return
     const metadata = nextProps.mapStyle.metadata || {}
     MapboxGl.accessToken = metadata['maputnik:mapbox_access_token'] || tokens.mapbox
@@ -92,20 +94,29 @@ export default class MapboxGlMap extends React.Component {
   }
 
   componentDidUpdate(prevProps) {
+    const map = this.state.map;
+
     if(this.props.inspectModeEnabled !== prevProps.inspectModeEnabled) {
       this.state.inspect.toggleInspector()
     }
     if(this.props.inspectModeEnabled) {
       this.state.inspect.render()
     }
+
+    map.showTileBoundaries = this.props.options.showTileBoundaries;
   }
 
   componentDidMount() {
-    const map = new MapboxGl.Map({
+    const mapOpts = {
+      ...this.props.options,
       container: this.container,
       style: this.props.mapStyle,
       hash: true,
-    })
+    }
+
+    const map = new MapboxGl.Map(mapOpts);
+
+    map.showTileBoundaries = mapOpts.showTileBoundaries;
 
     const zoom = new ZoomControl;
     map.addControl(zoom, 'top-right');
@@ -121,6 +132,7 @@ export default class MapboxGlMap extends React.Component {
       showMapPopupOnHover: false,
       showInspectMapPopupOnHover: true,
       showInspectButton: false,
+      blockHoverPopupOnClick: true,
       assignLayerColor: (layerId, alpha) => {
         return Color(colors.brightColor(layerId, alpha)).desaturate(0.5).string()
       },
