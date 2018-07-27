@@ -22,7 +22,7 @@ import SurveyModal from './modals/SurveyModal'
 
 import { downloadGlyphsMetadata, downloadSpriteMetadata } from '../libs/metadata'
 import * as styleSpec from '@mapbox/mapbox-gl-style-spec/style-spec'
-import style from '../libs/style.js'
+import style from '../libs/style'
 import { initialStyleUrl, loadStyleUrl } from '../libs/urlopen'
 import { undoMessages, redoMessages } from '../libs/diffmessage'
 import { loadDefaultStyle, StyleStore } from '../libs/stylestore'
@@ -407,7 +407,7 @@ export default class App extends React.Component {
 
   mapRenderer() {
     const mapProps = {
-      mapStyle: style.replaceAccessToken(this.state.mapStyle, {allowFallback: true}),
+      mapStyle: style.replaceAccessTokens(this.state.mapStyle, {allowFallback: true}),
       options: this.state.mapOptions,
       onDataChange: (e) => {
         this.layerWatcher.analyzeMap(e.map)

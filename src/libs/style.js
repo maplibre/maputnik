@@ -55,6 +55,10 @@ function indexOfLayer(layers, layerId) {
 }
 
 function getAccessToken(key, mapStyle, opts) {
+  if(key === "thunderforest_transport" || key === "thunderforest_outdoors") {
+    key = "thunderforest";
+  }
+
   const metadata = mapStyle.metadata || {}
   let accessToken = metadata['maputnik:'+key+'_access_token'];
 
