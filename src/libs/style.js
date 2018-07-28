@@ -99,7 +99,7 @@ function replaceSourceAccessToken(mapStyle, key, opts={}) {
 function replaceAccessTokens(mapStyle, opts={}) {
   let changedStyle = mapStyle;
 
-  Object.keys(tokens).forEach((tokenKey) => {
+  Object.keys(mapStyle.sources).forEach((tokenKey) => {
     changedStyle = replaceSourceAccessToken(changedStyle, tokenKey, opts);
   })
 
