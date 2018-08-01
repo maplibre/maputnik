@@ -193,7 +193,8 @@
             "raster-brightness-max",
             "raster-saturation",
             "raster-contrast",
-            "raster-fade-duration"
+            "raster-fade-duration",
+            "raster-resampling"
           ]
         }
       ]
