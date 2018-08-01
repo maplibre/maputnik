@@ -10,7 +10,7 @@ import Button from '../Button'
 import Modal from './Modal'
 import MdFileDownload from 'react-icons/lib/md/file-download'
 import TiClipboard from 'react-icons/lib/ti/clipboard'
-import style from '../../libs/style.js'
+import style from '../../libs/style'
 import GitHub from 'github-api'
 import { CopyToClipboard } from 'react-copy-to-clipboard'
 
@@ -49,7 +49,7 @@ class Gist extends React.Component {
     const mapboxToken = (this.props.mapStyle.metadata || {})['maputnik:mapbox_access_token'];
 
     const mapStyleStr = preview ?
-        styleSpec.format(stripAccessTokens(style.replaceAccessToken(this.props.mapStyle))) :
+        styleSpec.format(stripAccessTokens(style.replaceAccessTokens(this.props.mapStyle))) :
         styleSpec.format(stripAccessTokens(this.props.mapStyle));
     const styleTitle = this.props.mapStyle.name || 'Style';
     const htmlStr = `
@@ -235,7 +235,7 @@ class ExportModal extends React.Component {
   }
 
   downloadStyle() {
-    const tokenStyle = styleSpec.format(stripAccessTokens(style.replaceAccessToken(this.props.mapStyle)));
+    const tokenStyle = styleSpec.format(stripAccessTokens(style.replaceAccessTokens(this.props.mapStyle)));
 
     const blob = new Blob([tokenStyle], {type: "application/json;charset=utf-8"});
     saveAs(blob, this.props.mapStyle.id + ".json");
@@ -278,6 +278,12 @@ class ExportModal extends React.Component {
             <StringInput
               value={(this.props.mapStyle.metadata || {})['maputnik:mapbox_access_token']}
               onChange={this.changeMetadataProperty.bind(this, "maputnik:mapbox_access_token")}
+            />
+          </InputBlock>
+          <InputBlock label={"Thunderforest Access Token: "}>
+            <StringInput
+              value={(this.props.mapStyle.metadata || {})['maputnik:thunderforest_access_token']}
+              onChange={this.changeMetadataProperty.bind(this, "maputnik:thunderforest_access_token")}
             />
           </InputBlock>
         </p>

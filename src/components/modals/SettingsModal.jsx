@@ -94,6 +94,14 @@ class SettingsModal extends React.Component {
         />
       </InputBlock>
 
+      <InputBlock label={"Thunderforest Access Token"} doc={"Public access token for Thunderforest services."}>
+        <StringInput {...inputProps}
+          data-wd-key="modal-settings.maputnik:thunderforest_access_token" 
+          value={metadata['maputnik:thunderforest_access_token']}
+          onChange={this.changeMetadataProperty.bind(this, "maputnik:thunderforest_access_token")}
+        />
+      </InputBlock>
+
       <InputBlock label={"Style Renderer"} doc={"Choose the default Maputnik renderer for this style."}>
         <SelectInput {...inputProps}
           data-wd-key="modal-settings.maputnik:renderer" 

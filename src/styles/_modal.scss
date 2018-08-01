@@ -125,6 +125,10 @@
 }
 
 //SOURCE MODAL
+.maputnik-public-sources {
+  margin-bottom: 1.5%;
+}
+
 .maputnik-public-source {
   vertical-align: top;
   margin-top: 1.5%;
@@ -150,6 +154,7 @@
 
 .maputnik-public-source-id {
   font-weight: 400;
+  text-align: left;
 }
 
 .maputnik-active-source-type-editor {

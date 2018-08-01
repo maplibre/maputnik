@@ -54,17 +54,27 @@ function indexOfLayer(layers, layerId) {
   return null
 }
 
-function replaceAccessToken(mapStyle, opts={}) {
-  const omtSource = mapStyle.sources.openmaptiles
-  if(!omtSource) return mapStyle
-  if(!omtSource.hasOwnProperty("url")) return mapStyle
+function getAccessToken(key, mapStyle, opts) {
+  if(key === "thunderforest_transport" || key === "thunderforest_outdoors") {
+    key = "thunderforest";
+  }
 
   const metadata = mapStyle.metadata || {}
-  let accessToken = metadata['maputnik:openmaptiles_access_token'];
+  let accessToken = metadata['maputnik:'+key+'_access_token'];
 
   if(opts.allowFallback && !accessToken) {
-    accessToken = tokens.openmaptiles;
+    accessToken = tokens[key];
   }
+
+  return accessToken;
+}
+
+function replaceSourceAccessToken(mapStyle, key, opts={}) {
+  const source = mapStyle.sources[key]
+  if(!source) return mapStyle
+  if(!source.hasOwnProperty("url")) return mapStyle
+
+  const accessToken = getAccessToken(key, mapStyle, opts)
 
   if(!accessToken) {
     // Early exit.
@@ -73,15 +83,31 @@ function replaceAccessToken(mapStyle, opts={}) {
 
   const changedSources = {
     ...mapStyle.sources,
-    openmaptiles: {
-      ...omtSource,
-      url: omtSource.url.replace('{key}', accessToken)
+    [key]: {
+      ...source,
+      url: source.url.replace('{key}', accessToken)
     }
   }
   const changedStyle = {
     ...mapStyle,
-    glyphs: mapStyle.glyphs ? mapStyle.glyphs.replace('{key}', accessToken) : mapStyle.glyphs,
     sources: changedSources
+  }
+
+  return changedStyle
+}
+
+function replaceAccessTokens(mapStyle, opts={}) {
+  let changedStyle = mapStyle;
+
+  Object.keys(mapStyle.sources).forEach((tokenKey) => {
+    changedStyle = replaceSourceAccessToken(changedStyle, tokenKey, opts);
+  })
+
+  if(mapStyle.glyphs && mapStyle.glyphs.match(/\.tileserver\.org/)) {
+    changedStyle = {
+      ...changedStyle,
+      glyphs: mapStyle.glyphs ? mapStyle.glyphs.replace('{key}', getAccessToken("openmaptiles", mapStyle, opts)) : mapStyle.glyphs
+    }
   }
 
   return changedStyle
@@ -92,5 +118,5 @@ export default {
   emptyStyle,
   indexOfLayer,
   generateId,
-  replaceAccessToken,
+  replaceAccessTokens,
 }
