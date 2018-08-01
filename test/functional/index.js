@@ -13,6 +13,9 @@ describe('maputnik', function() {
       "geojson:example",
       "raster:raster"
     ]));
+    browser.execute(function() {
+      localStorage.setItem("survey", true);
+    });
     browser.waitForExist(".maputnik-toolbar-link");
     browser.flushReactUpdates();
   });
