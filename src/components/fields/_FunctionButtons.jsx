@@ -16,7 +16,7 @@ export default class FunctionButtons extends React.Component {
 
   render() {
     let makeZoomButton, makeDataButton
-    if (this.props.fieldSpec['zoom-function']) {
+    if (this.props.fieldSpec.expression.parameters.includes('zoom')) {
       makeZoomButton = <Button
         className="maputnik-make-zoom-function"
         onClick={this.props.onZoomClick}
