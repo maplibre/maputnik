@@ -31,11 +31,10 @@ class Gist extends React.Component {
     }
   }
 
-  UNSAFE_componentWillReceiveProps(nextProps) {
-    this.setState({
-      ...this.state,
-      preview: !!(nextProps.mapStyle.metadata || {})['maputnik:openmaptiles_access_token']
-    })
+  static getDerivedStateFromProps(props, state) {
+    return {
+      preview: !!(props.mapStyle.metadata || {})['maputnik:openmaptiles_access_token']
+    };
   }
 
   onSave() {

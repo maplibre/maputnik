@@ -13,6 +13,30 @@ import docUid from '../../libs/document-uid'
 import sortNumerically from '../../libs/sort-numerically'
 
 
+/**
+ * We cache a reference for each stop by its index.
+ *
+ * When the stops are reordered the references are also updated (see this.orderStops) this allows React to use the same key for the element and keep keyboard focus.
+ */
+function setStopRefs(props, state) {
+  // This is initialsed below only if required to improved performance.
+  let newRefs;
+
+  if(props.value && props.value.stops) {
+    props.value.stops.forEach((val, idx) => {
+      if(!state.refs.hasOwnProperty(idx)) {
+        if(!newRefs) {
+          newRefs = {...state};
+        }
+        newRefs[idx] = docUid("stop-");
+      }
+    })
+  }
+
+  return newRefs;
+}
+
+
 export default class ZoomProperty extends React.Component {
   static propTypes = {
     onChange: PropTypes.func,
@@ -39,39 +63,16 @@ export default class ZoomProperty extends React.Component {
 
   componentDidMount() {
     this.setState({
-      refs: this.setStopRefs(this.props)
+      refs: setStopRefs(this.props, this.state)
     })
   }
 
-  /**
-   * We cache a reference for each stop by its index.
-   *
-   * When the stops are reordered the references are also updated (see this.orderStops) this allows React to use the same key for the element and keep keyboard focus.
-   */
-  setStopRefs(props) {
-    // This is initialsed below only if required to improved performance.
-    let newRefs;
-
-    if(props.value && props.value.stops) {
-      props.value.stops.forEach((val, idx) => {
-        if(!this.state.refs.hasOwnProperty(idx)) {
-          if(!newRefs) {
-            newRefs = {...this.state.refs};
-          }
-          newRefs[idx] = docUid("stop-");
-        }
-      })
-    }
-
-    return newRefs;
-  }
-
-  UNSAFE_componentWillReceiveProps(nextProps) {
-    const newRefs = this.setStopRefs(nextProps);
+  static getDerivedStateFromProps(nextProps) {
+    const newRefs = setStopRefs(props, state);
     if(newRefs) {
-      this.setState({
+      return {
         refs: newRefs
-      })
+      };
     }
   }
 

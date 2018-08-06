@@ -79,18 +79,18 @@ export default class LayerEditor extends React.Component {
     this.state = { editorGroups }
   }
 
-  UNSAFE_componentWillReceiveProps(nextProps) {
-    const additionalGroups = { ...this.state.editorGroups }
+  static getDerivedStateFromProps(props, state) {
+    const additionalGroups = { ...state.editorGroups }
 
-    layout[nextProps.layer.type].groups.forEach(group => {
+    layout[props.layer.type].groups.forEach(group => {
       if(!(group.title in additionalGroups)) {
         additionalGroups[group.title] = true
       }
     })
 
-    this.setState({
+    return {
       editorGroups: additionalGroups
-    })
+    };
   }
 
   getChildContext () {
