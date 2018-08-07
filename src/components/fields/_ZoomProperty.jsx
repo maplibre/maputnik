@@ -62,18 +62,23 @@ export default class ZoomProperty extends React.Component {
   }
 
   componentDidMount() {
-    this.setState({
-      refs: setStopRefs(this.props, this.state)
-    })
+    const newRefs = setStopRefs(this.props, this.state);
+
+    if(newRefs) {
+      this.setState({
+        refs: newRefs
+      })
+    }
   }
 
-  static getDerivedStateFromProps(nextProps) {
+  static getDerivedStateFromProps(props, state) {
     const newRefs = setStopRefs(props, state);
     if(newRefs) {
       return {
         refs: newRefs
       };
     }
+    return null;
   }
 
   // Order the stops altering the refs to reflect their new position.
