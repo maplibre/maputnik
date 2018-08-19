@@ -176,7 +176,8 @@ export default class App extends React.Component {
         survey: localStorage.hasOwnProperty('survey') ? false : true
       },
       mapOptions: {
-        showTileBoundaries: queryUtil.asBool(queryObj, "show-tile-boundaries")
+        showTileBoundaries: queryUtil.asBool(queryObj, "show-tile-boundaries"),
+        showCollisionBoxes: queryUtil.asBool(queryObj, "show-collision-boxes")
       },
       mapFilter: queryObj["color-blindness-emulation"],
     }
