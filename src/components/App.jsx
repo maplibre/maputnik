@@ -191,11 +191,9 @@ export default class App extends React.Component {
   handleKeyPress(e) {
     if(navigator.platform.toUpperCase().indexOf('MAC') >= 0) {
       if(e.metaKey && e.shiftKey && e.keyCode === 90) {
-        console.log("redo");
         this.onRedo(e);
       }
       else if(e.metaKey && e.keyCode === 90) {
-        console.log("undo");
         this.onUndo(e);
       }
     }
