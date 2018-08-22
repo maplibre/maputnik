@@ -4,7 +4,6 @@ import LoadingModal from './LoadingModal'
 import Modal from './Modal'
 import Button from '../Button'
 import FileReaderInput from 'react-file-reader-input'
-import request from 'request'
 
 import FileUploadIcon from 'react-icons/lib/md/file-upload'
 import AddIcon from 'react-icons/lib/md/add-circle-outline'
@@ -77,30 +76,36 @@ class OpenModal extends React.Component {
   onStyleSelect(styleUrl) {
     this.clearError();
 
-    const reqOpts = {
-      url: styleUrl,
-      withCredentials: false,
-    }
-
-    const activeRequest = request(reqOpts, (error, response, body) => {
+    const activeRequest = fetch(styleUrl, {
+      mode: 'cors',
+      credentials: "same-origin"
+    })
+    .then(function(response) {
+      return response.json();
+    })
+    .then((body) => {
       this.setState({
         activeRequest: null,
         activeRequestUrl: null
       });
 
-        if (!error && response.statusCode == 200) {
-          const mapStyle = style.ensureStyleValidity(JSON.parse(body))
-          console.log('Loaded style ', mapStyle.id)
-          this.props.onStyleOpen(mapStyle)
-          this.onOpenToggle()
-        } else {
-          console.warn('Could not open the style URL', styleUrl)
-        }
+      const mapStyle = style.ensureStyleValidity(body)
+      console.log('Loaded style ', mapStyle.id)
+      this.props.onStyleOpen(mapStyle)
+      this.onOpenToggle()
+    })
+    .catch((err) => {
+      this.setState({
+        activeRequest: null,
+        activeRequestUrl: null
+      });
+      console.error(err);
+      console.warn('Could not open the style URL', styleUrl)
     })
 
     this.setState({
       activeRequest: activeRequest,
-      activeRequestUrl: reqOpts.url
+      activeRequestUrl: styleUrl
     })
   }
 

@@ -1,12 +1,11 @@
+import autoBind from 'react-autobind';
 import React from 'react'
-import Mousetrap from 'mousetrap'
 import cloneDeep from 'lodash.clonedeep'
 import clamp from 'lodash.clamp'
 import {arrayMove} from 'react-sortable-hoc'
 import url from 'url'
 
 import MapboxGlMap from './map/MapboxGlMap'
-import OpenLayers3Map from './map/OpenLayers3Map'
 import LayerList from './layers/LayerList'
 import LayerEditor from './layers/LayerEditor'
 import Toolbar from './Toolbar'
@@ -54,6 +53,8 @@ function updateRootSpec(spec, fieldName, newValues) {
 export default class App extends React.Component {
   constructor(props) {
     super(props)
+    autoBind(this);
+
     this.revisionStore = new RevisionStore()
     this.styleStore = new ApiStyleStore({
       onLocalStyleChange: mapStyle => this.onStyleChanged(mapStyle, false)
@@ -187,14 +188,33 @@ export default class App extends React.Component {
     })
   }
 
+  handleKeyPress(e) {
+    if(navigator.platform.toUpperCase().indexOf('MAC') >= 0) {
+      if(e.metaKey && e.shiftKey && e.keyCode === 90) {
+        console.log("redo");
+        this.onRedo(e);
+      }
+      else if(e.metaKey && e.keyCode === 90) {
+        console.log("undo");
+        this.onUndo(e);
+      }
+    }
+    else {
+      if(e.ctrlKey && e.keyCode === 90) {
+        this.onUndo(e);
+      }
+      else if(e.ctrlKey && e.keyCode === 89) {
+        this.onRedo(e);
+      }
+    }
+  }
+
   componentDidMount() {
-    Mousetrap.bind(['mod+z'], this.onUndo.bind(this));
-    Mousetrap.bind(['mod+y', 'mod+shift+z'], this.onRedo.bind(this));
+    window.addEventListener("keydown", this.handleKeyPress);
   }
 
   componentWillUnmount() {
-    Mousetrap.unbind(['mod+z'], this.onUndo.bind(this));
-    Mousetrap.unbind(['mod+y', 'mod+shift+z'], this.onRedo.bind(this));
+    window.removeEventListener("keydown", this.handleKeyPress);
   }
 
   saveStyle(snapshotStyle) {
@@ -371,7 +391,9 @@ export default class App extends React.Component {
           console.warn("Failed to normalizeSourceURL: ", err);
         }
 
-        fetch(url)
+        fetch(url, {
+          mode: 'cors',
+        })
           .then((response) => {
             return response.json();
           })
@@ -423,12 +445,12 @@ export default class App extends React.Component {
 
     // Check if OL3 code has been loaded?
     if(renderer === 'ol3') {
-      mapElement = <OpenLayers3Map {...mapProps} />
+      mapElement = <div>TODO</div>
     } else {
       mapElement = <MapboxGlMap {...mapProps}
         inspectModeEnabled={this.state.inspectModeEnabled}
         highlightedLayer={this.state.mapStyle.layers[this.state.selectedLayerIndex]}
-        onLayerSelect={this.onLayerSelect.bind(this)} />
+        onLayerSelect={this.onLayerSelect} />
     }
 
     const elementStyle = {};
