@@ -1,5 +1,6 @@
 // MAP
 .maputnik-map {
+  display: flex;
   position: fixed !important;
   top: $toolbar-height + $toolbar-offset;
   right: 0;
@@ -10,6 +11,16 @@
     - 200px /* layer list */
     - 350px /* layer editor */
   );
+
+  &--error {
+    align-items: center;
+    justify-content: center;
+  }
+
+  &__error-message {
+    margin: 16px;
+    text-align: center;
+  }
 }
 
 // DOC LABEL
