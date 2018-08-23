@@ -9,9 +9,6 @@ import SingleFilterEditor from './SingleFilterEditor'
 import FilterEditorBlock from './FilterEditorBlock'
 import Button from '../Button'
 
-import DeleteIcon from 'react-icons/lib/md/delete'
-import AddIcon from 'react-icons/lib/fa/plus'
-
 function hasCombiningFilter(filter) {
   return combiningFilterOps.indexOf(filter[0]) >= 0
 }

@@ -1,19 +1,11 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import FileReaderInput from 'react-file-reader-input'
 import classnames from 'classnames'
 
 import MdFileDownload from 'react-icons/lib/md/file-download'
-import MdFileUpload from 'react-icons/lib/md/file-upload'
 import OpenIcon from 'react-icons/lib/md/open-in-browser'
 import SettingsIcon from 'react-icons/lib/md/settings'
-import MdInfo from 'react-icons/lib/md/info'
 import SourcesIcon from 'react-icons/lib/md/layers'
-import MdSave from 'react-icons/lib/md/save'
-import MdStyle from 'react-icons/lib/md/style'
-import MdMap from 'react-icons/lib/md/map'
-import MdInsertEmoticon from 'react-icons/lib/md/insert-emoticon'
-import MdFontDownload from 'react-icons/lib/md/font-download'
 import HelpIcon from 'react-icons/lib/md/help-outline'
 import InspectionIcon from 'react-icons/lib/md/find-in-page'
 import SurveyIcon from 'react-icons/lib/md/assignment-turned-in'
@@ -21,7 +13,6 @@ import SurveyIcon from 'react-icons/lib/md/assignment-turned-in'
 import logoImage from 'maputnik-design/logos/logo-color.svg'
 import pkgJson from '../../package.json'
 
-import style from '../libs/style'
 
 class IconText extends React.Component {
   static propTypes = {

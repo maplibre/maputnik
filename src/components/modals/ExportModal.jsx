@@ -21,11 +21,14 @@ class Gist extends React.Component {
     onStyleChanged: PropTypes.func.isRequired,
   }
 
-  state = {
-    preview: false,
-    public: false,
-    saving: false,
-    latestGist: null,
+  constructor(props) {
+    super(props);
+    this.state = {
+      preview: false,
+      public: false,
+      saving: false,
+      latestGist: null,
+    }
   }
 
   UNSAFE_componentWillReceiveProps(nextProps) {

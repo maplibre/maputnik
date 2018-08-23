@@ -2,8 +2,6 @@ import React from 'react'
 import PropTypes from 'prop-types'
 
 import Button from '../Button'
-import InputBlock from '../inputs/InputBlock'
-import StringInput from '../inputs/StringInput'
 import Modal from './Modal'
 
 import LayerTypeBlock from '../layers/LayerTypeBlock'

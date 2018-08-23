@@ -1,6 +1,4 @@
-var assert      = require('assert');
 var config      = require("../config/specs");
-var geoServer   = require("../geojson-server");
 var helper      = require("./helper");
 
 require("./util/webdriverio-ext");

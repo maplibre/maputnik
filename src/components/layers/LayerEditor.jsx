@@ -16,9 +16,6 @@ import LayerSourceLayerBlock from './LayerSourceLayerBlock'
 
 import MoreVertIcon from 'react-icons/lib/md/more-vert'
 
-import InputBlock from '../inputs/InputBlock'
-import MultiButtonInput from '../inputs/MultiButtonInput'
-
 import { changeType, changeProperty } from '../../libs/layer'
 import layout from '../../config/layout.json'
 
