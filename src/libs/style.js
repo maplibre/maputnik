@@ -54,27 +54,27 @@ function indexOfLayer(layers, layerId) {
   return null
 }
 
-function getAccessToken(key, mapStyle, opts) {
-  if(key === "thunderforest_transport" || key === "thunderforest_outdoors") {
-    key = "thunderforest";
+function getAccessToken(sourceName, mapStyle, opts) {
+  if(sourceName === "thunderforest_transport" || sourceName === "thunderforest_outdoors") {
+    sourceName = "thunderforest"
   }
 
   const metadata = mapStyle.metadata || {}
-  let accessToken = metadata['maputnik:'+key+'_access_token'];
+  let accessToken = metadata[`maputnik:${sourceName}_access_token`]
 
   if(opts.allowFallback && !accessToken) {
-    accessToken = tokens[key];
+    accessToken = tokens[sourceName]
   }
 
   return accessToken;
 }
 
-function replaceSourceAccessToken(mapStyle, key, opts={}) {
-  const source = mapStyle.sources[key]
+function replaceSourceAccessToken(mapStyle, sourceName, opts={}) {
+  const source = mapStyle.sources[sourceName]
   if(!source) return mapStyle
   if(!source.hasOwnProperty("url")) return mapStyle
 
-  const accessToken = getAccessToken(key, mapStyle, opts)
+  const accessToken = getAccessToken(sourceName, mapStyle, opts)
 
   if(!accessToken) {
     // Early exit.
@@ -83,7 +83,7 @@ function replaceSourceAccessToken(mapStyle, key, opts={}) {
 
   const changedSources = {
     ...mapStyle.sources,
-    [key]: {
+    [sourceName]: {
       ...source,
       url: source.url.replace('{key}', accessToken)
     }
@@ -92,23 +92,18 @@ function replaceSourceAccessToken(mapStyle, key, opts={}) {
     ...mapStyle,
     sources: changedSources
   }
-
+  if (mapStyle.glyphs) {
+    changedStyle.glyphs = changedStyle.glyphs.replace('{key}', accessToken)
+  }
   return changedStyle
 }
 
 function replaceAccessTokens(mapStyle, opts={}) {
-  let changedStyle = mapStyle;
+  let changedStyle = mapStyle
 
-  Object.keys(mapStyle.sources).forEach((tokenKey) => {
-    changedStyle = replaceSourceAccessToken(changedStyle, tokenKey, opts);
+  Object.keys(mapStyle.sources).forEach((sourceName) => {
+    changedStyle = replaceSourceAccessToken(changedStyle, sourceName, opts);
   })
-
-  if(mapStyle.glyphs && mapStyle.glyphs.match(/\.tileserver\.org/)) {
-    changedStyle = {
-      ...changedStyle,
-      glyphs: mapStyle.glyphs ? mapStyle.glyphs.replace('{key}', getAccessToken("openmaptiles", mapStyle, opts)) : mapStyle.glyphs
-    }
-  }
 
   return changedStyle
 }
