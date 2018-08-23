@@ -12,8 +12,6 @@ class SurveyModal extends React.Component {
     onOpenToggle: PropTypes.func.isRequired,
   }
 
-  constructor(props) { super(props); }
-
   onClick = () => {
     window.open('https://gregorywolanski.typeform.com/to/cPgaSY', '_blank');
 

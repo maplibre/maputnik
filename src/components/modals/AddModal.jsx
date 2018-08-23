@@ -22,7 +22,7 @@ class AddModal extends React.Component {
     sources: PropTypes.object.isRequired,
   }
 
-  addLayer() {
+  addLayer = () => {
     const changedLayers = this.props.layers.slice(0)
     const layer = {
       id: this.state.id,
@@ -151,7 +151,7 @@ class AddModal extends React.Component {
       }
       <Button
         className="maputnik-add-layer-button"
-        onClick={this.addLayer.bind(this)}
+        onClick={this.addLayer}
         data-wd-key="add-layer"
       >
         Add Layer

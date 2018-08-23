@@ -107,16 +107,13 @@ export default class Toolbar extends React.Component {
     onToggleModal: PropTypes.func,
   }
 
-  constructor(props) {
-    super(props)
-    this.state = {
-      isOpen: {
-        settings: false,
-        sources: false,
-        open: false,
-        add: false,
-        export: false,
-      }
+  state = {
+    isOpen: {
+      settings: false,
+      sources: false,
+      open: false,
+      add: false,
+      export: false,
     }
   }
 

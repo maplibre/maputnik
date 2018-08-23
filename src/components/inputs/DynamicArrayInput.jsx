@@ -27,14 +27,13 @@ class DynamicArrayInput extends React.Component {
     return this.props.value || this.props.default || []
   }
 
-  addValue() {
+  addValue = () => {
     const values = this.values.slice(0)
     if (this.props.type === 'number') {
       values.push(0)
     } else {
       values.push("")
     }
-    
 
     this.props.onChange(values)
   }
@@ -77,7 +76,7 @@ class DynamicArrayInput extends React.Component {
       {inputs}
       <Button
         className="maputnik-array-add-value"
-        onClick={this.addValue.bind(this)}
+        onClick={this.addValue}
       >
         Add value
       </Button>

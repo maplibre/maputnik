@@ -11,10 +11,6 @@ class ShortcutsModal extends React.Component {
     onOpenToggle: PropTypes.func.isRequired,
   }
 
-  constructor(props) {
-    super(props);
-  }
-
   render() {
     const help = [
       {

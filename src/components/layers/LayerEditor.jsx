@@ -36,7 +36,7 @@ function layoutGroups(layerType) {
     title: 'JSON Editor',
     type: 'jsoneditor'
   }
-    return [layerGroup, filterGroup].concat(layout[layerType].groups).concat([editorGroup])
+  return [layerGroup, filterGroup].concat(layout[layerType].groups).concat([editorGroup])
 }
 
 /** Layer editor supporting multiple types of layers. */

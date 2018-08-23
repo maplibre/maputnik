@@ -29,12 +29,8 @@ export default class ZoomProperty extends React.Component {
     ]),
   }
 
-
-  constructor() {
-    super()
-    this.state = {
-      refs: {}
-    }
+  state = {
+    refs: {}
   }
 
   componentDidMount() {

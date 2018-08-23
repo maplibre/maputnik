@@ -60,7 +60,7 @@ export default class CombiningFilterEditor extends React.Component {
     this.props.onChange(newFilter)
   }
 
-  addFilterItem() {
+  addFilterItem = () => {
     const newFilterItem = this.combiningFilter().slice(0)
     newFilterItem.push(['==', 'name', ''])
     this.props.onChange(newFilterItem)
@@ -105,7 +105,7 @@ export default class CombiningFilterEditor extends React.Component {
         <Button
           data-wd-key="layer-filter-button"
           className="maputnik-add-filter"
-          onClick={this.addFilterItem.bind(this)}>
+          onClick={this.addFilterItem}>
           Add filter
         </Button>
       </div>
