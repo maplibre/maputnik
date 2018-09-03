@@ -92,9 +92,6 @@ function replaceSourceAccessToken(mapStyle, sourceName, opts={}) {
     ...mapStyle,
     sources: changedSources
   }
-  if (mapStyle.glyphs) {
-    changedStyle.glyphs = changedStyle.glyphs.replace('{key}', accessToken)
-  }
   return changedStyle
 }
 
@@ -104,6 +101,13 @@ function replaceAccessTokens(mapStyle, opts={}) {
   Object.keys(mapStyle.sources).forEach((sourceName) => {
     changedStyle = replaceSourceAccessToken(changedStyle, sourceName, opts);
   })
+
+  if (mapStyle.glyphs && mapStyle.glyphs.match(/\.tilehosting\.com/)) {
+    changedStyle = {
+      ...changedStyle,
+      glyphs: mapStyle.glyphs.replace('{key}', getAccessToken("openmaptiles", mapStyle, opts))
+    }
+  }
 
   return changedStyle
 }
