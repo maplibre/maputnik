@@ -14,6 +14,9 @@ import 'mapbox-gl/dist/mapbox-gl.css'
 import '../../mapboxgl.css'
 import '../../libs/mapbox-rtl'
 
+
+const IS_SUPPORTED = MapboxGl.supported();
+
 function renderPropertyPopup(features) {
   var mountNode = document.createElement('div');
   ReactDOM.render(<FeaturePropertyPopup features={features} />, mountNode)
@@ -81,6 +84,8 @@ export default class MapboxGlMap extends React.Component {
   }
 
   UNSAFE_componentWillReceiveProps(nextProps) {
+    if(!IS_SUPPORTED) return;
+
     if(!this.state.map) return
     const metadata = nextProps.mapStyle.metadata || {}
     MapboxGl.accessToken = metadata['maputnik:mapbox_access_token'] || tokens.mapbox
@@ -93,6 +98,8 @@ export default class MapboxGlMap extends React.Component {
   }
 
   componentDidUpdate(prevProps) {
+    if(!IS_SUPPORTED) return;
+
     const map = this.state.map;
 
     if(this.props.inspectModeEnabled !== prevProps.inspectModeEnabled) {
@@ -107,6 +114,8 @@ export default class MapboxGlMap extends React.Component {
   }
 
   componentDidMount() {
+    if(!IS_SUPPORTED) return;
+
     const mapOpts = {
       ...this.props.options,
       container: this.container,
@@ -163,9 +172,20 @@ export default class MapboxGlMap extends React.Component {
   }
 
   render() {
-    return <div
-      className="maputnik-map"
-      ref={x => this.container = x}
-    ></div>
+    if(IS_SUPPORTED) {
+      return <div
+        className="maputnik-map"
+        ref={x => this.container = x}
+      ></div>
+    }
+    else {
+      return <div
+        className="maputnik-map maputnik-map--error"
+      >
+        <div className="maputnik-map__error-message">
+          Error: Cannot load MapboxGL, WebGL is either unsupported or disabled
+        </div>
+      </div>
+    }
   }
 }
