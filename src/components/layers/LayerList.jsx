@@ -2,13 +2,10 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import classnames from 'classnames'
 
-import Button from '../Button'
 import LayerListGroup from './LayerListGroup'
 import LayerListItem from './LayerListItem'
-import AddIcon from 'react-icons/lib/md/add-circle-outline'
 import AddModal from '../modals/AddModal'
 
-import style from '../../libs/style.js'
 import {SortableContainer, SortableHandle} from 'react-sortable-hoc';
 
 const layerListPropTypes = {
@@ -45,15 +42,12 @@ class LayerListContainer extends React.Component {
     onLayerSelect: () => {},
   }
 
-  constructor(props) {
-    super(props)
-    this.state = {
-      collapsedGroups: {},
-      areAllGroupsExpanded: false,
-      isOpen: {
-        add: false,
-      }
-    }
+  state = {
+    collapsedGroups: {},
+    areAllGroupsExpanded: false,
+    isOpen: {
+      add: false,
+    } 
   }
 
   toggleModal(modalName) {
@@ -65,7 +59,7 @@ class LayerListContainer extends React.Component {
     })
   }
 
-  toggleLayers() {
+  toggleLayers = () => {
     let idx=0
 
     let newGroups=[]
@@ -179,7 +173,7 @@ class LayerListContainer extends React.Component {
           <div className="maputnik-multibutton">
             <button
               id="skip-menu"
-              onClick={this.toggleLayers.bind(this)}
+              onClick={this.toggleLayers}
               className="maputnik-button">
               {this.state.areAllGroupsExpanded === true ? "Collapse" : "Expand"}
             </button>

@@ -25,7 +25,7 @@ import * as styleSpec from '@mapbox/mapbox-gl-style-spec/style-spec'
 import style from '../libs/style'
 import { initialStyleUrl, loadStyleUrl } from '../libs/urlopen'
 import { undoMessages, redoMessages } from '../libs/diffmessage'
-import { loadDefaultStyle, StyleStore } from '../libs/stylestore'
+import { StyleStore } from '../libs/stylestore'
 import { ApiStyleStore } from '../libs/apistore'
 import { RevisionStore } from '../libs/revisions'
 import LayerWatcher from '../libs/layerwatcher'
@@ -217,7 +217,7 @@ export default class App extends React.Component {
     })
   }
 
-  onStyleChanged(newStyle, save=true) {
+  onStyleChanged = (newStyle, save=true) => {
 
     const errors = styleSpec.validate(newStyle, styleSpec.latest)
     if(errors.length === 0) {
@@ -244,7 +244,7 @@ export default class App extends React.Component {
     this.fetchSources();
   }
 
-  onUndo() {
+  onUndo = () => {
     const activeStyle = this.revisionStore.undo()
     const messages = undoMessages(this.state.mapStyle, activeStyle)
     this.saveStyle(activeStyle)
@@ -254,7 +254,7 @@ export default class App extends React.Component {
     })
   }
 
-  onRedo() {
+  onRedo = () => {
     const activeStyle = this.revisionStore.redo()
     const messages = redoMessages(this.state.mapStyle, activeStyle)
     this.saveStyle(activeStyle)
@@ -264,7 +264,7 @@ export default class App extends React.Component {
     })
   }
 
-  onMoveLayer(move) {
+  onMoveLayer = (move) => {
     let { oldIndex, newIndex } = move;
     let layers = this.state.mapStyle.layers;
     oldIndex = clamp(oldIndex, 0, layers.length-1);
@@ -282,7 +282,7 @@ export default class App extends React.Component {
     this.onLayersChange(layers);
   }
 
-  onLayersChange(changedLayers) {
+  onLayersChange = (changedLayers) => {
     const changedStyle = {
       ...this.state.mapStyle,
       layers: changedLayers
@@ -290,7 +290,7 @@ export default class App extends React.Component {
     this.onStyleChanged(changedStyle)
   }
 
-  onLayerDestroy(layerId) {
+  onLayerDestroy = (layerId) => {
     let layers = this.state.mapStyle.layers;
     const remainingLayers = layers.slice(0);
     const idx = style.indexOfLayer(remainingLayers, layerId)
@@ -298,7 +298,7 @@ export default class App extends React.Component {
     this.onLayersChange(remainingLayers);
   }
 
-  onLayerCopy(layerId) {
+  onLayerCopy = (layerId) => {
     let layers = this.state.mapStyle.layers;
     const changedLayers = layers.slice(0)
     const idx = style.indexOfLayer(changedLayers, layerId)
@@ -309,7 +309,7 @@ export default class App extends React.Component {
     this.onLayersChange(changedLayers)
   }
 
-  onLayerVisibilityToggle(layerId) {
+  onLayerVisibilityToggle = (layerId) => {
     let layers = this.state.mapStyle.layers;
     const changedLayers = layers.slice(0)
     const idx = style.indexOfLayer(changedLayers, layerId)
@@ -324,7 +324,7 @@ export default class App extends React.Component {
   }
 
 
-  onLayerIdChange(oldId, newId) {
+  onLayerIdChange = (oldId, newId) => {
     const changedLayers = this.state.mapStyle.layers.slice(0)
     const idx = style.indexOfLayer(changedLayers, oldId)
 
@@ -336,7 +336,7 @@ export default class App extends React.Component {
     this.onLayersChange(changedLayers)
   }
 
-  onLayerChanged(layer) {
+  onLayerChanged = (layer) => {
     const changedLayers = this.state.mapStyle.layers.slice(0)
     const idx = style.indexOfLayer(changedLayers, layer.id)
     changedLayers[idx] = layer
@@ -344,7 +344,7 @@ export default class App extends React.Component {
     this.onLayersChange(changedLayers)
   }
 
-  changeInspectMode() {
+  changeInspectMode = () => {
     this.setState({
       inspectModeEnabled: !this.state.inspectModeEnabled
     })
@@ -428,7 +428,7 @@ export default class App extends React.Component {
       mapElement = <MapboxGlMap {...mapProps}
         inspectModeEnabled={this.state.inspectModeEnabled}
         highlightedLayer={this.state.mapStyle.layers[this.state.selectedLayerIndex]}
-        onLayerSelect={this.onLayerSelect.bind(this)} />
+        onLayerSelect={this.onLayerSelect} />
     }
 
     const elementStyle = {};
@@ -441,7 +441,7 @@ export default class App extends React.Component {
     </div>
   }
 
-  onLayerSelect(layerId) {
+  onLayerSelect = (layerId) => {
     const idx = style.indexOfLayer(this.state.mapStyle.layers, layerId)
     this.setState({ selectedLayerIndex: idx })
   }
@@ -468,19 +468,19 @@ export default class App extends React.Component {
       mapStyle={this.state.mapStyle}
       inspectModeEnabled={this.state.inspectModeEnabled}
       sources={this.state.sources}
-      onStyleChanged={this.onStyleChanged.bind(this)}
-      onStyleOpen={this.onStyleChanged.bind(this)}
-      onInspectModeToggle={this.changeInspectMode.bind(this)}
+      onStyleChanged={this.onStyleChanged}
+      onStyleOpen={this.onStyleChanged}
+      onInspectModeToggle={this.changeInspectMode}
       onToggleModal={this.toggleModal.bind(this)}
     />
 
     const layerList = <LayerList
-      onMoveLayer={this.onMoveLayer.bind(this)}
-      onLayerDestroy={this.onLayerDestroy.bind(this)}
-      onLayerCopy={this.onLayerCopy.bind(this)}
-      onLayerVisibilityToggle={this.onLayerVisibilityToggle.bind(this)}
-      onLayersChange={this.onLayersChange.bind(this)}
-      onLayerSelect={this.onLayerSelect.bind(this)}
+      onMoveLayer={this.onMoveLayer}
+      onLayerDestroy={this.onLayerDestroy}
+      onLayerCopy={this.onLayerCopy}
+      onLayerVisibilityToggle={this.onLayerVisibilityToggle}
+      onLayersChange={this.onLayersChange}
+      onLayerSelect={this.onLayerSelect}
       selectedLayerIndex={this.state.selectedLayerIndex}
       layers={layers}
       sources={this.state.sources}
@@ -494,12 +494,12 @@ export default class App extends React.Component {
       sources={this.state.sources}
       vectorLayers={this.state.vectorLayers}
       spec={this.state.spec}
-      onMoveLayer={this.onMoveLayer.bind(this)}
-      onLayerChanged={this.onLayerChanged.bind(this)}
-      onLayerDestroy={this.onLayerDestroy.bind(this)}
-      onLayerCopy={this.onLayerCopy.bind(this)}
-      onLayerVisibilityToggle={this.onLayerVisibilityToggle.bind(this)}
-      onLayerIdChange={this.onLayerIdChange.bind(this)}
+      onMoveLayer={this.onMoveLayer}
+      onLayerChanged={this.onLayerChanged}
+      onLayerDestroy={this.onLayerDestroy}
+      onLayerCopy={this.onLayerCopy}
+      onLayerVisibilityToggle={this.onLayerVisibilityToggle}
+      onLayerIdChange={this.onLayerIdChange}
     /> : null
 
     const bottomPanel = (this.state.errors.length + this.state.infos.length) > 0 ? <MessagePanel
@@ -515,24 +515,24 @@ export default class App extends React.Component {
       />
       <SettingsModal
         mapStyle={this.state.mapStyle}
-        onStyleChanged={this.onStyleChanged.bind(this)}
+        onStyleChanged={this.onStyleChanged}
         isOpen={this.state.isOpen.settings}
         onOpenToggle={this.toggleModal.bind(this, 'settings')}
       />
       <ExportModal
         mapStyle={this.state.mapStyle}
-        onStyleChanged={this.onStyleChanged.bind(this)}
+        onStyleChanged={this.onStyleChanged}
         isOpen={this.state.isOpen.export}
         onOpenToggle={this.toggleModal.bind(this, 'export')}
       />
       <OpenModal
         isOpen={this.state.isOpen.open}
-        onStyleOpen={this.onStyleChanged.bind(this)}
+        onStyleOpen={this.onStyleChanged}
         onOpenToggle={this.toggleModal.bind(this, 'open')}
       />
       <SourcesModal
         mapStyle={this.state.mapStyle}
-        onStyleChanged={this.onStyleChanged.bind(this)}
+        onStyleChanged={this.onStyleChanged}
         isOpen={this.state.isOpen.sources}
         onOpenToggle={this.toggleModal.bind(this, 'sources')}
       />

@@ -1,6 +1,5 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import Color from 'color'
 import classnames from 'classnames'
 
 import CopyIcon from 'react-icons/lib/md/content-copy'
@@ -9,7 +8,6 @@ import VisibilityOffIcon from 'react-icons/lib/md/visibility-off'
 import DeleteIcon from 'react-icons/lib/md/delete'
 
 import LayerIcon from '../icons/LayerIcon'
-import LayerEditor from './LayerEditor'
 import {SortableElement, SortableHandle} from 'react-sortable-hoc'
 
 @SortableHandle

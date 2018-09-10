@@ -74,7 +74,7 @@ class OpenModal extends React.Component {
     }
   }
 
-  onStyleSelect(styleUrl) {
+  onStyleSelect = (styleUrl) => {
     this.clearError();
 
     const reqOpts = {
@@ -104,12 +104,12 @@ class OpenModal extends React.Component {
     })
   }
 
-  onOpenUrl() {
+  onOpenUrl = () => {
     const url = this.styleUrlElement.value;
     this.onStyleSelect(url);
   }
 
-  onUpload(_, files) {
+  onUpload = (_, files) => {
     const [e, file] = files[0];
     const reader = new FileReader();
 
@@ -146,7 +146,7 @@ class OpenModal extends React.Component {
         url={style.url}
         title={style.title}
         thumbnailUrl={style.thumbnail}
-        onSelect={this.onStyleSelect.bind(this)}
+        onSelect={this.onStyleSelect}
       />
     })
 
@@ -170,7 +170,7 @@ class OpenModal extends React.Component {
       <section className="maputnik-modal-section">
         <h2>Upload Style</h2>
         <p>Upload a JSON style from your computer.</p>
-        <FileReaderInput onChange={this.onUpload.bind(this)} tabIndex="-1">
+        <FileReaderInput onChange={this.onUpload} tabIndex="-1">
           <Button className="maputnik-upload-button"><FileUploadIcon /> Upload</Button>
         </FileReaderInput>
       </section>
@@ -182,7 +182,7 @@ class OpenModal extends React.Component {
         </p>
         <input data-wd-key="open-modal.url.input" type="text" ref={(input) => this.styleUrlElement = input} className="maputnik-input" placeholder="Enter URL..."/>
         <div>
-          <Button data-wd-key="open-modal.url.button" className="maputnik-big-button" onClick={this.onOpenUrl.bind(this)}>Open URL</Button>
+          <Button data-wd-key="open-modal.url.button" className="maputnik-big-button" onClick={this.onOpenUrl}>Open URL</Button>
         </div>
       </section>
 

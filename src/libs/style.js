@@ -1,4 +1,3 @@
-import React from 'react';
 import deref from '@mapbox/mapbox-gl-style-spec/deref'
 import tokens from '../config/tokens.json'
 

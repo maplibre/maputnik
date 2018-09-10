@@ -15,10 +15,6 @@ class SettingsModal extends React.Component {
     onOpenToggle: PropTypes.func.isRequired,
   }
 
-  constructor(props) {
-    super(props);
-  }
-
   changeStyleProperty(property, value) {
     const changedStyle = {
       ...this.props.mapStyle,

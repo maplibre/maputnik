@@ -3,7 +3,6 @@ import PropTypes from 'prop-types'
 
 import * as styleSpec from '@mapbox/mapbox-gl-style-spec/style-spec'
 import InputBlock from '../inputs/InputBlock'
-import StringInput from '../inputs/StringInput'
 import AutocompleteInput from '../inputs/AutocompleteInput'
 
 class LayerSourceLayer extends React.Component {

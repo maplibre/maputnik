@@ -1,7 +1,5 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import style from '../../libs/style.js'
-import isEqual from 'lodash.isequal'
 import { loadJSON } from '../../libs/urlopen'
 import 'ol/ol.css'
 
