@@ -14,25 +14,6 @@ var OUTPATH = artifacts.pathSync("/build");
 module.exports = {
   entry: {
     app: './src/index.jsx',
-    vendor: [
-        'file-saver',
-        'mapbox-gl/dist/mapbox-gl.js',
-        "lodash.clonedeep",
-        "lodash.throttle",
-        'color',
-        'react',
-        "react-dom",
-        "react-color",
-        "react-file-reader-input",
-        "react-collapse",
-        "react-height",
-        "react-icon-base",
-        "react-motion",
-        "react-sortable-hoc",
-        "request",
-        //TODO: Icons raise multi vendor errors?
-        //"react-icons",
-    ]
   },
   output: {
     path: OUTPATH,
@@ -55,7 +36,6 @@ module.exports = {
   },
   plugins: [
     new webpack.NoEmitOnErrorsPlugin(),
-    new webpack.optimize.CommonsChunkPlugin({ name: 'vendor', filename: '[chunkhash].vendor.js' }),
     new WebpackCleanupPlugin(),
     new webpack.DefinePlugin({
       'process.env': {

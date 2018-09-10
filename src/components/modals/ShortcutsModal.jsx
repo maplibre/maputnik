@@ -1,7 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 
-import Button from '../Button'
 import Modal from './Modal'
 
 
@@ -9,10 +8,6 @@ class ShortcutsModal extends React.Component {
   static propTypes = {
     isOpen: PropTypes.bool.isRequired,
     onOpenToggle: PropTypes.func.isRequired,
-  }
-
-  constructor(props) {
-    super(props);
   }
 
   render() {

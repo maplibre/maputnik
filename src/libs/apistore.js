@@ -1,4 +1,3 @@
-import request from 'request'
 import style from './style.js'
 import ReconnectingWebSocket from 'reconnecting-websocket'
 
@@ -14,15 +13,20 @@ export class ApiStyleStore {
   }
 
   init(cb) {
-    request(localUrl + '/styles', (error, response, body) => {
-      if (!error && body && response.statusCode == 200) {
-        const styleIds = JSON.parse(body)
-        this.latestStyleId = styleIds[0]
-        this.notifyLocalChanges()
-        cb(null)
-      } else {
-        cb(new Error('Can not connect to style API'))
-      }
+    fetch(localUrl + '/styles', {
+      mode: 'cors',
+    })
+    .then(function(response) {
+      return response.json();
+    })
+    .then(function(body) {
+      const styleIds = body;
+      this.latestStyleId = styleIds[0]
+      this.notifyLocalChanges()
+      cb(null)
+    })
+    .catch(function() {
+      cb(new Error('Can not connect to style API'))
     })
   }
 
@@ -44,8 +48,14 @@ export class ApiStyleStore {
 
   latestStyle(cb) {
     if(this.latestStyleId) {
-      request(localUrl + '/styles/' + this.latestStyleId, (error, response, body) => {
-        cb(style.ensureStyleValidity(JSON.parse(body)))
+      fetch(localUrl + '/styles/' + this.latestStyleId, {
+        mode: 'cors',
+      })
+      .then(function(response) {
+        return response.json();
+      })
+      .then(function(body) {
+        cb(style.ensureStyleValidity(body))
       })
     } else {
       throw new Error('No latest style available. You need to init the api backend first.')
@@ -55,11 +65,15 @@ export class ApiStyleStore {
   // Save current style replacing previous version
   save(mapStyle) {
     const id = mapStyle.id
-    request.put({
-      url: localUrl + '/styles/' + id,
-      json: true,
-      body: mapStyle
-    }, (error, response, body) => {
+    fetch(localUrl + '/styles/' + id, {
+      method: "PUT",
+      mode: 'cors',
+      headers: {
+        "Content-Type": "application/json; charset=utf-8",
+      },
+      body: JSON.stringify(mapStyle)
+    })
+    .catch(function(error) {
       if(error) console.error(error)
     })
     return mapStyle

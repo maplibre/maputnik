@@ -1,7 +1,5 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import InputBlock from '../inputs/InputBlock'
-import StringInput from '../inputs/StringInput'
 import LayerIcon from '../icons/LayerIcon'
 
 function groupFeaturesBySourceLayer(features) {

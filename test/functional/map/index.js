@@ -1,5 +1,3 @@
-var assert = require('assert');
-var wd     = require("../../wd-helper");
 var config = require("../../config/specs");
 var helper = require("../helper");
 

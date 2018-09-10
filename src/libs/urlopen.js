@@ -1,4 +1,3 @@
-import request from 'request'
 import url from 'url'
 import style from './style.js'
 
@@ -9,34 +8,40 @@ export function initialStyleUrl() {
 
 export function loadStyleUrl(styleUrl, cb) {
   console.log('Loading style', styleUrl)
-  request({
-    url: styleUrl,
-    withCredentials: false,
-  }, (error, response, body) => {
-      if (!error && response.statusCode == 200) {
-        cb(style.ensureStyleValidity(JSON.parse(body)))
-      } else {
-        console.warn('Could not fetch default style', styleUrl)
-        cb(style.emptyStyle)
-      }
+  fetch(styleUrl, {
+    mode: 'cors',
+    credentials: "same-origin"
+  })
+  .then(function(response) {
+    return response.json();
+  })
+  .then(function(body) {
+    cb(style.ensureStyleValidity(body))
+  })
+  .catch(function() {
+    console.warn('Could not fetch default style', styleUrl)
+    cb(style.emptyStyle)
   })
 }
 
 export function loadJSON(url, defaultValue, cb) {
-  request({
-    url: url,
-    withCredentials: false,
-  }, (error, response, body) => {
-    if (!error && body && response.statusCode == 200) {
-      try {
-        cb(JSON.parse(body))
-      } catch(err) {
-        console.error(err)
-        cb(defaultValue)
-      }
-    } else {
-      console.error('Can not load JSON from ' + url)
+  fetch(url, {
+    mode: 'cors',
+    credentials: "same-origin"
+  })
+  .then(function(response) {
+    return response.json();
+  })
+  .then(function(body) {
+    try {
+      cb(body)
+    } catch(err) {
+      console.error(err)
       cb(defaultValue)
     }
+  })
+  .catch(function() {
+    console.error('Can not load JSON from ' + url)
+    cb(defaultValue)
   })
 }

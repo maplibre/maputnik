@@ -15,10 +15,6 @@ class SettingsModal extends React.Component {
     onOpenToggle: PropTypes.func.isRequired,
   }
 
-  constructor(props) {
-    super(props);
-  }
-
   changeStyleProperty(property, value) {
     const changedStyle = {
       ...this.props.mapStyle,
@@ -107,7 +103,7 @@ class SettingsModal extends React.Component {
           data-wd-key="modal-settings.maputnik:renderer" 
           options={[
             ['mbgljs', 'MapboxGL JS'],
-            ['ol3', 'Open Layers 3'],
+            // ['ol3', 'Open Layers 3'],
           ]}
           value={metadata['maputnik:renderer'] || 'mbgljs'}
           onChange={this.changeMetadataProperty.bind(this, 'maputnik:renderer')}
