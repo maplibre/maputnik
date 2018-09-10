@@ -46,9 +46,9 @@ try {
   browser.addCommand('flushReactUpdates', function() {
     browser.executeAsync(function(done) {
       // For any events to propogate
-      process.nextTick(function() {
+      setImmediate(function() {
         // For the DOM to be updated.
-        process.nextTick(done);
+        setImmediate(done);
       })
     })
   })
