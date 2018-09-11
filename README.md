@@ -162,6 +162,6 @@ Sina Martinelli, Nicholas Doiron, Neil Cawse, Urs42, Benedikt Groß, Manuel Roth
 
 Maputnik is [licensed under MIT](LICENSE) and is Copyright (c) Lukas Martinelli and contributors.
 
-**Disclaimer** This project is not affiliated with Mapbox or Mapbox Studio. It is a independent style editor for the
+**Disclaimer** This project is not affiliated with Mapbox or Mapbox Studio. It is an independent style editor for the
 open source technology in the Mapbox GL ecosystem.
 As contributor please take extra care of not violating any Mapbox trademarks. Do not get inspired by Mapbox Studio and make your own decisions for a good style editor.
