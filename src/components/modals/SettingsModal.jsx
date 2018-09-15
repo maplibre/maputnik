@@ -82,7 +82,7 @@ class SettingsModal extends React.Component {
         />
       </InputBlock>
 
-      <InputBlock label={"OpenMapTiles Access Token"} doc={"Public access token for the OpenMapTiles CDN."}>
+      <InputBlock label={"MapTiler Access Token"} doc={"Public access token for MapTiler Cloud."}>
         <StringInput {...inputProps}
           data-wd-key="modal-settings.maputnik:openmaptiles_access_token" 
           value={metadata['maputnik:openmaptiles_access_token']}

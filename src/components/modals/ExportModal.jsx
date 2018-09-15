@@ -70,7 +70,7 @@ class ExportModal extends React.Component {
         </p>
 
         <p>
-          <InputBlock label={"OpenMapTiles Access Token: "}>
+          <InputBlock label={"MapTiler Access Token: "}>
             <StringInput
               value={(this.props.mapStyle.metadata || {})['maputnik:openmaptiles_access_token']}
               onChange={this.changeMetadataProperty.bind(this, "maputnik:openmaptiles_access_token")}
