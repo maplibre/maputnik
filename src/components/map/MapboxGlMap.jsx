@@ -109,8 +109,10 @@ export default class MapboxGlMap extends React.Component {
       this.state.inspect.render()
     }
 
-    map.showTileBoundaries = this.props.options.showTileBoundaries;
-    map.showCollisionBoxes = this.props.options.showCollisionBoxes;
+    if (map) {
+      map.showTileBoundaries = this.props.options.showTileBoundaries;
+      map.showCollisionBoxes = this.props.options.showCollisionBoxes;
+    }
   }
 
   componentDidMount() {
