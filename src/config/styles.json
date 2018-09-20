@@ -52,5 +52,29 @@
     "title": "Mapbox Basic",
     "url": "https://rawgit.com/mapbox/mapbox-gl-styles/master/styles/basic-v9.json",
     "thumbnail": "https://maputnik.github.io/thumbnails/mapbox-basic.png"
+  },
+  {
+    "id": "os-zoomstack-outdoor",
+    "title": "Zoomstack Outdoor",
+    "url": "https://s3-eu-west-1.amazonaws.com/tiles.os.uk/styles/open-zoomstack-outdoor/style.json",
+    "thumbnail": "https://maputnik.github.io/thumbnails/mapbox-basic.png"
+  },
+  {
+    "id": "os-zoomstack-road",
+    "title": "Zoomstack Road",
+    "url": "https://s3-eu-west-1.amazonaws.com/tiles.os.uk/styles/open-zoomstack-road/style.json",
+    "thumbnail": "https://maputnik.github.io/thumbnails/mapbox-basic.png"
+  },
+  {
+    "id": "os-zoomstack-light",
+    "title": "Zoomstack Light",
+    "url": "https://s3-eu-west-1.amazonaws.com/tiles.os.uk/styles/open-zoomstack-light/style.json",
+    "thumbnail": "https://maputnik.github.io/thumbnails/mapbox-basic.png"
+  },
+  {
+    "id": "os-zoomstack-night",
+    "title": "Zoomstack Night",
+    "url": "https://s3-eu-west-1.amazonaws.com/tiles.os.uk/styles/open-zoomstack-night/style.json",
+    "thumbnail": "https://maputnik.github.io/thumbnails/mapbox-basic.png"
   }
 ]
