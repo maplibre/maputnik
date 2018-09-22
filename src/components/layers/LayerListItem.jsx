@@ -114,7 +114,7 @@ class LayerListItem extends React.Component {
         />
         <IconAction
           wdKey={"layer-list-item:"+this.props.layerId+":toggle-visibility"}
-          action={this.props.visibility === 'visible' ? 'hide' : 'show'}
+          action={this.props.visibility === 'visible' ? 'show' : 'hide'}
           onClick={e => this.props.onLayerVisibilityToggle(this.props.layerId)}
         />
     </li>
