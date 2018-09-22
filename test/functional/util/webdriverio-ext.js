@@ -46,10 +46,10 @@ try {
   browser.addCommand('flushReactUpdates', function() {
     browser.executeAsync(function(done) {
       // For any events to propogate
-      setImmediate(function() {
+      setTimeout(function() {
         // For the DOM to be updated.
-        setImmediate(done);
-      })
+        setTimeout(done, 0);
+      }, 0)
     })
   })
 
