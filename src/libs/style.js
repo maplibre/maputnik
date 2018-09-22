@@ -102,9 +102,12 @@ function replaceAccessTokens(mapStyle, opts={}) {
   })
 
   if (mapStyle.glyphs && mapStyle.glyphs.match(/\.tilehosting\.com/)) {
-    changedStyle = {
-      ...changedStyle,
-      glyphs: mapStyle.glyphs.replace('{key}', getAccessToken("openmaptiles", mapStyle, opts))
+    const newAccessToken = getAccessToken("openmaptiles", mapStyle, opts);
+    if (newAccessToken) {
+      changedStyle = {
+        ...changedStyle,
+        glyphs: mapStyle.glyphs.replace('{key}', newAccessToken)
+      }
     }
   }
 
