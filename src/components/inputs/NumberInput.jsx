@@ -17,8 +17,10 @@ class NumberInput extends React.Component {
     }
   }
 
-  UNSAFE_componentWillReceiveProps(nextProps) {
-    this.setState({ value: nextProps.value })
+  static getDerivedStateFromProps(props, state) {
+    return {
+      value: props.value
+    };
   }
 
   changeValue(newValue) {
