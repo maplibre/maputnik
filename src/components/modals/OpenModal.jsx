@@ -76,10 +76,9 @@ class OpenModal extends React.Component {
   onStyleSelect = (styleUrl) => {
     this.clearError();
 
-    const requestController = new AbortController();
+    let canceled;
 
     const activeRequest = fetch(styleUrl, {
-      signal: requestController.signal,
       mode: 'cors',
       credentials: "same-origin"
     })
@@ -87,6 +86,10 @@ class OpenModal extends React.Component {
       return response.json();
     })
     .then((body) => {
+      if(canceled) {
+        return;
+      }
+
       this.setState({
         activeRequest: null,
         activeRequestUrl: null
@@ -107,7 +110,11 @@ class OpenModal extends React.Component {
     })
 
     this.setState({
-      activeRequest: requestController,
+      activeRequest: {
+        abort: function() {
+          canceled = true;
+        }
+      },
       activeRequestUrl: styleUrl
     })
   }
