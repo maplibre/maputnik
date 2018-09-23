@@ -456,7 +456,7 @@ export default class App extends React.Component {
     }
     const elementStyle = {};
     if (filterName) {
-      elementStyle.filter = `url('color-accessibility.svg#${filterName}')`;
+      elementStyle.filter = `url('#${filterName}')`;
     };
 
     return <div style={elementStyle} className="maputnik-map__container">
