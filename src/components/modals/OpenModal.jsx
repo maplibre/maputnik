@@ -76,6 +76,8 @@ class OpenModal extends React.Component {
   onStyleSelect = (styleUrl) => {
     this.clearError();
 
+    let canceled;
+
     const activeRequest = fetch(styleUrl, {
       mode: 'cors',
       credentials: "same-origin"
@@ -84,6 +86,10 @@ class OpenModal extends React.Component {
       return response.json();
     })
     .then((body) => {
+      if(canceled) {
+        return;
+      }
+
       this.setState({
         activeRequest: null,
         activeRequestUrl: null
@@ -104,7 +110,11 @@ class OpenModal extends React.Component {
     })
 
     this.setState({
-      activeRequest: activeRequest,
+      activeRequest: {
+        abort: function() {
+          canceled = true;
+        }
+      },
       activeRequestUrl: styleUrl
     })
   }
@@ -165,49 +175,53 @@ class OpenModal extends React.Component {
       );
     }
 
-    return <Modal
-      data-wd-key="open-modal"
-      isOpen={this.props.isOpen}
-      onOpenToggle={() => this.onOpenToggle()}
-      title={'Open Style'}
-    >
-      {errorElement}
-      <section className="maputnik-modal-section">
-        <h2>Upload Style</h2>
-        <p>Upload a JSON style from your computer.</p>
-        <FileReaderInput onChange={this.onUpload} tabIndex="-1">
-          <Button className="maputnik-upload-button"><FileUploadIcon /> Upload</Button>
-        </FileReaderInput>
-      </section>
+    return  (
+      <div>
+        <Modal
+          data-wd-key="open-modal"
+          isOpen={this.props.isOpen}
+          onOpenToggle={() => this.onOpenToggle()}
+          title={'Open Style'}
+        >
+          {errorElement}
+          <section className="maputnik-modal-section">
+            <h2>Upload Style</h2>
+            <p>Upload a JSON style from your computer.</p>
+            <FileReaderInput onChange={this.onUpload} tabIndex="-1">
+              <Button className="maputnik-upload-button"><FileUploadIcon /> Upload</Button>
+            </FileReaderInput>
+          </section>
 
-      <section className="maputnik-modal-section">
-        <h2>Load from URL</h2>
-        <p>
-          Load from a URL. Note that the URL must have <a href="https://enable-cors.org" target="_blank" rel="noopener noreferrer">CORS enabled</a>.
-        </p>
-        <input data-wd-key="open-modal.url.input" type="text" ref={(input) => this.styleUrlElement = input} className="maputnik-input" placeholder="Enter URL..."/>
-        <div>
-          <Button data-wd-key="open-modal.url.button" className="maputnik-big-button" onClick={this.onOpenUrl}>Open URL</Button>
-        </div>
-      </section>
+          <section className="maputnik-modal-section">
+            <h2>Load from URL</h2>
+            <p>
+              Load from a URL. Note that the URL must have <a href="https://enable-cors.org" target="_blank" rel="noopener noreferrer">CORS enabled</a>.
+            </p>
+            <input data-wd-key="open-modal.url.input" type="text" ref={(input) => this.styleUrlElement = input} className="maputnik-input" placeholder="Enter URL..."/>
+            <div>
+              <Button data-wd-key="open-modal.url.button" className="maputnik-big-button" onClick={this.onOpenUrl}>Open URL</Button>
+            </div>
+          </section>
 
-      <section className="maputnik-modal-section maputnik-modal-section--shrink">
-        <h2>Gallery Styles</h2>
-        <p>
-          Open one of the publicly available styles to start from.
-        </p>
-        <div className="maputnik-style-gallery-container">
-        {styleOptions}
-        </div>
-      </section>
+          <section className="maputnik-modal-section maputnik-modal-section--shrink">
+            <h2>Gallery Styles</h2>
+            <p>
+              Open one of the publicly available styles to start from.
+            </p>
+            <div className="maputnik-style-gallery-container">
+            {styleOptions}
+            </div>
+          </section>
+        </Modal>
 
-      <LoadingModal
-        isOpen={!!this.state.activeRequest}
-        title={'Loading style'}
-        onCancel={(e) => this.onCancelActiveRequest(e)}
-        message={"Loading: "+this.state.activeRequestUrl}
-      />
-    </Modal>
+        <LoadingModal
+          isOpen={!!this.state.activeRequest}
+          title={'Loading style'}
+          onCancel={(e) => this.onCancelActiveRequest(e)}
+          message={"Loading: "+this.state.activeRequestUrl}
+        />
+      </div>
+    )
   }
 }
 
