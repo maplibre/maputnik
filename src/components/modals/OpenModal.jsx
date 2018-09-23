@@ -107,7 +107,7 @@ class OpenModal extends React.Component {
     })
 
     this.setState({
-      activeRequest: activeRequest,
+      activeRequest: requestController,
       activeRequestUrl: styleUrl
     })
   }
