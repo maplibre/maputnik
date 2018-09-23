@@ -40,7 +40,7 @@
     "prop-types": "^15.6.0",
     "react": "^16.3.2",
     "react-aria-menubutton": "^5.1.1",
-    "react-aria-modal": "^3.0.0",
+    "react-aria-modal": "^2.12.1",
     "react-autobind": "^1.0.6",
     "react-autocomplete": "^1.7.2",
     "react-codemirror2": "^4.2.1",
