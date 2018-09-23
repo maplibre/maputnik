@@ -101,6 +101,8 @@ export default class Toolbar extends React.Component {
     sources: PropTypes.object.isRequired,
     children: PropTypes.node,
     onToggleModal: PropTypes.func,
+    onSetMapState: PropTypes.func,
+    mapState: PropTypes.string,
   }
 
   state = {
