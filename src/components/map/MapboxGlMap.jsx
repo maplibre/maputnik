@@ -83,17 +83,17 @@ export default class MapboxGlMap extends React.Component {
     }
   }
 
-  UNSAFE_componentWillReceiveProps(nextProps) {
+  updateMapFromProps(props) {
     if(!IS_SUPPORTED) return;
 
     if(!this.state.map) return
-    const metadata = nextProps.mapStyle.metadata || {}
+    const metadata = props.mapStyle.metadata || {}
     MapboxGl.accessToken = metadata['maputnik:mapbox_access_token'] || tokens.mapbox
 
-    if(!nextProps.inspectModeEnabled) {
+    if(!props.inspectModeEnabled) {
       //Mapbox GL now does diffing natively so we don't need to calculate
       //the necessary operations ourselves!
-      this.state.map.setStyle(nextProps.mapStyle, { diff: true})
+      this.state.map.setStyle(props.mapStyle, { diff: true})
     }
   }
 
@@ -102,6 +102,8 @@ export default class MapboxGlMap extends React.Component {
 
     const map = this.state.map;
 
+    this.updateMapFromProps(this.props);
+
     if(this.props.inspectModeEnabled !== prevProps.inspectModeEnabled) {
       this.state.inspect.toggleInspector()
     }
@@ -109,8 +111,10 @@ export default class MapboxGlMap extends React.Component {
       this.state.inspect.render()
     }
 
-    map.showTileBoundaries = this.props.options.showTileBoundaries;
-    map.showCollisionBoxes = this.props.options.showCollisionBoxes;
+    if (map) {
+      map.showTileBoundaries = this.props.options.showTileBoundaries;
+      map.showCollisionBoxes = this.props.options.showCollisionBoxes;
+    }
   }
 
   componentDidMount() {

@@ -29,10 +29,10 @@ class JSONEditor extends React.Component {
     }
   }
 
-  UNSAFE_componentWillReceiveProps(nextProps) {
-    this.setState({
-      code: JSON.stringify(nextProps.layer, null, 2)
-    })
+  static getDerivedStateFromProps(props, state) {
+    return {
+      code: JSON.stringify(props.layer, null, 2)
+    };
   }
 
   shouldComponentUpdate(nextProps, nextState) {
