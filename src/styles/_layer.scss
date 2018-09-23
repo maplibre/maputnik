@@ -58,22 +58,33 @@
     }
   }
 
+  .maputnik-layer-list-icon-action {
+    background: initial;
+    border: none;
+    padding: 0 2px;
+
+    svg {
+      fill: darken($color-lowgray, 20);
+
+      &:hover {
+        fill: $color-white;
+      }
+    }
+  }
+
+  .maputnik-layer-list-icon-action__visibility {
+    display: block;
+  }
+
   .maputnik-layer-list-item:hover,
   .maputnik-layer-list-item-selected {
     background-color: lighten($color-black, 2);
 
     .maputnik-layer-list-icon-action {
       display: block;
-      background: initial;
-      border: none;
-      padding: 0 2px;
-    }
 
-    .maputnik-layer-list-icon-action svg {
-      fill: darken($color-lowgray, 0.5);
-
-      &:hover {
-        fill: $color-white;
+      svg {
+        fill: darken($color-lowgray, 0.5);
       }
     }
   }

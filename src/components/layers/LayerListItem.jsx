@@ -31,7 +31,8 @@ class IconAction extends React.Component {
   static propTypes = {
     action: PropTypes.string.isRequired,
     onClick: PropTypes.func.isRequired,
-    wdKey: PropTypes.string
+    wdKey: PropTypes.string,
+    classBlockName: PropTypes.string,
   }
 
   renderIcon() {
@@ -44,10 +45,15 @@ class IconAction extends React.Component {
   }
 
   render() {
+    let classAdditions = '';
+    if (this.props.classBlockName) {
+      classAdditions = `maputnik-layer-list-icon-action__${this.props.classBlockName}`;
+    }
+
     return <button
       tabIndex="-1"
       title={this.props.action}
-      className="maputnik-layer-list-icon-action"
+      className={`maputnik-layer-list-icon-action ${classAdditions}`}
       data-wd-key={this.props.wdKey}
       onClick={this.props.onClick}
     >
@@ -105,16 +111,19 @@ class LayerListItem extends React.Component {
         <IconAction
           wdKey={"layer-list-item:"+this.props.layerId+":delete"}
           action={'delete'}
+          classBlockName="delete"
           onClick={e => this.props.onLayerDestroy(this.props.layerId)}
         />
         <IconAction
           wdKey={"layer-list-item:"+this.props.layerId+":copy"}
           action={'duplicate'}
+          classBlockName="duplicate"
           onClick={e => this.props.onLayerCopy(this.props.layerId)}
         />
         <IconAction
           wdKey={"layer-list-item:"+this.props.layerId+":toggle-visibility"}
           action={this.props.visibility === 'visible' ? 'hide' : 'show'}
+          classBlockName="visibility"
           onClick={e => this.props.onLayerVisibilityToggle(this.props.layerId)}
         />
     </li>
