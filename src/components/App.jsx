@@ -166,7 +166,7 @@ export default class App extends React.Component {
       selectedLayerIndex: 0,
       sources: {},
       vectorLayers: {},
-      mapState: "normal",
+      mapState: "map",
       spec: styleSpec.latest,
       isOpen: {
         settings: false,

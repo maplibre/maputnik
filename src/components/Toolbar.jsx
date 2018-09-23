@@ -131,25 +131,29 @@ export default class Toolbar extends React.Component {
       },
       {
         id: "filter-deuteranopia",
-        title: "Filter deuteranopia",
+        title: "Map (deuteranopia)",
         icon: <ColorIcon/>,
       },
       {
         id: "filter-protanopia",
-        title: "Filter protanopia",
+        title: "Map (protanopia)",
         icon: <ColorIcon/>,
       },
       {
         id: "filter-tritanopia",
-        title: "Filter tritanopia",
+        title: "Map (tritanopia)",
         icon: <ColorIcon/>,
       },
       {
         id: "filter-achromatopsia",
-        title: "Filter achromatopsia",
+        title: "Map (achromatopsia)",
         icon: <ColorIcon/>,
       },
     ];
+
+    const currentView = views.find((view) => {
+      return view.id === this.props.mapState;
+    });
 
     return <div className='maputnik-toolbar'>
       <div className="maputnik-toolbar__inner">
@@ -195,7 +199,7 @@ export default class Toolbar extends React.Component {
           >
             <Button wdKey="nav:settings" className="maputnik-toolbar-action">
               <ViewIcon/>
-              <IconText>Change view</IconText>
+              <IconText>View: {currentView.title}</IconText>
             </Button>
             <Menu>
               <ul className="map-state-menu__menu">
