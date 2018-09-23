@@ -125,6 +125,10 @@
 }
 
 //SOURCE MODAL
+.maputnik-public-sources {
+  margin-bottom: 1.5%;
+}
+
 .maputnik-public-source {
   vertical-align: top;
   margin-top: 1.5%;
@@ -150,6 +154,7 @@
 
 .maputnik-public-source-id {
   font-weight: 400;
+  text-align: left;
 }
 
 .maputnik-active-source-type-editor {
@@ -239,4 +244,22 @@
   li {
     margin-bottom: 4px;
   }
+}
+
+.maputnik-modal-survey {
+  width: 372px;
+}
+
+.maputnik-modal-survey__logo {
+  display: block;
+  margin: 0 auto;
+}
+
+.maputnik-modal-survey__description {
+  line-height: 1.5;
+}
+
+.maputnik-modal-survey__footnote {
+  color: $color-green;
+  margin-top: 16px;
 }

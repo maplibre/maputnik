@@ -32,7 +32,7 @@ export default class FunctionSpecProperty  extends React.Component {
     ]),
   }
 
-  addStop() {
+  addStop = () => {
     const stops = this.props.value.stops.slice(0)
     const lastStop = stops[stops.length - 1]
     if (typeof lastStop[0] === "object") {
@@ -53,7 +53,7 @@ export default class FunctionSpecProperty  extends React.Component {
     this.props.onChange(this.props.fieldName, changedValue)
   }
 
-  deleteStop(stopIdx) {
+  deleteStop = (stopIdx) => {
     const stops = this.props.value.stops.slice(0)
     stops.splice(stopIdx, 1)
 
@@ -69,7 +69,7 @@ export default class FunctionSpecProperty  extends React.Component {
     this.props.onChange(this.props.fieldName, changedValue)
   }
 
-  makeZoomFunction() {
+  makeZoomFunction = () => {
     const zoomFunc = {
       stops: [
         [6, this.props.value],
@@ -79,7 +79,7 @@ export default class FunctionSpecProperty  extends React.Component {
     this.props.onChange(this.props.fieldName, zoomFunc)
   }
 
-  makeDataFunction() {
+  makeDataFunction = () => {
     const dataFunc = {
       property: "",
       type: "categorical",
@@ -102,8 +102,8 @@ export default class FunctionSpecProperty  extends React.Component {
           fieldName={this.props.fieldName}
           fieldSpec={this.props.fieldSpec}
           value={this.props.value}
-          onDeleteStop={this.deleteStop.bind(this)}
-          onAddStop={this.addStop.bind(this)}
+          onDeleteStop={this.deleteStop}
+          onAddStop={this.addStop}
         />
       )
     }
@@ -114,8 +114,8 @@ export default class FunctionSpecProperty  extends React.Component {
           fieldName={this.props.fieldName}
           fieldSpec={this.props.fieldSpec}
           value={this.props.value}
-          onDeleteStop={this.deleteStop.bind(this)}
-          onAddStop={this.addStop.bind(this)}
+          onDeleteStop={this.deleteStop}
+          onAddStop={this.addStop}
         />
       )
     }
@@ -126,8 +126,8 @@ export default class FunctionSpecProperty  extends React.Component {
           fieldName={this.props.fieldName}
           fieldSpec={this.props.fieldSpec}
           value={this.props.value}
-          onZoomClick={this.makeZoomFunction.bind(this)}
-          onDataClick={this.makeDataFunction.bind(this)} 
+          onZoomClick={this.makeZoomFunction}
+          onDataClick={this.makeDataFunction} 
         />
       )
     }

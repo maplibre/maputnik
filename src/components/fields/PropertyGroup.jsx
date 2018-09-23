@@ -42,7 +42,7 @@ export default class PropertyGroup extends React.Component {
     spec: PropTypes.object.isRequired,
   }
 
-  onPropertyChange(property, newValue) {
+  onPropertyChange = (property, newValue) => {
     const group = getGroupName(this.props.spec, this.props.layer.type, property)
     this.props.onChange(group , property, newValue)
   }
@@ -56,7 +56,7 @@ export default class PropertyGroup extends React.Component {
       const fieldValue = fieldName in paint ? paint[fieldName] : layout[fieldName]
 
       return <FunctionSpecField
-        onChange={this.onPropertyChange.bind(this)}
+        onChange={this.onPropertyChange}
         key={fieldName}
         fieldName={fieldName}
         value={fieldValue === undefined ? fieldSpec.default : fieldValue}

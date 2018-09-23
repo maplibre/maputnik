@@ -1,6 +1,4 @@
-var assert      = require('assert');
 var config      = require("../config/specs");
-var geoServer   = require("../geojson-server");
 var helper      = require("./helper");
 
 require("./util/webdriverio-ext");
@@ -13,6 +11,9 @@ describe('maputnik', function() {
       "geojson:example",
       "raster:raster"
     ]));
+    browser.execute(function() {
+      localStorage.setItem("survey", true);
+    });
     browser.waitForExist(".maputnik-toolbar-link");
     browser.flushReactUpdates();
   });

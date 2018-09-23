@@ -1,8 +1,6 @@
-import { colorizeLayers } from './style.js'
 import style from './style.js'
 import { loadStyleUrl } from './urlopen'
 import publicSources from '../config/styles.json'
-import request from 'request'
 
 const storagePrefix = "maputnik"
 const stylePrefix = 'style'

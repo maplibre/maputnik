@@ -19,17 +19,14 @@ class ColorField extends React.Component {
     default: PropTypes.string,
   }
 
-  constructor(props) {
-    super(props)
-    this.state = {
-      pickerOpened: false,
-    }
+  state = {
+    pickerOpened: false
   }
 
   //TODO: I much rather would do this with absolute positioning
   //but I am too stupid to get it to work together with fixed position
   //and scrollbars so I have to fallback to JavaScript
-  calcPickerOffset() {
+  calcPickerOffset = () => {
     const elem = this.colorInput
     if(elem) {
       const pos = elem.getBoundingClientRect()
@@ -45,7 +42,7 @@ class ColorField extends React.Component {
     }
   }
 
-  togglePicker() {
+  togglePicker = () => {
     this.setState({ pickerOpened: !this.state.pickerOpened })
   }
 
@@ -85,7 +82,7 @@ class ColorField extends React.Component {
       />
       <div
         className="maputnik-color-picker-offset"
-        onClick={this.togglePicker.bind(this)}
+        onClick={this.togglePicker}
         style={{
           zIndex: -1,
           position: 'fixed',
@@ -108,7 +105,7 @@ class ColorField extends React.Component {
         spellCheck="false"
         className="maputnik-color"
         ref={(input) => this.colorInput = input}
-        onClick={this.togglePicker.bind(this)}
+        onClick={this.togglePicker}
         style={this.props.style}
         name={this.props.name}
         placeholder={this.props.default}

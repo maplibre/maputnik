@@ -1,22 +1,19 @@
-import request from 'request'
 import npmurl from 'url'
 
 function loadJSON(url, defaultValue, cb) {
-  request({
-    url: url,
-    withCredentials: false,
-  }, (error, response, body) => {
-    if (!error && body && response.statusCode == 200) {
-      try {
-        cb(JSON.parse(body))
-      } catch(err) {
-        console.error(err)
-        cb(defaultValue)
-      }
-    } else {
-      console.warn('Can not metadata for ' + url)
-      cb(defaultValue)
-    }
+  fetch(url, {
+    mode: 'cors',
+    credentials: "same-origin"
+  })
+  .then(function(response) {
+    return response.json();
+  })
+  .then(function(body) {
+    cb(body)
+  })
+  .catch(function() {
+    console.warn('Can not metadata for ' + url)
+    cb(defaultValue)
   })
 }
 

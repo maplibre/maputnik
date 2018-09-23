@@ -1,4 +1,3 @@
-var artifacts = require("../../artifacts");
 var config    = require("../../config/specs");
 var helper    = require("../helper");
 var wd        = require("../../wd-helper");

@@ -15,10 +15,6 @@ class SettingsModal extends React.Component {
     onOpenToggle: PropTypes.func.isRequired,
   }
 
-  constructor(props) {
-    super(props);
-  }
-
   changeStyleProperty(property, value) {
     const changedStyle = {
       ...this.props.mapStyle,
@@ -86,11 +82,19 @@ class SettingsModal extends React.Component {
         />
       </InputBlock>
 
-      <InputBlock label={"OpenMapTiles Access Token"} doc={"Public access token for the OpenMapTiles CDN."}>
+      <InputBlock label={"MapTiler Access Token"} doc={"Public access token for MapTiler Cloud."}>
         <StringInput {...inputProps}
           data-wd-key="modal-settings.maputnik:openmaptiles_access_token" 
           value={metadata['maputnik:openmaptiles_access_token']}
           onChange={this.changeMetadataProperty.bind(this, "maputnik:openmaptiles_access_token")}
+        />
+      </InputBlock>
+
+      <InputBlock label={"Thunderforest Access Token"} doc={"Public access token for Thunderforest services."}>
+        <StringInput {...inputProps}
+          data-wd-key="modal-settings.maputnik:thunderforest_access_token" 
+          value={metadata['maputnik:thunderforest_access_token']}
+          onChange={this.changeMetadataProperty.bind(this, "maputnik:thunderforest_access_token")}
         />
       </InputBlock>
 
@@ -99,7 +103,7 @@ class SettingsModal extends React.Component {
           data-wd-key="modal-settings.maputnik:renderer" 
           options={[
             ['mbgljs', 'MapboxGL JS'],
-            ['ol3', 'Open Layers 3'],
+            // ['ol3', 'Open Layers 3'],
           ]}
           value={metadata['maputnik:renderer'] || 'mbgljs'}
           onChange={this.changeMetadataProperty.bind(this, 'maputnik:renderer')}

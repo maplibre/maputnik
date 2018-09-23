@@ -14,16 +14,13 @@ class AutocompleteInput extends React.Component {
     keepMenuWithinWindowBounds: PropTypes.bool
   }
 
+  state = {
+    maxHeight: MAX_HEIGHT
+  }
+
   static defaultProps = {
     onChange: () => {},
     options: [],
-  }
-
-  constructor(props) {
-    super(props);
-    this.state = {
-      maxHeight: MAX_HEIGHT
-    };
   }
 
   calcMaxHeight() {
@@ -38,6 +35,7 @@ class AutocompleteInput extends React.Component {
       }
     }
   }
+
   componentDidMount() {
     this.calcMaxHeight();
   }

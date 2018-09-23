@@ -4,6 +4,7 @@ $color-midgray: #36383e;
 $color-lowgray: #8e8e8e;
 $color-white: #f0f0f0;
 $color-red: #cf4a4a;
+$color-green: #53b972;
 $margin-1: 3px;
 $margin-2: 5px;
 $margin-3: 10px;
@@ -37,6 +38,7 @@ $toolbar-offset: 0;
 @import 'popup';
 @import 'map';
 @import 'react-collapse';
+@import 'react-codemirror';
 
 /**
  * Hacks for webdriverio isVisibleWithinViewport

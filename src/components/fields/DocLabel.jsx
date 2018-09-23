@@ -17,7 +17,7 @@ export default class DocLabel extends React.Component {
         <div className="maputnik-doc-popup">
           {this.props.doc}
         </div>
-      </div >
+      </div>
     </label>
   }
 }

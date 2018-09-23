@@ -1,12 +1,17 @@
 {
-  "mapbox-streets": {
-    "type": "vector",
-    "url": "mapbox://mapbox.mapbox-streets-v7",
-    "title": "Mapbox Streets"
-  },
   "openmaptiles": {
     "type": "vector",
     "url": "https://free.tilehosting.com/data/v3.json?key={key}",
     "title": "OpenMapTiles"
+  },
+  "thunderforest_transport": {
+    "type": "vector",
+    "url": "https://tile.thunderforest.com/thunderforest.transport-v1.json?apikey={key}",
+    "title": "Thunderforest Transport (heavy)"
+  },
+  "thunderforest_outdoors": {
+    "type": "vector",
+    "url": "https://tile.thunderforest.com/thunderforest.outdoors-v1.json?apikey={key}",
+    "title": "Thunderforest Outdoors (heavy)"
   }
 }

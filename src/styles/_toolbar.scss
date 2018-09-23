@@ -57,6 +57,29 @@
   }
 }
 
+.maputnik-toolbar-link--highlighted {
+  line-height: 1;
+  padding: $margin-2 $margin-3;
+
+  .maputnik-toolbar-link-wrapper {
+    background-color: $color-white;
+    border-radius: 2px;
+    padding: $margin-2;
+    margin-top: $margin-1;
+    color: $color-black;
+    display: block;
+  }
+
+  &:hover {
+    background-color: $color-black;
+  }
+
+  &:hover .maputnik-toolbar-link-wrapper {
+    background-color: lighten($color-midgray, 12);
+    color: $color-white;
+  }
+}
+
 .maputnik-toolbar-version {
   font-size: 10px;
   margin-left: 4px;

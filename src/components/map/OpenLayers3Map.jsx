@@ -1,7 +1,5 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import style from '../../libs/style.js'
-import isEqual from 'lodash.isequal'
 import { loadJSON } from '../../libs/urlopen'
 import 'ol/ol.css'
 
@@ -29,10 +27,10 @@ class OpenLayers3Map extends React.Component {
     const styleFunc = olms.apply(this.map, newMapStyle)
   }
 
-  UNSAFE_componentWillReceiveProps(nextProps) {
+  componentDidUpdate() {
     require.ensure(["ol", "ol-mapbox-style"], () => {
       if(!this.map) return
-      this.updateStyle(nextProps.mapStyle)
+      this.updateStyle(this.props.mapStyle)
     })
   }
 

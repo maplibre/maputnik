@@ -1,4 +1,3 @@
-import React from 'react';
 import deref from '@mapbox/mapbox-gl-style-spec/deref'
 import tokens from '../config/tokens.json'
 
@@ -54,17 +53,27 @@ function indexOfLayer(layers, layerId) {
   return null
 }
 
-function replaceAccessToken(mapStyle, opts={}) {
-  const omtSource = mapStyle.sources.openmaptiles
-  if(!omtSource) return mapStyle
-  if(!omtSource.hasOwnProperty("url")) return mapStyle
+function getAccessToken(sourceName, mapStyle, opts) {
+  if(sourceName === "thunderforest_transport" || sourceName === "thunderforest_outdoors") {
+    sourceName = "thunderforest"
+  }
 
   const metadata = mapStyle.metadata || {}
-  let accessToken = metadata['maputnik:openmaptiles_access_token'];
+  let accessToken = metadata[`maputnik:${sourceName}_access_token`]
 
   if(opts.allowFallback && !accessToken) {
-    accessToken = tokens.openmaptiles;
+    accessToken = tokens[sourceName]
   }
+
+  return accessToken;
+}
+
+function replaceSourceAccessToken(mapStyle, sourceName, opts={}) {
+  const source = mapStyle.sources[sourceName]
+  if(!source) return mapStyle
+  if(!source.hasOwnProperty("url")) return mapStyle
+
+  const accessToken = getAccessToken(sourceName, mapStyle, opts)
 
   if(!accessToken) {
     // Early exit.
@@ -73,15 +82,33 @@ function replaceAccessToken(mapStyle, opts={}) {
 
   const changedSources = {
     ...mapStyle.sources,
-    openmaptiles: {
-      ...omtSource,
-      url: omtSource.url.replace('{key}', accessToken)
+    [sourceName]: {
+      ...source,
+      url: source.url.replace('{key}', accessToken)
     }
   }
   const changedStyle = {
     ...mapStyle,
-    glyphs: mapStyle.glyphs ? mapStyle.glyphs.replace('{key}', accessToken) : mapStyle.glyphs,
     sources: changedSources
+  }
+  return changedStyle
+}
+
+function replaceAccessTokens(mapStyle, opts={}) {
+  let changedStyle = mapStyle
+
+  Object.keys(mapStyle.sources).forEach((sourceName) => {
+    changedStyle = replaceSourceAccessToken(changedStyle, sourceName, opts);
+  })
+
+  if (mapStyle.glyphs && mapStyle.glyphs.match(/\.tilehosting\.com/)) {
+    const newAccessToken = getAccessToken("openmaptiles", mapStyle, opts);
+    if (newAccessToken) {
+      changedStyle = {
+        ...changedStyle,
+        glyphs: mapStyle.glyphs.replace('{key}', newAccessToken)
+      }
+    }
   }
 
   return changedStyle
@@ -92,5 +119,5 @@ export default {
   emptyStyle,
   indexOfLayer,
   generateId,
-  replaceAccessToken,
+  replaceAccessTokens,
 }

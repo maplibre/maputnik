@@ -13,10 +13,6 @@ class LoadingModal extends React.Component {
     message: PropTypes.node.isRequired,
   }
 
-  constructor(props) {
-    super(props);
-  }
-
   underlayOnClick(e) {
     // This stops click events falling through to underlying modals.
     e.stopPropagation();

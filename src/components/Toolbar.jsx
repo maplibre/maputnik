@@ -1,22 +1,15 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import FileReaderInput from 'react-file-reader-input'
 import classnames from 'classnames'
 import { Wrapper, Button, Menu, MenuItem } from 'react-aria-menubutton'
 
 import MdFileDownload from 'react-icons/lib/md/file-download'
-import MdFileUpload from 'react-icons/lib/md/file-upload'
 import OpenIcon from 'react-icons/lib/md/open-in-browser'
 import SettingsIcon from 'react-icons/lib/md/settings'
-import MdInfo from 'react-icons/lib/md/info'
 import SourcesIcon from 'react-icons/lib/md/layers'
-import MdSave from 'react-icons/lib/md/save'
-import MdStyle from 'react-icons/lib/md/style'
-import MdMap from 'react-icons/lib/md/map'
-import MdInsertEmoticon from 'react-icons/lib/md/insert-emoticon'
-import MdFontDownload from 'react-icons/lib/md/font-download'
 import HelpIcon from 'react-icons/lib/md/help-outline'
 import InspectionIcon from 'react-icons/lib/md/find-in-page'
+import SurveyIcon from 'react-icons/lib/md/assignment-turned-in'
 
 import ColorIcon from 'react-icons/lib/md/color-lens'
 import MapIcon from 'react-icons/lib/md/map'
@@ -26,7 +19,6 @@ import ViewIcon from 'react-icons/lib/md/remove-red-eye'
 import logoImage from 'maputnik-design/logos/logo-color.svg'
 import pkgJson from '../../package.json'
 
-import style from '../libs/style'
 
 class IconText extends React.Component {
   static propTypes = {
@@ -54,6 +46,28 @@ class ToolbarLink extends React.Component {
       target="_blank"
     >
       {this.props.children}
+    </a>
+  }
+}
+
+class ToolbarLinkHighlighted extends React.Component {
+  static propTypes = {
+    className: PropTypes.string,
+    children: PropTypes.node,
+    href: PropTypes.string,
+    onToggleModal: PropTypes.func
+  }
+
+  render() {
+    return <a
+      className={classnames('maputnik-toolbar-link', "maputnik-toolbar-link--highlighted", this.props.className)}
+      href={this.props.href}
+      rel="noopener noreferrer"
+      target="_blank"
+    >
+      <span className="maputnik-toolbar-link-wrapper">
+        {this.props.children}
+      </span>
     </a>
   }
 }
@@ -89,16 +103,13 @@ export default class Toolbar extends React.Component {
     onToggleModal: PropTypes.func,
   }
 
-  constructor(props) {
-    super(props)
-    this.state = {
-      isOpen: {
-        settings: false,
-        sources: false,
-        open: false,
-        add: false,
-        export: false,
-      }
+  state = {
+    isOpen: {
+      settings: false,
+      sources: false,
+      open: false,
+      add: false,
+      export: false,
     }
   }
 
@@ -211,6 +222,10 @@ export default class Toolbar extends React.Component {
             <HelpIcon />
             <IconText>Help</IconText>
           </ToolbarLink>
+          <ToolbarLinkHighlighted href={"https://gregorywolanski.typeform.com/to/cPgaSY"}>
+            <SurveyIcon />
+            <IconText>Take the Maputnik Survey</IconText>
+          </ToolbarLinkHighlighted>
         </div>
       </div>
     </div>
