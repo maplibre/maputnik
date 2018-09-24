@@ -52,7 +52,7 @@ class OpenModal extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      isUrlEmpty: true
+      styleUrl: ""
     };
   }
 
@@ -153,14 +153,16 @@ class OpenModal extends React.Component {
   }
 
   onOpenToggle() {
+    this.setState({
+      styleUrl: ""
+    });
     this.clearError();
     this.props.onOpenToggle();
   }
 
   onChangeUrl = () => {
-    const length = this.styleUrlElement.value.length;
     this.setState({
-      isUrlEmpty: length < 1
+      styleUrl: this.styleUrlElement.value
     });
   }
 
@@ -213,6 +215,7 @@ class OpenModal extends React.Component {
               ref={(input) => this.styleUrlElement = input}
               className="maputnik-input"
               placeholder="Enter URL..."
+              value={this.state.styleUrl}
               onChange={this.onChangeUrl}
             />
             <div>
@@ -220,7 +223,7 @@ class OpenModal extends React.Component {
                 data-wd-key="open-modal.url.button"
                 className="maputnik-big-button"
                 onClick={this.onOpenUrl}
-                disabled={this.state.isUrlEmpty}
+                disabled={this.state.styleUrl.length < 1}
               >Open URL</Button>
             </div>
           </section>
