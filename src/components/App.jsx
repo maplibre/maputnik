@@ -442,7 +442,7 @@ export default class App extends React.Component {
 
     let mapElement;
 
-    // Check if OL3 code has been loaded?
+    // Check if OL code has been loaded?
     if(renderer === 'ol') {
       mapElement = <OpenLayersMap
         {...mapProps}

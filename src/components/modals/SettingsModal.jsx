@@ -103,7 +103,7 @@ class SettingsModal extends React.Component {
           data-wd-key="modal-settings.maputnik:renderer" 
           options={[
             ['mbgljs', 'MapboxGL JS'],
-            ['ol', 'Open Layers 3 (experimental)'],
+            ['ol', 'Open Layers (experimental)'],
           ]}
           value={metadata['maputnik:renderer'] || 'mbgljs'}
           onChange={this.changeMetadataProperty.bind(this, 'maputnik:renderer')}
