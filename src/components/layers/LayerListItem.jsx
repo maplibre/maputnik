@@ -33,6 +33,7 @@ class IconAction extends React.Component {
     onClick: PropTypes.func.isRequired,
     wdKey: PropTypes.string,
     classBlockName: PropTypes.string,
+    classBlockModifier: PropTypes.string,
   }
 
   renderIcon() {
@@ -45,9 +46,15 @@ class IconAction extends React.Component {
   }
 
   render() {
+    const {classBlockName, classBlockModifier} = this.props;
+
     let classAdditions = '';
-    if (this.props.classBlockName) {
-      classAdditions = `maputnik-layer-list-icon-action__${this.props.classBlockName}`;
+    if (classBlockName) {
+      classAdditions = `maputnik-layer-list-icon-action__${classBlockName}`;
+
+      if (classBlockModifier) {
+        classAdditions += ` maputnik-layer-list-icon-action__${classBlockName}--${classBlockModifier}`;
+      }
     }
 
     return <button
@@ -96,6 +103,8 @@ class LayerListItem extends React.Component {
   }
 
   render() {
+    const visibilityAction = this.props.visibility === 'visible' ? 'show' : 'hide';
+
     return <li
       key={this.props.layerId}
       onClick={e => this.props.onLayerSelect(this.props.layerId)}
@@ -122,8 +131,9 @@ class LayerListItem extends React.Component {
         />
         <IconAction
           wdKey={"layer-list-item:"+this.props.layerId+":toggle-visibility"}
-          action={this.props.visibility === 'visible' ? 'show' : 'hide'}
+          action={visibilityAction}
           classBlockName="visibility"
+          classBlockModifier={visibilityAction}
           onClick={e => this.props.onLayerVisibilityToggle(this.props.layerId)}
         />
     </li>
