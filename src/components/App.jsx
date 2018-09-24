@@ -6,6 +6,7 @@ import {arrayMove} from 'react-sortable-hoc'
 import url from 'url'
 
 import MapboxGlMap from './map/MapboxGlMap'
+import OpenLayersMap from './map/OpenLayersMap'
 import LayerList from './layers/LayerList'
 import LayerEditor from './layers/LayerEditor'
 import Toolbar from './Toolbar'
@@ -442,8 +443,10 @@ export default class App extends React.Component {
     let mapElement;
 
     // Check if OL3 code has been loaded?
-    if(renderer === 'ol3') {
-      mapElement = <div>TODO</div>
+    if(renderer === 'ol') {
+      mapElement = <OpenLayersMap
+        {...mapProps}
+      />
     } else {
       mapElement = <MapboxGlMap {...mapProps}
         inspectModeEnabled={this.state.inspectModeEnabled}
