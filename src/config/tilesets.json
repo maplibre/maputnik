@@ -1,9 +1,4 @@
 {
-  "mapbox-streets": {
-    "type": "vector",
-    "url": "mapbox://mapbox.mapbox-streets-v7",
-    "title": "Mapbox Streets"
-  },
   "openmaptiles": {
     "type": "vector",
     "url": "https://free.tilehosting.com/data/v3.json?key={key}",

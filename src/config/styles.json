@@ -34,25 +34,6 @@
     "title": "Empty Style",
     "url": "https://rawgit.com/maputnik/editor/master/src/config/empty-style.json",
     "thumbnail": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAYAAAAECAQAAAAHDYbIAAAAEUlEQVR42mP8/58BDhiJ4wAA974H/U5Xe1oAAAAASUVORK5CYII="
-  },
-  {
-    "id": "mapbox-satellite",
-    "title": "Mapbox Satellite",
-    "url": "https://rawgit.com/mapbox/mapbox-gl-styles/master/styles/satellite-v9.json",
-    "thumbnail": "https://maputnik.github.io/thumbnails/mapbox-satellite.png"
-  },
-  {
-    "id": "mapbox-bright",
-    "title": "Mapbox Bright",
-    "url": "https://rawgit.com/mapbox/mapbox-gl-styles/master/styles/bright-v9.json",
-    "thumbnail": "https://maputnik.github.io/thumbnails/mapbox-bright.png"
-  },
-  {
-    "id": "mapbox-basic",
-    "title": "Mapbox Basic",
-    "url": "https://rawgit.com/mapbox/mapbox-gl-styles/master/styles/basic-v9.json",
-    "thumbnail": "https://maputnik.github.io/thumbnails/mapbox-basic.png"
-  },
   {
     "id": "os-zoomstack-outdoor",
     "title": "Zoomstack Outdoor",

@@ -10,6 +10,10 @@ export default class CollapseAlt extends React.Component {
     children: PropTypes.element.isRequired
   }
 
+  static defaultProps = {
+    isActive: true
+  }
+
   render() {
     if (accessibility.reducedMotionEnabled()) {
       return (
