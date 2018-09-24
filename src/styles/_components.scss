@@ -77,6 +77,12 @@
     background-color: lighten($color-midgray, 12);
     color: $color-white;
   }
+
+  &:disabled {
+    background-color: darken($color-midgray, 5);
+    color: $color-midgray;
+    cursor: not-allowed;
+  }
 }
 
 .maputnik-big-button {
