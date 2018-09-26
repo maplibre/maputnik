@@ -9,12 +9,14 @@ class Button extends React.Component {
     onClick: PropTypes.func,
     style: PropTypes.object,
     className: PropTypes.string,
-    children: PropTypes.node
+    children: PropTypes.node,
+    disabled: PropTypes.bool,
   }
 
   render() {
     return <button
       onClick={this.props.onClick}
+      disabled={this.props.disabled}
       aria-label={this.props["aria-label"]}
       className={classnames("maputnik-button", this.props.className)}
       data-wd-key={this.props["data-wd-key"]}
