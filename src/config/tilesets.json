@@ -1,7 +1,7 @@
 {
   "openmaptiles": {
     "type": "vector",
-    "url": "https://free.tilehosting.com/data/v3.json?key={key}",
+    "url": "https://maps.tilehosting.com/data/v3.json?key={key}",
     "title": "OpenMapTiles"
   },
   "thunderforest_transport": {
