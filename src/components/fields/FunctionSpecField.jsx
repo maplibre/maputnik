@@ -32,6 +32,16 @@ export default class FunctionSpecProperty  extends React.Component {
     ]),
   }
 
+  getFieldFunctionType(fieldSpec) {
+    if (fieldSpec.expression.interpolated) {
+      return "exponential"
+    }
+    if (fieldSpec.type === "number") {
+      return "interval"
+    }
+    return "categorical"
+  }
+
   addStop = () => {
     const stops = this.props.value.stops.slice(0)
     const lastStop = stops[stops.length - 1]
@@ -80,12 +90,14 @@ export default class FunctionSpecProperty  extends React.Component {
   }
 
   makeDataFunction = () => {
+    const functionType = this.getFieldFunctionType(this.props.fieldSpec);
+    const stopValue = functionType === 'categorical' ? '' : 0;
     const dataFunc = {
       property: "",
-      type: "categorical",
+      type: functionType,
       stops: [
-        [{zoom: 6, value: 0}, this.props.value],
-        [{zoom: 10, value: 0}, this.props.value]
+        [{zoom: 6, value: stopValue}, this.props.value || stopValue],
+        [{zoom: 10, value: stopValue}, this.props.value || stopValue]
       ]
     }
     this.props.onChange(this.props.fieldName, dataFunc)
