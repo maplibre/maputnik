@@ -4,10 +4,6 @@ import classnames from 'classnames'
 
 import {MdFileDownload, MdOpenInBrowser, MdSettings, MdLayers, MdHelpOutline, MdFindInPage, MdAssignmentTurnedIn} from 'react-icons/md'
 
-import ColorIcon from 'react-icons/lib/md/color-lens'
-import MapIcon from 'react-icons/lib/md/map'
-import ViewIcon from 'react-icons/lib/md/remove-red-eye'
-
 
 import logoImage from 'maputnik-design/logos/logo-color.svg'
 import pkgJson from '../../package.json'
@@ -133,32 +129,26 @@ export default class Toolbar extends React.Component {
       {
         id: "map",
         title: "Map",
-        icon: <MapIcon/>,
       },
       {
         id: "inspect",
         title: "Inspect",
-        icon: <InspectionIcon/>,
       },
       {
         id: "filter-deuteranopia",
         title: "Map (deuteranopia)",
-        icon: <ColorIcon/>,
       },
       {
         id: "filter-protanopia",
         title: "Map (protanopia)",
-        icon: <ColorIcon/>,
       },
       {
         id: "filter-tritanopia",
         title: "Map (tritanopia)",
-        icon: <ColorIcon/>,
       },
       {
         id: "filter-achromatopsia",
         title: "Map (achromatopsia)",
-        icon: <ColorIcon/>,
       },
     ];
 
