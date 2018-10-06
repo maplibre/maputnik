@@ -34,5 +34,29 @@
     "title": "Empty Style",
     "url": "https://rawgit.com/maputnik/editor/master/src/config/empty-style.json",
     "thumbnail": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAYAAAAECAQAAAAHDYbIAAAAEUlEQVR42mP8/58BDhiJ4wAA974H/U5Xe1oAAAAASUVORK5CYII="
+  },
+  {
+    "id": "os-zoomstack-outdoor",
+    "title": "Zoomstack Outdoor",
+    "url": "https://s3-eu-west-1.amazonaws.com/tiles.os.uk/styles/open-zoomstack-outdoor/style.json",
+    "thumbnail": "https://maputnik.github.io/thumbnails/os-zoomstack-outdoor.png"
+  },
+  {
+    "id": "os-zoomstack-road",
+    "title": "Zoomstack Road",
+    "url": "https://s3-eu-west-1.amazonaws.com/tiles.os.uk/styles/open-zoomstack-road/style.json",
+    "thumbnail": "https://maputnik.github.io/thumbnails/os-zoomstack-road.png"
+  },
+  {
+    "id": "os-zoomstack-light",
+    "title": "Zoomstack Light",
+    "url": "https://s3-eu-west-1.amazonaws.com/tiles.os.uk/styles/open-zoomstack-light/style.json",
+    "thumbnail": "https://maputnik.github.io/thumbnails/os-zoomstack-light.png"
+  },
+  {
+    "id": "os-zoomstack-night",
+    "title": "Zoomstack Night",
+    "url": "https://s3-eu-west-1.amazonaws.com/tiles.os.uk/styles/open-zoomstack-night/style.json",
+    "thumbnail": "https://maputnik.github.io/thumbnails/os-zoomstack-night.png"
   }
 ]

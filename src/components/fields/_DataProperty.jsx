@@ -30,7 +30,7 @@ export default class DataProperty extends React.Component {
   }
 
   getFieldFunctionType(fieldSpec) {
-    if (fieldSpec.function === "interpolated") {
+    if (fieldSpec.expression.interpolated) {
       return "exponential"
     }
     if (fieldSpec.type === "number") {
@@ -39,8 +39,8 @@ export default class DataProperty extends React.Component {
     return "categorical"
   }
 
-  getDataFunctionTypes(functionType) {
-    if (functionType === "interpolated") {
+  getDataFunctionTypes(fieldSpec) {
+    if (fieldSpec.expression.interpolated) {
       return ["categorical", "interval", "exponential"]
     }
     else {
@@ -150,7 +150,7 @@ export default class DataProperty extends React.Component {
             <SelectInput
               value={this.props.value.type}
               onChange={propVal => this.changeDataProperty("type", propVal)}
-              options={this.getDataFunctionTypes(this.props.fieldSpec.function)}
+              options={this.getDataFunctionTypes(this.props.fieldSpec)}
             />
           </div>
         </div>

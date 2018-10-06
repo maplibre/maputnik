@@ -28,7 +28,7 @@ export default class FunctionButtons extends React.Component {
         />
       </Button>
 
-      if (this.props.fieldSpec['property-function'] && ['piecewise-constant', 'interpolated'].indexOf(this.props.fieldSpec['function']) !== -1) {
+      if (this.props.fieldSpec['property-type'] === 'data-driven') {
         makeDataButton = <Button
           className="maputnik-make-data-function"
           onClick={this.props.onDataClick}

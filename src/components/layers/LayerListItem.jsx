@@ -31,7 +31,9 @@ class IconAction extends React.Component {
   static propTypes = {
     action: PropTypes.string.isRequired,
     onClick: PropTypes.func.isRequired,
-    wdKey: PropTypes.string
+    wdKey: PropTypes.string,
+    classBlockName: PropTypes.string,
+    classBlockModifier: PropTypes.string,
   }
 
   renderIcon() {
@@ -44,10 +46,21 @@ class IconAction extends React.Component {
   }
 
   render() {
+    const {classBlockName, classBlockModifier} = this.props;
+
+    let classAdditions = '';
+    if (classBlockName) {
+      classAdditions = `maputnik-layer-list-icon-action__${classBlockName}`;
+
+      if (classBlockModifier) {
+        classAdditions += ` maputnik-layer-list-icon-action__${classBlockName}--${classBlockModifier}`;
+      }
+    }
+
     return <button
       tabIndex="-1"
       title={this.props.action}
-      className="maputnik-layer-list-icon-action"
+      className={`maputnik-layer-list-icon-action ${classAdditions}`}
       data-wd-key={this.props.wdKey}
       onClick={this.props.onClick}
     >
@@ -90,6 +103,8 @@ class LayerListItem extends React.Component {
   }
 
   render() {
+    const visibilityAction = this.props.visibility === 'visible' ? 'show' : 'hide';
+
     return <li
       key={this.props.layerId}
       onClick={e => this.props.onLayerSelect(this.props.layerId)}
@@ -105,16 +120,20 @@ class LayerListItem extends React.Component {
         <IconAction
           wdKey={"layer-list-item:"+this.props.layerId+":delete"}
           action={'delete'}
+          classBlockName="delete"
           onClick={e => this.props.onLayerDestroy(this.props.layerId)}
         />
         <IconAction
           wdKey={"layer-list-item:"+this.props.layerId+":copy"}
           action={'duplicate'}
+          classBlockName="duplicate"
           onClick={e => this.props.onLayerCopy(this.props.layerId)}
         />
         <IconAction
           wdKey={"layer-list-item:"+this.props.layerId+":toggle-visibility"}
-          action={this.props.visibility === 'visible' ? 'show' : 'hide'}
+          action={visibilityAction}
+          classBlockName="visibility"
+          classBlockModifier={visibilityAction}
           onClick={e => this.props.onLayerVisibilityToggle(this.props.layerId)}
         />
     </li>

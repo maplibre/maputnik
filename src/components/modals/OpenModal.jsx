@@ -51,7 +51,9 @@ class OpenModal extends React.Component {
 
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+      styleUrl: ""
+    };
   }
 
   clearError() {
@@ -102,6 +104,7 @@ class OpenModal extends React.Component {
     })
     .catch((err) => {
       this.setState({
+        error: `Failed to load: '${styleUrl}'`,
         activeRequest: null,
         activeRequestUrl: null
       });
@@ -150,8 +153,17 @@ class OpenModal extends React.Component {
   }
 
   onOpenToggle() {
+    this.setState({
+      styleUrl: ""
+    });
     this.clearError();
     this.props.onOpenToggle();
+  }
+
+  onChangeUrl = () => {
+    this.setState({
+      styleUrl: this.styleUrlElement.value
+    });
   }
 
   render() {
@@ -197,9 +209,22 @@ class OpenModal extends React.Component {
             <p>
               Load from a URL. Note that the URL must have <a href="https://enable-cors.org" target="_blank" rel="noopener noreferrer">CORS enabled</a>.
             </p>
-            <input data-wd-key="open-modal.url.input" type="text" ref={(input) => this.styleUrlElement = input} className="maputnik-input" placeholder="Enter URL..."/>
+            <input
+              data-wd-key="open-modal.url.input"
+              type="text"
+              ref={(input) => this.styleUrlElement = input}
+              className="maputnik-input"
+              placeholder="Enter URL..."
+              value={this.state.styleUrl}
+              onChange={this.onChangeUrl}
+            />
             <div>
-              <Button data-wd-key="open-modal.url.button" className="maputnik-big-button" onClick={this.onOpenUrl}>Open URL</Button>
+              <Button
+                data-wd-key="open-modal.url.button"
+                className="maputnik-big-button"
+                onClick={this.onOpenUrl}
+                disabled={this.state.styleUrl.length < 1}
+              >Open URL</Button>
             </div>
           </section>
 
