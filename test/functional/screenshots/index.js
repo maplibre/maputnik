@@ -83,7 +83,7 @@ describe('screenshots', function() {
     browser.waitForExist(".maputnik-toolbar-link");
     browser.flushReactUpdates();
 
-    browser.click(wd.$("nav:inspect"))
+    browser.setValue(wd.$("nav:inspect", "select"), "inspect");
     browser.flushReactUpdates();
 
     browser.takeScreenShot("/inspect.png")

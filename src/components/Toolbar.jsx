@@ -1,7 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import classnames from 'classnames'
-import { Wrapper, Button, Menu, MenuItem } from 'react-aria-menubutton'
 
 import MdFileDownload from 'react-icons/lib/md/file-download'
 import OpenIcon from 'react-icons/lib/md/open-in-browser'
@@ -69,6 +68,22 @@ class ToolbarLinkHighlighted extends React.Component {
         {this.props.children}
       </span>
     </a>
+  }
+}
+
+class ToolbarSelect extends React.Component {
+  static propTypes = {
+    children: PropTypes.node,
+    wdKey: PropTypes.string
+  }
+
+  render() {
+    return <div
+      className='maputnik-toolbar-select'
+      data-wd-key={this.props.wdKey}
+    >
+      {this.props.children}
+    </div>
   }
 }
 
@@ -195,34 +210,19 @@ export default class Toolbar extends React.Component {
             <IconText>Style Settings</IconText>
           </ToolbarAction>
 
-          <Wrapper
-            className='map-state-menu'
-            onSelection={(val) => this.handleSelection(val)}
-          >
-            <Button wdKey="nav:settings" className="maputnik-toolbar-action">
-              <ViewIcon/>
-              <IconText>View: {currentView.title}</IconText>
-            </Button>
-            <Menu>
-              <ul className="map-state-menu__menu">
-                {views.map((item) => {
-                  return (
-                    <li key={item.id}>
-                      <MenuItem value={item.id}>
-                        <button
-                          className="maputnik-toolbar-action"
-                        >
-                          {item.icon}
-                          <IconText>{item.title}</IconText>
-                        </button>
-                      </MenuItem>
-                    </li>
-                  );
-                })}
-              </ul>
-            </Menu>
-          </Wrapper>
-
+          <ToolbarSelect wdKey="nav:inspect">
+            <ViewIcon/>
+            <IconText>View </IconText>
+            <select onChange={(e) => this.handleSelection(e.target.value)}>
+              {views.map((item) => {
+                return (
+                  <option value={item.id}>
+                    {item.title}
+                  </option>
+                );
+              })}
+            </select>
+          </ToolbarSelect>
 
           <ToolbarLink href={"https://github.com/maputnik/editor/wiki"}>
             <HelpIcon />

@@ -100,7 +100,7 @@ describe("modals", function() {
         "geojson:example"
       ]));
 
-      browser.click(wd.$("nav:inspect"));
+      browser.setValue(wd.$("nav:inspect", "select"), "inspect");
     })
   })
 
