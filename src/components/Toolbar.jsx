@@ -216,7 +216,7 @@ export default class Toolbar extends React.Component {
             <select onChange={(e) => this.handleSelection(e.target.value)}>
               {views.map((item) => {
                 return (
-                  <option value={item.id}>
+                  <option key={item.id} value={item.id}>
                     {item.title}
                   </option>
                 );
