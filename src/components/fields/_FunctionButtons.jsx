@@ -3,8 +3,7 @@ import PropTypes from 'prop-types'
 
 import DocLabel from './DocLabel'
 import Button from '../Button'
-import FunctionIcon from 'react-icons/lib/md/functions'
-import MdInsertChart from 'react-icons/lib/md/insert-chart'
+import {MdFunctions, MdInsertChart} from 'react-icons/md'
 
 
 export default class FunctionButtons extends React.Component {
@@ -22,7 +21,7 @@ export default class FunctionButtons extends React.Component {
         onClick={this.props.onZoomClick}
       >
         <DocLabel
-          label={<FunctionIcon />}
+          label={<MdFunctions />}
           cursorTargetStyle={{ cursor: 'pointer' }}
           doc={"Turn property into a zoom function to enable a map feature to change with map's zoom level."}
         />

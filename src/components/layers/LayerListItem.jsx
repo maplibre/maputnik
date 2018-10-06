@@ -2,10 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import classnames from 'classnames'
 
-import CopyIcon from 'react-icons/lib/md/content-copy'
-import VisibilityIcon from 'react-icons/lib/md/visibility'
-import VisibilityOffIcon from 'react-icons/lib/md/visibility-off'
-import DeleteIcon from 'react-icons/lib/md/delete'
+import {MdContentCopy, MdVisibility, MdVisibilityOff, MdDelete} from 'react-icons/md'
 
 import LayerIcon from '../icons/LayerIcon'
 import {SortableElement, SortableHandle} from 'react-sortable-hoc'
@@ -38,10 +35,10 @@ class IconAction extends React.Component {
 
   renderIcon() {
     switch(this.props.action) {
-      case 'duplicate': return <CopyIcon />
-      case 'show': return <VisibilityIcon />
-      case 'hide': return <VisibilityOffIcon />
-      case 'delete': return <DeleteIcon />
+      case 'duplicate': return <MdContentCopy />
+      case 'show': return <MdVisibility />
+      case 'hide': return <MdVisibilityOff />
+      case 'delete': return <MdDelete />
     }
   }
 

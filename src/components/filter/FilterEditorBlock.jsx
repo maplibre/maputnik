@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import Button from '../Button'
-import DeleteIcon from 'react-icons/lib/md/delete'
+import {MdDelete} from 'react-icons/md'
 
 class FilterEditorBlock extends React.Component {
   static propTypes = {
@@ -16,7 +16,7 @@ class FilterEditorBlock extends React.Component {
           className="maputnik-delete-filter"
           onClick={this.props.onDelete}
         >
-          <DeleteIcon />
+          <MdDelete />
         </Button>
       </div>
       <div className="maputnik-filter-editor-block-content">

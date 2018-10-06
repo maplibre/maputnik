@@ -12,8 +12,7 @@ import style from '../../libs/style'
 import { deleteSource, addSource, changeSource } from '../../libs/source'
 import publicSources from '../../config/tilesets.json'
 
-import AddIcon from 'react-icons/lib/md/add-circle-outline'
-import DeleteIcon from 'react-icons/lib/md/delete'
+import {MdAddCircleOutline, MdDelete} from 'react-icons/md'
 
 class PublicSource extends React.Component {
   static propTypes = {
@@ -34,7 +33,7 @@ class PublicSource extends React.Component {
 					<p className="maputnik-public-source-id">#{this.props.id}</p>
 				</div>
 				<span className="maputnik-space" />
-				<AddIcon />
+				<MdAddCircleOutline />
 			</Button>
     </div>
   }
@@ -76,7 +75,7 @@ class ActiveSourceTypeEditor extends React.Component {
           onClick={()=> this.props.onDelete(this.props.sourceId)}
           style={{backgroundColor: 'transparent'}}
         >
-          <DeleteIcon />
+          <MdDelete />
         </Button>
       </div>
       <div className="maputnik-active-source-type-editor-content">

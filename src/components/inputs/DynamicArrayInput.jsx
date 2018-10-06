@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import StringInput from './StringInput'
 import NumberInput from './NumberInput'
 import Button from '../Button'
-import DeleteIcon from 'react-icons/lib/md/delete'
+import {MdDelete} from 'react-icons/md'
 import DocLabel from '../fields/DocLabel'
 
 
@@ -95,7 +95,7 @@ class DeleteValueButton extends React.Component {
       onClick={this.props.onClick}
     >
       <DocLabel
-        label={<DeleteIcon />}
+        label={<MdDelete />}
         doc={"Remove array entry."}
       />
     </Button>

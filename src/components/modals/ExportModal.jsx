@@ -8,8 +8,7 @@ import StringInput from '../inputs/StringInput'
 import CheckboxInput from '../inputs/CheckboxInput'
 import Button from '../Button'
 import Modal from './Modal'
-import MdFileDownload from 'react-icons/lib/md/file-download'
-import TiClipboard from 'react-icons/lib/ti/clipboard'
+import {MdFileDownload} from 'react-icons/md'
 import style from '../../libs/style'
 
 

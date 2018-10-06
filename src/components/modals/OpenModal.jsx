@@ -5,8 +5,8 @@ import Modal from './Modal'
 import Button from '../Button'
 import FileReaderInput from 'react-file-reader-input'
 
-import FileUploadIcon from 'react-icons/lib/md/file-upload'
-import AddIcon from 'react-icons/lib/md/add-circle-outline'
+import {MdFileUpload} from 'react-icons/md'
+import {MdAddCircleOutline} from 'react-icons/md'
 
 import style from '../../libs/style.js'
 import publicStyles from '../../config/styles.json'
@@ -29,7 +29,7 @@ class PublicStyle extends React.Component {
         <header className="maputnik-public-style-header">
           <h4>{this.props.title}</h4>
           <span className="maputnik-space" />
-          <AddIcon />
+          <MdAddCircleOutline />
         </header>
         <div
           className="maputnik-public-style-thumbnail"
@@ -200,7 +200,7 @@ class OpenModal extends React.Component {
             <h2>Upload Style</h2>
             <p>Upload a JSON style from your computer.</p>
             <FileReaderInput onChange={this.onUpload} tabIndex="-1">
-              <Button className="maputnik-upload-button"><FileUploadIcon /> Upload</Button>
+              <Button className="maputnik-upload-button"><MdFileUpload /> Upload</Button>
             </FileReaderInput>
           </section>
 

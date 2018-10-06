@@ -2,13 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import classnames from 'classnames'
 
-import MdFileDownload from 'react-icons/lib/md/file-download'
-import OpenIcon from 'react-icons/lib/md/open-in-browser'
-import SettingsIcon from 'react-icons/lib/md/settings'
-import SourcesIcon from 'react-icons/lib/md/layers'
-import HelpIcon from 'react-icons/lib/md/help-outline'
-import InspectionIcon from 'react-icons/lib/md/find-in-page'
-import SurveyIcon from 'react-icons/lib/md/assignment-turned-in'
+import {MdFileDownload, MdOpenInBrowser, MdSettings, MdLayers, MdHelpOutline, MdFindInPage, MdAssignmentTurnedIn} from 'react-icons/md'
 
 import logoImage from 'maputnik-design/logos/logo-color.svg'
 import pkgJson from '../../package.json'
@@ -132,7 +126,7 @@ export default class Toolbar extends React.Component {
         </div>
         <div className="maputnik-toolbar__actions">
           <ToolbarAction wdKey="nav:open" onClick={this.props.onToggleModal.bind(this, 'open')}>
-            <OpenIcon />
+            <MdOpenInBrowser />
             <IconText>Open</IconText>
           </ToolbarAction>
           <ToolbarAction wdKey="nav:export" onClick={this.props.onToggleModal.bind(this, 'export')}>
@@ -140,26 +134,26 @@ export default class Toolbar extends React.Component {
             <IconText>Export</IconText>
           </ToolbarAction>
           <ToolbarAction wdKey="nav:sources" onClick={this.props.onToggleModal.bind(this, 'sources')}>
-            <SourcesIcon />
+            <MdLayers />
             <IconText>Data Sources</IconText>
           </ToolbarAction>
           <ToolbarAction wdKey="nav:settings" onClick={this.props.onToggleModal.bind(this, 'settings')}>
-            <SettingsIcon />
+            <MdSettings />
             <IconText>Style Settings</IconText>
           </ToolbarAction>
           <ToolbarAction wdKey="nav:inspect" onClick={this.props.onInspectModeToggle}>
-            <InspectionIcon />
+            <MdFindInPage />
             <IconText>
               { this.props.inspectModeEnabled && <span>Map Mode</span> }
               { !this.props.inspectModeEnabled && <span>Inspect Mode</span> }
             </IconText>
           </ToolbarAction>
           <ToolbarLink href={"https://github.com/maputnik/editor/wiki"}>
-            <HelpIcon />
+            <MdHelpOutline />
             <IconText>Help</IconText>
           </ToolbarLink>
           <ToolbarLinkHighlighted href={"https://gregorywolanski.typeform.com/to/cPgaSY"}>
-            <SurveyIcon />
+            <MdAssignmentTurnedIn />
             <IconText>Take the Maputnik Survey</IconText>
           </ToolbarLinkHighlighted>
         </div>

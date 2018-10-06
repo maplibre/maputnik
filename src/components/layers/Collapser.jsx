@@ -1,7 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import CollapseOpenIcon from 'react-icons/lib/md/arrow-drop-down'
-import CollapseCloseIcon from 'react-icons/lib/md/arrow-drop-up'
+import {MdArrowDropDown, MdArrowDropUp} from 'react-icons/md'
 
 export default class Collapser extends React.Component {
   static propTypes = {
@@ -15,7 +14,7 @@ export default class Collapser extends React.Component {
       height: 20,
       ...this.props.style,
     }
-    return this.props.isCollapsed ? <CollapseCloseIcon style={iconStyle}/> : <CollapseOpenIcon style={iconStyle} />
+    return this.props.isCollapsed ? <MdArrowDropUp style={iconStyle}/> : <MdArrowDropDown style={iconStyle} />
   }
 }
 
