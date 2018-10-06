@@ -4,6 +4,11 @@ import classnames from 'classnames'
 
 import {MdFileDownload, MdOpenInBrowser, MdSettings, MdLayers, MdHelpOutline, MdFindInPage, MdAssignmentTurnedIn} from 'react-icons/md'
 
+import ColorIcon from 'react-icons/lib/md/color-lens'
+import MapIcon from 'react-icons/lib/md/map'
+import ViewIcon from 'react-icons/lib/md/remove-red-eye'
+
+
 import logoImage from 'maputnik-design/logos/logo-color.svg'
 import pkgJson from '../../package.json'
 
@@ -60,6 +65,22 @@ class ToolbarLinkHighlighted extends React.Component {
   }
 }
 
+class ToolbarSelect extends React.Component {
+  static propTypes = {
+    children: PropTypes.node,
+    wdKey: PropTypes.string
+  }
+
+  render() {
+    return <div
+      className='maputnik-toolbar-select'
+      data-wd-key={this.props.wdKey}
+    >
+      {this.props.children}
+    </div>
+  }
+}
+
 class ToolbarAction extends React.Component {
   static propTypes = {
     children: PropTypes.node,
@@ -87,9 +108,10 @@ export default class Toolbar extends React.Component {
     onStyleOpen: PropTypes.func.isRequired,
     // A dict of source id's and the available source layers
     sources: PropTypes.object.isRequired,
-    onInspectModeToggle: PropTypes.func.isRequired,
     children: PropTypes.node,
     onToggleModal: PropTypes.func,
+    onSetMapState: PropTypes.func,
+    mapState: PropTypes.string,
   }
 
   state = {
@@ -102,7 +124,48 @@ export default class Toolbar extends React.Component {
     }
   }
 
+  handleSelection(val) {
+    this.props.onSetMapState(val);
+  }
+
   render() {
+    const views = [
+      {
+        id: "map",
+        title: "Map",
+        icon: <MapIcon/>,
+      },
+      {
+        id: "inspect",
+        title: "Inspect",
+        icon: <InspectionIcon/>,
+      },
+      {
+        id: "filter-deuteranopia",
+        title: "Map (deuteranopia)",
+        icon: <ColorIcon/>,
+      },
+      {
+        id: "filter-protanopia",
+        title: "Map (protanopia)",
+        icon: <ColorIcon/>,
+      },
+      {
+        id: "filter-tritanopia",
+        title: "Map (tritanopia)",
+        icon: <ColorIcon/>,
+      },
+      {
+        id: "filter-achromatopsia",
+        title: "Map (achromatopsia)",
+        icon: <ColorIcon/>,
+      },
+    ];
+
+    const currentView = views.find((view) => {
+      return view.id === this.props.mapState;
+    });
+
     return <div className='maputnik-toolbar'>
       <div className="maputnik-toolbar__inner">
         <div
@@ -141,13 +204,21 @@ export default class Toolbar extends React.Component {
             <MdSettings />
             <IconText>Style Settings</IconText>
           </ToolbarAction>
-          <ToolbarAction wdKey="nav:inspect" onClick={this.props.onInspectModeToggle}>
+
+          <ToolbarSelect wdKey="nav:inspect">
             <MdFindInPage />
-            <IconText>
-              { this.props.inspectModeEnabled && <span>Map Mode</span> }
-              { !this.props.inspectModeEnabled && <span>Inspect Mode</span> }
-            </IconText>
-          </ToolbarAction>
+            <IconText>View </IconText>
+            <select onChange={(e) => this.handleSelection(e.target.value)}>
+              {views.map((item) => {
+                return (
+                  <option key={item.id} value={item.id}>
+                    {item.title}
+                  </option>
+                );
+              })}
+            </select>
+          </ToolbarSelect>
+
           <ToolbarLink href={"https://github.com/maputnik/editor/wiki"}>
             <MdHelpOutline />
             <IconText>Help</IconText>
