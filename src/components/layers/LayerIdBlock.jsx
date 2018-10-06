@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 
-import * as styleSpec from '@mapbox/mapbox-gl-style-spec/style-spec'
+import {latest} from '@mapbox/mapbox-gl-style-spec'
 import InputBlock from '../inputs/InputBlock'
 import StringInput from '../inputs/StringInput'
 
@@ -13,7 +13,7 @@ class LayerIdBlock extends React.Component {
   }
 
   render() {
-    return <InputBlock label={"ID"} doc={styleSpec.latest.layer.id.doc}
+    return <InputBlock label={"ID"} doc={latest.layer.id.doc}
       data-wd-key={this.props.wdKey}
     >
       <StringInput

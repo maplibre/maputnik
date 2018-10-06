@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 
-import * as styleSpec from '@mapbox/mapbox-gl-style-spec/style-spec'
+import {latest} from '@mapbox/mapbox-gl-style-spec'
 import InputBlock from '../inputs/InputBlock'
 import StringInput from '../inputs/StringInput'
 import SelectInput from '../inputs/SelectInput'
@@ -44,7 +44,7 @@ class SettingsModal extends React.Component {
       title={'Style Settings'}
     >
       <div style={{minWidth: 350}}>
-      <InputBlock label={"Name"} doc={styleSpec.latest.$root.name.doc}>
+      <InputBlock label={"Name"} doc={latest.$root.name.doc}>
         <StringInput {...inputProps}
           data-wd-key="modal-settings.name" 
           value={this.props.mapStyle.name}
@@ -58,7 +58,7 @@ class SettingsModal extends React.Component {
           onChange={this.changeStyleProperty.bind(this, "owner")}
         />
       </InputBlock>
-      <InputBlock label={"Sprite URL"} doc={styleSpec.latest.$root.sprite.doc}>
+      <InputBlock label={"Sprite URL"} doc={latest.$root.sprite.doc}>
         <StringInput {...inputProps}
           data-wd-key="modal-settings.sprite" 
           value={this.props.mapStyle.sprite}
@@ -66,7 +66,7 @@ class SettingsModal extends React.Component {
         />
       </InputBlock>
 
-      <InputBlock label={"Glyphs URL"} doc={styleSpec.latest.$root.glyphs.doc}>
+      <InputBlock label={"Glyphs URL"} doc={latest.$root.glyphs.doc}>
         <StringInput {...inputProps}
           data-wd-key="modal-settings.glyphs" 
           value={this.props.mapStyle.glyphs}

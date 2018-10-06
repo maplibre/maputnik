@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 
-import * as styleSpec from '@mapbox/mapbox-gl-style-spec/style-spec'
+import {latest} from '@mapbox/mapbox-gl-style-spec'
 import InputBlock from '../inputs/InputBlock'
 import AutocompleteInput from '../inputs/AutocompleteInput'
 
@@ -19,7 +19,7 @@ class LayerSourceBlock extends React.Component {
   }
 
   render() {
-    return <InputBlock label={"Source"} doc={styleSpec.latest.layer.source.doc}
+    return <InputBlock label={"Source"} doc={latest.layer.source.doc}
       data-wd-key={this.props.wdKey}
     >
       <AutocompleteInput

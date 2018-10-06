@@ -21,7 +21,7 @@ import ShortcutsModal from './modals/ShortcutsModal'
 import SurveyModal from './modals/SurveyModal'
 
 import { downloadGlyphsMetadata, downloadSpriteMetadata } from '../libs/metadata'
-import * as styleSpec from '@mapbox/mapbox-gl-style-spec/style-spec'
+import {latest, validate} from '@mapbox/mapbox-gl-style-spec'
 import style from '../libs/style'
 import { initialStyleUrl, loadStyleUrl } from '../libs/urlopen'
 import { undoMessages, redoMessages } from '../libs/diffmessage'
@@ -168,7 +168,7 @@ export default class App extends React.Component {
       sources: {},
       vectorLayers: {},
       inspectModeEnabled: false,
-      spec: styleSpec.latest,
+      spec: latest,
       isOpen: {
         settings: false,
         sources: false,
@@ -238,7 +238,7 @@ export default class App extends React.Component {
 
   onStyleChanged = (newStyle, save=true) => {
 
-    const errors = styleSpec.validate(newStyle, styleSpec.latest)
+    const errors = validate(newStyle, latest)
     if(errors.length === 0) {
 
       if(newStyle.glyphs !== this.state.mapStyle.glyphs) {

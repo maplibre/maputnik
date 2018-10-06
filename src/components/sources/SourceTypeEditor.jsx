@@ -1,6 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import * as styleSpec from '@mapbox/mapbox-gl-style-spec/style-spec'
+import {latest} from '@mapbox/mapbox-gl-style-spec'
 import InputBlock from '../inputs/InputBlock'
 import StringInput from '../inputs/StringInput'
 import NumberInput from '../inputs/NumberInput'
@@ -16,7 +16,7 @@ class TileJSONSourceEditor extends React.Component {
 
   render() {
     return <div>
-      <InputBlock label={"TileJSON URL"} doc={styleSpec.latest.source_vector.url.doc}>
+      <InputBlock label={"TileJSON URL"} doc={latest.source_vector.url.doc}>
         <StringInput
           value={this.props.source.url}
           onChange={url => this.props.onChange({
@@ -50,7 +50,7 @@ class TileURLSourceEditor extends React.Component {
     const prefix = ['1st', '2nd', '3rd', '4th', '5th', '6th', '7th']
     const tiles = this.props.source.tiles || []
     return tiles.map((tileUrl, tileIndex) => {
-      return <InputBlock key={tileIndex} label={prefix[tileIndex] + " Tile URL"} doc={styleSpec.latest.source_vector.tiles.doc}>
+      return <InputBlock key={tileIndex} label={prefix[tileIndex] + " Tile URL"} doc={latest.source_vector.tiles.doc}>
         <StringInput
           value={tileUrl}
           onChange={this.changeTileUrl.bind(this, tileIndex)}
@@ -62,7 +62,7 @@ class TileURLSourceEditor extends React.Component {
   render() {
     return <div>
       {this.renderTileUrls()}
-      <InputBlock label={"Min Zoom"} doc={styleSpec.latest.source_vector.minzoom.doc}>
+      <InputBlock label={"Min Zoom"} doc={latest.source_vector.minzoom.doc}>
         <NumberInput
           value={this.props.source.minzoom || 0}
           onChange={minzoom => this.props.onChange({
@@ -71,7 +71,7 @@ class TileURLSourceEditor extends React.Component {
           })}
         />
       </InputBlock>
-      <InputBlock label={"Max Zoom"} doc={styleSpec.latest.source_vector.maxzoom.doc}>
+      <InputBlock label={"Max Zoom"} doc={latest.source_vector.maxzoom.doc}>
         <NumberInput
           value={this.props.source.maxzoom || 22}
           onChange={maxzoom => this.props.onChange({
@@ -93,7 +93,7 @@ class GeoJSONSourceEditor extends React.Component {
   }
 
   render() {
-    return <InputBlock label={"GeoJSON Data"} doc={styleSpec.latest.source_geojson.data.doc}>
+    return <InputBlock label={"GeoJSON Data"} doc={latest.source_geojson.data.doc}>
       <StringInput
         value={this.props.source.data}
         onChange={data => this.props.onChange({
@@ -125,14 +125,14 @@ class SourceTypeEditor extends React.Component {
       case 'tilexyz_raster': return <TileURLSourceEditor {...commonProps} />
       case 'tilejson_raster-dem': return <TileJSONSourceEditor {...commonProps} />
       case 'tilexyz_raster-dem': return <TileURLSourceEditor {...commonProps}>
-        <InputBlock label={"Encoding"} doc={styleSpec.latest.source_raster_dem.encoding.doc}>
+        <InputBlock label={"Encoding"} doc={latest.source_raster_dem.encoding.doc}>
           <SelectInput
-            options={Object.keys(styleSpec.latest.source_raster_dem.encoding.values)}
+            options={Object.keys(latest.source_raster_dem.encoding.values)}
             onChange={encoding => this.props.onChange({
               ...this.props.source,
               encoding: encoding
             })}
-            value={this.props.source.encoding || styleSpec.latest.source_raster_dem.encoding.default}
+            value={this.props.source.encoding || latest.source_raster_dem.encoding.default}
           />
         </InputBlock>
       </TileURLSourceEditor>

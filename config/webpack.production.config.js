@@ -1,7 +1,6 @@
 var webpack = require('webpack');
 var path = require('path');
 var loaders = require('./webpack.loaders');
-var ExtractTextPlugin = require('extract-text-webpack-plugin');
 var HtmlWebpackPlugin = require('html-webpack-plugin');
 var WebpackCleanupPlugin = require('webpack-cleanup-plugin');
 var BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
@@ -17,8 +16,8 @@ module.exports = {
   },
   output: {
     path: OUTPATH,
-    filename: '[name].[chunkhash].js',
-    chunkFilename: '[chunkhash].js'
+    filename: '[name].[contenthash].js',
+    chunkFilename: '[contenthash].js'
   },
   resolve: {
     extensions: ['.js', '.jsx']
@@ -27,7 +26,7 @@ module.exports = {
     noParse: [
       /mapbox-gl\/dist\/mapbox-gl.js/
     ],
-    loaders
+    rules: loaders
   },
   node: {
     fs: "empty",
@@ -43,9 +42,6 @@ module.exports = {
       }
     }),
     new UglifyJsPlugin(),
-    new ExtractTextPlugin('[contenthash].css', {
-      allChunks: true
-    }),
     new HtmlWebpackPlugin({
       template: './src/template.html',
       title: 'Maputnik'

@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 
-import * as styleSpec from '@mapbox/mapbox-gl-style-spec/style-spec'
+import {latest} from '@mapbox/mapbox-gl-style-spec'
 import InputBlock from '../inputs/InputBlock'
 import NumberInput from '../inputs/NumberInput'
 
@@ -12,15 +12,15 @@ class MinZoomBlock extends React.Component {
   }
 
   render() {
-    return <InputBlock label={"Min Zoom"} doc={styleSpec.latest.layer.minzoom.doc}
+    return <InputBlock label={"Min Zoom"} doc={latest.layer.minzoom.doc}
       data-wd-key="min-zoom"
     >
       <NumberInput
         value={this.props.value}
         onChange={this.props.onChange}
-        min={styleSpec.latest.layer.minzoom.minimum}
-        max={styleSpec.latest.layer.minzoom.maximum}
-        default={styleSpec.latest.layer.minzoom.minimum}
+        min={latest.layer.minzoom.minimum}
+        max={latest.layer.minzoom.maximum}
+        default={latest.layer.minzoom.minimum}
       />
     </InputBlock>
   }

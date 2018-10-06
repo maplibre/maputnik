@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 
-import * as styleSpec from '@mapbox/mapbox-gl-style-spec/style-spec'
+import {latest} from '@mapbox/mapbox-gl-style-spec'
 import InputBlock from '../inputs/InputBlock'
 import AutocompleteInput from '../inputs/AutocompleteInput'
 
@@ -20,7 +20,7 @@ class LayerSourceLayer extends React.Component {
   }
 
   render() {
-    return <InputBlock label={"Source Layer"} doc={styleSpec.latest.layer['source-layer'].doc}
+    return <InputBlock label={"Source Layer"} doc={latest.layer['source-layer'].doc}
       data-wd-key="layer-source-layer"
     >
       <AutocompleteInput
