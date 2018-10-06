@@ -1,4 +1,4 @@
-FROM nodesource/xenial:6.1.0
+FROM node:10
 
 EXPOSE 8888
 
