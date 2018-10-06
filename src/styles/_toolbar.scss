@@ -96,6 +96,16 @@
   @extend .maputnik-toolbar-link;
 }
 
+.maputnik-toolbar-select {
+  background: inherit;
+  border-width: 0;
+  @extend .maputnik-toolbar-link;
+}
+
+.maputnik-toolbar-select select {
+  margin-left: 4px;
+}
+
 .maputnik-icon-text {
   padding-left: $margin-1;
 }

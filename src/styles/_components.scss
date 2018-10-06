@@ -1,5 +1,5 @@
 // MAP
-.maputnik-map {
+.maputnik-map__container {
   display: flex;
   position: fixed !important;
   top: $toolbar-height + $toolbar-offset;
@@ -21,6 +21,11 @@
     margin: 16px;
     text-align: center;
   }
+}
+
+.maputnik-map__map {
+  width: 100%;
+  height: 100%;
 }
 
 // DOC LABEL
@@ -169,5 +174,34 @@
 
   &-error {
     color: $color-red;
+  }
+}
+
+.maputnik-dialog {
+  &__buttons {
+    text-align: right;
+  }
+}
+
+.map-state-menu {
+  display: inline-block;
+
+  &__menu {
+    position: absolute;
+    z-index: 999999;
+    background: $color-black;
+    display: flex;
+    flex-direction: column;
+    align-content: stretch;
+
+    li {
+      display: flex;
+      flex-direction: column;
+
+      button {
+        width: 100%;
+        text-align: left;
+      }
+    }
   }
 }

@@ -106,7 +106,7 @@ export default class App extends React.Component {
       {
         keyCode: keyCodes["i"],
         handler: () => {
-          this.changeInspectMode();
+          this.setMapState("inspect");
         }
       },
       {
@@ -166,7 +166,7 @@ export default class App extends React.Component {
       selectedLayerIndex: 0,
       sources: {},
       vectorLayers: {},
-      inspectModeEnabled: false,
+      mapState: "map",
       spec: styleSpec.latest,
       isOpen: {
         settings: false,
@@ -180,7 +180,6 @@ export default class App extends React.Component {
         showTileBoundaries: queryUtil.asBool(queryObj, "show-tile-boundaries"),
         showCollisionBoxes: queryUtil.asBool(queryObj, "show-collision-boxes")
       },
-      mapFilter: queryObj["color-blindness-emulation"],
     }
 
     this.layerWatcher = new LayerWatcher({
@@ -362,9 +361,9 @@ export default class App extends React.Component {
     this.onLayersChange(changedLayers)
   }
 
-  changeInspectMode = () => {
+  setMapState = (newState) => {
     this.setState({
-      inspectModeEnabled: !this.state.inspectModeEnabled
+      mapState: newState
     })
   }
 
@@ -446,17 +445,21 @@ export default class App extends React.Component {
       mapElement = <div>TODO</div>
     } else {
       mapElement = <MapboxGlMap {...mapProps}
-        inspectModeEnabled={this.state.inspectModeEnabled}
+        inspectModeEnabled={this.state.mapState === "inspect"}
         highlightedLayer={this.state.mapStyle.layers[this.state.selectedLayerIndex]}
         onLayerSelect={this.onLayerSelect} />
     }
 
-    const elementStyle = {};
-    if(this.state.mapFilter) {
-      elementStyle.filter = `url('#${this.state.mapFilter}')`;
+    let filterName;
+    if(this.state.mapState.match(/^filter-/)) {
+      filterName = this.state.mapState.replace(/^filter-/, "");
     }
+    const elementStyle = {};
+    if (filterName) {
+      elementStyle.filter = `url('#${filterName}')`;
+    };
 
-    return <div style={elementStyle}>
+    return <div style={elementStyle} className="maputnik-map__container">
       {mapElement}
     </div>
   }
@@ -485,12 +488,13 @@ export default class App extends React.Component {
     const metadata = this.state.mapStyle.metadata || {}
 
     const toolbar = <Toolbar
+      mapState={this.state.mapState}
       mapStyle={this.state.mapStyle}
-      inspectModeEnabled={this.state.inspectModeEnabled}
+      inspectModeEnabled={this.state.mapState === "inspect"}
       sources={this.state.sources}
       onStyleChanged={this.onStyleChanged}
       onStyleOpen={this.onStyleChanged}
-      onInspectModeToggle={this.changeInspectMode}
+      onSetMapState={this.setMapState}
       onToggleModal={this.toggleModal.bind(this)}
     />
 
