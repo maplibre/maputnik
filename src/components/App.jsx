@@ -35,7 +35,19 @@ import Debug from '../libs/debug'
 import queryUtil from '../libs/query-util'
 
 import MapboxGl from 'mapbox-gl'
-import { normalizeSourceURL } from 'mapbox-gl/src/util/mapbox'
+
+
+// Similar functionality as <https://github.com/mapbox/mapbox-gl-js/blob/7e30aadf5177486c2cfa14fe1790c60e217b5e56/src/util/mapbox.js>
+function normalizeSourceURL (url, apiToken="") {
+  const matches = url.match(/^mapbox:\/\/(.*)/);
+  if (matches) {
+    // mapbox://mapbox.mapbox-streets-v7
+    return `https://api.mapbox.com/v4/${matches[1]}.json?secure&access_token=${apiToken}`
+  }
+  else {
+    return url;
+  }
+}
 
 
 function updateRootSpec(spec, fieldName, newValues) {

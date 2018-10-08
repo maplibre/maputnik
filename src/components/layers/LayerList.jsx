@@ -6,7 +6,7 @@ import LayerListGroup from './LayerListGroup'
 import LayerListItem from './LayerListItem'
 import AddModal from '../modals/AddModal'
 
-import {SortableContainer, SortableHandle} from 'react-sortable-hoc';
+import {SortableContainer} from 'react-sortable-hoc';
 
 const layerListPropTypes = {
   layers: PropTypes.array.isRequired,
@@ -35,7 +35,6 @@ function findClosestCommonPrefix(layers, idx) {
 }
 
 // List of collapsible layer editors
-@SortableContainer
 class LayerListContainer extends React.Component {
   static propTypes = {...layerListPropTypes}
   static defaultProps = {
@@ -197,11 +196,13 @@ class LayerListContainer extends React.Component {
   }
 }
 
+const LayerListContainerSortable = SortableContainer((props) => <LayerListContainer {...props} />)
+
 export default class LayerList extends React.Component {
   static propTypes = {...layerListPropTypes}
 
   render() {
-    return <LayerListContainer
+    return <LayerListContainerSortable
       {...this.props}
       onSortEnd={this.props.onMoveLayer.bind(this)}
       useDragHandle={true}

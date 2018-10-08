@@ -18,10 +18,10 @@ class StringInput extends React.Component {
     }
   }
 
-  static getDerivedStateFromProps(props, state) {
-    return {
-      value: props.value || ''
-    };
+  componentDidUpdate(prevProps) {
+    if(this.props.value !== prevProps.value) {
+      this.setState({value: this.props.value})
+    }
   }
 
   render() {

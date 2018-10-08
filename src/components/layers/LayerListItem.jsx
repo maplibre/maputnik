@@ -7,7 +7,6 @@ import {MdContentCopy, MdVisibility, MdVisibilityOff, MdDelete} from 'react-icon
 import LayerIcon from '../icons/LayerIcon'
 import {SortableElement, SortableHandle} from 'react-sortable-hoc'
 
-@SortableHandle
 class LayerTypeDragHandle extends React.Component {
   static propTypes = LayerIcon.propTypes
 
@@ -23,6 +22,8 @@ class LayerTypeDragHandle extends React.Component {
     />
   }
 }
+
+const Handle = SortableHandle((props) => <LayerTypeDragHandle {...props} />)
 
 class IconAction extends React.Component {
   static propTypes = {
@@ -66,7 +67,6 @@ class IconAction extends React.Component {
   }
 }
 
-@SortableElement
 class LayerListItem extends React.Component {
   static propTypes = {
     layerId: PropTypes.string.isRequired,
@@ -111,7 +111,7 @@ class LayerListItem extends React.Component {
         "maputnik-layer-list-item-selected": this.props.isSelected,
         [this.props.className]: true,
       })}>
-        <LayerTypeDragHandle type={this.props.layerType} />
+        <Handle type={this.props.layerType} />
         <span className="maputnik-layer-list-item-id">{this.props.layerId}</span>
         <span style={{flexGrow: 1}} />
         <IconAction
@@ -137,4 +137,6 @@ class LayerListItem extends React.Component {
   }
 }
 
-export default LayerListItem;
+const LayerListItemSortable = SortableElement((props) => <LayerListItem {...props} />);
+
+export default LayerListItemSortable;
