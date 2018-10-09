@@ -23,7 +23,7 @@ class LayerTypeDragHandle extends React.Component {
   }
 }
 
-const Handle = SortableHandle((props) => <LayerTypeDragHandle {...props} />)
+const LayerTypeDragHandleSortable = SortableHandle((props) => <LayerTypeDragHandle {...props} />)
 
 class IconAction extends React.Component {
   static propTypes = {
@@ -111,7 +111,7 @@ class LayerListItem extends React.Component {
         "maputnik-layer-list-item-selected": this.props.isSelected,
         [this.props.className]: true,
       })}>
-        <Handle type={this.props.layerType} />
+        <LayerTypeDragHandleSortable type={this.props.layerType} />
         <span className="maputnik-layer-list-item-id">{this.props.layerId}</span>
         <span style={{flexGrow: 1}} />
         <IconAction
