@@ -6,28 +6,7 @@ module.exports = [
     exclude: [
       path.resolve(__dirname, '../node_modules')
     ],
-    use: {
-      loader: 'babel-loader',
-      options: {
-        "presets": [
-          "@babel/preset-env",
-          "@babel/preset-react"
-        ],
-        "plugins": [
-          "react-hot-loader/babel",
-          "@babel/plugin-proposal-class-properties"
-        ],
-        "env": {
-          "test": {
-            "plugins": [
-              ["istanbul", {
-                "exclude": ["node_modules/**", "test/**"]
-              }]
-            ]
-          }
-        }
-      }
-    }
+    use: 'babel-loader'
   },
   {
     test: /\.(eot|ttf|woff|woff2)$/,
