@@ -1,6 +1,6 @@
 var webpack = require('webpack');
 var path = require('path');
-var loaders = require('./webpack.loaders');
+var rules = require('./webpack.rules');
 var HtmlWebpackPlugin = require('html-webpack-plugin');
 var WebpackCleanupPlugin = require('webpack-cleanup-plugin');
 var BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
@@ -25,7 +25,7 @@ module.exports = {
     noParse: [
       /mapbox-gl\/dist\/mapbox-gl.js/
     ],
-    rules: loaders
+    rules: rules
   },
   node: {
     fs: "empty",
@@ -48,8 +48,8 @@ module.exports = {
       {
         from: './src/manifest.json',
         to: 'manifest.json'
-      }
-    ]),
+    }
+  ]),
     new BundleAnalyzerPlugin({
       analyzerMode: 'static',
       defaultSizes: 'gzip',

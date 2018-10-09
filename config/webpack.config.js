@@ -1,7 +1,7 @@
 "use strict";
 var webpack = require('webpack');
 var path = require('path');
-var loaders = require('./webpack.loaders');
+var rules = require('./webpack.rules');
 var HtmlWebpackPlugin = require('html-webpack-plugin');
 var CopyWebpackPlugin = require('copy-webpack-plugin');
 
@@ -28,7 +28,7 @@ module.exports = {
     noParse: [
       /mapbox-gl\/dist\/mapbox-gl.js/
     ],
-    rules: loaders
+    rules: rules
   },
   node: {
     fs: "empty",
