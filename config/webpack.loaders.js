@@ -6,21 +6,26 @@ module.exports = [
     exclude: [
       path.resolve(__dirname, '../node_modules')
     ],
-    use: 'babel-loader'
-  },
-  // HACK: This is a massive hack and reaches into the mapbox-gl private API.
-  // We have to include this for access to `normalizeSourceURL`. We should
-  // remove this ASAP, see <https://github.com/mapbox/mapbox-gl-js/issues/2416>
-  {
-    test: /\.jsx?$/,
-    include: [
-      path.resolve(__dirname, '../node_modules/mapbox-gl/src/util/')
-    ],
     use: {
       loader: 'babel-loader',
       options: {
-        presets: ['@babel/preset-env', '@babel/preset-react', '@babel/preset-flow'],
-        plugins: ['@babel/plugin-transform-runtime', '@babel/plugin-proposal-class-properties'],
+        "presets": [
+          "@babel/preset-env",
+          "@babel/preset-react"
+        ],
+        "plugins": [
+          "react-hot-loader/babel",
+          "@babel/plugin-proposal-class-properties"
+        ],
+        "env": {
+          "test": {
+            "plugins": [
+              ["istanbul", {
+                "exclude": ["node_modules/**", "test/**"]
+              }]
+            ]
+          }
+        }
       }
     }
   },

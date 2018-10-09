@@ -6,7 +6,6 @@ var WebpackCleanupPlugin = require('webpack-cleanup-plugin');
 var BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 var CopyWebpackPlugin = require('copy-webpack-plugin');
 var artifacts = require("../test/artifacts");
-var UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 
 var OUTPATH = artifacts.pathSync("/build");
 
@@ -41,7 +40,6 @@ module.exports = {
         NODE_ENV: '"production"'
       }
     }),
-    new UglifyJsPlugin(),
     new HtmlWebpackPlugin({
       template: './src/template.html',
       title: 'Maputnik'
