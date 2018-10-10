@@ -1,7 +1,7 @@
 "use strict";
 var webpack = require('webpack');
 var path = require('path');
-var loaders = require('./webpack.loaders');
+var rules = require('./webpack.rules');
 var HtmlWebpackPlugin = require('html-webpack-plugin');
 var CopyWebpackPlugin = require('copy-webpack-plugin');
 
@@ -10,6 +10,7 @@ const PORT = process.env.PORT || "8888";
 
 module.exports = {
   target: 'web',
+  mode: 'development',
   entry: [
     `webpack-dev-server/client?http://${HOST}:${PORT}`,
     `webpack/hot/only-dev-server`,
@@ -27,7 +28,7 @@ module.exports = {
     noParse: [
       /mapbox-gl\/dist\/mapbox-gl.js/
     ],
-    loaders: loaders
+    rules: rules
   },
   node: {
     fs: "empty",

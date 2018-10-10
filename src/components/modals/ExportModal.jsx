@@ -2,14 +2,13 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { saveAs } from 'file-saver'
 
-import * as styleSpec from '@mapbox/mapbox-gl-style-spec/style-spec'
+import {format} from '@mapbox/mapbox-gl-style-spec'
 import InputBlock from '../inputs/InputBlock'
 import StringInput from '../inputs/StringInput'
 import CheckboxInput from '../inputs/CheckboxInput'
 import Button from '../Button'
 import Modal from './Modal'
-import MdFileDownload from 'react-icons/lib/md/file-download'
-import TiClipboard from 'react-icons/lib/ti/clipboard'
+import {MdFileDownload} from 'react-icons/md'
 import style from '../../libs/style'
 
 
@@ -37,7 +36,7 @@ class ExportModal extends React.Component {
   }
 
   downloadStyle() {
-    const tokenStyle = styleSpec.format(stripAccessTokens(style.replaceAccessTokens(this.props.mapStyle)));
+    const tokenStyle = format(stripAccessTokens(style.replaceAccessTokens(this.props.mapStyle)));
 
     const blob = new Blob([tokenStyle], {type: "application/json;charset=utf-8"});
     saveAs(blob, this.props.mapStyle.id + ".json");

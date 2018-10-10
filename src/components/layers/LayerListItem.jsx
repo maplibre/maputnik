@@ -2,15 +2,11 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import classnames from 'classnames'
 
-import CopyIcon from 'react-icons/lib/md/content-copy'
-import VisibilityIcon from 'react-icons/lib/md/visibility'
-import VisibilityOffIcon from 'react-icons/lib/md/visibility-off'
-import DeleteIcon from 'react-icons/lib/md/delete'
+import {MdContentCopy, MdVisibility, MdVisibilityOff, MdDelete} from 'react-icons/md'
 
 import LayerIcon from '../icons/LayerIcon'
 import {SortableElement, SortableHandle} from 'react-sortable-hoc'
 
-@SortableHandle
 class LayerTypeDragHandle extends React.Component {
   static propTypes = LayerIcon.propTypes
 
@@ -27,6 +23,8 @@ class LayerTypeDragHandle extends React.Component {
   }
 }
 
+const LayerTypeDragHandleSortable = SortableHandle((props) => <LayerTypeDragHandle {...props} />)
+
 class IconAction extends React.Component {
   static propTypes = {
     action: PropTypes.string.isRequired,
@@ -38,10 +36,10 @@ class IconAction extends React.Component {
 
   renderIcon() {
     switch(this.props.action) {
-      case 'duplicate': return <CopyIcon />
-      case 'show': return <VisibilityIcon />
-      case 'hide': return <VisibilityOffIcon />
-      case 'delete': return <DeleteIcon />
+      case 'duplicate': return <MdContentCopy />
+      case 'show': return <MdVisibility />
+      case 'hide': return <MdVisibilityOff />
+      case 'delete': return <MdDelete />
     }
   }
 
@@ -69,7 +67,6 @@ class IconAction extends React.Component {
   }
 }
 
-@SortableElement
 class LayerListItem extends React.Component {
   static propTypes = {
     layerId: PropTypes.string.isRequired,
@@ -114,7 +111,7 @@ class LayerListItem extends React.Component {
         "maputnik-layer-list-item-selected": this.props.isSelected,
         [this.props.className]: true,
       })}>
-        <LayerTypeDragHandle type={this.props.layerType} />
+        <LayerTypeDragHandleSortable type={this.props.layerType} />
         <span className="maputnik-layer-list-item-id">{this.props.layerId}</span>
         <span style={{flexGrow: 1}} />
         <IconAction
@@ -140,4 +137,6 @@ class LayerListItem extends React.Component {
   }
 }
 
-export default LayerListItem;
+const LayerListItemSortable = SortableElement((props) => <LayerListItem {...props} />);
+
+export default LayerListItemSortable;

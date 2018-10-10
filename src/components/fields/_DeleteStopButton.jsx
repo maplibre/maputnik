@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 
 import DocLabel from './DocLabel'
 import Button from '../Button'
-import DeleteIcon from 'react-icons/lib/md/delete'
+import {MdDelete} from 'react-icons/md'
 
 
 export default class DeleteStopButton extends React.Component {
@@ -17,7 +17,7 @@ export default class DeleteStopButton extends React.Component {
       onClick={this.props.onClick}
     >
       <DocLabel
-        label={<DeleteIcon />}
+        label={<MdDelete />}
         doc={"Remove zoom level stop."}
       />
     </Button>

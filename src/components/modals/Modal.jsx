@@ -1,6 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import CloseIcon from 'react-icons/lib/md/close'
+import {MdClose} from 'react-icons/md'
 import AriaModal from 'react-aria-modal'
 
 
@@ -44,7 +44,7 @@ class Modal extends React.Component {
               onClick={() => this.props.onOpenToggle(false)}
               data-wd-key={this.props["data-wd-key"]+".close-modal"}
             >
-              <CloseIcon />
+              <MdClose />
             </button>
           </header>
           <div className="maputnik-modal-scroller">

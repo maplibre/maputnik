@@ -14,7 +14,7 @@ import CommentBlock from './CommentBlock'
 import LayerSourceBlock from './LayerSourceBlock'
 import LayerSourceLayerBlock from './LayerSourceLayerBlock'
 
-import MoreVertIcon from 'react-icons/lib/md/more-vert'
+import {MdMoreVert} from 'react-icons/md'
 
 import { changeType, changeProperty } from '../../libs/layer'
 import layout from '../../config/layout.json'
@@ -254,7 +254,7 @@ export default class LayerEditor extends React.Component {
               closeOnSelection={false}
             >
               <Button className='more-menu__button'>
-                <MoreVertIcon className="more-menu__button__svg" />
+                <MdMoreVert className="more-menu__button__svg" />
               </Button>
               <Menu>
                 <ul className="more-menu__menu">

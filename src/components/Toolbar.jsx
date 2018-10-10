@@ -2,17 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import classnames from 'classnames'
 
-import MdFileDownload from 'react-icons/lib/md/file-download'
-import OpenIcon from 'react-icons/lib/md/open-in-browser'
-import SettingsIcon from 'react-icons/lib/md/settings'
-import SourcesIcon from 'react-icons/lib/md/layers'
-import HelpIcon from 'react-icons/lib/md/help-outline'
-import InspectionIcon from 'react-icons/lib/md/find-in-page'
-import SurveyIcon from 'react-icons/lib/md/assignment-turned-in'
-
-import ColorIcon from 'react-icons/lib/md/color-lens'
-import MapIcon from 'react-icons/lib/md/map'
-import ViewIcon from 'react-icons/lib/md/remove-red-eye'
+import {MdFileDownload, MdOpenInBrowser, MdSettings, MdLayers, MdHelpOutline, MdFindInPage, MdAssignmentTurnedIn} from 'react-icons/md'
 
 
 import logoImage from 'maputnik-design/logos/logo-color.svg'
@@ -139,32 +129,26 @@ export default class Toolbar extends React.Component {
       {
         id: "map",
         title: "Map",
-        icon: <MapIcon/>,
       },
       {
         id: "inspect",
         title: "Inspect",
-        icon: <InspectionIcon/>,
       },
       {
         id: "filter-deuteranopia",
         title: "Map (deuteranopia)",
-        icon: <ColorIcon/>,
       },
       {
         id: "filter-protanopia",
         title: "Map (protanopia)",
-        icon: <ColorIcon/>,
       },
       {
         id: "filter-tritanopia",
         title: "Map (tritanopia)",
-        icon: <ColorIcon/>,
       },
       {
         id: "filter-achromatopsia",
         title: "Map (achromatopsia)",
-        icon: <ColorIcon/>,
       },
     ];
 
@@ -195,7 +179,7 @@ export default class Toolbar extends React.Component {
         </div>
         <div className="maputnik-toolbar__actions">
           <ToolbarAction wdKey="nav:open" onClick={this.props.onToggleModal.bind(this, 'open')}>
-            <OpenIcon />
+            <MdOpenInBrowser />
             <IconText>Open</IconText>
           </ToolbarAction>
           <ToolbarAction wdKey="nav:export" onClick={this.props.onToggleModal.bind(this, 'export')}>
@@ -203,16 +187,16 @@ export default class Toolbar extends React.Component {
             <IconText>Export</IconText>
           </ToolbarAction>
           <ToolbarAction wdKey="nav:sources" onClick={this.props.onToggleModal.bind(this, 'sources')}>
-            <SourcesIcon />
+            <MdLayers />
             <IconText>Data Sources</IconText>
           </ToolbarAction>
           <ToolbarAction wdKey="nav:settings" onClick={this.props.onToggleModal.bind(this, 'settings')}>
-            <SettingsIcon />
+            <MdSettings />
             <IconText>Style Settings</IconText>
           </ToolbarAction>
 
           <ToolbarSelect wdKey="nav:inspect">
-            <ViewIcon/>
+            <MdFindInPage />
             <IconText>View </IconText>
             <select onChange={(e) => this.handleSelection(e.target.value)}>
               {views.map((item) => {
@@ -226,11 +210,11 @@ export default class Toolbar extends React.Component {
           </ToolbarSelect>
 
           <ToolbarLink href={"https://github.com/maputnik/editor/wiki"}>
-            <HelpIcon />
+            <MdHelpOutline />
             <IconText>Help</IconText>
           </ToolbarLink>
           <ToolbarLinkHighlighted href={"https://gregorywolanski.typeform.com/to/cPgaSY"}>
-            <SurveyIcon />
+            <MdAssignmentTurnedIn />
             <IconText>Take the Maputnik Survey</IconText>
           </ToolbarLinkHighlighted>
         </div>
