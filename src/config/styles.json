@@ -26,8 +26,8 @@
   {
     "id": "osm-liberty",
     "title": "OSM Liberty",
-    "url": "https://cdn.jsdelivr.net/gh/maputnik/osm-liberty@07c0d7dc4e266e244d7f4a7017ad96fd61bc1bf4/style.json",
-    "thumbnail": "https://cdn.rawgit.com/maputnik/osm-liberty/gh-pages/thumbnail.png"
+    "url": "https://maputnik.github.io/osm-liberty/style.json",
+    "thumbnail": "https://maputnik.github.io/osm-liberty/thumbnail.png"
   },
   {
     "id": "empty-style",
