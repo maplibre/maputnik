@@ -36,6 +36,9 @@ class SettingsModal extends React.Component {
 
   render() {
     const metadata = this.props.mapStyle.metadata || {}
+    if(metadata['maputnik:renderer'] === undefined) {
+      this.changeMetadataProperty('maputnik:renderer', 'mbgljs')
+    }
     const inputProps = { }
     return <Modal
       data-wd-key="modal-settings"
