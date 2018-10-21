@@ -137,6 +137,7 @@
           "title": "Icon layout properties",
           "type": "properties",
           "fields": [
+            "icon-image",
             "icon-allow-overlap",
             "icon-ignore-placement",
             "icon-optional",
@@ -144,7 +145,6 @@
             "icon-size",
             "icon-text-fit",
             "icon-text-fit-padding",
-            "icon-image",
             "icon-rotate",
             "icon-padding",
             "icon-keep-upright",
