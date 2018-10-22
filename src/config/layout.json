@@ -71,7 +71,8 @@
             "fill-extrusion-translate-anchor",
             "fill-extrusion-pattern",
             "fill-extrusion-height",
-            "fill-extrusion-base"
+            "fill-extrusion-base",
+            "fill-extrusion-vertical-gradient"
           ]
         }
       ]
@@ -105,7 +106,8 @@
           "fields": [
             "symbol-placement",
             "symbol-spacing",
-            "symbol-avoid-edges"
+            "symbol-avoid-edges",
+            "symbol-z-order"
           ]
         },
         {
