@@ -42,7 +42,10 @@ class ExportModal extends React.Component {
     const blob = new Blob([tokenStyle], {type: "application/json;charset=utf-8"});
     let exportName;
     if(this.props.mapStyle.name) {
-      exportName = Slugify(this.props.mapStyle.name, '_')
+      exportName = Slugify(this.props.mapStyle.name, {
+                     replacement: '_',
+                     lower: true
+                   })
     } else {
       exportName = this.props.mapStyle.id
     }
