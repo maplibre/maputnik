@@ -1,5 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+import Slugify from 'slugify'
 import { saveAs } from 'file-saver'
 
 import {format} from '@mapbox/mapbox-gl-style-spec'
@@ -39,7 +40,13 @@ class ExportModal extends React.Component {
     const tokenStyle = format(stripAccessTokens(style.replaceAccessTokens(this.props.mapStyle)));
 
     const blob = new Blob([tokenStyle], {type: "application/json;charset=utf-8"});
-    saveAs(blob, this.props.mapStyle.id + ".json");
+    let exportName;
+    if(this.props.mapStyle.name) {
+      exportName = Slugify(this.props.mapStyle.name, '_')
+    } else {
+      exportName = this.props.mapStyle.id
+    }
+    saveAs(blob, exportName + ".json");
   }
 
   changeMetadataProperty(property, value) {
