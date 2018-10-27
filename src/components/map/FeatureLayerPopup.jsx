@@ -29,7 +29,8 @@ function groupFeaturesBySourceLayer(features) {
 class FeatureLayerPopup extends React.Component {
   static propTypes = {
     onLayerSelect: PropTypes.func.isRequired,
-    features: PropTypes.array
+    features: PropTypes.array,
+    zoom: PropTypes.number,
   }
 
   render() {
