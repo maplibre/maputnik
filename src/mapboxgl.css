@@ -14,6 +14,22 @@
   border-top-color: rgb(28, 31, 36);
 }
 
+.mapboxgl-popup-anchor-top-left .mapboxgl-popup-tip {
+ border-bottom-color: rgb(28, 31, 36);
+}
+
+.mapboxgl-popup-anchor-top-right .mapboxgl-popup-tip {
+  border-bottom-color: rgb(28, 31, 36);
+}
+
+.mapboxgl-popup-anchor-bottom-left .mapboxgl-popup-tip {
+  border-top-color: rgb(28, 31, 36);
+}
+
+.mapboxgl-popup-anchor-bottom-right .mapboxgl-popup-tip {
+  border-top-color: rgb(28, 31, 36);
+}
+
 .mapboxgl-popup-content {
   background-color: rgb(28, 31, 36);
   border-radius: 0px;
