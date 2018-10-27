@@ -156,7 +156,7 @@ export default class MapboxGlMap extends React.Component {
           return renderPropertyPopup(features)
         } else {
           var mountNode = document.createElement('div');
-          ReactDOM.render(<FeatureLayerPopup features={features} onLayerSelect={this.props.onLayerSelect} />, mountNode)
+          ReactDOM.render(<FeatureLayerPopup features={features} onLayerSelect={this.props.onLayerSelect} zoom={this.state.zoom} />, mountNode)
           return mountNode
         }
       }
@@ -164,7 +164,11 @@ export default class MapboxGlMap extends React.Component {
     map.addControl(inspect)
 
     map.on("style.load", () => {
-      this.setState({ map, inspect });
+      this.setState({
+        map,
+        inspect,
+        zoom: map.getZoom()
+      });
     })
 
     map.on("data", e => {
@@ -172,6 +176,12 @@ export default class MapboxGlMap extends React.Component {
       this.props.onDataChange({
         map: this.state.map
       })
+    })
+
+    map.on("zoom", e => {
+      this.setState({
+        zoom: map.getZoom()
+      });
     })
   }
 
