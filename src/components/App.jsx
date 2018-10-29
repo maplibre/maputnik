@@ -119,7 +119,9 @@ export default class App extends React.Component {
       {
         keyCode: keyCodes["i"],
         handler: () => {
-          this.setMapState("inspect");
+          this.setMapState(
+            this.state.mapState === "map" ? "inspect" : "map"
+          );
         }
       },
       {
@@ -135,12 +137,13 @@ export default class App extends React.Component {
         e.target.blur();
         document.body.focus();
       }
-      else if(document.activeElement === document.body) {
+      else if(this.state.isOpen.shortcuts || document.activeElement === document.body) {
         const shortcut = shortcuts.find((shortcut) => {
           return (shortcut.keyCode === e.keyCode)
         })
 
         if(shortcut) {
+          this.setModal("shortcuts", false);
           shortcut.handler(e);
         }
       }
@@ -484,17 +487,21 @@ export default class App extends React.Component {
     this.setState({ selectedLayerIndex: idx })
   }
 
-  toggleModal(modalName) {
+  setModal(modalName, value) {
+    if(modalName === 'survey' && value === false) {
+      localStorage.setItem('survey', '');
+    }
+
     this.setState({
       isOpen: {
         ...this.state.isOpen,
-        [modalName]: !this.state.isOpen[modalName]
+        [modalName]: value
       }
     })
+  }
 
-    if(modalName === 'survey') {
-      localStorage.setItem('survey', '');
-    }
+  toggleModal(modalName) {
+    this.setModal(modalName, !this.state.isOpen[modalName]);
   }
 
   render() {
@@ -549,6 +556,7 @@ export default class App extends React.Component {
 
     const modals = <div>
       <ShortcutsModal
+        ref={(el) => this.shortcutEl = el}
         isOpen={this.state.isOpen.shortcuts}
         onOpenToggle={this.toggleModal.bind(this, 'shortcuts')}
       />
