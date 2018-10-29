@@ -65,6 +65,11 @@ jobs:
       - image: node:10
     working_directory: ~/repo-linux-node-v10
     steps: *build-steps
+  build-linux-node-v11:
+    docker:
+      - image: node:11
+    working_directory: ~/repo-linux-node-v11
+    steps: *build-steps
   build-osx-node-v6:
     macos:
       xcode: "9.0"
@@ -89,6 +94,14 @@ jobs:
         - brew install node@10
     working_directory: ~/repo-osx-node-v10
     steps: *build-steps
+  build-osx-node-v11:
+    macos:
+      xcode: "9.0"
+    dependencies:
+      override:
+        - brew install node@11
+    working_directory: ~/repo-osx-node-v11
+    steps: *build-steps
 
 workflows:
   version: 2
@@ -97,7 +110,9 @@ workflows:
       - build-linux-node-v6
       - build-linux-node-v8
       - build-linux-node-v10
+      - build-linux-node-v11
       - build-osx-node-v6
       - build-osx-node-v8
       - build-osx-node-v10
+      - build-osx-node-v11
 
