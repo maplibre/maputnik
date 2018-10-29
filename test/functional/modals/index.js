@@ -99,6 +99,7 @@ describe("modals", function() {
       browser.url(config.baseUrl+"?debug&style="+helper.getStyleUrl([
         "geojson:example"
       ]));
+      browser.alertAccept();
 
       browser.selectByValue(wd.$("nav:inspect", "select"), "inspect");
     })
