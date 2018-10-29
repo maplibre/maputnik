@@ -147,13 +147,14 @@ export default class App extends React.Component {
     })
 
     const styleUrl = initialStyleUrl()
-    if(styleUrl) {
-      if(window.confirm("Load style from URL and discard current changes?")) {
-        this.styleStore = new StyleStore()
-        loadStyleUrl(styleUrl, mapStyle => this.onStyleChanged(mapStyle))
-      }
+    if(styleUrl && window.confirm("Load style from URL: " + styleUrl + " and discard current changes?")) {
+      this.styleStore = new StyleStore()
+      loadStyleUrl(styleUrl, mapStyle => this.onStyleChanged(mapStyle))
       removeStyleQuerystring()
     } else {
+      if(styleUrl) {
+        removeStyleQuerystring()
+      }
       this.styleStore.init(err => {
         if(err) {
           console.log('Falling back to local storage for storing styles')
