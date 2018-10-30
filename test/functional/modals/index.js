@@ -171,14 +171,14 @@ describe("modals", function() {
       assert.equal(styleObj.metadata["maputnik:openmaptiles_access_token"], apiKey);
     })
 
-    it.skip("style renderer", function() {
+    it("style renderer", function() {
       var selector = wd.$("modal-settings.maputnik:renderer");
-      browser.selectByValue(selector, "ol3");
+      browser.selectByValue(selector, "ol");
       browser.click(wd.$("modal-settings.name"))
       browser.flushReactUpdates();
 
       var styleObj = helper.getStyleStore(browser);
-      assert.equal(styleObj.metadata["maputnik:renderer"], "ol3");
+      assert.equal(styleObj.metadata["maputnik:renderer"], "ol");
     })
   })
 
