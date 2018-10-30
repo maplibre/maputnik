@@ -161,7 +161,7 @@ describe("modals", function() {
       })
     })
 
-    it("open map tiles access token", function() {
+    it("maptiler access token", function() {
       var apiKey = "testing123";
       browser.setValueSafe(wd.$("modal-settings.maputnik:openmaptiles_access_token"), apiKey);
       browser.click(wd.$("modal-settings.name"))
@@ -169,6 +169,16 @@ describe("modals", function() {
 
       var styleObj = helper.getStyleStore(browser);
       assert.equal(styleObj.metadata["maputnik:openmaptiles_access_token"], apiKey);
+    })
+
+    it("thunderforest access token", function() {
+      var apiKey = "testing123";
+      browser.setValueSafe(wd.$("modal-settings.maputnik:thunderforest_access_token"), apiKey);
+      browser.click(wd.$("modal-settings.name"))
+      browser.flushReactUpdates();
+
+      var styleObj = helper.getStyleStore(browser);
+      assert.equal(styleObj.metadata["maputnik:thunderforest_access_token"], apiKey);
     })
 
     it("style renderer", function() {
