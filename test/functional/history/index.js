@@ -13,6 +13,7 @@ describe.skip("history", function() {
     browser.url(config.baseUrl+"?debug&style="+helper.getStyleUrl([
       "geojson:example"
     ]));
+    browser.alertAccept();
 
     helper.modal.addLayer.open();
 

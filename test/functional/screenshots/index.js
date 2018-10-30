@@ -18,6 +18,7 @@ describe('screenshots', function() {
     browser.url(config.baseUrl+"?debug&style="+helper.getStyleUrl([
       "geojson:example"
     ]));
+    browser.alertAccept();
     browser.waitForExist(".maputnik-toolbar-link");
     browser.flushReactUpdates();
 
@@ -28,6 +29,7 @@ describe('screenshots', function() {
     browser.url(config.baseUrl+"?debug&style="+helper.getStyleUrl([
       "geojson:example"
     ]));
+    browser.alertAccept();
     browser.waitForExist(".maputnik-toolbar-link");
     browser.flushReactUpdates();
 
@@ -41,6 +43,7 @@ describe('screenshots', function() {
     browser.url(config.baseUrl+"?debug&style="+helper.getStyleUrl([
       "geojson:example"
     ]));
+    browser.alertAccept();
     browser.waitForExist(".maputnik-toolbar-link");
     browser.flushReactUpdates();
 
@@ -54,6 +57,7 @@ describe('screenshots', function() {
     browser.url(config.baseUrl+"?debug&style="+helper.getStyleUrl([
       "geojson:example"
     ]));
+    browser.alertAccept();
     browser.waitForExist(".maputnik-toolbar-link");
     browser.flushReactUpdates();
 
@@ -67,6 +71,7 @@ describe('screenshots', function() {
     browser.url(config.baseUrl+"?debug&style="+helper.getStyleUrl([
       "geojson:example"
     ]));
+    browser.alertAccept();
     browser.waitForExist(".maputnik-toolbar-link");
     browser.flushReactUpdates();
 
@@ -80,6 +85,7 @@ describe('screenshots', function() {
     browser.url(config.baseUrl+"?debug&style="+helper.getStyleUrl([
       "geojson:example"
     ]));
+    browser.alertAccept();
     browser.waitForExist(".maputnik-toolbar-link");
     browser.flushReactUpdates();
 
