@@ -74,50 +74,39 @@ export default class App extends React.Component {
     })
 
     
-    const keyCodes = {
-      "esc": 27,
-      "?": 191,
-      "o": 79,
-      "e": 69,
-      "s": 83,
-      "d": 68,
-      "i": 73,
-      "m": 77,
-    }
-
     const shortcuts = [
       {
-        keyCode: keyCodes["?"],
+        key: "?",
         handler: () => {
           this.toggleModal("shortcuts");
         }
       },
       {
-        keyCode: keyCodes["o"],
+        key: "o",
         handler: () => {
           this.toggleModal("open");
         }
       },
       {
-        keyCode: keyCodes["e"],
+        key: "e",
         handler: () => {
           this.toggleModal("export");
         }
       },
       {
-        keyCode: keyCodes["d"],
+        key: "d",
         handler: () => {
           this.toggleModal("sources");
         }
       },
       {
-        keyCode: keyCodes["s"],
+        key: "s",
         handler: () => {
           this.toggleModal("settings");
         }
       },
       {
-        keyCode: keyCodes["i"],
+        key: "i",
         handler: () => {
           this.setMapState(
             this.state.mapState === "map" ? "inspect" : "map"
@@ -125,7 +114,7 @@ export default class App extends React.Component {
         }
       },
       {
-        keyCode: keyCodes["m"],
+        key: "m",
         handler: () => {
           document.querySelector(".mapboxgl-canvas").focus();
         }
@@ -133,13 +122,13 @@ export default class App extends React.Component {
     ]
 
     document.body.addEventListener("keyup", (e) => {
-      if(e.keyCode === keyCodes["esc"]) {
+      if(e.key === "Escape") {
         e.target.blur();
         document.body.focus();
       }
       else if(this.state.isOpen.shortcuts || document.activeElement === document.body) {
         const shortcut = shortcuts.find((shortcut) => {
-          return (shortcut.keyCode === e.keyCode)
+          return (shortcut.key === e.key)
         })
 
         if(shortcut) {
