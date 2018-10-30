@@ -9,6 +9,7 @@ describe("map", function() {
       browser.url(config.baseUrl+"?debug&style="+helper.getStyleUrl([
         "geojson:example"
       ])+"#"+zoomLevel+"/41.3805/2.1635");
+      browser.alertAccept();
 
       browser.waitUntil(function () {
         return (
@@ -22,6 +23,7 @@ describe("map", function() {
       browser.url(config.baseUrl+"?debug&style="+helper.getStyleUrl([
         "geojson:example"
       ])+"#"+zoomLevel+"/41.3805/2.1635");
+      browser.alertAccept();
 
       browser.click(".mapboxgl-ctrl-zoom-in")
       browser.waitUntil(function () {

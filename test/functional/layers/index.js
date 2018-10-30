@@ -11,6 +11,7 @@ describe("layers", function() {
       "geojson:example",
       "raster:raster"
     ]));
+    browser.alertAccept();
     browser.waitForExist(".maputnik-toolbar-link");
     browser.flushReactUpdates();
 
@@ -449,6 +450,7 @@ describe("layers", function() {
       browser.url(config.baseUrl+"?debug&style="+getStyleUrl([
         "geojson:example"
       ]));
+      browser.alertAccept();
 
       helper.modal.addLayer.open();
       var aId = helper.modal.addLayer.fill({
