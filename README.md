@@ -39,7 +39,7 @@ The documentation can be found in the [Wiki](https://github.com/maputnik/editor/
 
 Maputnik is written in ES6 and is using [React](https://github.com/facebook/react) and [Mapbox GL JS](https://www.mapbox.com/mapbox-gl-js/api/).
 
-We ensure building and developing Maputnik works with the [current active LTS and above](https://github.com/nodejs/Release#release-schedule).
+We ensure building and developing Maputnik works with the [current active LTS Node.js version and above](https://github.com/nodejs/Release#release-schedule).
 
 Install the deps, start the dev server and open the web browser on `http://localhost:8888/`.
 
@@ -75,7 +75,7 @@ For testing we use [webdriverio](http://webdriver.io) and [selenium-standalone](
 
 [selenium-standalone](https://github.com/vvo/selenium-standalone) starts a server that will launch browsers on your local machine. We use chrome so you **must** have chrome installed on your machine.
 
-Now open and terminal and run the following. This will install the drivers on your local machine
+Now open a terminal and run the following. This will install the drivers on your local machine
 
 ```
 ./node_modules/.bin/selenium-standalone install
