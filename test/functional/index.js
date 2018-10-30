@@ -11,6 +11,7 @@ describe('maputnik', function() {
       "geojson:example",
       "raster:raster"
     ]));
+    browser.alertAccept();
     browser.execute(function() {
       localStorage.setItem("survey", true);
     });

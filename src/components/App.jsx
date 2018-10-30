@@ -23,7 +23,7 @@ import SurveyModal from './modals/SurveyModal'
 import { downloadGlyphsMetadata, downloadSpriteMetadata } from '../libs/metadata'
 import {latest, validate} from '@mapbox/mapbox-gl-style-spec'
 import style from '../libs/style'
-import { initialStyleUrl, loadStyleUrl } from '../libs/urlopen'
+import { initialStyleUrl, loadStyleUrl, removeStyleQuerystring } from '../libs/urlopen'
 import { undoMessages, redoMessages } from '../libs/diffmessage'
 import { StyleStore } from '../libs/stylestore'
 import { ApiStyleStore } from '../libs/apistore'
@@ -147,10 +147,14 @@ export default class App extends React.Component {
     })
 
     const styleUrl = initialStyleUrl()
-    if(styleUrl) {
+    if(styleUrl && window.confirm("Load style from URL: " + styleUrl + " and discard current changes?")) {
       this.styleStore = new StyleStore()
       loadStyleUrl(styleUrl, mapStyle => this.onStyleChanged(mapStyle))
+      removeStyleQuerystring()
     } else {
+      if(styleUrl) {
+        removeStyleQuerystring()
+      }
       this.styleStore.init(err => {
         if(err) {
           console.log('Falling back to local storage for storing styles')
