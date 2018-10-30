@@ -100,10 +100,17 @@
   background: inherit;
   border-width: 0;
   @extend .maputnik-toolbar-link;
-}
 
-.maputnik-toolbar-select select {
-  margin-left: 4px;
+  select {
+    // HACK: <https://github.com/maputnik/editor/pull/392#issuecomment-427595172>
+    color: $color-black !important;
+    margin-left: 4px;
+
+    option {
+      // HACK: <https://github.com/maputnik/editor/pull/392#issuecomment-427595172>
+      color: $color-black !important;
+    }
+  }
 }
 
 .maputnik-icon-text {
