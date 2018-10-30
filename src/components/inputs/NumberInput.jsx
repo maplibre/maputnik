@@ -68,14 +68,42 @@ class NumberInput extends React.Component {
   }
 
   render() {
-    return <input
-      spellCheck="false"
-      className="maputnik-number"
-      placeholder={this.props.default}
-      value={this.state.value}
-      onChange={e => this.changeValue(e.target.value)}
-      onBlur={this.resetValue}
-    />
+    let rangeEl;
+
+    if(
+      this.props.hasOwnProperty("min") && this.props.hasOwnProperty("max") &&
+      this.props.min !== undefined && this.props.max !== undefined &&
+      this.props.allowRange
+    ) {
+      rangeEl = (
+        <input
+          style={{width: "calc(100% - 4em)", flexShrink: "0"}}
+          key="range"
+          type="range"
+          step="0.01"
+          max={this.props.max}
+          min={this.props.min}
+          spellCheck="false"
+          className="maputnik-number"
+          value={this.state.value || this.props.default}
+          onChange={e => this.changeValue(e.target.value)}
+          onBlur={this.resetValue}
+        />
+      );
+    }
+
+    return <div style={{display: "flex"}}>
+      {rangeEl}
+      <input
+        key="text"
+        spellCheck="false"
+        className="maputnik-number"
+        placeholder={this.props.default}
+        value={this.state.value}
+        onChange={e => this.changeValue(e.target.value)}
+        onBlur={this.resetValue}
+      />
+    </div>
   }
 }
 

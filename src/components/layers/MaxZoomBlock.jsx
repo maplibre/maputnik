@@ -16,6 +16,7 @@ class MaxZoomBlock extends React.Component {
       data-wd-key="max-zoom"
     >
       <NumberInput
+        allowRange={true}
         value={this.props.value}
         onChange={this.props.onChange}
         min={latest.layer.maxzoom.minimum}
