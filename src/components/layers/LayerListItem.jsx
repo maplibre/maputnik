@@ -2,7 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import classnames from 'classnames'
 
-import {MdContentCopy, MdVisibility, MdVisibilityOff, MdDelete} from 'react-icons/md'
+import {MdMenu, MdContentCopy, MdVisibility, MdVisibilityOff, MdDelete} from 'react-icons/md'
 
 import LayerIcon from '../icons/LayerIcon'
 import {SortableElement, SortableHandle} from 'react-sortable-hoc'
@@ -11,15 +11,15 @@ class LayerTypeDragHandle extends React.Component {
   static propTypes = LayerIcon.propTypes
 
   render() {
-    return <LayerIcon
-      {...this.props}
-      style={{
-        cursor: 'move',
-        width: 14,
-        height: 14,
-        paddingRight: 3,
-      }}
-    />
+    return <div className="layer-handle">
+      <div className="layer-handle__handle">
+        <MdMenu style={{marginRight: "5px"}} />
+      </div>
+      <LayerIcon
+        className="layer-handle__icon"
+        {...this.props}
+      />
+    </div>
   }
 }
 

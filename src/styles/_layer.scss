@@ -42,6 +42,8 @@
     opacity: 1;
     -webkit-transition: opacity 600ms, visibility 600ms;
     transition: opacity 600ms, visibility 600ms;
+    padding-left: 0;
+    margin-left: -4px;
 
     @media screen and (prefers-reduced-motion: reduce) {
       transition-duration: 0;
@@ -111,6 +113,8 @@
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+    color: inherit;
+    text-decoration: none;
   }
 
   &-group-header {
@@ -229,3 +233,30 @@
     min-width: 28px;
   }
 }
+
+.layer-handle {
+  width: 35px;
+  flex-shrink: 0;
+  cursor: move;
+
+  &__handle {
+    margin-right: 4px;
+    display: inline-block;
+    width: 14px;
+    height: 14px;
+
+    :not(:hover) {
+      path {
+        fill: #555;
+      }
+    }
+  }
+
+  &__icon {
+    padding-right: 3px;
+    display: inline-block;
+    width: 14px;
+    height: 14px;
+  }
+}
+
