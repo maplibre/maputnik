@@ -195,6 +195,11 @@
 .more-menu {
   position: relative;
 
+  svg {
+    width: 22px;
+    height: 22px;
+  }
+
   &__menu {
     position: absolute;
     z-index: 9999;
