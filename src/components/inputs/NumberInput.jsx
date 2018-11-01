@@ -8,6 +8,12 @@ class NumberInput extends React.Component {
     min: PropTypes.number,
     max: PropTypes.number,
     onChange: PropTypes.func,
+    allowRange: PropTypes.bool,
+    rangeStep: PropTypes.number,
+  }
+
+  static defaultProps = {
+    rangeStep: 0.01
   }
 
   constructor(props) {
@@ -80,7 +86,7 @@ class NumberInput extends React.Component {
           style={{width: "calc(100% - 4em)", flexShrink: "0"}}
           key="range"
           type="range"
-          step="0.01"
+          step={this.props.rangeStep}
           max={this.props.max}
           min={this.props.min}
           spellCheck="false"

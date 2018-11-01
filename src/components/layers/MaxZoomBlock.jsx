@@ -17,6 +17,7 @@ class MaxZoomBlock extends React.Component {
     >
       <NumberInput
         allowRange={true}
+        rangeStep={0.1}
         value={this.props.value}
         onChange={this.props.onChange}
         min={latest.layer.maxzoom.minimum}
