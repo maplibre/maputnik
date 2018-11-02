@@ -69,7 +69,7 @@ class NumberInput extends React.Component {
   }
 
   onChangeRange = (e) => {
-    const val = parseFloat(rawValue, 10);
+    const val = parseFloat(e.target.value, 10);
     const step = this.props.rangeStep;
     let out = val;
 
