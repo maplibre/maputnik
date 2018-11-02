@@ -2,7 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import classnames from 'classnames'
 
-import {MdMenu, MdContentCopy, MdVisibility, MdVisibilityOff, MdDelete} from 'react-icons/md'
+import {MdContentCopy, MdVisibility, MdVisibilityOff, MdDelete} from 'react-icons/md'
 
 import LayerIcon from '../icons/LayerIcon'
 import {SortableElement, SortableHandle} from 'react-sortable-hoc'
