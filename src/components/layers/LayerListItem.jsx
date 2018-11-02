@@ -7,23 +7,16 @@ import {MdContentCopy, MdVisibility, MdVisibilityOff, MdDelete} from 'react-icon
 import LayerIcon from '../icons/LayerIcon'
 import {SortableElement, SortableHandle} from 'react-sortable-hoc'
 
-class LayerTypeDragHandle extends React.Component {
-  static propTypes = LayerIcon.propTypes
 
-  render() {
-    return <LayerIcon
-      {...this.props}
-      style={{
-        cursor: 'move',
-        width: 14,
-        height: 14,
-        paddingRight: 3,
-      }}
+const DraggableLabel = SortableHandle((props) => {
+  return <div className="maputnik-layer-list-item-handle">
+    <LayerIcon
+      className="layer-handle__icon"
+      type={props.layerType}
     />
-  }
-}
-
-const LayerTypeDragHandleSortable = SortableHandle((props) => <LayerTypeDragHandle {...props} />)
+    <span className="maputnik-layer-list-item-id">{props.layerId}</span>
+  </div>
+});
 
 class IconAction extends React.Component {
   static propTypes = {
@@ -111,8 +104,7 @@ class LayerListItem extends React.Component {
         "maputnik-layer-list-item-selected": this.props.isSelected,
         [this.props.className]: true,
       })}>
-        <LayerTypeDragHandleSortable type={this.props.layerType} />
-        <span className="maputnik-layer-list-item-id">{this.props.layerId}</span>
+        <DraggableLabel {...this.props} />
         <span style={{flexGrow: 1}} />
         <IconAction
           wdKey={"layer-list-item:"+this.props.layerId+":delete"}
