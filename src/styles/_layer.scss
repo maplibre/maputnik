@@ -234,3 +234,10 @@
     min-width: 28px;
   }
 }
+
+// Clone of the element which is sorted
+.sortableHelper {
+  font-family: $font-family;
+  z-index: 9999;
+  border: none;
+}
