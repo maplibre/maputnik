@@ -23,18 +23,13 @@ class NumberInput extends React.Component {
     }
   }
 
-  static getDerivedStateFromProps(props, state) {
-    return {
-      value: props.value
-    };
-  }
-
   changeValue(newValue) {
     const value = parseFloat(newValue)
 
     const hasChanged = this.state.value !== value
     if(this.isValid(value) && hasChanged) {
       this.props.onChange(value)
+      this.setState({ value: value })
     } else {
       this.setState({ value: newValue })
     }
@@ -73,6 +68,27 @@ class NumberInput extends React.Component {
     }
   }
 
+  onChangeRange = (e) => {
+    const val = parseFloat(rawValue, 10);
+    const step = this.props.rangeStep;
+    let out = val;
+
+    if(step) {
+      // Can't do this with the <input/> range step attribute else we won't be able to set a high precision value via the text input.
+      const snap = val % step;
+
+      // Round up/down to step
+      if (snap < step/2) {
+        out = val - snap;
+      }
+      else {
+        out = val + (step - snap);
+      };
+    }
+
+    this.changeValue(out);
+  }
+
   render() {
     let rangeEl;
 
@@ -83,22 +99,21 @@ class NumberInput extends React.Component {
     ) {
       rangeEl = (
         <input
-          style={{width: "calc(100% - 4em)", flexShrink: "0"}}
+          className="maputnik-number-range"
           key="range"
           type="range"
-          step={this.props.rangeStep}
           max={this.props.max}
           min={this.props.min}
+          step="any"
           spellCheck="false"
-          className="maputnik-number"
-          value={this.state.value || this.props.default}
-          onChange={e => this.changeValue(e.target.value)}
+          value={this.state.value}
+          onChange={this.onChangeRange}
           onBlur={this.resetValue}
         />
       );
     }
 
-    return <div style={{display: "flex"}}>
+    return <div className="maputnik-number-container">
       {rangeEl}
       <input
         key="text"
