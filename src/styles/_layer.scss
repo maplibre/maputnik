@@ -206,6 +206,11 @@
 .more-menu {
   position: relative;
 
+  svg {
+    width: 22px;
+    height: 22px;
+  }
+
   &__menu {
     position: absolute;
     z-index: 9999;
@@ -241,3 +246,9 @@
   }
 }
 
+// Clone of the element which is sorted
+.sortableHelper {
+  font-family: $font-family;
+  z-index: 9999;
+  border: none;
+}

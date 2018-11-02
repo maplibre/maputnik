@@ -46,7 +46,7 @@ class LayerListContainer extends React.Component {
     areAllGroupsExpanded: false,
     isOpen: {
       add: false,
-    } 
+    }
   }
 
   toggleModal(modalName) {
@@ -66,12 +66,12 @@ class LayerListContainer extends React.Component {
     this.groupedLayers().forEach(layers => {
       const groupPrefix = layerPrefix(layers[0].id)
       const lookupKey = [groupPrefix, idx].join('-')
-      
+
 
       if (layers.length > 1) {
         newGroups[lookupKey] = this.state.areAllGroupsExpanded
       }
-      
+
       layers.forEach((layer) => {
         idx += 1
       })
@@ -204,6 +204,7 @@ export default class LayerList extends React.Component {
   render() {
     return <LayerListContainerSortable
       {...this.props}
+      helperClass='sortableHelper'
       onSortEnd={this.props.onMoveLayer.bind(this)}
       useDragHandle={true}
     />
