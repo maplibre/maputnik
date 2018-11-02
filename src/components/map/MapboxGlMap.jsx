@@ -114,6 +114,7 @@ export default class MapboxGlMap extends React.Component {
     if (map) {
       map.showTileBoundaries = this.props.options.showTileBoundaries;
       map.showCollisionBoxes = this.props.options.showCollisionBoxes;
+      map.showOverdrawInspector = this.props.options.showOverdrawInspector;
     }
   }
 
@@ -131,6 +132,7 @@ export default class MapboxGlMap extends React.Component {
 
     map.showTileBoundaries = mapOpts.showTileBoundaries;
     map.showCollisionBoxes = mapOpts.showCollisionBoxes;
+    map.showOverdrawInspector = mapOpts.showOverdrawInspector;
 
     const zoom = new ZoomControl;
     map.addControl(zoom, 'top-right');

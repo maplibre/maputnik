@@ -73,7 +73,7 @@ export default class App extends React.Component {
       onLocalStyleChange: mapStyle => this.onStyleChanged(mapStyle, false)
     })
 
-    
+
     const shortcuts = [
       {
         key: "?",
@@ -187,7 +187,8 @@ export default class App extends React.Component {
       },
       mapOptions: {
         showTileBoundaries: queryUtil.asBool(queryObj, "show-tile-boundaries"),
-        showCollisionBoxes: queryUtil.asBool(queryObj, "show-collision-boxes")
+        showCollisionBoxes: queryUtil.asBool(queryObj, "show-collision-boxes"),
+        showOverdrawInspector: queryUtil.asBool(queryObj, "show-overdraw-inspector")
       },
     }
 
