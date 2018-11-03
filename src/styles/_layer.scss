@@ -171,7 +171,7 @@
 // PROPERTY
 .maputnik-default-property {
   .maputnik-input-block-label {
-    color: darken($color-lowgray, 25%);
+    color: darken($color-lowgray, 20%);
   }
 
   .maputnik-string,
@@ -180,7 +180,7 @@
   .maputnik-select,
   .maputnik-checkbox-wrapper {
     background-color: darken($color-gray, 2%);
-    color: darken($color-lowgray, 25%);
+    color: darken($color-lowgray, 20%);
   }
 
   .maputnik-make-zoom-function svg {
@@ -189,7 +189,7 @@
 
   .maputnik-multibutton .maputnik-button {
     background-color: darken($color-midgray, 10%);
-    color: darken($color-lowgray, 25%);
+    color: darken($color-lowgray, 20%);
 
     &:hover {
       background-color: lighten($color-midgray, 12);
