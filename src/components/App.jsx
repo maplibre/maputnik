@@ -259,6 +259,11 @@ export default class App extends React.Component {
       this.revisionStore.addRevision(newStyle)
       if(save) this.saveStyle(newStyle)
       this.setState({
+        mapStyle: style.replaceAccessTokens(newStyle, {allowFallback: true}),
+        errors: [],
+      })
+      this.fetchSources()
+      this.setState({
         mapStyle: newStyle,
         errors: [],
       })
@@ -266,9 +271,9 @@ export default class App extends React.Component {
       this.setState({
         errors: errors.map(err => err.message)
       })
+      this.fetchSources()
     }
 
-    this.fetchSources();
   }
 
   onUndo = () => {
