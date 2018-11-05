@@ -260,7 +260,6 @@ export default class App extends React.Component {
       if(save) this.saveStyle(newStyle)
       this.setState({
         mapStyle: style.replaceAccessTokens(newStyle, {allowFallback: true}),
-        errors: [],
       })
       this.fetchSources()
       this.setState({
