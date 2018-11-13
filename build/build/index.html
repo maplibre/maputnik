@@ -1,0 +1,157 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Maputnik</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="manifest" href="manifest.json">
+  <style>
+    html {
+      background-color: rgb(28, 31, 36);
+    }
+    #loader,
+    #loader:before,
+    #loader:after {
+      border-radius: 50%;
+      width: 2.5em;
+      height: 2.5em;
+      -webkit-animation-fill-mode: both;
+      animation-fill-mode: both;
+      -webkit-animation: pulseload 1.8s infinite ease-in-out;
+      animation: pulseload 1.8s infinite ease-in-out;
+    }
+    #loader {
+      color: #ffffff;
+      font-size: 10px;
+      margin: 80px auto;
+      position: relative;
+      text-indent: -9999em;
+      -webkit-transform: translateZ(0);
+      -ms-transform: translateZ(0);
+      transform: translateZ(0);
+      -webkit-animation-delay: -0.16s;
+      animation-delay: -0.16s;
+    }
+    #loader:before,
+    #loader:after {
+      content: '';
+      position: absolute;
+      top: 0;
+    }
+    #loader:before {
+      left: -3.5em;
+      -webkit-animation-delay: -0.32s;
+      animation-delay: -0.32s;
+    }
+    #loader:after {
+      left: 3.5em;
+    }
+    @-webkit-keyframes pulseload {
+      0%,
+      80%,
+      100% {
+        box-shadow: 0 2.5em 0 -1.3em;
+      }
+      40% {
+        box-shadow: 0 2.5em 0 0;
+      }
+    }
+    @keyframes pulseload {
+      0%,
+      80%,
+      100% {
+        box-shadow: 0 2.5em 0 -1.3em;
+      }
+      40% {
+        box-shadow: 0 2.5em 0 0;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- TODO: Import dynamically -->
+  <!-- From <https://github.com/hail2u/color-blindness-emulation> -->
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    version="1.1">
+    <defs>
+      <filter id="protanopia">
+        <feColorMatrix
+          in="SourceGraphic"
+          type="matrix"
+          values="0.567, 0.433, 0,     0, 0
+                  0.558, 0.442, 0,     0, 0
+                  0,     0.242, 0.758, 0, 0
+                  0,     0,     0,     1, 0"/>
+      </filter>
+      <filter id="protanomaly">
+        <feColorMatrix
+          in="SourceGraphic"
+          type="matrix"
+          values="0.817, 0.183, 0,     0, 0
+                  0.333, 0.667, 0,     0, 0
+                  0,     0.125, 0.875, 0, 0
+                  0,     0,     0,     1, 0"/>
+      </filter>
+      <filter id="deuteranopia">
+        <feColorMatrix
+          in="SourceGraphic"
+          type="matrix"
+          values="0.625, 0.375, 0,   0, 0
+                  0.7,   0.3,   0,   0, 0
+                  0,     0.3,   0.7, 0, 0
+                  0,     0,     0,   1, 0"/>
+      </filter>
+      <filter id="deuteranomaly">
+        <feColorMatrix
+          in="SourceGraphic"
+          type="matrix"
+          values="0.8,   0.2,   0,     0, 0
+                  0.258, 0.742, 0,     0, 0
+                  0,     0.142, 0.858, 0, 0
+                  0,     0,     0,     1, 0"/>
+      </filter>
+      <filter id="tritanopia">
+        <feColorMatrix
+          in="SourceGraphic"
+          type="matrix"
+          values="0.95, 0.05,  0,     0, 0
+                  0,    0.433, 0.567, 0, 0
+                  0,    0.475, 0.525, 0, 0
+                  0,    0,     0,     1, 0"/>
+      </filter>
+      <filter id="tritanomaly">
+        <feColorMatrix
+          in="SourceGraphic"
+          type="matrix"
+          values="0.967, 0.033, 0,     0, 0
+                  0,     0.733, 0.267, 0, 0
+                  0,     0.183, 0.817, 0, 0
+                  0,     0,     0,     1, 0"/>
+      </filter>
+      <filter id="achromatopsia">
+        <feColorMatrix
+          in="SourceGraphic"
+          type="matrix"
+          values="0.299, 0.587, 0.114, 0, 0
+                  0.299, 0.587, 0.114, 0, 0
+                  0.299, 0.587, 0.114, 0, 0
+                  0,     0,     0,     1, 0"/>
+      </filter>
+      <filter id="achromatomaly">
+        <feColorMatrix
+          in="SourceGraphic"
+          type="matrix"
+          values="0.618, 0.320, 0.062, 0, 0
+                  0.163, 0.775, 0.062, 0, 0
+                  0.163, 0.320, 0.516, 0, 0
+                  0,     0,     0,     1, 0"/>
+      </filter>
+    </defs>
+  </svg>
+
+  <div id="app">
+    <div id="loader">Loading...</div>
+  </div>
+<script type="text/javascript" src="app.c7d68e2094c238bbc5c2.js"></script></body>
+</html>
