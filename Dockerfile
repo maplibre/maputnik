@@ -12,4 +12,5 @@ WORKDIR ${HOME}
 RUN npm install -d --dev
 RUN npm run build
 
-CMD npm run start -- --host 0.0.0.0
+WORKDIR ${HOME}/build/build
+CMD python -m SimpleHTTPServer 8888
