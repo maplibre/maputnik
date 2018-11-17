@@ -132,7 +132,7 @@
     "stylelint-scss": "^3.3.1",
     "transform-loader": "^0.2.4",
     "uuid": "^3.3.2",
-    "wdio-mocha-framework": "^0.6.3",
+    "wdio-mocha-framework": "^0.6.4",
     "wdio-selenium-standalone-service": "0.0.10",
     "wdio-spec-reporter": "^0.1.5",
     "webdriverio": "^4.13.2",
