@@ -1,4 +1,4 @@
-image: Visual Studio 2017
+image: Previous Visual Studio 2017
 environment:
   matrix:
     - nodejs_version: "8"
