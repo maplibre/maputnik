@@ -49,6 +49,25 @@ function normalizeSourceURL (url, apiToken="") {
   }
 }
 
+function setFetchAccessToken(url, mapStyle) {
+  const matchesTilehosting = url.match(/\.tilehosting\.com/);
+  const matchesThunderforest = url.match(/\.thunderforest\.com/);
+  if (matchesTilehosting) {
+    const accessToken = style.getAccessToken("openmaptiles", mapStyle, {allowFallback: true})
+    if (accessToken) {
+      return url.replace('{key}', accessToken)
+    }
+  }
+  else if (matchesThunderforest) {
+    const accessToken = style.getAccessToken("thunderforest", mapStyle, {allowFallback: true})
+    if (accessToken) {
+      return url.replace('{key}', accessToken)
+    }
+  }
+  else {
+    return url;
+  }
+}
 
 function updateRootSpec(spec, fieldName, newValues) {
   return {
@@ -396,6 +415,12 @@ export default class App extends React.Component {
           url = normalizeSourceURL(url, MapboxGl.accessToken);
         } catch(err) {
           console.warn("Failed to normalizeSourceURL: ", err);
+        }
+
+        try {
+          url = setFetchAccessToken(url, this.state.mapStyle)
+        } catch(err) {
+          console.warn("Failed to setFetchAccessToken: ", err);
         }
 
         fetch(url, {
