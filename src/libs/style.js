@@ -119,5 +119,6 @@ export default {
   emptyStyle,
   indexOfLayer,
   generateId,
+  getAccessToken,
   replaceAccessTokens,
 }
