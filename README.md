@@ -1,12 +1,12 @@
 # Maputnik
 
-[![Build Status](https://circleci.com/gh/maputnik/editor.svg?style=shield)][circleci]
+[![Build Status](https://circleci.com/gh/maputnik/editor/tree/master.svg?style=shield)][circleci]
 [![Windows Build Status](https://ci.appveyor.com/api/projects/status/anelbgv6jdb3qnh9/branch/master?svg=true)][appveyor]
 [![Dependency Status](https://david-dm.org/maputnik/editor.svg)][dm-prod]
 [![Dev Dependency Status](https://david-dm.org/maputnik/editor/dev-status.svg)][dm-dev]
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)][license]
 
-[circleci]:    https://circleci.com/gh/maputnik/editor
+[circleci]:    https://circleci.com/gh/maputnik/editor/tree/master
 [appveyor]:    https://ci.appveyor.com/project/lukasmartinelli/editor
 [dm-prod]:     https://david-dm.org/maputnik/editor
 [dm-dev]:      https://david-dm.org/maputnik/editor#info=devDependencies
