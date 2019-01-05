@@ -81,6 +81,7 @@ export default class SpecField extends React.Component {
               options={options}
             />
           }
+        case 'formatted':
         case 'string':
           if(iconProperties.indexOf(this.props.fieldName) >= 0) {
             return <IconInput
