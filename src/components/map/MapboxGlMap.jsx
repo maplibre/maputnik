@@ -77,9 +77,6 @@ export default class MapboxGlMap extends React.Component {
     this.state = {
       map: null,
       inspect: null,
-      isPopupOpen: false,
-      popupX: 0,
-      popupY: 0,
     }
   }
 
