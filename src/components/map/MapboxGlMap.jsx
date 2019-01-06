@@ -17,10 +17,12 @@ import '../../libs/mapbox-rtl'
 
 const IS_SUPPORTED = MapboxGl.supported();
 
-function renderPropertyPopup(features) {
+function renderPopup(popup) {
   var mountNode = document.createElement('div');
-  ReactDOM.render(<FeaturePropertyPopup features={features} />, mountNode)
-  return mountNode.innerHTML;
+  ReactDOM.render(popup, mountNode)
+  var content = mountNode.innerHTML;
+  ReactDOM.unmountComponentAtNode(mountNode);
+  return content;
 }
 
 function buildInspectStyle(originalMapStyle, coloredLayers, highlightedLayer) {
@@ -162,11 +164,9 @@ export default class MapboxGlMap extends React.Component {
       buildInspectStyle: (originalMapStyle, coloredLayers) => buildInspectStyle(originalMapStyle, coloredLayers, this.props.highlightedLayer),
       renderPopup: features => {
         if(this.props.inspectModeEnabled) {
-          return renderPropertyPopup(features)
+          return renderPopup(<FeaturePropertyPopup features={features} />);
         } else {
-          var mountNode = document.createElement('div');
-          ReactDOM.render(<FeatureLayerPopup features={features} onLayerSelect={this.props.onLayerSelect} />, mountNode)
-          return mountNode
+          return renderPopup(<FeatureLayerPopup features={features} onLayerSelect={this.props.onLayerSelect} />);
         }
       }
     })
