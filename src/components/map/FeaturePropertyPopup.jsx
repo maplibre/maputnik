@@ -43,7 +43,7 @@ function removeDuplicatedFeatures(features) {
     if(featureIndex === -1) {
       uniqueFeatures.push(feature)
     } else {
-      if(uniqueFeatures[featureIndex].hasOwnProperty('counter')) {
+      if(uniqueFeatures[featureIndex].hasOwnProperty('inspectModeCounter')) {
         uniqueFeatures[featureIndex].inspectModeCounter++
       } else {
         uniqueFeatures[featureIndex].inspectModeCounter = 2
