@@ -174,6 +174,9 @@ export default class MapboxGlMap extends React.Component {
 
     map.on("style.load", () => {
       this.setState({ map, inspect });
+      if(this.props.inspectModeEnabled) {
+        inspect.toggleInspector();
+      }
     })
 
     map.on("data", e => {
