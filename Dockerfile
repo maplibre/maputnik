@@ -9,7 +9,7 @@ COPY . ${HOME}/
 
 WORKDIR ${HOME}
 
-RUN npm install -d --dev
+RUN npm install -d --only=dev
 RUN npm run build
 
 WORKDIR ${HOME}/build/build
