@@ -1,6 +1,5 @@
 os:
 - linux
-- osx
 language: go
 go:
 - 1.7.x
