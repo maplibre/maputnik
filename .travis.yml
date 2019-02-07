@@ -7,7 +7,9 @@ go:
 addons:
   artifacts:
     paths:
-    - maputnik
+    - maputnik_linux
+    - maputnik_darwin
+    - maputnik_windows.exe
 install:
 - go get -u golang.org/x/sys/...
 - go get github.com/fsnotify/fsnotify
@@ -17,6 +19,7 @@ install:
 - go get github.com/urfave/cli
 - go get github.com/elazarl/go-bindata-assetfs/...
 - go get github.com/jteeuwen/go-bindata/...
+- go get github.com/mitchellh/gox
 - wget https://raw.githubusercontent.com/openmaptiles/klokantech-basic-gl-style/master/style.json
 script:
 - make

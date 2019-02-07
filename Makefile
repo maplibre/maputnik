@@ -6,7 +6,7 @@ EDITOR_VERSION ?= v1.5.0
 all: $(BINARY)
 
 $(BINARY): $(SOURCES) bindata_assetfs.go
-	go build -o ${BINARY}
+	gox -osarch "windows/amd64 linux/amd64 darwin/amd64" -output "${BINARY}_{{.OS}}"
 
 editor/create_folder:
 	mkdir -p editor
@@ -19,4 +19,4 @@ bindata_assetfs.go: editor/pull_release
 
 .PHONY: clean
 clean:
-	rm -rf editor/public && rm -f bindata.go && rm -f bindata_assetfs.go && rm -f maputnik
+	rm -rf editor/public && rm -f bindata.go && rm -f bindata_assetfs.go && rm -f maputnik_*

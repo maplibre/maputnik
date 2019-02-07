@@ -54,11 +54,10 @@ maputnik --watch --file basic-v9.json
 
 ### Build
 
-Clone the repository **recursively** since the Maputnik editor is embedded
-as submodule. Make sure you clone it into the correct directory `$GOPATH/src/github.com/maputnik`.
+Clone the repository. Make sure you clone it into the correct directory `$GOPATH/src/github.com/maputnik`.
 
 ```
-git clone --recursive git@github.com:maputnik/desktop.git
+git clone git@github.com:maputnik/desktop.git
 ```
 
 Install the 3rd party dependencies.
@@ -72,6 +71,7 @@ go get github.com/fsnotify/fsnotify
 go get github.com/urfave/cli
 go get github.com/elazarl/go-bindata-assetfs/...
 go get github.com/jteeuwen/go-bindata/...
+go get github.com/mitchellh/gox
 ```
 
 Run `make` to build the app distribution bundle and create the `maputnik` binary
