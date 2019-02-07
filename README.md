@@ -60,25 +60,10 @@ Clone the repository. Make sure you clone it into the correct directory `$GOPATH
 git clone git@github.com:maputnik/desktop.git
 ```
 
-Install the 3rd party dependencies.
-
-```
-go get -u golang.org/x/sys/...
-go get github.com/gorilla/handlers
-go get github.com/gorilla/mux
-go get github.com/gorilla/websocket
-go get github.com/fsnotify/fsnotify
-go get github.com/urfave/cli
-go get github.com/elazarl/go-bindata-assetfs/...
-go get github.com/jteeuwen/go-bindata/...
-go get github.com/mitchellh/gox
-```
-
-Run `make` to build the app distribution bundle and create the `maputnik` binary
-embedding the editor.
+Run `make` to install the 3rd party dependencies and build the `maputnik` binary embedding the editor.
 
 ```
 make
 ```
 
-You should now find the `maputnik` binary in your directory.
+You should now find the `maputnik` binary in your `bin` directory.

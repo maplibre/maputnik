@@ -5,10 +5,21 @@ EDITOR_VERSION ?= v1.5.0
 
 all: $(BINARY)
 
+dependencies:
+	go get -u golang.org/x/sys/...
+	go get github.com/gorilla/handlers
+	go get github.com/gorilla/mux
+	go get github.com/gorilla/websocket
+	go get github.com/fsnotify/fsnotify
+	go get github.com/urfave/cli
+	go get github.com/elazarl/go-bindata-assetfs/...
+	go get github.com/jteeuwen/go-bindata/...
+	go get github.com/mitchellh/gox
+
 $(BINARY): $(SOURCES) bindata_assetfs.go
 	gox -osarch "windows/amd64 linux/amd64 darwin/amd64" -output "bin/{{.OS}}/${BINARY}"
 
-editor/create_folder:
+editor/create_folder: dependencies
 	mkdir -p editor
 
 editor/pull_release: editor/create_folder
