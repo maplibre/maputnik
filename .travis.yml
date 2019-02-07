@@ -9,8 +9,6 @@ addons:
     paths:
     - maputnik
 install:
-- nvm install 6
-- nvm use 6
 - go get -u golang.org/x/sys/...
 - go get github.com/fsnotify/fsnotify
 - go get github.com/gorilla/handlers
@@ -21,7 +19,6 @@ install:
 - go get github.com/jteeuwen/go-bindata/...
 - wget https://raw.githubusercontent.com/openmaptiles/klokantech-basic-gl-style/master/style.json
 script:
-- mkdir -p editor/public
 - make
 - ./maputnik --help
 - ./maputnik --version
