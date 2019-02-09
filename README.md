@@ -47,9 +47,9 @@ maputnik --watch --file basic-v9.json
 
 | Method                          | Description
 |---------------------------------|---------------------------------------
-| `GET /files`                     | List all configured style files
-| `GET /files/{filename}`           | Get contents of a single style file
-| `PUT /files/{filename}`           | Update contents of a style file
+| `GET /styles`                   | List the ID of all configured style files
+| `GET /styles/{filename}`        | Get contents of a single style file
+| `PUT /styles/{filename}`        | Update contents of a style file
 | `WEBSOCKET /ws`                 | Listen to change events for the configured style files
 
 ### Build
