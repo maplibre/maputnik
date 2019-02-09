@@ -1,28 +1,16 @@
 os:
 - linux
-- osx
 language: go
 go:
-- 1.7.x
+- 1.11.x
 addons:
   artifacts:
     paths:
-    - maputnik
+    - bin
 install:
-- nvm install 6
-- nvm use 6
-- go get -u golang.org/x/sys/...
-- go get github.com/fsnotify/fsnotify
-- go get github.com/gorilla/handlers
-- go get github.com/gorilla/mux
-- go get github.com/gorilla/websocket
-- go get github.com/urfave/cli
-- go get github.com/elazarl/go-bindata-assetfs/...
-- go get github.com/jteeuwen/go-bindata/...
 - wget https://raw.githubusercontent.com/openmaptiles/klokantech-basic-gl-style/master/style.json
 script:
-- mkdir -p editor/public
 - make
-- ./maputnik --help
-- ./maputnik --version
-- ./maputnik --watch --file style.json & sleep 5; kill $!
+- ./bin/linux/maputnik --help
+- ./bin/linux/maputnik --version
+- ./bin/linux/maputnik --watch --file style.json & sleep 5; kill $!

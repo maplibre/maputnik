@@ -1,8 +1,4 @@
-# Maputnik Desktop [![Build Status](https://travis-ci.org/maputnik/desktop.svg?branch=master)](https://travis-ci.org/maputnik/desktop) [![Windows Build Status](https://ci.appveyor.com/api/projects/status/sepe9jhfs123dwk9?svg=true)](https://ci.appveyor.com/project/lukasmartinelli/desktop)
-
-> :warning: The desktop build of Maputnik is no longer maintained.
-
-![](https://camo.githubusercontent.com/ea32c1383049053bd0ceba2b31834841f229bf64/68747470733a2f2f63312e737461746963666c69636b722e636f6d2f352f343339362f33363730343333373739315f343236383236313038395f6e2e6a7067)
+# Maputnik Desktop [![Build Status](https://travis-ci.org/maputnik/desktop.svg?branch=master)](https://travis-ci.org/maputnik/desktop)
 
 ---
 
@@ -54,31 +50,16 @@ maputnik --watch --file basic-v9.json
 
 ### Build
 
-Clone the repository **recursively** since the Maputnik editor is embedded
-as submodule. Make sure you clone it into the correct directory `$GOPATH/src/github.com/maputnik`.
+Clone the repository. Make sure you clone it into the correct directory `$GOPATH/src/github.com/maputnik`.
 
 ```
-git clone --recursive git@github.com:maputnik/desktop.git
+git clone git@github.com:maputnik/desktop.git
 ```
 
-Install the 3rd party dependencies.
-
-```
-go get -u golang.org/x/sys/...
-go get github.com/gorilla/handlers
-go get github.com/gorilla/mux
-go get github.com/gorilla/websocket
-go get github.com/fsnotify/fsnotify
-go get github.com/urfave/cli
-go get github.com/elazarl/go-bindata-assetfs/...
-go get github.com/jteeuwen/go-bindata/...
-```
-
-Run `make` to build the app distribution bundle and create the `maputnik` binary
-embedding the editor.
+Run `make` to install the 3rd party dependencies and build the `maputnik` binary embedding the editor.
 
 ```
 make
 ```
 
-You should now find the `maputnik` binary in your directory.
+You should now find the `maputnik` binary in your `bin` directory.

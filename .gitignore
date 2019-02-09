@@ -6,6 +6,7 @@
 # Folders
 _obj
 _test
+editor
 
 # Architecture specific extensions/prefixes
 *.[568vq]
@@ -25,6 +26,7 @@ _testmain.go
 
 # Bindata
 bindata_assetfs.go
+bindata.go
 
 # Built binary
 maputnik
