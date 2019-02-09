@@ -1,4 +1,4 @@
-# Maputnik Desktop [![Build Status](https://travis-ci.org/maputnik/desktop.svg?branch=master)](https://travis-ci.org/maputnik/desktop) [![Windows Build Status](https://ci.appveyor.com/api/projects/status/sepe9jhfs123dwk9?svg=true)](https://ci.appveyor.com/project/lukasmartinelli/desktop)
+# Maputnik Desktop [![Build Status](https://travis-ci.org/maputnik/desktop.svg?branch=master)](https://travis-ci.org/maputnik/desktop)
 
 ---
 
