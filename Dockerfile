@@ -1,4 +1,9 @@
-FROM node:10
+FROM node:10-slim
+
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    git \
+    python \
+ && rm -rf /var/lib/apt/lists/*
 
 EXPOSE 8888
 
