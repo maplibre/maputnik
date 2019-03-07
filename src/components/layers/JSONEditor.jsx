@@ -29,7 +29,7 @@ class JSONEditor extends React.Component {
     }
   }
 
-  componentDidUpdate(prevProps, prevState) {
+  componentDidUpdate(prevProps) {
     if (prevProps.layer !== this.props.layer) {
       this.setState({
         code: JSON.stringify(this.props.layer, null, 2)
