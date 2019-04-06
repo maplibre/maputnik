@@ -101,7 +101,7 @@ function replaceAccessTokens(mapStyle, opts={}) {
     changedStyle = replaceSourceAccessToken(changedStyle, sourceName, opts);
   })
 
-  if (mapStyle.glyphs && mapStyle.glyphs.match(/\.maptiler\.com/)) {
+  if (mapStyle.glyphs && (mapStyle.glyphs.match(/\.tilehosting\.com/) || mapStyle.glyphs.match(/\.maptiler\.com/))) {
     const newAccessToken = getAccessToken("openmaptiles", mapStyle, opts);
     if (newAccessToken) {
       changedStyle = {

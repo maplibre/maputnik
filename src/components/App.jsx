@@ -50,9 +50,10 @@ function normalizeSourceURL (url, apiToken="") {
 }
 
 function setFetchAccessToken(url, mapStyle) {
+  const matchesTilehosting = url.match(/\.tilehosting\.com/);
   const matchesMaptiler = url.match(/\.maptiler\.com/);
   const matchesThunderforest = url.match(/\.thunderforest\.com/);
-  if (matchesMaptiler) {
+  if (matchesTilehosting || matchesMaptiler) {
     const accessToken = style.getAccessToken("openmaptiles", mapStyle, {allowFallback: true})
     if (accessToken) {
       return url.replace('{key}', accessToken)
