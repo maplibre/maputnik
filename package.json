@@ -10,7 +10,7 @@
     "test-watch": "cross-env NODE_ENV=test wdio config/wdio.conf.js --watch",
     "start": "webpack-dev-server --progress --profile --colors --config config/webpack.config.js",
     "lint": "eslint --ext js --ext jsx src test",
-    "lint-styles": "stylelint 'src/styles/*.scss'"
+    "lint-styles": "stylelint \"src/styles/*.scss\""
   },
   "repository": {
     "type": "git",
