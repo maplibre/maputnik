@@ -9,6 +9,7 @@ export class ApiStyleStore {
     const host = opts.host || 'localhost'
     this.localUrl = `http://${host}:${port}`
     this.websocketUrl = `ws://${host}:${port}/ws`
+    this.init = this.init.bind(this)
   }
 
   init(cb) {
