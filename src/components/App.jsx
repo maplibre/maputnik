@@ -89,8 +89,15 @@ export default class App extends React.Component {
     autoBind(this);
 
     this.revisionStore = new RevisionStore()
+    const params = new URLSearchParams(window.location.search.substring(1))
+    let port = params.get("localport")
+    if (port == null && (window.location.port != 80 && window.location.port != 443)) {
+      port = window.location.port
+    }
     this.styleStore = new ApiStyleStore({
-      onLocalStyleChange: mapStyle => this.onStyleChanged(mapStyle, false)
+      onLocalStyleChange: mapStyle => this.onStyleChanged(mapStyle, false),
+      port: port,
+      host: params.get("localhost")
     })
 
 
