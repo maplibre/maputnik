@@ -17,10 +17,10 @@ import '../../libs/mapbox-rtl'
 
 const IS_SUPPORTED = MapboxGl.supported();
 
-function renderPropertyPopup(features) {
-  var mountNode = document.createElement('div');
-  ReactDOM.render(<FeaturePropertyPopup features={features} />, mountNode)
-  return mountNode.innerHTML;
+function renderPopup(popup, mountNode) {
+  ReactDOM.render(popup, mountNode);
+  var content = mountNode.innerHTML;
+  return content;
 }
 
 function buildInspectStyle(originalMapStyle, coloredLayers, highlightedLayer) {
@@ -77,9 +77,6 @@ export default class MapboxGlMap extends React.Component {
     this.state = {
       map: null,
       inspect: null,
-      isPopupOpen: false,
-      popupX: 0,
-      popupY: 0,
     }
   }
 
@@ -150,6 +147,8 @@ export default class MapboxGlMap extends React.Component {
     const nav = new MapboxGl.NavigationControl();
     map.addControl(nav, 'top-right');
 
+    const tmpNode = document.createElement('div');
+
     const inspect = new MapboxInspect({
       popup: new MapboxGl.Popup({
         closeOnClick: false
@@ -165,11 +164,9 @@ export default class MapboxGlMap extends React.Component {
       buildInspectStyle: (originalMapStyle, coloredLayers) => buildInspectStyle(originalMapStyle, coloredLayers, this.props.highlightedLayer),
       renderPopup: features => {
         if(this.props.inspectModeEnabled) {
-          return renderPropertyPopup(features)
+          return renderPopup(<FeaturePropertyPopup features={features} />, tmpNode);
         } else {
-          var mountNode = document.createElement('div');
-          ReactDOM.render(<FeatureLayerPopup features={features} onLayerSelect={this.props.onLayerSelect} />, mountNode)
-          return mountNode
+          return renderPopup(<FeatureLayerPopup features={features} onLayerSelect={this.props.onLayerSelect} />, tmpNode);
         }
       }
     })
@@ -177,6 +174,9 @@ export default class MapboxGlMap extends React.Component {
 
     map.on("style.load", () => {
       this.setState({ map, inspect });
+      if(this.props.inspectModeEnabled) {
+        inspect.toggleInspector();
+      }
     })
 
     map.on("data", e => {
