@@ -9,7 +9,7 @@
 [circleci]:    https://circleci.com/gh/maputnik/editor/tree/master
 [appveyor]:    https://ci.appveyor.com/project/lukasmartinelli/editor
 [dm-prod]:     https://david-dm.org/maputnik/editor
-[dm-dev]:      https://david-dm.org/maputnik/editor#info=devDependencies
+[dm-dev]:      https://david-dm.org/maputnik/editor?type=dev
 [license]:     https://tldrlegal.com/license/mit-license
 
 <img width="200" align="right" alt="Maputnik" src="src/img/maputnik.png" />
