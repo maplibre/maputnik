@@ -8,6 +8,7 @@ class DebugModal extends React.Component {
   static propTypes = {
     isOpen: PropTypes.bool.isRequired,
     onChangeDebug: PropTypes.func.isRequired,
+    onOpenToggle: PropTypes.func.isRequired,
     debugOptions: PropTypes.object,
   }
 
