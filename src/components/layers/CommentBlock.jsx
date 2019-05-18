@@ -4,7 +4,7 @@ import PropTypes from 'prop-types'
 import InputBlock from '../inputs/InputBlock'
 import StringInput from '../inputs/StringInput'
 
-class MetadataBlock extends React.Component {
+class MetadataBlock extends React.PureComponent {
   static propTypes = {
     value: PropTypes.string,
     onChange: PropTypes.func.isRequired,

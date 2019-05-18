@@ -5,7 +5,7 @@ import {latest} from '@mapbox/mapbox-gl-style-spec'
 import InputBlock from '../inputs/InputBlock'
 import AutocompleteInput from '../inputs/AutocompleteInput'
 
-class LayerSourceLayer extends React.Component {
+class LayerSourceLayer extends React.PureComponent {
   static propTypes = {
     value: PropTypes.string,
     onChange: PropTypes.func,

@@ -35,7 +35,7 @@ function parseFilter(v) {
   return v;
 }
 
-class SingleFilterEditor extends React.Component {
+class SingleFilterEditor extends React.PureComponent {
   static propTypes = {
     filter: PropTypes.array.isRequired,
     onChange: PropTypes.func.isRequired,

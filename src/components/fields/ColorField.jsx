@@ -9,7 +9,7 @@ function formatColor(color) {
 }
 
 /*** Number fields with support for min, max and units and documentation*/
-class ColorField extends React.Component {
+class ColorField extends React.PureComponent {
   static propTypes = {
     onChange: PropTypes.func.isRequired,
     name: PropTypes.string.isRequired,

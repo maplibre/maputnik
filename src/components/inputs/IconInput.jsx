@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import AutocompleteInput from './AutocompleteInput'
 
 
-class IconInput extends React.Component {
+class IconInput extends React.PureComponent {
   static propTypes = {
     value: PropTypes.string,
     icons: PropTypes.array,

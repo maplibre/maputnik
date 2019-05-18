@@ -4,7 +4,7 @@ import Collapse from 'react-collapse'
 import accessibility from '../../libs/accessibility'
 
 
-export default class CollapseAlt extends React.Component {
+export default class CollapseAlt extends React.PureComponent {
   static propTypes = {
     isActive: PropTypes.bool.isRequired,
     children: PropTypes.element.isRequired

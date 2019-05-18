@@ -37,7 +37,7 @@ function setStopRefs(props, state) {
 }
 
 
-export default class ZoomProperty extends React.Component {
+export default class ZoomProperty extends React.PureComponent {
   static propTypes = {
     onChange: PropTypes.func,
     onDeleteStop: PropTypes.func,

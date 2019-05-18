@@ -2,7 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import classnames from 'classnames'
 
-class Button extends React.Component {
+class Button extends React.PureComponent {
   static propTypes = {
     "data-wd-key": PropTypes.string,
     "aria-label": PropTypes.string,

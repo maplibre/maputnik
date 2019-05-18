@@ -35,7 +35,7 @@ function findClosestCommonPrefix(layers, idx) {
 }
 
 // List of collapsible layer editors
-class LayerListContainer extends React.Component {
+class LayerListContainer extends React.PureComponent {
   static propTypes = {...layerListPropTypes}
   static defaultProps = {
     onLayerSelect: () => {},
@@ -148,9 +148,9 @@ class LayerListContainer extends React.Component {
           visibility={(layer.layout || {}).visibility}
           isSelected={idx === this.props.selectedLayerIndex}
           onLayerSelect={this.props.onLayerSelect}
-          onLayerDestroy={this.props.onLayerDestroy.bind(this)}
-          onLayerCopy={this.props.onLayerCopy.bind(this)}
-          onLayerVisibilityToggle={this.props.onLayerVisibilityToggle.bind(this)}
+          onLayerDestroy={this.props.onLayerDestroy}
+          onLayerCopy={this.props.onLayerCopy}
+          onLayerVisibilityToggle={this.props.onLayerVisibilityToggle}
         />
         listItems.push(listItem)
         idx += 1
@@ -205,7 +205,7 @@ export default class LayerList extends React.Component {
     return <LayerListContainerSortable
       {...this.props}
       helperClass='sortableHelper'
-      onSortEnd={this.props.onMoveLayer.bind(this)}
+      onSortEnd={this.props.onMoveLayer}
       useDragHandle={true}
     />
   }

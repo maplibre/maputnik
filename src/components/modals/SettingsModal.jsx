@@ -7,7 +7,7 @@ import StringInput from '../inputs/StringInput'
 import SelectInput from '../inputs/SelectInput'
 import Modal from './Modal'
 
-class SettingsModal extends React.Component {
+class SettingsModal extends React.PureComponent {
   static propTypes = {
     mapStyle: PropTypes.object.isRequired,
     onStyleChanged: PropTypes.func.isRequired,

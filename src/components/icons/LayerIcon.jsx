@@ -7,7 +7,7 @@ import SymbolIcon from './SymbolIcon.jsx'
 import BackgroundIcon from './BackgroundIcon.jsx'
 import CircleIcon from './CircleIcon.jsx'
 
-class LayerIcon extends React.Component {
+class LayerIcon extends React.PureComponent {
   static propTypes = {
     type: PropTypes.string.isRequired,
     style: PropTypes.object,

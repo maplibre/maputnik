@@ -2,7 +2,7 @@ import React from 'react'
 import IconBase from 'react-icon-base'
 
 
-export default class FillIcon extends React.Component {
+export default class FillIcon extends React.PureComponent {
   render() {
     return (
       <IconBase viewBox="0 0 20 20" {...this.props}>

@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 
-class NumberInput extends React.Component {
+class NumberInput extends React.PureComponent {
   static propTypes = {
     value: PropTypes.number,
     default: PropTypes.number,

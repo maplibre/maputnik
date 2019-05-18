@@ -37,7 +37,7 @@ function layoutGroups(layerType) {
 }
 
 /** Layer editor supporting multiple types of layers. */
-export default class LayerEditor extends React.Component {
+export default class LayerEditor extends React.PureComponent {
   static propTypes = {
     layer: PropTypes.object.isRequired,
     sources: PropTypes.object,

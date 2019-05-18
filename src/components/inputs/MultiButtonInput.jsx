@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import classnames from 'classnames'
 import Button from '../Button'
 
-class MultiButtonInput extends React.Component {
+class MultiButtonInput extends React.PureComponent {
   static propTypes = {
     value: PropTypes.string.isRequired,
     options: PropTypes.array.isRequired,

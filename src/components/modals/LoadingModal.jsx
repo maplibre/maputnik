@@ -5,7 +5,7 @@ import Button from '../Button'
 import Modal from './Modal'
 
 
-class LoadingModal extends React.Component {
+class LoadingModal extends React.PureComponent {
   static propTypes = {
     isOpen: PropTypes.bool.isRequired,
     onCancel: PropTypes.func.isRequired,

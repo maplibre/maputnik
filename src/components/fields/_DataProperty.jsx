@@ -13,7 +13,7 @@ import labelFromFieldName from './_labelFromFieldName'
 import DeleteStopButton from './_DeleteStopButton'
 
 
-export default class DataProperty extends React.Component {
+export default class DataProperty extends React.PureComponent {
   static propTypes = {
     onChange: PropTypes.func,
     onDeleteStop: PropTypes.func,

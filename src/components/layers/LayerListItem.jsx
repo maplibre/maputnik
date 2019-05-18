@@ -18,7 +18,7 @@ const DraggableLabel = SortableHandle((props) => {
   </div>
 });
 
-class IconAction extends React.Component {
+class IconAction extends React.PureComponent {
   static propTypes = {
     action: PropTypes.string.isRequired,
     onClick: PropTypes.func.isRequired,
@@ -60,7 +60,7 @@ class IconAction extends React.Component {
   }
 }
 
-class LayerListItem extends React.Component {
+class LayerListItem extends React.PureComponent {
   static propTypes = {
     layerId: PropTypes.string.isRequired,
     layerType: PropTypes.string.isRequired,

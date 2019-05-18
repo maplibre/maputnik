@@ -2,7 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import ScrollContainer from './ScrollContainer'
 
-class AppLayout extends React.Component {
+class AppLayout extends React.PureComponent {
   static propTypes = {
     toolbar: PropTypes.element.isRequired,
     layerList: PropTypes.element.isRequired,

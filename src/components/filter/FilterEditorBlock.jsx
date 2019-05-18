@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import Button from '../Button'
 import {MdDelete} from 'react-icons/md'
 
-class FilterEditorBlock extends React.Component {
+class FilterEditorBlock extends React.PureComponent {
   static propTypes = {
     onDelete: PropTypes.func.isRequired,
     children: PropTypes.element.isRequired,

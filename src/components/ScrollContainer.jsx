@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 
-class ScrollContainer extends React.Component {
+class ScrollContainer extends React.PureComponent {
   static propTypes = {
     children: PropTypes.node
   }

@@ -4,7 +4,7 @@ import classnames from 'classnames'
 import DocLabel from '../fields/DocLabel'
 
 /** Wrap a component with a label */
-class InputBlock extends React.Component {
+class InputBlock extends React.PureComponent {
   static propTypes = {
     "data-wd-key": PropTypes.string,
     label: PropTypes.oneOfType([

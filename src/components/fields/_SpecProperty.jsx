@@ -8,7 +8,7 @@ import InputBlock from '../inputs/InputBlock'
 import labelFromFieldName from './_labelFromFieldName'
 
 
-export default class SpecProperty extends React.Component {
+export default class SpecProperty extends React.PureComponent {
   static propTypes = {
     onZoomClick: PropTypes.func.isRequired,
     onDataClick: PropTypes.func.isRequired,

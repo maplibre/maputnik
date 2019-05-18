@@ -9,7 +9,7 @@ import LayerIdBlock from '../layers/LayerIdBlock'
 import LayerSourceBlock from '../layers/LayerSourceBlock'
 import LayerSourceLayerBlock from '../layers/LayerSourceLayerBlock'
 
-class AddModal extends React.Component {
+class AddModal extends React.PureComponent {
   static propTypes = {
     layers: PropTypes.array.isRequired,
     onLayersChange: PropTypes.func.isRequired,

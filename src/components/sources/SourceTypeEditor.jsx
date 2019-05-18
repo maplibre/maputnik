@@ -7,7 +7,7 @@ import NumberInput from '../inputs/NumberInput'
 import SelectInput from '../inputs/SelectInput'
 
 
-class TileJSONSourceEditor extends React.Component {
+class TileJSONSourceEditor extends React.PureComponent {
   static propTypes = {
     source: PropTypes.object.isRequired,
     onChange: PropTypes.func.isRequired,
@@ -30,7 +30,7 @@ class TileJSONSourceEditor extends React.Component {
   }
 }
 
-class TileURLSourceEditor extends React.Component {
+class TileURLSourceEditor extends React.PureComponent {
   static propTypes = {
     source: PropTypes.object.isRequired,
     onChange: PropTypes.func.isRequired,
@@ -86,7 +86,7 @@ class TileURLSourceEditor extends React.Component {
   }
 }
 
-class GeoJSONSourceEditor extends React.Component {
+class GeoJSONSourceEditor extends React.PureComponent {
   static propTypes = {
     source: PropTypes.object.isRequired,
     onChange: PropTypes.func.isRequired,
@@ -105,7 +105,7 @@ class GeoJSONSourceEditor extends React.Component {
   }
 }
 
-class SourceTypeEditor extends React.Component {
+class SourceTypeEditor extends React.PureComponent {
   static propTypes = {
     mode: PropTypes.string.isRequired,
     source: PropTypes.object.isRequired,

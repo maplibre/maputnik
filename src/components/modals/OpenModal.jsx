@@ -11,7 +11,7 @@ import {MdAddCircleOutline} from 'react-icons/md'
 import style from '../../libs/style.js'
 import publicStyles from '../../config/styles.json'
 
-class PublicStyle extends React.Component {
+class PublicStyle extends React.PureComponent {
   static propTypes = {
     url: PropTypes.string.isRequired,
     thumbnailUrl: PropTypes.string.isRequired,
@@ -42,7 +42,7 @@ class PublicStyle extends React.Component {
   }
 }
 
-class OpenModal extends React.Component {
+class OpenModal extends React.PureComponent {
   static propTypes = {
     isOpen: PropTypes.bool.isRequired,
     onOpenToggle: PropTypes.func.isRequired,

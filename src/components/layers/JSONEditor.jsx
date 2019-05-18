@@ -16,7 +16,7 @@ import jsonlint from 'jsonlint'
 import '../../vendor/codemirror/addon/lint/json-lint'
 
 
-class JSONEditor extends React.Component {
+class JSONEditor extends React.PureComponent {
   static propTypes = {
     layer: PropTypes.object.isRequired,
     onChange: PropTypes.func,

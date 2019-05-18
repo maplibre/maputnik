@@ -21,7 +21,7 @@ function hasNestedCombiningFilter(filter) {
   return false
 }
 
-export default class CombiningFilterEditor extends React.Component {
+export default class CombiningFilterEditor extends React.PureComponent {
   static propTypes = {
     /** Properties of the vector layer and the available fields */
     properties: PropTypes.object,

@@ -6,7 +6,7 @@ import Modal from './Modal'
 
 import logoImage from 'maputnik-design/logos/logo-color.svg'
 
-class SurveyModal extends React.Component {
+class SurveyModal extends React.PureComponent {
   static propTypes = {
     isOpen: PropTypes.bool.isRequired,
     onOpenToggle: PropTypes.func.isRequired,

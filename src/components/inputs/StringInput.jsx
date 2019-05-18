@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 
-class StringInput extends React.Component {
+class StringInput extends React.PureComponent {
   static propTypes = {
     "data-wd-key": PropTypes.string,
     value: PropTypes.string,

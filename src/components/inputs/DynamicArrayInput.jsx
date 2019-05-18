@@ -7,7 +7,7 @@ import {MdDelete} from 'react-icons/md'
 import DocLabel from '../fields/DocLabel'
 
 
-class DynamicArrayInput extends React.Component {
+class DynamicArrayInput extends React.PureComponent {
   static propTypes = {
     value: PropTypes.array,
     type: PropTypes.string,

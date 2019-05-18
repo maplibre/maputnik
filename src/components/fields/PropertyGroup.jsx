@@ -34,7 +34,7 @@ function getGroupName(spec, layerType, fieldName) {
   }
 }
 
-export default class PropertyGroup extends React.Component {
+export default class PropertyGroup extends React.PureComponent {
   static propTypes = {
     layer: PropTypes.object.isRequired,
     groupFields: PropTypes.array.isRequired,

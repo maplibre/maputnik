@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 
-class SelectInput extends React.Component {
+class SelectInput extends React.PureComponent {
   static propTypes = {
     value: PropTypes.string.isRequired,
     "data-wd-key": PropTypes.string,

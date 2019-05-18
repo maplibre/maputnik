@@ -34,7 +34,7 @@ function optionsLabelLength(options) {
 /** Display any field from the Mapbox GL style spec and
  * choose the correct field component based on the @{fieldSpec}
  * to display @{value}. */
-export default class SpecField extends React.Component {
+export default class SpecField extends React.PureComponent {
   static propTypes = {
     onChange: PropTypes.func.isRequired,
     fieldName: PropTypes.string.isRequired,

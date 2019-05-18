@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import StringInput from './StringInput'
 import NumberInput from './NumberInput'
 
-class ArrayInput extends React.Component {
+class ArrayInput extends React.PureComponent {
   static propTypes = {
     value: PropTypes.array,
     type: PropTypes.string,

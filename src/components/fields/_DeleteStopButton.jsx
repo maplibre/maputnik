@@ -6,7 +6,7 @@ import Button from '../Button'
 import {MdDelete} from 'react-icons/md'
 
 
-export default class DeleteStopButton extends React.Component {
+export default class DeleteStopButton extends React.PureComponent {
   static propTypes = {
     onClick: PropTypes.func,
   }

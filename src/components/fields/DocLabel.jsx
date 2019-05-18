@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 
-export default class DocLabel extends React.Component {
+export default class DocLabel extends React.PureComponent {
   static propTypes = {
     label: PropTypes.oneOfType([
       PropTypes.object,

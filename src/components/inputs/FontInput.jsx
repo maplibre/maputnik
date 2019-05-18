@@ -2,7 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import AutocompleteInput from './AutocompleteInput'
 
-class FontInput extends React.Component {
+class FontInput extends React.PureComponent {
   static propTypes = {
     value: PropTypes.array.isRequired,
     default: PropTypes.array,

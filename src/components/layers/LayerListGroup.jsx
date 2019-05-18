@@ -2,7 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import Collapser from './Collapser'
 
-export default class LayerListGroup extends React.Component {
+export default class LayerListGroup extends React.PureComponent {
   static propTypes = {
     title: PropTypes.string.isRequired,
     "data-wd-key": PropTypes.string,

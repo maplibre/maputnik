@@ -5,7 +5,7 @@ import {latest} from '@mapbox/mapbox-gl-style-spec'
 import InputBlock from '../inputs/InputBlock'
 import NumberInput from '../inputs/NumberInput'
 
-class MinZoomBlock extends React.Component {
+class MinZoomBlock extends React.PureComponent {
   static propTypes = {
     value: PropTypes.number,
     onChange: PropTypes.func.isRequired,

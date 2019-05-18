@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 
-class CheckboxInput extends React.Component {
+class CheckboxInput extends React.PureComponent {
   static propTypes = {
     value: PropTypes.bool.isRequired,
     style: PropTypes.object,

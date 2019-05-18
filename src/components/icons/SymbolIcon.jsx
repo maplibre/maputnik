@@ -2,7 +2,7 @@ import React from 'react'
 import IconBase from 'react-icon-base'
 
 
-export default class SymbolIcon extends React.Component {
+export default class SymbolIcon extends React.PureComponent {
   render() {
     return (
       <IconBase viewBox="0 0 20 20" {...this.props}>

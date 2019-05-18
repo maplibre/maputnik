@@ -6,7 +6,7 @@ import Button from '../Button'
 import {MdFunctions, MdInsertChart} from 'react-icons/md'
 
 
-export default class FunctionButtons extends React.Component {
+export default class FunctionButtons extends React.PureComponent {
   static propTypes = {
     fieldSpec: PropTypes.object,
     onZoomClick: PropTypes.func,

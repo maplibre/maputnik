@@ -4,7 +4,7 @@ import Collapser from './Collapser'
 import Collapse from './Collapse'
 
 
-export default class LayerEditorGroup extends React.Component {
+export default class LayerEditorGroup extends React.PureComponent {
   static propTypes = {
     "data-wd-key": PropTypes.string,
     title: PropTypes.string.isRequired,

@@ -5,7 +5,7 @@ import {latest} from '@mapbox/mapbox-gl-style-spec'
 import InputBlock from '../inputs/InputBlock'
 import SelectInput from '../inputs/SelectInput'
 
-class LayerTypeBlock extends React.Component {
+class LayerTypeBlock extends React.PureComponent {
   static propTypes = {
     value: PropTypes.string.isRequired,
     wdKey: PropTypes.string,

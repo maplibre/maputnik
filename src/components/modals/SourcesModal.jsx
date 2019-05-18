@@ -14,7 +14,7 @@ import publicSources from '../../config/tilesets.json'
 
 import {MdAddCircleOutline, MdDelete} from 'react-icons/md'
 
-class PublicSource extends React.Component {
+class PublicSource extends React.PureComponent {
   static propTypes = {
     id: PropTypes.string.isRequired,
     type: PropTypes.string.isRequired,
@@ -56,7 +56,7 @@ function editorMode(source) {
   return null
 }
 
-class ActiveSourceTypeEditor extends React.Component {
+class ActiveSourceTypeEditor extends React.PureComponent {
   static propTypes = {
     sourceId: PropTypes.string.isRequired,
     source: PropTypes.object.isRequired,
@@ -89,7 +89,7 @@ class ActiveSourceTypeEditor extends React.Component {
   }
 }
 
-class AddSource extends React.Component {
+class AddSource extends React.PureComponent {
   static propTypes = {
     onAdd: PropTypes.func.isRequired,
   }
@@ -181,7 +181,7 @@ class AddSource extends React.Component {
   }
 }
 
-class SourcesModal extends React.Component {
+class SourcesModal extends React.PureComponent {
   static propTypes = {
     mapStyle: PropTypes.object.isRequired,
     isOpen: PropTypes.bool.isRequired,

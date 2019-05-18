@@ -6,7 +6,7 @@ import Autocomplete from 'react-autocomplete'
 
 const MAX_HEIGHT = 140;
 
-class AutocompleteInput extends React.Component {
+class AutocompleteInput extends React.PureComponent {
   static propTypes = {
     value: PropTypes.string,
     options: PropTypes.array,

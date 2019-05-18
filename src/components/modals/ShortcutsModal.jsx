@@ -4,7 +4,7 @@ import PropTypes from 'prop-types'
 import Modal from './Modal'
 
 
-class ShortcutsModal extends React.Component {
+class ShortcutsModal extends React.PureComponent {
   static propTypes = {
     isOpen: PropTypes.bool.isRequired,
     onOpenToggle: PropTypes.func.isRequired,

@@ -24,7 +24,7 @@ function stripAccessTokens(mapStyle) {
   }
 }
 
-class ExportModal extends React.Component {
+class ExportModal extends React.PureComponent {
   static propTypes = {
     mapStyle: PropTypes.object.isRequired,
     onStyleChanged: PropTypes.func.isRequired,
