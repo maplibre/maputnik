@@ -143,7 +143,6 @@ export default class App extends React.Component {
       },
     ]
 
-    // TODO: Abstract this out
     document.body.addEventListener("keyup", (e) => {
       if(e.key === "Escape") {
         e.target.blur();
@@ -161,28 +160,29 @@ export default class App extends React.Component {
       }
     })
 
-    // const styleUrl = initialStyleUrl()
-    // if(styleUrl && window.confirm("Load style from URL: " + styleUrl + " and discard current changes?")) {
-    //   this.styleStore = new StyleStore()
-    //   loadStyleUrl(styleUrl, mapStyle => this.onStyleChanged(mapStyle))
-    //   removeStyleQuerystring()
-    // } else {
-    //   if(styleUrl) {
-    //     removeStyleQuerystring()
-    //   }
-    //   this.styleStore.init(err => {
-    //     if(err) {
-    //       console.log('Falling back to local storage for storing styles')
-    //       this.styleStore = new StyleStore()
-    //     }
-    //     this.styleStore.latestStyle(mapStyle => this.onStyleChanged(mapStyle))
+    const immutableStyle = new IcepickStyle();
 
-    //     if(Debug.enabled()) {
-    //       Debug.set("maputnik", "styleStore", this.styleStore);
-    //       Debug.set("maputnik", "revisionStore", this.revisionStore);
-    //     }
-    //   })
-    // }
+    const styleUrl = initialStyleUrl()
+    if(styleUrl && window.confirm("Load style from URL: " + styleUrl + " and discard current changes?")) {
+      loadStyleUrl(styleUrl, mapStyle => this.onStyleChanged(mapStyle))
+      removeStyleQuerystring()
+    } else {
+      if(styleUrl) {
+        removeStyleQuerystring()
+      }
+      // this.styleStore.init(err => {
+      //   if(err) {
+      //     console.log('Falling back to local storage for storing styles')
+      //     this.styleStore = new StyleStore()
+      //   }
+      //   this.styleStore.latestStyle(mapStyle => this.onStyleChanged(mapStyle))
+
+      //   // if(Debug.enabled()) {
+      //   //   Debug.set("maputnik", "styleStore", this.styleStore);
+      //   //   Debug.set("maputnik", "revisionStore", this.revisionStore);
+      //   // }
+      // })
+    }
 
     // if(Debug.enabled()) {
     //   Debug.set("maputnik", "revisionStore", this.revisionStore);
@@ -190,21 +190,6 @@ export default class App extends React.Component {
     // }
 
     const queryObj = url.parse(window.location.href, true).query;
-
-
-    const immutableStyle = new IcepickStyle({
-      version: 8,
-      sources: {},
-      layers: [
-        {
-          id: "background",
-          type: "background",
-          paint: {
-            "background-color": "hsl(0, 50%, 50%)"
-          }
-        }
-      ]
-    });
 
     // HACK
     immutableStyle.on("change", () => {
