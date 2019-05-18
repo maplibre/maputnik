@@ -1,18 +1,19 @@
-image: Visual Studio 2017
+image: Visual Studio 2015
 environment:
   matrix:
     - nodejs_version: "8"
-    - nodejs_version: "9"
     - nodejs_version: "10"
+    - nodejs_version: "11"
 platform:
   - x86
   - x64
 install:
   - ps: Install-Product node $env:nodejs_version
   - md public
-  - npm install --global --production windows-build-tools
+  - npm --vs2015 install --global windows-build-tools
   - npm install
 build_script:
   - npm run build
 test_script:
   - npm run lint
+  - npm run lint-styles

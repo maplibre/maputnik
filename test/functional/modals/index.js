@@ -99,6 +99,7 @@ describe("modals", function() {
       browser.url(config.baseUrl+"?debug&style="+helper.getStyleUrl([
         "geojson:example"
       ]));
+      browser.alertAccept();
 
       browser.selectByValue(wd.$("nav:inspect", "select"), "inspect");
     })
@@ -161,7 +162,7 @@ describe("modals", function() {
       })
     })
 
-    it("open map tiles access token", function() {
+    it("maptiler access token", function() {
       var apiKey = "testing123";
       browser.setValueSafe(wd.$("modal-settings.maputnik:openmaptiles_access_token"), apiKey);
       browser.click(wd.$("modal-settings.name"))
@@ -171,14 +172,24 @@ describe("modals", function() {
       assert.equal(styleObj.metadata["maputnik:openmaptiles_access_token"], apiKey);
     })
 
-    it.skip("style renderer", function() {
-      var selector = wd.$("modal-settings.maputnik:renderer");
-      browser.selectByValue(selector, "ol3");
+    it("thunderforest access token", function() {
+      var apiKey = "testing123";
+      browser.setValueSafe(wd.$("modal-settings.maputnik:thunderforest_access_token"), apiKey);
       browser.click(wd.$("modal-settings.name"))
       browser.flushReactUpdates();
 
       var styleObj = helper.getStyleStore(browser);
-      assert.equal(styleObj.metadata["maputnik:renderer"], "ol3");
+      assert.equal(styleObj.metadata["maputnik:thunderforest_access_token"], apiKey);
+    })
+
+    it("style renderer", function() {
+      var selector = wd.$("modal-settings.maputnik:renderer");
+      browser.selectByValue(selector, "ol");
+      browser.click(wd.$("modal-settings.name"))
+      browser.flushReactUpdates();
+
+      var styleObj = helper.getStyleStore(browser);
+      assert.equal(styleObj.metadata["maputnik:renderer"], "ol");
     })
   })
 

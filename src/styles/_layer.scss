@@ -24,6 +24,15 @@
     padding-bottom: $margin-5;
   }
 
+  &-item-handle {
+    flex: 1;
+    display: flex;
+
+    svg {
+      margin-right: 4px;
+    }
+  }
+
   &-item {
     font-weight: 400;
     color: $color-lowgray;
@@ -36,7 +45,7 @@
     z-index: 2000;
     cursor: pointer;
     position: relative;
-    padding: 5px 10px;
+    padding: 5px;
     line-height: 1.3;
     max-height: 50px;
     opacity: 1;
@@ -62,6 +71,7 @@
     background: initial;
     border: none;
     padding: 0 2px;
+    height: 15px;
 
     svg {
       fill: darken($color-lowgray, 20);
@@ -111,6 +121,8 @@
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+    color: inherit;
+    text-decoration: none;
   }
 
   &-group-header {
@@ -160,7 +172,7 @@
 // PROPERTY
 .maputnik-default-property {
   .maputnik-input-block-label {
-    color: darken($color-lowgray, 25%);
+    color: darken($color-lowgray, 20%);
   }
 
   .maputnik-string,
@@ -169,7 +181,7 @@
   .maputnik-select,
   .maputnik-checkbox-wrapper {
     background-color: darken($color-gray, 2%);
-    color: darken($color-lowgray, 25%);
+    color: darken($color-lowgray, 20%);
   }
 
   .maputnik-make-zoom-function svg {
@@ -178,7 +190,7 @@
 
   .maputnik-multibutton .maputnik-button {
     background-color: darken($color-midgray, 10%);
-    color: darken($color-lowgray, 25%);
+    color: darken($color-lowgray, 20%);
 
     &:hover {
       background-color: lighten($color-midgray, 12);
@@ -194,6 +206,11 @@
 
 .more-menu {
   position: relative;
+
+  svg {
+    width: 22px;
+    height: 22px;
+  }
 
   &__menu {
     position: absolute;
@@ -228,4 +245,11 @@
   &__info {
     min-width: 28px;
   }
+}
+
+// Clone of the element which is sorted
+.sortableHelper {
+  font-family: $font-family;
+  z-index: 9999;
+  border: none;
 }

@@ -5,7 +5,7 @@ import AutocompleteInput from './AutocompleteInput'
 
 class IconInput extends React.Component {
   static propTypes = {
-    value: PropTypes.array,
+    value: PropTypes.string,
     icons: PropTypes.array,
     style: PropTypes.object,
     onChange: PropTypes.func.isRequired,
