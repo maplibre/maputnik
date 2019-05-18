@@ -11,7 +11,7 @@ import {SortableContainer} from 'react-sortable-hoc';
 const layerListPropTypes = {
   layers: PropTypes.array.isRequired,
   selectedLayerIndex: PropTypes.number.isRequired,
-  onLayersChange: PropTypes.func.isRequired,
+  onAddLayer: PropTypes.func.isRequired,
   onLayerSelect: PropTypes.func,
   sources: PropTypes.object.isRequired,
 }
@@ -163,7 +163,7 @@ class LayerListContainer extends React.PureComponent {
           sources={this.props.sources}
           isOpen={this.state.isOpen.add}
           onOpenToggle={this.toggleModal.bind(this, 'add')}
-          onLayersChange={this.props.onLayersChange}
+          onAddLayer={this.props.onAddLayer}
       />
       <header className="maputnik-layer-list-header">
         <span className="maputnik-layer-list-header-title">Layers</span>

@@ -288,29 +288,7 @@ export default class App extends React.Component {
   }
 
   onStyleChanged = (newStyle, save=true) => {
-    // TODO
-    // const errors = validate(newStyle, latest)
-    // if(errors.length === 0) {
-
-    //   if(newStyle.glyphs !== this.state.mapStyle.glyphs) {
-    //     this.updateFonts(newStyle.glyphs)
-    //   }
-    //   if(newStyle.sprite !== this.state.mapStyle.sprite) {
-    //     this.updateIcons(newStyle.sprite)
-    //   }
-
-    //   this.revisionStore.addRevision(newStyle)
-    //   if(save) this.saveStyle(newStyle)
-    //   this.setState({
-    //     mapStyle: newStyle,
-    //     errors: [],
-    //   })
-    // } else {
-    //   this.setState({
-    //     errors: errors.map(err => err.message)
-    //   })
-    // }
-
+    this.state.mapStyle.replace(newStyle);
     // this.fetchSources();
   }
 
@@ -331,13 +309,8 @@ export default class App extends React.Component {
     this.state.mapStyle.moveLayer(oldIndex, newIndex);
   }
 
-  onLayersChange = (changedLayers) => {
-    // TODO: Remove
-    // const changedStyle = {
-    //   ...this.state.mapStyle,
-    //   layers: changedLayers
-    // }
-    // this.onStyleChanged(changedStyle)
+  onAddLayer = (layer) => {
+    this.state.mapStyle.addLayer(layer.id, layer);
   }
 
   onLayerDestroy = (layerId) => {
@@ -551,7 +524,7 @@ export default class App extends React.Component {
       onLayerDestroy={this.onLayerDestroy}
       onLayerCopy={this.onLayerCopy}
       onLayerVisibilityToggle={this.onLayerVisibilityToggle}
-      onLayersChange={this.onLayersChange}
+      onAddLayer={this.onAddLayer}
       onLayerSelect={this.onLayerSelect}
       selectedLayerIndex={this.state.selectedLayerIndex}
       layers={layers}

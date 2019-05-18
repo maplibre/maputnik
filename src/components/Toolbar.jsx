@@ -24,7 +24,6 @@ class ToolbarLink extends React.PureComponent {
     className: PropTypes.string,
     children: PropTypes.node,
     href: PropTypes.string,
-    onToggleModal: PropTypes.func,
   }
 
   render() {
@@ -44,7 +43,6 @@ class ToolbarLinkHighlighted extends React.PureComponent {
     className: PropTypes.string,
     children: PropTypes.node,
     href: PropTypes.string,
-    onToggleModal: PropTypes.func
   }
 
   render() {
@@ -99,11 +97,7 @@ export default class Toolbar extends React.PureComponent {
   static propTypes = {
     mapStyle: PropTypes.object.isRequired,
     inspectModeEnabled: PropTypes.bool.isRequired,
-    onStyleChanged: PropTypes.func.isRequired,
-    // A new style has been uploaded
-    onStyleOpen: PropTypes.func.isRequired,
     // A dict of source id's and the available source layers
-    sources: PropTypes.object.isRequired,
     children: PropTypes.node,
     onToggleModal: PropTypes.func,
     onSetMapState: PropTypes.func,
