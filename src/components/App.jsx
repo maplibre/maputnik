@@ -187,9 +187,9 @@ export default class App extends React.Component {
 
     const queryObj = url.parse(window.location.href, true).query;
 
-    // HACK
     immutableStyle.on("change", () => {
       this.forceUpdate();
+      this.saveStyle(this.state.mapStyle.current);
     })
 
     this.state = {
