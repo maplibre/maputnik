@@ -33,53 +33,63 @@ class FeatureLayerPopup extends React.Component {
     zoom: PropTypes.number,
   }
 
+  _getFeatureColor(feature, zoom) {
+    try {
+      const paintProps = feature.layer.paint;
+      let propName;
+
+      if(paintProps.hasOwnProperty("text-color") && paintProps["text-color"]) {
+        propName = "text-color";
+      }
+      else if (paintProps.hasOwnProperty("fill-color") && paintProps["fill-color"]) {
+        propName = "fill-color";
+      }
+      else if (paintProps.hasOwnProperty("line-color") && paintProps["line-color"]) {
+        propName = "line-color";
+      }
+      else if (paintProps.hasOwnProperty("fill-extrusion-color") && paintProps["fill-extrusion-color"]) {
+        propName = "fill-extrusion-color";
+      }
+
+      if(propName) {
+        const propertySpec = latest["paint_"+feature.layer.type][propName];
+
+        let color = feature.layer.paint[propName];
+
+        if(typeof(color) === "object") {
+          if(color.stops) {
+            color = styleFunction.convertFunction(color, propertySpec);
+          }
+
+          const exprResult = expression.createExpression(color, propertySpec);
+          const val = exprResult.value.evaluate({
+            zoom: zoom
+          }, feature);
+          return val.toString();
+        }
+        else {
+          return color;
+        }
+      }
+      else {
+        // Default color
+        return "black";
+      }
+    }
+    // This is quite complex, just incase there's an edgecase we're missing
+    // always return black if we get an unexpected error.
+    catch (err) {
+      console.error("Unable to get feature color, error:", err);
+      return "black";
+    }
+  }
+
   render() {
     const sources = groupFeaturesBySourceLayer(this.props.features)
 
     const items = Object.keys(sources).map(vectorLayerId => {
       const layers = sources[vectorLayerId].map((feature, idx) => {
-        const paintProps = feature.layer.paint;
-        let propName;
-        
-        if(paintProps.hasOwnProperty("text-color") && paintProps["text-color"]) {
-          propName = "text-color";
-        }
-        else if (paintProps.hasOwnProperty("fill-color") && paintProps["fill-color"]) {
-          propName = "fill-color";
-        }
-        else if (paintProps.hasOwnProperty("line-color") && paintProps["line-color"]) {
-          propName = "line-color";
-        }
-        else if (paintProps.hasOwnProperty("fill-extrusion-color") && paintProps["fill-extrusion-color"]) {
-          propName = "fill-extrusion-color";
-        }
-
-        let swatchColor;
-
-        if(propName) {
-          const propertySpec = latest["paint_"+feature.layer.type][propName];
-
-          let color = feature.layer.paint[propName];
-
-          if(typeof(color) === "object") {
-            if(color.stops) {
-              color = styleFunction.convertFunction(color, propertySpec);
-            }
-
-            const exprResult = expression.createExpression(color, propertySpec);
-            const val = exprResult.value.evaluate({
-              zoom: this.props.zoom
-            }, feature);
-            swatchColor = val.toString();
-          }
-          else {
-            swatchColor = color;
-          }
-        }
-        else {
-          // Default color
-          swatchColor = "black";
-        }
+        const featureColor = this._getFeatureColor(feature, this.props.zoom);
 
         return <div
             key={idx}
@@ -87,7 +97,7 @@ class FeatureLayerPopup extends React.Component {
         >
           <div
             className="maputnik-popup-layer__swatch" 
-            style={{background: swatchColor}}
+            style={{background: featureColor}}
           ></div>
           <label
             className="maputnik-popup-layer__label"
