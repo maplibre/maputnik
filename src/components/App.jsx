@@ -19,6 +19,7 @@ import SourcesModal from './modals/SourcesModal'
 import OpenModal from './modals/OpenModal'
 import ShortcutsModal from './modals/ShortcutsModal'
 import SurveyModal from './modals/SurveyModal'
+import DebugModal from './modals/DebugModal'
 
 import { downloadGlyphsMetadata, downloadSpriteMetadata } from '../libs/metadata'
 import {latest, validate} from '@mapbox/mapbox-gl-style-spec'
@@ -139,6 +140,12 @@ export default class App extends React.Component {
           document.querySelector(".mapboxgl-canvas").focus();
         }
       },
+      {
+        key: "!",
+        handler: () => {
+          this.toggleModal("debug");
+        }
+      },
     ]
 
     document.body.addEventListener("keyup", (e) => {
@@ -203,12 +210,13 @@ export default class App extends React.Component {
         open: false,
         shortcuts: false,
         export: false,
-        survey: localStorage.hasOwnProperty('survey') ? false : true
+        survey: localStorage.hasOwnProperty('survey') ? false : true,
+        debug: false,
       },
       mapOptions: {
-        showTileBoundaries: queryUtil.asBool(queryObj, "show-tile-boundaries"),
-        showCollisionBoxes: queryUtil.asBool(queryObj, "show-collision-boxes"),
-        showOverdrawInspector: queryUtil.asBool(queryObj, "show-overdraw-inspector")
+        showTileBoundaries: false,
+        showCollisionBoxes: false,
+        showOverdrawInspector: false,
       },
     }
 
@@ -524,6 +532,15 @@ export default class App extends React.Component {
     this.setModal(modalName, !this.state.isOpen[modalName]);
   }
 
+  onChangeDebug = (key, value) => {
+    this.setState({
+      mapOptions: {
+        ...this.state.mapOptions,
+        [key]: value, 
+      }
+    });
+  }
+
   render() {
     const layers = this.state.mapStyle.layers || []
     const selectedLayer = layers.length > 0 ? layers[this.state.selectedLayerIndex] : null
@@ -575,6 +592,12 @@ export default class App extends React.Component {
 
 
     const modals = <div>
+      <DebugModal
+        debugOptions={this.state.mapOptions}
+        onChangeDebug={this.onChangeDebug}
+        isOpen={this.state.isOpen.debug}
+        onOpenToggle={this.toggleModal.bind(this, 'debug')}
+      />
       <ShortcutsModal
         ref={(el) => this.shortcutEl = el}
         isOpen={this.state.isOpen.shortcuts}
