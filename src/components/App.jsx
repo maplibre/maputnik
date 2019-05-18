@@ -28,7 +28,6 @@ import { initialStyleUrl, loadStyleUrl, removeStyleQuerystring } from '../libs/u
 import { undoMessages, redoMessages } from '../libs/diffmessage'
 import { StyleStore } from '../libs/stylestore'
 import { ApiStyleStore } from '../libs/apistore'
-import { RevisionStore } from '../libs/revisions'
 import LayerWatcher from '../libs/layerwatcher'
 import tokens from '../config/tokens.json'
 import isEqual from 'lodash.isequal'
@@ -90,7 +89,6 @@ export default class App extends React.Component {
     super(props)
     autoBind(this);
 
-    // this.revisionStore = new RevisionStore()
     this.styleStore = new ApiStyleStore({
       onLocalStyleChange: mapStyle => this.onStyleChanged(mapStyle, false)
     })
@@ -170,24 +168,22 @@ export default class App extends React.Component {
       if(styleUrl) {
         removeStyleQuerystring()
       }
-      // this.styleStore.init(err => {
-      //   if(err) {
-      //     console.log('Falling back to local storage for storing styles')
-      //     this.styleStore = new StyleStore()
-      //   }
-      //   this.styleStore.latestStyle(mapStyle => this.onStyleChanged(mapStyle))
+      this.styleStore.init(err => {
+        if(err) {
+          console.log('Falling back to local storage for storing styles')
+          this.styleStore = new StyleStore()
+        }
+        this.styleStore.latestStyle(mapStyle => this.onStyleChanged(mapStyle))
 
-      //   // if(Debug.enabled()) {
-      //   //   Debug.set("maputnik", "styleStore", this.styleStore);
-      //   //   Debug.set("maputnik", "revisionStore", this.revisionStore);
-      //   // }
-      // })
+        if(Debug.enabled()) {
+          Debug.set("maputnik", "styleStore", this.styleStore);
+        }
+      })
     }
 
-    // if(Debug.enabled()) {
-    //   Debug.set("maputnik", "revisionStore", this.revisionStore);
-    //   Debug.set("maputnik", "styleStore", this.styleStore);
-    // }
+    if(Debug.enabled()) {
+      Debug.set("maputnik", "styleStore", this.styleStore);
+    }
 
     const queryObj = url.parse(window.location.href, true).query;
 
