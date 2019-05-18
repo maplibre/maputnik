@@ -13,7 +13,6 @@ import pkgJson from '../../package.json'
 // This is required because of <https://stackoverflow.com/a/49846426>, there isn't another way to detect support that I'm aware of.
 const browser = detect();
 const colorAccessibilityFiltersEnabled = ['chrome', 'firefox'].indexOf(browser.name) > -1;
-console.log("colorAccessibilityFiltersEnabled", colorAccessibilityFiltersEnabled)
 
 
 class IconText extends React.Component {
