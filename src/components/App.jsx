@@ -274,7 +274,7 @@ export default class App extends React.Component {
 
   onStyleChanged = (newStyle, save=true) => {
     this.state.mapStyle.replace(newStyle);
-    // this.fetchSources();
+    this.fetchSources();
   }
 
   onUndo = () => {
@@ -359,69 +359,69 @@ export default class App extends React.Component {
     this.state.mapStyle.replace(newState);
   }
 
-  // fetchSources() {
-  //   const sourceList = {...this.state.sources};
+  fetchSources() {
+    const sourceList = {...this.state.sources};
 
-  //   for(let [key, val] of Object.entries(this.state.mapStyle.sources)) {
-  //     if(sourceList.hasOwnProperty(key)) {
-  //       continue;
-  //     }
+    for(let [key, val] of Object.entries(this.state.mapStyle.current.sources)) {
+      if(sourceList.hasOwnProperty(key)) {
+        continue;
+      }
 
-  //     sourceList[key] = {
-  //       type: val.type,
-  //       layers: []
-  //     };
+      sourceList[key] = {
+        type: val.type,
+        layers: []
+      };
 
-  //     if(!this.state.sources.hasOwnProperty(key) && val.type === "vector" && val.hasOwnProperty("url")) {
-  //       let url = val.url;
-  //       try {
-  //         url = normalizeSourceURL(url, MapboxGl.accessToken);
-  //       } catch(err) {
-  //         console.warn("Failed to normalizeSourceURL: ", err);
-  //       }
+      if(!this.state.sources.hasOwnProperty(key) && val.type === "vector" && val.hasOwnProperty("url")) {
+        let url = val.url;
+        try {
+          url = normalizeSourceURL(url, MapboxGl.accessToken);
+        } catch(err) {
+          console.warn("Failed to normalizeSourceURL: ", err);
+        }
 
-  //       try {
-  //         url = setFetchAccessToken(url, this.state.mapStyle)
-  //       } catch(err) {
-  //         console.warn("Failed to setFetchAccessToken: ", err);
-  //       }
+        try {
+          url = setFetchAccessToken(url, this.state.mapStyle.current)
+        } catch(err) {
+          console.warn("Failed to setFetchAccessToken: ", err);
+        }
 
-  //       fetch(url, {
-  //         mode: 'cors',
-  //       })
-  //         .then((response) => {
-  //           return response.json();
-  //         })
-  //         .then((json) => {
-  //           if(!json.hasOwnProperty("vector_layers")) {
-  //             return;
-  //           }
+        fetch(url, {
+          mode: 'cors',
+        })
+          .then((response) => {
+            return response.json();
+          })
+          .then((json) => {
+            if(!json.hasOwnProperty("vector_layers")) {
+              return;
+            }
 
-  //           // Create new objects before setState
-  //           const sources = Object.assign({}, this.state.sources);
+            // Create new objects before setState
+            const sources = Object.assign({}, this.state.sources);
 
-  //           for(let layer of json.vector_layers) {
-  //             sources[key].layers.push(layer.id)
-  //           }
+            for(let layer of json.vector_layers) {
+              sources[key].layers.push(layer.id)
+            }
 
-  //           console.debug("Updating source: "+key);
-  //           this.setState({
-  //             sources: sources
-  //           });
-  //         })
-  //         .catch((err) => {
-  //           console.error("Failed to process sources for '%s'", url, err);
-  //         })
-  //     }
-  //   }
+            console.debug("Updating source: "+key);
+            this.setState({
+              sources: sources
+            });
+          })
+          .catch((err) => {
+            console.error("Failed to process sources for '%s'", url, err);
+          })
+      }
+    }
 
-  //   if(!isEqual(this.state.sources, sourceList)) {
-  //     console.debug("Setting sources");
-  //     this.setState({
-  //       sources: sourceList
-  //     })
-  //   }
-  // }
+    if(!isEqual(this.state.sources, sourceList)) {
+      console.debug("Setting sources");
+      this.setState({
+        sources: sourceList
+      })
+    }
+  }
 
   mapRenderer() {
     const mapProps = {
