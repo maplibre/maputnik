@@ -11,6 +11,7 @@ import 'codemirror/lib/codemirror.css'
 import 'codemirror/addon/lint/lint.css'
 import '../../codemirror-maputnik.css'
 import jsonlint from 'jsonlint'
+import stringify from 'json-stable-stringify';
 
 // This is mainly because of this issue <https://github.com/zaach/jsonlint/issues/57> also the API has changed, see comment in file
 import '../../vendor/codemirror/addon/lint/json-lint'
@@ -25,14 +26,14 @@ class JSONEditor extends React.PureComponent {
   constructor(props) {
     super(props)
     this.state = {
-      code: JSON.stringify(props.layer, null, 2)
+      code: stringify(props.layer, {space: 2})
     }
   }
 
   componentDidUpdate(prevProps) {
     if (prevProps.layer !== this.props.layer) {
       this.setState({
-        code: JSON.stringify(this.props.layer, null, 2)
+        code: stringify(this.props.layer, {space: 2})
       })
     }
   }
@@ -53,7 +54,7 @@ class JSONEditor extends React.PureComponent {
   resetValue() {
     console.log('reset')
     this.setState({
-      code: JSON.stringify(this.props.layer, null, 2)
+      code: stringify(this.props.layer, {space: 2})
     })
   }
 
