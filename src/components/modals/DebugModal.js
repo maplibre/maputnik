@@ -7,7 +7,7 @@ import Modal from './Modal'
 class DebugModal extends React.Component {
   static propTypes = {
     isOpen: PropTypes.bool.isRequired,
-    onOpenToggle: PropTypes.func.isRequired,
+    onChangeDebug: PropTypes.func.isRequired,
     debugOptions: PropTypes.object,
   }
 
