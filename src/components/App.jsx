@@ -225,20 +225,24 @@ export default class App extends React.Component {
     })
   }
 
-  handleKeyPress(e) {
+  handleKeyPress = (e) => {
     if(navigator.platform.toUpperCase().indexOf('MAC') >= 0) {
       if(e.metaKey && e.shiftKey && e.keyCode === 90) {
+        e.preventDefault();
         this.onRedo(e);
       }
       else if(e.metaKey && e.keyCode === 90) {
+        e.preventDefault();
         this.onUndo(e);
       }
     }
     else {
       if(e.ctrlKey && e.keyCode === 90) {
+        e.preventDefault();
         this.onUndo(e);
       }
       else if(e.ctrlKey && e.keyCode === 89) {
+        e.preventDefault();
         this.onRedo(e);
       }
     }
