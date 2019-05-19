@@ -189,6 +189,24 @@ export default class App extends React.Component {
 
     immutableStyle.on("change", () => {
       this.forceUpdate();
+
+			if (immutableStyle.errors.length === 0) {	
+        const prevStyle = immutableStyle.stack(-1).style;
+				if (immutableStyle.current.glyphs !== prevStyle.glyphs) {	
+					this.updateFonts(immutableStyle.current.glyphs);
+				}	
+				if (immutableStyle.current.sprite !== prevStyle.sprite) {	
+					this.updateIcons(immutableStyle.current.sprite);
+				}	
+				if (immutableStyle.current.sources !== prevStyle.sources) {	
+          this.fetchSources();
+        }
+			}
+
+			this.setState({	
+				errors: this.state.mapStyle.errors,
+			});
+
       this.saveStyle(this.state.mapStyle.current);
     })
 
@@ -270,7 +288,6 @@ export default class App extends React.Component {
 
   onStyleChanged = (newStyle, save=true) => {
     this.state.mapStyle.replace(newStyle);
-    this.fetchSources();
   }
 
   onUndo = () => {
