@@ -26,6 +26,7 @@
     "classnames": "^2.2.6",
     "codemirror": "^5.40.2",
     "color": "^3.0.0",
+    "detect-browser": "^4.5.0",
     "file-saver": "^1.3.8",
     "jsonlint": "github:josdejong/jsonlint#85a19d7",
     "lodash.capitalize": "^4.2.1",
