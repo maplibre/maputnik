@@ -49,6 +49,26 @@ function normalizeSourceURL (url, apiToken="") {
   }
 }
 
+function setFetchAccessToken(url, mapStyle) {
+  const matchesTilehosting = url.match(/\.tilehosting\.com/);
+  const matchesMaptiler = url.match(/\.maptiler\.com/);
+  const matchesThunderforest = url.match(/\.thunderforest\.com/);
+  if (matchesTilehosting || matchesMaptiler) {
+    const accessToken = style.getAccessToken("openmaptiles", mapStyle, {allowFallback: true})
+    if (accessToken) {
+      return url.replace('{key}', accessToken)
+    }
+  }
+  else if (matchesThunderforest) {
+    const accessToken = style.getAccessToken("thunderforest", mapStyle, {allowFallback: true})
+    if (accessToken) {
+      return url.replace('{key}', accessToken)
+    }
+  }
+  else {
+    return url;
+  }
+}
 
 function updateRootSpec(spec, fieldName, newValues) {
   return {
@@ -73,57 +93,48 @@ export default class App extends React.Component {
       onLocalStyleChange: mapStyle => this.onStyleChanged(mapStyle, false)
     })
 
-    
-    const keyCodes = {
-      "esc": 27,
-      "?": 191,
-      "o": 79,
-      "e": 69,
-      "s": 83,
-      "d": 68,
-      "i": 73,
-      "m": 77,
-    }
 
     const shortcuts = [
       {
-        keyCode: keyCodes["?"],
+        key: "?",
         handler: () => {
           this.toggleModal("shortcuts");
         }
       },
       {
-        keyCode: keyCodes["o"],
+        key: "o",
         handler: () => {
           this.toggleModal("open");
         }
       },
       {
-        keyCode: keyCodes["e"],
+        key: "e",
         handler: () => {
           this.toggleModal("export");
         }
       },
       {
-        keyCode: keyCodes["d"],
+        key: "d",
         handler: () => {
           this.toggleModal("sources");
         }
       },
       {
-        keyCode: keyCodes["s"],
+        key: "s",
         handler: () => {
           this.toggleModal("settings");
         }
       },
       {
-        keyCode: keyCodes["i"],
+        key: "i",
         handler: () => {
-          this.setMapState("inspect");
+          this.setMapState(
+            this.state.mapState === "map" ? "inspect" : "map"
+          );
         }
       },
       {
-        keyCode: keyCodes["m"],
+        key: "m",
         handler: () => {
           document.querySelector(".mapboxgl-canvas").focus();
         }
@@ -131,16 +142,17 @@ export default class App extends React.Component {
     ]
 
     document.body.addEventListener("keyup", (e) => {
-      if(e.keyCode === keyCodes["esc"]) {
+      if(e.key === "Escape") {
         e.target.blur();
         document.body.focus();
       }
-      else if(document.activeElement === document.body) {
+      else if(this.state.isOpen.shortcuts || document.activeElement === document.body) {
         const shortcut = shortcuts.find((shortcut) => {
-          return (shortcut.keyCode === e.keyCode)
+          return (shortcut.key === e.key)
         })
 
         if(shortcut) {
+          this.setModal("shortcuts", false);
           shortcut.handler(e);
         }
       }
@@ -195,7 +207,8 @@ export default class App extends React.Component {
       },
       mapOptions: {
         showTileBoundaries: queryUtil.asBool(queryObj, "show-tile-boundaries"),
-        showCollisionBoxes: queryUtil.asBool(queryObj, "show-collision-boxes")
+        showCollisionBoxes: queryUtil.asBool(queryObj, "show-collision-boxes"),
+        showOverdrawInspector: queryUtil.asBool(queryObj, "show-overdraw-inspector")
       },
     }
 
@@ -405,6 +418,12 @@ export default class App extends React.Component {
           console.warn("Failed to normalizeSourceURL: ", err);
         }
 
+        try {
+          url = setFetchAccessToken(url, this.state.mapStyle)
+        } catch(err) {
+          console.warn("Failed to setFetchAccessToken: ", err);
+        }
+
         fetch(url, {
           mode: 'cors',
         })
@@ -488,17 +507,21 @@ export default class App extends React.Component {
     this.setState({ selectedLayerIndex: idx })
   }
 
-  toggleModal(modalName) {
+  setModal(modalName, value) {
+    if(modalName === 'survey' && value === false) {
+      localStorage.setItem('survey', '');
+    }
+
     this.setState({
       isOpen: {
         ...this.state.isOpen,
-        [modalName]: !this.state.isOpen[modalName]
+        [modalName]: value
       }
     })
+  }
 
-    if(modalName === 'survey') {
-      localStorage.setItem('survey', '');
-    }
+  toggleModal(modalName) {
+    this.setModal(modalName, !this.state.isOpen[modalName]);
   }
 
   render() {
@@ -553,6 +576,7 @@ export default class App extends React.Component {
 
     const modals = <div>
       <ShortcutsModal
+        ref={(el) => this.shortcutEl = el}
         isOpen={this.state.isOpen.shortcuts}
         onOpenToggle={this.toggleModal.bind(this, 'shortcuts')}
       />

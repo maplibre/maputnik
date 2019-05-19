@@ -29,20 +29,11 @@ class JSONEditor extends React.Component {
     }
   }
 
-  static getDerivedStateFromProps(props, state) {
-    return {
-      code: JSON.stringify(props.layer, null, 2)
-    };
-  }
-
-  shouldComponentUpdate(nextProps, nextState) {
-    try {
-      const parsedLayer = JSON.parse(this.state.code)
-      // If the structure is still the same do not update
-      // because it affects editing experience by reformatting all the time
-      return nextState.code !== JSON.stringify(parsedLayer, null, 2)
-    } catch(err) {
-      return true
+  componentDidUpdate(prevProps) {
+    if (prevProps.layer !== this.props.layer) {
+      this.setState({
+        code: JSON.stringify(this.props.layer, null, 2)
+      })
     }
   }
 

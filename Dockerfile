@@ -1,4 +1,9 @@
-FROM node:10
+FROM node:10-slim
+
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    git \
+    python \
+ && rm -rf /var/lib/apt/lists/*
 
 EXPOSE 8888
 
@@ -9,7 +14,8 @@ COPY . ${HOME}/
 
 WORKDIR ${HOME}
 
-RUN npm install -d --dev
+RUN npm install -d
 RUN npm run build
 
-CMD npm run start -- --host 0.0.0.0
+WORKDIR ${HOME}/build/build
+CMD python -m SimpleHTTPServer 8888

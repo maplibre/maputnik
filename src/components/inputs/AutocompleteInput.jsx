@@ -54,7 +54,8 @@ class AutocompleteInput extends React.Component {
         menuStyle={{
           position: "fixed",
           overflow: "auto",
-          maxHeight: this.state.maxHeight
+          maxHeight: this.state.maxHeight,
+          zIndex: '998'
         }}
         wrapperProps={{
           className: "maputnik-autocomplete",

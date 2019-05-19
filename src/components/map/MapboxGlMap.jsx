@@ -17,10 +17,10 @@ import '../../libs/mapbox-rtl'
 
 const IS_SUPPORTED = MapboxGl.supported();
 
-function renderPropertyPopup(features) {
-  var mountNode = document.createElement('div');
-  ReactDOM.render(<FeaturePropertyPopup features={features} />, mountNode)
-  return mountNode.innerHTML;
+function renderPopup(popup, mountNode) {
+  ReactDOM.render(popup, mountNode);
+  var content = mountNode.innerHTML;
+  return content;
 }
 
 function buildInspectStyle(originalMapStyle, coloredLayers, highlightedLayer) {
@@ -77,9 +77,6 @@ export default class MapboxGlMap extends React.Component {
     this.state = {
       map: null,
       inspect: null,
-      isPopupOpen: false,
-      popupX: 0,
-      popupY: 0,
     }
   }
 
@@ -95,6 +92,16 @@ export default class MapboxGlMap extends React.Component {
       //the necessary operations ourselves!
       this.state.map.setStyle(props.mapStyle, { diff: true})
     }
+  }
+
+  shouldComponentUpdate(nextProps, nextState) {
+    let should = false;
+    try {
+      should = JSON.stringify(this.props) !== JSON.stringify(nextProps) || JSON.stringify(this.state) !== JSON.stringify(nextState);
+    } catch(e) {
+      // no biggie, carry on
+    }
+    return should;
   }
 
   componentDidUpdate(prevProps) {
@@ -114,6 +121,7 @@ export default class MapboxGlMap extends React.Component {
     if (map) {
       map.showTileBoundaries = this.props.options.showTileBoundaries;
       map.showCollisionBoxes = this.props.options.showCollisionBoxes;
+      map.showOverdrawInspector = this.props.options.showOverdrawInspector;
     }
   }
 
@@ -131,12 +139,15 @@ export default class MapboxGlMap extends React.Component {
 
     map.showTileBoundaries = mapOpts.showTileBoundaries;
     map.showCollisionBoxes = mapOpts.showCollisionBoxes;
+    map.showOverdrawInspector = mapOpts.showOverdrawInspector;
 
     const zoom = new ZoomControl;
     map.addControl(zoom, 'top-right');
 
     const nav = new MapboxGl.NavigationControl();
     map.addControl(nav, 'top-right');
+
+    const tmpNode = document.createElement('div');
 
     const inspect = new MapboxInspect({
       popup: new MapboxGl.Popup({
@@ -153,18 +164,23 @@ export default class MapboxGlMap extends React.Component {
       buildInspectStyle: (originalMapStyle, coloredLayers) => buildInspectStyle(originalMapStyle, coloredLayers, this.props.highlightedLayer),
       renderPopup: features => {
         if(this.props.inspectModeEnabled) {
-          return renderPropertyPopup(features)
+          return renderPopup(<FeaturePropertyPopup features={features} />, tmpNode);
         } else {
-          var mountNode = document.createElement('div');
-          ReactDOM.render(<FeatureLayerPopup features={features} onLayerSelect={this.props.onLayerSelect} />, mountNode)
-          return mountNode
+          return renderPopup(<FeatureLayerPopup features={features} onLayerSelect={this.props.onLayerSelect} zoom={this.state.zoom} />, tmpNode);
         }
       }
     })
     map.addControl(inspect)
 
     map.on("style.load", () => {
-      this.setState({ map, inspect });
+      this.setState({
+        map,
+        inspect,
+        zoom: map.getZoom()
+      });
+      if(this.props.inspectModeEnabled) {
+        inspect.toggleInspector();
+      }
     })
 
     map.on("data", e => {
@@ -172,6 +188,12 @@ export default class MapboxGlMap extends React.Component {
       this.props.onDataChange({
         map: this.state.map
       })
+    })
+
+    map.on("zoom", e => {
+      this.setState({
+        zoom: map.getZoom()
+      });
     })
   }
 
