@@ -7,9 +7,10 @@ import Modal from './Modal'
 class DebugModal extends React.Component {
   static propTypes = {
     isOpen: PropTypes.bool.isRequired,
-    onChangeDebug: PropTypes.func.isRequired,
+    renderer: PropTypes.string.isRequired,
+    onChangeMaboxGlDebug: PropTypes.func.isRequired,
     onOpenToggle: PropTypes.func.isRequired,
-    debugOptions: PropTypes.object,
+    mapboxGlDebugOptions: PropTypes.object,
   }
 
   render() {
@@ -20,15 +21,22 @@ class DebugModal extends React.Component {
       title={'Debug'}
     >
       <div className="maputnik-modal-section maputnik-modal-shortcuts">
-        <ul>
-          {Object.entries(this.props.debugOptions).map(([key, val]) => {
-            return <li key={key}>
-              <label>
-                <input type="checkbox" value={val} onClick={(e) => this.props.onChangeDebug(key, e.target.checked)} /> {key}
-              </label>
-            </li>
-          })}
-        </ul>
+        {this.props.renderer === 'mbgljs' &&
+          <ul>
+            {Object.entries(this.props.mapboxGlDebugOptions).map(([key, val]) => {
+              return <li key={key}>
+                <label>
+                  <input type="checkbox" checked={val} onClick={(e) => this.props.onChangeMaboxGlDebug(key, e.target.checked)} /> {key}
+                </label>
+              </li>
+            })}
+          </ul>
+        }
+        {this.props.renderer === 'ol' &&
+          <div>
+            No debug options available for the OpenLayers renderer
+          </div>
+        }
       </div>
     </Modal>
   }

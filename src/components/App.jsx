@@ -213,7 +213,7 @@ export default class App extends React.Component {
         survey: localStorage.hasOwnProperty('survey') ? false : true,
         debug: false,
       },
-      mapOptions: {
+      mapboxGlDebugOptions: {
         showTileBoundaries: false,
         showCollisionBoxes: false,
         showOverdrawInspector: false,
@@ -469,18 +469,22 @@ export default class App extends React.Component {
     }
   }
 
+  _getRenderer () {
+    const metadata = this.state.mapStyle.metadata || {};
+    return metadata['maputnik:renderer'] || 'mbgljs';
+  }
+
   mapRenderer() {
     const mapProps = {
       mapStyle: style.replaceAccessTokens(this.state.mapStyle, {allowFallback: true}),
-      options: this.state.mapOptions,
+      options: this.state.mapboxGlDebugOptions,
       onDataChange: (e) => {
         this.layerWatcher.analyzeMap(e.map)
         this.fetchSources();
       },
     }
 
-    const metadata = this.state.mapStyle.metadata || {}
-    const renderer = metadata['maputnik:renderer'] || 'mbgljs'
+    const renderer = this._getRenderer();
 
     let mapElement;
 
@@ -532,10 +536,10 @@ export default class App extends React.Component {
     this.setModal(modalName, !this.state.isOpen[modalName]);
   }
 
-  onChangeDebug = (key, value) => {
+  onChangeMaboxGlDebug = (key, value) => {
     this.setState({
-      mapOptions: {
-        ...this.state.mapOptions,
+      mapboxGlDebugOptions: {
+        ...this.state.mapboxGlDebugOptions,
         [key]: value, 
       }
     });
@@ -593,8 +597,9 @@ export default class App extends React.Component {
 
     const modals = <div>
       <DebugModal
-        debugOptions={this.state.mapOptions}
-        onChangeDebug={this.onChangeDebug}
+        renderer={this._getRenderer()}
+        mapboxGlDebugOptions={this.state.mapboxGlDebugOptions}
+        onChangeMaboxGlDebug={this.onChangeMaboxGlDebug}
         isOpen={this.state.isOpen.debug}
         onOpenToggle={this.toggleModal.bind(this, 'debug')}
       />
