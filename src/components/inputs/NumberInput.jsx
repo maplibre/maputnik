@@ -13,7 +13,7 @@ class NumberInput extends React.Component {
   }
 
   static defaultProps = {
-    rangeStep: 0.01
+    rangeStep: 1
   }
 
   constructor(props) {
