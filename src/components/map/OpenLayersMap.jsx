@@ -51,12 +51,8 @@ export default class OpenLayersMap extends React.Component {
     return <div
       ref={x => this.container = x}
       style={{
-        position: "fixed",
-        top: 40,
-        right: 0,
-        bottom: 0,
-        height: 'calc(100% - 40px)',
-        width: "75%",
+        width: "100%",
+        height: "100%",
         backgroundColor: '#fff',
         ...this.props.style,
       }}>
