@@ -106,6 +106,8 @@ class NumberInput extends React.Component {
       this.props.min !== undefined && this.props.max !== undefined &&
       this.props.allowRange
     ) {
+      const value = this.props.value === undefined ? this.props.default : this.props.value;
+
       rangeEl = (
         <input
           className="maputnik-number-range"
@@ -115,7 +117,7 @@ class NumberInput extends React.Component {
           min={this.props.min}
           step="any"
           spellCheck="false"
-          value={this.state.value}
+          value={value}
           onChange={this.onChangeRange}
           onBlur={this.resetValue}
         />
