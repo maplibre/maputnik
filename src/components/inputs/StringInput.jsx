@@ -14,13 +14,16 @@ class StringInput extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
+      editing: false,
       value: props.value || ''
     }
   }
 
-  componentDidUpdate(prevProps) {
-    if(this.props.value !== prevProps.value) {
-      this.setState({value: this.props.value})
+  static getDerivedStateFromProps(props, state) {
+    if (!state.editing) {
+      return {
+        value: props.value
+      };
     }
   }
 
@@ -51,11 +54,15 @@ class StringInput extends React.Component {
       placeholder: this.props.default,
       onChange: e => {
         this.setState({
+          editing: true,
           value: e.target.value
         })
       },
       onBlur: () => {
-        if(this.state.value!==this.props.value) this.props.onChange(this.state.value)
+        if(this.state.value!==this.props.value) {
+          this.setState({editing: false});
+          this.props.onChange(this.state.value);
+        }
       }
     });
   }
