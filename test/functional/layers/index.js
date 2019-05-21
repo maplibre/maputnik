@@ -191,7 +191,7 @@ describe("layers", function() {
           var bgId = createBackground();
 
           browser.click(wd.$("layer-list-item:background:"+bgId))
-          browser.setValueSafe(wd.$("min-zoom", "input"), 1)
+          browser.setValueSafe(wd.$("min-zoom", 'input[type="text"]'), 1)
           browser.click(wd.$("layer-editor.layer-id", "input"));
 
           var styleObj = helper.getStyleStore(browser);
@@ -221,7 +221,7 @@ describe("layers", function() {
           var bgId = createBackground();
 
           browser.click(wd.$("layer-list-item:background:"+bgId))
-          browser.setValueSafe(wd.$("max-zoom", "input"), 1)
+          browser.setValueSafe(wd.$("max-zoom", 'input[type="text"]'), 1)
           browser.click(wd.$("layer-editor.layer-id", "input"));
 
           var styleObj = helper.getStyleStore(browser);

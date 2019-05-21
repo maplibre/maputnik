@@ -108,13 +108,6 @@ class NumberInput extends React.Component {
   }
 
   render() {
-    let wdProps = {};
-    if (this.props.wdKey) {
-      wdProps = {
-        "data-wd-key": this.props.wdKey
-      };
-    }
-
     if(
       this.props.hasOwnProperty("min") && this.props.hasOwnProperty("max") &&
       this.props.min !== undefined && this.props.max !== undefined &&
@@ -146,6 +139,7 @@ class NumberInput extends React.Component {
         />
         <input
           key="text"
+          type="text"
           spellCheck="false"
           className="maputnik-number"
           placeholder={this.props.default}
@@ -154,7 +148,6 @@ class NumberInput extends React.Component {
             this.changeValue(e.target.value)
           }}
           onBlur={this.resetValue}
-          {...wdProps}
         />
       </div>
     }
@@ -162,13 +155,13 @@ class NumberInput extends React.Component {
       return <div className="maputnik-number-container">
         <input
           key="text"
+          type="text"
           spellCheck="false"
           className="maputnik-number"
           placeholder={this.props.default}
           value={this.state.value}
           onChange={e => this.changeValue(e.target.value)}
           onBlur={this.resetValue}
-          {...wdProps}
         />
       </div>
     }
