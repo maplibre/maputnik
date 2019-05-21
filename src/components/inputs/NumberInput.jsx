@@ -10,6 +10,7 @@ class NumberInput extends React.Component {
     onChange: PropTypes.func,
     allowRange: PropTypes.bool,
     rangeStep: PropTypes.number,
+    wdKey: PropTypes.string,
   }
 
   static defaultProps = {
@@ -107,6 +108,13 @@ class NumberInput extends React.Component {
   }
 
   render() {
+    let wdProps = {};
+    if (this.props.wdKey) {
+      wdProps = {
+        "data-wd-key": this.props.wdKey
+      };
+    }
+
     if(
       this.props.hasOwnProperty("min") && this.props.hasOwnProperty("max") &&
       this.props.min !== undefined && this.props.max !== undefined &&
@@ -146,6 +154,7 @@ class NumberInput extends React.Component {
             this.changeValue(e.target.value)
           }}
           onBlur={this.resetValue}
+          {...wdProps}
         />
       </div>
     }
@@ -159,6 +168,7 @@ class NumberInput extends React.Component {
           value={this.state.value}
           onChange={e => this.changeValue(e.target.value)}
           onBlur={this.resetValue}
+          {...wdProps}
         />
       </div>
     }
