@@ -21,14 +21,19 @@ class NumberInput extends React.Component {
     this.state = {
       editing: false,
       value: props.value,
+      dirtyValue: props.value,
     }
   }
 
   static getDerivedStateFromProps(props, state) {
     if (!state.editing) {
       return {
-        value: props.value
+        value: props.value,
+        dirtyValue: props.value,
       };
+    }
+    else {
+      return null;
     }
   }
 
@@ -36,11 +41,14 @@ class NumberInput extends React.Component {
     this.setState({editing: true});
     const value = parseFloat(newValue)
 
-    const hasChanged = this.state.value !== value
+    const hasChanged = this.state.value !== value;
     if(this.isValid(value) && hasChanged) {
       this.props.onChange(value)
     }
-    this.setState({ value: newValue })
+    this.setState({
+      value: newValue,
+      dirtyValue: newValue,
+    })
   }
 
   isValid(v) {
@@ -78,37 +86,36 @@ class NumberInput extends React.Component {
   }
 
   onChangeRange = (e) => {
-    const val = parseFloat(e.target.value, 10);
+    const value = parseFloat(e.target.value, 10);
     const step = this.props.rangeStep;
-    let out = val;
+    let dirtyValue = value;
 
     if(step) {
       // Can't do this with the <input/> range step attribute else we won't be able to set a high precision value via the text input.
-      const snap = val % step;
+      const snap = value % step;
 
       // Round up/down to step
       if (snap < step/2) {
-        out = val - snap;
+        dirtyValue = value - snap;
       }
       else {
-        out = val + (step - snap);
+        dirtyValue = value + (step - snap);
       };
     }
 
-    this.changeValue(out);
+    this.setState({editing: true, value, dirtyValue});
   }
 
   render() {
-    let rangeEl;
-
     if(
       this.props.hasOwnProperty("min") && this.props.hasOwnProperty("max") &&
       this.props.min !== undefined && this.props.max !== undefined &&
       this.props.allowRange
     ) {
-      const value = this.props.value === undefined ? this.props.default : this.props.value;
+      const value = this.state.value === undefined ? this.props.default : this.state.value;
+      const rangeValue = Number.isNaN(parseFloat(value, 10)) ? this.props.default : value;
 
-      rangeEl = (
+      return <div className="maputnik-number-container">
         <input
           className="maputnik-number-range"
           key="range"
@@ -117,25 +124,44 @@ class NumberInput extends React.Component {
           min={this.props.min}
           step="any"
           spellCheck="false"
-          value={value}
+          value={rangeValue}
           onChange={this.onChangeRange}
+          onPointerUp={() => {
+            const {dirtyValue} = this.state;
+            const hasChanged = this.state.props !== dirtyValue
+            if(this.isValid(dirtyValue) && hasChanged) {
+              this.setState({editing: false}, () => {
+                this.props.onChange(dirtyValue);
+              });
+            }
+          }}
+        />
+        <input
+          key="text"
+          spellCheck="false"
+          className="maputnik-number"
+          placeholder={this.props.default}
+          value={this.state.dirtyValue}
+          onChange={e => {
+            this.changeValue(e.target.value)
+          }}
           onBlur={this.resetValue}
         />
-      );
+      </div>
     }
-
-    return <div className="maputnik-number-container">
-      {rangeEl}
-      <input
-        key="text"
-        spellCheck="false"
-        className="maputnik-number"
-        placeholder={this.props.default}
-        value={this.state.value}
-        onChange={e => this.changeValue(e.target.value)}
-        onBlur={this.resetValue}
-      />
-    </div>
+    else {
+      return <div className="maputnik-number-container">
+        <input
+          key="text"
+          spellCheck="false"
+          className="maputnik-number"
+          placeholder={this.props.default}
+          value={this.state.value}
+          onChange={e => this.changeValue(e.target.value)}
+          onBlur={this.resetValue}
+        />
+      </div>
+    }
   }
 }
 
