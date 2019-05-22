@@ -40,6 +40,10 @@ class ShortcutsModal extends React.Component {
         key: "m",
         text: "Focus map"
       },
+      {
+        key: "!",
+        text: "Debug modal"
+      },
     ]
 
 

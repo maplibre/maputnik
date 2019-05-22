@@ -1,4 +1,15 @@
 .maputnik-popup-layer {
+  display: flex;
+  flex-direction: row;
+}
+
+.maputnik-popup-layer__swatch {
+  display: inline-block;
+  width: 5px;
+  align-content: stretch;
+}
+
+.maputnik-popup-layer__label {
   display: block;
   color: $color-lowgray;
   cursor: pointer;
