@@ -1,4 +1,5 @@
 import React from 'react'
+import {throttle} from 'lodash';
 import PropTypes from 'prop-types'
 import { loadJSON } from '../../libs/urlopen'
 
@@ -22,10 +23,14 @@ export default class OpenLayersMap extends React.Component {
 
   constructor(props) {
     super(props);
+    this.updateStyle = throttle(this._updateStyle.bind(this), 200);
   }
 
-  updateStyle(newMapStyle) {
+  _updateStyle(newMapStyle) {
     if(!this.map) return;
+
+    // See <https://github.com/openlayers/ol-mapbox-style/issues/215#issuecomment-493198815>
+    this.map.getLayers().clear();
     apply(this.map, newMapStyle);
   }
 
