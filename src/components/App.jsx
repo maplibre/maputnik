@@ -219,8 +219,6 @@ export default class App extends React.Component {
         showOverdrawInspector: false,
       },
       openlayersDebugOptions: {
-        // TODO: For future projection work
-        // enableProjections: true,
         debugToolbox: true,
       },
     }
