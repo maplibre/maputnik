@@ -9,6 +9,7 @@ class DebugModal extends React.Component {
     isOpen: PropTypes.bool.isRequired,
     renderer: PropTypes.string.isRequired,
     onChangeMaboxGlDebug: PropTypes.func.isRequired,
+    onChangeOpenlayersDebug: PropTypes.func.isRequired,
     onOpenToggle: PropTypes.func.isRequired,
     mapboxGlDebugOptions: PropTypes.object,
     openlayersDebugOptions: PropTypes.object,

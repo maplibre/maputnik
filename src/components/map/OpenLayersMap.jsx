@@ -31,6 +31,7 @@ export default class OpenLayersMap extends React.Component {
     accessToken: PropTypes.string,
     style: PropTypes.object,
     onLayerSelect: PropTypes.func.isRequired,
+    debugToolbox: PropTypes.bool.isRequired,
   }
 
   static defaultProps = {
@@ -123,7 +124,7 @@ export default class OpenLayersMap extends React.Component {
         className="maputnik-popup"
       >
         <button
-          class="mapboxgl-popup-close-button"
+          className="mapboxgl-popup-close-button"
           onClick={this.closeOverlay}
           aria-label="Close popup"
         >
