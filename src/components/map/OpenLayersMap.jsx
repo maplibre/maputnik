@@ -9,14 +9,8 @@ import 'ol/ol.css'
 import {apply} from 'ol-mapbox-style';
 import {Map, View, Proj, Overlay} from 'ol';
 
-import proj4 from 'proj4';
-import {register} from 'ol/proj/proj4';
-import {get as getProjection, toLonLat} from 'ol/proj';
+import {toLonLat} from 'ol/proj';
 import {toStringHDMS} from 'ol/coordinate';
-
-// Register some projections...
-proj4.defs('EPSG:3031', '+proj=stere +lat_0=-90 +lat_ts=-71 +lon_0=0 +k=1 +x_0=0 +y_0=0 +datum=WGS84 +units=m +no_defs ');
-register(proj4);
 
 
 function renderCoords (coords) {
@@ -64,21 +58,7 @@ export default class OpenLayersMap extends React.Component {
     apply(this.map, newMapStyle);
   }
 
-  updateProjection () {
-    this.projection = getProjection(this.props.projectionCode || "EPSG:3857");
-  }
-
   componentDidUpdate(prevProps) {
-    if (this.props.projectionCode !== prevProps.projectionCode) {
-      this.updateProjection();
-      this.map.setView(
-        new View({
-          projection: this.projection,
-          zoom: 1,
-          center: [180, -90]
-        })
-      );
-    }
     if (this.props.mapStyle !== prevProps.mapStyle) {
       this.updateStyle(this.props.mapStyle);
     }
@@ -93,20 +73,17 @@ export default class OpenLayersMap extends React.Component {
       }
     });
 
-    this.updateProjection();
-
     const map = new Map({
       target: this.container,
       overlays: [this.overlay],
       view: new View({
-        projection: this.projection,
         zoom: 1,
         center: [180, -90],
       })
     });
 
     map.on('pointermove', (evt) => {
-      var coords = toLonLat(evt.coordinate, this.projection);
+      var coords = toLonLat(evt.coordinate);
       this.setState({
         cursor: [
           coords[0].toFixed(2),
@@ -116,7 +93,7 @@ export default class OpenLayersMap extends React.Component {
     })
 
     map.on('postrender', (evt) => {
-      const center = toLonLat(map.getView().getCenter(), this.projection);
+      const center = toLonLat(map.getView().getCenter());
       this.setState({
         center: [
           center[0].toFixed(2),
