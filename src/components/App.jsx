@@ -219,7 +219,7 @@ export default class App extends React.Component {
         showOverdrawInspector: false,
       },
       openlayersDebugOptions: {
-        debugToolbox: true,
+        debugToolbox: false,
       },
     }
 
