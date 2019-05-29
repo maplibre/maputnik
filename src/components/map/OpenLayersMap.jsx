@@ -3,10 +3,32 @@ import {throttle} from 'lodash';
 import PropTypes from 'prop-types'
 import { loadJSON } from '../../libs/urlopen'
 
+import FeatureLayerPopup from './FeatureLayerPopup';
+
 import 'ol/ol.css'
 import {apply} from 'ol-mapbox-style';
-import {Map, View} from 'ol';
+import {Map, View, Proj, Overlay} from 'ol';
 
+import proj4 from 'proj4';
+import {register} from 'ol/proj/proj4';
+import {get as getProjection, toLonLat} from 'ol/proj';
+import {toStringHDMS} from 'ol/coordinate';
+
+// Register some projections...
+proj4.defs('EPSG:3031', '+proj=stere +lat_0=-90 +lat_ts=-71 +lon_0=0 +k=1 +x_0=0 +y_0=0 +datum=WGS84 +units=m +no_defs ');
+register(proj4);
+
+
+function renderCoords (coords) {
+  if (!coords || coords.length < 2) {
+    return null;
+  }
+  else {
+    return <span className="maputnik-coords">
+      {coords.map((coord) => String(coord).padStart(7, "\u00A0")).join(', ')}
+    </span>
+  }
+}
 
 export default class OpenLayersMap extends React.Component {
   static propTypes = {
@@ -14,15 +36,23 @@ export default class OpenLayersMap extends React.Component {
     mapStyle: PropTypes.object.isRequired,
     accessToken: PropTypes.string,
     style: PropTypes.object,
+    onLayerSelect: PropTypes.func.isRequired,
   }
 
   static defaultProps = {
     onMapLoaded: () => {},
     onDataChange: () => {},
+    onLayerSelect: () => {},
   }
 
   constructor(props) {
     super(props);
+    this.state = {
+      zoom: 0,
+      rotation: 0,
+      cursor: [],
+      center: [],
+    };
     this.updateStyle = throttle(this._updateStyle.bind(this), 200);
   }
 
@@ -34,33 +64,125 @@ export default class OpenLayersMap extends React.Component {
     apply(this.map, newMapStyle);
   }
 
-  componentDidUpdate() {
-    this.updateStyle(this.props.mapStyle);
+  updateProjection () {
+    this.projection = getProjection(this.props.projectionCode || "EPSG:3857");
+  }
+
+  componentDidUpdate(prevProps) {
+    if (this.props.projectionCode !== prevProps.projectionCode) {
+      this.updateProjection();
+      this.map.setView(
+        new View({
+          projection: this.projection,
+          zoom: 1,
+          center: [180, -90]
+        })
+      );
+    }
+    if (this.props.mapStyle !== prevProps.mapStyle) {
+      this.updateStyle(this.props.mapStyle);
+    }
   }
 
   componentDidMount() {
-    this.updateStyle(this.props.mapStyle);
+    this.overlay = new Overlay({
+      element: this.popupContainer,
+      autoPan: true,
+      autoPanAnimation: {
+        duration: 250
+      }
+    });
+
+    this.updateProjection();
 
     const map = new Map({
       target: this.container,
-      layers: [],
+      overlays: [this.overlay],
       view: new View({
-        zoom: 2,
-        center: [52.5, -78.4]
+        projection: this.projection,
+        zoom: 1,
+        center: [180, -90],
+      })
+    });
+
+    map.on('pointermove', (evt) => {
+      var coords = toLonLat(evt.coordinate, this.projection);
+      this.setState({
+        cursor: [
+          coords[0].toFixed(2),
+          coords[1].toFixed(2)
+        ]
       })
     })
+
+    map.on('postrender', (evt) => {
+      const center = toLonLat(map.getView().getCenter(), this.projection);
+      this.setState({
+        center: [
+          center[0].toFixed(2),
+          center[1].toFixed(2),
+        ],
+        rotation: map.getView().getRotation().toFixed(2),
+        zoom: map.getView().getZoom().toFixed(2)
+      });
+    });
+
+
+
     this.map = map;
+    this.updateStyle(this.props.mapStyle);
+  }
+
+  closeOverlay = (e) => {
+    e.target.blur();
+    this.overlay.setPosition(undefined);
   }
 
   render() {
-    return <div
-      ref={x => this.container = x}
-      style={{
-        width: "100%",
-        height: "100%",
-        backgroundColor: '#fff',
-        ...this.props.style,
-      }}>
+    return <div className="maputnik-ol-container">
+      <div
+        ref={x => this.popupContainer = x}
+        style={{background: "black"}}
+        className="maputnik-popup"
+      >
+        <button
+          class="mapboxgl-popup-close-button"
+          onClick={this.closeOverlay}
+          aria-label="Close popup"
+        >
+          ×
+        </button>
+        <FeatureLayerPopup
+          features={this.state.selectedFeatures || []}
+          onLayerSelect={this.props.onLayerSelect}
+        />
+      </div>
+      <div className="maputnik-ol-zoom">
+        Zoom level: {this.state.zoom}
+      </div>
+      {this.props.debugToolbox &&
+        <div className="maputnik-ol-debug">
+          <div>
+            <label>cursor: </label>
+            <span>{renderCoords(this.state.cursor)}</span>
+          </div>
+          <div>
+            <label>center: </label>
+            <span>{renderCoords(this.state.center)}</span>
+          </div>
+          <div>
+            <label>rotation: </label>
+            <span>{this.state.rotation}</span>
+          </div>
+        </div>
+      }
+      <div
+        className="maputnik-ol"
+        ref={x => this.container = x}
+        style={{
+          ...this.props.style,
+        }}>
+      </div>
     </div>
   }
 }

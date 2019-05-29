@@ -218,6 +218,11 @@ export default class App extends React.Component {
         showCollisionBoxes: false,
         showOverdrawInspector: false,
       },
+      openlayersDebugOptions: {
+        // TODO: For future projection work
+        // enableProjections: true,
+        debugToolbox: true,
+      },
     }
 
     this.layerWatcher = new LayerWatcher({
@@ -478,10 +483,16 @@ export default class App extends React.Component {
     return metadata['maputnik:renderer'] || 'mbgljs';
   }
 
+  getProjectionCode () {
+    const metadata = this.state.mapStyle.metadata || {};
+    return this.state.openlayersDebugOptions.enableProjections ? metadata['maputnik:projection'] : "EPSG:3857";
+  }
+
   mapRenderer() {
+    const metadata = this.state.mapStyle.metadata || {};
+
     const mapProps = {
       mapStyle: style.replaceAccessTokens(this.state.mapStyle, {allowFallback: true}),
-      options: this.state.mapboxGlDebugOptions,
       onDataChange: (e) => {
         this.layerWatcher.analyzeMap(e.map)
         this.fetchSources();
@@ -496,9 +507,13 @@ export default class App extends React.Component {
     if(renderer === 'ol') {
       mapElement = <OpenLayersMap
         {...mapProps}
+        projectionCode={this.getProjectionCode()}
+        debugToolbox={this.state.openlayersDebugOptions.debugToolbox}
+        onLayerSelect={this.onLayerSelect}
       />
     } else {
       mapElement = <MapboxGlMap {...mapProps}
+        options={this.state.mapboxGlDebugOptions}
         inspectModeEnabled={this.state.mapState === "inspect"}
         highlightedLayer={this.state.mapStyle.layers[this.state.selectedLayerIndex]}
         onLayerSelect={this.onLayerSelect} />
@@ -540,6 +555,15 @@ export default class App extends React.Component {
     this.setModal(modalName, !this.state.isOpen[modalName]);
   }
 
+  onChangeOpenlayersDebug = (key, value) => {
+    this.setState({
+      openlayersDebugOptions: {
+        ...this.state.openlayersDebugOptions,
+        [key]: value,
+      }
+    });
+  }
+
   onChangeMaboxGlDebug = (key, value) => {
     this.setState({
       mapboxGlDebugOptions: {
@@ -555,6 +579,7 @@ export default class App extends React.Component {
     const metadata = this.state.mapStyle.metadata || {}
 
     const toolbar = <Toolbar
+      renderer={this._getRenderer()}
       mapState={this.state.mapState}
       mapStyle={this.state.mapStyle}
       inspectModeEnabled={this.state.mapState === "inspect"}
@@ -603,7 +628,9 @@ export default class App extends React.Component {
       <DebugModal
         renderer={this._getRenderer()}
         mapboxGlDebugOptions={this.state.mapboxGlDebugOptions}
+        openlayersDebugOptions={this.state.openlayersDebugOptions}
         onChangeMaboxGlDebug={this.onChangeMaboxGlDebug}
+        onChangeOpenlayersDebug={this.onChangeOpenlayersDebug}
         isOpen={this.state.isOpen.debug}
         onOpenToggle={this.toggleModal.bind(this, 'debug')}
       />
@@ -617,6 +644,7 @@ export default class App extends React.Component {
         onStyleChanged={this.onStyleChanged}
         isOpen={this.state.isOpen.settings}
         onOpenToggle={this.toggleModal.bind(this, 'settings')}
+        openlayersDebugOptions={this.state.openlayersDebugOptions}
       />
       <ExportModal
         mapStyle={this.state.mapStyle}

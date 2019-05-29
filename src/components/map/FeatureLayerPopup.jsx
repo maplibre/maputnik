@@ -34,6 +34,11 @@ class FeatureLayerPopup extends React.Component {
   }
 
   _getFeatureColor(feature, zoom) {
+    // Guard because openlayers won't have this
+    if (!feature.layer.paint) {
+      return;
+    }
+
     try {
       const paintProps = feature.layer.paint;
       let propName;
@@ -105,11 +110,13 @@ class FeatureLayerPopup extends React.Component {
               this.props.onLayerSelect(feature.layer.id)
             }}
           >
-            <LayerIcon type={feature.layer.type} style={{
-              width: 14,
-              height: 14,
-              paddingRight: 3
-            }}/>
+            {feature.layer.type && 
+              <LayerIcon type={feature.layer.type} style={{
+                width: 14,
+                height: 14,
+                paddingRight: 3
+              }}/>
+            }
             {feature.layer.id}
             {feature.counter && <span> × {feature.counter}</span>}
           </label>

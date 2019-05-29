@@ -11,6 +11,7 @@ class DebugModal extends React.Component {
     onChangeMaboxGlDebug: PropTypes.func.isRequired,
     onOpenToggle: PropTypes.func.isRequired,
     mapboxGlDebugOptions: PropTypes.object,
+    openlayersDebugOptions: PropTypes.object,
   }
 
   render() {
@@ -33,9 +34,15 @@ class DebugModal extends React.Component {
           </ul>
         }
         {this.props.renderer === 'ol' &&
-          <div>
-            No debug options available for the OpenLayers renderer
-          </div>
+          <ul>
+            {Object.entries(this.props.openlayersDebugOptions).map(([key, val]) => {
+              return <li key={key}>
+                <label>
+                  <input type="checkbox" checked={val} onClick={(e) => this.props.onChangeOpenlayersDebug(key, e.target.checked)} /> {key}
+                </label>
+              </li>
+            })}
+          </ul>
         }
       </div>
     </Modal>
