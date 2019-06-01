@@ -2,6 +2,7 @@ import autoBind from 'react-autobind';
 import React from 'react'
 import cloneDeep from 'lodash.clonedeep'
 import clamp from 'lodash.clamp'
+import get from 'lodash.get'
 import {arrayMove} from 'react-sortable-hoc'
 import url from 'url'
 
@@ -277,6 +278,27 @@ export default class App extends React.Component {
     downloadSpriteMetadata(baseUrl, icons => {
       this.setState({ spec: updateRootSpec(this.state.spec, 'sprite', icons)})
     })
+  }
+
+  onChangeMetadataProperty = (property, value) => {
+    // If we're changing renderer reset the map state.
+    if (
+      property === 'maputnik:renderer' &&
+      value !== get(this.state.mapStyle, ['metadata', 'maputnik:renderer'], 'mbgljs')
+    ) {
+      this.setState({
+        mapState: 'map'
+      });
+    }
+
+    const changedStyle = {
+      ...this.state.mapStyle,
+      metadata: {
+        ...this.state.mapStyle.metadata,
+        [property]: value
+      }
+    }
+    this.onStyleChanged(changedStyle)
   }
 
   onStyleChanged = (newStyle, save=true) => {
@@ -634,6 +656,7 @@ export default class App extends React.Component {
       <SettingsModal
         mapStyle={this.state.mapStyle}
         onStyleChanged={this.onStyleChanged}
+        onChangeMetadataProperty={this.onChangeMetadataProperty}
         isOpen={this.state.isOpen.settings}
         onOpenToggle={this.toggleModal.bind(this, 'settings')}
         openlayersDebugOptions={this.state.openlayersDebugOptions}
