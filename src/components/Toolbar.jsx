@@ -114,6 +114,7 @@ export default class Toolbar extends React.Component {
     onToggleModal: PropTypes.func,
     onSetMapState: PropTypes.func,
     mapState: PropTypes.string,
+    renderer: PropTypes.string,
   }
 
   state = {
@@ -139,6 +140,7 @@ export default class Toolbar extends React.Component {
       {
         id: "inspect",
         title: "Inspect",
+        disabled: this.props.renderer !== 'mbgljs',
       },
       {
         id: "filter-deuteranopia",
