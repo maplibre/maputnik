@@ -41,7 +41,8 @@ describe("modals", function() {
       closeModal("open-modal");
     });
 
-    it("upload", function() {
+    // "chooseFile" command currently not available for wdio v5 https://github.com/webdriverio/webdriverio/pull/3632
+    it.skip("upload", function() {
       const elem = $("*[type='file']");
       elem.waitForExist();
       browser.chooseFile("*[type='file']", styleFilePath);
