@@ -11,11 +11,12 @@ describe('maputnik', function() {
       "geojson:example",
       "raster:raster"
     ]));
-    browser.alertAccept();
+    browser.acceptAlert();
     browser.execute(function() {
       localStorage.setItem("survey", true);
     });
-    browser.waitForExist(".maputnik-toolbar-link");
+    const elem = $(".maputnik-toolbar-link");
+    elem.waitForExist();
     browser.flushReactUpdates();
   });
 
