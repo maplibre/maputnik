@@ -200,8 +200,7 @@ describe("layers", function() {
 
           const elem = $(wd.$("layer-list-item:background:"+bgId));
           elem.click();
-          // zoom level number input currently fails https://github.com/webdriverio/webdriverio/issues/4059, this is whystring input "1" is used
-          browser.setValueSafe(wd.$("min-zoom", "input"), "1")
+          browser.setValueSafe(wd.$("min-zoom", "input"), 1)
           const elem2 = $(wd.$("layer-editor.layer-id", "input"));
           elem2.click();
 
@@ -233,8 +232,7 @@ describe("layers", function() {
 
           const elem = $(wd.$("layer-list-item:background:"+bgId));
           elem.click();
-          // zoom level number input currently fails https://github.com/webdriverio/webdriverio/issues/4059, this is whystring input "1" is used
-          browser.setValueSafe(wd.$("max-zoom", "input"), "1")
+          browser.setValueSafe(wd.$("max-zoom", "input"), 1)
           const elem2 = $(wd.$("layer-editor.layer-id", "input"));
           elem2.click();
 
