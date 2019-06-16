@@ -52,14 +52,14 @@ jobs:
   build-linux-node-v8:
     docker:
       - image: node:8
-      - image: selenium/standalone-chrome:3.8.1
     working_directory: ~/repo-linux-node-v8
-    steps: *wdio-steps
+    steps: *build-steps
   build-linux-node-v10:
     docker:
       - image: node:10
+      - image: selenium/standalone-chrome:3.141.59
     working_directory: ~/repo-linux-node-v10
-    steps: *build-steps
+    steps: *wdio-steps
   build-linux-node-v11:
     docker:
       - image: node:11

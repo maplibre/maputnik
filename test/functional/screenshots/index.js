@@ -8,18 +8,16 @@ var wd        = require("../../wd-helper");
 describe('screenshots', function() {
 
   beforeEach(function() {
-    browser.windowHandleSize({
-      width: 1280,
-      height: 800
-    });
+    browser.setWindowSize(1280, 800)
   })
 
   it("front_page", function() {
     browser.url(config.baseUrl+"?debug&style="+helper.getStyleUrl([
       "geojson:example"
     ]));
-    browser.alertAccept();
-    browser.waitForExist(".maputnik-toolbar-link");
+    browser.acceptAlert();
+    const elem = $(".maputnik-toolbar-link");
+    elem.waitForExist();  
     browser.flushReactUpdates();
 
     browser.takeScreenShot("/front_page.png")
@@ -29,11 +27,13 @@ describe('screenshots', function() {
     browser.url(config.baseUrl+"?debug&style="+helper.getStyleUrl([
       "geojson:example"
     ]));
-    browser.alertAccept();
-    browser.waitForExist(".maputnik-toolbar-link");
+    browser.acceptAlert();
+    const elem = $(".maputnik-toolbar-link");
+    elem.waitForExist();  
     browser.flushReactUpdates();
 
-    browser.click(wd.$("nav:open"))
+    const nav_open = $(wd.$("nav:open"));
+    nav_open.waitForExist(); 
     browser.flushReactUpdates();
 
     browser.takeScreenShot("/open.png")
@@ -43,11 +43,13 @@ describe('screenshots', function() {
     browser.url(config.baseUrl+"?debug&style="+helper.getStyleUrl([
       "geojson:example"
     ]));
-    browser.alertAccept();
-    browser.waitForExist(".maputnik-toolbar-link");
+    browser.acceptAlert();
+    const elem = $(".maputnik-toolbar-link")
+    elem.waitForExist()  
     browser.flushReactUpdates();
 
-    browser.click(wd.$("nav:export"))
+    const nav_export = $(wd.$("nav:export"));
+    nav_export.waitForExist(); 
     browser.flushReactUpdates();
 
     browser.takeScreenShot("/export.png")
@@ -57,11 +59,13 @@ describe('screenshots', function() {
     browser.url(config.baseUrl+"?debug&style="+helper.getStyleUrl([
       "geojson:example"
     ]));
-    browser.alertAccept();
-    browser.waitForExist(".maputnik-toolbar-link");
+    browser.acceptAlert();
+    const elem = $(".maputnik-toolbar-link")
+    elem.waitForExist()  
     browser.flushReactUpdates();
 
-    browser.click(wd.$("nav:sources"))
+    const nav_sources = $(wd.$("nav:sources"));
+    nav_sources.waitForExist(); 
     browser.flushReactUpdates();
 
     browser.takeScreenShot("/sources.png")
@@ -71,11 +75,13 @@ describe('screenshots', function() {
     browser.url(config.baseUrl+"?debug&style="+helper.getStyleUrl([
       "geojson:example"
     ]));
-    browser.alertAccept();
-    browser.waitForExist(".maputnik-toolbar-link");
+    browser.acceptAlert();
+    const elem = $(".maputnik-toolbar-link")
+    elem.waitForExist()  
     browser.flushReactUpdates();
 
-    browser.click(wd.$("nav:settings"))
+    const nav_settings = $(wd.$("nav:settings"));
+    nav_settings.waitForExist(); 
     browser.flushReactUpdates();
 
     browser.takeScreenShot("/settings.png")
@@ -85,11 +91,14 @@ describe('screenshots', function() {
     browser.url(config.baseUrl+"?debug&style="+helper.getStyleUrl([
       "geojson:example"
     ]));
-    browser.alertAccept();
-    browser.waitForExist(".maputnik-toolbar-link");
+    browser.acceptAlert();
+    const elem = $(".maputnik-toolbar-link")
+    elem.waitForExist()  
     browser.flushReactUpdates();
 
-    browser.selectByValue(wd.$("nav:inspect", "select"), "inspect");
+    const selectBox = $(wd.$("nav:inspect", "select"));
+    selectBox.selectByAttribute('value', 'inspect');
+
     browser.flushReactUpdates();
 
     browser.takeScreenShot("/inspect.png")

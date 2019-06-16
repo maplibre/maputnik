@@ -9,10 +9,10 @@
 [circleci]:    https://circleci.com/gh/maputnik/editor/tree/master
 [appveyor]:    https://ci.appveyor.com/project/lukasmartinelli/editor
 [dm-prod]:     https://david-dm.org/maputnik/editor
-[dm-dev]:      https://david-dm.org/maputnik/editor#info=devDependencies
+[dm-dev]:      https://david-dm.org/maputnik/editor?type=dev
 [license]:     https://tldrlegal.com/license/mit-license
 
-<img width="200" align="right" alt="Maputnik" src="src/img/maputnik.png" />
+<img width="200" align="right" alt="Maputnik" src="https://cdn.jsdelivr.net/gh/maputnik/editor@1.5.0/src/img/maputnik.png" />
 
 A free and open visual editor for the [Mapbox GL styles](https://www.mapbox.com/mapbox-gl-style-spec/)
 targeted at developers and map designers.
@@ -118,13 +118,13 @@ Thanks to the supporters of the **[Kickstarter campaign](https://www.kickstarter
 - [Terranodo](http://terranodo.io/)
 
 <a href="https://getwemap.com/">
-  <img width="33%" alt="Wemap" style="display:inline" src="media/sponsors/wemap.jpg" />
+  <img width="33%" alt="Wemap" style="display:inline" src="https://cdn.jsdelivr.net/gh/maputnik/editor@1.5.0/media/sponsors/wemap.jpg" />
 </a>
 <a href="http://terranodo.io/">
-  <img width="33%" alt="Terranodo" style="display:inline" src="media/sponsors/terranodo.png" />
+  <img width="33%" alt="Terranodo" style="display:inline" src="https://cdn.jsdelivr.net/gh/maputnik/editor@1.5.0/media/sponsors/terranodo.png" />
 </a>
 <a href="https://www.orbiconinformatik.dk/">
-  <img width="32%" alt="Terranodo" style="display:inline" src="media/sponsors/orbicon_informatik.png" />
+  <img width="32%" alt="Terranodo" style="display:inline" src="https://cdn.jsdelivr.net/gh/maputnik/editor@1.5.0/media/sponsors/orbicon_informatik.png" />
 </a>
 
 <br/>
@@ -136,13 +136,13 @@ Thanks to the supporters of the **[Kickstarter campaign](https://www.kickstarter
 - [Dreipol](https://www.dreipol.ch/)
 
 <a href="https://www.klokantech.com/">
-  <img width="18%" alt="Klokan Technologies" style="display:inline-block" src="media/sponsors/klokantech.png" />
+  <img width="18%" alt="Klokan Technologies" style="display:inline-block" src="https://cdn.jsdelivr.net/gh/maputnik/editor@1.5.0/media/sponsors/klokantech.png" />
 </a>
 <a href="http://www.geofabrik.de/">
-  <img width="18%" alt="Geofabrik" style="display:inline-block" src="media/sponsors/geofabrik.png" />
+  <img width="18%" alt="Geofabrik" style="display:inline-block" src="https://cdn.jsdelivr.net/gh/maputnik/editor@1.5.0/media/sponsors/geofabrik.png" />
 </a>
 <a href="https://www.dreipol.ch/">
-  <img width="18%" alt="Dreipol" style="display:inline-block" src="media/sponsors/dreipol.png" />
+  <img width="18%" alt="Dreipol" style="display:inline-block" src="https://cdn.jsdelivr.net/gh/maputnik/editor@1.5.0/media/sponsors/dreipol.png" />
 </a>
 
 <br/>

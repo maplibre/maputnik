@@ -1,12 +1,18 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import classnames from 'classnames'
+import {detect} from 'detect-browser';
 
 import {MdFileDownload, MdOpenInBrowser, MdSettings, MdLayers, MdHelpOutline, MdFindInPage, MdAssignmentTurnedIn} from 'react-icons/md'
 
 
 import logoImage from 'maputnik-design/logos/logo-color.svg'
 import pkgJson from '../../package.json'
+
+
+// This is required because of <https://stackoverflow.com/a/49846426>, there isn't another way to detect support that I'm aware of.
+const browser = detect();
+const colorAccessibilityFiltersEnabled = ['chrome', 'firefox'].indexOf(browser.name) > -1;
 
 
 class IconText extends React.Component {
@@ -108,6 +114,7 @@ export default class Toolbar extends React.Component {
     onToggleModal: PropTypes.func,
     onSetMapState: PropTypes.func,
     mapState: PropTypes.string,
+    renderer: PropTypes.string,
   }
 
   state = {
@@ -133,22 +140,27 @@ export default class Toolbar extends React.Component {
       {
         id: "inspect",
         title: "Inspect",
+        disabled: this.props.renderer !== 'mbgljs',
       },
       {
         id: "filter-deuteranopia",
         title: "Map (deuteranopia)",
+        disabled: !colorAccessibilityFiltersEnabled,
       },
       {
         id: "filter-protanopia",
         title: "Map (protanopia)",
+        disabled: !colorAccessibilityFiltersEnabled,
       },
       {
         id: "filter-tritanopia",
         title: "Map (tritanopia)",
+        disabled: !colorAccessibilityFiltersEnabled,
       },
       {
         id: "filter-achromatopsia",
         title: "Map (achromatopsia)",
+        disabled: !colorAccessibilityFiltersEnabled,
       },
     ];
 
@@ -201,7 +213,7 @@ export default class Toolbar extends React.Component {
             <select onChange={(e) => this.handleSelection(e.target.value)} value={currentView.id}>
               {views.map((item) => {
                 return (
-                  <option key={item.id} value={item.id}>
+                  <option key={item.id} value={item.id} disabled={item.disabled}>
                     {item.title}
                   </option>
                 );
