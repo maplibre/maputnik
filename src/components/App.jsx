@@ -434,6 +434,27 @@ export default class App extends React.Component {
     })
   }
 
+  setDefaultValues = (styleObj) => {
+    const metadata = styleObj.metadata || {}
+    if(metadata['maputnik:renderer'] === undefined) {
+      const changedStyle = {
+        ...styleObj,
+        metadata: {
+          ...styleObj.metadata,
+          'maputnik:renderer': 'mbgljs'
+        }
+      }
+      return changedStyle
+    } else {
+      return styleObj
+    }
+  }
+
+  openStyle = (styleObj) => {
+    styleObj = this.setDefaultValues(styleObj)
+    this.onStyleChanged(styleObj)
+  }
+
   fetchSources() {
     const sourceList = {...this.state.sources};
 
@@ -582,7 +603,7 @@ export default class App extends React.Component {
     this.setState({
       mapboxGlDebugOptions: {
         ...this.state.mapboxGlDebugOptions,
-        [key]: value, 
+        [key]: value,
       }
     });
   }
@@ -669,7 +690,7 @@ export default class App extends React.Component {
       />
       <OpenModal
         isOpen={this.state.isOpen.open}
-        onStyleOpen={this.onStyleChanged}
+        onStyleOpen={this.openStyle}
         onOpenToggle={this.toggleModal.bind(this, 'open')}
       />
       <SourcesModal
