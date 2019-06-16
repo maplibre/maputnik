@@ -110,6 +110,22 @@ class SettingsModal extends React.Component {
         />
       </InputBlock>
 
+
+       {this.props.openlayersDebugOptions.enableProjections &&
+        <InputBlock label={"Projection (experimental)"} doc={"Projection of the data"}>
+          <SelectInput {...inputProps}
+            data-wd-key="modal-settings.maputnik:projection" 
+            options={[
+              ['EPSG:3857', '[EPSG:3857] Web Mercator'],
+              ['EPSG:3031', '[EPSG:3031] Antarctic Polar Stereographic (experimental)'],
+              ['EPSG:102003', '[EPSG:102003]'],
+            ]}
+            value={metadata['maputnik:projection'] || 'EPSG:3857'}
+            onChange={this.changeMetadataProperty.bind(this, 'maputnik:projection')}
+          />
+        </InputBlock>
+      }
+
       </div>
     </Modal>
   }

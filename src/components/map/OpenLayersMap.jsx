@@ -9,8 +9,23 @@ import 'ol/ol.css'
 import {apply} from 'ol-mapbox-style';
 import {Map, View, Proj, Overlay} from 'ol';
 
-import {toLonLat} from 'ol/proj';
+import proj4 from 'proj4';
+import {register} from 'ol/proj/proj4';
+import {get as getProjection, toLonLat} from 'ol/proj';
 import {toStringHDMS} from 'ol/coordinate';
+
+// Register some projections...
+proj4.defs([
+  [
+    'EPSG:3031',
+    '+proj=stere +lat_0=-90 +lat_ts=-71 +lon_0=0 +k=1 +x_0=0 +y_0=0 +datum=WGS84 +units=m +no_defs '
+  ],
+  [
+    'EPSG:102003',
+    '+proj=aea +lat_1=29.5 +lat_2=45.5 +lat_0=37.5 +lon_0=-96 +x_0=0 +y_0=0 +datum=NAD83 +units=m +no_defs'
+  ]
+]);
+register(proj4);
 
 
 function renderCoords (coords) {
@@ -54,12 +69,55 @@ export default class OpenLayersMap extends React.Component {
   _updateStyle(newMapStyle) {
     if(!this.map) return;
 
+    // Add projection into the style sources.
+    const newSources = {};
+    Object.keys(newMapStyle.sources).forEach(key => {
+      newSources[key] = {
+        ...newMapStyle.sources[key],
+        projection: this.props.projectionCode,
+      }
+    })
+
     // See <https://github.com/openlayers/ol-mapbox-style/issues/215#issuecomment-493198815>
     this.map.getLayers().clear();
-    apply(this.map, newMapStyle);
+    apply(this.map, {
+      ...newMapStyle,
+      sources: newSources,
+    });
+  }
+
+  updateProjection () {
+    this.projection = getProjection(this.props.projectionCode || "EPSG:3857");
+    console.log("SETTING PROJECTION TO", this.props.projectionCode);
+
+    // HACK: This is a hack to get the projection to work
+    if (this.props.projectionCode === "EPSG:3031") {
+      const halfWidth = 12367396.218459858;
+      this.projection.setExtent([
+        -halfWidth, -halfWidth, halfWidth, halfWidth
+      ]);
+    }
+    else if (this.props.projectionCode === "EPSG:102003") {
+      this.projection.setExtent([
+				-2357180.9345227931626141,-1295390.5666783656924963,
+				2257301.1407301435247064,1560376.8365237235557288
+				// -7096284.707872171, 1504250.5813716482,
+				// 1981650.6525988532, 4761255.0482150335
+      ]);
+    }
   }
 
   componentDidUpdate(prevProps) {
+    if (this.props.projectionCode !== prevProps.projectionCode) {
+      this.updateProjection();
+      this.map.setView(
+        new View({
+          projection: this.projection,
+          zoom: 1,
+          center: [180, -90]
+        })
+      );
+    }
     if (this.props.mapStyle !== prevProps.mapStyle) {
       this.updateStyle(this.props.mapStyle);
     }
@@ -74,17 +132,23 @@ export default class OpenLayersMap extends React.Component {
       }
     });
 
+    this.updateProjection();
+
     const map = new Map({
       target: this.container,
       overlays: [this.overlay],
       view: new View({
+        projection: this.projection,
         zoom: 1,
         center: [180, -90],
       })
     });
 
+    // For debugging...
+    window.map = map;
+
     map.on('pointermove', (evt) => {
-      var coords = toLonLat(evt.coordinate);
+      var coords = toLonLat(evt.coordinate, this.projection);
       this.setState({
         cursor: [
           coords[0].toFixed(2),
@@ -94,7 +158,7 @@ export default class OpenLayersMap extends React.Component {
     })
 
     map.on('postrender', (evt) => {
-      const center = toLonLat(map.getView().getCenter());
+      const center = toLonLat(map.getView().getCenter(), this.projection);
       this.setState({
         center: [
           center[0].toFixed(2),
@@ -106,6 +170,32 @@ export default class OpenLayersMap extends React.Component {
     });
 
 
+    map.on('singleclick', (evt) => {
+      this.overlay.setPosition(undefined);
+
+      const features = [];
+      map.forEachLayerAtPixel(evt.pixel, (layer) => {
+        // FIXME: This is a HACK
+        layer.values_['mapbox-layers'].forEach((id) => {
+          features.push({
+            layer: {
+              id,
+              'source-layer': layer.values_['mapbox-source']
+            }
+          });
+        })
+      });
+
+      this.setState({
+        selectedFeatures: features,
+      });
+
+      if (features.length > 0) {
+        const coordinate = evt.coordinate;
+        const hdms = toStringHDMS(toLonLat(coordinate));
+        this.overlay.setPosition(coordinate);
+      }
+    });
 
     this.map = map;
     this.updateStyle(this.props.mapStyle);

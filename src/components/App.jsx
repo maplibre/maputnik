@@ -219,7 +219,8 @@ export default class App extends React.Component {
         showOverdrawInspector: false,
       },
       openlayersDebugOptions: {
-        debugToolbox: false,
+        enableProjections: true,
+        debugToolbox: true,
       },
     }
 
@@ -481,6 +482,11 @@ export default class App extends React.Component {
     return metadata['maputnik:renderer'] || 'mbgljs';
   }
 
+  getProjectionCode () {
+    const metadata = this.state.mapStyle.metadata || {};
+    return this.state.openlayersDebugOptions.enableProjections ? metadata['maputnik:projection'] : "EPSG:3857";
+  }
+
   mapRenderer() {
     const metadata = this.state.mapStyle.metadata || {};
 
@@ -500,6 +506,7 @@ export default class App extends React.Component {
     if(renderer === 'ol') {
       mapElement = <OpenLayersMap
         {...mapProps}
+        projectionCode={this.getProjectionCode()}
         debugToolbox={this.state.openlayersDebugOptions.debugToolbox}
         onLayerSelect={this.onLayerSelect}
       />
