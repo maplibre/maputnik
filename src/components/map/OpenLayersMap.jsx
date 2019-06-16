@@ -89,22 +89,6 @@ export default class OpenLayersMap extends React.Component {
   updateProjection () {
     this.projection = getProjection(this.props.projectionCode || "EPSG:3857");
     console.log("SETTING PROJECTION TO", this.props.projectionCode);
-
-    // HACK: This is a hack to get the projection to work
-    if (this.props.projectionCode === "EPSG:3031") {
-      const halfWidth = 12367396.218459858;
-      this.projection.setExtent([
-        -halfWidth, -halfWidth, halfWidth, halfWidth
-      ]);
-    }
-    else if (this.props.projectionCode === "EPSG:102003") {
-      this.projection.setExtent([
-				-2357180.9345227931626141,-1295390.5666783656924963,
-				2257301.1407301435247064,1560376.8365237235557288
-				// -7096284.707872171, 1504250.5813716482,
-				// 1981650.6525988532, 4761255.0482150335
-      ]);
-    }
   }
 
   componentDidUpdate(prevProps) {
