@@ -38,7 +38,7 @@
     "mapbox-gl-inspect": "^1.3.1",
     "maputnik-design": "github:maputnik/design",
     "ol": "^6.0.0-beta.8",
-    "ol-mapbox-style": "github:orangemug/ol-mapbox-style#feature/projections-hack",
+    "ol-mapbox-style": "github:orangemug/ol-mapbox-style#feature/add-projections",
     "proj4": "^2.5.0",
     "prop-types": "^15.6.2",
     "react": "^16.5.2",
