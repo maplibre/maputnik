@@ -129,7 +129,7 @@
     "istanbul-lib-coverage": "^2.0.1",
     "mkdirp": "^0.5.1",
     "mocha": "^6.1.4",
-    "node-sass": "^4.10.0",
+    "node-sass": "^4.12.0",
     "raw-loader": "^0.5.1",
     "react-hot-loader": "^4.3.11",
     "sass-loader": "^7.1.0",
