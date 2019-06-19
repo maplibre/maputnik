@@ -31,7 +31,11 @@ export function changeProperty(layer, group, property, newValue) {
   if(newValue === undefined) {
     if(group) {
       const newLayer = {
-        ...layer
+        ...layer,
+        // Change object so the diff works in ./src/components/map/MapboxGlMap.jsx
+        [group]: {
+          ...layer[group]
+        }
       };
       delete newLayer[group][property];
 

@@ -44,6 +44,10 @@ class AutocompleteInput extends React.Component {
     this.calcMaxHeight();
   }
 
+  onChange (v) {
+    this.props.onChange(v === "" ? undefined : v);
+  }
+
   render() {
     return <div
       ref={(el) => {
@@ -68,8 +72,8 @@ class AutocompleteInput extends React.Component {
         value={this.props.value}
         items={this.props.options}
         getItemValue={(item) => item[0]}
-        onSelect={v => this.props.onChange(v)}
-        onChange={(e, v) => this.props.onChange(v)}
+        onSelect={v => this.onChange(v)}
+        onChange={(e, v) => this.onChange(v)}
         shouldItemRender={(item, value="") => {
           if (typeof(value) === "string") {
             return item[0].toLowerCase().indexOf(value.toLowerCase()) > -1
