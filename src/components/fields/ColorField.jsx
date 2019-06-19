@@ -57,6 +57,10 @@ class ColorField extends React.Component {
     }
   }
 
+  onChange (v) {
+    this.props.onChange(v === "" ? undefined : v);
+  }
+
   render() {
     const offset = this.calcPickerOffset()
     var currentColor = this.color.object()
@@ -110,7 +114,7 @@ class ColorField extends React.Component {
         name={this.props.name}
         placeholder={this.props.default}
         value={this.props.value ? this.props.value : ""}
-        onChange={(e) => this.props.onChange(e.target.value)}
+        onChange={(e) => this.onChange(e.target.value)}
       />
     </div>
   }
