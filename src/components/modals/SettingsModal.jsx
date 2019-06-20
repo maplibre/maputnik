@@ -11,6 +11,7 @@ class SettingsModal extends React.Component {
   static propTypes = {
     mapStyle: PropTypes.object.isRequired,
     onStyleChanged: PropTypes.func.isRequired,
+    onChangeMetadataProperty: PropTypes.func.isRequired,
     isOpen: PropTypes.bool.isRequired,
     onOpenToggle: PropTypes.func.isRequired,
   }
@@ -23,19 +24,9 @@ class SettingsModal extends React.Component {
     this.props.onStyleChanged(changedStyle)
   }
 
-  changeMetadataProperty(property, value) {
-    const changedStyle = {
-      ...this.props.mapStyle,
-      metadata: {
-        ...this.props.mapStyle.metadata,
-        [property]: value
-      }
-    }
-    this.props.onStyleChanged(changedStyle)
-  }
-
   render() {
     const metadata = this.props.mapStyle.metadata || {}
+    const {onChangeMetadataProperty} = this.props;
     const inputProps = { }
     return <Modal
       data-wd-key="modal-settings"
@@ -78,7 +69,7 @@ class SettingsModal extends React.Component {
         <StringInput {...inputProps}
           data-wd-key="modal-settings.maputnik:mapbox_access_token" 
           value={metadata['maputnik:mapbox_access_token']}
-          onChange={this.changeMetadataProperty.bind(this, "maputnik:mapbox_access_token")}
+          onChange={onChangeMetadataProperty.bind(this, "maputnik:mapbox_access_token")}
         />
       </InputBlock>
 
@@ -86,7 +77,7 @@ class SettingsModal extends React.Component {
         <StringInput {...inputProps}
           data-wd-key="modal-settings.maputnik:openmaptiles_access_token" 
           value={metadata['maputnik:openmaptiles_access_token']}
-          onChange={this.changeMetadataProperty.bind(this, "maputnik:openmaptiles_access_token")}
+          onChange={onChangeMetadataProperty.bind(this, "maputnik:openmaptiles_access_token")}
         />
       </InputBlock>
 
@@ -94,7 +85,7 @@ class SettingsModal extends React.Component {
         <StringInput {...inputProps}
           data-wd-key="modal-settings.maputnik:thunderforest_access_token" 
           value={metadata['maputnik:thunderforest_access_token']}
-          onChange={this.changeMetadataProperty.bind(this, "maputnik:thunderforest_access_token")}
+          onChange={onChangeMetadataProperty.bind(this, "maputnik:thunderforest_access_token")}
         />
       </InputBlock>
 
@@ -106,9 +97,10 @@ class SettingsModal extends React.Component {
             ['ol', 'Open Layers (experimental)'],
           ]}
           value={metadata['maputnik:renderer'] || 'mbgljs'}
-          onChange={this.changeMetadataProperty.bind(this, 'maputnik:renderer')}
+          onChange={onChangeMetadataProperty.bind(this, 'maputnik:renderer')}
         />
       </InputBlock>
+
       </div>
     </Modal>
   }

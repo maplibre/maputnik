@@ -2,6 +2,7 @@ import autoBind from 'react-autobind';
 import React from 'react'
 import cloneDeep from 'lodash.clonedeep'
 import clamp from 'lodash.clamp'
+import get from 'lodash.get'
 import {arrayMove} from 'react-sortable-hoc'
 import url from 'url'
 
@@ -19,6 +20,7 @@ import SourcesModal from './modals/SourcesModal'
 import OpenModal from './modals/OpenModal'
 import ShortcutsModal from './modals/ShortcutsModal'
 import SurveyModal from './modals/SurveyModal'
+import DebugModal from './modals/DebugModal'
 
 import { downloadGlyphsMetadata, downloadSpriteMetadata } from '../libs/metadata'
 import {latest, validate} from '@mapbox/mapbox-gl-style-spec'
@@ -139,6 +141,12 @@ export default class App extends React.Component {
           document.querySelector(".mapboxgl-canvas").focus();
         }
       },
+      {
+        key: "!",
+        handler: () => {
+          this.toggleModal("debug");
+        }
+      },
     ]
 
     document.body.addEventListener("keyup", (e) => {
@@ -203,12 +211,16 @@ export default class App extends React.Component {
         open: false,
         shortcuts: false,
         export: false,
-        survey: localStorage.hasOwnProperty('survey') ? false : true
+        survey: localStorage.hasOwnProperty('survey') ? false : true,
+        debug: false,
       },
-      mapOptions: {
-        showTileBoundaries: queryUtil.asBool(queryObj, "show-tile-boundaries"),
-        showCollisionBoxes: queryUtil.asBool(queryObj, "show-collision-boxes"),
-        showOverdrawInspector: queryUtil.asBool(queryObj, "show-overdraw-inspector")
+      mapboxGlDebugOptions: {
+        showTileBoundaries: false,
+        showCollisionBoxes: false,
+        showOverdrawInspector: false,
+      },
+      openlayersDebugOptions: {
+        debugToolbox: false,
       },
     }
 
@@ -217,20 +229,24 @@ export default class App extends React.Component {
     })
   }
 
-  handleKeyPress(e) {
+  handleKeyPress = (e) => {
     if(navigator.platform.toUpperCase().indexOf('MAC') >= 0) {
       if(e.metaKey && e.shiftKey && e.keyCode === 90) {
+        e.preventDefault();
         this.onRedo(e);
       }
       else if(e.metaKey && e.keyCode === 90) {
+        e.preventDefault();
         this.onUndo(e);
       }
     }
     else {
       if(e.ctrlKey && e.keyCode === 90) {
+        e.preventDefault();
         this.onUndo(e);
       }
       else if(e.ctrlKey && e.keyCode === 89) {
+        e.preventDefault();
         this.onRedo(e);
       }
     }
@@ -262,6 +278,27 @@ export default class App extends React.Component {
     downloadSpriteMetadata(baseUrl, icons => {
       this.setState({ spec: updateRootSpec(this.state.spec, 'sprite', icons)})
     })
+  }
+
+  onChangeMetadataProperty = (property, value) => {
+    // If we're changing renderer reset the map state.
+    if (
+      property === 'maputnik:renderer' &&
+      value !== get(this.state.mapStyle, ['metadata', 'maputnik:renderer'], 'mbgljs')
+    ) {
+      this.setState({
+        mapState: 'map'
+      });
+    }
+
+    const changedStyle = {
+      ...this.state.mapStyle,
+      metadata: {
+        ...this.state.mapStyle.metadata,
+        [property]: value
+      }
+    }
+    this.onStyleChanged(changedStyle)
   }
 
   onStyleChanged = (newStyle, save=true) => {
@@ -397,6 +434,27 @@ export default class App extends React.Component {
     })
   }
 
+  setDefaultValues = (styleObj) => {
+    const metadata = styleObj.metadata || {}
+    if(metadata['maputnik:renderer'] === undefined) {
+      const changedStyle = {
+        ...styleObj,
+        metadata: {
+          ...styleObj.metadata,
+          'maputnik:renderer': 'mbgljs'
+        }
+      }
+      return changedStyle
+    } else {
+      return styleObj
+    }
+  }
+
+  openStyle = (styleObj) => {
+    styleObj = this.setDefaultValues(styleObj)
+    this.onStyleChanged(styleObj)
+  }
+
   fetchSources() {
     const sourceList = {...this.state.sources};
 
@@ -461,18 +519,23 @@ export default class App extends React.Component {
     }
   }
 
+  _getRenderer () {
+    const metadata = this.state.mapStyle.metadata || {};
+    return metadata['maputnik:renderer'] || 'mbgljs';
+  }
+
   mapRenderer() {
+    const metadata = this.state.mapStyle.metadata || {};
+
     const mapProps = {
       mapStyle: style.replaceAccessTokens(this.state.mapStyle, {allowFallback: true}),
-      options: this.state.mapOptions,
       onDataChange: (e) => {
         this.layerWatcher.analyzeMap(e.map)
         this.fetchSources();
       },
     }
 
-    const metadata = this.state.mapStyle.metadata || {}
-    const renderer = metadata['maputnik:renderer'] || 'mbgljs'
+    const renderer = this._getRenderer();
 
     let mapElement;
 
@@ -480,9 +543,12 @@ export default class App extends React.Component {
     if(renderer === 'ol') {
       mapElement = <OpenLayersMap
         {...mapProps}
+        debugToolbox={this.state.openlayersDebugOptions.debugToolbox}
+        onLayerSelect={this.onLayerSelect}
       />
     } else {
       mapElement = <MapboxGlMap {...mapProps}
+        options={this.state.mapboxGlDebugOptions}
         inspectModeEnabled={this.state.mapState === "inspect"}
         highlightedLayer={this.state.mapStyle.layers[this.state.selectedLayerIndex]}
         onLayerSelect={this.onLayerSelect} />
@@ -524,12 +590,31 @@ export default class App extends React.Component {
     this.setModal(modalName, !this.state.isOpen[modalName]);
   }
 
+  onChangeOpenlayersDebug = (key, value) => {
+    this.setState({
+      openlayersDebugOptions: {
+        ...this.state.openlayersDebugOptions,
+        [key]: value,
+      }
+    });
+  }
+
+  onChangeMaboxGlDebug = (key, value) => {
+    this.setState({
+      mapboxGlDebugOptions: {
+        ...this.state.mapboxGlDebugOptions,
+        [key]: value,
+      }
+    });
+  }
+
   render() {
     const layers = this.state.mapStyle.layers || []
     const selectedLayer = layers.length > 0 ? layers[this.state.selectedLayerIndex] : null
     const metadata = this.state.mapStyle.metadata || {}
 
     const toolbar = <Toolbar
+      renderer={this._getRenderer()}
       mapState={this.state.mapState}
       mapStyle={this.state.mapStyle}
       inspectModeEnabled={this.state.mapState === "inspect"}
@@ -575,6 +660,15 @@ export default class App extends React.Component {
 
 
     const modals = <div>
+      <DebugModal
+        renderer={this._getRenderer()}
+        mapboxGlDebugOptions={this.state.mapboxGlDebugOptions}
+        openlayersDebugOptions={this.state.openlayersDebugOptions}
+        onChangeMaboxGlDebug={this.onChangeMaboxGlDebug}
+        onChangeOpenlayersDebug={this.onChangeOpenlayersDebug}
+        isOpen={this.state.isOpen.debug}
+        onOpenToggle={this.toggleModal.bind(this, 'debug')}
+      />
       <ShortcutsModal
         ref={(el) => this.shortcutEl = el}
         isOpen={this.state.isOpen.shortcuts}
@@ -583,8 +677,10 @@ export default class App extends React.Component {
       <SettingsModal
         mapStyle={this.state.mapStyle}
         onStyleChanged={this.onStyleChanged}
+        onChangeMetadataProperty={this.onChangeMetadataProperty}
         isOpen={this.state.isOpen.settings}
         onOpenToggle={this.toggleModal.bind(this, 'settings')}
+        openlayersDebugOptions={this.state.openlayersDebugOptions}
       />
       <ExportModal
         mapStyle={this.state.mapStyle}
@@ -594,7 +690,7 @@ export default class App extends React.Component {
       />
       <OpenModal
         isOpen={this.state.isOpen.open}
-        onStyleOpen={this.onStyleChanged}
+        onStyleOpen={this.openStyle}
         onOpenToggle={this.toggleModal.bind(this, 'open')}
       />
       <SourcesModal

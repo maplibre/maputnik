@@ -13,25 +13,28 @@ class NumberInput extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      value: props.value
+      editing: false,
+      value: props.value,
     }
   }
 
   static getDerivedStateFromProps(props, state) {
-    return {
-      value: props.value
-    };
+    if (!state.editing) {
+      return {
+        value: props.value
+      };
+    }
   }
 
   changeValue(newValue) {
+    this.setState({editing: true});
     const value = parseFloat(newValue)
 
     const hasChanged = this.state.value !== value
     if(this.isValid(value) && hasChanged) {
       this.props.onChange(value)
-    } else {
-      this.setState({ value: newValue })
     }
+    this.setState({ value: newValue })
   }
 
   isValid(v) {
@@ -52,6 +55,7 @@ class NumberInput extends React.Component {
   }
 
   resetValue = () => {
+    this.setState({editing: false});
     // Reset explicitly to default value if value has been cleared
     if(this.state.value === "") {
       return this.changeValue(this.props.default)
