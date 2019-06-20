@@ -53,7 +53,7 @@ class AddModal extends React.Component {
     }
   }
 
-  UNSAFE_componentWillUpdate(nextProps, nextState) {
+  shouldComponentUpdate(nextProps, nextState) {
     // Check if source is valid for new type
     const oldType = this.state.type;
     const newType = nextState.type;
@@ -75,6 +75,7 @@ class AddModal extends React.Component {
         source: ""
       });
     }
+    return true;
   }
 
   getLayersForSource(source) {
