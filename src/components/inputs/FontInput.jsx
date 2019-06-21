@@ -30,7 +30,10 @@ class FontInput extends React.Component {
   changeFont(idx, newValue) {
     const changedValues = this.values.slice(0)
     changedValues[idx] = newValue
-    const filteredValues = changedValues.filter(v => v !== undefined);
+    const filteredValues = changedValues
+      .filter(v => v !== undefined)
+      .filter(v => v !== "")
+
     this.props.onChange(filteredValues);
   }
 
