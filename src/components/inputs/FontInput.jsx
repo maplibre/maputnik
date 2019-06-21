@@ -16,13 +16,25 @@ class FontInput extends React.Component {
   }
 
   get values() {
-   return this.props.value || this.props.default.slice(1) || []
+    const out = this.props.value || this.props.default.slice(1) || [""];
+
+    // Always put a "" in the last field to you can keep adding entries
+    if (out[out.length-1] !== ""){
+      return out.concat("");
+    }
+    else {
+      return out;
+    }
   }
 
   changeFont(idx, newValue) {
     const changedValues = this.values.slice(0)
     changedValues[idx] = newValue
-    this.props.onChange(changedValues)
+    const filteredValues = changedValues
+      .filter(v => v !== undefined)
+      .filter(v => v !== "")
+
+    this.props.onChange(filteredValues);
   }
 
   render() {
