@@ -91,10 +91,19 @@ class AddModal extends React.Component {
         "line",
         "symbol",
         "circle",
-        "fill-extrusion"
+        "fill-extrusion",
+        "heatmap"
       ],
       raster: [
         "raster"
+      ],
+      geojson: [
+        "fill",
+        "line",
+        "symbol",
+        "circle",
+        "fill-extrusion",
+        "heatmap"
       ]
     }
 
