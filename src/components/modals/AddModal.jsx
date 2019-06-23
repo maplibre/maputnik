@@ -53,10 +53,10 @@ class AddModal extends React.Component {
     }
   }
 
-  shouldComponentUpdate(nextProps, nextState) {
+  componentDidUpdate(prevProps, prevState) {
     // Check if source is valid for new type
-    const oldType = this.state.type;
-    const newType = nextState.type;
+    const oldType = prevState.type;
+    const newType = this.state.type;
 
     const availableSourcesOld = this.getSources(oldType);
     const availableSourcesNew = this.getSources(newType);
@@ -64,18 +64,17 @@ class AddModal extends React.Component {
     if(
       // Type has changed
       oldType !== newType
-      && this.state.source !== ""
+      && prevState.source !== ""
       // Was a valid source previously
-      && availableSourcesOld.indexOf(this.state.source) > -1
+      && availableSourcesOld.indexOf(prevState.source) > -1
       // And is not a valid source now
-      && availableSourcesNew.indexOf(nextState.source) < 0
+      && availableSourcesNew.indexOf(this.state.source) < 0
     ) {
       // Clear the source
       this.setState({
         source: ""
       });
     }
-    return true;
   }
 
   getLayersForSource(source) {
