@@ -1,37 +1,37 @@
 import style from './style.js'
 import ReconnectingWebSocket from 'reconnecting-websocket'
 
-const host = 'localhost'
-const port = '8000'
-const localUrl = `http://${host}:${port}`
-const websocketUrl = `ws://${host}:${port}/ws`
-
-
 export class ApiStyleStore {
+
   constructor(opts) {
     this.onLocalStyleChange = opts.onLocalStyleChange || (() => {})
+    const port = opts.port || '8000'
+    const host = opts.host || 'localhost'
+    this.localUrl = `http://${host}:${port}`
+    this.websocketUrl = `ws://${host}:${port}/ws`
+    this.init = this.init.bind(this)
   }
 
   init(cb) {
-    fetch(localUrl + '/styles', {
+    fetch(this.localUrl + '/styles', {
       mode: 'cors',
     })
-    .then(function(response) {
+    .then((response) =>  {
       return response.json();
     })
-    .then(function(body) {
+    .then((body) => {
       const styleIds = body;
       this.latestStyleId = styleIds[0]
       this.notifyLocalChanges()
       cb(null)
     })
-    .catch(function() {
+    .catch(function(e) {
       cb(new Error('Can not connect to style API'))
     })
   }
 
   notifyLocalChanges() {
-    const connection = new ReconnectingWebSocket(websocketUrl)
+    const connection = new ReconnectingWebSocket(this.websocketUrl)
     connection.onmessage = e => {
       if(!e.data) return
       console.log('Received style update from API')
@@ -48,7 +48,7 @@ export class ApiStyleStore {
 
   latestStyle(cb) {
     if(this.latestStyleId) {
-      fetch(localUrl + '/styles/' + this.latestStyleId, {
+      fetch(this.localUrl + '/styles/' + this.latestStyleId, {
         mode: 'cors',
       })
       .then(function(response) {
@@ -65,7 +65,7 @@ export class ApiStyleStore {
   // Save current style replacing previous version
   save(mapStyle) {
     const id = mapStyle.id
-    fetch(localUrl + '/styles/' + id, {
+    fetch(this.localUrl + '/styles/' + id, {
       method: "PUT",
       mode: 'cors',
       headers: {
