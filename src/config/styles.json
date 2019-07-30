@@ -24,16 +24,17 @@
     "thumbnail": "https://maputnik.github.io/thumbnails/osm-bright.png"
   },
   {
+    "id": "toner-gl-style",
+    "title": "Toner",
+    "url": "https://cdn.jsdelivr.net/gh/openmaptiles/toner-gl-style@c289223/style.json",
+    "thumbnail": "https://maputnik.github.io/thumbnails/toner.png"
+  },
+
+  {
     "id": "osm-liberty",
     "title": "OSM Liberty",
     "url": "https://maputnik.github.io/osm-liberty/style.json",
     "thumbnail": "https://maputnik.github.io/osm-liberty/thumbnail.png"
-  },
-  {
-    "id": "empty-style",
-    "title": "Empty Style",
-    "url": "https://cdn.jsdelivr.net/gh/maputnik/editor@9cf74ca405d2be0608b57db8109cf3a6af5b9f49/src/config/empty-style.json",
-    "thumbnail": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAYAAAAECAQAAAAHDYbIAAAAEUlEQVR42mP8/58BDhiJ4wAA974H/U5Xe1oAAAAASUVORK5CYII="
   },
   {
     "id": "os-zoomstack-outdoor",
@@ -58,5 +59,11 @@
     "title": "Zoomstack Night",
     "url": "https://s3-eu-west-1.amazonaws.com/tiles.os.uk/styles/open-zoomstack-night/style.json",
     "thumbnail": "https://maputnik.github.io/thumbnails/os-zoomstack-night.png"
+  },
+  {
+    "id": "empty-style",
+    "title": "Empty Style",
+    "url": "https://cdn.jsdelivr.net/gh/maputnik/editor@9cf74ca405d2be0608b57db8109cf3a6af5b9f49/src/config/empty-style.json",
+    "thumbnail": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAYAAAAECAQAAAAHDYbIAAAAEUlEQVR42mP8/58BDhiJ4wAA974H/U5Xe1oAAAAASUVORK5CYII="
   }
 ]
