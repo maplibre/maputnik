@@ -144,7 +144,7 @@ export default class MapboxGlMap extends React.Component {
     const zoom = new ZoomControl;
     map.addControl(zoom, 'top-right');
 
-    const nav = new MapboxGl.NavigationControl();
+    const nav = new MapboxGl.NavigationControl({visualizePitch:true});
     map.addControl(nav, 'top-right');
 
     const tmpNode = document.createElement('div');
