@@ -29,7 +29,6 @@
     "url": "https://cdn.jsdelivr.net/gh/openmaptiles/toner-gl-style@c289223/style.json",
     "thumbnail": "https://maputnik.github.io/thumbnails/toner.png"
   },
-
   {
     "id": "osm-liberty",
     "title": "OSM Liberty",
