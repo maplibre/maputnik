@@ -26,6 +26,13 @@ Mapbox has built one of the best and most amazing OSS ecosystems. A key componen
 ## Donations
 If you or your organisation has seen value from Maputnik, please consider donating at <https://maputnik.github.io/donate>
 
+## Using
+
+The quickest way is to use docker, even without cloning the repo.  Run this command and open your browser to http://localhost:8888 .  Ctrl+C to stop the server.
+
+```bash
+docker run -it -p 8888:8888 maputnik
+```
 
 ## Documentation
 

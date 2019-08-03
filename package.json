@@ -17,6 +17,9 @@
     "url": "https://github.com/maputnik/editor"
   },
   "author": "Lukas Martinelli",
+  "contributors": [
+    "Yuri Astrakhan <YuriAstrakhan@gmail.com>"
+  ],
   "license": "MIT",
   "homepage": "https://github.com/maputnik/editor#readme",
   "dependencies": {
