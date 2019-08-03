@@ -31,7 +31,7 @@ If you or your organisation has seen value from Maputnik, please consider donati
 The quickest way is to use docker, even without cloning the repo.  Run this command and open your browser to http://localhost:8888 .  Ctrl+C to stop the server.
 
 ```bash
-docker run -it -p 8888:8888 maputnik
+docker run -it --rm -p 8888:8888 maputnik/editor
 ```
 
 ## Documentation
