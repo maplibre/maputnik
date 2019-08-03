@@ -17,22 +17,19 @@
 A free and open visual editor for the [Mapbox GL styles](https://www.mapbox.com/mapbox-gl-style-spec/)
 targeted at developers and map designers.
 
+## Usage
+
 - :link: Design your maps online at **<https://maputnik.github.io/editor/>** (all in local storage)
 - :link: Use the [Maputnik CLI](https://github.com/maputnik/editor/wiki/Maputnik-CLI) for local style development
-
-Mapbox has built one of the best and most amazing OSS ecosystems. A key component to ensure its longevity and independence is an OSS map designer.
-
-
-## Donations
-If you or your organisation has seen value from Maputnik, please consider donating at <https://maputnik.github.io/donate>
-
-## Using
-
-The quickest way is to use docker, even without cloning the repo.  Run this command and open your browser to http://localhost:8888 .  Ctrl+C to stop the server.
+- In a Docker, run this command and browse to http://localhost:8888, Ctrl+C to stop the server.
 
 ```bash
 docker run -it --rm -p 8888:8888 maputnik/editor
 ```
+
+## Donations
+Mapbox has built one of the best and most amazing OSS ecosystems. A key component to ensure its longevity and independence is an OSS map designer.
+If you or your organisation has seen value from Maputnik, please consider donating at <https://maputnik.github.io/donate>
 
 ## Documentation
 
