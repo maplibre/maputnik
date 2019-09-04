@@ -37,6 +37,12 @@ use Maputnik.
 maputnik --watch --file basic-v9.json
 ```
 
+Choose a local port to listen on, instead of using the default port 8000.
+
+```
+maputnik --port 8001
+```
+
 ### API
 
 `maputnik` exposes the configured styles via a HTTP API.
