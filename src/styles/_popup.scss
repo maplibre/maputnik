@@ -28,6 +28,8 @@
 }
 
 .maputnik-feature-property-popup {
+  max-height: calc(50vh - 40px); /* toolbar height: 40px */
+  overflow-y: auto;
   .maputnik-input-block {
     margin: 0;
     margin-left: $margin-2;
