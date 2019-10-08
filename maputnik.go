@@ -27,6 +27,11 @@ func main() {
 			Name:  "watch",
 			Usage: "Notify web client about JSON style file changes",
 		},
+		cli.IntFlag{
+			Name: "port",
+			Value: 8000,
+			Usage: "TCP port to listen on",
+		},
 	}
 
 	app.Action = func(c *cli.Context) error {
@@ -56,8 +61,8 @@ func main() {
 		loggedRouter := handlers.LoggingHandler(os.Stdout, router)
 		corsRouter := handlers.CORS(handlers.AllowedHeaders([]string{"Content-Type"}), handlers.AllowedMethods([]string{"GET", "PUT"}), handlers.AllowedOrigins([]string{"*"}), handlers.AllowCredentials())(loggedRouter)
 
-		fmt.Println("Exposing Maputnik on http://localhost:8000")
-		return http.ListenAndServe(":8000", corsRouter)
+		fmt.Printf("Exposing Maputnik on http://localhost:%d\n", c.Int("port"))
+		return http.ListenAndServe(fmt.Sprintf(":%d", c.Int("port")), corsRouter)
 	}
 
 	app.Run(os.Args)
