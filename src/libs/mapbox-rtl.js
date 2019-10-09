@@ -1,7 +1,7 @@
 import MapboxGl from 'mapbox-gl'
+import {readFileSync} from 'fs'
 
-// Load mapbox-gl-rtl-text using object urls without needing http://localhost for AJAX.
-const data = require("raw-loader?mimetype=text/javascript!@mapbox/mapbox-gl-rtl-text/mapbox-gl-rtl-text.js");
+const data = readFileSync(__dirname+"/../../node_modules/@mapbox/mapbox-gl-rtl-text/mapbox-gl-rtl-text.js", "utf8");
 
 const blob = new window.Blob([data], {
   type: "text/javascript"
