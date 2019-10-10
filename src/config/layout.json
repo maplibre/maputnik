@@ -24,7 +24,8 @@
             "line-cap",
             "line-join",
             "line-miter-limit",
-            "line-round-limit"
+            "line-round-limit",
+            "line-sort-key"
           ]
         }
       ]
@@ -55,6 +56,13 @@
             "fill-pattern",
             "fill-translate",
             "fill-translate-anchor"
+          ]
+        },
+        {
+          "title": "Layout properties",
+          "type": "properties",
+          "fields": [
+            "fill-sort-key"
           ]
         }
       ]
@@ -93,7 +101,8 @@
             "circle-pitch-scale",
             "circle-translate",
             "circle-translate-anchor",
-            "circle-pitch-alignment"
+            "circle-pitch-alignment",
+            "circle-sort-key"
           ]
         }
       ]
@@ -107,7 +116,8 @@
             "symbol-placement",
             "symbol-spacing",
             "symbol-avoid-edges",
-            "symbol-z-order"
+            "symbol-z-order",
+            "symbol-sort-key"
           ]
         },
         {
@@ -128,6 +138,7 @@
             "text-justify",
             "text-anchor",
             "text-max-angle",
+            "text-writing-mode",
             "text-rotate",
             "text-keep-upright",
             "text-transform",
