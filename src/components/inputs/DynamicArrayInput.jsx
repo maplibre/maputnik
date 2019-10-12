@@ -16,6 +16,7 @@ class DynamicArrayInput extends React.Component {
     default: PropTypes.array,
     onChange: PropTypes.func,
     style: PropTypes.object,
+    fieldSpec: PropTypes.object,
   }
 
   changeValue(idx, newValue) {
