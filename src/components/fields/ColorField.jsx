@@ -30,7 +30,7 @@ class ColorField extends React.Component {
   }
 
   onChangeNoCheck (v) {
-    this.props.onChange(formatColor(v));
+    this.props.onChange(v);
   }
 
   //TODO: I much rather would do this with absolute positioning
