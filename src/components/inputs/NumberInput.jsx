@@ -28,7 +28,9 @@ class NumberInput extends React.Component {
 
   changeValue(newValue) {
     this.setState({editing: true});
-    const value = parseFloat(newValue)
+    const value = (newValue === "" || newValue === undefined) ?
+      undefined :
+      parseFloat(newValue);
 
     const hasChanged = this.state.value !== value
     if(this.isValid(value) && hasChanged) {
@@ -38,6 +40,10 @@ class NumberInput extends React.Component {
   }
 
   isValid(v) {
+    if (v === undefined) {
+      return true;
+    }
+
     const value = parseFloat(v)
     if(isNaN(value)) {
       return false
