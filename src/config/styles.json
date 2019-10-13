@@ -2,31 +2,31 @@
   {
     "id": "klokantech-basic",
     "title": "Klokantech Basic",
-    "url": "https://cdn.jsdelivr.net/gh/openmaptiles/klokantech-basic-gl-style@v1.8/style.json",
+    "url": "https://cdn.jsdelivr.net/gh/openmaptiles/klokantech-basic-gl-style@e142f83/style.json",
     "thumbnail": "https://maputnik.github.io/thumbnails/klokantech-basic.png"
   },
   {
     "id": "dark-matter",
     "title": "Dark Matter",
-    "url": "https://cdn.jsdelivr.net/gh/openmaptiles/dark-matter-gl-style@v1.7/style.json",
+    "url": "https://cdn.jsdelivr.net/gh/openmaptiles/dark-matter-gl-style@1dcc1d3/style.json",
     "thumbnail": "https://maputnik.github.io/thumbnails/dark-matter.png"
   },
   {
     "id": "positron",
     "title": "Positron",
-    "url": "https://cdn.jsdelivr.net/gh/openmaptiles/positron-gl-style@v1.7/style.json",
+    "url": "https://cdn.jsdelivr.net/gh/openmaptiles/positron-gl-style@2877814/style.json",
     "thumbnail": "https://maputnik.github.io/thumbnails/positron.png"
   },
   {
     "id": "osm-bright",
     "title": "OSM Bright",
-    "url": "https://cdn.jsdelivr.net/gh/openmaptiles/osm-bright-gl-style@v1.8/style.json",
+    "url": "https://cdn.jsdelivr.net/gh/openmaptiles/osm-bright-gl-style@500e26e/style.json",
     "thumbnail": "https://maputnik.github.io/thumbnails/osm-bright.png"
   },
   {
     "id": "toner-gl-style",
     "title": "Toner",
-    "url": "https://cdn.jsdelivr.net/gh/openmaptiles/toner-gl-style@c289223/style.json",
+    "url": "https://cdn.jsdelivr.net/gh/openmaptiles/toner-gl-style@bb49571/style.json",
     "thumbnail": "https://maputnik.github.io/thumbnails/toner.png"
   },
   {
