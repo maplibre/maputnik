@@ -24,6 +24,7 @@ class NumberInput extends React.Component {
         value: props.value
       };
     }
+    return {};
   }
 
   changeValue(newValue) {
@@ -82,7 +83,7 @@ class NumberInput extends React.Component {
       spellCheck="false"
       className="maputnik-number"
       placeholder={this.props.default}
-      value={this.state.value}
+      value={this.state.value || ""}
       onChange={e => this.changeValue(e.target.value)}
       onBlur={this.resetValue}
     />
