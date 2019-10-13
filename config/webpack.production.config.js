@@ -18,9 +18,6 @@ module.exports = {
     filename: '[name].[contenthash].js',
     chunkFilename: '[contenthash].js'
   },
-  optimization:{
-    minimize: false,
-  },
   resolve: {
     extensions: ['.js', '.jsx']
   },
