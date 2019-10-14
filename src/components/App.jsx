@@ -645,6 +645,7 @@ export default class App extends React.Component {
     />
 
     const layerEditor = selectedLayer ? <LayerEditor
+      key={selectedLayer.id}
       layer={selectedLayer}
       layerIndex={this.state.selectedLayerIndex}
       isFirstLayer={this.state.selectedLayerIndex < 1}

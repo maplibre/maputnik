@@ -5,6 +5,8 @@ import NumberInput from './NumberInput'
 import Button from '../Button'
 import {MdDelete} from 'react-icons/md'
 import DocLabel from '../fields/DocLabel'
+import EnumInput from '../inputs/SelectInput'
+import capitalize from 'lodash.capitalize'
 
 
 class DynamicArrayInput extends React.Component {
@@ -14,6 +16,7 @@ class DynamicArrayInput extends React.Component {
     default: PropTypes.array,
     onChange: PropTypes.func,
     style: PropTypes.object,
+    fieldSpec: PropTypes.object,
   }
 
   changeValue(idx, newValue) {
@@ -31,6 +34,11 @@ class DynamicArrayInput extends React.Component {
     const values = this.values.slice(0)
     if (this.props.type === 'number') {
       values.push(0)
+    }
+    else if (this.props.type === 'enum') {
+      const {fieldSpec} = this.props;
+      const defaultValue = Object.keys(fieldSpec.values)[0];
+      values.push(defaultValue);
     } else {
       values.push("")
     }
@@ -48,15 +56,28 @@ class DynamicArrayInput extends React.Component {
   render() {
     const inputs = this.values.map((v, i) => {
       const deleteValueBtn= <DeleteValueButton onClick={this.deleteValue.bind(this, i)} />
-      const input = this.props.type === 'number' 
-        ? <NumberInput
+      let input;
+      if (this.props.type === 'number') {
+        input = <NumberInput
           value={v}
           onChange={this.changeValue.bind(this, i)}
         />
-        : <StringInput
+      }
+      else if (this.props.type === 'enum') {
+        const options = Object.keys(this.props.fieldSpec.values).map(v => [v, capitalize(v)]);
+
+        input = <EnumInput
+          options={options}
           value={v}
           onChange={this.changeValue.bind(this, i)}
         />
+      }
+      else {
+        input = <StringInput
+          value={v}
+          onChange={this.changeValue.bind(this, i)}
+        />
+      }
 
       return <div
         style={this.props.style}

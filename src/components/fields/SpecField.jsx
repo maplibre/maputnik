@@ -11,6 +11,7 @@ import ArrayInput from '../inputs/ArrayInput'
 import DynamicArrayInput from '../inputs/DynamicArrayInput'
 import FontInput from '../inputs/FontInput'
 import IconInput from '../inputs/IconInput'
+import EnumInput from '../inputs/SelectInput'
 import capitalize from 'lodash.capitalize'
 
 const iconProperties = ['background-pattern', 'fill-pattern', 'line-pattern', 'fill-extrusion-pattern', 'icon-image']
@@ -70,17 +71,10 @@ export default class SpecField extends React.Component {
         case 'enum':
           const options = Object.keys(this.props.fieldSpec.values).map(v => [v, capitalize(v)])
 
-          if(options.length <= 3 && optionsLabelLength(options) <= 20) {
-            return <MultiButtonInput
-              {...commonProps}
-              options={options}
-            />
-          } else {
-            return <SelectInput
-              {...commonProps}
-              options={options}
-            />
-          }
+          return <EnumInput
+            {...commonProps}
+            options={options}
+          />
         case 'formatted':
         case 'string':
           if(iconProperties.indexOf(this.props.fieldName) >= 0) {
@@ -119,6 +113,7 @@ export default class SpecField extends React.Component {
             } else {
               return <DynamicArrayInput
                 {...commonProps}
+                fieldSpec={this.props.fieldSpec}
                 type={this.props.fieldSpec.value}
               />
             }

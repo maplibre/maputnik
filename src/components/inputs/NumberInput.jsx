@@ -24,11 +24,14 @@ class NumberInput extends React.Component {
         value: props.value
       };
     }
+    return {};
   }
 
   changeValue(newValue) {
     this.setState({editing: true});
-    const value = parseFloat(newValue)
+    const value = (newValue === "" || newValue === undefined) ?
+      undefined :
+      parseFloat(newValue);
 
     const hasChanged = this.state.value !== value
     if(this.isValid(value) && hasChanged) {
@@ -38,6 +41,10 @@ class NumberInput extends React.Component {
   }
 
   isValid(v) {
+    if (v === undefined) {
+      return true;
+    }
+
     const value = parseFloat(v)
     if(isNaN(value)) {
       return false
@@ -76,7 +83,7 @@ class NumberInput extends React.Component {
       spellCheck="false"
       className="maputnik-number"
       placeholder={this.props.default}
-      value={this.state.value}
+      value={this.state.value || ""}
       onChange={e => this.changeValue(e.target.value)}
       onBlur={this.resetValue}
     />
