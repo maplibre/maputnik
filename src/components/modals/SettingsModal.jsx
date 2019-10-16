@@ -59,9 +59,15 @@ class SettingsModal extends React.Component {
   changeStyleProperty(property, value) {
     const changedStyle = {
       ...this.props.mapStyle,
-      [property]: value
+    };
+
+    if (value === undefined) {
+      delete changedStyle[property];
     }
-    this.props.onStyleChanged(changedStyle)
+    else {
+      changedStyle[property] = value;
+    }
+    this.props.onStyleChanged(changedStyle);
   }
 
   render() {
