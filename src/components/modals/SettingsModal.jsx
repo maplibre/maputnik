@@ -7,6 +7,8 @@ import ArrayInput from '../inputs/ArrayInput'
 import NumberInput from '../inputs/NumberInput'
 import StringInput from '../inputs/StringInput'
 import SelectInput from '../inputs/SelectInput'
+import EnumInput from '../inputs/EnumInput'
+import ColorField from '../fields/ColorField'
 import Modal from './Modal'
 
 class SettingsModal extends React.Component {
@@ -16,6 +18,17 @@ class SettingsModal extends React.Component {
     onChangeMetadataProperty: PropTypes.func.isRequired,
     isOpen: PropTypes.bool.isRequired,
     onOpenToggle: PropTypes.func.isRequired,
+  }
+
+  changeLightProperty(property, value) {
+    const changedStyle = {
+      ...this.props.mapStyle,
+      light: {
+        ...this.props.mapStyle.light,
+        [property]: value
+      }
+    }
+    this.props.onStyleChanged(changedStyle)
   }
 
   changeStyleProperty(property, value) {
@@ -30,6 +43,9 @@ class SettingsModal extends React.Component {
     const metadata = this.props.mapStyle.metadata || {}
     const {onChangeMetadataProperty, mapStyle} = this.props;
     const inputProps = { }
+
+    const light = this.props.mapStyle.light || {};
+
     return <Modal
       data-wd-key="modal-settings"
       isOpen={this.props.isOpen}
@@ -139,6 +155,45 @@ class SettingsModal extends React.Component {
           onChange={this.changeStyleProperty.bind(this, "pitch")}
         />
       </InputBlock>
+
+      <InputBlock label={"Light anchor"} doc={latest.light.anchor.doc}>
+        <EnumInput
+          {...inputProps}
+          value={light.anchor}
+          options={Object.keys(latest.light.anchor.values)}
+          default={latest.light.anchor.default}
+          onChange={this.changeLightProperty.bind(this, "anchor")}
+        />
+      </InputBlock>
+
+      <InputBlock label={"Light color"} doc={latest.light.color.doc}>
+        <ColorField
+          {...inputProps}
+          value={light.color}
+          default={latest.light.color.default}
+          onChange={this.changeLightProperty.bind(this, "color")}
+        />
+      </InputBlock>
+
+      <InputBlock label={"Light intensity"} doc={latest.light.intensity.doc}>
+        <NumberInput
+          {...inputProps}
+          value={light.intensity}
+          default={latest.light.intensity.default}
+          onChange={this.changeLightProperty.bind(this, "intensity")}
+        />
+      </InputBlock>
+
+      <InputBlock label={"Light position"} doc={latest.light.position.doc}>
+        <ArrayInput
+          {...inputProps}
+          length={latest.light.position.length}
+          value={light.position}
+          default={latest.light.position.default}
+          onChange={this.changeLightProperty.bind(this, "position")}
+        />
+      </InputBlock>
+
 
       </div>
     </Modal>
