@@ -21,25 +21,39 @@ class SettingsModal extends React.Component {
   }
 
   changeTransitionProperty(property, value) {
-    const changedStyle = {
-      ...this.props.mapStyle,
-      transition: {
-        ...this.props.mapStyle.transition,
-        [property]: value
-      }
+    const transition = {
+      ...this.props.mapStyle.transition,
     }
-    this.props.onStyleChanged(changedStyle)
+
+    if (value === undefined) {
+      delete transition[property];
+    }
+    else {
+      transition[property] = value;
+    }
+
+    this.props.onStyleChanged({
+      ...this.props.mapStyle,
+      transition,
+    });
   }
 
   changeLightProperty(property, value) {
-    const changedStyle = {
-      ...this.props.mapStyle,
-      light: {
-        ...this.props.mapStyle.light,
-        [property]: value
-      }
+    const light = {
+      ...this.props.mapStyle.light,
     }
-    this.props.onStyleChanged(changedStyle)
+
+    if (value === undefined) {
+      delete light[property];
+    }
+    else {
+      light[property] = value;
+    }
+
+    this.props.onStyleChanged({
+      ...this.props.mapStyle,
+      light,
+    });
   }
 
   changeStyleProperty(property, value) {
