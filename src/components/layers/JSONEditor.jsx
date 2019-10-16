@@ -115,7 +115,10 @@ class JSONEditor extends React.Component {
       scrollbarStyle: "null",
     }
 
-    return <div ref={(el) => this._el = el} />
+    return <div
+      className="codemirror-container"
+      ref={(el) => this._el = el}
+    />
   }
 }
 
