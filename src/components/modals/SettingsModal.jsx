@@ -3,6 +3,8 @@ import PropTypes from 'prop-types'
 
 import {latest} from '@mapbox/mapbox-gl-style-spec'
 import InputBlock from '../inputs/InputBlock'
+import ArrayInput from '../inputs/ArrayInput'
+import NumberInput from '../inputs/NumberInput'
 import StringInput from '../inputs/StringInput'
 import SelectInput from '../inputs/SelectInput'
 import Modal from './Modal'
@@ -26,7 +28,7 @@ class SettingsModal extends React.Component {
 
   render() {
     const metadata = this.props.mapStyle.metadata || {}
-    const {onChangeMetadataProperty} = this.props;
+    const {onChangeMetadataProperty, mapStyle} = this.props;
     const inputProps = { }
     return <Modal
       data-wd-key="modal-settings"
@@ -98,6 +100,43 @@ class SettingsModal extends React.Component {
           ]}
           value={metadata['maputnik:renderer'] || 'mbgljs'}
           onChange={onChangeMetadataProperty.bind(this, 'maputnik:renderer')}
+        />
+      </InputBlock>
+
+      <InputBlock label={"Center"} doc={latest.$root.center.doc}>
+        <ArrayInput
+          length={2}
+          type="number"
+          value={mapStyle.center}
+          default={latest.$root.center.default || [0, 0]}
+          onChange={this.changeStyleProperty.bind(this, "center")}
+        />
+      </InputBlock>
+
+      <InputBlock label={"Zoom"} doc={latest.$root.zoom.doc}>
+        <NumberInput
+          {...inputProps}
+          value={mapStyle.zoom}
+          default={latest.$root.zoom.default || 0}
+          onChange={this.changeStyleProperty.bind(this, "zoom")}
+        />
+      </InputBlock>
+
+      <InputBlock label={"Bearing"} doc={latest.$root.bearing.doc}>
+        <NumberInput
+          {...inputProps}
+          value={mapStyle.bearing}
+          default={latest.$root.bearing.default}
+          onChange={this.changeStyleProperty.bind(this, "bearing")}
+        />
+      </InputBlock>
+
+      <InputBlock label={"Pitch"} doc={latest.$root.pitch.doc}>
+        <NumberInput
+          {...inputProps}
+          value={mapStyle.pitch}
+          default={latest.$root.pitch.default}
+          onChange={this.changeStyleProperty.bind(this, "pitch")}
         />
       </InputBlock>
 
