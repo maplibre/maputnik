@@ -65,7 +65,7 @@ class NumberInput extends React.Component {
     this.setState({editing: false});
     // Reset explicitly to default value if value has been cleared
     if(this.state.value === "") {
-      return this.changeValue(this.props.default)
+      return;
     }
 
     // If set value is invalid fall back to the last valid value from props or at last resort the default value
@@ -73,7 +73,7 @@ class NumberInput extends React.Component {
       if(this.isValid(this.props.value)) {
         this.changeValue(this.props.value)
       } else {
-        this.changeValue(this.props.default)
+        this.changeValue(undefined);
       }
     }
   }
