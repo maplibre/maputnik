@@ -42,4 +42,4 @@ class EnumInput extends React.Component {
   }
 }
 
-export default StringInput
+export default EnumInput
