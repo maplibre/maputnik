@@ -139,16 +139,6 @@ class SettingsModal extends React.Component {
         />
       </InputBlock>
 
-      <InputBlock label={"Center"} doc={latest.$root.center.doc}>
-        <ArrayInput
-          length={2}
-          type="number"
-          value={mapStyle.center}
-          default={latest.$root.center.default || [0, 0]}
-          onChange={this.changeStyleProperty.bind(this, "center")}
-        />
-      </InputBlock>
-
       <InputBlock label={"Zoom"} doc={latest.$root.zoom.doc}>
         <NumberInput
           {...inputProps}
@@ -201,16 +191,6 @@ class SettingsModal extends React.Component {
           value={light.intensity}
           default={latest.light.intensity.default}
           onChange={this.changeLightProperty.bind(this, "intensity")}
-        />
-      </InputBlock>
-
-      <InputBlock label={"Light position"} doc={latest.light.position.doc}>
-        <ArrayInput
-          {...inputProps}
-          length={latest.light.position.length}
-          value={light.position}
-          default={latest.light.position.default}
-          onChange={this.changeLightProperty.bind(this, "position")}
         />
       </InputBlock>
 
