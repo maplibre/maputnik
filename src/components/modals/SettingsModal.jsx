@@ -107,18 +107,6 @@ class SettingsModal extends React.Component {
         />
       </InputBlock>
 
-      <InputBlock label={"Style Renderer"} doc={"Choose the default Maputnik renderer for this style."}>
-        <SelectInput {...inputProps}
-          data-wd-key="modal-settings.maputnik:renderer" 
-          options={[
-            ['mbgljs', 'MapboxGL JS'],
-            ['ol', 'Open Layers (experimental)'],
-          ]}
-          value={metadata['maputnik:renderer'] || 'mbgljs'}
-          onChange={onChangeMetadataProperty.bind(this, 'maputnik:renderer')}
-        />
-      </InputBlock>
-
       <InputBlock label={"Center"} doc={latest.$root.center.doc}>
         <ArrayInput
           length={2}
@@ -193,6 +181,19 @@ class SettingsModal extends React.Component {
           onChange={this.changeLightProperty.bind(this, "position")}
         />
       </InputBlock>
+
+      <InputBlock label={"Style Renderer"} doc={"Choose the default Maputnik renderer for this style."}>
+        <SelectInput {...inputProps}
+          data-wd-key="modal-settings.maputnik:renderer" 
+          options={[
+            ['mbgljs', 'MapboxGL JS'],
+            ['ol', 'Open Layers (experimental)'],
+          ]}
+          value={metadata['maputnik:renderer'] || 'mbgljs'}
+          onChange={onChangeMetadataProperty.bind(this, 'maputnik:renderer')}
+        />
+      </InputBlock>
+
 
 
       </div>
