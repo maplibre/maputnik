@@ -12,29 +12,32 @@ class ArrayInput extends React.Component {
     onChange: PropTypes.func,
   }
 
+  static defaultProps = {
+    value: [],
+    default: [],
+  }
+
   changeValue(idx, newValue) {
     console.log(idx, newValue)
-    const values = this.values.slice(0)
+    const values = this.props.value.slice(0)
     values[idx] = newValue
     this.props.onChange(values)
   }
 
-  get values() {
-    return this.props.value || this.props.default || []
-  }
-
   render() {
-    const inputs = this.values.map((v, i) => {
+    const inputs = Array(this.props.length).fill(null).map((_, i) => {
       if(this.props.type === 'number') {
         return <NumberInput
           key={i}
-          value={v}
+          default={this.props.default[i]}
+          value={this.props.value[i]}
           onChange={this.changeValue.bind(this, i)}
         />
       } else {
         return <StringInput
           key={i}
-          value={v}
+          default={this.props.default[i]}
+          value={this.props.value[i]}
           onChange={this.changeValue.bind(this, i)}
         />
       }
