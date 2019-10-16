@@ -20,6 +20,17 @@ class SettingsModal extends React.Component {
     onOpenToggle: PropTypes.func.isRequired,
   }
 
+  changeTransitionProperty(property, value) {
+    const changedStyle = {
+      ...this.props.mapStyle,
+      transition: {
+        ...this.props.mapStyle.transition,
+        [property]: value
+      }
+    }
+    this.props.onStyleChanged(changedStyle)
+  }
+
   changeLightProperty(property, value) {
     const changedStyle = {
       ...this.props.mapStyle,
@@ -45,6 +56,7 @@ class SettingsModal extends React.Component {
     const inputProps = { }
 
     const light = this.props.mapStyle.light || {};
+    const transition = this.props.mapStyle.transition || {};
 
     return <Modal
       data-wd-key="modal-settings"
@@ -179,6 +191,24 @@ class SettingsModal extends React.Component {
           value={light.position}
           default={latest.light.position.default}
           onChange={this.changeLightProperty.bind(this, "position")}
+        />
+      </InputBlock>
+
+      <InputBlock label={"Transition delay"} doc={latest.transition.delay.doc}>
+        <NumberInput
+          {...inputProps}
+          value={transition.delay}
+          default={latest.transition.delay.default}
+          onChange={this.changeTransitionProperty.bind(this, "delay")}
+        />
+      </InputBlock>
+
+      <InputBlock label={"Transition duration"} doc={latest.transition.duration.doc}>
+        <NumberInput
+          {...inputProps}
+          value={transition.duration}
+          default={latest.transition.duration.default}
+          onChange={this.changeTransitionProperty.bind(this, "duration")}
         />
       </InputBlock>
 
