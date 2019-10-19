@@ -5,6 +5,7 @@ import InputBlock from '../inputs/InputBlock'
 import StringInput from '../inputs/StringInput'
 import NumberInput from '../inputs/NumberInput'
 import SelectInput from '../inputs/SelectInput'
+import JSONEditor from '../layers/JSONEditor'
 
 
 class TileJSONSourceEditor extends React.Component {
@@ -86,20 +87,41 @@ class TileURLSourceEditor extends React.Component {
   }
 }
 
-class GeoJSONSourceEditor extends React.Component {
+class GeoJSONSourceUrlEditor extends React.Component {
   static propTypes = {
     source: PropTypes.object.isRequired,
     onChange: PropTypes.func.isRequired,
   }
 
   render() {
-    return <InputBlock label={"GeoJSON Data"} doc={latest.source_geojson.data.doc}>
+    return <InputBlock label={"GeoJSON URL"} doc={latest.source_geojson.data.doc}>
       <StringInput
         value={this.props.source.data}
         onChange={data => this.props.onChange({
           ...this.props.source,
           data: data
         })}
+      />
+    </InputBlock>
+  }
+}
+
+class GeoJSONSourceJSONEditor extends React.Component {
+  static propTypes = {
+    source: PropTypes.object.isRequired,
+    onChange: PropTypes.func.isRequired,
+  }
+
+  render() {
+    return <InputBlock label={"GeoJSON"} doc={latest.source_geojson.data.doc}>
+      <JSONEditor
+        layer={this.props.source.data}
+        onChange={data => {
+          this.props.onChange({
+            ...this.props.source,
+            data,
+          })
+        }}
       />
     </InputBlock>
   }
@@ -118,7 +140,8 @@ class SourceTypeEditor extends React.Component {
       onChange: this.props.onChange,
     }
     switch(this.props.mode) {
-      case 'geojson': return <GeoJSONSourceEditor {...commonProps} />
+      case 'geojson_url': return <GeoJSONSourceUrlEditor {...commonProps} />
+      case 'geojson_json': return <GeoJSONSourceJSONEditor {...commonProps} />
       case 'tilejson_vector': return <TileJSONSourceEditor {...commonProps} />
       case 'tilexyz_vector': return <TileURLSourceEditor {...commonProps} />
       case 'tilejson_raster': return <TileJSONSourceEditor {...commonProps} />

@@ -52,7 +52,14 @@ function editorMode(source) {
     if(source.tiles) return 'tilexyz_vector'
     return 'tilejson_vector'
   }
-  if(source.type === 'geojson') return 'geojson'
+  if(source.type === 'geojson') {
+    if (typeof(source.data) === "string") {
+      return 'geojson_url';
+    }
+    else {
+      return 'geojson_json';
+    }
+  }
   return null
 }
 
@@ -106,9 +113,13 @@ class AddSource extends React.Component {
   defaultSource(mode) {
     const source = (this.state || {}).source || {}
     switch(mode) {
-      case 'geojson': return {
+      case 'geojson_url': return {
         type: 'geojson',
         data: source.data || 'http://localhost:3000/geojson.json'
+      }
+      case 'geojson_json': return {
+        type: 'geojson',
+        data: source.data || {}
       }
       case 'tilejson_vector': return {
         type: 'vector',
@@ -155,7 +166,8 @@ class AddSource extends React.Component {
       <InputBlock label={"Source Type"} doc={latest.source_vector.type.doc}>
         <SelectInput
           options={[
-            ['geojson', 'GeoJSON'],
+            ['geojson_json', 'GeoJSON (JSON)'],
+            ['geojson_url', 'GeoJSON (URL)'],
             ['tilejson_vector', 'Vector (TileJSON URL)'],
             ['tilexyz_vector', 'Vector (XYZ URLs)'],
             ['tilejson_raster', 'Raster (TileJSON URL)'],
