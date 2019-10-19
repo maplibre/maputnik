@@ -18,7 +18,6 @@ templates:
 
     - run: mkdir -p /tmp/artifacts/logs
     - run: npm run build
-    - run: npm run profiling-build
     - run: npm run lint
     - run: npm run lint-styles
     - store_artifacts:
@@ -42,6 +41,7 @@ templates:
 
     - run: mkdir -p /tmp/artifacts/logs
     - run: npm run build
+    - run: npm run profiling-build
     - run: npm run lint
     - run: npm run lint-styles
     - run: DOCKER_HOST=localhost npm test
