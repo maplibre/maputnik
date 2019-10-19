@@ -50,7 +50,7 @@ class StringInput extends React.Component {
       spellCheck: !(tag === "input"),
       className: classes.join(" "),
       style: this.props.style,
-      value: this.state.value,
+      value: this.state.value === undefined ? "" : this.state.value,
       placeholder: this.props.default,
       onChange: e => {
         this.setState({
@@ -63,7 +63,8 @@ class StringInput extends React.Component {
           this.setState({editing: false});
           this.props.onChange(this.state.value);
         }
-      }
+      },
+      required: this.props.required,
     });
   }
 }

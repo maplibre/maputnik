@@ -59,7 +59,7 @@ export default class PropertyGroup extends React.Component {
         onChange={this.onPropertyChange}
         key={fieldName}
         fieldName={fieldName}
-        value={fieldValue === undefined ? fieldSpec.default : fieldValue}
+        value={fieldValue}
         fieldSpec={fieldSpec}
       />
     })
