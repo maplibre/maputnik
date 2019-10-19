@@ -28,6 +28,13 @@
   height: 100%;
 }
 
+.maputnik-input-block:hover {
+  .maputnik-doc-button {
+    opacity: 1;
+    pointer-events: all;
+  }
+}
+
 // DOC LABEL
 .maputnik-doc {
   &-target {
@@ -57,6 +64,30 @@
     z-index: 10;
     pointer-events: none;
   }
+
+  &-button {
+    opacity: 0;
+    pointer-events: none;
+    background: #000;
+    color: white;
+    border: solid 1px #555;
+    border-radius: 100px;
+
+    &--open {
+      background: white;
+      color: black;
+      opacity: 1;
+      pointer-events: all;
+    }
+  }
+}
+
+.maputnik-doc-inline {
+  color: $color-lowgray;
+  background-color: $color-gray;
+  padding: $margin-2;
+  font-size: 12px;
+  margin-top: $margin-2;
 }
 
 .maputnik-doc-target:hover .maputnik-doc-popup {

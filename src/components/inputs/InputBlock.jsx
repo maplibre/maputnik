@@ -18,9 +18,22 @@ class InputBlock extends React.Component {
     onChange: PropTypes.func,
   }
 
+  constructor (props) {
+    super(props);
+    this.state = {
+      showDoc: false,
+    }
+  }
+
   onChange(e) {
     const value = e.target.value
     return this.props.onChange(value === "" ? undefined : value)
+  }
+
+  onToggleDoc = (val) => {
+    this.setState({
+      showDoc: val
+    });
   }
 
   render() {
@@ -36,6 +49,7 @@ class InputBlock extends React.Component {
         <DocLabel
           label={this.props.label}
           doc={this.props.doc}
+          onToggleDoc={this.onToggleDoc}
         />
       </div>
       }
@@ -52,6 +66,14 @@ class InputBlock extends React.Component {
       <div className="maputnik-input-block-content">
         {this.props.children}
       </div>
+      {this.props.doc &&
+      <div
+        className="maputnik-doc-inline"
+        style={{display: this.state.showDoc ? '' : 'none'}}
+      >
+        {this.props.doc}
+      </div>
+      }
     </div>
   }
 }
