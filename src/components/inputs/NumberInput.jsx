@@ -8,6 +8,7 @@ class NumberInput extends React.Component {
     min: PropTypes.number,
     max: PropTypes.number,
     onChange: PropTypes.func,
+    required: PropTypes.bool,
   }
 
   constructor(props) {
