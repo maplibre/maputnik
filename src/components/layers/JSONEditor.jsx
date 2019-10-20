@@ -19,6 +19,7 @@ import '../../vendor/codemirror/addon/lint/json-lint'
 class JSONEditor extends React.Component {
   static propTypes = {
     layer: PropTypes.object.isRequired,
+    maxHeight: PropTypes.number,
     onChange: PropTypes.func,
   }
 
