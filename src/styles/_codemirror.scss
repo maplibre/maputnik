@@ -2,7 +2,8 @@
   z-index: 2000 !important;
 }
 
-.CodeMirror-wrapper {
+.codemirror-container {
+  max-width: 100%;
   position: relative;
   overflow: auto;
 }

@@ -6,6 +6,7 @@
   "scripts": {
     "stats": "webpack --config config/webpack.production.config.js --profile --json > stats.json",
     "build": "webpack --config config/webpack.production.config.js --progress --profile --colors",
+    "profiling-build": "webpack --config config/webpack.profiling.config.js --progress --profile --colors",
     "test": "cross-env NODE_ENV=test wdio config/wdio.conf.js",
     "test-watch": "cross-env NODE_ENV=test wdio config/wdio.conf.js --watch",
     "start": "webpack-dev-server --progress --profile --colors --config config/webpack.config.js",
@@ -47,7 +48,6 @@
     "react-aria-modal": "^4.0.0",
     "react-autobind": "^1.0.6",
     "react-autocomplete": "^1.8.1",
-    "react-codemirror2": "^6.0.0",
     "react-collapse": "^4.0.3",
     "react-color": "^2.17.3",
     "react-dom": "^16.10.2",
