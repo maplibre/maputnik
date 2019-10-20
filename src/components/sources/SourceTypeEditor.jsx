@@ -116,6 +116,7 @@ class GeoJSONSourceJSONEditor extends React.Component {
     return <InputBlock label={"GeoJSON"} doc={latest.source_geojson.data.doc}>
       <JSONEditor
         layer={this.props.source.data}
+        maxHeight={200}
         onChange={data => {
           this.props.onChange({
             ...this.props.source,

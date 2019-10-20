@@ -115,11 +115,11 @@ class AddSource extends React.Component {
     switch(mode) {
       case 'geojson_url': return {
         type: 'geojson',
-        data: source.data || 'http://localhost:3000/geojson.json'
+        data: 'http://localhost:3000/geojson.json'
       }
       case 'geojson_json': return {
         type: 'geojson',
-        data: source.data || {}
+        data: {}
       }
       case 'tilejson_vector': return {
         type: 'vector',

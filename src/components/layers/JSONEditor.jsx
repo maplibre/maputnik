@@ -69,12 +69,19 @@ class JSONEditor extends React.Component {
       scrollbarStyle: "null",
     }
 
-    return <CodeMirror
-      value={this.state.code}
-      onBeforeChange={(editor, data, value) => this.onCodeUpdate(value)}
-      onFocusChange={focused => focused ? true : this.resetValue()}
-      options={codeMirrorOptions}
-    />
+    const style = {};
+    if (this.props.maxHeight) {
+      style.maxHeight = this.props.maxHeight;
+    }
+
+    return <div className="CodeMirror-wrapper" style={style}>
+      <CodeMirror
+        value={this.state.code}
+        onBeforeChange={(editor, data, value) => this.onCodeUpdate(value)}
+        onFocusChange={focused => focused ? true : this.resetValue()}
+        options={codeMirrorOptions}
+      />
+    </div>
   }
 }
 
