@@ -8,6 +8,7 @@ class NumberInput extends React.Component {
     min: PropTypes.number,
     max: PropTypes.number,
     onChange: PropTypes.func,
+    required: PropTypes.bool,
   }
 
   constructor(props) {
@@ -65,7 +66,7 @@ class NumberInput extends React.Component {
     this.setState({editing: false});
     // Reset explicitly to default value if value has been cleared
     if(this.state.value === "") {
-      return this.changeValue(this.props.default)
+      return;
     }
 
     // If set value is invalid fall back to the last valid value from props or at last resort the default value
@@ -73,7 +74,7 @@ class NumberInput extends React.Component {
       if(this.isValid(this.props.value)) {
         this.changeValue(this.props.value)
       } else {
-        this.changeValue(this.props.default)
+        this.changeValue(undefined);
       }
     }
   }
@@ -83,9 +84,10 @@ class NumberInput extends React.Component {
       spellCheck="false"
       className="maputnik-number"
       placeholder={this.props.default}
-      value={this.state.value || ""}
+      value={this.state.value === undefined ? "" : this.state.value}
       onChange={e => this.changeValue(e.target.value)}
       onBlur={this.resetValue}
+      required={this.props.required}
     />
   }
 }

@@ -3,8 +3,12 @@ import PropTypes from 'prop-types'
 
 import {latest} from '@mapbox/mapbox-gl-style-spec'
 import InputBlock from '../inputs/InputBlock'
+import ArrayInput from '../inputs/ArrayInput'
+import NumberInput from '../inputs/NumberInput'
 import StringInput from '../inputs/StringInput'
 import SelectInput from '../inputs/SelectInput'
+import EnumInput from '../inputs/EnumInput'
+import ColorField from '../fields/ColorField'
 import Modal from './Modal'
 
 class SettingsModal extends React.Component {
@@ -16,18 +20,64 @@ class SettingsModal extends React.Component {
     onOpenToggle: PropTypes.func.isRequired,
   }
 
+  changeTransitionProperty(property, value) {
+    const transition = {
+      ...this.props.mapStyle.transition,
+    }
+
+    if (value === undefined) {
+      delete transition[property];
+    }
+    else {
+      transition[property] = value;
+    }
+
+    this.props.onStyleChanged({
+      ...this.props.mapStyle,
+      transition,
+    });
+  }
+
+  changeLightProperty(property, value) {
+    const light = {
+      ...this.props.mapStyle.light,
+    }
+
+    if (value === undefined) {
+      delete light[property];
+    }
+    else {
+      light[property] = value;
+    }
+
+    this.props.onStyleChanged({
+      ...this.props.mapStyle,
+      light,
+    });
+  }
+
   changeStyleProperty(property, value) {
     const changedStyle = {
       ...this.props.mapStyle,
-      [property]: value
+    };
+
+    if (value === undefined) {
+      delete changedStyle[property];
     }
-    this.props.onStyleChanged(changedStyle)
+    else {
+      changedStyle[property] = value;
+    }
+    this.props.onStyleChanged(changedStyle);
   }
 
   render() {
     const metadata = this.props.mapStyle.metadata || {}
-    const {onChangeMetadataProperty} = this.props;
+    const {onChangeMetadataProperty, mapStyle} = this.props;
     const inputProps = { }
+
+    const light = this.props.mapStyle.light || {};
+    const transition = this.props.mapStyle.transition || {};
+
     return <Modal
       data-wd-key="modal-settings"
       isOpen={this.props.isOpen}
@@ -89,6 +139,100 @@ class SettingsModal extends React.Component {
         />
       </InputBlock>
 
+      <InputBlock label={"Center"} doc={latest.$root.center.doc}>
+        <ArrayInput
+          length={2}
+          type="number"
+          value={mapStyle.center}
+          default={latest.$root.center.default || [0, 0]}
+          onChange={this.changeStyleProperty.bind(this, "center")}
+        />
+      </InputBlock>
+
+      <InputBlock label={"Zoom"} doc={latest.$root.zoom.doc}>
+        <NumberInput
+          {...inputProps}
+          value={mapStyle.zoom}
+          default={latest.$root.zoom.default || 0}
+          onChange={this.changeStyleProperty.bind(this, "zoom")}
+        />
+      </InputBlock>
+
+      <InputBlock label={"Bearing"} doc={latest.$root.bearing.doc}>
+        <NumberInput
+          {...inputProps}
+          value={mapStyle.bearing}
+          default={latest.$root.bearing.default}
+          onChange={this.changeStyleProperty.bind(this, "bearing")}
+        />
+      </InputBlock>
+
+      <InputBlock label={"Pitch"} doc={latest.$root.pitch.doc}>
+        <NumberInput
+          {...inputProps}
+          value={mapStyle.pitch}
+          default={latest.$root.pitch.default}
+          onChange={this.changeStyleProperty.bind(this, "pitch")}
+        />
+      </InputBlock>
+
+      <InputBlock label={"Light anchor"} doc={latest.light.anchor.doc}>
+        <EnumInput
+          {...inputProps}
+          value={light.anchor}
+          options={Object.keys(latest.light.anchor.values)}
+          default={latest.light.anchor.default}
+          onChange={this.changeLightProperty.bind(this, "anchor")}
+        />
+      </InputBlock>
+
+      <InputBlock label={"Light color"} doc={latest.light.color.doc}>
+        <ColorField
+          {...inputProps}
+          value={light.color}
+          default={latest.light.color.default}
+          onChange={this.changeLightProperty.bind(this, "color")}
+        />
+      </InputBlock>
+
+      <InputBlock label={"Light intensity"} doc={latest.light.intensity.doc}>
+        <NumberInput
+          {...inputProps}
+          value={light.intensity}
+          default={latest.light.intensity.default}
+          onChange={this.changeLightProperty.bind(this, "intensity")}
+        />
+      </InputBlock>
+
+      <InputBlock label={"Light position"} doc={latest.light.position.doc}>
+        <ArrayInput
+          {...inputProps}
+          type="number"
+          length={latest.light.position.length}
+          value={light.position}
+          default={latest.light.position.default}
+          onChange={this.changeLightProperty.bind(this, "position")}
+        />
+      </InputBlock>
+
+      <InputBlock label={"Transition delay"} doc={latest.transition.delay.doc}>
+        <NumberInput
+          {...inputProps}
+          value={transition.delay}
+          default={latest.transition.delay.default}
+          onChange={this.changeTransitionProperty.bind(this, "delay")}
+        />
+      </InputBlock>
+
+      <InputBlock label={"Transition duration"} doc={latest.transition.duration.doc}>
+        <NumberInput
+          {...inputProps}
+          value={transition.duration}
+          default={latest.transition.duration.default}
+          onChange={this.changeTransitionProperty.bind(this, "duration")}
+        />
+      </InputBlock>
+
       <InputBlock label={"Style Renderer"} doc={"Choose the default Maputnik renderer for this style."}>
         <SelectInput {...inputProps}
           data-wd-key="modal-settings.maputnik:renderer" 
@@ -100,6 +244,8 @@ class SettingsModal extends React.Component {
           onChange={onChangeMetadataProperty.bind(this, 'maputnik:renderer')}
         />
       </InputBlock>
+
+
 
       </div>
     </Modal>
