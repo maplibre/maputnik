@@ -16,7 +16,7 @@
   },
   "open_zoomstack": {
     "type": "vector",
-    "url": "https://s3-eu-west-1.amazonaws.com/tiles.os.uk/data/vector/open-zoomstack/config.json",
+    "url": "https://s3-eu-west-1.amazonaws.com/tiles.os.uk/v2/data/vector/open-zoomstack/config.json",
     "title": "OS Open Zoomstack"
   }
 }
