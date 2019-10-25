@@ -45,17 +45,12 @@
 }
 
 .maputnik-delete-stop {
+  display: inline-block;
+  padding-bottom: 0;
+  padding-top: 0;
+  vertical-align: middle;
+
   @extend .maputnik-icon-button;
-
-  vertical-align: top;
-
-  .maputnik-doc-wrapper {
-    width: auto;
-  }
-
-  .maputnik-doc-target {
-    cursor: pointer;
-  }
 }
 
 .maputnik-add-stop {
