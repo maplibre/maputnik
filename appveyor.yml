@@ -3,12 +3,20 @@ environment:
   matrix:
     - nodejs_version: "8"
     - nodejs_version: "10"
-    - nodejs_version: "11"
+    - nodejs_version: "12"
+    - nodejs_version: "13"
 platform:
   - x86
   - x64
 install:
-  - ps: Install-Product node $env:nodejs_version
+  # https://github.com/appveyor/ci/issues/2921#issuecomment-501016533
+  - ps: |
+      try {
+      Install-Product node $env:nodejs_version $env:platform
+      } catch {
+      echo "Unable to install node $env:nodejs_version, trying update..."
+      Update-NodeJsInstallation (Get-NodeJsLatestBuild $env:nodejs_version) $env:platform
+      }
   - md public
   - npm --vs2015 install --global windows-build-tools
   - npm install

@@ -94,16 +94,6 @@ export default class MapboxGlMap extends React.Component {
     }
   }
 
-  shouldComponentUpdate(nextProps, nextState) {
-    let should = false;
-    try {
-      should = JSON.stringify(this.props) !== JSON.stringify(nextProps) || JSON.stringify(this.state) !== JSON.stringify(nextState);
-    } catch(e) {
-      // no biggie, carry on
-    }
-    return should;
-  }
-
   componentDidUpdate(prevProps) {
     if(!IS_SUPPORTED) return;
 
@@ -144,7 +134,7 @@ export default class MapboxGlMap extends React.Component {
     const zoom = new ZoomControl;
     map.addControl(zoom, 'top-right');
 
-    const nav = new MapboxGl.NavigationControl();
+    const nav = new MapboxGl.NavigationControl({visualizePitch:true});
     map.addControl(nav, 'top-right');
 
     const tmpNode = document.createElement('div');

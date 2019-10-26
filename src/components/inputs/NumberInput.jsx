@@ -11,6 +11,7 @@ class NumberInput extends React.Component {
     allowRange: PropTypes.bool,
     rangeStep: PropTypes.number,
     wdKey: PropTypes.string,
+    required: PropTypes.bool,
   }
 
   static defaultProps = {
@@ -33,14 +34,14 @@ class NumberInput extends React.Component {
         dirtyValue: props.value,
       };
     }
-    else {
-      return null;
-    }
+    return {};
   }
 
   changeValue(newValue) {
     this.setState({editing: true});
-    const value = parseFloat(newValue)
+    const value = (newValue === "" || newValue === undefined) ?
+      undefined :
+      parseFloat(newValue);
 
     const hasChanged = this.state.value !== value;
     if(this.isValid(value) && hasChanged) {
@@ -53,6 +54,10 @@ class NumberInput extends React.Component {
   }
 
   isValid(v) {
+    if (v === undefined) {
+      return true;
+    }
+
     const value = parseFloat(v)
     if(isNaN(value)) {
       return false
@@ -73,7 +78,7 @@ class NumberInput extends React.Component {
     this.setState({editing: false});
     // Reset explicitly to default value if value has been cleared
     if(this.state.value === "") {
-      return this.changeValue(this.props.default)
+      return;
     }
 
     // If set value is invalid fall back to the last valid value from props or at last resort the default value
@@ -81,7 +86,7 @@ class NumberInput extends React.Component {
       if(this.isValid(this.props.value)) {
         this.changeValue(this.props.value)
       } else {
-        this.changeValue(this.props.default)
+        this.changeValue(undefined);
       }
     }
   }
@@ -108,6 +113,7 @@ class NumberInput extends React.Component {
   }
 
   render() {
+<<<<<<< HEAD
     if(
       this.props.hasOwnProperty("min") && this.props.hasOwnProperty("max") &&
       this.props.min !== undefined && this.props.max !== undefined &&
@@ -152,18 +158,15 @@ class NumberInput extends React.Component {
       </div>
     }
     else {
-      return <div className="maputnik-number-container">
-        <input
-          key="text"
-          type="text"
-          spellCheck="false"
-          className="maputnik-number"
-          placeholder={this.props.default}
-          value={this.state.value}
-          onChange={e => this.changeValue(e.target.value)}
-          onBlur={this.resetValue}
-        />
-      </div>
+      return <input
+        spellCheck="false"
+        className="maputnik-number"
+        placeholder={this.props.default}
+        value={this.state.value === undefined ? "" : this.state.value}
+        onChange={e => this.changeValue(e.target.value)}
+        onBlur={this.resetValue}
+        required={this.props.required}
+      />
     }
   }
 }

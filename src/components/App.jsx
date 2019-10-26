@@ -2,6 +2,7 @@ import autoBind from 'react-autobind';
 import React from 'react'
 import cloneDeep from 'lodash.clonedeep'
 import clamp from 'lodash.clamp'
+import get from 'lodash.get'
 import {arrayMove} from 'react-sortable-hoc'
 import url from 'url'
 
@@ -90,8 +91,15 @@ export default class App extends React.Component {
     autoBind(this);
 
     this.revisionStore = new RevisionStore()
+    const params = new URLSearchParams(window.location.search.substring(1))
+    let port = params.get("localport")
+    if (port == null && (window.location.port != 80 && window.location.port != 443)) {
+      port = window.location.port
+    }
     this.styleStore = new ApiStyleStore({
-      onLocalStyleChange: mapStyle => this.onStyleChanged(mapStyle, false)
+      onLocalStyleChange: mapStyle => this.onStyleChanged(mapStyle, false),
+      port: port,
+      host: params.get("localhost")
     })
 
 
@@ -218,6 +226,9 @@ export default class App extends React.Component {
         showCollisionBoxes: false,
         showOverdrawInspector: false,
       },
+      openlayersDebugOptions: {
+        debugToolbox: false,
+      },
     }
 
     this.layerWatcher = new LayerWatcher({
@@ -274,6 +285,27 @@ export default class App extends React.Component {
     downloadSpriteMetadata(baseUrl, icons => {
       this.setState({ spec: updateRootSpec(this.state.spec, 'sprite', icons)})
     })
+  }
+
+  onChangeMetadataProperty = (property, value) => {
+    // If we're changing renderer reset the map state.
+    if (
+      property === 'maputnik:renderer' &&
+      value !== get(this.state.mapStyle, ['metadata', 'maputnik:renderer'], 'mbgljs')
+    ) {
+      this.setState({
+        mapState: 'map'
+      });
+    }
+
+    const changedStyle = {
+      ...this.state.mapStyle,
+      metadata: {
+        ...this.state.mapStyle.metadata,
+        [property]: value
+      }
+    }
+    this.onStyleChanged(changedStyle)
   }
 
   onStyleChanged = (newStyle, save=true) => {
@@ -409,6 +441,27 @@ export default class App extends React.Component {
     })
   }
 
+  setDefaultValues = (styleObj) => {
+    const metadata = styleObj.metadata || {}
+    if(metadata['maputnik:renderer'] === undefined) {
+      const changedStyle = {
+        ...styleObj,
+        metadata: {
+          ...styleObj.metadata,
+          'maputnik:renderer': 'mbgljs'
+        }
+      }
+      return changedStyle
+    } else {
+      return styleObj
+    }
+  }
+
+  openStyle = (styleObj) => {
+    styleObj = this.setDefaultValues(styleObj)
+    this.onStyleChanged(styleObj)
+  }
+
   fetchSources() {
     const sourceList = {...this.state.sources};
 
@@ -479,9 +532,10 @@ export default class App extends React.Component {
   }
 
   mapRenderer() {
+    const metadata = this.state.mapStyle.metadata || {};
+
     const mapProps = {
       mapStyle: style.replaceAccessTokens(this.state.mapStyle, {allowFallback: true}),
-      options: this.state.mapboxGlDebugOptions,
       onDataChange: (e) => {
         this.layerWatcher.analyzeMap(e.map)
         this.fetchSources();
@@ -496,9 +550,12 @@ export default class App extends React.Component {
     if(renderer === 'ol') {
       mapElement = <OpenLayersMap
         {...mapProps}
+        debugToolbox={this.state.openlayersDebugOptions.debugToolbox}
+        onLayerSelect={this.onLayerSelect}
       />
     } else {
       mapElement = <MapboxGlMap {...mapProps}
+        options={this.state.mapboxGlDebugOptions}
         inspectModeEnabled={this.state.mapState === "inspect"}
         highlightedLayer={this.state.mapStyle.layers[this.state.selectedLayerIndex]}
         onLayerSelect={this.onLayerSelect} />
@@ -540,11 +597,20 @@ export default class App extends React.Component {
     this.setModal(modalName, !this.state.isOpen[modalName]);
   }
 
+  onChangeOpenlayersDebug = (key, value) => {
+    this.setState({
+      openlayersDebugOptions: {
+        ...this.state.openlayersDebugOptions,
+        [key]: value,
+      }
+    });
+  }
+
   onChangeMaboxGlDebug = (key, value) => {
     this.setState({
       mapboxGlDebugOptions: {
         ...this.state.mapboxGlDebugOptions,
-        [key]: value, 
+        [key]: value,
       }
     });
   }
@@ -555,6 +621,7 @@ export default class App extends React.Component {
     const metadata = this.state.mapStyle.metadata || {}
 
     const toolbar = <Toolbar
+      renderer={this._getRenderer()}
       mapState={this.state.mapState}
       mapStyle={this.state.mapStyle}
       inspectModeEnabled={this.state.mapState === "inspect"}
@@ -578,6 +645,7 @@ export default class App extends React.Component {
     />
 
     const layerEditor = selectedLayer ? <LayerEditor
+      key={selectedLayer.id}
       layer={selectedLayer}
       layerIndex={this.state.selectedLayerIndex}
       isFirstLayer={this.state.selectedLayerIndex < 1}
@@ -603,7 +671,9 @@ export default class App extends React.Component {
       <DebugModal
         renderer={this._getRenderer()}
         mapboxGlDebugOptions={this.state.mapboxGlDebugOptions}
+        openlayersDebugOptions={this.state.openlayersDebugOptions}
         onChangeMaboxGlDebug={this.onChangeMaboxGlDebug}
+        onChangeOpenlayersDebug={this.onChangeOpenlayersDebug}
         isOpen={this.state.isOpen.debug}
         onOpenToggle={this.toggleModal.bind(this, 'debug')}
       />
@@ -615,8 +685,10 @@ export default class App extends React.Component {
       <SettingsModal
         mapStyle={this.state.mapStyle}
         onStyleChanged={this.onStyleChanged}
+        onChangeMetadataProperty={this.onChangeMetadataProperty}
         isOpen={this.state.isOpen.settings}
         onOpenToggle={this.toggleModal.bind(this, 'settings')}
+        openlayersDebugOptions={this.state.openlayersDebugOptions}
       />
       <ExportModal
         mapStyle={this.state.mapStyle}
@@ -626,7 +698,7 @@ export default class App extends React.Component {
       />
       <OpenModal
         isOpen={this.state.isOpen.open}
-        onStyleOpen={this.onStyleChanged}
+        onStyleOpen={this.openStyle}
         onOpenToggle={this.toggleModal.bind(this, 'open')}
       />
       <SourcesModal

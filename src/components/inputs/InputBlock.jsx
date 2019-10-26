@@ -20,7 +20,7 @@ class InputBlock extends React.Component {
 
   onChange(e) {
     const value = e.target.value
-    return this.props.onChange(value === "" ? null: value)
+    return this.props.onChange(value === "" ? undefined : value)
   }
 
   render() {

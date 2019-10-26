@@ -141,7 +141,7 @@ export default class LayerEditor extends React.Component {
           onChange={v => this.changeProperty(null, 'source', v)}
         />
         }
-        {['background', 'raster', 'hillshade', 'heatmap'].indexOf(this.state.type) < 0 &&
+        {['background', 'raster', 'hillshade', 'heatmap'].indexOf(this.props.layer.type) < 0 &&
         <LayerSourceLayerBlock
           sourceLayerIds={sourceLayerIds}
           value={this.props.layer['source-layer']}

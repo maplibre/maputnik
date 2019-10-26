@@ -128,11 +128,14 @@
             "text-justify",
             "text-anchor",
             "text-max-angle",
+            "text-writing-mode",
             "text-rotate",
             "text-keep-upright",
             "text-transform",
             "text-offset",
-            "text-optional"
+            "text-optional",
+            "text-variable-anchor",
+            "text-radial-offset"
           ]
         },
         {

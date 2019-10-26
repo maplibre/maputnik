@@ -3,8 +3,8 @@ var fs        = require("fs");
 var path      = require("path");
 
 
-browser.timeoutsAsyncScript(20*1000);
-browser.timeoutsImplicitWait(20*1000);
+browser.setTimeout({ 'script': 20*1000 });
+browser.setTimeout({ 'implicit': 20*1000 });
 
 var SCREENSHOTS_PATH = artifacts.pathSync("/screenshots");
 
@@ -16,15 +16,18 @@ var SCREENSHOTS_PATH = artifacts.pathSync("/screenshots");
 try {
   browser.addCommand('setValueSafe', function(selector, text) {
     for(var i=0; i<10; i++) {
-      browser.waitForVisible(selector);
+      const elem = $(selector);
+      elem.waitForDisplayed(500);
 
-      var elements = browser.elements(selector);
+      var elements = browser.findElements("css selector", selector);
       if(elements.length > 1) {
         throw "Too many elements found";
       }
 
-      browser.setValue(selector, text);
-      var browserText = browser.getValue(selector);
+      const elem2 = $(selector);
+      elem2.setValue(text);
+
+      var browserText = elem2.getValue();
 
       if(browserText == text) {
         return;
@@ -39,7 +42,7 @@ try {
   })
 
   browser.addCommand('takeScreenShot', function(filepath) {
-    var data = browser.screenshot();
+    var data = browser.takeScreenshot();
     fs.writeFileSync(path.join(SCREENSHOTS_PATH, filepath), data.value, 'base64');
   });
 

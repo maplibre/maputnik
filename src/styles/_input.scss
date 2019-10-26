@@ -11,6 +11,11 @@
   border: none;
   background-color: $color-gray;
   color: lighten($color-lowgray, 12);
+
+  &:invalid {
+    border: solid 1px #B71C1C;
+    border-radius: 2px;
+  }
 }
 
 .maputnik-string {

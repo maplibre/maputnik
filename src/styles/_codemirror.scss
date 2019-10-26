@@ -1,0 +1,9 @@
+.CodeMirror-lint-tooltip {
+  z-index: 2000 !important;
+}
+
+.codemirror-container {
+  max-width: 100%;
+  position: relative;
+  overflow: auto;
+}
