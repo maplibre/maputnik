@@ -113,7 +113,6 @@ class NumberInput extends React.Component {
   }
 
   render() {
-<<<<<<< HEAD
     if(
       this.props.hasOwnProperty("min") && this.props.hasOwnProperty("max") &&
       this.props.min !== undefined && this.props.max !== undefined &&
@@ -149,7 +148,7 @@ class NumberInput extends React.Component {
           spellCheck="false"
           className="maputnik-number"
           placeholder={this.props.default}
-          value={this.state.dirtyValue}
+          value={this.state.dirtyValue === undefined ? "" : this.state.dirtyValue}
           onChange={e => {
             this.changeValue(e.target.value)
           }}
