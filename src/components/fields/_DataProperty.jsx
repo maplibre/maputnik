@@ -8,10 +8,31 @@ import StringInput from '../inputs/StringInput'
 import SelectInput from '../inputs/SelectInput'
 import DocLabel from './DocLabel'
 import InputBlock from '../inputs/InputBlock'
+import docUid from '../../libs/document-uid'
+import sortNumerically from '../../libs/sort-numerically'
 
 import labelFromFieldName from './_labelFromFieldName'
 import DeleteStopButton from './_DeleteStopButton'
 
+
+
+function setStopRefs(props, state) {
+  // This is initialsed below only if required to improved performance.
+  let newRefs;
+
+  if(props.value && props.value.stops) {
+    props.value.stops.forEach((val, idx) => {
+      if(!state.refs.hasOwnProperty(idx)) {
+        if(!newRefs) {
+          newRefs = {...state};
+        }
+        newRefs[idx] = docUid("stop-");
+      }
+    })
+  }
+
+  return newRefs;
+}
 
 export default class DataProperty extends React.Component {
   static propTypes = {
@@ -27,6 +48,30 @@ export default class DataProperty extends React.Component {
       PropTypes.bool,
       PropTypes.array
     ]),
+  }
+
+  state = {
+    refs: {}
+  }
+
+  componentDidMount() {
+    const newRefs = setStopRefs(this.props, this.state);
+
+    if(newRefs) {
+      this.setState({
+        refs: newRefs
+      })
+    }
+  }
+
+  static getDerivedStateFromProps(props, state) {
+    const newRefs = setStopRefs(props, state);
+    if(newRefs) {
+      return {
+        refs: newRefs
+      };
+    }
+    return null;
   }
 
   getFieldFunctionType(fieldSpec) {
@@ -48,14 +93,42 @@ export default class DataProperty extends React.Component {
     }
   }
 
+  // Order the stops altering the refs to reflect their new position.
+  orderStopsByZoom(stops) {
+    const mappedWithRef = stops
+      .map((stop, idx) => {
+        return {
+          ref: this.state.refs[idx],
+          data: stop
+        }
+      })
+      // Sort by zoom
+      .sort((a, b) => sortNumerically(a.data[0].zoom, b.data[0].zoom));
+
+    // Fetch the new position of the stops
+    const newRefs = {};
+    mappedWithRef
+      .forEach((stop, idx) =>{
+        newRefs[idx] = stop.ref;
+      })
+
+    this.setState({
+      refs: newRefs
+    });
+
+    return mappedWithRef.map((item) => item.data);
+  }
 
   changeStop(changeIdx, stopData, value) {
     const stops = this.props.value.stops.slice(0)
     const changedStop = stopData.zoom === undefined ? stopData.value : stopData
     stops[changeIdx] = [changedStop, value]
+
+    const orderedStops = this.orderStopsByZoom(stops);
+
     const changedValue = {
       ...this.props.value,
-      stops: stops,
+      stops: orderedStops,
     }
     this.props.onChange(this.props.fieldName, changedValue)
   }
@@ -77,6 +150,7 @@ export default class DataProperty extends React.Component {
 
     const dataFields = this.props.value.stops.map((stop, idx) => {
       const zoomLevel = typeof stop[0] === 'object' ? stop[0].zoom : undefined;
+      const key  = this.state.refs[idx];
       const dataLevel = typeof stop[0] === 'object' ? stop[0].value : stop[0];
       const value = stop[1]
       const deleteStopBtn = <DeleteStopButton onClick={this.props.onDeleteStop.bind(this, idx)} />
@@ -107,7 +181,7 @@ export default class DataProperty extends React.Component {
         </div>
       }
 
-      return <InputBlock key={idx} action={deleteStopBtn} label="">
+      return <InputBlock key={key} action={deleteStopBtn} label="">
         {zoomInput}
         <div className="maputnik-data-spec-property-stop-data">
           {dataInput}
