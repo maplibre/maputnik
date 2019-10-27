@@ -23,7 +23,7 @@ function validate (url) {
   ) {
     error = (
       <SmallError>
-        CORs policy won&apos;t allow fetching resources served over http from https, use a <code>https://</code> domain
+        CORS policy won&apos;t allow fetching resources served over http from https, use a <code>https://</code> domain
       </SmallError>
     );
   }
