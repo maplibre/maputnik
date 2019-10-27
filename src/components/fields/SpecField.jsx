@@ -11,7 +11,7 @@ import ArrayInput from '../inputs/ArrayInput'
 import DynamicArrayInput from '../inputs/DynamicArrayInput'
 import FontInput from '../inputs/FontInput'
 import IconInput from '../inputs/IconInput'
-import EnumInput from '../inputs/SelectInput'
+import EnumInput from '../inputs/EnumInput'
 import capitalize from 'lodash.capitalize'
 
 const iconProperties = ['background-pattern', 'fill-pattern', 'line-pattern', 'fill-extrusion-pattern', 'icon-image']

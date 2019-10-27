@@ -14,6 +14,25 @@ function isDataField(value) {
   return typeof value === 'object' && value.stops && typeof value.property !== 'undefined'
 }
 
+/**
+ * If we don't have a default value just make one up
+ */
+function findDefaultFromSpec (spec) {
+  if (spec.hasOwnProperty('default')) {
+    return spec.default;
+  }
+
+  const defaults = {
+    'color': '#000000',
+    'string': '',
+    'boolean': false,
+    'number': 0,
+    'array': [],
+  }
+
+  return defaults[spec.type] || '';
+}
+
 /** Supports displaying spec field for zoom function objects
  * https://www.mapbox.com/mapbox-gl-style-spec/#types-function-zoom-property
  */
@@ -82,8 +101,8 @@ export default class FunctionSpecProperty  extends React.Component {
   makeZoomFunction = () => {
     const zoomFunc = {
       stops: [
-        [6, this.props.value],
-        [10, this.props.value]
+        [6, this.props.value || findDefaultFromSpec(this.props.fieldSpec)],
+        [10, this.props.value || findDefaultFromSpec(this.props.fieldSpec)]
       ]
     }
     this.props.onChange(this.props.fieldName, zoomFunc)
@@ -96,8 +115,8 @@ export default class FunctionSpecProperty  extends React.Component {
       property: "",
       type: functionType,
       stops: [
-        [{zoom: 6, value: stopValue}, this.props.value || stopValue],
-        [{zoom: 10, value: stopValue}, this.props.value || stopValue]
+        [{zoom: 6, value: stopValue}, this.props.value || findDefaultFromSpec(this.props.fieldSpec)],
+        [{zoom: 10, value: stopValue}, this.props.value || findDefaultFromSpec(this.props.fieldSpec)]
       ]
     }
     this.props.onChange(this.props.fieldName, dataFunc)
