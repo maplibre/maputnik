@@ -4,6 +4,7 @@ import LoadingModal from './LoadingModal'
 import Modal from './Modal'
 import Button from '../Button'
 import FileReaderInput from 'react-file-reader-input'
+import UrlInput from '../inputs/UrlInput'
 
 import {MdFileUpload} from 'react-icons/md'
 import {MdAddCircleOutline} from 'react-icons/md'
@@ -160,9 +161,9 @@ class OpenModal extends React.Component {
     this.props.onOpenToggle();
   }
 
-  onChangeUrl = () => {
+  onChangeUrl = (url) => {
     this.setState({
-      styleUrl: this.styleUrlElement.value
+      styleUrl: url,
     });
   }
 
@@ -209,14 +210,13 @@ class OpenModal extends React.Component {
             <p>
               Load from a URL. Note that the URL must have <a href="https://enable-cors.org" target="_blank" rel="noopener noreferrer">CORS enabled</a>.
             </p>
-            <input
+            <UrlInput
               data-wd-key="open-modal.url.input"
               type="text"
-              ref={(input) => this.styleUrlElement = input}
               className="maputnik-input"
-              placeholder="Enter URL..."
+              default="Enter URL..."
               value={this.state.styleUrl}
-              onChange={this.onChangeUrl}
+              onInput={this.onChangeUrl}
             />
             <div>
               <Button
