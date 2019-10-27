@@ -158,15 +158,12 @@ class AddSource extends React.Component {
   }
 
   onAdd = () => {
-    this.props.onAdd(this.state.sourceId, this.state.source);
+    const {source, sourceId} = this.state;
+    this.props.onAdd(sourceId, source);
   }
 
   onChangeSource = (source) => {
-    // let error = "CORs policy won't allow fetching resources served over http from https";
-    this.setState({
-      source,
-      error,
-    });
+    this.setState({source});
   }
 
   render() {
@@ -198,15 +195,9 @@ class AddSource extends React.Component {
         mode={this.state.mode}
         source={this.state.source}
       />
-      {this.state.error &&
-        <div className="maputnik-add-source-error" style={{fontSize: "12px", color: "#E57373"}}>
-          Error: {this.state.error}
-        </div>
-      }
       <Button
         className="maputnik-add-source-button"
 				onClick={this.onAdd}
-        disabled={!!this.state.error}
       >
         Add Source
       </Button>
