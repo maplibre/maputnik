@@ -1,6 +1,8 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 
+let IDX = 0;
+
 class NumberInput extends React.Component {
   static propTypes = {
     value: PropTypes.number,
@@ -21,6 +23,7 @@ class NumberInput extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
+      uuid: IDX++,
       editing: false,
       value: props.value,
       dirtyValue: props.value,
@@ -29,6 +32,7 @@ class NumberInput extends React.Component {
 
   static getDerivedStateFromProps(props, state) {
     if (!state.editing) {
+      console.log("getDerivedStateFromProps[%s]", state.uuid, props.value);
       return {
         value: props.value,
         dirtyValue: props.value,
@@ -38,13 +42,14 @@ class NumberInput extends React.Component {
   }
 
   changeValue(newValue) {
-    this.setState({editing: true});
     const value = (newValue === "" || newValue === undefined) ?
       undefined :
       parseFloat(newValue);
 
-    const hasChanged = this.state.value !== value;
+    const hasChanged = this.props.value !== value;
+    console.log("changeValue[%s]->hasChanged", this.state.uuid, value, this.isValid(value), this.props.value, "!==", value)
     if(this.isValid(value) && hasChanged) {
+      console.log("changeValue[%s]->onChange", this.state.uuid, value);
       this.props.onChange(value)
     }
     this.setState({
@@ -92,9 +97,9 @@ class NumberInput extends React.Component {
   }
 
   onChangeRange = (e) => {
-    console.log(">> onChangeRange");
+    console.log("onChangeRange[%s]", this.state.uuid);
     if (this._cancelNextChangeEvent) {
-      console.log("onChangeRange:cancel");
+      console.log("onChangeRange[%s]:cancel", this.state.uuid);
       this._cancelNextChangeEvent = false;
       return;
     }
@@ -126,6 +131,7 @@ class NumberInput extends React.Component {
     ) {
       const value = this.state.value === undefined ? this.props.default : this.state.value;
       const rangeValue = Number.isNaN(parseFloat(value, 10)) ? this.props.default : value;
+      console.log("render[%s]", this.state.uuid, value, rangeValue);
 
       return <div className="maputnik-number-container">
         <input
@@ -142,16 +148,14 @@ class NumberInput extends React.Component {
           onPointerDown={() => {
             this._cancelNextChangeEvent = false;
           }}
+          onBlur={() => {
+            console.log("onBlur[%s]", this.state.uuid);
+            this.changeValue(this.state.dirtyValue);
+          }}
           onPointerUp={() => {
+            console.log("onPointerUp[%s]", this.state.uuid);
             this._cancelNextChangeEvent = true;
-            console.log(">> onPointerUp");
-            const {dirtyValue} = this.state;
-            const hasChanged = this.state.props !== dirtyValue
-            if(this.isValid(dirtyValue) && hasChanged) {
-              this.setState({editing: false}, () => {
-                this.props.onChange(dirtyValue);
-              });
-            }
+            this.changeValue(this.state.dirtyValue);
           }}
         />
         <input
