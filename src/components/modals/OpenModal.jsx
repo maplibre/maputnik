@@ -123,9 +123,8 @@ class OpenModal extends React.Component {
     })
   }
 
-  onOpenUrl = () => {
-    const url = this.styleUrlElement.value;
-    this.onStyleSelect(url);
+  onOpenUrl = (url) => {
+    this.onStyleSelect(this.state.styleUrl);
   }
 
   onUpload = (_, files) => {
