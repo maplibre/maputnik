@@ -87,11 +87,9 @@ export default class MapboxGlMap extends React.Component {
     const metadata = props.mapStyle.metadata || {}
     MapboxGl.accessToken = metadata['maputnik:mapbox_access_token'] || tokens.mapbox
 
-    if(!props.inspectModeEnabled) {
-      //Mapbox GL now does diffing natively so we don't need to calculate
-      //the necessary operations ourselves!
-      this.state.map.setStyle(props.mapStyle, { diff: true})
-    }
+    //Mapbox GL now does diffing natively so we don't need to calculate
+    //the necessary operations ourselves!
+    this.state.map.setStyle(props.mapStyle, {diff: true})
   }
 
   componentDidUpdate(prevProps) {
