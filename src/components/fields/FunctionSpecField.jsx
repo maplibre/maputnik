@@ -18,7 +18,7 @@ function isDataField(value) {
  * If we don't have a default value just make one up
  */
 function findDefaultFromSpec (spec) {
-  if (spec.default) {
+  if (spec.hasOwnProperty('default')) {
     return spec.default;
   }
 
