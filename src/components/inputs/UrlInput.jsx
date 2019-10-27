@@ -32,12 +32,12 @@ class UrlInput extends React.Component {
     const protocol = getProtocol(url);
     if (
       protocol &&
-      protocol === "https:" &&
-      window.location.protocol !== "http:"
+      protocol === "http:" &&
+      window.location.protocol === "https:"
     ) {
       error = (
         <SmallError>
-        CORs policy won't allow fetching resources served over http from https, use a <code>https://</code> domain
+        CORs policy won&apos;t allow fetching resources served over http from https, use a <code>https://</code> domain
         </SmallError>
       );
     }
