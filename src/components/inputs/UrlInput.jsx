@@ -38,6 +38,7 @@ class UrlInput extends React.Component {
     style: PropTypes.object,
     default: PropTypes.string,
     onChange: PropTypes.func,
+    onInput: PropTypes.func,
     multi: PropTypes.bool,
     required: PropTypes.bool,
   }
