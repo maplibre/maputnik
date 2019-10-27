@@ -92,6 +92,7 @@ class NumberInput extends React.Component {
   }
 
   onChangeRange = (e) => {
+    console.log(">> onChangeRange");
     const value = parseFloat(e.target.value, 10);
     const step = this.props.rangeStep;
     let dirtyValue = value;
@@ -131,8 +132,9 @@ class NumberInput extends React.Component {
           step="any"
           spellCheck="false"
           value={rangeValue}
-          onChange={this.onChangeRange}
+          onInput={this.onChangeRange}
           onPointerUp={() => {
+            console.log(">> onPointerUp");
             const {dirtyValue} = this.state;
             const hasChanged = this.state.props !== dirtyValue
             if(this.isValid(dirtyValue) && hasChanged) {
