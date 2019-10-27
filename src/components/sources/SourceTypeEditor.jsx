@@ -96,7 +96,7 @@ class GeoJSONSourceUrlEditor extends React.Component {
 
   render() {
     return <InputBlock label={"GeoJSON URL"} doc={latest.source_geojson.data.doc}>
-      <StringInput
+      <UrlInput
         value={this.props.source.data}
         onChange={data => this.props.onChange({
           ...this.props.source,
