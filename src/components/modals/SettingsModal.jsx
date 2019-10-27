@@ -85,7 +85,7 @@ class SettingsModal extends React.Component {
       onOpenToggle={this.props.onOpenToggle}
       title={'Style Settings'}
     >
-      <div style={{minWidth: 350}}>
+      <div className="modal-settings">
       <InputBlock label={"Name"} doc={latest.$root.name.doc}>
         <StringInput {...inputProps}
           data-wd-key="modal-settings.name" 
