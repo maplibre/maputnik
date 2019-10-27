@@ -93,6 +93,11 @@ class NumberInput extends React.Component {
 
   onChangeRange = (e) => {
     console.log(">> onChangeRange");
+    if (this._cancelNextChangeEvent) {
+      console.log("onChangeRange:cancel");
+      this._cancelNextChangeEvent = false;
+      return;
+    }
     const value = parseFloat(e.target.value, 10);
     const step = this.props.rangeStep;
     let dirtyValue = value;
@@ -133,7 +138,12 @@ class NumberInput extends React.Component {
           spellCheck="false"
           value={rangeValue}
           onInput={this.onChangeRange}
+          onMouseUp={() => console.log("mouseup")}
+          onPointerDown={() => {
+            this._cancelNextChangeEvent = false;
+          }}
           onPointerUp={() => {
+            this._cancelNextChangeEvent = true;
             console.log(">> onPointerUp");
             const {dirtyValue} = this.state;
             const hasChanged = this.state.props !== dirtyValue
