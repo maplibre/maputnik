@@ -31,14 +31,14 @@ class NumberInput extends React.Component {
   }
 
   static getDerivedStateFromProps(props, state) {
+    console.log("getDerivedStateFromProps[%s]", state.uuid, props.value, state.value);
     if (!state.editing) {
-      console.log("getDerivedStateFromProps[%s]", state.uuid, props.value);
       return {
         value: props.value,
         dirtyValue: props.value,
       };
     }
-    return {};
+    return null;
   }
 
   changeValue(newValue) {
@@ -166,6 +166,7 @@ class NumberInput extends React.Component {
           placeholder={this.props.default}
           value={this.state.dirtyValue === undefined ? "" : this.state.dirtyValue}
           onChange={e => {
+            console.log("input.text->onChange[%s]", this.state.uuid, e.target.value);
             this.changeValue(e.target.value)
           }}
           onBlur={this.resetValue}
