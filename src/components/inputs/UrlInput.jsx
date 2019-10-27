@@ -42,6 +42,10 @@ class UrlInput extends React.Component {
     required: PropTypes.bool,
   }
 
+  static defaultProps = {
+    onInput: () => {},
+  }
+
   constructor (props) {
     super(props);
     this.state = {
@@ -53,6 +57,7 @@ class UrlInput extends React.Component {
     this.setState({
       error: validate(url)
     });
+    this.props.onInput(url);
   }
 
   render () {
