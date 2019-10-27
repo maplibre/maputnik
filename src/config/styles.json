@@ -1,5 +1,11 @@
 [
   {
+    "id": "osm-liberty",
+    "title": "OSM Liberty",
+    "url": "https://maputnik.github.io/osm-liberty/style.json",
+    "thumbnail": "https://maputnik.github.io/thumbnails/osm-liberty.png"
+  },
+  {
     "id": "klokantech-basic",
     "title": "Klokantech Basic",
     "url": "https://cdn.jsdelivr.net/gh/openmaptiles/klokantech-basic-gl-style@e142f83/style.json",
@@ -28,12 +34,6 @@
     "title": "Toner",
     "url": "https://cdn.jsdelivr.net/gh/openmaptiles/toner-gl-style@bb49571/style.json",
     "thumbnail": "https://maputnik.github.io/thumbnails/toner.png"
-  },
-  {
-    "id": "osm-liberty",
-    "title": "OSM Liberty",
-    "url": "https://maputnik.github.io/osm-liberty/style.json",
-    "thumbnail": "https://maputnik.github.io/thumbnails/osm-liberty.png"
   },
   {
     "id": "os-zoomstack-outdoor",
