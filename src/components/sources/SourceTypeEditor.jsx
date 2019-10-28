@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 import {latest} from '@mapbox/mapbox-gl-style-spec'
 import InputBlock from '../inputs/InputBlock'
 import StringInput from '../inputs/StringInput'
+import UrlInput from '../inputs/UrlInput'
 import NumberInput from '../inputs/NumberInput'
 import SelectInput from '../inputs/SelectInput'
 import JSONEditor from '../layers/JSONEditor'
@@ -18,7 +19,7 @@ class TileJSONSourceEditor extends React.Component {
   render() {
     return <div>
       <InputBlock label={"TileJSON URL"} doc={latest.source_vector.url.doc}>
-        <StringInput
+        <UrlInput
           value={this.props.source.url}
           onChange={url => this.props.onChange({
             ...this.props.source,
@@ -52,7 +53,7 @@ class TileURLSourceEditor extends React.Component {
     const tiles = this.props.source.tiles || []
     return tiles.map((tileUrl, tileIndex) => {
       return <InputBlock key={tileIndex} label={prefix[tileIndex] + " Tile URL"} doc={latest.source_vector.tiles.doc}>
-        <StringInput
+        <UrlInput
           value={tileUrl}
           onChange={this.changeTileUrl.bind(this, tileIndex)}
         />
@@ -95,7 +96,7 @@ class GeoJSONSourceUrlEditor extends React.Component {
 
   render() {
     return <InputBlock label={"GeoJSON URL"} doc={latest.source_geojson.data.doc}>
-      <StringInput
+      <UrlInput
         value={this.props.source.data}
         onChange={data => this.props.onChange({
           ...this.props.source,

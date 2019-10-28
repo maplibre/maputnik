@@ -181,6 +181,10 @@ export default class MapboxGlMap extends React.Component {
       })
     })
 
+    map.on("error", e => {
+      console.log("ERROR", e);
+    })
+
     map.on("zoom", e => {
       this.setState({
         zoom: map.getZoom()

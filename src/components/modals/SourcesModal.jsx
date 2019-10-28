@@ -112,10 +112,12 @@ class AddSource extends React.Component {
 
   defaultSource(mode) {
     const source = (this.state || {}).source || {}
+    const {protocol} = window.location;
+
     switch(mode) {
       case 'geojson_url': return {
         type: 'geojson',
-        data: 'http://localhost:3000/geojson.json'
+        data: `${protocol}//localhost:3000/geojson.json`
       }
       case 'geojson_json': return {
         type: 'geojson',
@@ -123,36 +125,45 @@ class AddSource extends React.Component {
       }
       case 'tilejson_vector': return {
         type: 'vector',
-        url: source.url || 'http://localhost:3000/tilejson.json'
+        url: source.url || `${protocol}//localhost:3000/tilejson.json`
       }
       case 'tilexyz_vector': return {
         type: 'vector',
-        tiles: source.tiles || ['http://localhost:3000/{x}/{y}/{z}.pbf'],
+        tiles: source.tiles || [`${protocol}//localhost:3000/{x}/{y}/{z}.pbf`],
         minZoom: source.minzoom || 0,
         maxZoom: source.maxzoom || 14
       }
       case 'tilejson_raster': return {
         type: 'raster',
-        url: source.url || 'http://localhost:3000/tilejson.json'
+        url: source.url || `${protocol}//localhost:3000/tilejson.json`
       }
       case 'tilexyz_raster': return {
         type: 'raster',
-        tiles: source.tiles || ['http://localhost:3000/{x}/{y}/{z}.pbf'],
+        tiles: source.tiles || [`${protocol}//localhost:3000/{x}/{y}/{z}.pbf`],
         minzoom: source.minzoom || 0,
         maxzoom: source.maxzoom || 14
       }
       case 'tilejson_raster-dem': return {
         type: 'raster-dem',
-        url: source.url || 'http://localhost:3000/tilejson.json'
+        url: source.url || `${protocol}//localhost:3000/tilejson.json`
       }
       case 'tilexyz_raster-dem': return {
         type: 'raster-dem',
-        tiles: source.tiles || ['http://localhost:3000/{x}/{y}/{z}.pbf'],
+        tiles: source.tiles || [`${protocol}//localhost:3000/{x}/{y}/{z}.pbf`],
         minzoom: source.minzoom || 0,
         maxzoom: source.maxzoom || 14
       }
       default: return {}
     }
+  }
+
+  onAdd = () => {
+    const {source, sourceId} = this.state;
+    this.props.onAdd(sourceId, source);
+  }
+
+  onChangeSource = (source) => {
+    this.setState({source});
   }
 
   render() {
@@ -180,13 +191,14 @@ class AddSource extends React.Component {
         />
       </InputBlock>
       <SourceTypeEditor
-        onChange={src => this.setState({ source: src })}
+        onChange={this.onChangeSource}
         mode={this.state.mode}
         source={this.state.source}
       />
       <Button
         className="maputnik-add-source-button"
-				onClick={() => this.props.onAdd(this.state.sourceId, this.state.source)}>
+				onClick={this.onAdd}
+      >
         Add Source
       </Button>
     </div>

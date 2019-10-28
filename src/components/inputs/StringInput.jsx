@@ -8,8 +8,13 @@ class StringInput extends React.Component {
     style: PropTypes.object,
     default: PropTypes.string,
     onChange: PropTypes.func,
+    onInput: PropTypes.func,
     multi: PropTypes.bool,
     required: PropTypes.bool,
+  }
+
+  static defaultProps = {
+    onInput: () => {},
   }
 
   constructor(props) {
@@ -57,7 +62,9 @@ class StringInput extends React.Component {
         this.setState({
           editing: true,
           value: e.target.value
-        })
+        }, () => {
+          this.props.onInput(this.state.value);
+        });
       },
       onBlur: () => {
         if(this.state.value!==this.props.value) {
