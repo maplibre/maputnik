@@ -100,6 +100,9 @@ export default class MapboxGlMap extends React.Component {
     this.updateMapFromProps(this.props);
 
     if(this.props.inspectModeEnabled !== prevProps.inspectModeEnabled) {
+      // HACK: Fix for <https://github.com/maputnik/editor/issues/576>, while we wait for a proper fix.
+      // eslint-disable-next-line
+      this.state.inspect._popupBlocked = false;
       this.state.inspect.toggleInspector()
     }
     if(this.props.inspectModeEnabled) {
