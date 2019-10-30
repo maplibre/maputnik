@@ -17,7 +17,7 @@
 }
 
 .cm-s-maputnik .CodeMirror-cursor {
-    border-left: solid thin #8e8e8e !important;
+    border-left: solid thin #f0f0f0 !important;
 }
 
 .cm-s-maputnik.CodeMirror-focused div.CodeMirror-selected {
@@ -47,5 +47,11 @@
 }
 
 .cm-s-maputnik .CodeMirror-matchingbracket {
+  background-color: #f0f0f0;  
+  color: #565659 !important;
+}
+
+.cm-s-maputnik .CodeMirror-nonmatchingbracket {
+  background-color: #bb0000;  
   color: white !important;
 }
