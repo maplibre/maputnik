@@ -105,17 +105,6 @@ class JSONEditor extends React.Component {
   }
 
   render() {
-    const codeMirrorOptions = {
-      mode: {name: "javascript", json: true},
-      tabSize: 2,
-      theme: 'maputnik',
-      viewportMargin: Infinity,
-      lineNumbers: true,
-      lint: true,
-      gutters: ["CodeMirror-lint-markers"],
-      scrollbarStyle: "null",
-    }
-
     const style = {};
     if (this.props.maxHeight) {
       style.maxHeight = this.props.maxHeight;
