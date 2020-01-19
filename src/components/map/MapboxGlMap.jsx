@@ -60,12 +60,15 @@ export default class MapboxGlMap extends React.Component {
     inspectModeEnabled: PropTypes.bool.isRequired,
     highlightedLayer: PropTypes.object,
     options: PropTypes.object,
+    replaceAccessTokens: PropTypes.func.isRequired,
+    onChange: PropTypes.func.isRequired,
   }
 
   static defaultProps = {
     onMapLoaded: () => {},
     onDataChange: () => {},
     onLayerSelect: () => {},
+    onChange: () => {},
     mapboxAccessToken: tokens.mapbox,
     options: {},
   }
@@ -88,7 +91,10 @@ export default class MapboxGlMap extends React.Component {
 
     //Mapbox GL now does diffing natively so we don't need to calculate
     //the necessary operations ourselves!
-    this.state.map.setStyle(props.mapStyle, {diff: true})
+    this.state.map.setStyle(
+      this.props.replaceAccessTokens(props.mapStyle),
+      {diff: true}
+    )
   }
 
   componentDidUpdate(prevProps) {
@@ -128,12 +134,19 @@ export default class MapboxGlMap extends React.Component {
 
     const map = new MapboxGl.Map(mapOpts);
 
+    const mapViewChange = () => {
+      const center = map.getCenter();
+      const zoom = map.getZoom();
+      this.props.onChange({center, zoom});
+    }
+    mapViewChange();
+
     map.showTileBoundaries = mapOpts.showTileBoundaries;
     map.showCollisionBoxes = mapOpts.showCollisionBoxes;
     map.showOverdrawInspector = mapOpts.showOverdrawInspector;
 
-    const zoom = new ZoomControl;
-    map.addControl(zoom, 'top-right');
+    const zoomControl = new ZoomControl;
+    map.addControl(zoomControl, 'top-right');
 
     const nav = new MapboxGl.NavigationControl({visualizePitch:true});
     map.addControl(nav, 'top-right');
@@ -189,7 +202,10 @@ export default class MapboxGlMap extends React.Component {
       this.setState({
         zoom: map.getZoom()
       });
-    })
+    });
+
+    map.on("dragend", mapViewChange);
+    map.on("zoomend", mapViewChange);
   }
 
   render() {
