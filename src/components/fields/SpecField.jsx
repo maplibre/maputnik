@@ -75,6 +75,7 @@ export default class SpecField extends React.Component {
             {...commonProps}
             options={options}
           />
+        case 'resolvedImage':
         case 'formatted':
         case 'string':
           if(iconProperties.indexOf(this.props.fieldName) >= 0) {
