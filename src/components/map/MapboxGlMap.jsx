@@ -19,8 +19,7 @@ const IS_SUPPORTED = MapboxGl.supported();
 
 function renderPopup(popup, mountNode) {
   ReactDOM.render(popup, mountNode);
-  var content = mountNode.innerHTML;
-  return content;
+  return mountNode;
 }
 
 function buildInspectStyle(originalMapStyle, coloredLayers, highlightedLayer) {
