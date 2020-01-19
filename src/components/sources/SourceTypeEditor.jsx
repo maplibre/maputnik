@@ -117,7 +117,7 @@ class ImageSourceEditor extends React.Component {
           })}
         />
       </InputBlock>
-      {["top", "left", "bottom", "right"].map((label, idx) => {
+      {["top left", "top right", "bottom right", "bottom left"].map((label, idx) => {
         return (
           <InputBlock label={`Coord ${label}`} key={label}>
             <ArrayInput
@@ -167,7 +167,7 @@ class VideoSourceEditor extends React.Component {
           onChange={changeUrls}
         />
       </InputBlock>
-      {["top", "left", "bottom", "right"].map((label, idx) => {
+      {["top left", "top right", "bottom right", "bottom left"].map((label, idx) => {
         return (
           <InputBlock label={`Coord ${label}`} key={label}>
             <ArrayInput
