@@ -139,8 +139,8 @@ class NumberInput extends React.Component {
       this.props.min !== undefined && this.props.max !== undefined &&
       this.props.allowRange
     ) {
-      const value = this.state.value === undefined ? this.props.default : this.state.value;
-      const rangeValue = Number.isNaN(parseFloat(value, 10)) ? this.props.default : value;
+      const dirtyValue = this.state.dirtyValue === undefined ? this.props.default : this.state.dirtyValue
+      const value = this.state.value === undefined ? "" : this.state.value;
 
       return <div className="maputnik-number-container">
         <input
@@ -151,7 +151,7 @@ class NumberInput extends React.Component {
           min={this.props.min}
           step="any"
           spellCheck="false"
-          value={rangeValue}
+          value={dirtyValue}
           aria-hidden="true"
           onChange={this.onChangeRange}
           onKeyDown={() => {
@@ -167,7 +167,7 @@ class NumberInput extends React.Component {
           spellCheck="false"
           className="maputnik-number"
           placeholder={this.props.default}
-          value={this.state.value === undefined ? "" : this.state.value}
+          value={value}
           onChange={e => {
             if (!this.state.editing) {
               this.changeValue(e.target.value);
@@ -178,11 +178,13 @@ class NumberInput extends React.Component {
       </div>
     }
     else {
+      const value = this.state.value === undefined ? "" : this.state.value;
+
       return <input
         spellCheck="false"
         className="maputnik-number"
         placeholder={this.props.default}
-        value={this.state.value === undefined ? "" : this.state.value}
+        value={value}
         onChange={e => this.changeValue(e.target.value)}
         onBlur={this.resetValue}
         required={this.props.required}
