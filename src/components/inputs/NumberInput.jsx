@@ -150,11 +150,13 @@ class NumberInput extends React.Component {
           }}
           onBlur={() => {
             console.log("onBlur[%s]", this.state.uuid);
+            this.setState({editing: false});
             this.changeValue(this.state.dirtyValue);
           }}
           onPointerUp={() => {
             console.log("onPointerUp[%s]", this.state.uuid);
             this._cancelNextChangeEvent = true;
+            this.setState({editing: false});
             this.changeValue(this.state.dirtyValue);
           }}
         />
