@@ -27,6 +27,16 @@
   }
 }
 
+.maputnik-number-container {
+  display: flex;
+}
+
+.maputnik-number-range {
+  width: calc(100% - 4.5em);
+  margin-right: 0.5em;
+  flex-shrink: 0;
+}
+
 .maputnik-number {
   @extend .maputnik-input;
 }
@@ -177,4 +187,9 @@
   .maputnik-autocomplete:not(:last-child) {
     margin-bottom: $margin-3;
   }
+}
+
+.maputnik-input-block-content {
+  position: relative;
+  overflow: hidden;
 }
