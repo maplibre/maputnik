@@ -6,6 +6,7 @@ import InputBlock from '../inputs/InputBlock'
 import ArrayInput from '../inputs/ArrayInput'
 import NumberInput from '../inputs/NumberInput'
 import StringInput from '../inputs/StringInput'
+import UrlInput from '../inputs/UrlInput'
 import SelectInput from '../inputs/SelectInput'
 import EnumInput from '../inputs/EnumInput'
 import ColorField from '../fields/ColorField'
@@ -84,7 +85,7 @@ class SettingsModal extends React.Component {
       onOpenToggle={this.props.onOpenToggle}
       title={'Style Settings'}
     >
-      <div style={{minWidth: 350}}>
+      <div className="modal-settings">
       <InputBlock label={"Name"} doc={latest.$root.name.doc}>
         <StringInput {...inputProps}
           data-wd-key="modal-settings.name" 
@@ -100,7 +101,7 @@ class SettingsModal extends React.Component {
         />
       </InputBlock>
       <InputBlock label={"Sprite URL"} doc={latest.$root.sprite.doc}>
-        <StringInput {...inputProps}
+        <UrlInput {...inputProps}
           data-wd-key="modal-settings.sprite" 
           value={this.props.mapStyle.sprite}
           onChange={this.changeStyleProperty.bind(this, "sprite")}
@@ -108,7 +109,7 @@ class SettingsModal extends React.Component {
       </InputBlock>
 
       <InputBlock label={"Glyphs URL"} doc={latest.$root.glyphs.doc}>
-        <StringInput {...inputProps}
+        <UrlInput {...inputProps}
           data-wd-key="modal-settings.glyphs" 
           value={this.props.mapStyle.glyphs}
           onChange={this.changeStyleProperty.bind(this, "glyphs")}

@@ -11,7 +11,7 @@ import ArrayInput from '../inputs/ArrayInput'
 import DynamicArrayInput from '../inputs/DynamicArrayInput'
 import FontInput from '../inputs/FontInput'
 import IconInput from '../inputs/IconInput'
-import EnumInput from '../inputs/SelectInput'
+import EnumInput from '../inputs/EnumInput'
 import capitalize from 'lodash.capitalize'
 
 const iconProperties = ['background-pattern', 'fill-pattern', 'line-pattern', 'fill-extrusion-pattern', 'icon-image']
@@ -75,6 +75,7 @@ export default class SpecField extends React.Component {
             {...commonProps}
             options={options}
           />
+        case 'resolvedImage':
         case 'formatted':
         case 'string':
           if(iconProperties.indexOf(this.props.fieldName) >= 0) {

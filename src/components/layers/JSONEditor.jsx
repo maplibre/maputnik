@@ -7,6 +7,7 @@ import CodeMirror from 'codemirror';
 
 import 'codemirror/mode/javascript/javascript'
 import 'codemirror/addon/lint/lint'
+import 'codemirror/addon/edit/matchbrackets'
 import 'codemirror/lib/codemirror.css'
 import 'codemirror/addon/lint/lint.css'
 import '../../codemirror-maputnik.css'
@@ -47,6 +48,7 @@ class JSONEditor extends React.Component {
       viewportMargin: Infinity,
       lineNumbers: true,
       lint: true,
+      matchBrackets: true,
       gutters: ["CodeMirror-lint-markers"],
       scrollbarStyle: "null",
     });
@@ -105,17 +107,6 @@ class JSONEditor extends React.Component {
   }
 
   render() {
-    const codeMirrorOptions = {
-      mode: {name: "javascript", json: true},
-      tabSize: 2,
-      theme: 'maputnik',
-      viewportMargin: Infinity,
-      lineNumbers: true,
-      lint: true,
-      gutters: ["CodeMirror-lint-markers"],
-      scrollbarStyle: "null",
-    }
-
     const style = {};
     if (this.props.maxHeight) {
       style.maxHeight = this.props.maxHeight;

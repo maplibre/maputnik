@@ -19,8 +19,7 @@ const IS_SUPPORTED = MapboxGl.supported();
 
 function renderPopup(popup, mountNode) {
   ReactDOM.render(popup, mountNode);
-  var content = mountNode.innerHTML;
-  return content;
+  return mountNode;
 }
 
 function buildInspectStyle(originalMapStyle, coloredLayers, highlightedLayer) {
@@ -87,11 +86,9 @@ export default class MapboxGlMap extends React.Component {
     const metadata = props.mapStyle.metadata || {}
     MapboxGl.accessToken = metadata['maputnik:mapbox_access_token'] || tokens.mapbox
 
-    if(!props.inspectModeEnabled) {
-      //Mapbox GL now does diffing natively so we don't need to calculate
-      //the necessary operations ourselves!
-      this.state.map.setStyle(props.mapStyle, { diff: true})
-    }
+    //Mapbox GL now does diffing natively so we don't need to calculate
+    //the necessary operations ourselves!
+    this.state.map.setStyle(props.mapStyle, {diff: true})
   }
 
   componentDidUpdate(prevProps) {
@@ -102,6 +99,9 @@ export default class MapboxGlMap extends React.Component {
     this.updateMapFromProps(this.props);
 
     if(this.props.inspectModeEnabled !== prevProps.inspectModeEnabled) {
+      // HACK: Fix for <https://github.com/maputnik/editor/issues/576>, while we wait for a proper fix.
+      // eslint-disable-next-line
+      this.state.inspect._popupBlocked = false;
       this.state.inspect.toggleInspector()
     }
     if(this.props.inspectModeEnabled) {
@@ -123,6 +123,7 @@ export default class MapboxGlMap extends React.Component {
       container: this.container,
       style: this.props.mapStyle,
       hash: true,
+      maxZoom: 24
     }
 
     const map = new MapboxGl.Map(mapOpts);
@@ -178,6 +179,10 @@ export default class MapboxGlMap extends React.Component {
       this.props.onDataChange({
         map: this.state.map
       })
+    })
+
+    map.on("error", e => {
+      console.log("ERROR", e);
     })
 
     map.on("zoom", e => {
