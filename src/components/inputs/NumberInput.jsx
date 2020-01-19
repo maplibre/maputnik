@@ -48,10 +48,13 @@ class NumberInput extends React.Component {
     const hasChanged = this.props.value !== value;
     if(this.isValid(value) && hasChanged) {
       this.props.onChange(value)
+      this.setState({
+        dirtyValue: newValue,
+      });
     }
+
     this.setState({
       value: newValue,
-      dirtyValue: newValue,
     })
   }
 
