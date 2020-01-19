@@ -19,6 +19,10 @@ class DebugModal extends React.Component {
   render() {
     const {mapView} = this.props;
 
+    const osmZoom = Math.round(mapView.zoom)+1;
+    const osmLon = Number.parseFloat(mapView.center.lng).toFixed(5);
+    const osmLat = Number.parseFloat(mapView.center.lat).toFixed(5);
+
     return <Modal
       data-wd-key="debug-modal"
       isOpen={this.props.isOpen}
@@ -56,7 +60,7 @@ class DebugModal extends React.Component {
           <a
             target="_blank"
             rel="noopener noreferrer"
-            href={`https://www.openstreetmap.org/#map=${Math.round(mapView.zoom)+1}/${mapView.center.lat}/${mapView.center.lng}`}
+            href={`https://www.openstreetmap.org/#map=${osmZoom}/${osmLat}/${osmLon}`}
           >
             Open in OSM
           </a> &mdash; Opens the current view on openstreetmap.org
