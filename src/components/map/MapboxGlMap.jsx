@@ -60,6 +60,7 @@ export default class MapboxGlMap extends React.Component {
     inspectModeEnabled: PropTypes.bool.isRequired,
     highlightedLayer: PropTypes.object,
     options: PropTypes.object,
+    replaceAccessTokens: PropTypes.func.isRequired,
     onChange: PropTypes.func.isRequired,
   }
 
@@ -90,7 +91,10 @@ export default class MapboxGlMap extends React.Component {
 
     //Mapbox GL now does diffing natively so we don't need to calculate
     //the necessary operations ourselves!
-    this.state.map.setStyle(props.mapStyle, {diff: true})
+    this.state.map.setStyle(
+      this.props.replaceAccessTokens(props.mapStyle),
+      {diff: true}
+    )
   }
 
   componentDidUpdate(prevProps) {
