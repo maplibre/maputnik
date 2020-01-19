@@ -60,6 +60,7 @@ export default class MapboxGlMap extends React.Component {
     inspectModeEnabled: PropTypes.bool.isRequired,
     highlightedLayer: PropTypes.object,
     options: PropTypes.object,
+    onChange: PropTypes.func.isRequired,
   }
 
   static defaultProps = {

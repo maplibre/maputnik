@@ -55,7 +55,7 @@ class DebugModal extends React.Component {
         <p>
           <a
             target="_blank"
-            rel="noopener" or rel="noreferrer"
+            rel="noopener noreferrer"
             href={`https://www.openstreetmap.org/#map=${Math.round(mapView.zoom)+1}/${mapView.center.lat}/${mapView.center.lng}`}
           >
             Open in OSM

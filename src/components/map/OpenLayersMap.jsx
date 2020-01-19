@@ -32,6 +32,8 @@ export default class OpenLayersMap extends React.Component {
     style: PropTypes.object,
     onLayerSelect: PropTypes.func.isRequired,
     debugToolbox: PropTypes.bool.isRequired,
+    replaceAccessTokens: PropTypes.func.isRequired,
+    onChange: PropTypes.func.isRequired,
   }
 
   static defaultProps = {
