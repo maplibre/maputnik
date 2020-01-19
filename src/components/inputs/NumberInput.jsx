@@ -34,6 +34,7 @@ class NumberInput extends React.Component {
     if (!state.editing) {
       return {
         value: props.value,
+        dirtyValue: props.value,
       };
     }
     return null;
@@ -107,12 +108,13 @@ class NumberInput extends React.Component {
         // for example we might go from 13 to 13.23, however because we know
         // that came from a keyboard event we always want to increase by a
         // single step value.
-        if (value < this.state.value) {
-          value = value - snap;
+        if (value < this.state.dirtyValue) {
+          value = this.state.value - step;
         }
         else {
-          value = value - snap + snap;
+          value = this.state.value + step
         }
+        dirtyValue = value;
       }
       else {
         if (snap < step/2) {
