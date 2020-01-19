@@ -134,7 +134,7 @@ class NumberInput extends React.Component {
     // Clamp between min/max
     value = Math.max(this.props.min, Math.min(this.props.max, value));
 
-    this.setState({editing: true, value, dirtyValue});
+    this.setState({value, dirtyValue});
     this.props.onChange(value);
   }
 
@@ -161,6 +161,13 @@ class NumberInput extends React.Component {
           onChange={this.onChangeRange}
           onKeyDown={() => {
             this._keyboardEvent = true;
+          }}
+          onPointerDown={() => {
+            this.setState({editing: true});
+          }}
+          onPointerUp={() => {
+            // Safari doesn't get onBlur event
+            this.setState({editing: false});
           }}
           onBlur={() => {
             this.setState({editing: false});
