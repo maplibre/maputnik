@@ -60,6 +60,12 @@ function editorMode(source) {
       return 'geojson_json';
     }
   }
+  if(source.type === 'image') {
+    return 'image';
+  }
+  if(source.type === 'video') {
+    return 'video';
+  }
   return null
 }
 
@@ -153,6 +159,28 @@ class AddSource extends React.Component {
         minzoom: source.minzoom || 0,
         maxzoom: source.maxzoom || 14
       }
+      case 'image': return {
+        type: 'image',
+        url: `${protocol}//localhost:3000/image.png`,
+        coordinates: [
+          [0,0],
+          [0,0],
+          [0,0],
+          [0,0],
+        ],
+      }
+      case 'video': return {
+        type: 'video',
+        urls: [
+          `${protocol}//localhost:3000/movie.mp4`
+        ],
+        coordinates: [
+          [0,0],
+          [0,0],
+          [0,0],
+          [0,0],
+        ],
+      }
       default: return {}
     }
   }
@@ -185,6 +213,8 @@ class AddSource extends React.Component {
             ['tilexyz_raster', 'Raster (XYZ URL)'],
             ['tilejson_raster-dem', 'Raster DEM (TileJSON URL)'],
             ['tilexyz_raster-dem', 'Raster DEM (XYZ URLs)'],
+            ['image', 'Image'],
+            ['video', 'Video'],
           ]}
           onChange={mode => this.setState({mode: mode, source: this.defaultSource(mode)})}
           value={this.state.mode}
