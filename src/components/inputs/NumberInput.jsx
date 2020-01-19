@@ -31,7 +31,6 @@ class NumberInput extends React.Component {
   }
 
   static getDerivedStateFromProps(props, state) {
-    console.log("getDerivedStateFromProps[%s]", state.uuid, props.value, state.value);
     if (!state.editing) {
       return {
         value: props.value,
@@ -46,9 +45,7 @@ class NumberInput extends React.Component {
       parseFloat(newValue);
 
     const hasChanged = this.props.value !== value;
-    console.log("changeValue[%s]->hasChanged", this.state.uuid, value, this.isValid(value), this.props.value, "!==", value)
     if(this.isValid(value) && hasChanged) {
-      console.log("changeValue[%s]->onChange", this.state.uuid, value);
       this.props.onChange(value)
     }
     this.setState({
@@ -96,13 +93,7 @@ class NumberInput extends React.Component {
   }
 
   onChangeRange = (e) => {
-    console.log("onChangeRange[%s]", this.state.uuid);
-    if (this._cancelNextChangeEvent) {
-      console.log("onChangeRange[%s]:cancel", this.state.uuid);
-      this._cancelNextChangeEvent = false;
-      return;
-    }
-    const value = parseFloat(e.target.value, 10);
+    let value = parseFloat(e.target.value, 10);
     const step = this.props.rangeStep;
     let dirtyValue = value;
 
@@ -111,15 +102,35 @@ class NumberInput extends React.Component {
       const snap = value % step;
 
       // Round up/down to step
-      if (snap < step/2) {
-        dirtyValue = value - snap;
+      if (this._keyboardEvent) {
+        // If it's keyboard event we might get a low positive/negative value,
+        // for example we might go from 13 to 13.23, however because we know
+        // that came from a keyboard event we always want to increase by a
+        // single step value.
+        if (value < this.state.value) {
+          value = value - snap;
+        }
+        else {
+          value = value - snap + snap;
+        }
       }
       else {
-        dirtyValue = value + (step - snap);
-      };
+        if (snap < step/2) {
+          value = value - snap;
+        }
+        else {
+          value = value + (step - snap);
+        };
+      }
     }
 
+    this._keyboardEvent = false;
+
+    // Clamp between min/max
+    value = Math.max(this.props.min, Math.min(this.props.max, value));
+
     this.setState({editing: true, value, dirtyValue});
+    this.props.onChange(value);
   }
 
   render() {
@@ -130,7 +141,6 @@ class NumberInput extends React.Component {
     ) {
       const value = this.state.value === undefined ? this.props.default : this.state.value;
       const rangeValue = Number.isNaN(parseFloat(value, 10)) ? this.props.default : value;
-      console.log("render[%s]", this.state.uuid, value, rangeValue);
 
       return <div className="maputnik-number-container">
         <input
@@ -142,21 +152,13 @@ class NumberInput extends React.Component {
           step="any"
           spellCheck="false"
           value={rangeValue}
-          onInput={this.onChangeRange}
-          onMouseUp={() => console.log("mouseup")}
-          onPointerDown={() => {
-            this._cancelNextChangeEvent = false;
+          aria-hidden="true"
+          onChange={this.onChangeRange}
+          onKeyDown={() => {
+            this._keyboardEvent = true;
           }}
           onBlur={() => {
-            console.log("onBlur[%s]", this.state.uuid);
             this.setState({editing: false});
-            this.changeValue(this.state.dirtyValue);
-          }}
-          onPointerUp={() => {
-            console.log("onPointerUp[%s]", this.state.uuid);
-            this._cancelNextChangeEvent = true;
-            this.setState({editing: false});
-            this.changeValue(this.state.dirtyValue);
           }}
         />
         <input
@@ -165,10 +167,11 @@ class NumberInput extends React.Component {
           spellCheck="false"
           className="maputnik-number"
           placeholder={this.props.default}
-          value={this.state.dirtyValue === undefined ? "" : this.state.dirtyValue}
+          value={this.state.value === undefined ? "" : this.state.value}
           onChange={e => {
-            console.log("input.text->onChange[%s]", this.state.uuid, e.target.value);
-            this.changeValue(e.target.value)
+            if (!this.state.editing) {
+              this.changeValue(e.target.value);
+            }
           }}
           onBlur={this.resetValue}
         />
