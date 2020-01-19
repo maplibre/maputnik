@@ -66,6 +66,7 @@ export default class MapboxGlMap extends React.Component {
     onMapLoaded: () => {},
     onDataChange: () => {},
     onLayerSelect: () => {},
+    onChange: () => {},
     mapboxAccessToken: tokens.mapbox,
     options: {},
   }
@@ -128,12 +129,21 @@ export default class MapboxGlMap extends React.Component {
 
     const map = new MapboxGl.Map(mapOpts);
 
+    const center = map.getCenter();
+    const zoom = map.getZoom();
+
+    this.setState({
+      center,
+      zoom,
+    });
+    this.props.onChange({center, zoom});
+
     map.showTileBoundaries = mapOpts.showTileBoundaries;
     map.showCollisionBoxes = mapOpts.showCollisionBoxes;
     map.showOverdrawInspector = mapOpts.showOverdrawInspector;
 
-    const zoom = new ZoomControl;
-    map.addControl(zoom, 'top-right');
+    const zoomControl = new ZoomControl;
+    map.addControl(zoomControl, 'top-right');
 
     const nav = new MapboxGl.NavigationControl({visualizePitch:true});
     map.addControl(nav, 'top-right');
@@ -189,7 +199,21 @@ export default class MapboxGlMap extends React.Component {
       this.setState({
         zoom: map.getZoom()
       });
-    })
+    });
+
+    map.on("dragend", e => {
+      this.props.onChange({
+        center: map.getCenter(),
+        zoom: this.state.zoom,
+      })
+    });
+
+    map.on("zoomend", e => {
+      this.props.onChange({
+        center: this.state.center,
+        zoom: map.getZoom(),
+      })
+    });
   }
 
   render() {

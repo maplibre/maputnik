@@ -212,6 +212,13 @@ export default class App extends React.Component {
       vectorLayers: {},
       mapState: "map",
       spec: latest,
+      mapView: {
+        zoom: 0,
+        center: {
+          lng: 0,
+          lat: 0,
+        },
+      },
       isOpen: {
         settings: false,
         sources: false,
@@ -531,11 +538,22 @@ export default class App extends React.Component {
     return metadata['maputnik:renderer'] || 'mbgljs';
   }
 
+  onMapChange = (mapView) => {
+    this.setState({
+      mapView,
+    });
+  }
+
   mapRenderer() {
     const metadata = this.state.mapStyle.metadata || {};
 
     const mapProps = {
-      mapStyle: style.replaceAccessTokens(this.state.mapStyle, {allowFallback: true}),
+      mapStyle: this.state.mapStyle,
+      replaceAccessTokens: (mapStyle) => {
+        return style.replaceAccessTokens(mapStyle, {
+          allowFallback: true
+        });
+      },
       onDataChange: (e) => {
         this.layerWatcher.analyzeMap(e.map)
         this.fetchSources();
@@ -550,11 +568,13 @@ export default class App extends React.Component {
     if(renderer === 'ol') {
       mapElement = <OpenLayersMap
         {...mapProps}
+        onChange={this.onMapChange}
         debugToolbox={this.state.openlayersDebugOptions.debugToolbox}
         onLayerSelect={this.onLayerSelect}
       />
     } else {
       mapElement = <MapboxGlMap {...mapProps}
+        onChange={this.onMapChange}
         options={this.state.mapboxGlDebugOptions}
         inspectModeEnabled={this.state.mapState === "inspect"}
         highlightedLayer={this.state.mapStyle.layers[this.state.selectedLayerIndex]}
@@ -676,6 +696,7 @@ export default class App extends React.Component {
         onChangeOpenlayersDebug={this.onChangeOpenlayersDebug}
         isOpen={this.state.isOpen.debug}
         onOpenToggle={this.toggleModal.bind(this, 'debug')}
+        mapView={this.state.mapView}
       />
       <ShortcutsModal
         ref={(el) => this.shortcutEl = el}
