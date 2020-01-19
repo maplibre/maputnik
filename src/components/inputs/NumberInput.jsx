@@ -35,7 +35,6 @@ class NumberInput extends React.Component {
     if (!state.editing) {
       return {
         value: props.value,
-        dirtyValue: props.value,
       };
     }
     return null;
