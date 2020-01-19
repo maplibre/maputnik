@@ -14,16 +14,6 @@ import style from '../../libs/style'
 
 
 
-function stripAccessTokens(mapStyle) {
-  const changedMetadata = { ...mapStyle.metadata }
-  delete changedMetadata['maputnik:mapbox_access_token']
-  delete changedMetadata['maputnik:openmaptiles_access_token']
-  return {
-    ...mapStyle,
-    metadata: changedMetadata
-  }
-}
-
 class ExportModal extends React.Component {
   static propTypes = {
     mapStyle: PropTypes.object.isRequired,
@@ -37,7 +27,11 @@ class ExportModal extends React.Component {
   }
 
   downloadStyle() {
-    const tokenStyle = format(stripAccessTokens(style.replaceAccessTokens(this.props.mapStyle)));
+    const tokenStyle = format(
+      style.stripAccessTokens(
+        style.replaceAccessTokens(this.props.mapStyle)
+      )
+    );
 
     const blob = new Blob([tokenStyle], {type: "application/json;charset=utf-8"});
     let exportName;

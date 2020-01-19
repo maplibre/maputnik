@@ -1,4 +1,5 @@
 import style from './style.js'
+import {format} from '@mapbox/mapbox-gl-style-spec'
 import ReconnectingWebSocket from 'reconnecting-websocket'
 
 export class ApiStyleStore {
@@ -64,6 +65,12 @@ export class ApiStyleStore {
 
   // Save current style replacing previous version
   save(mapStyle) {
+    const styleJSON = format(
+      style.stripAccessTokens(
+        style.replaceAccessTokens(newStyle)
+      )
+    );
+
     const id = mapStyle.id
     fetch(this.localUrl + '/styles/' + id, {
       method: "PUT",
@@ -71,7 +78,7 @@ export class ApiStyleStore {
       headers: {
         "Content-Type": "application/json; charset=utf-8",
       },
-      body: JSON.stringify(mapStyle)
+      body: styleJSON
     })
     .catch(function(error) {
       if(error) console.error(error)
