@@ -200,7 +200,7 @@ describe("layers", function() {
 
           const elem = $(wd.$("layer-list-item:background:"+bgId));
           elem.click();
-          browser.setValueSafe(wd.$("min-zoom", "input"), 1)
+          browser.setValueSafe(wd.$("min-zoom", 'input[type="text"]'), 1)
           const elem2 = $(wd.$("layer-editor.layer-id", "input"));
           elem2.click();
 
@@ -232,7 +232,7 @@ describe("layers", function() {
 
           const elem = $(wd.$("layer-list-item:background:"+bgId));
           elem.click();
-          browser.setValueSafe(wd.$("max-zoom", "input"), 1)
+          browser.setValueSafe(wd.$("max-zoom", 'input[type="text"]'), 1)
           const elem2 = $(wd.$("layer-editor.layer-id", "input"));
           elem2.click();
 

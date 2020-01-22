@@ -16,6 +16,7 @@ class MinZoomBlock extends React.Component {
       data-wd-key="min-zoom"
     >
       <NumberInput
+        allowRange={true}
         value={this.props.value}
         onChange={this.props.onChange}
         min={latest.layer.minzoom.minimum}

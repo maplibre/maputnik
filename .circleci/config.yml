@@ -41,6 +41,7 @@ templates:
 
     - run: mkdir -p /tmp/artifacts/logs
     - run: npm run build
+    - run: npm run profiling-build
     - run: npm run lint
     - run: npm run lint-styles
     - run: DOCKER_HOST=localhost npm test
@@ -49,11 +50,6 @@ templates:
         path: /tmp/artifacts
         destination: /artifacts
 jobs:
-  build-linux-node-v8:
-    docker:
-      - image: node:8
-    working_directory: ~/repo-linux-node-v8
-    steps: *build-steps
   build-linux-node-v10:
     docker:
       - image: node:10
@@ -65,13 +61,10 @@ jobs:
       - image: node:12
     working_directory: ~/repo-linux-node-v12
     steps: *build-steps
-  build-osx-node-v8:
-    macos:
-      xcode: "9.0"
-    dependencies:
-      override:
-        - brew install node@8
-    working_directory: ~/repo-osx-node-v8
+  build-linux-node-v13:
+    docker:
+      - image: node:13
+    working_directory: ~/repo-linux-node-v13
     steps: *build-steps
   build-osx-node-v10:
     macos:
@@ -89,14 +82,22 @@ jobs:
         - brew install node@12
     working_directory: ~/repo-osx-node-v12
     steps: *build-steps
+  build-osx-node-v13:
+    macos:
+      xcode: "9.0"
+    dependencies:
+      override:
+        - brew install node@13
+    working_directory: ~/repo-osx-node-v13
+    steps: *build-steps
 
 workflows:
   version: 2
   build:
     jobs:
-      - build-linux-node-v8
       - build-linux-node-v10
       - build-linux-node-v12
-      - build-osx-node-v8
+      - build-linux-node-v13
       - build-osx-node-v10
       - build-osx-node-v12
+      - build-osx-node-v13

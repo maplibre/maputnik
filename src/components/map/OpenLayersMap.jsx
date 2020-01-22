@@ -32,6 +32,8 @@ export default class OpenLayersMap extends React.Component {
     style: PropTypes.object,
     onLayerSelect: PropTypes.func.isRequired,
     debugToolbox: PropTypes.bool.isRequired,
+    replaceAccessTokens: PropTypes.func.isRequired,
+    onChange: PropTypes.func.isRequired,
   }
 
   static defaultProps = {
@@ -61,7 +63,9 @@ export default class OpenLayersMap extends React.Component {
 
   componentDidUpdate(prevProps) {
     if (this.props.mapStyle !== prevProps.mapStyle) {
-      this.updateStyle(this.props.mapStyle);
+      this.updateStyle(
+        this.props.replaceAccessTokens(this.props.mapStyle)
+      );
     }
   }
 
@@ -93,6 +97,22 @@ export default class OpenLayersMap extends React.Component {
       })
     })
 
+    const onMoveEnd = () => {
+      const zoom = map.getView().getZoom();
+      const center = toLonLat(map.getView().getCenter());
+
+      this.props.onChange({
+        zoom,
+        center: {
+          lng: center[0],
+          lat: center[1],
+        },
+      });
+    }
+
+    onMoveEnd();
+    map.on('moveend', onMoveEnd);
+
     map.on('postrender', (evt) => {
       const center = toLonLat(map.getView().getCenter());
       this.setState({
@@ -108,7 +128,9 @@ export default class OpenLayersMap extends React.Component {
 
 
     this.map = map;
-    this.updateStyle(this.props.mapStyle);
+    this.updateStyle(
+      this.props.replaceAccessTokens(this.props.mapStyle)
+    );
   }
 
   closeOverlay = (e) => {

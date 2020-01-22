@@ -29,17 +29,17 @@ class EnumInput extends React.Component {
     if(options.length <= 3 && optionsLabelLength(options) <= 20) {
       return <MultiButtonInput
         options={options}
-        value={value}
+        value={value || this.props.default}
         onChange={onChange}
       />
     } else {
       return <SelectInput
         options={options}
-        value={value}
+        value={value || this.props.default}
         onChange={onChange}
       />
     }
   }
 }
 
-export default StringInput
+export default EnumInput

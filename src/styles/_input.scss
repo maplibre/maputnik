@@ -11,6 +11,11 @@
   border: none;
   background-color: $color-gray;
   color: lighten($color-lowgray, 12);
+
+  &:invalid {
+    border: solid 1px #B71C1C;
+    border-radius: 2px;
+  }
 }
 
 .maputnik-string {
@@ -20,6 +25,16 @@
     resize: vertical;
     height: 78px;
   }
+}
+
+.maputnik-number-container {
+  display: flex;
+}
+
+.maputnik-number-range {
+  width: calc(100% - 4.5em);
+  margin-right: 0.5em;
+  flex-shrink: 0;
 }
 
 .maputnik-number {
@@ -172,4 +187,9 @@
   .maputnik-autocomplete:not(:last-child) {
     margin-bottom: $margin-3;
   }
+}
+
+.maputnik-input-block-content {
+  position: relative;
+  overflow: hidden;
 }
