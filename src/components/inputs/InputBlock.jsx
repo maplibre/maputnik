@@ -17,6 +17,7 @@ class InputBlock extends React.Component {
     children: PropTypes.node.isRequired,
     style: PropTypes.object,
     onChange: PropTypes.func,
+    fieldSpec: PropTypes.object,
   }
 
   constructor (props) {
