@@ -6,6 +6,8 @@ import StringInput from '../inputs/StringInput'
 import UrlInput from '../inputs/UrlInput'
 import NumberInput from '../inputs/NumberInput'
 import SelectInput from '../inputs/SelectInput'
+import DynamicArrayInput from '../inputs/DynamicArrayInput'
+import ArrayInput from '../inputs/ArrayInput'
 import JSONEditor from '../layers/JSONEditor'
 
 
@@ -88,6 +90,100 @@ class TileURLSourceEditor extends React.Component {
   }
 }
 
+class ImageSourceEditor extends React.Component {
+  static propTypes = {
+    source: PropTypes.object.isRequired,
+    onChange: PropTypes.func.isRequired,
+  }
+
+  render() {
+    const changeCoord = (idx, val) => {
+      const coordinates = this.props.source.coordinates.slice(0);
+      coordinates[idx] = val;
+
+      this.props.onChange({
+        ...this.props.source,
+        coordinates,
+      });
+    }
+
+    return <div>
+      <InputBlock label={"Image URL"} doc={latest.source_image.url.doc}>
+        <UrlInput
+          value={this.props.source.url}
+          onChange={url => this.props.onChange({
+            ...this.props.source,
+            url,
+          })}
+        />
+      </InputBlock>
+      {["top left", "top right", "bottom right", "bottom left"].map((label, idx) => {
+        return (
+          <InputBlock label={`Coord ${label}`} key={label}>
+            <ArrayInput
+              length={2}
+              type="number"
+              value={this.props.source.coordinates[idx]}
+              default={[0, 0]}
+              onChange={(val) => changeCoord(idx, val)}
+            />
+          </InputBlock>
+        );
+      })}
+    </div>
+  }
+}
+
+class VideoSourceEditor extends React.Component {
+  static propTypes = {
+    source: PropTypes.object.isRequired,
+    onChange: PropTypes.func.isRequired,
+  }
+
+  render() {
+    const changeCoord = (idx, val) => {
+      const coordinates = this.props.source.coordinates.slice(0);
+      coordinates[idx] = val;
+
+      this.props.onChange({
+        ...this.props.source,
+        coordinates,
+      });
+    }
+
+    const changeUrls = (urls) => {
+      this.props.onChange({
+        ...this.props.source,
+        urls,
+      });
+    }
+
+    return <div>
+      <InputBlock label={"Video URL"} doc={latest.source_video.urls.doc}>
+        <DynamicArrayInput
+          type="string"
+          value={this.props.source.urls}
+          default={""}
+          onChange={changeUrls}
+        />
+      </InputBlock>
+      {["top left", "top right", "bottom right", "bottom left"].map((label, idx) => {
+        return (
+          <InputBlock label={`Coord ${label}`} key={label}>
+            <ArrayInput
+              length={2}
+              type="number"
+              value={this.props.source.coordinates[idx]}
+              default={[0, 0]}
+              onChange={val => changeCoord(idx, val)}
+            />
+          </InputBlock>
+        );
+      })}
+    </div>
+  }
+}
+
 class GeoJSONSourceUrlEditor extends React.Component {
   static propTypes = {
     source: PropTypes.object.isRequired,
@@ -161,6 +257,8 @@ class SourceTypeEditor extends React.Component {
           />
         </InputBlock>
       </TileURLSourceEditor>
+      case 'image': return <ImageSourceEditor {...commonProps} />
+      case 'video': return <VideoSourceEditor {...commonProps} />
       default: return null
     }
   }
