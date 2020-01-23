@@ -126,6 +126,7 @@ class AddModal extends React.Component {
       onOpenToggle={this.props.onOpenToggle}
       title={'Add Layer'}
       data-wd-key="modal:add-layer"
+      className="maputnik-add-modal"
     >
       <div className="maputnik-add-layer">
       <LayerIdBlock

@@ -18,7 +18,7 @@ class TileJSONSourceEditor extends React.Component {
 
   render() {
     return <div>
-      <InputBlock label={"TileJSON URL"} doc={latest.source_vector.url.doc}>
+      <InputBlock label={"TileJSON URL"} fieldSpec={latest.source_vector.url}>
         <UrlInput
           value={this.props.source.url}
           onChange={url => this.props.onChange({
@@ -52,7 +52,7 @@ class TileURLSourceEditor extends React.Component {
     const prefix = ['1st', '2nd', '3rd', '4th', '5th', '6th', '7th']
     const tiles = this.props.source.tiles || []
     return tiles.map((tileUrl, tileIndex) => {
-      return <InputBlock key={tileIndex} label={prefix[tileIndex] + " Tile URL"} doc={latest.source_vector.tiles.doc}>
+      return <InputBlock key={tileIndex} label={prefix[tileIndex] + " Tile URL"} fieldSpec={latest.source_vector.tiles}>
         <UrlInput
           value={tileUrl}
           onChange={this.changeTileUrl.bind(this, tileIndex)}
@@ -64,7 +64,7 @@ class TileURLSourceEditor extends React.Component {
   render() {
     return <div>
       {this.renderTileUrls()}
-      <InputBlock label={"Min Zoom"} doc={latest.source_vector.minzoom.doc}>
+      <InputBlock label={"Min Zoom"} fieldSpec={latest.source_vector.minzoom}>
         <NumberInput
           value={this.props.source.minzoom || 0}
           onChange={minzoom => this.props.onChange({
@@ -73,7 +73,7 @@ class TileURLSourceEditor extends React.Component {
           })}
         />
       </InputBlock>
-      <InputBlock label={"Max Zoom"} doc={latest.source_vector.maxzoom.doc}>
+      <InputBlock label={"Max Zoom"} fieldSpec={latest.source_vector.maxzoom}>
         <NumberInput
           value={this.props.source.maxzoom || 22}
           onChange={maxzoom => this.props.onChange({
@@ -95,7 +95,7 @@ class GeoJSONSourceUrlEditor extends React.Component {
   }
 
   render() {
-    return <InputBlock label={"GeoJSON URL"} doc={latest.source_geojson.data.doc}>
+    return <InputBlock label={"GeoJSON URL"} fieldSpec={latest.source_geojson.data}>
       <UrlInput
         value={this.props.source.data}
         onChange={data => this.props.onChange({
@@ -114,7 +114,7 @@ class GeoJSONSourceJSONEditor extends React.Component {
   }
 
   render() {
-    return <InputBlock label={"GeoJSON"} doc={latest.source_geojson.data.doc}>
+    return <InputBlock label={"GeoJSON"} fieldSpec={latest.source_geojson.data}>
       <JSONEditor
         layer={this.props.source.data}
         maxHeight={200}
@@ -150,7 +150,7 @@ class SourceTypeEditor extends React.Component {
       case 'tilexyz_raster': return <TileURLSourceEditor {...commonProps} />
       case 'tilejson_raster-dem': return <TileJSONSourceEditor {...commonProps} />
       case 'tilexyz_raster-dem': return <TileURLSourceEditor {...commonProps}>
-        <InputBlock label={"Encoding"} doc={latest.source_raster_dem.encoding.doc}>
+        <InputBlock label={"Encoding"} fieldSpec={latest.source_raster_dem.encoding}>
           <SelectInput
             options={Object.keys(latest.source_raster_dem.encoding.values)}
             onChange={encoding => this.props.onChange({

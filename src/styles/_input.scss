@@ -193,3 +193,20 @@
   position: relative;
   overflow: hidden;
 }
+
+.sdk-support {
+  position: relative;
+  max-width: 100%;
+  overflow-x: auto;
+}
+
+.sdk-support__table {
+  width: 100%;
+  margin-top: $margin-3;
+
+  td, th {
+    border: solid 1px $color-midgray;
+    padding: 4px 6px;
+    white-space: nowrap;
+  }
+}

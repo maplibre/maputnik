@@ -28,7 +28,8 @@
   height: 100%;
 }
 
-.maputnik-input-block:hover {
+.maputnik-input-block:hover,
+.maputnik-filter-editor-compound-select:hover {
   .maputnik-doc-button {
     opacity: 1;
     pointer-events: all;
@@ -68,14 +69,16 @@
   &-button {
     opacity: 0;
     pointer-events: none;
-    background: #000;
+    background: $color-black;
     color: white;
-    border: solid 1px #555;
-    border-radius: 100px;
+    border: none;
+    padding: 0;
+
+    svg {
+      pointer-events: none;
+    }
 
     &--open {
-      background: white;
-      color: black;
       opacity: 1;
       pointer-events: all;
     }
@@ -87,7 +90,8 @@
   background-color: $color-gray;
   padding: $margin-2;
   font-size: 12px;
-  margin-top: $margin-2;
+  margin-top: $margin-3;
+  line-height: 1.5;
 }
 
 .maputnik-doc-target:hover .maputnik-doc-popup {

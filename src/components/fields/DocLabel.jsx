@@ -1,13 +1,15 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 
+import {MdInfoOutline, MdHighlightOff} from 'react-icons/md'
+
 export default class DocLabel extends React.Component {
   static propTypes = {
     label: PropTypes.oneOfType([
       PropTypes.object,
       PropTypes.string
     ]).isRequired,
-    doc: PropTypes.string.isRequired,
+    fieldSpec: PropTypes.object.isRequired,
   }
 
   constructor (props) {
@@ -28,19 +30,26 @@ export default class DocLabel extends React.Component {
   }
 
   render() {
-    return <label className="maputnik-doc-wrapper">
-      <div className="maputnik-doc-target">
-        <span>
-          {this.props.label}
+    const {label, fieldSpec} = this.props;
+    const {doc} = fieldSpec || {};
+
+    if (doc) {
+      return <label className="maputnik-doc-wrapper">
+        <div className="maputnik-doc-target">
+          {label}
           {'\xa0'}
           <button
+            aria-label={this.state.open ? "close property documentation" : "open property documentation"}
             className={`maputnik-doc-button maputnik-doc-button--${this.state.open ? 'open' : 'closed'}`}
             onClick={() => this.onToggleDoc(!this.state.open)}
           >
-            {this.state.open ? 'x' : '?'}
+            {this.state.open ? <MdHighlightOff /> : <MdInfoOutline />}
           </button>
-        </span>
-      </div>
-    </label>
+        </div>
+      </label>
+    }
+    else {
+      return <div />
+    }
   }
 }

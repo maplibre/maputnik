@@ -108,6 +108,11 @@
   background-color: $color-midgray;
 }
 
+.maputnik-add-modal {
+  width: 400px;
+  max-width: 100%;
+}
+
 .maputnik-add-layer {
   @extend .clearfix;
 }

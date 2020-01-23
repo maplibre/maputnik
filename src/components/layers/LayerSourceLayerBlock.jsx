@@ -20,7 +20,7 @@ class LayerSourceLayer extends React.Component {
   }
 
   render() {
-    return <InputBlock label={"Source Layer"} doc={latest.layer['source-layer'].doc}
+    return <InputBlock label={"Source Layer"} fieldSpec={latest.layer['source-layer']}
       data-wd-key="layer-source-layer"
     >
       <AutocompleteInput

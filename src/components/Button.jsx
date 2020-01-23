@@ -20,7 +20,8 @@ class Button extends React.Component {
       aria-label={this.props["aria-label"]}
       className={classnames("maputnik-button", this.props.className)}
       data-wd-key={this.props["data-wd-key"]}
-      style={this.props.style}>
+      style={this.props.style}
+    >
       {this.props.children}
     </button>
   }
