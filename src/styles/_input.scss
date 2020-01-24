@@ -194,13 +194,13 @@
   overflow: hidden;
 }
 
-.sdk-support {
+.SpecDoc__sdk-support {
   position: relative;
   max-width: 100%;
   overflow-x: auto;
 }
 
-.sdk-support__table {
+.SpecDoc__sdk-support__table {
   width: 100%;
   margin-top: $margin-3;
 
@@ -209,4 +209,14 @@
     padding: 4px 6px;
     white-space: nowrap;
   }
+}
+
+.SpecDoc__values li {
+  margin-top: $margin-3;
+}
+
+.SpecDoc__values code {
+  background: $color-midgray;
+  padding: 0.1em 0.3em;
+  border-radius: 2px;
 }

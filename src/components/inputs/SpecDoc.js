@@ -9,7 +9,7 @@ export default class SpecDoc extends React.Component {
   render () {
     const {fieldSpec} = this.props;
 
-    const {doc} = fieldSpec;
+    const {doc, values} = fieldSpec;
     const sdkSupport = fieldSpec['sdk-support'];
 
     const headers = {
@@ -22,11 +22,25 @@ export default class SpecDoc extends React.Component {
     return (
       <>
         {doc && 
-          <div>{doc}</div>
+          <div className="SpecDoc">
+            <div className="SpecDoc__doc">{doc}</div>
+            {values && 
+              <ul className="SpecDoc__values">
+                {Object.entries(values).map(([key, value]) => {
+                  return (
+                    <li key={key}>
+                      <code>{JSON.stringify(key)}</code>
+                      <div>{value.doc}</div>
+                    </li>
+                  );
+                })}
+              </ul>
+            }
+          </div>
         }
         {sdkSupport &&
-          <div className="sdk-support">
-            <table className="sdk-support__table">
+          <div className="SpecDoc__sdk-support">
+            <table className="SpecDoc__sdk-support__table">
               <thead>
                 <tr>
                   <th></th>
