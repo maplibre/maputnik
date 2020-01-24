@@ -19,12 +19,19 @@ export default class SpecDoc extends React.Component {
       macos: "macOS",
     };
 
+    const renderValues = (
+      !!values &&
+      // HACK: Currently we merge additional values into the stylespec, so this is required
+      // See <https://github.com/maputnik/editor/blob/master/src/components/fields/PropertyGroup.jsx#L16>
+      !Array.isArray(values)
+    );
+
     return (
       <>
         {doc && 
           <div className="SpecDoc">
             <div className="SpecDoc__doc">{doc}</div>
-            {values && 
+            {renderValues &&
               <ul className="SpecDoc__values">
                 {Object.entries(values).map(([key, value]) => {
                   return (
