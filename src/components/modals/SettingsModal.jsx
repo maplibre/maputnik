@@ -11,6 +11,7 @@ import SelectInput from '../inputs/SelectInput'
 import EnumInput from '../inputs/EnumInput'
 import ColorField from '../fields/ColorField'
 import Modal from './Modal'
+import fieldSpecAdditional from '../../libs/field-spec-additional'
 
 class SettingsModal extends React.Component {
   static propTypes = {
@@ -116,7 +117,10 @@ class SettingsModal extends React.Component {
         />
       </InputBlock>
 
-      <InputBlock label={"Mapbox Access Token"} fieldSpec={{doc: "Public access token for Mapbox services."}}>
+      <InputBlock
+        label={fieldSpecAdditional.maputnik.mapbox_access_token.label} 
+        fieldSpec={fieldSpecAdditional.maputnik.mapbox_access_token}
+      >
         <StringInput {...inputProps}
           data-wd-key="modal-settings.maputnik:mapbox_access_token" 
           value={metadata['maputnik:mapbox_access_token']}
@@ -124,7 +128,10 @@ class SettingsModal extends React.Component {
         />
       </InputBlock>
 
-      <InputBlock label={"MapTiler Access Token"} fieldSpec={{doc: "Public access token for MapTiler Cloud."}}>
+      <InputBlock
+        label={fieldSpecAdditional.maputnik.maptiler_access_token.label} 
+        fieldSpec={fieldSpecAdditional.maputnik.maptiler_access_token}
+      >
         <StringInput {...inputProps}
           data-wd-key="modal-settings.maputnik:openmaptiles_access_token" 
           value={metadata['maputnik:openmaptiles_access_token']}
@@ -132,7 +139,10 @@ class SettingsModal extends React.Component {
         />
       </InputBlock>
 
-      <InputBlock label={"Thunderforest Access Token"} fieldSpec={{doc: "Public access token for Thunderforest services."}}>
+      <InputBlock
+        label={fieldSpecAdditional.maputnik.thunderforest_access_token.label} 
+        fieldSpec={fieldSpecAdditional.maputnik.thunderforest_access_token}
+      >
         <StringInput {...inputProps}
           data-wd-key="modal-settings.maputnik:thunderforest_access_token" 
           value={metadata['maputnik:thunderforest_access_token']}

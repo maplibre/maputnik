@@ -11,6 +11,7 @@ import Button from '../Button'
 import Modal from './Modal'
 import {MdFileDownload} from 'react-icons/md'
 import style from '../../libs/style'
+import fieldSpecAdditional from '../../libs/field-spec-additional'
 
 
 
@@ -70,6 +71,7 @@ class ExportModal extends React.Component {
       isOpen={this.props.isOpen}
       onOpenToggle={this.props.onOpenToggle}
       title={'Export Style'}
+      className="maputnik-export-modal"
     >
 
       <div className="maputnik-modal-section">
@@ -79,19 +81,28 @@ class ExportModal extends React.Component {
         </p>
 
         <p>
-          <InputBlock label={"MapTiler Access Token: "}>
+          <InputBlock
+            label={fieldSpecAdditional.maputnik.mapbox_access_token.label}
+            fieldSpec={fieldSpecAdditional.maputnik.mapbox_access_token}
+          >
             <StringInput
               value={(this.props.mapStyle.metadata || {})['maputnik:openmaptiles_access_token']}
               onChange={this.changeMetadataProperty.bind(this, "maputnik:openmaptiles_access_token")}
             />
           </InputBlock>
-          <InputBlock label={"Mapbox Access Token: "}>
+          <InputBlock
+            label={fieldSpecAdditional.maputnik.maptiler_access_token.label}
+            fieldSpec={fieldSpecAdditional.maputnik.maptiler_access_token}
+          >
             <StringInput
               value={(this.props.mapStyle.metadata || {})['maputnik:mapbox_access_token']}
               onChange={this.changeMetadataProperty.bind(this, "maputnik:mapbox_access_token")}
             />
           </InputBlock>
-          <InputBlock label={"Thunderforest Access Token: "}>
+          <InputBlock
+            label={fieldSpecAdditional.maputnik.thunderforest_access_token.label}
+            fieldSpec={fieldSpecAdditional.maputnik.thunderforest_access_token}
+          >
             <StringInput
               value={(this.props.mapStyle.metadata || {})['maputnik:thunderforest_access_token']}
               onChange={this.changeMetadataProperty.bind(this, "maputnik:thunderforest_access_token")}
