@@ -21,8 +21,9 @@ function renderProperties(feature) {
   })
 }
 
-function renderFeature(feature) {
-  return <div key={`${feature.sourceLayer}-${feature.id}`}>
+function renderFeature(feature, idx) {
+  const uniqueKey = feature.hasOwnProperty('id') ? feature.id : idx;
+  return <div key={`${feature.sourceLayer}-${uniqueKey}`}>
     <div className="maputnik-popup-layer-id">{feature.layer['source-layer']}{feature.inspectModeCounter && <span> × {feature.inspectModeCounter}</span>}</div>
     <InputBlock key={"property-type"} label={"$type"}>
       <StringInput value={feature.geometry.type} style={{backgroundColor: 'transparent'}} />
