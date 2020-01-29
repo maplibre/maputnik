@@ -13,6 +13,7 @@ class MinZoomBlock extends React.Component {
 
   render() {
     return <InputBlock label={"Min Zoom"} doc={latest.layer.minzoom.doc}
+      error={this.props.error}
       data-wd-key="min-zoom"
     >
       <NumberInput

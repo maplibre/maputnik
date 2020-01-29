@@ -67,15 +67,25 @@ export default class CombiningFilterEditor extends React.Component {
     const filter = this.combiningFilter()
     let combiningOp = filter[0]
     let filters = filter.slice(1)
+    const {errors} = this.props;
 
     const editorBlocks = filters.map((f, idx) => {
-      return <FilterEditorBlock key={idx} onDelete={this.deleteFilterItem.bind(this, idx)}>
-        <SingleFilterEditor
-          properties={this.props.properties}
-          filter={f}
-          onChange={this.onFilterPartChanged.bind(this, idx + 1)}
-        />
-      </FilterEditorBlock>
+      const error = errors[`filter[${idx+1}]`];
+
+      return (
+        <>
+          <FilterEditorBlock key={idx} onDelete={this.deleteFilterItem.bind(this, idx)}>
+            <SingleFilterEditor
+              properties={this.props.properties}
+              filter={f}
+              onChange={this.onFilterPartChanged.bind(this, idx + 1)}
+            />
+          </FilterEditorBlock>
+          {error &&
+            <div className="maputnik-inline-error">{error.message}</div>
+          }
+        </>
+      );
     })
 
     //TODO: Implement support for nested filter

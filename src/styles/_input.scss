@@ -25,6 +25,11 @@
     resize: vertical;
     height: 78px;
   }
+
+  &--disabled {
+    background: transparent;
+    border: none;
+  }
 }
 
 .maputnik-number-container {

@@ -34,3 +34,12 @@
   width: 14px;
   height: 14px;
 }
+
+.maputnik-inline-error {
+  color: #a4a4a4;
+  padding: 0.4em 0.4em;
+  font-size: 0.9em;
+  border: solid 1px $color-red;
+  border-radius: 2px;
+  margin: $margin-2 0px;
+}

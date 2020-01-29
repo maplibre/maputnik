@@ -48,14 +48,18 @@ export default class PropertyGroup extends React.Component {
   }
 
   render() {
+    const {errors} = this.props;
     const fields = this.props.groupFields.map(fieldName => {
       const fieldSpec = getFieldSpec(this.props.spec, this.props.layer.type, fieldName)
 
       const paint = this.props.layer.paint || {}
       const layout = this.props.layer.layout || {}
       const fieldValue = fieldName in paint ? paint[fieldName] : layout[fieldName]
+      const fieldType = fieldName in paint ? 'paint' : 'layout';
+      const errorKey = fieldType+"."+fieldName;
 
       return <FunctionSpecField
+        error={errors[errorKey]}
         onChange={this.onPropertyChange}
         key={fieldName}
         fieldName={fieldName}

@@ -200,6 +200,7 @@ export default class DataProperty extends React.Component {
     return <div className="maputnik-data-spec-block">
     <div className="maputnik-data-spec-property">
       <InputBlock
+        error={this.props.error}
         doc={this.props.fieldSpec.doc}
         label={labelFromFieldName(this.props.fieldName)}
       >

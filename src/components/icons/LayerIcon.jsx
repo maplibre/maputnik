@@ -6,6 +6,7 @@ import FillIcon from './FillIcon.jsx'
 import SymbolIcon from './SymbolIcon.jsx'
 import BackgroundIcon from './BackgroundIcon.jsx'
 import CircleIcon from './CircleIcon.jsx'
+import MissingIcon from './MissingIcon.jsx'
 
 class LayerIcon extends React.Component {
   static propTypes = {
@@ -25,6 +26,7 @@ class LayerIcon extends React.Component {
       case 'line': return <LineIcon {...iconProps} />
       case 'symbol': return <SymbolIcon {...iconProps} />
       case 'circle': return <CircleIcon {...iconProps} />
+      default: return <MissingIcon {...iconProps} />
     }
   }
 }

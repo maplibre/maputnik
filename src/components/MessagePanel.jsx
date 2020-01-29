@@ -8,8 +8,23 @@ class MessagePanel extends React.Component {
   }
 
   render() {
-    const errors = this.props.errors.map((m, i) => {
-      return <p key={"error-"+i} className="maputnik-message-panel-error">{m}</p>
+    const errors = this.props.errors.map((error, idx) => {
+      let content;
+      if (error.parsed && error.parsed.type === "layer") {
+        const {parsed} = error;
+        const {mapStyle} = this.props;
+        content = (
+          <>
+            Layer <span>'{mapStyle.layers[parsed.data.index].id}'</span>: {parsed.data.message}
+          </>
+        );
+      }
+      else {
+        content = error.message;
+      }
+      return <p key={"error-"+idx} className="maputnik-message-panel-error">
+        {content}
+      </p>
     })
 
     const infos = this.props.infos.map((m, i) => {

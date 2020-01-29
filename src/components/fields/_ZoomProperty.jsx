@@ -124,6 +124,7 @@ export default class ZoomProperty extends React.Component {
       const deleteStopBtn= <DeleteStopButton onClick={this.props.onDeleteStop.bind(this, idx)} />
 
       return <InputBlock
+        error={this.props.error}
         key={key}
         doc={this.props.fieldSpec.doc}
         label={labelFromFieldName(this.props.fieldName)}

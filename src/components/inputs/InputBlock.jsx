@@ -52,6 +52,11 @@ class InputBlock extends React.Component {
       <div className="maputnik-input-block-content">
         {this.props.children}
       </div>
+      {this.props.error &&
+        <div className="maputnik-inline-error">
+          {this.props.error.message}
+        </div>
+      }
     </div>
   }
 }

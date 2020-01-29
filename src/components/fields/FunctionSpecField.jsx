@@ -4,6 +4,9 @@ import PropTypes from 'prop-types'
 import SpecProperty from './_SpecProperty'
 import DataProperty from './_DataProperty'
 import ZoomProperty from './_ZoomProperty'
+import ExpressionProperty from './_ExpressionProperty'
+import {expression} from '@mapbox/mapbox-gl-style-spec'
+
 
 
 function isZoomField(value) {
@@ -12,6 +15,24 @@ function isZoomField(value) {
 
 function isDataField(value) {
   return typeof value === 'object' && value.stops && typeof value.property !== 'undefined'
+}
+
+/**
+ * So here we can't just check is `Array.isArray(value)` because certain
+ * properties accept arrays as values, for example `text-font`. So we must try
+ * and create an expression.
+ */
+function isExpression(value, fieldSpec={}) {
+  if (!Array.isArray(value)) {
+    return false;
+  }
+  try {
+    const out = expression.createExpression(value, fieldSpec);
+    return (out.result === "success");
+  }
+  catch (err) {
+    return false;
+  }
 }
 
 /**
@@ -108,6 +129,11 @@ export default class FunctionSpecProperty  extends React.Component {
     this.props.onChange(this.props.fieldName, zoomFunc)
   }
 
+  makeExpression = () => {
+    const expression = ["literal", this.props.value || this.props.fieldSpec.default];
+    this.props.onChange(this.props.fieldName, expression);
+  }
+
   makeDataFunction = () => {
     const functionType = this.getFieldFunctionType(this.props.fieldSpec);
     const stopValue = functionType === 'categorical' ? '' : 0;
@@ -126,9 +152,21 @@ export default class FunctionSpecProperty  extends React.Component {
     const propClass = this.props.fieldSpec.default === this.props.value ? "maputnik-default-property" : "maputnik-modified-property"
     let specField;
 
-    if (isZoomField(this.props.value)) {
+    if (isExpression(this.props.value, this.props.fieldSpec)) {
+      specField = (
+        <ExpressionProperty
+          error={this.props.error}
+          onChange={this.props.onChange.bind(this, this.props.fieldName)}
+          fieldName={this.props.fieldName}
+          fieldSpec={this.props.fieldSpec}
+          value={this.props.value}
+        />
+      );
+    }
+    else if (isZoomField(this.props.value)) {
       specField = (
         <ZoomProperty
+          error={this.props.error}
           onChange={this.props.onChange.bind(this)}
           fieldName={this.props.fieldName}
           fieldSpec={this.props.fieldSpec}
@@ -141,6 +179,7 @@ export default class FunctionSpecProperty  extends React.Component {
     else if (isDataField(this.props.value)) {
       specField = (
         <DataProperty
+          error={this.props.error}
           onChange={this.props.onChange.bind(this)}
           fieldName={this.props.fieldName}
           fieldSpec={this.props.fieldSpec}
@@ -153,12 +192,14 @@ export default class FunctionSpecProperty  extends React.Component {
     else {
       specField = (
         <SpecProperty
+          error={this.props.error}
           onChange={this.props.onChange.bind(this)}
           fieldName={this.props.fieldName}
           fieldSpec={this.props.fieldSpec}
           value={this.props.value}
           onZoomClick={this.makeZoomFunction}
           onDataClick={this.makeDataFunction} 
+          onExpressionClick={this.makeExpression} 
         />
       )
     }

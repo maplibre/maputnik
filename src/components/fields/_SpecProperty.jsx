@@ -21,9 +21,12 @@ export default class SpecProperty extends React.Component {
       fieldSpec={this.props.fieldSpec}
       onZoomClick={this.props.onZoomClick}
       onDataClick={this.props.onDataClick} 
+      value={this.props.value}
+      onExpressionClick={this.props.onExpressionClick} 
     />
 
     return <InputBlock
+      error={this.props.error}
       doc={this.props.fieldSpec.doc}
       label={labelFromFieldName(this.props.fieldName)}
       action={functionBtn}
