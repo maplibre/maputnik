@@ -244,7 +244,10 @@ class SettingsModal extends React.Component {
         />
       </InputBlock>
 
-      <InputBlock label={"Style Renderer"} fieldSpec={{doc: "Choose the default Maputnik renderer for this style."}}>
+      <InputBlock
+        label={fieldSpecAdditional.maputnik.style_renderer.label}
+        fieldSpec={fieldSpecAdditional.maputnik.style_renderer}
+      >
         <SelectInput {...inputProps}
           data-wd-key="modal-settings.maputnik:renderer" 
           options={[

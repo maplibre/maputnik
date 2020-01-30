@@ -12,6 +12,10 @@ const spec = {
       label: "Thunderforest Access Token",
       doc: "Public access token for Thunderforest services."
     },
+    style_renderer: {
+      label: "Style Renderer",
+      doc: "Choose the default Maputnik renderer for this style.",
+    },
   }
 }
 
