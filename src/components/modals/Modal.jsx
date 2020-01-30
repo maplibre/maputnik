@@ -2,6 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import {MdClose} from 'react-icons/md'
 import AriaModal from 'react-aria-modal'
+import classnames from 'classnames';
 
 
 class Modal extends React.Component {
@@ -13,6 +14,7 @@ class Modal extends React.Component {
     children: PropTypes.node,
     underlayClickExits: PropTypes.bool,
     underlayProps: PropTypes.object,
+    className: PropTypes.string,
   }
 
   static defaultProps = {
@@ -45,7 +47,7 @@ class Modal extends React.Component {
         verticallyCenter={true}
         onExit={this.onClose}
       >
-        <div className="maputnik-modal"
+        <div className={classnames("maputnik-modal", this.props.className)}
           data-wd-key={this.props["data-wd-key"]}
         >
           <header className="maputnik-modal-header">

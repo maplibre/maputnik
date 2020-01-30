@@ -8,6 +8,7 @@ class SelectInput extends React.Component {
     options: PropTypes.array.isRequired,
     style: PropTypes.object,
     onChange: PropTypes.func.isRequired,
+    title: PropTypes.string,
   }
 
 
@@ -21,6 +22,7 @@ class SelectInput extends React.Component {
       className="maputnik-select"
       data-wd-key={this.props["data-wd-key"]}
       style={this.props.style}
+      title={this.props.title}
       value={this.props.value}
       onChange={e => this.props.onChange(e.target.value)}
     >

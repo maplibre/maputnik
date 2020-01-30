@@ -195,14 +195,25 @@ class AddSource extends React.Component {
   }
 
   render() {
+    // Kind of a hack because the type changes, however maputnik has 1..n
+    // options per type, for example 
+    //
+    //  - 'geojson' - 'GeoJSON (URL)' and 'GeoJSON (JSON)'
+    //  - 'raster' - 'Raster (TileJSON URL)' and 'Raster (XYZ URL)'
+    //
+    // So we just ignore the values entirely as they are self explanatory
+    const sourceTypeFieldSpec = {
+      doc: latest.source_vector.type.doc
+    };
+
     return <div className="maputnik-add-source">
-      <InputBlock label={"Source ID"} doc={"Unique ID that identifies the source and is used in the layer to reference the source."}>
+      <InputBlock label={"Source ID"} fieldSpec={{doc: "Unique ID that identifies the source and is used in the layer to reference the source."}}>
         <StringInput
           value={this.state.sourceId}
           onChange={v => this.setState({ sourceId: v})}
         />
       </InputBlock>
-      <InputBlock label={"Source Type"} doc={latest.source_vector.type.doc}>
+      <InputBlock label={"Source Type"} fieldSpec={sourceTypeFieldSpec}>
         <SelectInput
           options={[
             ['geojson_json', 'GeoJSON (JSON)'],
