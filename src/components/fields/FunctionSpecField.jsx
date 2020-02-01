@@ -22,7 +22,7 @@ function isDataField(value) {
  * properties accept arrays as values, for example `text-font`. So we must try
  * and create an expression.
  */
-function isExpression(value, fieldSpec={}) {
+function checkIsExpression (value, fieldSpec={}) {
   if (!Array.isArray(value)) {
     return false;
   }
@@ -72,6 +72,13 @@ export default class FunctionSpecProperty  extends React.Component {
     ]),
   }
 
+  constructor (props) {
+    super();
+    this.state = {
+      isExpression: checkIsExpression(props.value, props.fieldSpec),
+    }
+  }
+
   getFieldFunctionType(fieldSpec) {
     if (fieldSpec.expression.interpolated) {
       return "exponential"
@@ -103,6 +110,13 @@ export default class FunctionSpecProperty  extends React.Component {
     this.props.onChange(this.props.fieldName, changedValue)
   }
 
+  deleteExpression = (newValue) => {
+    this.props.onChange(this.props.fieldName, newValue);
+    this.setState({
+      isExpression: false,
+    });
+  }
+
   deleteStop = (stopIdx) => {
     const stops = this.props.value.stops.slice(0)
     stops.splice(stopIdx, 1)
@@ -132,6 +146,10 @@ export default class FunctionSpecProperty  extends React.Component {
   makeExpression = () => {
     const expression = ["literal", this.props.value || this.props.fieldSpec.default];
     this.props.onChange(this.props.fieldName, expression);
+
+    this.setState({
+      isExpression: true,
+    });
   }
 
   makeDataFunction = () => {
@@ -152,11 +170,12 @@ export default class FunctionSpecProperty  extends React.Component {
     const propClass = this.props.fieldSpec.default === this.props.value ? "maputnik-default-property" : "maputnik-modified-property"
     let specField;
 
-    if (isExpression(this.props.value, this.props.fieldSpec)) {
+    if (this.state.isExpression) {
       specField = (
         <ExpressionProperty
           error={this.props.error}
           onChange={this.props.onChange.bind(this, this.props.fieldName)}
+          onDelete={this.deleteExpression}
           fieldName={this.props.fieldName}
           fieldSpec={this.props.fieldSpec}
           value={this.props.value}

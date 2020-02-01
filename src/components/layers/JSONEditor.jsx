@@ -1,5 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+import classnames from 'classnames';
 
 import InputBlock from '../inputs/InputBlock'
 import StringInput from '../inputs/StringInput'
@@ -22,6 +23,15 @@ class JSONEditor extends React.Component {
     layer: PropTypes.object.isRequired,
     maxHeight: PropTypes.number,
     onChange: PropTypes.func,
+    lineNumbers: PropTypes.bool,
+  }
+
+  static defaultProps = {
+    lineNumbers: true,
+    gutters: ["CodeMirror-lint-markers"],
+    getValue: (data) => {
+      return JSON.stringify(data, null, 2)
+    }
   }
 
   constructor(props) {
@@ -33,7 +43,7 @@ class JSONEditor extends React.Component {
   }
 
   getValue () {
-    return JSON.stringify(this.props.layer, null, 2);
+    return this.props.getValue(this.props.layer);
   }
 
   componentDidMount () {
@@ -43,13 +53,14 @@ class JSONEditor extends React.Component {
         name: "javascript",
         json: true
       },
+      lineWrapping: this.props.lineWrapping,
       tabSize: 2,
       theme: 'maputnik',
       viewportMargin: Infinity,
-      lineNumbers: true,
+      lineNumbers: this.props.lineNumbers,
       lint: true,
       matchBrackets: true,
-      gutters: ["CodeMirror-lint-markers"],
+      gutters: this.props.gutters,
       scrollbarStyle: "null",
     });
 
@@ -113,7 +124,7 @@ class JSONEditor extends React.Component {
     }
 
     return <div
-      className="codemirror-container"
+      className={classnames("codemirror-container", this.props.className)}
       ref={(el) => this._el = el}
       style={style}
     />

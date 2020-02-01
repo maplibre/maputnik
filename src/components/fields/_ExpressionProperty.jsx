@@ -8,6 +8,7 @@ import StringInput from '../inputs/StringInput'
 
 import labelFromFieldName from './_labelFromFieldName'
 import stringifyPretty from 'json-stringify-pretty-compact'
+import JSONEditor from '../layers/JSONEditor'
 
 
 function isLiteralExpression (value) {
@@ -16,7 +17,7 @@ function isLiteralExpression (value) {
 
 export default class ExpressionProperty extends React.Component {
   static propTypes = {
-    onDeleteStop: PropTypes.func,
+    onDelete: PropTypes.func,
     fieldName: PropTypes.string,
     fieldSpec: PropTypes.object
   }
@@ -28,21 +29,14 @@ export default class ExpressionProperty extends React.Component {
     };
   }
 
-  onChange = (value) => {
-    try {
-      const jsonVal = JSON.parse(value);
-
-      if (isLiteralExpression(jsonVal)) {
-        this.setState({
-          lastValue: jsonVal
-        });
-      }
-
-      this.props.onChange(jsonVal);
+  onChange = (jsonVal) => {
+    if (isLiteralExpression(jsonVal)) {
+      this.setState({
+        lastValue: jsonVal
+      });
     }
-    catch (err) {
-      // TODO: Handle JSON parse error
-    }
+
+    this.props.onChange(jsonVal);
   }
 
   onDelete = () => {
@@ -50,13 +44,13 @@ export default class ExpressionProperty extends React.Component {
     const {value, fieldName, fieldSpec} = this.props;
 
     if (isLiteralExpression(value)) {
-     this.props.onChange(value[1]);
+     this.props.onDelete(value[1]);
     }
     else if (isLiteralExpression(lastValue)) {
-     this.props.onChange(lastValue[1]);
+     this.props.onDelete(lastValue[1]);
     }
     else {
-      this.props.onChange(fieldSpec.default);
+      this.props.onDelete(fieldSpec.default);
     }
   }
 
@@ -75,12 +69,16 @@ export default class ExpressionProperty extends React.Component {
       doc={this.props.fieldSpec.doc}
       label={labelFromFieldName(this.props.fieldName)}
       action={deleteStopBtn}
+      wideMode={true}
     >
-      <StringInput
-        multi={true}
-        value={stringifyPretty(this.props.value, {indent: 2})}
-        spellCheck={false}
-        onInput={this.onChange}
+      <JSONEditor
+        className="maputnik-expression-editor"
+        layer={this.props.value}
+        lineNumbers={false}
+        maxHeight={200}
+        lineWrapping={true}
+        getValue={(data) => stringifyPretty(data, {indent: 2, maxLength: 50})}
+        onChange={this.onChange}
       />
     </InputBlock>
   }

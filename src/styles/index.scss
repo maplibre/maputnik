@@ -35,6 +35,7 @@
   height: 14px;
 }
 
+// TODO: Move these into correct *.scss files
 .maputnik-inline-error {
   color: #a4a4a4;
   padding: 0.4em 0.4em;
@@ -42,4 +43,23 @@
   border: solid 1px $color-red;
   border-radius: 2px;
   margin: $margin-2 0px;
+}
+
+.maputnik-expression-editor {
+  border: solid 1px $color-gray;
+}
+
+.maputnik-input-block--wide {
+  .maputnik-input-block-content {
+    display: block;
+    width: auto;
+  }
+
+  .maputnik-input-block-label {
+    width: 82%;
+  }
+
+  .maputnik-input-block-action {
+    text-align: right;
+  }
 }

@@ -28,6 +28,7 @@ class InputBlock extends React.Component {
       data-wd-key={this.props["data-wd-key"]}
       className={classnames({
         "maputnik-input-block": true,
+        "maputnik-input-block--wide": this.props.wideMode,
         "maputnik-action-block": this.props.action
       })}
       >
