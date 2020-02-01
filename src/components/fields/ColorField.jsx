@@ -13,7 +13,7 @@ function formatColor(color) {
 class ColorField extends React.Component {
   static propTypes = {
     onChange: PropTypes.func.isRequired,
-    name: PropTypes.string.isRequired,
+    name: PropTypes.string,
     value: PropTypes.string,
     doc: PropTypes.string,
     style: PropTypes.object,

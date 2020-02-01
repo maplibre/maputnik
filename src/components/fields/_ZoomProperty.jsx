@@ -126,7 +126,7 @@ export default class ZoomProperty extends React.Component {
       return <InputBlock
         error={this.props.error}
         key={key}
-        doc={this.props.fieldSpec.doc}
+        fieldSpec={this.props.fieldSpec}
         label={labelFromFieldName(this.props.fieldName)}
         action={deleteStopBtn}
       >

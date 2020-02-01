@@ -66,7 +66,7 @@ export default class ExpressionProperty extends React.Component {
 
     return <InputBlock
       error={this.props.error}
-      doc={this.props.fieldSpec.doc}
+      fieldSpec={this.props.fieldSpec}
       label={labelFromFieldName(this.props.fieldName)}
       action={deleteStopBtn}
       wideMode={true}

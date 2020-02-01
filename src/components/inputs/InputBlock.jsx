@@ -2,6 +2,8 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import classnames from 'classnames'
 import DocLabel from '../fields/DocLabel'
+import SpecDoc from './SpecDoc'
+
 
 /** Wrap a component with a label */
 class InputBlock extends React.Component {
@@ -11,16 +13,29 @@ class InputBlock extends React.Component {
       PropTypes.string,
       PropTypes.element,
     ]).isRequired,
-    doc: PropTypes.string,
     action: PropTypes.element,
     children: PropTypes.node.isRequired,
     style: PropTypes.object,
     onChange: PropTypes.func,
+    fieldSpec: PropTypes.object,
+  }
+
+  constructor (props) {
+    super(props);
+    this.state = {
+      showDoc: false,
+    }
   }
 
   onChange(e) {
     const value = e.target.value
     return this.props.onChange(value === "" ? undefined : value)
+  }
+
+  onToggleDoc = (val) => {
+    this.setState({
+      showDoc: val
+    });
   }
 
   render() {
@@ -32,15 +47,16 @@ class InputBlock extends React.Component {
         "maputnik-action-block": this.props.action
       })}
       >
-      {this.props.doc &&
+      {this.props.fieldSpec &&
       <div className="maputnik-input-block-label">
         <DocLabel
           label={this.props.label}
-          doc={this.props.doc}
+          onToggleDoc={this.onToggleDoc}
+          fieldSpec={this.props.fieldSpec}
         />
       </div>
       }
-      {!this.props.doc &&
+      {!this.props.fieldSpec &&
       <label className="maputnik-input-block-label">
         {this.props.label}
       </label>
@@ -57,6 +73,14 @@ class InputBlock extends React.Component {
         <div className="maputnik-inline-error">
           {this.props.error.message}
         </div>
+      }
+      {this.props.fieldSpec &&
+      <div
+        className="maputnik-doc-inline"
+        style={{display: this.state.showDoc ? '' : 'none'}}
+      >
+        <SpecDoc fieldSpec={this.props.fieldSpec} />
+      </div>
       }
     </div>
   }

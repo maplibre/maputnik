@@ -14,7 +14,7 @@ class LayerTypeBlock extends React.Component {
   }
 
   render() {
-    return <InputBlock label={"Type"} doc={latest.layer.type.doc}
+    return <InputBlock label={"Type"} fieldSpec={latest.layer.type}
       data-wd-key={this.props.wdKey}
       error={this.props.error}
     >

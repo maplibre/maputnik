@@ -11,6 +11,7 @@ import SelectInput from '../inputs/SelectInput'
 import EnumInput from '../inputs/EnumInput'
 import ColorField from '../fields/ColorField'
 import Modal from './Modal'
+import fieldSpecAdditional from '../../libs/field-spec-additional'
 
 class SettingsModal extends React.Component {
   static propTypes = {
@@ -86,21 +87,21 @@ class SettingsModal extends React.Component {
       title={'Style Settings'}
     >
       <div className="modal-settings">
-      <InputBlock label={"Name"} doc={latest.$root.name.doc}>
+      <InputBlock label={"Name"} fieldSpec={latest.$root.name}>
         <StringInput {...inputProps}
           data-wd-key="modal-settings.name" 
           value={this.props.mapStyle.name}
           onChange={this.changeStyleProperty.bind(this, "name")}
         />
       </InputBlock>
-      <InputBlock label={"Owner"} doc={"Owner ID of the style. Used by Mapbox or future style APIs."}>
+      <InputBlock label={"Owner"} fieldSpec={{doc: "Owner ID of the style. Used by Mapbox or future style APIs."}}>
         <StringInput {...inputProps}
           data-wd-key="modal-settings.owner" 
           value={this.props.mapStyle.owner}
           onChange={this.changeStyleProperty.bind(this, "owner")}
         />
       </InputBlock>
-      <InputBlock label={"Sprite URL"} doc={latest.$root.sprite.doc}>
+      <InputBlock label={"Sprite URL"} fieldSpec={latest.$root.sprite}>
         <UrlInput {...inputProps}
           data-wd-key="modal-settings.sprite" 
           value={this.props.mapStyle.sprite}
@@ -108,7 +109,7 @@ class SettingsModal extends React.Component {
         />
       </InputBlock>
 
-      <InputBlock label={"Glyphs URL"} doc={latest.$root.glyphs.doc}>
+      <InputBlock label={"Glyphs URL"} fieldSpec={latest.$root.glyphs}>
         <UrlInput {...inputProps}
           data-wd-key="modal-settings.glyphs" 
           value={this.props.mapStyle.glyphs}
@@ -116,7 +117,10 @@ class SettingsModal extends React.Component {
         />
       </InputBlock>
 
-      <InputBlock label={"Mapbox Access Token"} doc={"Public access token for Mapbox services."}>
+      <InputBlock
+        label={fieldSpecAdditional.maputnik.mapbox_access_token.label} 
+        fieldSpec={fieldSpecAdditional.maputnik.mapbox_access_token}
+      >
         <StringInput {...inputProps}
           data-wd-key="modal-settings.maputnik:mapbox_access_token" 
           value={metadata['maputnik:mapbox_access_token']}
@@ -124,7 +128,10 @@ class SettingsModal extends React.Component {
         />
       </InputBlock>
 
-      <InputBlock label={"MapTiler Access Token"} doc={"Public access token for MapTiler Cloud."}>
+      <InputBlock
+        label={fieldSpecAdditional.maputnik.maptiler_access_token.label} 
+        fieldSpec={fieldSpecAdditional.maputnik.maptiler_access_token}
+      >
         <StringInput {...inputProps}
           data-wd-key="modal-settings.maputnik:openmaptiles_access_token" 
           value={metadata['maputnik:openmaptiles_access_token']}
@@ -132,7 +139,10 @@ class SettingsModal extends React.Component {
         />
       </InputBlock>
 
-      <InputBlock label={"Thunderforest Access Token"} doc={"Public access token for Thunderforest services."}>
+      <InputBlock
+        label={fieldSpecAdditional.maputnik.thunderforest_access_token.label} 
+        fieldSpec={fieldSpecAdditional.maputnik.thunderforest_access_token}
+      >
         <StringInput {...inputProps}
           data-wd-key="modal-settings.maputnik:thunderforest_access_token" 
           value={metadata['maputnik:thunderforest_access_token']}
@@ -140,7 +150,7 @@ class SettingsModal extends React.Component {
         />
       </InputBlock>
 
-      <InputBlock label={"Center"} doc={latest.$root.center.doc}>
+      <InputBlock label={"Center"} fieldSpec={latest.$root.center}>
         <ArrayInput
           length={2}
           type="number"
@@ -150,7 +160,7 @@ class SettingsModal extends React.Component {
         />
       </InputBlock>
 
-      <InputBlock label={"Zoom"} doc={latest.$root.zoom.doc}>
+      <InputBlock label={"Zoom"} fieldSpec={latest.$root.zoom}>
         <NumberInput
           {...inputProps}
           value={mapStyle.zoom}
@@ -159,7 +169,7 @@ class SettingsModal extends React.Component {
         />
       </InputBlock>
 
-      <InputBlock label={"Bearing"} doc={latest.$root.bearing.doc}>
+      <InputBlock label={"Bearing"} fieldSpec={latest.$root.bearing}>
         <NumberInput
           {...inputProps}
           value={mapStyle.bearing}
@@ -168,7 +178,7 @@ class SettingsModal extends React.Component {
         />
       </InputBlock>
 
-      <InputBlock label={"Pitch"} doc={latest.$root.pitch.doc}>
+      <InputBlock label={"Pitch"} fieldSpec={latest.$root.pitch}>
         <NumberInput
           {...inputProps}
           value={mapStyle.pitch}
@@ -177,7 +187,7 @@ class SettingsModal extends React.Component {
         />
       </InputBlock>
 
-      <InputBlock label={"Light anchor"} doc={latest.light.anchor.doc}>
+      <InputBlock label={"Light anchor"} fieldSpec={latest.light.anchor}>
         <EnumInput
           {...inputProps}
           value={light.anchor}
@@ -187,7 +197,7 @@ class SettingsModal extends React.Component {
         />
       </InputBlock>
 
-      <InputBlock label={"Light color"} doc={latest.light.color.doc}>
+      <InputBlock label={"Light color"} fieldSpec={latest.light.color}>
         <ColorField
           {...inputProps}
           value={light.color}
@@ -196,7 +206,7 @@ class SettingsModal extends React.Component {
         />
       </InputBlock>
 
-      <InputBlock label={"Light intensity"} doc={latest.light.intensity.doc}>
+      <InputBlock label={"Light intensity"} fieldSpec={latest.light.intensity}>
         <NumberInput
           {...inputProps}
           value={light.intensity}
@@ -205,7 +215,7 @@ class SettingsModal extends React.Component {
         />
       </InputBlock>
 
-      <InputBlock label={"Light position"} doc={latest.light.position.doc}>
+      <InputBlock label={"Light position"} fieldSpec={latest.light.position}>
         <ArrayInput
           {...inputProps}
           type="number"
@@ -216,7 +226,7 @@ class SettingsModal extends React.Component {
         />
       </InputBlock>
 
-      <InputBlock label={"Transition delay"} doc={latest.transition.delay.doc}>
+      <InputBlock label={"Transition delay"} fieldSpec={latest.transition.delay}>
         <NumberInput
           {...inputProps}
           value={transition.delay}
@@ -225,7 +235,7 @@ class SettingsModal extends React.Component {
         />
       </InputBlock>
 
-      <InputBlock label={"Transition duration"} doc={latest.transition.duration.doc}>
+      <InputBlock label={"Transition duration"} fieldSpec={latest.transition.duration}>
         <NumberInput
           {...inputProps}
           value={transition.duration}
@@ -234,7 +244,10 @@ class SettingsModal extends React.Component {
         />
       </InputBlock>
 
-      <InputBlock label={"Style Renderer"} doc={"Choose the default Maputnik renderer for this style."}>
+      <InputBlock
+        label={fieldSpecAdditional.maputnik.style_renderer.label}
+        fieldSpec={fieldSpecAdditional.maputnik.style_renderer}
+      >
         <SelectInput {...inputProps}
           data-wd-key="modal-settings.maputnik:renderer" 
           options={[

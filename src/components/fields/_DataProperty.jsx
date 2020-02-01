@@ -201,17 +201,18 @@ export default class DataProperty extends React.Component {
     <div className="maputnik-data-spec-property">
       <InputBlock
         error={this.props.error}
-        doc={this.props.fieldSpec.doc}
+        fieldSpec={this.props.fieldSpec}
+        fieldSpec={this.props.fieldSpec}
         label={labelFromFieldName(this.props.fieldName)}
       >
         <div className="maputnik-data-spec-property-group">
           <DocLabel
             label="Property"
-            doc={"Input a data property to base styles off of."}
           />
           <div className="maputnik-data-spec-property-input">
             <StringInput
               value={this.props.value.property}
+              title={"Input a data property to base styles off of."}
               onChange={propVal => this.changeDataProperty("property", propVal)}
             />
           </div>
@@ -219,12 +220,12 @@ export default class DataProperty extends React.Component {
         <div className="maputnik-data-spec-property-group">
           <DocLabel
             label="Type"
-            doc={"Select a type of data scale (default is 'categorical')."}
           />
           <div className="maputnik-data-spec-property-input">
             <SelectInput
               value={this.props.value.type}
               onChange={propVal => this.changeDataProperty("type", propVal)}
+              title={"Select a type of data scale (default is 'categorical')."}
               options={this.getDataFunctionTypes(this.props.fieldSpec)}
             />
           </div>
@@ -232,7 +233,6 @@ export default class DataProperty extends React.Component {
         <div className="maputnik-data-spec-property-group">
           <DocLabel
             label="Default"
-            doc={"Input a default value for data if not covered by the scales."}
           />
           <div className="maputnik-data-spec-property-input">
             <SpecField
@@ -243,15 +243,15 @@ export default class DataProperty extends React.Component {
             />
           </div>
         </div>
+        {dataFields}
+        <Button
+          className="maputnik-add-stop"
+          onClick={this.props.onAddStop.bind(this)}
+        >
+          Add stop
+        </Button>
       </InputBlock>
     </div>
-      {dataFields}
-      <Button
-        className="maputnik-add-stop"
-        onClick={this.props.onAddStop.bind(this)}
-      >
-        Add stop
-      </Button>
     </div>
   }
 }
