@@ -207,7 +207,7 @@ export default class App extends React.Component {
       errors: [],
       infos: [],
       mapStyle: style.emptyStyle,
-      hopefulMapStyle: style.emptyStyle,
+      dirtyMapStyle: style.emptyStyle,
       selectedLayerIndex: 0,
       sources: {},
       vectorLayers: {},
@@ -280,7 +280,7 @@ export default class App extends React.Component {
   }
 
   updateFonts(urlTemplate) {
-    const metadata = this.state.hopefulMapStyle.metadata || {}
+    const metadata = this.state.dirtyMapStyle.metadata || {}
     const accessToken = metadata['maputnik:openmaptiles_access_token'] || tokens.openmaptiles
 
     let glyphUrl = (typeof urlTemplate === 'string')? urlTemplate.replace('{key}', accessToken): urlTemplate;
@@ -345,23 +345,23 @@ export default class App extends React.Component {
 
     if(errors.length === 0) {
 
-      if(newStyle.glyphs !== this.state.hopefulMapStyle.glyphs) {
+      if(newStyle.glyphs !== this.state.dirtyMapStyle.glyphs) {
         this.updateFonts(newStyle.glyphs)
       }
-      if(newStyle.sprite !== this.state.hopefulMapStyle.sprite) {
+      if(newStyle.sprite !== this.state.dirtyMapStyle.sprite) {
         this.updateIcons(newStyle.sprite)
       }
 
       this.revisionStore.addRevision(newStyle)
       if(save) this.saveStyle(newStyle)
       this.setState({
-        hopefulMapStyle: newStyle,
+        dirtyMapStyle: newStyle,
         mapStyle: newStyle,
         errors: [],
       })
     } else {
       this.setState({
-        hopefulMapStyle: newStyle,
+        dirtyMapStyle: newStyle,
         errors: mappedErrors,
       })
     }
@@ -373,38 +373,38 @@ export default class App extends React.Component {
     let activeStyle;
 
     // Check our dirty style state first, otherwise just undo to that state.
-    if (isEqual(this.state.mapStyle, this.state.hopefulMapStyle)) {
+    if (isEqual(this.state.mapStyle, this.state.dirtyMapStyle)) {
       activeStyle = this.revisionStore.undo()
     }
     else {
       activeStyle = this.state.mapStyle;
     }
 
-    const messages = undoMessages(this.state.hopefulMapStyle, activeStyle)
+    const messages = undoMessages(this.state.dirtyMapStyle, activeStyle)
     this.saveStyle(activeStyle)
     this.setState({
       infos: messages,
       mapStyle: activeStyle,
-      hopefulMapStyle: activeStyle,
+      dirtyMapStyle: activeStyle,
       errors: [],
     })
   }
 
   onRedo = () => {
     const activeStyle = this.revisionStore.redo()
-    const messages = redoMessages(this.state.hopefulMapStyle, activeStyle)
+    const messages = redoMessages(this.state.dirtyMapStyle, activeStyle)
     this.saveStyle(activeStyle)
     this.setState({
       infos: messages,
       mapStyle: activeStyle,
-      hopefulMapStyle: activeStyle,
+      dirtyMapStyle: activeStyle,
       errors: [],
     })
   }
 
   onMoveLayer = (move) => {
     let { oldIndex, newIndex } = move;
-    let layers = this.state.hopefulMapStyle.layers;
+    let layers = this.state.dirtyMapStyle.layers;
     oldIndex = clamp(oldIndex, 0, layers.length-1);
     newIndex = clamp(newIndex, 0, layers.length-1);
     if(oldIndex === newIndex) return;
@@ -422,14 +422,14 @@ export default class App extends React.Component {
 
   onLayersChange = (changedLayers) => {
     const changedStyle = {
-      ...this.state.hopefulMapStyle,
+      ...this.state.dirtyMapStyle,
       layers: changedLayers
     }
     this.onStyleChanged(changedStyle)
   }
 
   onLayerDestroy = (layerId) => {
-    let layers = this.state.hopefulMapStyle.layers;
+    let layers = this.state.dirtyMapStyle.layers;
     const remainingLayers = layers.slice(0);
     const idx = style.indexOfLayer(remainingLayers, layerId)
     remainingLayers.splice(idx, 1);
@@ -448,7 +448,7 @@ export default class App extends React.Component {
   }
 
   onLayerVisibilityToggle = (layerId) => {
-    let layers = this.state.hopefulMapStyle.layers;
+    let layers = this.state.dirtyMapStyle.layers;
     const changedLayers = layers.slice(0)
     const idx = style.indexOfLayer(changedLayers, layerId)
 
@@ -463,7 +463,7 @@ export default class App extends React.Component {
 
 
   onLayerIdChange = (oldId, newId) => {
-    const changedLayers = this.state.hopefulMapStyle.layers.slice(0)
+    const changedLayers = this.state.dirtyMapStyle.layers.slice(0)
     const idx = style.indexOfLayer(changedLayers, oldId)
 
     changedLayers[idx] = {
@@ -476,7 +476,7 @@ export default class App extends React.Component {
 
   onLayerChanged = (layer) => {
     console.log("test: onLayerChanged", layer);
-    const changedLayers = this.state.hopefulMapStyle.layers.slice(0)
+    const changedLayers = this.state.dirtyMapStyle.layers.slice(0)
     const idx = style.indexOfLayer(changedLayers, layer.id)
     changedLayers[idx] = layer
 
@@ -513,7 +513,7 @@ export default class App extends React.Component {
   fetchSources() {
     const sourceList = {...this.state.sources};
 
-    for(let [key, val] of Object.entries(this.state.hopefulMapStyle.sources)) {
+    for(let [key, val] of Object.entries(this.state.dirtyMapStyle.sources)) {
       if(sourceList.hasOwnProperty(key)) {
         continue;
       }
@@ -637,7 +637,7 @@ export default class App extends React.Component {
   }
 
   onLayerSelect = (layerId) => {
-    const idx = style.indexOfLayer(this.state.hopefulMapStyle.layers, layerId)
+    const idx = style.indexOfLayer(this.state.dirtyMapStyle.layers, layerId)
     this.setState({ selectedLayerIndex: idx })
   }
 
@@ -677,14 +677,14 @@ export default class App extends React.Component {
   }
 
   render() {
-    const layers = this.state.hopefulMapStyle.layers || []
+    const layers = this.state.dirtyMapStyle.layers || []
     const selectedLayer = layers.length > 0 ? layers[this.state.selectedLayerIndex] : null
-    const metadata = this.state.hopefulMapStyle.metadata || {}
+    const metadata = this.state.dirtyMapStyle.metadata || {}
 
     const toolbar = <Toolbar
       renderer={this._getRenderer()}
       mapState={this.state.mapState}
-      mapStyle={this.state.hopefulMapStyle}
+      mapStyle={this.state.dirtyMapStyle}
       inspectModeEnabled={this.state.mapState === "inspect"}
       sources={this.state.sources}
       onStyleChanged={this.onStyleChanged}
@@ -711,7 +711,7 @@ export default class App extends React.Component {
       layer={selectedLayer}
       layerIndex={this.state.selectedLayerIndex}
       isFirstLayer={this.state.selectedLayerIndex < 1}
-      isLastLayer={this.state.selectedLayerIndex === this.state.hopefulMapStyle.layers.length-1}
+      isLastLayer={this.state.selectedLayerIndex === this.state.dirtyMapStyle.layers.length-1}
       sources={this.state.sources}
       vectorLayers={this.state.vectorLayers}
       spec={this.state.spec}
@@ -748,7 +748,7 @@ export default class App extends React.Component {
         onOpenToggle={this.toggleModal.bind(this, 'shortcuts')}
       />
       <SettingsModal
-        mapStyle={this.state.hopefulMapStyle}
+        mapStyle={this.state.dirtyMapStyle}
         onStyleChanged={this.onStyleChanged}
         onChangeMetadataProperty={this.onChangeMetadataProperty}
         isOpen={this.state.isOpen.settings}
@@ -756,7 +756,7 @@ export default class App extends React.Component {
         openlayersDebugOptions={this.state.openlayersDebugOptions}
       />
       <ExportModal
-        mapStyle={this.state.hopefulMapStyle}
+        mapStyle={this.state.dirtyMapStyle}
         onStyleChanged={this.onStyleChanged}
         isOpen={this.state.isOpen.export}
         onOpenToggle={this.toggleModal.bind(this, 'export')}
@@ -767,7 +767,7 @@ export default class App extends React.Component {
         onOpenToggle={this.toggleModal.bind(this, 'open')}
       />
       <SourcesModal
-        mapStyle={this.state.hopefulMapStyle}
+        mapStyle={this.state.dirtyMapStyle}
         onStyleChanged={this.onStyleChanged}
         isOpen={this.state.isOpen.sources}
         onOpenToggle={this.toggleModal.bind(this, 'sources')}
