@@ -370,12 +370,23 @@ export default class App extends React.Component {
   }
 
   onUndo = () => {
-    const activeStyle = this.revisionStore.undo()
+    let activeStyle;
+
+    // Check our dirty style state first, otherwise just undo to that state.
+    if (isEqual(this.state.mapStyle, this.state.hopefulMapStyle)) {
+      activeStyle = this.revisionStore.undo()
+    }
+    else {
+      activeStyle = this.state.mapStyle;
+    }
+
     const messages = undoMessages(this.state.hopefulMapStyle, activeStyle)
     this.saveStyle(activeStyle)
     this.setState({
-      mapStyle: activeStyle,
       infos: messages,
+      mapStyle: activeStyle,
+      hopefulMapStyle: activeStyle,
+      errors: [],
     })
   }
 
@@ -384,8 +395,10 @@ export default class App extends React.Component {
     const messages = redoMessages(this.state.hopefulMapStyle, activeStyle)
     this.saveStyle(activeStyle)
     this.setState({
-      mapStyle: activeStyle,
       infos: messages,
+      mapStyle: activeStyle,
+      hopefulMapStyle: activeStyle,
+      errors: [],
     })
   }
 
