@@ -10,7 +10,6 @@ import 'codemirror/addon/lint/lint'
 import 'codemirror/addon/edit/matchbrackets'
 import 'codemirror/lib/codemirror.css'
 import 'codemirror/addon/lint/lint.css'
-import '../../codemirror-maputnik.css'
 import jsonlint from 'jsonlint'
 
 // This is mainly because of this issue <https://github.com/zaach/jsonlint/issues/57> also the API has changed, see comment in file
