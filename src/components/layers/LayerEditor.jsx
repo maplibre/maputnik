@@ -154,6 +154,7 @@ export default class LayerEditor extends React.Component {
           onChange={newId => this.props.onLayerIdChange(this.props.layer.id, newId)}
         />
         <LayerTypeBlock
+          disabled={true}
           error={errorData.type}
           value={this.props.layer.type}
           onChange={newType => this.props.onLayerChanged(changeType(this.props.layer, newType))}

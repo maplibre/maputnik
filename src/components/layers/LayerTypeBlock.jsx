@@ -12,6 +12,11 @@ class LayerTypeBlock extends React.Component {
     wdKey: PropTypes.string,
     onChange: PropTypes.func.isRequired,
     error: PropTypes.object,
+    disabled: PropTypes.bool,
+  }
+
+  static defaultProps = {
+    disabled: false,
   }
 
   render() {
@@ -19,10 +24,29 @@ class LayerTypeBlock extends React.Component {
       data-wd-key={this.props.wdKey}
       error={this.props.error}
     >
-      <StringInput
-        value={this.props.value}
-        disabled={true}
-      />
+      {this.props.disabled &&
+        <StringInput
+          value={this.props.value}
+          disabled={true}
+        />
+      }
+      {!this.props.disabled &&
+        <SelectInput
+          options={[
+            ['background', 'Background'],
+            ['fill', 'Fill'],
+            ['line', 'Line'],
+            ['symbol', 'Symbol'],
+            ['raster', 'Raster'],
+            ['circle', 'Circle'],
+            ['fill-extrusion', 'Fill Extrusion'],
+            ['hillshade', 'Hillshade'],
+            ['heatmap', 'Heatmap'],
+          ]}
+          onChange={this.props.onChange}
+          value={this.props.value}
+        />
+      }
     </InputBlock>
   }
 }
