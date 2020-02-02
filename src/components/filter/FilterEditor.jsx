@@ -27,6 +27,7 @@ export default class CombiningFilterEditor extends React.Component {
     /** Properties of the vector layer and the available fields */
     properties: PropTypes.object,
     filter: PropTypes.array,
+    errors: PropTypes.array,
     onChange: PropTypes.func.isRequired,
   }
 

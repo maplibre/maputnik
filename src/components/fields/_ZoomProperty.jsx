@@ -44,6 +44,7 @@ export default class ZoomProperty extends React.Component {
     onAddStop: PropTypes.func,
     fieldName: PropTypes.string,
     fieldSpec: PropTypes.object,
+    error: PropTypes.object,
     value: PropTypes.oneOfType([
       PropTypes.object,
       PropTypes.string,

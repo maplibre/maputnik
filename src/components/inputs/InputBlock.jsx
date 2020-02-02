@@ -18,6 +18,8 @@ class InputBlock extends React.Component {
     style: PropTypes.object,
     onChange: PropTypes.func,
     fieldSpec: PropTypes.object,
+    wideMode: PropTypes.bool,
+    error: PropTypes.object,
   }
 
   constructor (props) {

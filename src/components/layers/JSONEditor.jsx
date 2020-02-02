@@ -24,10 +24,15 @@ class JSONEditor extends React.Component {
     maxHeight: PropTypes.number,
     onChange: PropTypes.func,
     lineNumbers: PropTypes.bool,
+    lineWrapping: PropTypes.bool,
+    getValue: PropTypes.func,
+    gutters: PropTypes.array,
+    className: PropTypes.string,
   }
 
   static defaultProps = {
     lineNumbers: true,
+    lineWrapping: false,
     gutters: ["CodeMirror-lint-markers"],
     getValue: (data) => {
       return JSON.stringify(data, null, 2)

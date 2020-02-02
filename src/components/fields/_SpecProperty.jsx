@@ -13,7 +13,10 @@ export default class SpecProperty extends React.Component {
     onZoomClick: PropTypes.func.isRequired,
     onDataClick: PropTypes.func.isRequired,
     fieldName: PropTypes.string,
-    fieldSpec: PropTypes.object
+    fieldSpec: PropTypes.object,
+    value: PropTypes.any,
+    error: PropTypes.object,
+    onExpressionClick: PropTypes.func,
   }
 
   render() {
@@ -27,7 +30,6 @@ export default class SpecProperty extends React.Component {
 
     return <InputBlock
       error={this.props.error}
-      fieldSpec={this.props.fieldSpec}
       fieldSpec={this.props.fieldSpec}
       label={labelFromFieldName(this.props.fieldName)}
       action={functionBtn}

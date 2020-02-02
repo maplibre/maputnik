@@ -5,6 +5,7 @@ class MessagePanel extends React.Component {
   static propTypes = {
     errors: PropTypes.array,
     infos: PropTypes.array,
+    mapStyle: PropTypes.object,
   }
 
   render() {
@@ -15,7 +16,7 @@ class MessagePanel extends React.Component {
         const {mapStyle} = this.props;
         content = (
           <>
-            Layer <span>'{mapStyle.layers[parsed.data.index].id}'</span>: {parsed.data.message}
+            Layer <span>&apos;{mapStyle.layers[parsed.data.index].id}&apos;</span>: {parsed.data.message}
           </>
         );
       }

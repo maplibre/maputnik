@@ -48,6 +48,7 @@ export default class DataProperty extends React.Component {
       PropTypes.bool,
       PropTypes.array
     ]),
+    error: PropTypes.object,
   }
 
   state = {
@@ -201,7 +202,6 @@ export default class DataProperty extends React.Component {
     <div className="maputnik-data-spec-property">
       <InputBlock
         error={this.props.error}
-        fieldSpec={this.props.fieldSpec}
         fieldSpec={this.props.fieldSpec}
         label={labelFromFieldName(this.props.fieldName)}
       >

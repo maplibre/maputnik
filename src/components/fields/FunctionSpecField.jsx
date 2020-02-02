@@ -62,6 +62,7 @@ export default class FunctionSpecProperty  extends React.Component {
       onChange: PropTypes.func.isRequired,
       fieldName: PropTypes.string.isRequired,
       fieldSpec: PropTypes.object.isRequired,
+      error: PropTypes.object,
 
       value: PropTypes.oneOfType([
       PropTypes.object,

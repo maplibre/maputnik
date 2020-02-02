@@ -11,6 +11,7 @@ class LayerTypeBlock extends React.Component {
     value: PropTypes.string.isRequired,
     wdKey: PropTypes.string,
     onChange: PropTypes.func.isRequired,
+    error: PropTypes.object,
   }
 
   render() {

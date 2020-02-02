@@ -9,6 +9,7 @@ class MinZoomBlock extends React.Component {
   static propTypes = {
     value: PropTypes.number,
     onChange: PropTypes.func.isRequired,
+    error: PropTypes.object,
   }
 
   render() {

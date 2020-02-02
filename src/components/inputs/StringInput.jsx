@@ -12,6 +12,7 @@ class StringInput extends React.Component {
     multi: PropTypes.bool,
     required: PropTypes.bool,
     disabled: PropTypes.bool,
+    spellCheck: PropTypes.bool,
   }
 
   static defaultProps = {

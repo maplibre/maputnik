@@ -58,6 +58,7 @@ export default class LayerEditor extends React.Component {
     isFirstLayer: PropTypes.bool,
     isLastLayer: PropTypes.bool,
     layerIndex: PropTypes.number,
+    errors: PropTypes.array,
   }
 
   static defaultProps = {
