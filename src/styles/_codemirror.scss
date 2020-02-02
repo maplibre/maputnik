@@ -11,15 +11,12 @@
 .cm-s-maputnik.CodeMirror {
   height: 100%;
   font-size: 12px;
+  background: transparent;
 }
 
 .cm-s-maputnik.CodeMirror, .cm-s-maputnik .CodeMirror-gutters {
   color: #8e8e8e;
   border: none;
-}
-
-.cm-s-maputnik.CodeMirror {
-  background: transparent;
 }
 
 .cm-s-maputnik .CodeMirror-gutters {
