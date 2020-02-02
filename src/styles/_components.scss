@@ -1,5 +1,6 @@
 // MAP
 .maputnik-map__container {
+  background: white;
   display: flex;
   position: fixed !important;
   top: $toolbar-height + $toolbar-offset;
