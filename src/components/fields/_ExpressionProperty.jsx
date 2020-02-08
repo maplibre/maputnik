@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 
 import InputBlock from '../inputs/InputBlock'
 import Button from '../Button'
-import {MdDelete} from 'react-icons/md'
+import {MdDelete, MdUndo} from 'react-icons/md'
 import StringInput from '../inputs/StringInput'
 
 import labelFromFieldName from './_labelFromFieldName'
@@ -42,9 +42,9 @@ export default class ExpressionProperty extends React.Component {
     this.props.onChange(jsonVal);
   }
 
-  onDelete = () => {
+  onReset = () => {
     const {lastValue} = this.state;
-    const {value, fieldName, fieldSpec} = this.props;
+    const {value, fieldSpec} = this.props;
 
     if (isLiteralExpression(value)) {
      this.props.onDelete(value[1]);
@@ -52,19 +52,34 @@ export default class ExpressionProperty extends React.Component {
     else if (isLiteralExpression(lastValue)) {
      this.props.onDelete(lastValue[1]);
     }
-    else {
-      this.props.onDelete(fieldSpec.default);
-    }
+  }
+
+  onDelete = () => {
+    const {fieldSpec} = this.props;
+    this.props.onDelete(fieldSpec.default);
   }
 
   render() {
+    const {lastValue} = this.state;
+    const {value} = this.props;
+
+    const canUndo = isLiteralExpression(value) || isLiteralExpression(lastValue);
     const deleteStopBtn = (
-      <Button
-        onClick={this.onDelete}
-        className="maputnik-delete-stop"
-      >
-        <MdDelete />
-      </Button>
+      <>
+        <Button
+          onClick={this.onReset}
+          disabled={!canUndo}
+          className="maputnik-delete-stop"
+        >
+          <MdUndo />
+        </Button>
+        <Button
+          onClick={this.onDelete}
+          className="maputnik-delete-stop"
+        >
+          <MdDelete />
+        </Button>
+      </>
     );
 
     return <InputBlock
@@ -76,7 +91,7 @@ export default class ExpressionProperty extends React.Component {
     >
       <JSONEditor
         className="maputnik-expression-editor"
-        layer={this.props.value}
+        layer={value}
         lineNumbers={false}
         maxHeight={200}
         lineWrapping={true}
