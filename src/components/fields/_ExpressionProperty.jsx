@@ -19,6 +19,8 @@ export default class ExpressionProperty extends React.Component {
     value: PropTypes.any,
     error: PropTypes.object,
     onChange: PropTypes.func,
+    onUndo: PropTypes.func,
+    canUndo: PropTypes.bool,
   }
 
   constructor (props) {
