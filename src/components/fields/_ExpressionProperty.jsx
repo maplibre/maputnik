@@ -20,7 +20,7 @@ export default class ExpressionProperty extends React.Component {
     error: PropTypes.object,
     onChange: PropTypes.func,
     onUndo: PropTypes.func,
-    canUndo: PropTypes.bool,
+    canUndo: PropTypes.func,
   }
 
   constructor (props) {
@@ -29,6 +29,7 @@ export default class ExpressionProperty extends React.Component {
 
   render() {
     const {value, canUndo} = this.props;
+    const undoDisabled = canUndo ? !canUndo() : true;
 
     const deleteStopBtn = (
       <>
@@ -36,7 +37,7 @@ export default class ExpressionProperty extends React.Component {
           <Button
             key="undo_action"
             onClick={this.props.onUndo}
-            disabled={canUndo ? canUndo() : false}
+            disabled={undoDisabled}
             className="maputnik-delete-stop"
           >
             <MdUndo />
