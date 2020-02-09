@@ -84,6 +84,10 @@ export default class CombiningFilterEditor extends React.Component {
     onChange: PropTypes.func.isRequired,
   }
 
+  static defaultProps = {
+    filter: ["all"],
+  }
+
   constructor (props) {
     super();
     this.state = {
@@ -255,13 +259,6 @@ export default class CombiningFilterEditor extends React.Component {
     }
     else {
       let {filter} = this.props;
-
-      if (!filter) {
-        filter = defaultFilter;
-      }
-      else if (isNestedCombiningFilter) {
-        filter = migrateFilter(filter);
-      }
 
       const errorMessage = Object.entries(errors)
         .filter(([k, v]) => k.match(/filter(\[\d+\])?/))
