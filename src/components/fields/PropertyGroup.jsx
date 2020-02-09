@@ -40,7 +40,7 @@ export default class PropertyGroup extends React.Component {
     groupFields: PropTypes.array.isRequired,
     onChange: PropTypes.func.isRequired,
     spec: PropTypes.object.isRequired,
-    errors: PropTypes.array,
+    errors: PropTypes.object,
   }
 
   onPropertyChange = (property, newValue) => {

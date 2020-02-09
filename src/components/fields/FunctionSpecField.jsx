@@ -8,6 +8,9 @@ import ExpressionProperty from './_ExpressionProperty'
 import {expression} from '@mapbox/mapbox-gl-style-spec'
 
 
+function isLiteralExpression (value) {
+  return (Array.isArray(value) && value.length === 2 && value[0] === "literal");
+}
 
 function isZoomField(value) {
   return typeof value === 'object' && value.stops && typeof value.property === 'undefined'
@@ -22,6 +25,7 @@ function isDataField(value) {
  * properties accept arrays as values, for example `text-font`. So we must try
  * and create an expression.
  */
+// TODO: Use function from filter checks.
 function checkIsExpression (value, fieldSpec={}) {
   if (!Array.isArray(value)) {
     return false;
@@ -111,8 +115,9 @@ export default class FunctionSpecProperty  extends React.Component {
     this.props.onChange(this.props.fieldName, changedValue)
   }
 
-  deleteExpression = (newValue) => {
-    this.props.onChange(this.props.fieldName, newValue);
+  deleteExpression = () => {
+    const {fieldSpec, fieldName} = this.props;
+    this.props.onChange(fieldName, fieldSpec.default);
     this.setState({
       isExpression: false,
     });
@@ -142,6 +147,22 @@ export default class FunctionSpecProperty  extends React.Component {
       ]
     }
     this.props.onChange(this.props.fieldName, zoomFunc)
+  }
+
+  undoExpression = () => {
+    const {value, fieldName} = this.props;
+
+    if (isLiteralExpression(value)) {
+     this.props.onChange(fieldName, value[1]);
+     this.setState({
+       isExpression: false
+     });
+    }
+  }
+
+  canUndo = () => {
+    const {value} = this.props;
+    return isLiteralExpression(value);
   }
 
   makeExpression = () => {
@@ -176,6 +197,8 @@ export default class FunctionSpecProperty  extends React.Component {
         <ExpressionProperty
           error={this.props.error}
           onChange={this.props.onChange.bind(this, this.props.fieldName)}
+          canUndo={this.canUndo}
+          onUndo={this.undoExpression}
           onDelete={this.deleteExpression}
           fieldName={this.props.fieldName}
           fieldSpec={this.props.fieldSpec}

@@ -11,70 +11,38 @@ import stringifyPretty from 'json-stringify-pretty-compact'
 import JSONEditor from '../layers/JSONEditor'
 
 
-function isLiteralExpression (value) {
-  return (Array.isArray(value) && value.length === 2 && value[0] === "literal");
-}
-
 export default class ExpressionProperty extends React.Component {
   static propTypes = {
     onDelete: PropTypes.func,
     fieldName: PropTypes.string,
     fieldSpec: PropTypes.object,
-    value: PropTypes.object,
+    value: PropTypes.any,
     error: PropTypes.object,
     onChange: PropTypes.func,
   }
 
   constructor (props) {
     super();
-    this.state = {
-      lastValue: props.value,
-    };
-  }
-
-  onChange = (jsonVal) => {
-    if (isLiteralExpression(jsonVal)) {
-      this.setState({
-        lastValue: jsonVal
-      });
-    }
-
-    this.props.onChange(jsonVal);
-  }
-
-  onReset = () => {
-    const {lastValue} = this.state;
-    const {value, fieldSpec} = this.props;
-
-    if (isLiteralExpression(value)) {
-     this.props.onDelete(value[1]);
-    }
-    else if (isLiteralExpression(lastValue)) {
-     this.props.onDelete(lastValue[1]);
-    }
-  }
-
-  onDelete = () => {
-    const {fieldSpec} = this.props;
-    this.props.onDelete(fieldSpec.default);
   }
 
   render() {
-    const {lastValue} = this.state;
-    const {value} = this.props;
+    const {value, canUndo} = this.props;
 
-    const canUndo = isLiteralExpression(value) || isLiteralExpression(lastValue);
     const deleteStopBtn = (
       <>
+        {this.props.onUndo &&
+          <Button
+            key="undo_action"
+            onClick={this.props.onUndo}
+            disabled={canUndo ? canUndo() : false}
+            className="maputnik-delete-stop"
+          >
+            <MdUndo />
+          </Button>
+        }
         <Button
-          onClick={this.onReset}
-          disabled={!canUndo}
-          className="maputnik-delete-stop"
-        >
-          <MdUndo />
-        </Button>
-        <Button
-          onClick={this.onDelete}
+          key="delete_action"
+          onClick={this.props.onDelete}
           className="maputnik-delete-stop"
         >
           <MdDelete />
@@ -96,7 +64,7 @@ export default class ExpressionProperty extends React.Component {
         maxHeight={200}
         lineWrapping={true}
         getValue={(data) => stringifyPretty(data, {indent: 2, maxLength: 50})}
-        onChange={this.onChange}
+        onChange={this.props.onChange}
       />
     </InputBlock>
   }

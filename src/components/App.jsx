@@ -318,7 +318,7 @@ export default class App extends React.Component {
 
   onStyleChanged = (newStyle, save=true) => {
 
-    const errors = validate(newStyle, latest)
+    const errors = validate(newStyle, latest) || [];
     const mappedErrors = errors.map(error => {
       const layerMatch = error.message.match(/layers\[(\d+)\]\.(?:(\S+)\.)?(\S+): (.*)/);
       if (layerMatch) {

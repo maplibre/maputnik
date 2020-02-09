@@ -13,6 +13,7 @@ import 'codemirror/lib/codemirror.css'
 import 'codemirror/addon/lint/lint.css'
 import '../../codemirror-maputnik.css'
 import jsonlint from 'jsonlint'
+import stringifyPretty from 'json-stringify-pretty-compact'
 
 // This is mainly because of this issue <https://github.com/zaach/jsonlint/issues/57> also the API has changed, see comment in file
 import '../../vendor/codemirror/addon/lint/json-lint'
@@ -20,7 +21,7 @@ import '../../vendor/codemirror/addon/lint/json-lint'
 
 class JSONEditor extends React.Component {
   static propTypes = {
-    layer: PropTypes.object.isRequired,
+    layer: PropTypes.any.isRequired,
     maxHeight: PropTypes.number,
     onChange: PropTypes.func,
     lineNumbers: PropTypes.bool,
@@ -35,7 +36,7 @@ class JSONEditor extends React.Component {
     lineWrapping: false,
     gutters: ["CodeMirror-lint-markers"],
     getValue: (data) => {
-      return JSON.stringify(data, null, 2)
+      return stringifyPretty(data, {indent: 2, maxLength: 50} );
     }
   }
 
