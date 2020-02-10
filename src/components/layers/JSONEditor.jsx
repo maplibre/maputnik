@@ -11,7 +11,6 @@ import 'codemirror/addon/lint/lint'
 import 'codemirror/addon/edit/matchbrackets'
 import 'codemirror/lib/codemirror.css'
 import 'codemirror/addon/lint/lint.css'
-import '../../codemirror-maputnik.css'
 import jsonlint from 'jsonlint'
 import stringifyPretty from 'json-stringify-pretty-compact'
 

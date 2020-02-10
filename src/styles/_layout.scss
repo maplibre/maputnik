@@ -40,9 +40,9 @@
     position: fixed;
     height: 50px;
     bottom: 0;
-    left: 550px;
+    right: 0;
     z-index: 1;
-    width: 100%;
+    width: $layout-map-width;
     background-color: $color-black;
   }
 }
