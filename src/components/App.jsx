@@ -354,8 +354,15 @@ export default class App extends React.Component {
 
       errors.forEach(error => {
         const {message} = error;
-        const objPath = message.split(":")[0];
-        unset(dirtyMapStyle, objPath);
+        if (message) {
+          try {
+            const objPath = message.split(":")[0];
+            unset(dirtyMapStyle, objPath);
+          }
+          catch (err) {
+            console.warn(err);
+          }
+        }
       });
     }
 
@@ -475,7 +482,6 @@ export default class App extends React.Component {
   }
 
   onLayerChanged = (layer) => {
-    console.log("test: onLayerChanged", layer);
     const changedLayers = this.state.mapStyle.layers.slice(0)
     const idx = style.indexOfLayer(changedLayers, layer.id)
     changedLayers[idx] = layer
