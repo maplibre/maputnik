@@ -57,14 +57,14 @@ export default class PropertyGroup extends React.Component {
       const layout = this.props.layer.layout || {}
       const fieldValue = fieldName in paint ? paint[fieldName] : layout[fieldName]
       const fieldType = fieldName in paint ? 'paint' : 'layout';
-      const errorKey = fieldType+"."+fieldName;
 
       return <FunctionSpecField
-        error={errors[errorKey]}
+        errors={errors}
         onChange={this.onPropertyChange}
         key={fieldName}
         fieldName={fieldName}
         value={fieldValue}
+        fieldType={fieldType}
         fieldSpec={fieldSpec}
       />
     })

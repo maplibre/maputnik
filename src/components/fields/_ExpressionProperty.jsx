@@ -17,10 +17,14 @@ export default class ExpressionProperty extends React.Component {
     fieldName: PropTypes.string,
     fieldSpec: PropTypes.object,
     value: PropTypes.any,
-    error: PropTypes.object,
+    errors: PropTypes.object,
     onChange: PropTypes.func,
     onUndo: PropTypes.func,
     canUndo: PropTypes.func,
+  }
+
+  static defaultProps = {
+    errors: {},
   }
 
   constructor (props) {
@@ -28,7 +32,7 @@ export default class ExpressionProperty extends React.Component {
   }
 
   render() {
-    const {value, canUndo} = this.props;
+    const {errors, fieldName, fieldType, value, canUndo} = this.props;
     const undoDisabled = canUndo ? !canUndo() : true;
 
     const deleteStopBtn = (
@@ -53,8 +57,10 @@ export default class ExpressionProperty extends React.Component {
       </>
     );
 
+    const error = errors[fieldType+"."+fieldName];
+
     return <InputBlock
-      error={this.props.error}
+      error={error}
       fieldSpec={this.props.fieldSpec}
       label={labelFromFieldName(this.props.fieldName)}
       action={deleteStopBtn}

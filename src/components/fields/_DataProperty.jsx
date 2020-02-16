@@ -48,7 +48,7 @@ export default class DataProperty extends React.Component {
       PropTypes.bool,
       PropTypes.array
     ]),
-    error: PropTypes.object,
+    errors: PropTypes.object,
   }
 
   state = {
@@ -145,6 +145,8 @@ export default class DataProperty extends React.Component {
   }
 
   render() {
+    const {fieldName, fieldType, errors} = this.props;
+
     if (typeof this.props.value.type === "undefined") {
       this.props.value.type = this.getFieldFunctionType(this.props.fieldSpec)
     }
@@ -182,7 +184,22 @@ export default class DataProperty extends React.Component {
         </div>
       }
 
-      return <InputBlock key={key} action={deleteStopBtn} label="">
+      const errorKeyStart = `${fieldType}.${fieldName}.stops[${idx}]`;
+      const foundErrors = Object.entries(errors).filter(([key, error]) => {
+        return key.startsWith(errorKeyStart);
+      });
+
+      const message = foundErrors.map(([key, error]) => {
+        return error.message;
+      }).join("");
+      const error = message ? {message} : undefined;
+
+      return <InputBlock
+        error={error}
+        key={key}
+        action={deleteStopBtn}
+        label=""
+      >
         {zoomInput}
         <div className="maputnik-data-spec-property-stop-data">
           {dataInput}
@@ -201,7 +218,6 @@ export default class DataProperty extends React.Component {
     return <div className="maputnik-data-spec-block">
     <div className="maputnik-data-spec-property">
       <InputBlock
-        error={this.props.error}
         fieldSpec={this.props.fieldSpec}
         label={labelFromFieldName(this.props.fieldName)}
       >

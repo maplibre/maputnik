@@ -13,13 +13,20 @@ export default class SpecProperty extends React.Component {
     onZoomClick: PropTypes.func.isRequired,
     onDataClick: PropTypes.func.isRequired,
     fieldName: PropTypes.string,
+    fieldType: PropTypes.string,
     fieldSpec: PropTypes.object,
     value: PropTypes.any,
-    error: PropTypes.object,
+    errors: PropTypes.object,
     onExpressionClick: PropTypes.func,
   }
 
+  static defaultProps = {
+    errors: {},
+  }
+
   render() {
+    const {errors, fieldName, fieldType} = this.props;
+
     const functionBtn = <FunctionButtons
       fieldSpec={this.props.fieldSpec}
       onZoomClick={this.props.onZoomClick}
@@ -28,8 +35,10 @@ export default class SpecProperty extends React.Component {
       onExpressionClick={this.props.onExpressionClick} 
     />
 
+    const error = errors[fieldType+"."+fieldName];
+
     return <InputBlock
-      error={this.props.error}
+      error={error}
       fieldSpec={this.props.fieldSpec}
       label={labelFromFieldName(this.props.fieldName)}
       action={functionBtn}

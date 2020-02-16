@@ -42,9 +42,10 @@ export default class ZoomProperty extends React.Component {
     onChange: PropTypes.func,
     onDeleteStop: PropTypes.func,
     onAddStop: PropTypes.func,
+    fieldType: PropTypes.string,
     fieldName: PropTypes.string,
     fieldSpec: PropTypes.object,
-    error: PropTypes.object,
+    errors: PropTypes.object,
     value: PropTypes.oneOfType([
       PropTypes.object,
       PropTypes.string,
@@ -52,6 +53,10 @@ export default class ZoomProperty extends React.Component {
       PropTypes.bool,
       PropTypes.array
     ]),
+  }
+
+  static defaultProps = {
+    errors: {},
   }
 
   state = {
@@ -118,14 +123,26 @@ export default class ZoomProperty extends React.Component {
   }
 
   render() {
+    const {fieldName, fieldType, errors} = this.props;
+
     const zoomFields = this.props.value.stops.map((stop, idx) => {
       const zoomLevel = stop[0]
       const key  = this.state.refs[idx];
       const value = stop[1]
       const deleteStopBtn= <DeleteStopButton onClick={this.props.onDeleteStop.bind(this, idx)} />
 
+      const errorKeyStart = `${fieldType}.${fieldName}.stops[${idx}]`;
+      const foundErrors = Object.entries(errors).filter(([key, error]) => {
+        return key.startsWith(errorKeyStart);
+      });
+
+      const message = foundErrors.map(([key, error]) => {
+        return error.message;
+      }).join("");
+      const error = message ? {message} : undefined;
+
       return <InputBlock
-        error={this.props.error}
+        error={error}
         key={key}
         fieldSpec={this.props.fieldSpec}
         label={labelFromFieldName(this.props.fieldName)}

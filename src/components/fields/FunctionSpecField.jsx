@@ -95,8 +95,9 @@ export default class FunctionSpecProperty  extends React.Component {
   static propTypes = {
       onChange: PropTypes.func.isRequired,
       fieldName: PropTypes.string.isRequired,
+      fieldType: PropTypes.string.isRequired,
       fieldSpec: PropTypes.object.isRequired,
-      error: PropTypes.object,
+      errors: PropTypes.object,
 
       value: PropTypes.oneOfType([
       PropTypes.object,
@@ -225,11 +226,12 @@ export default class FunctionSpecProperty  extends React.Component {
     if (this.state.isExpression) {
       specField = (
         <ExpressionProperty
-          error={this.props.error}
+          errors={this.props.errors}
           onChange={this.props.onChange.bind(this, this.props.fieldName)}
           canUndo={this.canUndo}
           onUndo={this.undoExpression}
           onDelete={this.deleteExpression}
+          fieldType={this.props.fieldType}
           fieldName={this.props.fieldName}
           fieldSpec={this.props.fieldSpec}
           value={this.props.value}
@@ -239,8 +241,9 @@ export default class FunctionSpecProperty  extends React.Component {
     else if (isZoomField(this.props.value)) {
       specField = (
         <ZoomProperty
-          error={this.props.error}
+          errors={this.props.errors}
           onChange={this.props.onChange.bind(this)}
+          fieldType={this.props.fieldType}
           fieldName={this.props.fieldName}
           fieldSpec={this.props.fieldSpec}
           value={this.props.value}
@@ -252,8 +255,9 @@ export default class FunctionSpecProperty  extends React.Component {
     else if (isDataField(this.props.value)) {
       specField = (
         <DataProperty
-          error={this.props.error}
+          errors={this.props.errors}
           onChange={this.props.onChange.bind(this)}
+          fieldType={this.props.fieldType}
           fieldName={this.props.fieldName}
           fieldSpec={this.props.fieldSpec}
           value={this.props.value}
@@ -265,8 +269,9 @@ export default class FunctionSpecProperty  extends React.Component {
     else {
       specField = (
         <SpecProperty
-          error={this.props.error}
+          errors={this.props.errors}
           onChange={this.props.onChange.bind(this)}
+          fieldType={this.props.fieldType}
           fieldName={this.props.fieldName}
           fieldSpec={this.props.fieldSpec}
           value={this.props.value}
