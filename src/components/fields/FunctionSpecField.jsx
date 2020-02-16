@@ -5,7 +5,6 @@ import SpecProperty from './_SpecProperty'
 import DataProperty from './_DataProperty'
 import ZoomProperty from './_ZoomProperty'
 import ExpressionProperty from './_ExpressionProperty'
-import {expression} from '@mapbox/mapbox-gl-style-spec'
 
 
 function isLiteralExpression (value) {
@@ -13,29 +12,60 @@ function isLiteralExpression (value) {
 }
 
 function isZoomField(value) {
-  return typeof value === 'object' && value.stops && typeof value.property === 'undefined'
+  return (
+    typeof(value) === 'object' &&
+    value.stops &&
+    typeof(value.property) === 'undefined' &&
+    Array.isArray(value.stops) &&
+    value.stops.length > 1 &&
+    value.stops.every(stop => Array.isArray(stop) && stop.length === 2)
+  );
 }
 
 function isDataField(value) {
-  return typeof value === 'object' && value.stops && typeof value.property !== 'undefined'
+  return (
+    typeof(value) === 'object' &&
+    value.stops &&
+    typeof(value.property) !== 'undefined' &&
+    value.stops.length > 1 &&
+    Array.isArray(value.stops) &&
+    value.stops.every(stop => {
+      return (
+        Array.isArray(stop) &&
+        stop.length === 2 &&
+        typeof(stop[0]) === 'object'
+      );
+    })
+  );
 }
 
-/**
- * So here we can't just check is `Array.isArray(value)` because certain
- * properties accept arrays as values, for example `text-font`. So we must try
- * and create an expression.
- */
-// TODO: Use function from filter checks.
+function isPrimative (value) {
+  const valid = ["string", "boolean", "number"];
+  return valid.includes(typeof(value));
+}
+
+function isArrayOfPrimatives (values) {
+  if (Array.isArray(value)) {
+    return values.every(isPrimative);
+  }
+  return false;
+}
+
 function checkIsExpression (value, fieldSpec={}) {
-  if (!Array.isArray(value)) {
+  if (value === undefined) {
     return false;
   }
-  try {
-    const out = expression.createExpression(value, fieldSpec);
-    return (out.result === "success");
-  }
-  catch (err) {
+  else if (isPrimative(value)) {
     return false;
+  }
+  else if (fieldSpec.type === "array" && isArrayOfPrimatives(value)) {
+    return false;
+  }
+  else if (isZoomField(value) || isDataField(value)) {
+    return false;
+  }
+  else {
+    return true;
   }
 }
 
