@@ -40,6 +40,7 @@ export default class DataProperty extends React.Component {
     onDeleteStop: PropTypes.func,
     onAddStop: PropTypes.func,
     fieldName: PropTypes.string,
+    fieldType: PropTypes.string,
     fieldSpec: PropTypes.object,
     value: PropTypes.oneOfType([
       PropTypes.object,

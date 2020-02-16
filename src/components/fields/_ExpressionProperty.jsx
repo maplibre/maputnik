@@ -15,6 +15,7 @@ export default class ExpressionProperty extends React.Component {
   static propTypes = {
     onDelete: PropTypes.func,
     fieldName: PropTypes.string,
+    fieldType: PropTypes.string,
     fieldSpec: PropTypes.object,
     value: PropTypes.any,
     errors: PropTypes.object,
