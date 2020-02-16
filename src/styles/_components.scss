@@ -146,7 +146,7 @@
 .maputnik-icon-button {
   background-color: transparent;
 
-  &:hover {
+  &:hover:not(:disabled) {
     background-color: transparent;
 
     label,
