@@ -217,58 +217,58 @@ export default class DataProperty extends React.Component {
     })
 
     return <div className="maputnik-data-spec-block">
-    <div className="maputnik-data-spec-property">
-      <InputBlock
-        fieldSpec={this.props.fieldSpec}
-        label={labelFromFieldName(this.props.fieldName)}
-      >
-        <div className="maputnik-data-spec-property-group">
-          <DocLabel
-            label="Property"
-          />
-          <div className="maputnik-data-spec-property-input">
-            <StringInput
-              value={this.props.value.property}
-              title={"Input a data property to base styles off of."}
-              onChange={propVal => this.changeDataProperty("property", propVal)}
-            />
-          </div>
-        </div>
-        <div className="maputnik-data-spec-property-group">
-          <DocLabel
-            label="Type"
-          />
-          <div className="maputnik-data-spec-property-input">
-            <SelectInput
-              value={this.props.value.type}
-              onChange={propVal => this.changeDataProperty("type", propVal)}
-              title={"Select a type of data scale (default is 'categorical')."}
-              options={this.getDataFunctionTypes(this.props.fieldSpec)}
-            />
-          </div>
-        </div>
-        <div className="maputnik-data-spec-property-group">
-          <DocLabel
-            label="Default"
-          />
-          <div className="maputnik-data-spec-property-input">
-            <SpecField
-              fieldName={this.props.fieldName}
-              fieldSpec={this.props.fieldSpec}
-              value={this.props.value.default}
-              onChange={(_, propVal) => this.changeDataProperty("default", propVal)}
-            />
-          </div>
-        </div>
-        {dataFields}
-        <Button
-          className="maputnik-add-stop"
-          onClick={this.props.onAddStop.bind(this)}
+      <div className="maputnik-data-spec-property">
+        <InputBlock
+          fieldSpec={this.props.fieldSpec}
+          label={labelFromFieldName(this.props.fieldName)}
         >
-          Add stop
-        </Button>
-      </InputBlock>
-    </div>
+          <div className="maputnik-data-spec-property-group">
+            <DocLabel
+              label="Property"
+            />
+            <div className="maputnik-data-spec-property-input">
+              <StringInput
+                value={this.props.value.property}
+                title={"Input a data property to base styles off of."}
+                onChange={propVal => this.changeDataProperty("property", propVal)}
+              />
+            </div>
+          </div>
+          <div className="maputnik-data-spec-property-group">
+            <DocLabel
+              label="Type"
+            />
+            <div className="maputnik-data-spec-property-input">
+              <SelectInput
+                value={this.props.value.type}
+                onChange={propVal => this.changeDataProperty("type", propVal)}
+                title={"Select a type of data scale (default is 'categorical')."}
+                options={this.getDataFunctionTypes(this.props.fieldSpec)}
+              />
+            </div>
+          </div>
+          <div className="maputnik-data-spec-property-group">
+            <DocLabel
+              label="Default"
+            />
+            <div className="maputnik-data-spec-property-input">
+              <SpecField
+                fieldName={this.props.fieldName}
+                fieldSpec={this.props.fieldSpec}
+                value={this.props.value.default}
+                onChange={(_, propVal) => this.changeDataProperty("default", propVal)}
+              />
+            </div>
+          </div>
+        </InputBlock>
+      </div>
+      {dataFields}
+      <Button
+        className="maputnik-add-stop"
+        onClick={this.props.onAddStop.bind(this)}
+      >
+        Add stop
+      </Button>
     </div>
   }
 }

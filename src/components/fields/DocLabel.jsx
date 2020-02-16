@@ -49,8 +49,15 @@ export default class DocLabel extends React.Component {
         </div>
       </label>
     }
+    else if (label) {
+      return <label className="maputnik-doc-wrapper">
+        <div className="maputnik-doc-target">
+          {label}
+        </div>
+      </label>
+    }
     else {
-      return <div />
+      <div />
     }
   }
 }
