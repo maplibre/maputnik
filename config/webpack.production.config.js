@@ -2,6 +2,7 @@ var webpack = require('webpack');
 var path = require('path');
 var rules = require('./webpack.rules');
 var HtmlWebpackPlugin = require('html-webpack-plugin');
+var HtmlWebpackInlineSVGPlugin = require('html-webpack-inline-svg-plugin');
 var WebpackCleanupPlugin = require('webpack-cleanup-plugin');
 var BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 var CopyWebpackPlugin = require('copy-webpack-plugin');
@@ -43,6 +44,9 @@ module.exports = {
     new HtmlWebpackPlugin({
       template: './src/template.html',
       title: 'Maputnik'
+    }),
+    new HtmlWebpackInlineSVGPlugin({
+      runPreEmit: true,
     }),
     new CopyWebpackPlugin([
       {
