@@ -6,6 +6,11 @@ class MessagePanel extends React.Component {
     errors: PropTypes.array,
     infos: PropTypes.array,
     mapStyle: PropTypes.object,
+    onLayerSelect: PropTypes.func,
+  }
+
+  static defaultProps = {
+    onLayerSelect: () => {},
   }
 
   render() {
@@ -14,9 +19,16 @@ class MessagePanel extends React.Component {
       if (error.parsed && error.parsed.type === "layer") {
         const {parsed} = error;
         const {mapStyle} = this.props;
+        const layerId = mapStyle.layers[parsed.data.index].id;
         content = (
           <>
-            Layer <span>&apos;{mapStyle.layers[parsed.data.index].id}&apos;</span>: {parsed.data.message}
+            Layer <span>&apos;{layerId}&apos;</span>: {parsed.data.message} &mdash;&nbsp;
+            <button
+              className="maputnik-message-panel__switch-button"
+              onClick={() => this.props.onLayerSelect(layerId)}
+            >
+              switch to layer
+            </button>
           </>
         );
       }

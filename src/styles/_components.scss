@@ -212,6 +212,12 @@
   &-error {
     color: $color-red;
   }
+
+  &__switch-button {
+    all: unset;
+    text-decoration: underline;
+    cursor: pointer;
+  }
 }
 
 .maputnik-dialog {

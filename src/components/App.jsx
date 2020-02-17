@@ -732,6 +732,7 @@ export default class App extends React.Component {
     /> : null
 
     const bottomPanel = (this.state.errors.length + this.state.infos.length) > 0 ? <MessagePanel
+      onLayerSelect={this.onLayerSelect}
       mapStyle={this.state.mapStyle}
       errors={this.state.errors}
       infos={this.state.infos}
