@@ -62,7 +62,18 @@ export default class ExpressionProperty extends React.Component {
       </>
     );
 
-    const error = errors[fieldType+"."+fieldName];
+    const fieldError = errors[fieldType+"."+fieldName];
+    const errorKeyStart = `${fieldType}.${fieldName}[`;
+    const foundErrors = Object.entries(errors).filter(([key, error]) => {
+      return key.startsWith(errorKeyStart);
+    });
+    let message = foundErrors.map(([key, error]) => {
+      return error.message;
+    }).join("");
+    if (fieldError) {
+      message = fieldError.message + message;
+    }
+    const error = message ? {message} : undefined;
 
     return <InputBlock
       error={error}
