@@ -5,6 +5,7 @@ import SpecProperty from './_SpecProperty'
 import DataProperty from './_DataProperty'
 import ZoomProperty from './_ZoomProperty'
 import ExpressionProperty from './_ExpressionProperty'
+import {function as styleFunction} from '@mapbox/mapbox-gl-style-spec';
 
 
 function isLiteralExpression (value) {
@@ -218,7 +219,15 @@ export default class FunctionSpecProperty  extends React.Component {
   }
 
   makeExpression = () => {
-    const expression = ["literal", this.props.value || this.props.fieldSpec.default];
+    const {value, fieldSpec} = this.props;
+    let expression;
+
+    if (typeof(value) === "object" && 'stops' in value) {
+      expression = styleFunction.convertFunction(value, fieldSpec);
+    }
+    else {
+      expression = ["literal", value || this.props.fieldSpec.default];
+    }
     this.props.onChange(this.props.fieldName, expression);
   }
 
@@ -277,6 +286,7 @@ export default class FunctionSpecProperty  extends React.Component {
           value={this.props.value}
           onDeleteStop={this.deleteStop}
           onAddStop={this.addStop}
+          onExpressionClick={this.makeExpression} 
         />
       )
     }
@@ -291,6 +301,7 @@ export default class FunctionSpecProperty  extends React.Component {
           value={this.props.value}
           onDeleteStop={this.deleteStop}
           onAddStop={this.addStop}
+          onExpressionClick={this.makeExpression} 
         />
       )
     }

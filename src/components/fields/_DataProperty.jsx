@@ -269,6 +269,12 @@ export default class DataProperty extends React.Component {
       >
         Add stop
       </Button>
+      <Button
+        className="maputnik-add-stop"
+        onClick={this.props.onExpressionClick.bind(this)}
+      >
+        Convert to expression
+      </Button>
     </div>
   }
 }
