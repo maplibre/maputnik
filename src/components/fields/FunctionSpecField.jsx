@@ -45,27 +45,30 @@ function isPrimative (value) {
 }
 
 function isArrayOfPrimatives (values) {
-  if (Array.isArray(value)) {
+  if (Array.isArray(values)) {
     return values.every(isPrimative);
   }
   return false;
 }
 
-function checkIsExpression (value, fieldSpec={}) {
+function getDataType (value, fieldSpec={}) {
   if (value === undefined) {
-    return false;
+    return "value";
   }
   else if (isPrimative(value)) {
-    return false;
+    return "value";
   }
   else if (fieldSpec.type === "array" && isArrayOfPrimatives(value)) {
-    return false;
+    return "value";
   }
-  else if (isZoomField(value) || isDataField(value)) {
-    return false;
+  else if (isZoomField(value)) {
+    return "zoom_function";
+  }
+  else if (isDataField(value)) {
+    return "data_function";
   }
   else {
-    return true;
+    return "expression";
   }
 }
 
@@ -111,7 +114,21 @@ export default class FunctionSpecProperty  extends React.Component {
   constructor (props) {
     super();
     this.state = {
-      isExpression: checkIsExpression(props.value, props.fieldSpec),
+      dataType: getDataType(props.value, props.fieldSpec),
+      isEditing: false,
+    }
+  }
+
+  static getDerivedStateFromProps(props, state) {
+    // Because otherwise when editing values we end up accidentally changing field type.
+    if (state.isEditing) {
+      return {};
+    }
+    else {
+      return {
+        isEditing: false,
+        dataType: getDataType(props.value, props.fieldSpec)
+      };
     }
   }
 
@@ -150,7 +167,7 @@ export default class FunctionSpecProperty  extends React.Component {
     const {fieldSpec, fieldName} = this.props;
     this.props.onChange(fieldName, fieldSpec.default);
     this.setState({
-      isExpression: false,
+      dataType: "value",
     });
   }
 
@@ -184,25 +201,25 @@ export default class FunctionSpecProperty  extends React.Component {
     const {value, fieldName} = this.props;
 
     if (isLiteralExpression(value)) {
-     this.props.onChange(fieldName, value[1]);
-     this.setState({
-       isExpression: false
-     });
+      this.props.onChange(fieldName, value[1]);
+      this.setState({
+        dataType: "value",
+      });
     }
   }
 
   canUndo = () => {
-    const {value} = this.props;
-    return isLiteralExpression(value);
+    const {value, fieldSpec} = this.props;
+    return (
+      isLiteralExpression(value) ||
+      isPrimative(value) ||
+      (Array.isArray(value) && fieldSpec.type === "array")
+    );
   }
 
   makeExpression = () => {
     const expression = ["literal", this.props.value || this.props.fieldSpec.default];
     this.props.onChange(this.props.fieldName, expression);
-
-    this.setState({
-      isExpression: true,
-    });
   }
 
   makeDataFunction = () => {
@@ -219,11 +236,20 @@ export default class FunctionSpecProperty  extends React.Component {
     this.props.onChange(this.props.fieldName, dataFunc)
   }
 
+  onMarkEditing = () => {
+    this.setState({isEditing: true});
+  }
+
+  onUnmarkEditing = () => {
+    this.setState({isEditing: false});
+  }
+
   render() {
+    const {dataType} = this.state;
     const propClass = this.props.fieldSpec.default === this.props.value ? "maputnik-default-property" : "maputnik-modified-property"
     let specField;
 
-    if (this.state.isExpression) {
+    if (dataType === "expression") {
       specField = (
         <ExpressionProperty
           errors={this.props.errors}
@@ -235,10 +261,12 @@ export default class FunctionSpecProperty  extends React.Component {
           fieldName={this.props.fieldName}
           fieldSpec={this.props.fieldSpec}
           value={this.props.value}
+          onFocus={this.onMarkEditing}
+          onBlur={this.onUnmarkEditing}
         />
       );
     }
-    else if (isZoomField(this.props.value)) {
+    else if (dataType === "zoom_function") {
       specField = (
         <ZoomProperty
           errors={this.props.errors}
@@ -252,7 +280,7 @@ export default class FunctionSpecProperty  extends React.Component {
         />
       )
     }
-    else if (isDataField(this.props.value)) {
+    else if (dataType === "data_function") {
       specField = (
         <DataProperty
           errors={this.props.errors}

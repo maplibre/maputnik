@@ -35,25 +35,23 @@ class JSONEditor extends React.Component {
     lineWrapping: false,
     gutters: ["CodeMirror-lint-markers"],
     getValue: (data) => {
-      return stringifyPretty(data, {indent: 2, maxLength: 50} );
-    }
+      return stringifyPretty(data, {indent: 2, maxLength: 50});
+    },
+    onFocus: () => {},
+    onBlur: () => {},
   }
 
   constructor(props) {
     super(props)
     this.state = {
       isEditing: false,
-      prevValue: this.getValue(),
+      prevValue: this.props.getValue(this.props.layer),
     };
-  }
-
-  getValue () {
-    return this.props.getValue(this.props.layer);
   }
 
   componentDidMount () {
     this._doc = CodeMirror(this._el, {
-      value: this.getValue(),
+      value: this.props.getValue(this.props.layer),
       mode: {
         name: "javascript",
         json: true
@@ -75,12 +73,14 @@ class JSONEditor extends React.Component {
   }
 
   onFocus = () => {
+    this.props.onFocus();
     this.setState({
       isEditing: true
     });
   }
 
   onBlur = () => {
+    this.props.onBlur();
     this.setState({
       isEditing: false
     });
@@ -96,7 +96,7 @@ class JSONEditor extends React.Component {
     if (!this.state.isEditing && prevProps.layer !== this.props.layer) {
       this._cancelNextChange = true;
       this._doc.setValue(
-        this.getValue(),
+        this.props.getValue(this.props.layer),
       )
     }
   }
@@ -104,6 +104,9 @@ class JSONEditor extends React.Component {
   onChange = (e) => {
     if (this._cancelNextChange) {
       this._cancelNextChange = false;
+      this.setState({
+        prevValue: this._doc.getValue(),
+      })
       return;
     }
     const newCode = this._doc.getValue();

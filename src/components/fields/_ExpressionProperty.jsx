@@ -26,6 +26,8 @@ export default class ExpressionProperty extends React.Component {
 
   static defaultProps = {
     errors: {},
+    onFocus: () => {},
+    onBlur: () => {},
   }
 
   constructor (props) {
@@ -69,6 +71,8 @@ export default class ExpressionProperty extends React.Component {
     >
       <JSONEditor
         className="maputnik-expression-editor"
+        onFocus={this.props.onFocus}
+        onBlur={this.props.onBlur}
         layer={value}
         lineNumbers={false}
         maxHeight={200}
