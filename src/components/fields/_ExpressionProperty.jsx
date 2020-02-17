@@ -22,6 +22,8 @@ export default class ExpressionProperty extends React.Component {
     onChange: PropTypes.func,
     onUndo: PropTypes.func,
     canUndo: PropTypes.func,
+    onFocus: PropTypes.func,
+    onBlur: PropTypes.func,
   }
 
   static defaultProps = {

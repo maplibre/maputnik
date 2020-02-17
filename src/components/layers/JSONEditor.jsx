@@ -28,6 +28,8 @@ class JSONEditor extends React.Component {
     getValue: PropTypes.func,
     gutters: PropTypes.array,
     className: PropTypes.string,
+    onFocus: PropTypes.func,
+    onBlur: PropTypes.func,
   }
 
   static defaultProps = {
