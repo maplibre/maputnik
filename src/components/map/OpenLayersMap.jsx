@@ -11,7 +11,6 @@ import {Map, View, Proj, Overlay} from 'ol';
 
 import {toLonLat} from 'ol/proj';
 import {toStringHDMS} from 'ol/coordinate';
-import {mdiMagnify} from '@mdi/js';
 
 
 function renderCoords (coords) {
@@ -159,17 +158,7 @@ export default class OpenLayersMap extends React.Component {
         />
       </div>
       <div className="maputnik-ol-zoom">
-        <svg
-          style={{
-            width: "14px",
-            height: "14px",
-            verticalAlign: "middle",
-          }}
-          viewBox="0 0 24 24"
-        >
-          <title>Zoom level</title>
-          <path fill="currentColor" d={mdiMagnify} />
-        </svg> {this.state.zoom}
+        Zoom: {this.state.zoom}
       </div>
       {this.props.debugToolbox &&
         <div className="maputnik-ol-debug">
