@@ -12,3 +12,6 @@ ReactDOM.render(
   </IconContext.Provider>,
   document.querySelector("#app")
 );
+
+// Hide the loader.
+document.querySelector(".loading").style.display = "none";
