@@ -19,7 +19,12 @@ function isZoomField(value) {
     typeof(value.property) === 'undefined' &&
     Array.isArray(value.stops) &&
     value.stops.length > 1 &&
-    value.stops.every(stop => Array.isArray(stop) && stop.length === 2)
+    value.stops.every(stop => {
+      return (
+        Array.isArray(stop) &&
+        stop.length === 2
+      );
+    })
   );
 }
 
