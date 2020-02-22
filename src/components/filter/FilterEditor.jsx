@@ -296,7 +296,7 @@ export default class CombiningFilterEditor extends React.Component {
           />
           {this.state.valueIsSimpleFilter &&
             <div className="maputnik-expr-infobox">
-              You've entered a old style filter,{' '}
+              You&apos;ve entered a old style filter,{' '}
               <button
                 onClick={this.makeFilter}
                 className="maputnik-expr-infobox__button"
