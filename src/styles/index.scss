@@ -63,3 +63,22 @@
     text-align: right;
   }
 }
+
+.maputnik-expr-infobox {
+  font-size: $font-size-6;
+  background: $color-midgray;
+  padding: $margin-2;
+  border-radius: 2px;
+  border-top-right-radius: 0px;
+  border-top-left-radius: 0px;
+  color: $color-white;
+}
+.maputnik-expr-infobox__button {
+  unset: all;
+  background: none;
+  border: none;
+  padding: 0;
+  text-decoration: underline;
+  color: currentColor;
+  cursor: pointer;
+}

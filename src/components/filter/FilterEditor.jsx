@@ -13,6 +13,19 @@ import SpecDoc from '../inputs/SpecDoc'
 import ExpressionProperty from '../fields/_ExpressionProperty';
 
 
+function combiningFilter (props) {
+  let filter = props.filter || ['all'];
+
+  let combiningOp = filter[0];
+  let filters = filter.slice(1);
+
+  if(combiningFilterOps.indexOf(combiningOp) < 0) {
+    combiningOp = 'all';
+    filters = [filter.slice(0)];
+  }
+
+  return [combiningOp, ...filters];
+}
 
 function migrateFilter (filter) {
   return migrate(createStyleFromFilter(filter)).layers[0].filter;
@@ -92,39 +105,25 @@ export default class CombiningFilterEditor extends React.Component {
     super();
     this.state = {
       showDoc: false,
-      isSimpleFilter: checkIfSimpleFilter(this.combiningFilter(props)),
+      displaySimpleFilter: checkIfSimpleFilter(combiningFilter(props)),
     };
   }
 
   // Convert filter to combining filter
-  combiningFilter(props=this.props) {
-    let filter = props.filter || ['all']
-
-    let combiningOp = filter[0]
-    let filters = filter.slice(1)
-
-    if(combiningFilterOps.indexOf(combiningOp) < 0) {
-      combiningOp = 'all'
-      filters = [filter.slice(0)]
-    }
-
-    return [combiningOp, ...filters]
-  }
-
   onFilterPartChanged(filterIdx, newPart) {
-    const newFilter = this.combiningFilter().slice(0)
+    const newFilter = combiningFilter(this.props).slice(0)
     newFilter[filterIdx] = newPart
     this.props.onChange(newFilter)
   }
 
   deleteFilterItem(filterIdx) {
-    const newFilter = this.combiningFilter().slice(0)
+    const newFilter = combiningFilter(this.props).slice(0)
     newFilter.splice(filterIdx + 1, 1)
     this.props.onChange(newFilter)
   }
 
   addFilterItem = () => {
-    const newFilterItem = this.combiningFilter().slice(0)
+    const newFilterItem = combiningFilter(this.props).slice(0)
     newFilterItem.push(['==', 'name', ''])
     this.props.onChange(newFilterItem)
   }
@@ -135,38 +134,52 @@ export default class CombiningFilterEditor extends React.Component {
     });
   }
 
+  makeFilter = () => {
+    this.setState({
+      displaySimpleFilter: true,
+    })
+  }
+
   makeExpression = () => {
-    let filter = this.combiningFilter();
+    let filter = combiningFilter(this.props);
     this.props.onChange(migrateFilter(filter));
     this.setState({
-      isSimpleFilter: false,
+      displaySimpleFilter: false,
     })
   }
 
   static getDerivedStateFromProps (props, currentState) {
     const {filter} = props;
-    const isSimpleFilter = checkIfSimpleFilter(props.filter);
+    const displaySimpleFilter = checkIfSimpleFilter(combiningFilter(props));
 
     // Upgrade but never downgrade
-    if (!isSimpleFilter && currentState.isSimpleFilter === true) {
+    if (!displaySimpleFilter && currentState.displaySimpleFilter === true) {
       return {
-        isSimpleFilter: false,
+        displaySimpleFilter: false,
+        valueIsSimpleFilter: false,
       };
     }
+    else if (displaySimpleFilter && currentState.displaySimpleFilter === false) {
+      return {
+        valueIsSimpleFilter: true,
+      }
+    }
     else {
-      return {};
+      return {
+        valueIsSimpleFilter: false,
+      };
     }
   }
 
   render() {
     const {errors} = this.props;
-    const {isSimpleFilter} = this.state;
+    const {displaySimpleFilter} = this.state;
     const fieldSpec={
       doc: latest.layer.filter.doc + " Combine multiple filters together by using a compound filter."
     };
     const defaultFilter = ["all"];
 
-    const isNestedCombiningFilter = isSimpleFilter && hasNestedCombiningFilter(this.combiningFilter());
+    const isNestedCombiningFilter = displaySimpleFilter && hasNestedCombiningFilter(combiningFilter(this.props));
 
     if (isNestedCombiningFilter) {
       return <div className="maputnik-filter-editor-unsupported">
@@ -183,8 +196,8 @@ export default class CombiningFilterEditor extends React.Component {
         </Button>
       </div>
     }
-    else if (isSimpleFilter) {
-      const filter = this.combiningFilter();
+    else if (displaySimpleFilter) {
+      const filter = combiningFilter(this.props);
       let combiningOp = filter[0];
       let filters = filter.slice(1)
 
@@ -269,17 +282,30 @@ export default class CombiningFilterEditor extends React.Component {
       const error = errorMessage ? {message: errorMessage} : null;
 
       return (
-        <ExpressionProperty
-          onDelete={() => {
-            this.setState({isSimpleFilter: true});
-            this.props.onChange(defaultFilter);
-          }}
-          fieldName="filter-compound-filter"
-          fieldSpec={fieldSpec}
-          value={filter}
-          error={error}
-          onChange={this.props.onChange}
-        />
+        <>
+          <ExpressionProperty
+            onDelete={() => {
+              this.setState({displaySimpleFilter: true});
+              this.props.onChange(defaultFilter);
+            }}
+            fieldName="filter-compound-filter"
+            fieldSpec={fieldSpec}
+            value={filter}
+            error={error}
+            onChange={this.props.onChange}
+          />
+          {this.state.valueIsSimpleFilter &&
+            <div className="maputnik-expr-infobox">
+              You've entered a old style filter,{' '}
+              <button
+                onClick={this.makeFilter}
+                className="maputnik-expr-infobox__button"
+              >
+                switch to filter editor
+              </button>
+            </div>
+          }
+        </>
       );
     }
   }
