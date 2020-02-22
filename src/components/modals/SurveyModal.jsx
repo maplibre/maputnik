@@ -26,7 +26,7 @@ class SurveyModal extends React.Component {
       title="Maputnik Survey"
     >
       <div className="maputnik-modal-survey">
-        <img className="maputnik-modal-survey__logo" src={logoImage} alt="" width="128" />
+        <div className="maputnik-modal-survey__logo" dangerouslySetInnerHTML={{__html: logoImage}} />
         <h1>You + Maputnik = Maputnik better for you</h1>
         <p className="maputnik-modal-survey__description">We don’t track you, so we don’t know how you use Maputnik. Help us make Maputnik better for you by completing a 7–minute survey carried out by our contributing designer.</p>
         <Button onClick={this.onClick} className="maputnik-big-button maputnik-white-button maputnik-wide-button">Take the Maputnik Survey</Button>
