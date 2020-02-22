@@ -18,8 +18,8 @@ templates:
 
     - run: mkdir -p /tmp/artifacts/logs
     - run: npm run build
-    - run: npm run lint
-    - run: npm run lint-styles
+    - run: npm run lint-js
+    - run: npm run lint-css
     - store_artifacts:
         path: /tmp/artifacts
         destination: /artifacts
@@ -42,8 +42,8 @@ templates:
     - run: mkdir -p /tmp/artifacts/logs
     - run: npm run build
     - run: npm run profiling-build
-    - run: npm run lint
-    - run: npm run lint-styles
+    - run: npm run lint-js
+    - run: npm run lint-css
     - run: DOCKER_HOST=localhost npm test
     - run: ./node_modules/.bin/istanbul report --include /tmp/artifacts/coverage/coverage.json --dir /tmp/artifacts/coverage html lcov
     - store_artifacts:

@@ -6,8 +6,10 @@ var helper = require("../helper");
 
 
 function closeModal(wdKey) {
+  const selector = wd.$(wdKey);
+
   browser.waitUntil(function() {
-    const elem = $(wdKey);
+    const elem = $(selector);
     return elem.isDisplayedInViewport();
   });
 
@@ -15,8 +17,9 @@ function closeModal(wdKey) {
   closeBtnSelector.click();
 
   browser.waitUntil(function() {
-    const elem = $(wdKey);
-    return !elem.isDisplayed();
+    return browser.execute((selector) => {
+      return !document.querySelector(selector);
+    }, selector);
   });
 }
 
