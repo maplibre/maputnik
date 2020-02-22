@@ -158,7 +158,7 @@ export default class OpenLayersMap extends React.Component {
         />
       </div>
       <div className="maputnik-ol-zoom">
-        Zoom level: {this.state.zoom}
+        Zoom: {this.state.zoom}
       </div>
       {this.props.debugToolbox &&
         <div className="maputnik-ol-debug">

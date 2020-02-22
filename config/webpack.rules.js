@@ -17,8 +17,14 @@ module.exports = [
     use: 'file-loader?name=[name].[ext]'
   },
   {
-    test: /\.(svg|gif|jpg|png)$/,
+    test: /\.(gif|jpg|png)$/,
     use: 'file-loader?name=img/[name].[ext]'
+  },
+  {
+    test: /\.svg$/,
+    use: [
+      'svg-inline-loader'
+    ]
   },
   {
     test: /[\/\\](node_modules|global|src)[\/\\].*\.scss$/,
