@@ -3,9 +3,13 @@ import PropTypes from 'prop-types'
 
 class CheckboxInput extends React.Component {
   static propTypes = {
-    value: PropTypes.bool.isRequired,
+    value: PropTypes.bool,
     style: PropTypes.object,
     onChange: PropTypes.func,
+  }
+
+  static defaultProps = {
+    value: false,
   }
 
   render() {
