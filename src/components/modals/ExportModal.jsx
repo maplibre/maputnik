@@ -80,7 +80,7 @@ class ExportModal extends React.Component {
           Download a JSON style to your computer.
         </p>
 
-        <p>
+        <div>
           <InputBlock
             label={fieldSpecAdditional.maputnik.mapbox_access_token.label}
             fieldSpec={fieldSpecAdditional.maputnik.mapbox_access_token}
@@ -108,7 +108,7 @@ class ExportModal extends React.Component {
               onChange={this.changeMetadataProperty.bind(this, "maputnik:thunderforest_access_token")}
             />
           </InputBlock>
-        </p>
+        </div>
 
         <Button onClick={this.downloadStyle.bind(this)}>
           <MdFileDownload />
