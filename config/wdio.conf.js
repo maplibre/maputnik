@@ -97,7 +97,7 @@ exports.config = {
     //
     screenshotPath: SCREENSHOT_PATH,
     // Note: This is here because @orangemug currently runs Maputnik inside a docker container.
-    host: process.env.DOCKER_HOST || "0.0.0.0",
+    hostname: process.env.DOCKER_HOST || "0.0.0.0",
     // Set a base URL in order to shorten url command calls. If your `url` parameter starts
     // with `/`, the base url gets prepended, not including the path portion of your baseUrl.
     // If your `url` parameter starts without a scheme or `/` (like `some/path`), the base url
@@ -118,7 +118,6 @@ exports.config = {
     // Services take over a specific job you don't want to take care of. They enhance
     // your test setup with almost no effort. Unlike plugins, they don't add new
     // commands. Instead, they hook themselves up into the test process.
-    services: ['selenium-standalone'],
     //
     // Framework you want to run your specs with.
     // The following are supported: Mocha, Jasmine, and Cucumber
@@ -147,12 +146,16 @@ exports.config = {
     onPrepare: function (config, capabilities) {
       return new Promise(function(resolve, reject) {
         var compiler = webpack(webpackConfig);
+        const serverHost = isDocker() ? "0.0.0.0" : "localhost";
+
         server = new WebpackDevServer(compiler, {
+          host: serverHost,
           stats: {
             colors: true
           }
         });
-        server.listen(testConfig.port, (isDocker() ? "0.0.0.0" : "localhost"), function(err) {
+
+        server.listen(testConfig.port, serverHost, function(err) {
           if(err) {
             reject(err);
           }

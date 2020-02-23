@@ -22,5 +22,5 @@ install:
 build_script:
   - npm run build
 test_script:
-  - npm run lint
-  - npm run lint-styles
+  - npm run lint-js
+  - npm run lint-css

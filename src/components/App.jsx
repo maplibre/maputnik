@@ -226,7 +226,8 @@ export default class App extends React.Component {
         open: false,
         shortcuts: false,
         export: false,
-        survey: localStorage.hasOwnProperty('survey') ? false : true,
+        // TODO: Disabled for now, this should be opened on the Nth visit to the editor
+        survey: false,
         debug: false,
       },
       mapboxGlDebugOptions: {

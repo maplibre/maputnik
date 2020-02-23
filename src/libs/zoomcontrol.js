@@ -3,6 +3,10 @@ export default class ZoomControl {
     this._map = map;
     this._container = document.createElement('div');
     this._container.className = 'mapboxgl-ctrl mapboxgl-ctrl-group mapboxgl-ctrl-zoom';
+    this._container.innerHTML = `
+      Zoom: <span></span>
+    `;
+    this._textEl = this._container.querySelector("span");
     
     this.addEventListeners();
     
@@ -10,7 +14,7 @@ export default class ZoomControl {
   }
   
   updateZoomLevel() {
-    this._container.innerHTML = `Zoom level: ${this._map.getZoom().toFixed(2)}`;
+    this._textEl.innerHTML = this._map.getZoom().toFixed(2);
   }
   
   addEventListeners (){
