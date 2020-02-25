@@ -19,7 +19,7 @@ class InputBlock extends React.Component {
     onChange: PropTypes.func,
     fieldSpec: PropTypes.object,
     wideMode: PropTypes.bool,
-    error: PropTypes.object,
+    error: PropTypes.array,
   }
 
   constructor (props) {
@@ -41,6 +41,8 @@ class InputBlock extends React.Component {
   }
 
   render() {
+    const errors = [].concat(this.props.error || []);
+
     return <div style={this.props.style}
       data-wd-key={this.props["data-wd-key"]}
       className={classnames({
@@ -71,9 +73,11 @@ class InputBlock extends React.Component {
       <div className="maputnik-input-block-content">
         {this.props.children}
       </div>
-      {this.props.error &&
+      {errors.length > 0 &&
         <div className="maputnik-inline-error">
-          {this.props.error.message}
+          {[].concat(this.props.error).map(error => {
+            return <div>{error.message}</div>
+          })}
         </div>
       }
       {this.props.fieldSpec &&

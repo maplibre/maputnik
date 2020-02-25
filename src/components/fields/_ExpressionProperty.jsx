@@ -34,10 +34,26 @@ export default class ExpressionProperty extends React.Component {
 
   constructor (props) {
     super();
+    this.state = {
+      jsonError: false,
+    };
+  }
+
+  onJSONInvalid = (err) => {
+    this.setState({
+      jsonError: true,
+    })
+  }
+
+  onJSONValid = () => {
+    this.setState({
+      jsonError: false,
+    })
   }
 
   render() {
     const {errors, fieldName, fieldType, value, canUndo} = this.props;
+    const {jsonError} = this.state;
     const undoDisabled = canUndo ? !canUndo() : true;
 
     const deleteStopBtn = (
@@ -62,21 +78,31 @@ export default class ExpressionProperty extends React.Component {
       </>
     );
 
-    const fieldError = errors[fieldType+"."+fieldName];
-    const errorKeyStart = `${fieldType}.${fieldName}[`;
-    const foundErrors = Object.entries(errors).filter(([key, error]) => {
-      return key.startsWith(errorKeyStart);
-    });
-    let message = foundErrors.map(([key, error]) => {
-      return error.message;
-    }).join("");
-    if (fieldError) {
-      message = fieldError.message + message;
+    const fieldKey = fieldType === undefined ? fieldName : `${fieldType}.${fieldName}`;
+
+    const fieldError = errors[fieldKey];
+    const errorKeyStart = `${fieldKey}[`;
+    const foundErrors = [];
+    
+    if (jsonError) {
+      foundErrors.push({message: "Invalid JSON"});
     }
-    const error = message ? {message} : undefined;
+    else {
+      Object.entries(errors)
+      .filter(([key, error]) => {
+        return key.startsWith(errorKeyStart);
+      })
+      .forEach(([key, error]) => {
+        return foundErrors.push(error);
+      })
+
+      if (fieldError) {
+        foundErrors.push(fieldError);
+      }
+    }
 
     return <InputBlock
-      error={error}
+      error={foundErrors}
       fieldSpec={this.props.fieldSpec}
       label={labelFromFieldName(this.props.fieldName)}
       action={deleteStopBtn}
@@ -86,6 +112,8 @@ export default class ExpressionProperty extends React.Component {
         className="maputnik-expression-editor"
         onFocus={this.props.onFocus}
         onBlur={this.props.onBlur}
+        onJSONInvalid={this.onJSONInvalid}
+        onJSONValid={this.onJSONValid}
         layer={value}
         lineNumbers={false}
         maxHeight={200}

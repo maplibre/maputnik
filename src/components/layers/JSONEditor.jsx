@@ -30,6 +30,8 @@ class JSONEditor extends React.Component {
     className: PropTypes.string,
     onFocus: PropTypes.func,
     onBlur: PropTypes.func,
+    onJSONValid: PropTypes.func,
+    onJSONInvalid: PropTypes.func,
   }
 
   static defaultProps = {
@@ -41,6 +43,8 @@ class JSONEditor extends React.Component {
     },
     onFocus: () => {},
     onBlur: () => {},
+    onJSONInvalid: () => {},
+    onJSONValid: () => {},
   }
 
   constructor(props) {
@@ -114,11 +118,20 @@ class JSONEditor extends React.Component {
     const newCode = this._doc.getValue();
 
     if (this.state.prevValue !== newCode) {
+      let parsedLayer, err;
       try {
-        const parsedLayer = JSON.parse(newCode)
+        parsedLayer = JSON.parse(newCode);
+      } catch(_err) {
+        err = _err;
+        console.warn(_err)
+      }
+
+      if (err) {
+        this.props.onJSONInvalid();
+      }
+      else {
         this.props.onChange(parsedLayer)
-      } catch(err) {
-        console.warn(err)
+        this.props.onJSONValid();
       }
     }
 

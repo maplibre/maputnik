@@ -239,7 +239,7 @@ export default class CombiningFilterEditor extends React.Component {
           <InputBlock
             key="top"
             fieldSpec={fieldSpec}
-            label={"Compound filter"}
+            label={"Filter"}
             action={actions}
           >
             <SelectInput
@@ -273,14 +273,6 @@ export default class CombiningFilterEditor extends React.Component {
     else {
       let {filter} = this.props;
 
-      const errorMessage = Object.entries(errors)
-        .filter(([k, v]) => k.match(/filter(\[\d+\])?/))
-        .map(([k, v]) => {
-          return v.message;
-        })
-        .join("\n")
-      const error = errorMessage ? {message: errorMessage} : null;
-
       return (
         <>
           <ExpressionProperty
@@ -288,10 +280,10 @@ export default class CombiningFilterEditor extends React.Component {
               this.setState({displaySimpleFilter: true});
               this.props.onChange(defaultFilter);
             }}
-            fieldName="filter-compound-filter"
+            fieldName="filter"
             fieldSpec={fieldSpec}
             value={filter}
-            error={error}
+            errors={errors}
             onChange={this.props.onChange}
           />
           {this.state.valueIsSimpleFilter &&
