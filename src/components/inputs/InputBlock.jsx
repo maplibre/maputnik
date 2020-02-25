@@ -75,8 +75,8 @@ class InputBlock extends React.Component {
       </div>
       {errors.length > 0 &&
         <div className="maputnik-inline-error">
-          {[].concat(this.props.error).map(error => {
-            return <div key={error}>{error.message}</div>
+          {[].concat(this.props.error).map((error, idx) => {
+            return <div key={idx}>{error.message}</div>
           })}
         </div>
       }
