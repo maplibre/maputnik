@@ -15,9 +15,6 @@ import jsonlint from 'jsonlint'
 import stringifyPretty from 'json-stringify-pretty-compact'
 import '../util/codemirror-mgl';
 
-// This is mainly because of this issue <https://github.com/zaach/jsonlint/issues/57> also the API has changed, see comment in file
-import '../../vendor/codemirror/addon/lint/json-lint'
-
 
 class JSONEditor extends React.Component {
   static propTypes = {
