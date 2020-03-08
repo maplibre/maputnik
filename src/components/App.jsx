@@ -358,7 +358,9 @@ export default class App extends React.Component {
         if (message) {
           try {
             const objPath = message.split(":")[0];
-            unset(dirtyMapStyle, objPath);
+            // Errors can be deply nested for example 'layers[0].filter[1][1][0]' we only care upto the property 'layers[0].filter'
+            const unsetPath = objPath.match(/^\S+?\[\d+\]\.[^\[]+/)[0];
+            unset(dirtyMapStyle, unsetPath);
           }
           catch (err) {
             console.warn(err);

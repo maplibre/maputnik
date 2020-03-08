@@ -83,6 +83,10 @@ export default class ExpressionProperty extends React.Component {
     const fieldError = errors[fieldKey];
     const errorKeyStart = `${fieldKey}[`;
     const foundErrors = [];
+
+    function getValue (data) {
+      return stringifyPretty(data, {indent: 2, maxLength: 38})
+    }
     
     if (jsonError) {
       foundErrors.push({message: "Invalid JSON"});
@@ -109,6 +113,11 @@ export default class ExpressionProperty extends React.Component {
       wideMode={true}
     >
       <JSONEditor
+        mode={{name: "mgl"}}
+        lint={{
+          context: "expression",
+          spec: this.props.fieldSpec,
+        }}
         className="maputnik-expression-editor"
         onFocus={this.props.onFocus}
         onBlur={this.props.onBlur}
@@ -118,7 +127,7 @@ export default class ExpressionProperty extends React.Component {
         lineNumbers={false}
         maxHeight={200}
         lineWrapping={true}
-        getValue={(data) => stringifyPretty(data, {indent: 2, maxLength: 50})}
+        getValue={getValue}
         onChange={this.props.onChange}
       />
     </InputBlock>

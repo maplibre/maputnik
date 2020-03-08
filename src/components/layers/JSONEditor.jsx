@@ -13,6 +13,7 @@ import 'codemirror/lib/codemirror.css'
 import 'codemirror/addon/lint/lint.css'
 import jsonlint from 'jsonlint'
 import stringifyPretty from 'json-stringify-pretty-compact'
+import '../util/codemirror-mgl';
 
 // This is mainly because of this issue <https://github.com/zaach/jsonlint/issues/57> also the API has changed, see comment in file
 import '../../vendor/codemirror/addon/lint/json-lint'
@@ -32,6 +33,11 @@ class JSONEditor extends React.Component {
     onBlur: PropTypes.func,
     onJSONValid: PropTypes.func,
     onJSONInvalid: PropTypes.func,
+    mode: PropTypes.object,
+    lint: PropTypes.oneOfType([
+      PropTypes.bool,
+      PropTypes.object,
+    ]),
   }
 
   static defaultProps = {
@@ -39,7 +45,7 @@ class JSONEditor extends React.Component {
     lineWrapping: false,
     gutters: ["CodeMirror-lint-markers"],
     getValue: (data) => {
-      return stringifyPretty(data, {indent: 2, maxLength: 50});
+      return stringifyPretty(data, {indent: 2, maxLength: 40});
     },
     onFocus: () => {},
     onBlur: () => {},
@@ -58,16 +64,17 @@ class JSONEditor extends React.Component {
   componentDidMount () {
     this._doc = CodeMirror(this._el, {
       value: this.props.getValue(this.props.layer),
-      mode: {
-        name: "javascript",
-        json: true
+      mode: this.props.mode || {
+        name: "mgl",
       },
       lineWrapping: this.props.lineWrapping,
       tabSize: 2,
       theme: 'maputnik',
       viewportMargin: Infinity,
       lineNumbers: this.props.lineNumbers,
-      lint: true,
+      lint: this.props.lint || {
+        context: "layer"
+      },
       matchBrackets: true,
       gutters: this.props.gutters,
       scrollbarStyle: "null",

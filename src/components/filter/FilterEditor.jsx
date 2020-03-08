@@ -16,6 +16,10 @@ import ExpressionProperty from '../fields/_ExpressionProperty';
 function combiningFilter (props) {
   let filter = props.filter || ['all'];
 
+  if (!Array.isArray(filter)) {
+    return filter;
+  }
+
   let combiningOp = filter[0];
   let filters = filter.slice(1);
 
