@@ -252,3 +252,51 @@
     }
   }
 }
+
+.maputnik-inline-error {
+  color: #a4a4a4;
+  padding: 0.4em 0.4em;
+  font-size: 0.9em;
+  border: solid 1px $color-red;
+  border-radius: 2px;
+  margin: $margin-2 0px;
+}
+
+.maputnik-expression-editor {
+  border: solid 1px $color-gray;
+}
+
+.maputnik-input-block--wide {
+  .maputnik-input-block-content {
+    display: block;
+    width: auto;
+  }
+
+  .maputnik-input-block-label {
+    width: 82%;
+  }
+
+  .maputnik-input-block-action {
+    text-align: right;
+  }
+}
+
+.maputnik-expr-infobox {
+  font-size: $font-size-6;
+  background: $color-midgray;
+  padding: $margin-2;
+  border-radius: 2px;
+  border-top-right-radius: 0px;
+  border-top-left-radius: 0px;
+  color: $color-white;
+}
+
+.maputnik-expr-infobox__button {
+  background: none;
+  border: none;
+  padding: 0;
+  text-decoration: underline;
+  color: currentColor;
+  cursor: pointer;
+}
+

@@ -393,8 +393,7 @@ export default class App extends React.Component {
   }
 
   onUndo = () => {
-    let activeStyle;
-    activeStyle = this.revisionStore.undo()
+    const activeStyle = this.revisionStore.undo()
 
     const messages = undoMessages(this.state.mapStyle, activeStyle)
     this.onStyleChanged(activeStyle, {addRevision: false});
