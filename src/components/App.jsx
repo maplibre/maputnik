@@ -3,6 +3,7 @@ import React from 'react'
 import cloneDeep from 'lodash.clonedeep'
 import clamp from 'lodash.clamp'
 import get from 'lodash.get'
+import {unset} from 'lodash'
 import {arrayMove} from 'react-sortable-hoc'
 import url from 'url'
 
@@ -97,7 +98,7 @@ export default class App extends React.Component {
       port = window.location.port
     }
     this.styleStore = new ApiStyleStore({
-      onLocalStyleChange: mapStyle => this.onStyleChanged(mapStyle, false),
+      onLocalStyleChange: mapStyle => this.onStyleChanged(mapStyle, {save: false}),
       port: port,
       host: params.get("localhost")
     })
@@ -316,39 +317,87 @@ export default class App extends React.Component {
     this.onStyleChanged(changedStyle)
   }
 
-  onStyleChanged = (newStyle, save=true) => {
+  onStyleChanged = (newStyle, opts={}) => {
+    opts = {
+      save: true,
+      addRevision: true,
+      ...opts,
+    };
 
-    const errors = validate(newStyle, latest)
-    if(errors.length === 0) {
-
-      if(newStyle.glyphs !== this.state.mapStyle.glyphs) {
-        this.updateFonts(newStyle.glyphs)
+    const errors = validate(newStyle, latest) || [];
+    const mappedErrors = errors.map(error => {
+      const layerMatch = error.message.match(/layers\[(\d+)\]\.(?:(\S+)\.)?(\S+): (.*)/);
+      if (layerMatch) {
+        const [matchStr, index, group, property, message] = layerMatch;
+        const key = (group && property) ? [group, property].join(".") : property;
+        return {
+          message: error.message,
+          parsed: {
+            type: "layer",
+            data: {
+              index,
+              key,
+              message
+            }
+          }
+        }
       }
-      if(newStyle.sprite !== this.state.mapStyle.sprite) {
-        this.updateIcons(newStyle.sprite)
+      else {
+        return {
+          message: error.message,
+        };
       }
+    })
 
-      this.revisionStore.addRevision(newStyle)
-      if(save) this.saveStyle(newStyle)
-      this.setState({
-        mapStyle: newStyle,
-        errors: [],
-      })
-    } else {
-      this.setState({
-        errors: errors.map(err => err.message)
-      })
+    let dirtyMapStyle = undefined;
+    if (errors.length > 0) {
+      dirtyMapStyle = cloneDeep(newStyle);
+
+      errors.forEach(error => {
+        const {message} = error;
+        if (message) {
+          try {
+            const objPath = message.split(":")[0];
+            // Errors can be deply nested for example 'layers[0].filter[1][1][0]' we only care upto the property 'layers[0].filter'
+            const unsetPath = objPath.match(/^\S+?\[\d+\]\.[^\[]+/)[0];
+            unset(dirtyMapStyle, unsetPath);
+          }
+          catch (err) {
+            console.warn(err);
+          }
+        }
+      });
     }
+
+    if(newStyle.glyphs !== this.state.mapStyle.glyphs) {
+      this.updateFonts(newStyle.glyphs)
+    }
+    if(newStyle.sprite !== this.state.mapStyle.sprite) {
+      this.updateIcons(newStyle.sprite)
+    }
+
+    if (opts.addRevision) {
+      this.revisionStore.addRevision(newStyle);
+    }
+    if (opts.save) {
+      this.saveStyle(newStyle);
+    }
+       
+    this.setState({
+      mapStyle: newStyle,
+      dirtyMapStyle: dirtyMapStyle,
+      errors: mappedErrors,
+    })
 
     this.fetchSources();
   }
 
   onUndo = () => {
     const activeStyle = this.revisionStore.undo()
+
     const messages = undoMessages(this.state.mapStyle, activeStyle)
-    this.saveStyle(activeStyle)
+    this.onStyleChanged(activeStyle, {addRevision: false});
     this.setState({
-      mapStyle: activeStyle,
       infos: messages,
     })
   }
@@ -356,9 +405,8 @@ export default class App extends React.Component {
   onRedo = () => {
     const activeStyle = this.revisionStore.redo()
     const messages = redoMessages(this.state.mapStyle, activeStyle)
-    this.saveStyle(activeStyle)
+    this.onStyleChanged(activeStyle, {addRevision: false});
     this.setState({
-      mapStyle: activeStyle,
       infos: messages,
     })
   }
@@ -546,10 +594,11 @@ export default class App extends React.Component {
   }
 
   mapRenderer() {
+    const {mapStyle, dirtyMapStyle} = this.state;
     const metadata = this.state.mapStyle.metadata || {};
 
     const mapProps = {
-      mapStyle: this.state.mapStyle,
+      mapStyle: (dirtyMapStyle || mapStyle),
       replaceAccessTokens: (mapStyle) => {
         return style.replaceAccessTokens(mapStyle, {
           allowFallback: true
@@ -663,6 +712,7 @@ export default class App extends React.Component {
       selectedLayerIndex={this.state.selectedLayerIndex}
       layers={layers}
       sources={this.state.sources}
+      errors={this.state.errors}
     />
 
     const layerEditor = selectedLayer ? <LayerEditor
@@ -680,9 +730,13 @@ export default class App extends React.Component {
       onLayerCopy={this.onLayerCopy}
       onLayerVisibilityToggle={this.onLayerVisibilityToggle}
       onLayerIdChange={this.onLayerIdChange}
+      errors={this.state.errors}
     /> : null
 
     const bottomPanel = (this.state.errors.length + this.state.infos.length) > 0 ? <MessagePanel
+      currentLayer={selectedLayer}
+      onLayerSelect={this.onLayerSelect}
+      mapStyle={this.state.mapStyle}
       errors={this.state.errors}
       infos={this.state.infos}
     /> : null

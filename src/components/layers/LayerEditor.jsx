@@ -20,6 +20,10 @@ import { changeType, changeProperty } from '../../libs/layer'
 import layout from '../../config/layout.json'
 
 
+function getLayoutForType (type) {
+  return layout[type] ? layout[type] : layout.invalid;
+}
+
 function layoutGroups(layerType) {
   const layerGroup = {
     title: 'Layer',
@@ -33,7 +37,9 @@ function layoutGroups(layerType) {
     title: 'JSON Editor',
     type: 'jsoneditor'
   }
-  return [layerGroup, filterGroup].concat(layout[layerType].groups).concat([editorGroup])
+  return [layerGroup, filterGroup]
+    .concat(getLayoutForType(layerType).groups)
+    .concat([editorGroup])
 }
 
 /** Layer editor supporting multiple types of layers. */
@@ -52,6 +58,7 @@ export default class LayerEditor extends React.Component {
     isFirstLayer: PropTypes.bool,
     isLastLayer: PropTypes.bool,
     layerIndex: PropTypes.number,
+    errors: PropTypes.array,
   }
 
   static defaultProps = {
@@ -79,7 +86,7 @@ export default class LayerEditor extends React.Component {
   static getDerivedStateFromProps(props, state) {
     const additionalGroups = { ...state.editorGroups }
 
-    layout[props.layer.type].groups.forEach(group => {
+    getLayoutForType(props.layer.type).groups.forEach(group => {
       if(!(group.title in additionalGroups)) {
         additionalGroups[group.title] = true
       }
@@ -118,6 +125,20 @@ export default class LayerEditor extends React.Component {
     if(this.props.layer.metadata) {
       comment = this.props.layer.metadata['maputnik:comment']
     }
+    const {errors, layerIndex} = this.props;
+
+    const errorData = {};
+    errors.forEach(error => {
+      if (
+        error.parsed &&
+        error.parsed.type === "layer" &&
+        error.parsed.data.index == layerIndex
+      ) {
+        errorData[error.parsed.data.key] = {
+          message: error.parsed.data.message
+        };
+      }
+    })
 
     let sourceLayerIds;
     if(this.props.sources.hasOwnProperty(this.props.layer.source)) {
@@ -129,13 +150,17 @@ export default class LayerEditor extends React.Component {
         <LayerIdBlock
           value={this.props.layer.id}
           wdKey="layer-editor.layer-id"
+          error={errorData.id}
           onChange={newId => this.props.onLayerIdChange(this.props.layer.id, newId)}
         />
         <LayerTypeBlock
+          disabled={true}
+          error={errorData.type}
           value={this.props.layer.type}
           onChange={newType => this.props.onLayerChanged(changeType(this.props.layer, newType))}
         />
         {this.props.layer.type !== 'background' && <LayerSourceBlock
+          error={errorData.sources}
           sourceIds={Object.keys(this.props.sources)}
           value={this.props.layer.source}
           onChange={v => this.changeProperty(null, 'source', v)}
@@ -143,20 +168,24 @@ export default class LayerEditor extends React.Component {
         }
         {['background', 'raster', 'hillshade', 'heatmap'].indexOf(this.props.layer.type) < 0 &&
         <LayerSourceLayerBlock
+          error={errorData['source-layer']}
           sourceLayerIds={sourceLayerIds}
           value={this.props.layer['source-layer']}
           onChange={v => this.changeProperty(null, 'source-layer', v)}
         />
         }
         <MinZoomBlock
+          error={errorData.minzoom}
           value={this.props.layer.minzoom}
           onChange={v => this.changeProperty(null, 'minzoom', v)}
         />
         <MaxZoomBlock
+          error={errorData.maxzoom}
           value={this.props.layer.maxzoom}
           onChange={v => this.changeProperty(null, 'maxzoom', v)}
         />
         <CommentBlock
+          error={errorData.comment}
           value={comment}
           onChange={v => this.changeProperty('metadata', 'maputnik:comment', v == ""  ? undefined : v)}
         />
@@ -164,6 +193,7 @@ export default class LayerEditor extends React.Component {
       case 'filter': return <div>
         <div className="maputnik-filter-editor-wrapper">
           <FilterEditor
+            errors={errorData}
             filter={this.props.layer.filter}
             properties={this.props.vectorLayers[this.props.layer['source-layer']]}
             onChange={f => this.changeProperty(null, 'filter', f)}
@@ -171,6 +201,7 @@ export default class LayerEditor extends React.Component {
         </div>
       </div>
       case 'properties': return <PropertyGroup
+        errors={errorData}
         layer={this.props.layer}
         groupFields={fields}
         spec={this.props.spec}

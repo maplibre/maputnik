@@ -9,10 +9,12 @@ class MaxZoomBlock extends React.Component {
   static propTypes = {
     value: PropTypes.number,
     onChange: PropTypes.func.isRequired,
+    error: PropTypes.object,
   }
 
   render() {
     return <InputBlock label={"Max Zoom"} fieldSpec={latest.layer.maxzoom}
+      error={this.props.error}
       data-wd-key="max-zoom"
     >
       <NumberInput

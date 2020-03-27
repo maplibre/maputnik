@@ -1,5 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+import classnames from 'classnames';
 
 import InputBlock from '../inputs/InputBlock'
 import StringInput from '../inputs/StringInput'
@@ -11,44 +12,68 @@ import 'codemirror/addon/edit/matchbrackets'
 import 'codemirror/lib/codemirror.css'
 import 'codemirror/addon/lint/lint.css'
 import jsonlint from 'jsonlint'
-
-// This is mainly because of this issue <https://github.com/zaach/jsonlint/issues/57> also the API has changed, see comment in file
-import '../../vendor/codemirror/addon/lint/json-lint'
+import stringifyPretty from 'json-stringify-pretty-compact'
+import '../util/codemirror-mgl';
 
 
 class JSONEditor extends React.Component {
   static propTypes = {
-    layer: PropTypes.object.isRequired,
+    layer: PropTypes.any.isRequired,
     maxHeight: PropTypes.number,
     onChange: PropTypes.func,
+    lineNumbers: PropTypes.bool,
+    lineWrapping: PropTypes.bool,
+    getValue: PropTypes.func,
+    gutters: PropTypes.array,
+    className: PropTypes.string,
+    onFocus: PropTypes.func,
+    onBlur: PropTypes.func,
+    onJSONValid: PropTypes.func,
+    onJSONInvalid: PropTypes.func,
+    mode: PropTypes.object,
+    lint: PropTypes.oneOfType([
+      PropTypes.bool,
+      PropTypes.object,
+    ]),
+  }
+
+  static defaultProps = {
+    lineNumbers: true,
+    lineWrapping: false,
+    gutters: ["CodeMirror-lint-markers"],
+    getValue: (data) => {
+      return stringifyPretty(data, {indent: 2, maxLength: 40});
+    },
+    onFocus: () => {},
+    onBlur: () => {},
+    onJSONInvalid: () => {},
+    onJSONValid: () => {},
   }
 
   constructor(props) {
     super(props)
     this.state = {
       isEditing: false,
-      prevValue: this.getValue(),
+      prevValue: this.props.getValue(this.props.layer),
     };
-  }
-
-  getValue () {
-    return JSON.stringify(this.props.layer, null, 2);
   }
 
   componentDidMount () {
     this._doc = CodeMirror(this._el, {
-      value: this.getValue(),
-      mode: {
-        name: "javascript",
-        json: true
+      value: this.props.getValue(this.props.layer),
+      mode: this.props.mode || {
+        name: "mgl",
       },
+      lineWrapping: this.props.lineWrapping,
       tabSize: 2,
       theme: 'maputnik',
       viewportMargin: Infinity,
-      lineNumbers: true,
-      lint: true,
+      lineNumbers: this.props.lineNumbers,
+      lint: this.props.lint || {
+        context: "layer"
+      },
       matchBrackets: true,
-      gutters: ["CodeMirror-lint-markers"],
+      gutters: this.props.gutters,
       scrollbarStyle: "null",
     });
 
@@ -58,12 +83,14 @@ class JSONEditor extends React.Component {
   }
 
   onFocus = () => {
+    this.props.onFocus();
     this.setState({
       isEditing: true
     });
   }
 
   onBlur = () => {
+    this.props.onBlur();
     this.setState({
       isEditing: false
     });
@@ -79,7 +106,7 @@ class JSONEditor extends React.Component {
     if (!this.state.isEditing && prevProps.layer !== this.props.layer) {
       this._cancelNextChange = true;
       this._doc.setValue(
-        this.getValue(),
+        this.props.getValue(this.props.layer),
       )
     }
   }
@@ -87,16 +114,28 @@ class JSONEditor extends React.Component {
   onChange = (e) => {
     if (this._cancelNextChange) {
       this._cancelNextChange = false;
+      this.setState({
+        prevValue: this._doc.getValue(),
+      })
       return;
     }
     const newCode = this._doc.getValue();
 
     if (this.state.prevValue !== newCode) {
+      let parsedLayer, err;
       try {
-        const parsedLayer = JSON.parse(newCode)
+        parsedLayer = JSON.parse(newCode);
+      } catch(_err) {
+        err = _err;
+        console.warn(_err)
+      }
+
+      if (err) {
+        this.props.onJSONInvalid();
+      }
+      else {
         this.props.onChange(parsedLayer)
-      } catch(err) {
-        console.warn(err)
+        this.props.onJSONValid();
       }
     }
 
@@ -112,7 +151,7 @@ class JSONEditor extends React.Component {
     }
 
     return <div
-      className="codemirror-container"
+      className={classnames("codemirror-container", this.props.className)}
       ref={(el) => this._el = el}
       style={style}
     />

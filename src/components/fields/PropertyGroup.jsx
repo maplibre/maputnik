@@ -40,6 +40,7 @@ export default class PropertyGroup extends React.Component {
     groupFields: PropTypes.array.isRequired,
     onChange: PropTypes.func.isRequired,
     spec: PropTypes.object.isRequired,
+    errors: PropTypes.object,
   }
 
   onPropertyChange = (property, newValue) => {
@@ -48,18 +49,22 @@ export default class PropertyGroup extends React.Component {
   }
 
   render() {
+    const {errors} = this.props;
     const fields = this.props.groupFields.map(fieldName => {
       const fieldSpec = getFieldSpec(this.props.spec, this.props.layer.type, fieldName)
 
       const paint = this.props.layer.paint || {}
       const layout = this.props.layer.layout || {}
       const fieldValue = fieldName in paint ? paint[fieldName] : layout[fieldName]
+      const fieldType = fieldName in paint ? 'paint' : 'layout';
 
       return <FunctionSpecField
+        errors={errors}
         onChange={this.onPropertyChange}
         key={fieldName}
         fieldName={fieldName}
         value={fieldValue}
+        fieldType={fieldType}
         fieldSpec={fieldSpec}
       />
     })

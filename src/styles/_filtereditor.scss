@@ -1,5 +1,10 @@
 .maputnik-filter-editor-wrapper {
   padding: $margin-3;
+  overflow: hidden;
+
+  .maputnik-input-block {
+    margin: 0;
+  }
 }
 
 .maputnik-filter-editor {

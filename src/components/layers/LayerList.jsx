@@ -181,10 +181,19 @@ class LayerListContainer extends React.Component {
       layers.forEach((layer, idxInGroup) => {
         const groupIdx = findClosestCommonPrefix(this.props.layers, idx)
 
+        const layerError = this.props.errors.find(error => {
+          return (
+            error.parsed &&
+            error.parsed.type === "layer" &&
+            error.parsed.data.index == idx
+          );
+        });
+
         const listItem = <LayerListItem
           className={classnames({
             'maputnik-layer-list-item-collapsed': layers.length > 1 && this.isCollapsed(groupPrefix, groupIdx) && idx !== this.props.selectedLayerIndex,
-            'maputnik-layer-list-item-group-last': idxInGroup == layers.length - 1 && layers.length > 1
+            'maputnik-layer-list-item-group-last': idxInGroup == layers.length - 1 && layers.length > 1,
+            'maputnik-layer-list-item--error': !!layerError
           })}
           index={idx}
           key={layer.id}

@@ -11,6 +11,8 @@ class StringInput extends React.Component {
     onInput: PropTypes.func,
     multi: PropTypes.bool,
     required: PropTypes.bool,
+    disabled: PropTypes.bool,
+    spellCheck: PropTypes.bool,
   }
 
   static defaultProps = {
@@ -51,9 +53,14 @@ class StringInput extends React.Component {
       ]
     }
 
+    if(!!this.props.disabled) {
+      classes.push("maputnik-string--disabled");
+    }
+
     return React.createElement(tag, {
       "data-wd-key": this.props["data-wd-key"],
-      spellCheck: !(tag === "input"),
+      spellCheck: this.props.hasOwnProperty("spellCheck") ? this.props.spellCheck : !(tag === "input"),
+      disabled: this.props.disabled,
       className: classes.join(" "),
       style: this.props.style,
       value: this.state.value === undefined ? "" : this.state.value,

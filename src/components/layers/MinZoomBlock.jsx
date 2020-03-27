@@ -9,10 +9,12 @@ class MinZoomBlock extends React.Component {
   static propTypes = {
     value: PropTypes.number,
     onChange: PropTypes.func.isRequired,
+    error: PropTypes.object,
   }
 
   render() {
     return <InputBlock label={"Min Zoom"} fieldSpec={latest.layer.minzoom}
+      error={this.props.error}
       data-wd-key="min-zoom"
     >
       <NumberInput
