@@ -79,6 +79,11 @@ class StringInput extends React.Component {
           this.props.onChange(this.state.value);
         }
       },
+      onKeyDown: (e) => {
+        if (e.keyCode === 13) {
+          this.props.onChange(this.state.value);
+        }
+      },
       required: this.props.required,
     });
   }

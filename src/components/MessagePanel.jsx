@@ -1,5 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+import {formatLayerId} from './util/format';
 
 class MessagePanel extends React.Component {
   static propTypes = {
@@ -23,7 +24,7 @@ class MessagePanel extends React.Component {
         const layerId = mapStyle.layers[parsed.data.index].id;
         content = (
           <>
-            Layer <span>&apos;{layerId}&apos;</span>: {parsed.data.message}
+            Layer <span>{formatLayerId(layerId)}</span>: {parsed.data.message}
             {currentLayer.id !== layerId &&
               <>
                 &nbsp;&mdash;&nbsp;
