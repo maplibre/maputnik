@@ -2,7 +2,8 @@
 div:not(.maputnik-toolbar__actions) {
   &::-webkit-scrollbar {
     background-color: #26282e;
-    width: 5px;
+    width: 8px;
+    height: 8px;
   }
 
   &::-webkit-scrollbar-thumb {
