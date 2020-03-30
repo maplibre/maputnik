@@ -15,6 +15,7 @@ class LayerIdBlock extends React.Component {
   render() {
     return <InputBlock label={"ID"} fieldSpec={latest.layer.id}
       data-wd-key={this.props.wdKey}
+      error={this.props.error}
     >
       <StringInput
         value={this.props.value}

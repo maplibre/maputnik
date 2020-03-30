@@ -19,6 +19,7 @@ import {MdMoreVert} from 'react-icons/md'
 
 import { changeType, changeProperty } from '../../libs/layer'
 import layout from '../../config/layout.json'
+import {formatLayerId} from '../util/format';
 
 
 function getLayoutForType (type) {
@@ -292,7 +293,7 @@ export default class LayerEditor extends React.Component {
       <header>
         <div className="layer-header">
           <h2 className="layer-header__title">
-            Layer: {this.props.layer.id}
+            Layer: {formatLayerId(this.props.layer.id)}
           </h2>
           <div className="layer-header__info">
             <Wrapper

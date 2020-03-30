@@ -335,22 +335,33 @@ export default class App extends React.Component {
       newStyle.layers.forEach((layer, index) => {
         if (layer.id === "" && foundLayers.has(layer.id)) {
           const message = `Duplicate layer: ${formatLayerId(layer.id)}`;
-          layerErrors.push({
-            message,
-            parsed: {
-              type: "layer",
-              data: {
-                index,
-                message,
-              }
-            }
-          });
+          const error = new Error(
+            `layers[${index}]: duplicate layer id [empty_string], previously used`
+          );
+          layerErrors.push(error);
         }
         foundLayers.set(layer.id, true);
       });
     }
 
-    const mappedErrors = errors.map(error => {
+    const mappedErrors = layerErrors.concat(errors).map(error => {
+      const dupMatch = error.message.match(/layers\[(\d+)\]: (duplicate layer id "?(.*)"?, previously used)/);
+      if (dupMatch) {
+        const [matchStr, index, message] = dupMatch;
+        return {
+          message: error.message,
+          parsed: {
+            type: "layer",
+            data: {
+              index,
+              key: "id",
+              message,
+            }
+          }
+        }
+      }
+
+      // duplicate layer id
       const layerMatch = error.message.match(/layers\[(\d+)\]\.(?:(\S+)\.)?(\S+): (.*)/);
       if (layerMatch) {
         const [matchStr, index, group, property, message] = layerMatch;
@@ -372,7 +383,7 @@ export default class App extends React.Component {
           message: error.message,
         };
       }
-    }).concat(layerErrors);
+    });
 
     let dirtyMapStyle = undefined;
     if (errors.length > 0) {
@@ -753,6 +764,7 @@ export default class App extends React.Component {
 
     const bottomPanel = (this.state.errors.length + this.state.infos.length) > 0 ? <MessagePanel
       currentLayer={selectedLayer}
+      selectedLayerIndex={this.state.selectedLayerIndex}
       onLayerSelect={this.onLayerSelect}
       mapStyle={this.state.mapStyle}
       errors={this.state.errors}
