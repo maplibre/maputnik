@@ -1,5 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+import {formatLayerId} from './util/format';
 
 class MessagePanel extends React.Component {
   static propTypes = {
@@ -8,6 +9,7 @@ class MessagePanel extends React.Component {
     mapStyle: PropTypes.object,
     onLayerSelect: PropTypes.func,
     currentLayer: PropTypes.object,
+    selectedLayerIndex: PropTypes.number,
   }
 
   static defaultProps = {
@@ -15,6 +17,7 @@ class MessagePanel extends React.Component {
   }
 
   render() {
+    const {selectedLayerIndex} = this.props;
     const errors = this.props.errors.map((error, idx) => {
       let content;
       if (error.parsed && error.parsed.type === "layer") {
@@ -23,13 +26,13 @@ class MessagePanel extends React.Component {
         const layerId = mapStyle.layers[parsed.data.index].id;
         content = (
           <>
-            Layer <span>&apos;{layerId}&apos;</span>: {parsed.data.message}
-            {currentLayer.id !== layerId &&
+            Layer <span>{formatLayerId(layerId)}</span>: {parsed.data.message}
+            {selectedLayerIndex !== parsed.data.index &&
               <>
                 &nbsp;&mdash;&nbsp;
                 <button
                   className="maputnik-message-panel__switch-button"
-                  onClick={() => this.props.onLayerSelect(layerId)}
+                  onClick={() => this.props.onLayerSelect(parsed.data.index)}
                 >
                   switch to layer
                 </button>

@@ -36,6 +36,7 @@ import tokens from '../config/tokens.json'
 import isEqual from 'lodash.isequal'
 import Debug from '../libs/debug'
 import queryUtil from '../libs/query-util'
+import {formatLayerId} from './util/format';
 
 import MapboxGl from 'mapbox-gl'
 
@@ -325,7 +326,42 @@ export default class App extends React.Component {
     };
 
     const errors = validate(newStyle, latest) || [];
-    const mappedErrors = errors.map(error => {
+
+    // The validate function doesn't give us errors for duplicate error with
+    // empty string for layer.id, manually deal with that here.
+    const layerErrors = [];
+    if (newStyle && newStyle.layers) {
+      const foundLayers = new Map();
+      newStyle.layers.forEach((layer, index) => {
+        if (layer.id === "" && foundLayers.has(layer.id)) {
+          const message = `Duplicate layer: ${formatLayerId(layer.id)}`;
+          const error = new Error(
+            `layers[${index}]: duplicate layer id [empty_string], previously used`
+          );
+          layerErrors.push(error);
+        }
+        foundLayers.set(layer.id, true);
+      });
+    }
+
+    const mappedErrors = layerErrors.concat(errors).map(error => {
+      const dupMatch = error.message.match(/layers\[(\d+)\]: (duplicate layer id "?(.*)"?, previously used)/);
+      if (dupMatch) {
+        const [matchStr, index, message] = dupMatch;
+        return {
+          message: error.message,
+          parsed: {
+            type: "layer",
+            data: {
+              index,
+              key: "id",
+              message,
+            }
+          }
+        }
+      }
+
+      // duplicate layer id
       const layerMatch = error.message.match(/layers\[(\d+)\]\.(?:(\S+)\.)?(\S+): (.*)/);
       if (layerMatch) {
         const [matchStr, index, group, property, message] = layerMatch;
@@ -347,7 +383,7 @@ export default class App extends React.Component {
           message: error.message,
         };
       }
-    })
+    });
 
     let dirtyMapStyle = undefined;
     if (errors.length > 0) {
@@ -437,56 +473,50 @@ export default class App extends React.Component {
     this.onStyleChanged(changedStyle)
   }
 
-  onLayerDestroy = (layerId) => {
+  onLayerDestroy = (index) => {
     let layers = this.state.mapStyle.layers;
     const remainingLayers = layers.slice(0);
-    const idx = style.indexOfLayer(remainingLayers, layerId)
-    remainingLayers.splice(idx, 1);
+    remainingLayers.splice(index, 1);
     this.onLayersChange(remainingLayers);
   }
 
-  onLayerCopy = (layerId) => {
+  onLayerCopy = (index) => {
     let layers = this.state.mapStyle.layers;
     const changedLayers = layers.slice(0)
-    const idx = style.indexOfLayer(changedLayers, layerId)
 
-    const clonedLayer = cloneDeep(changedLayers[idx])
+    const clonedLayer = cloneDeep(changedLayers[index])
     clonedLayer.id = clonedLayer.id + "-copy"
-    changedLayers.splice(idx, 0, clonedLayer)
+    changedLayers.splice(index, 0, clonedLayer)
     this.onLayersChange(changedLayers)
   }
 
-  onLayerVisibilityToggle = (layerId) => {
+  onLayerVisibilityToggle = (index) => {
     let layers = this.state.mapStyle.layers;
     const changedLayers = layers.slice(0)
-    const idx = style.indexOfLayer(changedLayers, layerId)
 
-    const layer = { ...changedLayers[idx] }
+    const layer = { ...changedLayers[index] }
     const changedLayout = 'layout' in layer ? {...layer.layout} : {}
     changedLayout.visibility = changedLayout.visibility === 'none' ? 'visible' : 'none'
 
     layer.layout = changedLayout
-    changedLayers[idx] = layer
+    changedLayers[index] = layer
     this.onLayersChange(changedLayers)
   }
 
 
-  onLayerIdChange = (oldId, newId) => {
+  onLayerIdChange = (index, oldId, newId) => {
     const changedLayers = this.state.mapStyle.layers.slice(0)
-    const idx = style.indexOfLayer(changedLayers, oldId)
-
-    changedLayers[idx] = {
-      ...changedLayers[idx],
+    changedLayers[index] = {
+      ...changedLayers[index],
       id: newId
     }
 
     this.onLayersChange(changedLayers)
   }
 
-  onLayerChanged = (layer) => {
+  onLayerChanged = (index, layer) => {
     const changedLayers = this.state.mapStyle.layers.slice(0)
-    const idx = style.indexOfLayer(changedLayers, layer.id)
-    changedLayers[idx] = layer
+    changedLayers[index] = layer
 
     this.onLayersChange(changedLayers)
   }
@@ -645,9 +675,8 @@ export default class App extends React.Component {
     </div>
   }
 
-  onLayerSelect = (layerId) => {
-    const idx = style.indexOfLayer(this.state.mapStyle.layers, layerId)
-    this.setState({ selectedLayerIndex: idx })
+  onLayerSelect = (index) => {
+    this.setState({ selectedLayerIndex: index })
   }
 
   setModal(modalName, value) {
@@ -735,6 +764,7 @@ export default class App extends React.Component {
 
     const bottomPanel = (this.state.errors.length + this.state.infos.length) > 0 ? <MessagePanel
       currentLayer={selectedLayer}
+      selectedLayerIndex={this.state.selectedLayerIndex}
       onLayerSelect={this.onLayerSelect}
       mapStyle={this.state.mapStyle}
       errors={this.state.errors}

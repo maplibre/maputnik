@@ -102,6 +102,11 @@
         "experimentalObjectRestSpread": true,
         "jsx": true
       }
+    },
+    "settings": {
+      "react": {
+        "version": "detect"
+      }
     }
   },
   "devDependencies": {

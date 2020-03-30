@@ -62,6 +62,7 @@ class IconAction extends React.Component {
 
 class LayerListItem extends React.Component {
   static propTypes = {
+    layerIndex: PropTypes.number.isRequired,
     layerId: PropTypes.string.isRequired,
     layerType: PropTypes.string.isRequired,
     isSelected: PropTypes.bool,
@@ -97,7 +98,7 @@ class LayerListItem extends React.Component {
 
     return <li
       key={this.props.layerId}
-      onClick={e => this.props.onLayerSelect(this.props.layerId)}
+      onClick={e => this.props.onLayerSelect(this.props.layerIndex)}
       data-wd-key={"layer-list-item:"+this.props.layerId}
       className={classnames({
         "maputnik-layer-list-item": true,
@@ -110,20 +111,20 @@ class LayerListItem extends React.Component {
           wdKey={"layer-list-item:"+this.props.layerId+":delete"}
           action={'delete'}
           classBlockName="delete"
-          onClick={e => this.props.onLayerDestroy(this.props.layerId)}
+          onClick={e => this.props.onLayerDestroy(this.props.layerIndex)}
         />
         <IconAction
           wdKey={"layer-list-item:"+this.props.layerId+":copy"}
           action={'duplicate'}
           classBlockName="duplicate"
-          onClick={e => this.props.onLayerCopy(this.props.layerId)}
+          onClick={e => this.props.onLayerCopy(this.props.layerIndex)}
         />
         <IconAction
           wdKey={"layer-list-item:"+this.props.layerId+":toggle-visibility"}
           action={visibilityAction}
           classBlockName="visibility"
           classBlockModifier={visibilityAction}
-          onClick={e => this.props.onLayerVisibilityToggle(this.props.layerId)}
+          onClick={e => this.props.onLayerVisibilityToggle(this.props.layerIndex)}
         />
     </li>
   }
