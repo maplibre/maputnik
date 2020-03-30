@@ -10,6 +10,7 @@ class LayerIdBlock extends React.Component {
     value: PropTypes.string.isRequired,
     wdKey: PropTypes.string.isRequired,
     onChange: PropTypes.func.isRequired,
+    error: PropTypes.object.isRequired,
   }
 
   render() {
