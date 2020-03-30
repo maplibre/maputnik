@@ -163,9 +163,38 @@
   color: $color-white;
   cursor: pointer;
   user-select: none;
-  padding: $margin-2;
   line-height: 20px;
   border-top: solid 1px #36383e;
+
+  &__button {
+    flex: 1;
+    display: flex;
+    padding: $margin-2;
+
+    &__icon {
+      fill: white;
+    }
+
+    &__icon--up {
+      display: block;
+    }
+
+    &__icon--down {
+      display: none;
+    }
+
+  }
+
+  &__button[aria-expanded="true"] {
+    .maputnik-layer-editor-group__button__icon--up {
+      display: none;
+    }
+
+    .maputnik-layer-editor-group__button__icon--down {
+      display: block;
+    }
+  }
+
 
   @include flex-row;
 

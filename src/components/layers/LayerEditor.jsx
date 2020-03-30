@@ -13,6 +13,7 @@ import MaxZoomBlock from './MaxZoomBlock'
 import CommentBlock from './CommentBlock'
 import LayerSourceBlock from './LayerSourceBlock'
 import LayerSourceLayerBlock from './LayerSourceLayerBlock'
+import {Accordion} from 'react-accessible-accordion';
 
 import {MdMoreVert} from 'react-icons/md'
 
@@ -233,12 +234,16 @@ export default class LayerEditor extends React.Component {
   }
 
   render() {
+    const groupIds = [];
     const layerType = this.props.layer.type
     const groups = layoutGroups(layerType).filter(group => {
       return !(layerType === 'background' && group.type === 'source')
     }).map(group => {
+      const groupId = group.title.replace(/ /g, "_");
+      groupIds.push(groupId);
       return <LayerEditorGroup
         data-wd-key={group.title}
+        id={groupId}
         key={group.title}
         title={group.title}
         isActive={this.state.editorGroups[group.title]}
@@ -315,7 +320,13 @@ export default class LayerEditor extends React.Component {
         </div>
 
       </header>
-      {groups}
+      <Accordion
+        allowMultipleExpanded={true}
+        allowZeroExpanded={true}
+        preExpanded={groupIds}
+      >
+        {groups}
+      </Accordion>
     </div>
   }
 }
