@@ -19,6 +19,7 @@ import {MdMoreVert} from 'react-icons/md'
 
 import { changeType, changeProperty } from '../../libs/layer'
 import layout from '../../config/layout.json'
+import {formatLayerId} from '../util/format';
 
 
 function getLayoutForType (type) {
@@ -108,7 +109,10 @@ export default class LayerEditor extends React.Component {
   }
 
   changeProperty(group, property, newValue) {
-    this.props.onLayerChanged(changeProperty(this.props.layer, group, property, newValue))
+    this.props.onLayerChanged(
+      this.props.layerIndex,
+      changeProperty(this.props.layer, group, property, newValue)
+    )
   }
 
   onGroupToggle(groupTitle, active) {
@@ -152,13 +156,16 @@ export default class LayerEditor extends React.Component {
           value={this.props.layer.id}
           wdKey="layer-editor.layer-id"
           error={errorData.id}
-          onChange={newId => this.props.onLayerIdChange(this.props.layer.id, newId)}
+          onChange={newId => this.props.onLayerIdChange(this.props.layerIndex, this.props.layer.id, newId)}
         />
         <LayerTypeBlock
           disabled={true}
           error={errorData.type}
           value={this.props.layer.type}
-          onChange={newType => this.props.onLayerChanged(changeType(this.props.layer, newType))}
+          onChange={newType => this.props.onLayerChanged(
+            this.props.layerIndex,
+            changeType(this.props.layer, newType)
+          )}
         />
         {this.props.layer.type !== 'background' && <LayerSourceBlock
           error={errorData.sources}
@@ -210,7 +217,12 @@ export default class LayerEditor extends React.Component {
       />
       case 'jsoneditor': return <JSONEditor
         layer={this.props.layer}
-        onChange={this.props.onLayerChanged}
+        onChange={(layer) => {
+          this.props.onLayerChanged(
+            this.props.layerIndex,
+            layer
+          );
+        }}
       />
     }
   }
@@ -247,15 +259,15 @@ export default class LayerEditor extends React.Component {
     const items = {
       delete: {
         text: "Delete",
-        handler: () => this.props.onLayerDestroy(this.props.layer.id)
+        handler: () => this.props.onLayerDestroy(this.props.layerIndex)
       },
       duplicate: {
         text: "Duplicate",
-        handler: () => this.props.onLayerCopy(this.props.layer.id)
+        handler: () => this.props.onLayerCopy(this.props.layerIndex)
       },
       hide: {
         text: (layout.visibility === "none") ? "Show" : "Hide",
-        handler: () => this.props.onLayerVisibilityToggle(this.props.layer.id)
+        handler: () => this.props.onLayerVisibilityToggle(this.props.layerIndex)
       },
       moveLayerUp: {
         text: "Move layer up",
@@ -281,7 +293,7 @@ export default class LayerEditor extends React.Component {
       <header>
         <div className="layer-header">
           <h2 className="layer-header__title">
-            Layer: {this.props.layer.id}
+            Layer: {formatLayerId(this.props.layer.id)}
           </h2>
           <div className="layer-header__info">
             <Wrapper

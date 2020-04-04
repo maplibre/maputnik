@@ -1,6 +1,6 @@
 {
   "name": "maputnik",
-  "version": "1.6.1",
+  "version": "1.7.0-beta",
   "description": "A MapboxGL visual style editor",
   "main": "''",
   "scripts": {
@@ -101,6 +101,11 @@
         "impliedStrict": true,
         "experimentalObjectRestSpread": true,
         "jsx": true
+      }
+    },
+    "settings": {
+      "react": {
+        "version": "detect"
       }
     }
   },

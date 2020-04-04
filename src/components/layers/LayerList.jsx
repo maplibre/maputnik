@@ -176,12 +176,15 @@ class LayerListContainer extends React.Component {
 
     const listItems = []
     let idx = 0
-    this.groupedLayers().forEach(layers => {
+    const layerIdCount = new Map();
+
+    const layersByGroup = this.groupedLayers();
+    layersByGroup.forEach(layers => {
       const groupPrefix = layerPrefix(layers[0].id)
       if(layers.length > 1) {
         const grp = <LayerListGroup
           data-wd-key={[groupPrefix, idx].join('-')}
-          key={[groupPrefix, idx].join('-')}
+          key={`group-${groupPrefix}`}
           title={groupPrefix}
           isActive={!this.isCollapsed(groupPrefix, idx) || idx === this.props.selectedLayerIndex}
           onActiveToggle={this.toggleLayerGroup.bind(this, groupPrefix, idx)}
@@ -205,6 +208,10 @@ class LayerListContainer extends React.Component {
           additionalProps.ref = this.selectedItemRef;
         }
 
+        layerIdCount.set(layer.id,
+          layerIdCount.has(layer.id) ? layerIdCount.get(layer.id) + 1 : 0
+        );
+        const key = `${layer.id}-${layerIdCount.get(layer.id)}`;
         const listItem = <LayerListItem
           className={classnames({
             'maputnik-layer-list-item-collapsed': layers.length > 1 && this.isCollapsed(groupPrefix, groupIdx) && idx !== this.props.selectedLayerIndex,
@@ -212,8 +219,9 @@ class LayerListContainer extends React.Component {
             'maputnik-layer-list-item--error': !!layerError
           })}
           index={idx}
-          key={layer.id}
+          key={key}
           layerId={layer.id}
+          layerIndex={idx}
           layerType={layer.type}
           visibility={(layer.layout || {}).visibility}
           isSelected={idx === this.props.selectedLayerIndex}
