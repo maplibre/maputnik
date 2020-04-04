@@ -58,23 +58,8 @@ class FeatureLayerPopup extends React.Component {
 
       if(propName) {
         const propertySpec = latest["paint_"+feature.layer.type][propName];
-
         let color = feature.layer.paint[propName];
-
-        if(typeof(color) === "object") {
-          if(color.stops) {
-            color = styleFunction.convertFunction(color, propertySpec);
-          }
-
-          const exprResult = expression.createExpression(String(color), propertySpec);
-          const val = exprResult.value.evaluate({
-            zoom: zoom
-          }, feature);
-          return val.toString();
-        }
-        else {
-          return color;
-        }
+        return String(color);
       }
       else {
         // Default color
