@@ -42,11 +42,15 @@ class LayerListContainer extends React.Component {
     onLayerSelect: () => {},
   }
 
-  state = {
-    collapsedGroups: {},
-    areAllGroupsExpanded: false,
-    isOpen: {
-      add: false,
+  constructor(props) {
+    super(props);
+    this.selectedItemRef = React.createRef();
+    this.state = {
+      collapsedGroups: {},
+      areAllGroupsExpanded: false,
+      isOpen: {
+        add: false,
+      }
     }
   }
 
@@ -161,6 +165,13 @@ class LayerListContainer extends React.Component {
     return propsChanged;
   }
 
+  componentDidUpdate () {
+    const selectedItemNode = this.selectedItemRef.current;
+    if (selectedItemNode && selectedItemNode.node) {
+      selectedItemNode.node.scrollIntoView();
+    }
+  }
+
   render() {
 
     const listItems = []
@@ -192,6 +203,11 @@ class LayerListContainer extends React.Component {
           );
         });
 
+        const additionalProps = {};
+        if (idx === this.props.selectedLayerIndex) {
+          additionalProps.ref = this.selectedItemRef;
+        }
+
         layerIdCount.set(layer.id,
           layerIdCount.has(layer.id) ? layerIdCount.get(layer.id) + 1 : 0
         );
@@ -213,6 +229,7 @@ class LayerListContainer extends React.Component {
           onLayerDestroy={this.props.onLayerDestroy.bind(this)}
           onLayerCopy={this.props.onLayerCopy.bind(this)}
           onLayerVisibilityToggle={this.props.onLayerVisibilityToggle.bind(this)}
+          {...additionalProps}
         />
         listItems.push(listItem)
         idx += 1
