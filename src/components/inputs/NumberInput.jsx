@@ -31,7 +31,7 @@ class NumberInput extends React.Component {
   }
 
   static getDerivedStateFromProps(props, state) {
-    if (!state.editing) {
+    if (!state.editing && props.value !== state.value) {
       return {
         value: props.value,
         dirtyValue: props.value,
@@ -49,12 +49,17 @@ class NumberInput extends React.Component {
     if(this.isValid(value) && hasChanged) {
       this.props.onChange(value)
       this.setState({
-        dirtyValue: newValue,
+        value: newValue,
+      });
+    }
+    else if (!this.isValid(value) && hasChanged) {
+      this.setState({
+        value: undefined,
       });
     }
 
     this.setState({
-      value: newValue,
+      dirtyValue: newValue === "" ? undefined : newValue,
     })
   }
 
@@ -144,8 +149,14 @@ class NumberInput extends React.Component {
       this.props.min !== undefined && this.props.max !== undefined &&
       this.props.allowRange
     ) {
-      const dirtyValue = this.state.dirtyValue === undefined ? this.props.default : this.state.dirtyValue
-      const value = this.state.value === undefined ? "" : this.state.value;
+      const value = this.state.editing ? this.state.dirtyValue : this.state.value;
+      let inputValue;
+      if (this.state.editingRange) {
+        inputValue = this.state.value;
+      }
+      else {
+        inputValue = value;
+      }
 
       return <div className="maputnik-number-container">
         <input
@@ -156,21 +167,26 @@ class NumberInput extends React.Component {
           min={this.props.min}
           step="any"
           spellCheck="false"
-          value={dirtyValue}
+          placeholder={this.props.default}
+          value={value === undefined ? "" : value}
           aria-hidden="true"
           onChange={this.onChangeRange}
           onKeyDown={() => {
             this._keyboardEvent = true;
           }}
           onPointerDown={() => {
-            this.setState({editing: true});
+            this.setState({editing: true, editingRange: true});
           }}
           onPointerUp={() => {
             // Safari doesn't get onBlur event
-            this.setState({editing: false});
+            this.setState({editing: false, editingRange: false});
           }}
           onBlur={() => {
-            this.setState({editing: false});
+            this.setState({
+              editing: false,
+              editingRange: false,
+              dirtyValue: this.state.value,
+            });
           }}
         />
         <input
@@ -179,25 +195,32 @@ class NumberInput extends React.Component {
           spellCheck="false"
           className="maputnik-number"
           placeholder={this.props.default}
-          value={value}
-          onChange={e => {
-            if (!this.state.editing) {
-              this.changeValue(e.target.value);
-            }
+          value={inputValue === undefined ? "" : inputValue}
+          onFocus={e => {
+            this.setState({editing: true});
           }}
-          onBlur={this.resetValue}
+          onChange={e => {
+            this.changeValue(e.target.value);
+          }}
+          onBlur={e => {
+            this.setState({editing: false});
+            this.resetValue()
+          }}
         />
       </div>
     }
     else {
-      const value = this.state.value === undefined ? "" : this.state.value;
+      const value = this.state.editing ? this.state.dirtyValue : this.state.value;
 
       return <input
         spellCheck="false"
         className="maputnik-number"
         placeholder={this.props.default}
-        value={value}
+        value={value === undefined ? "" : value}
         onChange={e => this.changeValue(e.target.value)}
+        onFocus={() => {
+          this.setState({editing: true});
+        }}
         onBlur={this.resetValue}
         required={this.props.required}
       />
