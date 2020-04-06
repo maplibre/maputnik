@@ -45,6 +45,7 @@ class LayerListContainer extends React.Component {
   constructor(props) {
     super(props);
     this.selectedItemRef = React.createRef();
+    this.scrollContainerRef = React.createRef();
     this.state = {
       collapsedGroups: {},
       areAllGroupsExpanded: false,
@@ -169,7 +170,19 @@ class LayerListContainer extends React.Component {
     if (prevProps.selectedLayerIndex !== this.props.selectedLayerIndex) {
       const selectedItemNode = this.selectedItemRef.current;
       if (selectedItemNode && selectedItemNode.node) {
-        selectedItemNode.node.scrollIntoView();
+        const target = selectedItemNode.node;
+        const options = {
+          root: this.scrollContainerRef.current,
+          threshold: 1.0
+        }
+        const observer = new IntersectionObserver(entries => {
+          observer.unobserve(target);
+          if (entries.length > 0 && entries[0].intersectionRatio < 1) {
+            target.scrollIntoView();
+          }
+        }, options);
+
+        observer.observe(target);
       }
     }
   }
@@ -238,7 +251,7 @@ class LayerListContainer extends React.Component {
       })
     })
 
-    return <div className="maputnik-layer-list">
+    return <div className="maputnik-layer-list" ref={this.scrollContainerRef}>
       <AddModal
           layers={this.props.layers}
           sources={this.props.sources}
