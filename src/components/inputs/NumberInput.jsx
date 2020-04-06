@@ -92,11 +92,13 @@ class NumberInput extends React.Component {
     }
 
     // If set value is invalid fall back to the last valid value from props or at last resort the default value
-    if(!this.isValid(this.state.value)) {
+    if (!this.isValid(this.state.value)) {
       if(this.isValid(this.props.value)) {
         this.changeValue(this.props.value)
+        this.setState({dirtyValue: this.props.value});
       } else {
         this.changeValue(undefined);
+        this.setState({dirtyValue: undefined});
       }
     }
   }
