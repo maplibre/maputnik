@@ -4,7 +4,7 @@ import cloneDeep from 'lodash.clonedeep'
 import clamp from 'lodash.clamp'
 import get from 'lodash.get'
 import {unset} from 'lodash'
-import {arrayMove} from 'react-sortable-hoc'
+import arrayMove from 'array-move'
 import url from 'url'
 
 import MapboxGlMap from './map/MapboxGlMap'
@@ -353,7 +353,7 @@ export default class App extends React.Component {
           parsed: {
             type: "layer",
             data: {
-              index,
+              index: parseInt(index, 10),
               key: "id",
               message,
             }
@@ -371,7 +371,7 @@ export default class App extends React.Component {
           parsed: {
             type: "layer",
             data: {
-              index,
+              index: parseInt(index, 10),
               key,
               message
             }
