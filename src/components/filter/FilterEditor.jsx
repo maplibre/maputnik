@@ -223,7 +223,7 @@ export default class CombiningFilterEditor extends React.Component {
         const error = errors[`filter[${idx+1}]`];
 
         return (
-          <>
+          <div key={`block-${idx}`}>
             <FilterEditorBlock key={idx} onDelete={this.deleteFilterItem.bind(this, idx)}>
               <SingleFilterEditor
                 properties={this.props.properties}
@@ -232,9 +232,9 @@ export default class CombiningFilterEditor extends React.Component {
               />
             </FilterEditorBlock>
             {error &&
-              <div className="maputnik-inline-error">{error.message}</div>
+              <div key="error" className="maputnik-inline-error">{error.message}</div>
             }
-          </>
+          </div>
         );
       })
 

@@ -165,10 +165,12 @@ class LayerListContainer extends React.Component {
     return propsChanged;
   }
 
-  componentDidUpdate () {
-    const selectedItemNode = this.selectedItemRef.current;
-    if (selectedItemNode && selectedItemNode.node) {
-      selectedItemNode.node.scrollIntoView();
+  componentDidUpdate (prevProps) {
+    if (prevProps.selectedLayerIndex !== this.props.selectedLayerIndex) {
+      const selectedItemNode = this.selectedItemRef.current;
+      if (selectedItemNode && selectedItemNode.node) {
+        selectedItemNode.node.scrollIntoView();
+      }
     }
   }
 
@@ -184,7 +186,7 @@ class LayerListContainer extends React.Component {
       if(layers.length > 1) {
         const grp = <LayerListGroup
           data-wd-key={[groupPrefix, idx].join('-')}
-          key={`group-${groupPrefix}`}
+          key={`group-${groupPrefix}-${idx}`}
           title={groupPrefix}
           isActive={!this.isCollapsed(groupPrefix, idx) || idx === this.props.selectedLayerIndex}
           onActiveToggle={this.toggleLayerGroup.bind(this, groupPrefix, idx)}

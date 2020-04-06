@@ -33,6 +33,7 @@ class StringInput extends React.Component {
         value: props.value
       };
     }
+    return {};
   }
 
   render() {

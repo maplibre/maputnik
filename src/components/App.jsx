@@ -353,7 +353,7 @@ export default class App extends React.Component {
           parsed: {
             type: "layer",
             data: {
-              index,
+              index: parseInt(index, 10),
               key: "id",
               message,
             }
@@ -371,7 +371,7 @@ export default class App extends React.Component {
           parsed: {
             type: "layer",
             data: {
-              index,
+              index: parseInt(index, 10),
               key,
               message
             }

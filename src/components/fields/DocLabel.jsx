@@ -9,8 +9,8 @@ export default class DocLabel extends React.Component {
       PropTypes.object,
       PropTypes.string
     ]).isRequired,
-    fieldSpec: PropTypes.object.isRequired,
-    onToggleDoc: PropTypes.func.isRequired,
+    fieldSpec: PropTypes.object,
+    onToggleDoc: PropTypes.func,
   }
 
   constructor (props) {
