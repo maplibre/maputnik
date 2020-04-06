@@ -1,5 +1,8 @@
 // LAYER LIST
 .maputnik-layer-list {
+  height: 100%;
+  overflow: auto;
+
   &-header {
     padding: $margin-2 $margin-2 $margin-3;
 

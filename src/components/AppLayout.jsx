@@ -26,9 +26,7 @@ class AppLayout extends React.Component {
     return <div className="maputnik-layout">
       {this.props.toolbar}
       <div className="maputnik-layout-list">
-        <ScrollContainer>
-          {this.props.layerList}
-        </ScrollContainer>
+        {this.props.layerList}
       </div>
       <div className="maputnik-layout-drawer">
         <ScrollContainer>
