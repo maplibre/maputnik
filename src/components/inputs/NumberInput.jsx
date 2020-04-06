@@ -150,6 +150,7 @@ class NumberInput extends React.Component {
       this.props.allowRange
     ) {
       const value = this.state.editing ? this.state.dirtyValue : this.state.value;
+      const defaultValue = this.props.default === undefined ? "" : this.props.default;
       let inputValue;
       if (this.state.editingRange) {
         inputValue = this.state.value;
@@ -167,8 +168,7 @@ class NumberInput extends React.Component {
           min={this.props.min}
           step="any"
           spellCheck="false"
-          placeholder={this.props.default}
-          value={value === undefined ? "" : value}
+          value={value === undefined ? defaultValue : value}
           aria-hidden="true"
           onChange={this.onChangeRange}
           onKeyDown={() => {
