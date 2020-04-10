@@ -2,21 +2,21 @@
   "openmaptiles": {
     "type": "vector",
     "url": "https://api.maptiler.com/tiles/v3/tiles.json?key={key}",
-    "title": "OpenMapTiles"
+    "title": "OpenMapTiles v3"
   },
   "thunderforest_transport": {
     "type": "vector",
     "url": "https://tile.thunderforest.com/thunderforest.transport-v2.json?apikey={key}",
-    "title": "Thunderforest Transport (heavy)"
+    "title": "Thunderforest Transport v2 (heavy)"
   },
   "thunderforest_outdoors": {
     "type": "vector",
     "url": "https://tile.thunderforest.com/thunderforest.outdoors-v2.json?apikey={key}",
-    "title": "Thunderforest Outdoors (heavy)"
+    "title": "Thunderforest Outdoors v2 (heavy)"
   },
   "open_zoomstack": {
     "type": "vector",
     "url": "https://s3-eu-west-1.amazonaws.com/tiles.os.uk/v2/data/vector/open-zoomstack/config.json",
-    "title": "OS Open Zoomstack"
+    "title": "OS Open Zoomstack v2"
   }
 }
