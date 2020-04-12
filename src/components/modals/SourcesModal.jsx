@@ -303,9 +303,6 @@ class SourcesModal extends React.Component {
         <div className="maputnik-public-sources" style={{maxwidth: 500}}>
         {tilesetOptions}
         </div>
-        <p>
-          <strong>Note:</strong> Some of the tilesets are not optimised for online use, and as a result the file sizes of the tiles can be quite large (heavy) for online vector rendering. Please review any tilesets before use.
-        </p>
       </div>
 
       <div className="maputnik-modal-section">
