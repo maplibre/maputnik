@@ -4,7 +4,7 @@ import AutocompleteInput from './AutocompleteInput'
 
 class FontInput extends React.Component {
   static propTypes = {
-    value: PropTypes.array.isRequired,
+    value: PropTypes.array,
     default: PropTypes.array,
     fonts: PropTypes.array,
     style: PropTypes.object,
@@ -16,7 +16,7 @@ class FontInput extends React.Component {
   }
 
   get values() {
-    const out = this.props.value || this.props.default.slice(1) || [""];
+    const out = this.props.value || this.props.default || [];
 
     // Always put a "" in the last field to you can keep adding entries
     if (out[out.length-1] !== ""){
