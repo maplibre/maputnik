@@ -110,11 +110,11 @@ export default class MapboxGlMap extends React.Component {
       this.state.inspect._popupBlocked = false;
       this.state.inspect.toggleInspector()
     }
-    if(this.props.inspectModeEnabled) {
-      this.state.inspect.render()
-    }
-
     if (map) {
+      if (this.props.inspectModeEnabled) {
+        this.state.inspect.render();
+      }
+
       map.showTileBoundaries = this.props.options.showTileBoundaries;
       map.showCollisionBoxes = this.props.options.showCollisionBoxes;
       map.showOverdrawInspector = this.props.options.showOverdrawInspector;
