@@ -11,6 +11,7 @@ class LayerSourceBlock extends React.Component {
     wdKey: PropTypes.string,
     onChange: PropTypes.func,
     sourceIds: PropTypes.array,
+    error: PropTypes.object,
   }
 
   static defaultProps = {
@@ -19,7 +20,10 @@ class LayerSourceBlock extends React.Component {
   }
 
   render() {
-    return <InputBlock label={"Source"} fieldSpec={latest.layer.source}
+    return <InputBlock
+      label={"Source"}
+      fieldSpec={latest.layer.source}
+      error={this.props.error}
       data-wd-key={this.props.wdKey}
     >
       <AutocompleteInput

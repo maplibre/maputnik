@@ -345,6 +345,7 @@ export default class App extends React.Component {
     }
 
     const mappedErrors = layerErrors.concat(errors).map(error => {
+      // Special case: Duplicate layer id
       const dupMatch = error.message.match(/layers\[(\d+)\]: (duplicate layer id "?(.*)"?, previously used)/);
       if (dupMatch) {
         const [matchStr, index, message] = dupMatch;
@@ -361,7 +362,23 @@ export default class App extends React.Component {
         }
       }
 
-      // duplicate layer id
+      // Special case: Invalid source
+      const invalidSourceMatch = error.message.match(/layers\[(\d+)\]: (source "(?:.*)" not found)/);
+      if (invalidSourceMatch) {
+        const [matchStr, index, message] = invalidSourceMatch;
+        return {
+          message: error.message,
+          parsed: {
+            type: "layer",
+            data: {
+              index: parseInt(index, 10),
+              key: "source",
+              message,
+            }
+          }
+        }
+      }
+
       const layerMatch = error.message.match(/layers\[(\d+)\]\.(?:(\S+)\.)?(\S+): (.*)/);
       if (layerMatch) {
         const [matchStr, index, group, property, message] = layerMatch;

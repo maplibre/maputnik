@@ -168,7 +168,7 @@ export default class LayerEditor extends React.Component {
           )}
         />
         {this.props.layer.type !== 'background' && <LayerSourceBlock
-          error={errorData.sources}
+          error={errorData.source}
           sourceIds={Object.keys(this.props.sources)}
           value={this.props.layer.source}
           onChange={v => this.changeProperty(null, 'source', v)}
