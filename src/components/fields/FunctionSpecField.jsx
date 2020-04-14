@@ -6,10 +6,19 @@ import DataProperty from './_DataProperty'
 import ZoomProperty from './_ZoomProperty'
 import ExpressionProperty from './_ExpressionProperty'
 import {function as styleFunction} from '@mapbox/mapbox-gl-style-spec';
+import {findDefaultFromSpec} from '../util/spec-helper';
 
 
 function isLiteralExpression (value) {
   return (Array.isArray(value) && value.length === 2 && value[0] === "literal");
+}
+
+function isGetExpression (value) {
+  return (
+    Array.isArray(value) &&
+    value.length === 2 &&
+    value[0] === "get"
+  );
 }
 
 function isZoomField(value) {
@@ -28,7 +37,15 @@ function isZoomField(value) {
   );
 }
 
-function isDataField(value) {
+function isIdentityProperty (value) {
+  return (
+    typeof(value) === 'object' &&
+    value.type === "identity" &&
+    value.hasOwnProperty("property")
+  );
+}
+
+function isDataStopProperty (value) {
   return (
     typeof(value) === 'object' &&
     value.stops &&
@@ -42,6 +59,13 @@ function isDataField(value) {
         typeof(stop[0]) === 'object'
       );
     })
+  );
+}
+
+function isDataField(value) {
+  return (
+    isIdentityProperty(value) ||
+    isDataStopProperty(value)
   );
 }
 
@@ -78,24 +102,6 @@ function getDataType (value, fieldSpec={}) {
   }
 }
 
-/**
- * If we don't have a default value just make one up
- */
-function findDefaultFromSpec (spec) {
-  if (spec.hasOwnProperty('default')) {
-    return spec.default;
-  }
-
-  const defaults = {
-    'color': '#000000',
-    'string': '',
-    'boolean': false,
-    'number': 0,
-    'array': [],
-  }
-
-  return defaults[spec.type] || '';
-}
 
 /** Supports displaying spec field for zoom function objects
  * https://www.mapbox.com/mapbox-gl-style-spec/#types-function-zoom-property
@@ -206,7 +212,16 @@ export default class FunctionSpecProperty  extends React.Component {
   undoExpression = () => {
     const {value, fieldName} = this.props;
 
-    if (isLiteralExpression(value)) {
+    if (isGetExpression(value)) {
+      this.props.onChange(fieldName, {
+        "type": "identity",
+        "property": value[1]
+      });
+      this.setState({
+        dataType: "value",
+      });
+    }
+    else if (isLiteralExpression(value)) {
       this.props.onChange(fieldName, value[1]);
       this.setState({
         dataType: "value",
@@ -217,6 +232,7 @@ export default class FunctionSpecProperty  extends React.Component {
   canUndo = () => {
     const {value, fieldSpec} = this.props;
     return (
+      isGetExpression(value) ||
       isLiteralExpression(value) ||
       isPrimative(value) ||
       (Array.isArray(value) && fieldSpec.type === "array")
@@ -229,6 +245,9 @@ export default class FunctionSpecProperty  extends React.Component {
 
     if (typeof(value) === "object" && 'stops' in value) {
       expression = styleFunction.convertFunction(value, fieldSpec);
+    }
+    else if (isIdentityProperty(value)) {
+      expression = ["get", value.property];
     }
     else {
       expression = ["literal", value || this.props.fieldSpec.default];

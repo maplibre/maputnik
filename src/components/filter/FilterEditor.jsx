@@ -1,6 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { combiningFilterOps } from '../../libs/filterops.js'
+import {mdiTableRowPlusAfter} from '@mdi/js';
 
 import {latest, validate, migrate} from '@mapbox/mapbox-gl-style-spec'
 import DocLabel from '../fields/DocLabel'
@@ -261,8 +262,11 @@ export default class CombiningFilterEditor extends React.Component {
             <Button
               data-wd-key="layer-filter-button"
               className="maputnik-add-filter"
-              onClick={this.addFilterItem}>
-              Add filter
+              onClick={this.addFilterItem}
+            >
+              <svg style={{width:"14px", height:"14px", verticalAlign: "text-bottom"}} viewBox="0 0 24 24">
+                <path fill="currentColor" d={mdiTableRowPlusAfter} />
+              </svg> Add filter
             </Button>
           </div>
           <div
