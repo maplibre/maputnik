@@ -1,5 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+import {mdiFunctionVariant, mdiTableRowPlusAfter} from '@mdi/js';
 
 import Button from '../Button'
 import SpecField from './SpecField'
@@ -299,7 +300,9 @@ export default class DataProperty extends React.Component {
             className="maputnik-add-stop"
             onClick={this.props.onAddStop.bind(this)}
           >
-            Add stop
+            <svg style={{width:"14px", height:"14px", verticalAlign: "text-bottom"}} viewBox="0 0 24 24">
+              <path fill="currentColor" d={mdiTableRowPlusAfter} />
+            </svg> Add stop
           </Button>
         </>
       }
@@ -307,7 +310,9 @@ export default class DataProperty extends React.Component {
         className="maputnik-add-stop"
         onClick={this.props.onExpressionClick.bind(this)}
       >
-        Convert to expression
+        <svg style={{width:"14px", height:"14px", verticalAlign: "text-bottom"}} viewBox="0 0 24 24">
+          <path fill="currentColor" d={mdiFunctionVariant} />
+        </svg> Convert to expression
       </Button>
     </div>
   }
