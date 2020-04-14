@@ -104,7 +104,7 @@ export default class MapboxGlMap extends React.Component {
 
     this.updateMapFromProps(this.props);
 
-    if(this.props.inspectModeEnabled !== prevProps.inspectModeEnabled) {
+    if(this.state.inspect && this.props.inspectModeEnabled !== this.state.inspect._showInspectMap) {
       // HACK: Fix for <https://github.com/maputnik/editor/issues/576>, while we wait for a proper fix.
       // eslint-disable-next-line
       this.state.inspect._popupBlocked = false;
@@ -112,7 +112,14 @@ export default class MapboxGlMap extends React.Component {
     }
     if (map) {
       if (this.props.inspectModeEnabled) {
-        this.state.inspect.render();
+        // HACK: We need to work out why we need to do this and what's causing
+        // this error. I'm assuming an issue with mapbox-gl update and
+        // mapbox-gl-inspect.
+        try {
+          this.state.inspect.render();
+        } catch(err) {
+          console.error("FIXME: Caught error", err);
+        }
       }
 
       map.showTileBoundaries = this.props.options.showTileBoundaries;
@@ -182,9 +189,6 @@ export default class MapboxGlMap extends React.Component {
         inspect,
         zoom: map.getZoom()
       });
-      if(this.props.inspectModeEnabled) {
-        inspect.toggleInspector();
-      }
     })
 
     map.on("data", e => {
