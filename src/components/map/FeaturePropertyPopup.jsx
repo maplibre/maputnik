@@ -22,7 +22,7 @@ function renderProperties(feature) {
 }
 
 function renderFeatureId(feature) {
-  return <InputBlock key={"feature-id"} label={"feature id"}>
+  return <InputBlock key={"feature-id"} label={"feature_id"}>
     <StringInput value={displayValue(feature.id)} style={{backgroundColor: 'transparent'}} />
   </InputBlock>
   }
