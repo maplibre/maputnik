@@ -21,12 +21,19 @@ function renderProperties(feature) {
   })
 }
 
+function renderFeatureId(feature) {
+  return <InputBlock key={"feature-id"} label={"feature id"}>
+    <StringInput value={displayValue(feature.id)} style={{backgroundColor: 'transparent'}} />
+  </InputBlock>
+  }
+
 function renderFeature(feature, idx) {
   return <div key={`${feature.sourceLayer}-${idx}`}>
     <div className="maputnik-popup-layer-id">{feature.layer['source-layer']}{feature.inspectModeCounter && <span> × {feature.inspectModeCounter}</span>}</div>
     <InputBlock key={"property-type"} label={"$type"}>
       <StringInput value={feature.geometry.type} style={{backgroundColor: 'transparent'}} />
     </InputBlock>
+    {renderFeatureId(feature)}
     {renderProperties(feature)}
   </div>
 }
@@ -36,7 +43,7 @@ function removeDuplicatedFeatures(features) {
 
   features.forEach(feature => {
     const featureIndex = uniqueFeatures.findIndex(feature2 => {
-      return feature.layer['source-layer'] === feature2.layer['source-layer'] 
+      return feature.layer['source-layer'] === feature2.layer['source-layer']
         && JSON.stringify(feature.properties) === JSON.stringify(feature2.properties)
     })
 
