@@ -12,6 +12,30 @@ CodeMirror.defineMode("mgl", function(config, parserConfig) {
   );
 });
 
+CodeMirror.registerHelper("lint", "json", function(text) {
+  const found = [];
+
+  // NOTE: This was modified from the original to remove the global, also the
+  // old jsonlint API was 'jsonlint.parseError' its now
+  // 'jsonlint.parser.parseError'
+  jsonlint.parser.parseError = function(str, hash) {
+    const loc = hash.loc;
+    found.push({
+      from:    CodeMirror.Pos(loc.first_line - 1, loc.first_column),
+      to:      CodeMirror.Pos(loc.last_line  - 1, loc.last_column),
+      message: str
+    });
+  };
+
+  try {
+    jsonlint.parse(text);
+  }
+  catch(e) {
+    // Do nothing we catch the error above
+  }
+  return found;
+});
+
 CodeMirror.registerHelper("lint", "mgl", function(text, opts, doc) {
   const found = [];
   const {parser} = jsonlint;

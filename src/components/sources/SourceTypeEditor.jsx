@@ -214,6 +214,11 @@ class GeoJSONSourceJSONEditor extends React.Component {
       <JSONEditor
         layer={this.props.source.data}
         maxHeight={200}
+        mode={{
+          name: "javascript",
+          json: true
+        }}
+        lint={true}
         onChange={data => {
           this.props.onChange({
             ...this.props.source,
