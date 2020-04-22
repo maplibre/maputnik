@@ -67,7 +67,7 @@ export class ApiStyleStore {
   save(mapStyle) {
     const styleJSON = format(
       style.stripAccessTokens(
-        style.replaceAccessTokens(newStyle)
+        style.replaceAccessTokens(mapStyle)
       )
     );
 
