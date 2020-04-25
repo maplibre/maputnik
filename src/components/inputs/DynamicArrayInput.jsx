@@ -7,6 +7,7 @@ import {MdDelete} from 'react-icons/md'
 import DocLabel from '../fields/DocLabel'
 import EnumInput from '../inputs/SelectInput'
 import capitalize from 'lodash.capitalize'
+import UrlInput from '../inputs/UrlInput'
 
 
 class DynamicArrayInput extends React.Component {
@@ -35,6 +36,9 @@ class DynamicArrayInput extends React.Component {
     if (this.props.type === 'number') {
       values.push(0)
     }
+    else if (this.props.type === 'url') {
+      values.push("");
+    }
     else if (this.props.type === 'enum') {
       const {fieldSpec} = this.props;
       const defaultValue = Object.keys(fieldSpec.values)[0];
@@ -57,7 +61,13 @@ class DynamicArrayInput extends React.Component {
     const inputs = this.values.map((v, i) => {
       const deleteValueBtn= <DeleteValueButton onClick={this.deleteValue.bind(this, i)} />
       let input;
-      if (this.props.type === 'number') {
+      if(this.props.type === 'url') {
+        input = <UrlInput
+          value={v}
+          onChange={this.changeValue.bind(this, i)}
+        />
+      }
+      else if (this.props.type === 'number') {
         input = <NumberInput
           value={v}
           onChange={this.changeValue.bind(this, i)}

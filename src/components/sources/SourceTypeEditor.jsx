@@ -41,26 +41,22 @@ class TileURLSourceEditor extends React.Component {
     children: PropTypes.node,
   }
 
-  changeTileUrl(idx, value) {
-    const tiles = this.props.source.tiles.slice(0)
-    tiles[idx] = value
+  changeTileUrls(tiles) {
     this.props.onChange({
       ...this.props.source,
-      tiles: tiles
+      tiles,
     })
   }
 
   renderTileUrls() {
-    const prefix = ['1st', '2nd', '3rd', '4th', '5th', '6th', '7th']
-    const tiles = this.props.source.tiles || []
-    return tiles.map((tileUrl, tileIndex) => {
-      return <InputBlock key={tileIndex} label={prefix[tileIndex] + " Tile URL"} fieldSpec={latest.source_vector.tiles}>
-        <UrlInput
-          value={tileUrl}
-          onChange={this.changeTileUrl.bind(this, tileIndex)}
-        />
-      </InputBlock>
-    })
+    const tiles = this.props.source.tiles || [];
+    return <InputBlock label={"Tile URL"} fieldSpec={latest.source_vector.tiles}>
+      <DynamicArrayInput
+        type="url"
+        value={tiles}
+        onChange={this.changeTileUrls.bind(this)}
+      />
+    </InputBlock>
   }
 
   render() {
@@ -108,7 +104,7 @@ class ImageSourceEditor extends React.Component {
     }
 
     return <div>
-      <InputBlock label={"Image URL"} doc={latest.source_image.url.doc}>
+      <InputBlock label={"Image URL"} fieldSpec={latest.source_image.url}>
         <UrlInput
           value={this.props.source.url}
           onChange={url => this.props.onChange({
@@ -159,7 +155,7 @@ class VideoSourceEditor extends React.Component {
     }
 
     return <div>
-      <InputBlock label={"Video URL"} doc={latest.source_video.urls.doc}>
+      <InputBlock label={"Video URL"} fieldSpec={latest.source_video.urls}>
         <DynamicArrayInput
           type="string"
           value={this.props.source.urls}
