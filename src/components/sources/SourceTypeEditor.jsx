@@ -41,26 +41,22 @@ class TileURLSourceEditor extends React.Component {
     children: PropTypes.node,
   }
 
-  changeTileUrl(idx, value) {
-    const tiles = this.props.source.tiles.slice(0)
-    tiles[idx] = value
+  changeTileUrls(tiles) {
     this.props.onChange({
       ...this.props.source,
-      tiles: tiles
+      tiles,
     })
   }
 
   renderTileUrls() {
-    const prefix = ['1st', '2nd', '3rd', '4th', '5th', '6th', '7th']
-    const tiles = this.props.source.tiles || []
-    return tiles.map((tileUrl, tileIndex) => {
-      return <InputBlock key={tileIndex} label={prefix[tileIndex] + " Tile URL"} fieldSpec={latest.source_vector.tiles}>
-        <UrlInput
-          value={tileUrl}
-          onChange={this.changeTileUrl.bind(this, tileIndex)}
-        />
-      </InputBlock>
-    })
+    const tiles = this.props.source.tiles || [];
+    return <InputBlock label={"Tile URL"} fieldSpec={latest.source_vector.tiles}>
+      <DynamicArrayInput
+        type="url"
+        value={tiles}
+        onChange={this.changeTileUrls.bind(this)}
+      />
+    </InputBlock>
   }
 
   render() {
