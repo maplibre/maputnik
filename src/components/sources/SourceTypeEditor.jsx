@@ -104,7 +104,7 @@ class ImageSourceEditor extends React.Component {
     }
 
     return <div>
-      <InputBlock label={"Image URL"} doc={latest.source_image.url.doc}>
+      <InputBlock label={"Image URL"} fieldSpec={latest.source_image.url}>
         <UrlInput
           value={this.props.source.url}
           onChange={url => this.props.onChange({
@@ -155,7 +155,7 @@ class VideoSourceEditor extends React.Component {
     }
 
     return <div>
-      <InputBlock label={"Video URL"} doc={latest.source_video.urls.doc}>
+      <InputBlock label={"Video URL"} fieldSpec={latest.source_video.urls}>
         <DynamicArrayInput
           type="string"
           value={this.props.source.urls}
