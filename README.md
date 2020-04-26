@@ -18,7 +18,6 @@ A free and open visual editor for the [Mapbox GL styles](https://www.mapbox.com/
 targeted at developers and map designers.
 
 - :link: Design your maps online at **<https://maputnik.github.io/editor/>** (all in local storage)
-- :link: Try out the v1.7.0-beta release at: https://maputnik.github.io/releases/v1.7.0-beta/
 - :link: Use the [Maputnik CLI](https://github.com/maputnik/editor/wiki/Maputnik-CLI) for local style development
 
 Mapbox has built one of the best and most amazing OSS ecosystems. A key component to ensure its longevity and independence is an OSS map designer.
@@ -56,7 +55,7 @@ If you want Maputnik to be accessible externally use the [`--host` option](https
 
 ```bash
 # start externally accessible dev server
-npm start -- --host 0.0.0.0 
+npm start -- --host 0.0.0.0
 ```
 
 The build process will watch for changes to the filesystem, rebuild and autoreload the editor. However note this from the [webpack-dev-server docs](https://webpack.js.org/configuration/dev-server/):
@@ -106,7 +105,7 @@ After some time you should see a browser launch which will be automated by the t
 
 ## Related Projects
 
-- [maputnik-dev-server](https://github.com/nycplanning/labs-maputnik-dev-server) - An express.js server that allows for quickly loading the style from any mapboxGL map into mapuntnik. 
+- [maputnik-dev-server](https://github.com/nycplanning/labs-maputnik-dev-server) - An express.js server that allows for quickly loading the style from any mapboxGL map into mapuntnik.
 
 ## Sponsors
 
