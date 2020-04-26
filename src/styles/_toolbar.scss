@@ -107,6 +107,8 @@
     display: inline;
     width: auto;
     border: solid 1px $color-midgray;
+    vertical-align: inherit;
+    margin-top: -2px;
   }
 }
 
