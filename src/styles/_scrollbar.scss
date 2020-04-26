@@ -1,4 +1,4 @@
-* {
+*:not(select) {
   &::-webkit-scrollbar {
     background-color: #26282e;
     width: 8px;
