@@ -1,5 +1,4 @@
-// HACK: ::webkit-scrollbar selector covers to much of the UI. Bigger changes to come so for now just use :not() to ignore the toolbar
-div:not(.maputnik-toolbar__actions) {
+*:not(select) {
   &::-webkit-scrollbar {
     background-color: #26282e;
     width: 8px;

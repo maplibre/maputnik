@@ -25,3 +25,6 @@ $layout-list-width: 200px;
 $layout-editor-width: 370px;
 $layout-map-width: calc(100% - #{$layout-list-width + $layout-editor-width});
 
+// 'menu-down' from 'https://materialdesignicons.com/'
+// See <https://github.com/Templarian/MaterialDesign/blob/master/LICENSE>
+$icon-down-arrow: "data:image/svg+xml;charset=utf-8,<svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24'><path fill='white' d='M7,10L12,15L17,10H7Z' /></svg>"

@@ -97,6 +97,13 @@
 .maputnik-select {
   @extend .maputnik-input;
 
+  -moz-appearance: none;
+  -webkit-appearance: none;
+  background: $color-gray url("#{$icon-down-arrow}") right center no-repeat;
+  color: $color-white;
+  background-position: calc(100% - 2px) center;
+  padding-right: 20px;
+
   height: 24px;
 }
 

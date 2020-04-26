@@ -210,7 +210,11 @@ export default class Toolbar extends React.Component {
           <ToolbarSelect wdKey="nav:inspect">
             <MdFindInPage />
             <IconText>View </IconText>
-            <select onChange={(e) => this.handleSelection(e.target.value)} value={currentView.id}>
+            <select
+              className="maputnik-select"
+              onChange={(e) => this.handleSelection(e.target.value)}
+              value={currentView.id}
+            >
               {views.map((item) => {
                 return (
                   <option key={item.id} value={item.id} disabled={item.disabled}>

@@ -17,7 +17,7 @@
   text-decoration: none;
   display: block;
   flex: 0 0 190px;
-  width: 190px;
+  width: 200px;
   text-align: left;
   background-color: $color-black;
   padding: $margin-2;
@@ -102,15 +102,13 @@
   @extend .maputnik-toolbar-link;
 
   select {
-    // HACK: <https://github.com/maputnik/editor/pull/392#issuecomment-427595172>
-    color: $color-black !important;
-    margin-left: 4px;
+    margin-left: 6px;
     border-width: 0;
-
-    option {
-      // HACK: <https://github.com/maputnik/editor/pull/392#issuecomment-427595172>
-      color: $color-black !important;
-    }
+    display: inline;
+    width: auto;
+    border: solid 1px $color-midgray;
+    vertical-align: inherit;
+    margin-top: -2px;
   }
 }
 
