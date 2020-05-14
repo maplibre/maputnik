@@ -80,8 +80,8 @@ class ExportModal extends React.Component {
             fieldSpec={fieldSpecAdditional.maputnik.mapbox_access_token}
           >
             <StringInput
-              value={(this.props.mapStyle.metadata || {})['maputnik:openmaptiles_access_token']}
-              onChange={this.changeMetadataProperty.bind(this, "maputnik:openmaptiles_access_token")}
+              value={(this.props.mapStyle.metadata || {})['maputnik:mapbox_access_token']}
+              onChange={this.changeMetadataProperty.bind(this, "maputnik:mapbox_access_token")}
             />
           </InputBlock>
           <InputBlock
@@ -89,8 +89,8 @@ class ExportModal extends React.Component {
             fieldSpec={fieldSpecAdditional.maputnik.maptiler_access_token}
           >
             <StringInput
-              value={(this.props.mapStyle.metadata || {})['maputnik:mapbox_access_token']}
-              onChange={this.changeMetadataProperty.bind(this, "maputnik:mapbox_access_token")}
+              value={(this.props.mapStyle.metadata || {})['maputnik:openmaptiles_access_token']}
+              onChange={this.changeMetadataProperty.bind(this, "maputnik:openmaptiles_access_token")}
             />
           </InputBlock>
           <InputBlock
