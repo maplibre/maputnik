@@ -11,6 +11,7 @@ class Button extends React.Component {
     className: PropTypes.string,
     children: PropTypes.node,
     disabled: PropTypes.bool,
+    type: PropTypes.string,
   }
 
   render() {
