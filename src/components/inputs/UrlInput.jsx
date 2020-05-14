@@ -1,10 +1,14 @@
-import React from 'react'
+import React, {Fragment} from 'react'
 import PropTypes from 'prop-types'
 import StringInput from './StringInput'
 import SmallError from '../util/SmallError'
 
 
 function validate (url) {
+  if (url === "") {
+    return;
+  }
+
   let error;
   const getProtocol = (url) => {
     try {
@@ -16,7 +20,20 @@ function validate (url) {
     }
   };
   const protocol = getProtocol(url);
-  if (
+  const isSsl = window.location.protocol === "https:";
+
+  if (!protocol) {
+    error = (
+      <SmallError>
+        Must provide protocol {
+          isSsl
+          ? <code>http://</code>
+          : <><code>http://</code> or <code>https://</code></>
+        }
+      </SmallError>
+    );
+  }
+  else if (
     protocol &&
     protocol === "http:" &&
     window.location.protocol === "https:"
@@ -61,12 +78,20 @@ class UrlInput extends React.Component {
     this.props.onInput(url);
   }
 
+  onChange = (url) => {
+    this.setState({
+      error: validate(url)
+    });
+    this.props.onChange(url);
+  }
+
   render () {
     return (
       <div>
         <StringInput
           {...this.props}
           onInput={this.onInput}
+          onChange={this.onChange}
         />
         {this.state.error}
       </div>

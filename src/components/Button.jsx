@@ -15,6 +15,7 @@ class Button extends React.Component {
 
   render() {
     return <button
+      type={this.props.type}
       onClick={this.props.onClick}
       disabled={this.props.disabled}
       aria-label={this.props["aria-label"]}
