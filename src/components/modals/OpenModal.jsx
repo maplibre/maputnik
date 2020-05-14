@@ -123,7 +123,8 @@ class OpenModal extends React.Component {
     })
   }
 
-  onOpenUrl = (url) => {
+  onSubmitUrl = (e) => {
+    e.preventDefault();
     this.onStyleSelect(this.state.styleUrl);
   }
 
@@ -209,22 +210,25 @@ class OpenModal extends React.Component {
             <p>
               Load from a URL. Note that the URL must have <a href="https://enable-cors.org" target="_blank" rel="noopener noreferrer">CORS enabled</a>.
             </p>
-            <UrlInput
-              data-wd-key="open-modal.url.input"
-              type="text"
-              className="maputnik-input"
-              default="Enter URL..."
-              value={this.state.styleUrl}
-              onInput={this.onChangeUrl}
-            />
-            <div>
-              <Button
-                data-wd-key="open-modal.url.button"
-                className="maputnik-big-button"
-                onClick={this.onOpenUrl}
-                disabled={this.state.styleUrl.length < 1}
-              >Open URL</Button>
-            </div>
+            <form onSubmit={this.onSubmitUrl}>
+              <UrlInput
+                data-wd-key="open-modal.url.input"
+                type="text"
+                className="maputnik-input"
+                default="Enter URL..."
+                value={this.state.styleUrl}
+                onInput={this.onChangeUrl}
+                onChange={this.onChangeUrl}
+              />
+              <div>
+                <Button
+                  data-wd-key="open-modal.url.button"
+                  type="submit"
+                  className="maputnik-big-button"
+                  disabled={this.state.styleUrl.length < 1}
+                >Open URL</Button>
+              </div>
+            </form>
           </section>
 
           <section className="maputnik-modal-section maputnik-modal-section--shrink">
