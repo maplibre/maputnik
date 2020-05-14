@@ -27,7 +27,7 @@ function validate (url) {
       <SmallError>
         Must provide protocol {
           isSsl
-          ? <code>http://</code>
+          ? <code>https://</code>
           : <><code>http://</code> or <code>https://</code></>
         }
       </SmallError>
