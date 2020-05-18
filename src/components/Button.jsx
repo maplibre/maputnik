@@ -13,6 +13,7 @@ class Button extends React.Component {
     disabled: PropTypes.bool,
     type: PropTypes.string,
     id: PropTypes.string,
+    title: PropTypes.string,
   }
 
   render() {

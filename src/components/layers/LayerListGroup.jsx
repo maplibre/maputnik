@@ -7,7 +7,8 @@ export default class LayerListGroup extends React.Component {
     title: PropTypes.string.isRequired,
     "data-wd-key": PropTypes.string,
     isActive: PropTypes.bool.isRequired,
-    onActiveToggle: PropTypes.func.isRequired
+    onActiveToggle: PropTypes.func.isRequired,
+    'aria-controls': PropTypes.string,
   }
 
   render() {
