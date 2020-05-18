@@ -54,6 +54,7 @@ class Modal extends React.Component {
             <h1 className="maputnik-modal-header-title">{this.props.title}</h1>
             <span className="maputnik-modal-header-space"></span>
             <button className="maputnik-modal-header-toggle"
+              title="Close modal"
               onClick={this.onClose}
               data-wd-key={this.props["data-wd-key"]+".close-modal"}
             >

@@ -15,6 +15,7 @@ class FilterEditorBlock extends React.Component {
         <Button
           className="maputnik-delete-filter"
           onClick={this.props.onDelete}
+          title="Delete filter block"
         >
           <MdDelete />
         </Button>

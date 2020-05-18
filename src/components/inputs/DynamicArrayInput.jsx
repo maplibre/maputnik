@@ -124,10 +124,11 @@ class DeleteValueButton extends React.Component {
     return <Button
       className="maputnik-delete-stop"
       onClick={this.props.onClick}
+      title="Remove array item"
     >
       <DocLabel
         label={<MdDelete />}
-        doc={"Remove array entry."}
+        doc={"Remove array item."}
       />
     </Button>
   }

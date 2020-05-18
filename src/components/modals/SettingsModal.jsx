@@ -190,6 +190,7 @@ class SettingsModal extends React.Component {
       <InputBlock label={"Light anchor"} fieldSpec={latest.light.anchor}>
         <EnumInput
           {...inputProps}
+          name="light-anchor"
           value={light.anchor}
           options={Object.keys(latest.light.anchor.values)}
           default={latest.light.anchor.default}

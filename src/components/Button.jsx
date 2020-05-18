@@ -12,10 +12,13 @@ class Button extends React.Component {
     children: PropTypes.node,
     disabled: PropTypes.bool,
     type: PropTypes.string,
+    id: PropTypes.string,
   }
 
   render() {
     return <button
+      id={this.props.id}
+      title={this.props.title}
       type={this.props.type}
       onClick={this.props.onClick}
       disabled={this.props.disabled}

@@ -13,36 +13,88 @@ class ShortcutsModal extends React.Component {
   render() {
     const help = [
       {
-        key: "?",
+        key: <kbd>?</kbd>,
         text: "Shortcuts menu"
       },
       {
-        key: "o",
+        key: <kbd>o</kbd>,
         text: "Open modal"
       },
       {
-        key: "e",
+        key: <kbd>e</kbd>,
         text: "Export modal"
       },
       {
-        key: "d",
+        key: <kbd>d</kbd>,
         text: "Data Sources modal"
       },
       {
-        key: "s",
+        key: <kbd>s</kbd>,
         text: "Style Settings modal"
       },
       {
-        key: "i",
+        key: <kbd>i</kbd>,
         text: "Toggle inspect"
       },
       {
-        key: "m",
+        key: <kbd>m</kbd>,
         text: "Focus map"
       },
       {
-        key: "!",
+        key: <kbd>!</kbd>,
         text: "Debug modal"
+      },
+    ]
+
+
+    const mapShortcuts = [
+      {
+        key: <kbd>+</kbd>,
+        text: "Increase the zoom level by 1.",
+      },
+      {
+        key: <><kbd>Shift</kbd> + <kbd>+</kbd></>,
+        text: "Increase the zoom level by 2.",
+      },
+      {
+        key: <kbd>-</kbd>,
+        text: "Decrease the zoom level by 1.",
+      },
+      {
+        key: <><kbd>Shift</kbd> + <kbd>-</kbd></>,
+        text: "Decrease the zoom level by 2.",
+      },
+      {
+        key: <kbd>Up</kbd>,
+        text: "Pan up by 100 pixels.",
+      },
+      {
+        key: <kbd>Down</kbd>,
+        text: "Pan down by 100 pixels.",
+      },
+      {
+        key: <kbd>Left</kbd>,
+        text: "Pan left by 100 pixels.",
+      },
+      {
+        key: <kbd>Right</kbd>,
+        text: "Pan right by 100 pixels.",
+      },
+      {
+        key: <><kbd>Shift</kbd> + <kbd>Right</kbd></>,
+        text: "Increase the rotation by 15 degrees.",
+      },
+      {
+        key: <><kbd>Shift</kbd> + <kbd>Left</kbd></>,
+        text: "Decrease the rotation by 15 degrees."
+      },
+      {
+        key: <><kbd>Shift</kbd> + <kbd>Up</kbd></>,
+        text: "Increase the pitch by 10 degrees."
+      },
+      {
+        key: <><kbd>Shift</kbd> + <kbd>Down</kbd></>,
+        text: "Decrease the pitch by 10 degrees."
       },
     ]
 
@@ -57,10 +109,19 @@ class ShortcutsModal extends React.Component {
         <p>
           Press <code>ESC</code> to lose focus of any active elements, then press one of:
         </p>
+        <dl>
+          {help.map((item, idx) => {
+            return <div key={idx} className="maputnik-modal-shortcuts__shortcut">
+              <dt key={"dt"+idx}>{item.key}</dt>
+              <dd key={"dd"+idx}>{item.text}</dd>
+            </div>
+          })}
+        </dl>
+        <p>If the Map is in focused you can use the following shortcuts</p>
         <ul>
-          {help.map((item) => {
-            return <li key={item.key}>
-              <code>{item.key}</code> {item.text}
+          {mapShortcuts.map((item, idx) => {
+            return <li key={idx}>
+              <span>{item.key}</span> {item.text}
             </li>
           })}
         </ul>

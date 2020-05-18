@@ -194,6 +194,7 @@ export default class CombiningFilterEditor extends React.Component {
         </p>
         <Button
           onClick={this.makeExpression}
+          title="Convert to expression"
         >
           <svg style={{marginRight: "0.2em", width:"14px", height:"14px", verticalAlign: "middle"}} viewBox="0 0 24 24">
             <path fill="currentColor" d={mdiFunctionVariant} />
@@ -211,6 +212,7 @@ export default class CombiningFilterEditor extends React.Component {
         <div>
           <Button
             onClick={this.makeExpression}
+            title="Convert to expression"
             className="maputnik-make-zoom-function"
           >
             <svg style={{width:"14px", height:"14px", verticalAlign: "middle"}} viewBox="0 0 24 24">

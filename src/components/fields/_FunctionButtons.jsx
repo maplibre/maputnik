@@ -40,6 +40,7 @@ export default class FunctionButtons extends React.Component {
         <Button
           className="maputnik-make-zoom-function"
           onClick={this.props.onExpressionClick}
+          title="Convert to expression"
         >
           <svg style={{width:"14px", height:"14px", verticalAlign: "middle"}} viewBox="0 0 24 24">
             <path fill="currentColor" d={mdiFunctionVariant} />
@@ -50,7 +51,7 @@ export default class FunctionButtons extends React.Component {
       makeZoomButton = <Button
         className="maputnik-make-zoom-function"
         onClick={this.props.onZoomClick}
-        title={"Turn property into a zoom function to enable a map feature to change with map's zoom level."}
+        title="Convert property into a zoom function"
       >
         <MdFunctions />
       </Button>
@@ -59,7 +60,7 @@ export default class FunctionButtons extends React.Component {
         makeDataButton = <Button
           className="maputnik-make-data-function"
           onClick={this.props.onDataClick}
-          title={"Turn property into a data function to enable a map feature to change according to data properties and the map's zoom level."}
+          title="Convert property to data function"
         >
           <MdInsertChart />
         </Button>

@@ -179,6 +179,8 @@ export default class OpenLayersMap extends React.Component {
       <div
         className="maputnik-ol"
         ref={x => this.container = x}
+        role="region"
+        aria-label="Map view"
         style={{
           ...this.props.style,
         }}>

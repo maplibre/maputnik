@@ -132,6 +132,8 @@
 }
 
 .maputnik-toolbar-skip {
+  all: unset;
+  border: solid 1px transparent;
   position: absolute;
   overflow: hidden;
   width: 0px;
@@ -147,6 +149,7 @@
   &:active,
   &:focus {
     width: 100%;
+    border-color: $color-lowgray;
   }
 }
 

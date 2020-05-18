@@ -131,6 +131,16 @@ export default class Toolbar extends React.Component {
     this.props.onSetMapState(val);
   }
 
+  onSkip = (target) => {
+    if (target === "map") {
+      document.querySelector(".mapboxgl-canvas").focus();
+    }
+    else {
+      const el = document.querySelector("#skip-target-"+target);
+      el.focus();
+    }
+  }
+
   render() {
     const views = [
       {
@@ -144,22 +154,22 @@ export default class Toolbar extends React.Component {
       },
       {
         id: "filter-deuteranopia",
-        title: "Map (deuteranopia)",
+        title: "Deuteranopia color filter",
         disabled: !colorAccessibilityFiltersEnabled,
       },
       {
         id: "filter-protanopia",
-        title: "Map (protanopia)",
+        title: "Protanopia color filter",
         disabled: !colorAccessibilityFiltersEnabled,
       },
       {
         id: "filter-tritanopia",
-        title: "Map (tritanopia)",
+        title: "Tritanopia color filter",
         disabled: !colorAccessibilityFiltersEnabled,
       },
       {
         id: "filter-achromatopsia",
-        title: "Map (achromatopsia)",
+        title: "Achromatopsia color filter",
         disabled: !colorAccessibilityFiltersEnabled,
       },
     ];
@@ -173,23 +183,37 @@ export default class Toolbar extends React.Component {
         <div
           className="maputnik-toolbar-logo-container"
         >
-          <a className="maputnik-toolbar-skip" href="#skip-menu">
-            Skip navigation
-          </a>
-          <a
-            href="https://github.com/maputnik/editor"
-            rel="noopener noreferrer"
-            target="_blank"
+          {/* Keyboard accessible quick links */}
+          <button
+            className="maputnik-toolbar-skip"
+            onClick={e => this.onSkip("layer-list")}
+          >
+            Layers list
+          </button>
+          <button
+            className="maputnik-toolbar-skip"
+            onClick={e => this.onSkip("layer-editor")}
+          >
+            Layer editor
+          </button>
+          <button
+            className="maputnik-toolbar-skip"
+            onClick={e => this.onSkip("map")}
+          >
+            Map view
+          </button>
+          <div
             className="maputnik-toolbar-logo"
+            tabIndex="-1"
           >
             <span dangerouslySetInnerHTML={{__html: logoImage}} />
             <h1>
               <span className="maputnik-toolbar-name">{pkgJson.name}</span>
               <span className="maputnik-toolbar-version">v{pkgJson.version}</span>
             </h1>
-          </a>
+          </div>
         </div>
-        <div className="maputnik-toolbar__actions">
+        <div className="maputnik-toolbar__actions" role="navigation" aria-label="Toolbar">
           <ToolbarAction wdKey="nav:open" onClick={this.props.onToggleModal.bind(this, 'open')}>
             <MdOpenInBrowser />
             <IconText>Open</IconText>
@@ -209,20 +233,21 @@ export default class Toolbar extends React.Component {
 
           <ToolbarSelect wdKey="nav:inspect">
             <MdFindInPage />
-            <IconText>View </IconText>
-            <select
-              className="maputnik-select"
-              onChange={(e) => this.handleSelection(e.target.value)}
-              value={currentView.id}
-            >
-              {views.map((item) => {
-                return (
-                  <option key={item.id} value={item.id} disabled={item.disabled}>
-                    {item.title}
-                  </option>
-                );
-              })}
-            </select>
+            <label>View
+              <select
+                className="maputnik-select"
+                onChange={(e) => this.handleSelection(e.target.value)}
+                value={currentView.id}
+              >
+                {views.map((item) => {
+                  return (
+                    <option key={item.id} value={item.id} disabled={item.disabled}>
+                      {item.title}
+                    </option>
+                  );
+                })}
+              </select>
+            </label>
           </ToolbarSelect>
 
           <ToolbarLink href={"https://github.com/maputnik/editor/wiki"}>

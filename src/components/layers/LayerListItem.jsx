@@ -14,7 +14,9 @@ const DraggableLabel = SortableHandle((props) => {
       className="layer-handle__icon"
       type={props.layerType}
     />
-    <span className="maputnik-layer-list-item-id">{props.layerId}</span>
+    <button className="maputnik-layer-list-item-id">
+      {props.layerId}
+    </button>
   </div>
 });
 
@@ -54,6 +56,7 @@ class IconAction extends React.Component {
       className={`maputnik-layer-list-icon-action ${classAdditions}`}
       data-wd-key={this.props.wdKey}
       onClick={this.props.onClick}
+      aria-hidden="true"
     >
       {this.renderIcon()}
     </button>

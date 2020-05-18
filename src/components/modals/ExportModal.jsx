@@ -104,7 +104,10 @@ class ExportModal extends React.Component {
           </InputBlock>
         </div>
 
-        <Button onClick={this.downloadStyle.bind(this)}>
+        <Button
+          onClick={this.downloadStyle.bind(this)}
+          title="Download style"
+        >
           <MdFileDownload />
           Download
         </Button>
