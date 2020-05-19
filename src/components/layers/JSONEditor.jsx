@@ -54,6 +54,7 @@ class JSONEditor extends React.Component {
     super(props)
     this.state = {
       isEditing: false,
+      showMessage: false,
       prevValue: this.props.getValue(this.props.layer),
     };
   }
@@ -82,17 +83,24 @@ class JSONEditor extends React.Component {
     this._doc.on('blur', this.onBlur);
   }
 
-  onFocus = () => {
+  onPointerDown = (cm, e) => {
+    this._keyEvent = "pointer";
+  }
+
+  onFocus = (cm, e) => {
     this.props.onFocus();
     this.setState({
-      isEditing: true
+      isEditing: true,
+      showMessage: (this._keyEvent === "keyboard"),
     });
   }
 
   onBlur = () => {
+    this._keyEvent = "keyboard";
     this.props.onBlur();
     this.setState({
-      isEditing: false
+      isEditing: false,
+      showMessage: false,
     });
   }
 
@@ -145,16 +153,22 @@ class JSONEditor extends React.Component {
   }
 
   render() {
+    const {showMessage} = this.state;
     const style = {};
     if (this.props.maxHeight) {
       style.maxHeight = this.props.maxHeight;
     }
 
-    return <div
-      className={classnames("codemirror-container", this.props.className)}
-      ref={(el) => this._el = el}
-      style={style}
-    />
+    return <div className="JSONEditor" onPointerDown={this.onPointerDown}>
+      <div class={classnames("JSONEditor__message", {"JSONEditor__message--on": showMessage})}>
+        Press <kbd>ESC</kbd> to lose focus
+      </div>
+      <div
+        className={classnames("codemirror-container", this.props.className)}
+        ref={(el) => this._el = el}
+        style={style}
+      />
+    </div>
   }
 }
 
