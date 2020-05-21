@@ -35,6 +35,8 @@ function findClosestCommonPrefix(layers, idx) {
   return closestIdx
 }
 
+let UID = 0;
+
 // List of collapsible layer editors
 class LayerListContainer extends React.Component {
   static propTypes = {...layerListPropTypes}
@@ -49,6 +51,9 @@ class LayerListContainer extends React.Component {
     this.state = {
       collapsedGroups: {},
       areAllGroupsExpanded: false,
+      keys: {
+        add: UID++,
+      },
       isOpen: {
         add: false,
       }
@@ -57,6 +62,10 @@ class LayerListContainer extends React.Component {
 
   toggleModal(modalName) {
     this.setState({
+      keys: {
+        ...this.state.keys,
+        [modalName]: UID++,
+      },
       isOpen: {
         ...this.state.isOpen,
         [modalName]: !this.state.isOpen[modalName]
@@ -253,6 +262,7 @@ class LayerListContainer extends React.Component {
 
     return <div className="maputnik-layer-list" ref={this.scrollContainerRef}>
       <AddModal
+          key={this.state.keys.add}
           layers={this.props.layers}
           sources={this.props.sources}
           isOpen={this.state.isOpen.add}
