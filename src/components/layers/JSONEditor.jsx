@@ -51,7 +51,8 @@ class JSONEditor extends React.Component {
   }
 
   constructor(props) {
-    super(props)
+    super(props);
+    this._keyEvent = "keyboard";
     this.state = {
       isEditing: false,
       showMessage: false,
