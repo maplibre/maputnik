@@ -159,7 +159,7 @@ class JSONEditor extends React.Component {
       style.maxHeight = this.props.maxHeight;
     }
 
-    return <div className="JSONEditor" onPointerDown={this.onPointerDown}>
+    return <div className="JSONEditor" onPointerDown={this.onPointerDown} aria-hidden="true">
       <div class={classnames("JSONEditor__message", {"JSONEditor__message--on": showMessage})}>
         Press <kbd>ESC</kbd> to lose focus
       </div>
