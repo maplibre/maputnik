@@ -1,16 +1,14 @@
 # Maputnik
 
-[![Build Status](https://circleci.com/gh/maputnik/editor/tree/master.svg?style=shield)][circleci]
-[![Windows Build Status](https://ci.appveyor.com/api/projects/status/anelbgv6jdb3qnh9/branch/master?svg=true)][appveyor]
+[![GitHub CI status](https://github.com/maputnik/editor/workflows/ci/badge.svg)][github-action-ci]
 [![Dependency Status](https://david-dm.org/maputnik/editor.svg)][dm-prod]
 [![Dev Dependency Status](https://david-dm.org/maputnik/editor/dev-status.svg)][dm-dev]
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)][license]
 
-[circleci]:    https://circleci.com/gh/maputnik/editor/tree/master
-[appveyor]:    https://ci.appveyor.com/project/lukasmartinelli/editor
-[dm-prod]:     https://david-dm.org/maputnik/editor
-[dm-dev]:      https://david-dm.org/maputnik/editor?type=dev
-[license]:     https://tldrlegal.com/license/mit-license
+[github-action-ci]: https://github.com/maputnik/editor/actions?query=workflow%3Aci
+[dm-prod]:          https://david-dm.org/maputnik/editor
+[dm-dev]:           https://david-dm.org/maputnik/editor?type=dev
+[license]:          https://tldrlegal.com/license/mit-license
 
 <img width="200" align="right" alt="Maputnik" src="https://cdn.jsdelivr.net/gh/maputnik/editor@1.5.0/src/img/maputnik.png" />
 

@@ -1,10 +1,17 @@
 var config      = require("../config/specs");
 var helper      = require("./helper");
 
-require("./util/webdriverio-ext");
-
 
 describe('maputnik', function() {
+
+  before(function(done) {
+    require("./util/webdriverio-ext");
+    helper.startGeoserver(done);
+  });
+
+  after(function(done) {
+    helper.stopGeoserver(done);
+  });
 
   beforeEach(function() {
     browser.url(config.baseUrl+"?debug&style="+helper.getStyleUrl([

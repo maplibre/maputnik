@@ -33,6 +33,7 @@ describe('screenshots', function() {
     browser.flushReactUpdates();
 
     const nav_open = $(wd.$("nav:open"));
+    nav_open.click();
     nav_open.waitForExist(); 
     browser.flushReactUpdates();
 
@@ -49,6 +50,7 @@ describe('screenshots', function() {
     browser.flushReactUpdates();
 
     const nav_export = $(wd.$("nav:export"));
+    nav_export.click();
     nav_export.waitForExist(); 
     browser.flushReactUpdates();
 
@@ -65,6 +67,7 @@ describe('screenshots', function() {
     browser.flushReactUpdates();
 
     const nav_sources = $(wd.$("nav:sources"));
+    nav_sources.click();
     nav_sources.waitForExist(); 
     browser.flushReactUpdates();
 
@@ -81,6 +84,7 @@ describe('screenshots', function() {
     browser.flushReactUpdates();
 
     const nav_settings = $(wd.$("nav:settings"));
+    nav_settings.click();
     nav_settings.waitForExist(); 
     browser.flushReactUpdates();
 

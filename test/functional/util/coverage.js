@@ -14,7 +14,9 @@ afterEach(function() {
     return window.__coverage__;
   });
 
-  coverage.merge(results.value);
+  if (results) {
+    coverage.merge(results);
+  }
 })
 
 // Dump the coverage to a file
