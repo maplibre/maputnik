@@ -36,6 +36,7 @@
   &-item-handle {
     flex: 1;
     display: flex;
+    cursor: grab;
 
     svg {
       margin-right: 4px;
@@ -43,12 +44,11 @@
   }
 
   &-item {
+    border: solid 1px transparent;
     font-weight: 400;
     color: $color-lowgray;
     font-size: $font-size-6;
-    border-width: 0 0 1px;
-    border-style: solid;
-    border-color: lighten($color-black, 0.1);
+    border-bottom-color: lighten($color-black, 0.1);
     user-select: none;
     list-style: none;
     z-index: 2000;
@@ -60,6 +60,10 @@
     opacity: 1;
     -webkit-transition: opacity 600ms, visibility 600ms;
     transition: opacity 600ms, visibility 600ms;
+
+    &:focus-within {
+      border: solid 1px $color-lowgray;
+    }
 
     @media screen and (prefers-reduced-motion: reduce) {
       transition-duration: 0;
@@ -131,21 +135,32 @@
   }
 
   &-item-id {
+    all: inherit;
     width: 115px;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
     color: inherit;
     text-decoration: none;
+    cursor: pointer;
   }
 
   &-group-header {
+    border: solid 1px transparent;
     font-size: $font-size-6;
     color: $color-lowgray;
     background-color: lighten($color-black, 2);
-    cursor: pointer;
     user-select: none;
     padding: $margin-2;
+
+    &:focus-within {
+      border: solid 1px $color-lowgray;
+    }
+
+    button {
+      all: unset;
+      cursor: pointer;
+    }
 
     @include flex-row;
 

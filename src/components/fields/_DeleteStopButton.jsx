@@ -14,7 +14,7 @@ export default class DeleteStopButton extends React.Component {
     return <Button
       className="maputnik-delete-stop"
       onClick={this.props.onClick}
-      title={"Remove zoom level stop."}
+      title={"Remove zoom level from stop"}
     >
       <MdDelete />
     </Button>

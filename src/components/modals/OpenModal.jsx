@@ -226,7 +226,7 @@ class OpenModal extends React.Component {
                   type="submit"
                   className="maputnik-big-button"
                   disabled={this.state.styleUrl.length < 1}
-                >Open URL</Button>
+                >Load from URL</Button>
               </div>
             </form>
           </section>

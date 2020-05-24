@@ -64,6 +64,7 @@ export default class ExpressionProperty extends React.Component {
             onClick={this.props.onUndo}
             disabled={undoDisabled}
             className="maputnik-delete-stop"
+            title="Revert from expression"
           >
             <MdUndo />
           </Button>
@@ -72,6 +73,7 @@ export default class ExpressionProperty extends React.Component {
           key="delete_action"
           onClick={this.props.onDelete}
           className="maputnik-delete-stop"
+          title="Delete expression"
         >
           <MdDelete />
         </Button>

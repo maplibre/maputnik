@@ -5,6 +5,7 @@ import Button from '../Button'
 
 class MultiButtonInput extends React.Component {
   static propTypes = {
+    name: PropTypes.string.isRequired,
     value: PropTypes.string.isRequired,
     options: PropTypes.array.isRequired,
     onChange: PropTypes.func.isRequired,
@@ -17,19 +18,24 @@ class MultiButtonInput extends React.Component {
     }
 
     const selectedValue = this.props.value || options[0][0]
-    const buttons = options.map(([val, label])=> {
-      return <Button
+    const radios = options.map(([val, label])=> {
+      return <label
         key={val}
-        onClick={e => this.props.onChange(val)}
-        className={classnames({"maputnik-button-selected": val === selectedValue})}
+        className={classnames("maputnik-radio-as-button", {"maputnik-button-selected": val === selectedValue})}
       >
+        <input type="radio"
+          name={this.props.name}
+          onChange={e => this.props.onChange(val)}
+          value={val}
+          checked={val === selectedValue}
+        />
         {label}
-      </Button>
+      </label>
     })
 
-    return <div className="maputnik-multibutton">
-      {buttons}
-    </div>
+    return <fieldset className="maputnik-multibutton">
+      {radios}
+    </fieldset>
   }
 }
 

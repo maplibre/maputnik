@@ -19,15 +19,17 @@ class EnumInput extends React.Component {
     value: PropTypes.string,
     style: PropTypes.object,
     default: PropTypes.string,
+    name: PropTypes.string,
     onChange: PropTypes.func,
     options: PropTypes.array,
   }
 
   render() {
-    const {options, value, onChange} = this.props;
+    const {options, value, onChange, name} = this.props;
 
     if(options.length <= 3 && optionsLabelLength(options) <= 20) {
       return <MultiButtonInput
+        name={name}
         options={options}
         value={value || this.props.default}
         onChange={onChange}

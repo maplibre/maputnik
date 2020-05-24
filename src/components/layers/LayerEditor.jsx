@@ -289,7 +289,9 @@ export default class LayerEditor extends React.Component {
     }
 
     return <div className="maputnik-layer-editor"
-      >
+      role="main"
+      aria-label="Layer editor"
+    >
       <header>
         <div className="layer-header">
           <h2 className="layer-header__title">
@@ -301,7 +303,7 @@ export default class LayerEditor extends React.Component {
               onSelection={handleSelection}
               closeOnSelection={false}
             >
-              <Button className='more-menu__button'>
+              <Button id="skip-target-layer-editor" className='more-menu__button' title="Layer options">
                 <MdMoreVert className="more-menu__button__svg" />
               </Button>
               <Menu>

@@ -221,6 +221,8 @@ export default class MapboxGlMap extends React.Component {
     if(IS_SUPPORTED) {
       return <div
         className="maputnik-map__map"
+        role="region"
+        aria-label="Map view"
         ref={x => this.container = x}
       ></div>
     }

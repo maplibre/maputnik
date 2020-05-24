@@ -7,7 +7,8 @@ export default class LayerListGroup extends React.Component {
     title: PropTypes.string.isRequired,
     "data-wd-key": PropTypes.string,
     isActive: PropTypes.bool.isRequired,
-    onActiveToggle: PropTypes.func.isRequired
+    onActiveToggle: PropTypes.func.isRequired,
+    'aria-controls': PropTypes.string,
   }
 
   render() {
@@ -16,7 +17,13 @@ export default class LayerListGroup extends React.Component {
         data-wd-key={"layer-list-group:"+this.props["data-wd-key"]}
         onClick={e => this.props.onActiveToggle(!this.props.isActive)}
       >
-        <span className="maputnik-layer-list-group-title">{this.props.title}</span>
+        <button
+          className="maputnik-layer-list-group-title"
+          aria-controls={this.props['aria-controls']}
+          aria-expanded={this.props.isActive}
+        >
+          {this.props.title}
+        </button>
         <span className="maputnik-space" />
         <Collapser
           style={{ height: 14, width: 14 }}

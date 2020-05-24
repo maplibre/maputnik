@@ -256,15 +256,31 @@
 }
 
 .maputnik-modal-shortcuts {
-  code {
+  position: relative;
+  overflow: hidden;
+  max-width: 30em;
+
+  kbd {
     color: white;
     background: #3c3c3c;
     padding: 2px 6px;
     display: inline-block;
     text-align: center;
     border-radius: 2px;
-    margin-right: 4px;
     font-family: monospace;
+  }
+
+  &__shortcut {
+    margin-bottom: $margin-2;
+  }
+
+  dt {
+    display: inline;
+    margin-right: $margin-2;
+  }
+
+  dd {
+    display: inline;
   }
 
   li {
