@@ -13,7 +13,7 @@ jobs:
     name: deploy/docker
     runs-on: ${{ matrix.os }}
 
-    if: ${{ github.event_name == 'push' && github.ref == 'master' }}
+    if: ${{ github.event_name == 'push' }}
 
     strategy:
       fail-fast: false

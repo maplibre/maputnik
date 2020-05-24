@@ -16,10 +16,12 @@ exports.config = {
     './test/functional/index.js'
   ],
   maxInstances: 10,
-  capabilities: [{
-    maxInstances: 5,
-    browserName: 'chrome',
-  }],
+  capabilities: [
+    {
+      maxInstances: 5,
+      browserName: (process.env.BROWSER || 'chrome'),
+    }
+  ],
   logLevel: 'info',
   bail: 0,
   screenshotPath: SCREENSHOT_PATH,
