@@ -161,7 +161,7 @@ class JSONEditor extends React.Component {
     }
 
     return <div className="JSONEditor" onPointerDown={this.onPointerDown} aria-hidden="true">
-      <div class={classnames("JSONEditor__message", {"JSONEditor__message--on": showMessage})}>
+      <div className={classnames("JSONEditor__message", {"JSONEditor__message--on": showMessage})}>
         Press <kbd>ESC</kbd> to lose focus
       </div>
       <div
