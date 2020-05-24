@@ -440,9 +440,10 @@ export default class App extends React.Component {
       mapStyle: newStyle,
       dirtyMapStyle: dirtyMapStyle,
       errors: mappedErrors,
+    }, () => {
+      this.fetchSources();
     })
 
-    this.fetchSources();
   }
 
   onUndo = () => {
@@ -566,19 +567,19 @@ export default class App extends React.Component {
   }
 
   fetchSources() {
-    const sourceList = {...this.state.sources};
+    const sourceList = {};
 
     for(let [key, val] of Object.entries(this.state.mapStyle.sources)) {
-      if(sourceList.hasOwnProperty(key)) {
-        continue;
-      }
+      if(
+        !this.state.sources.hasOwnProperty(key) &&
+        val.type === "vector" &&
+        val.hasOwnProperty("url")
+      ) {
+        sourceList[key] = {
+          type: val.type,
+          layers: []
+        };
 
-      sourceList[key] = {
-        type: val.type,
-        layers: []
-      };
-
-      if(!this.state.sources.hasOwnProperty(key) && val.type === "vector" && val.hasOwnProperty("url")) {
         let url = val.url;
         try {
           url = normalizeSourceURL(url, MapboxGl.accessToken);
@@ -595,29 +596,33 @@ export default class App extends React.Component {
         fetch(url, {
           mode: 'cors',
         })
-          .then((response) => {
-            return response.json();
-          })
-          .then((json) => {
-            if(!json.hasOwnProperty("vector_layers")) {
-              return;
-            }
+        .then(response => response.json())
+        .then(json => {
 
-            // Create new objects before setState
-            const sources = Object.assign({}, this.state.sources);
+          if(!json.hasOwnProperty("vector_layers")) {
+            return;
+          }
 
-            for(let layer of json.vector_layers) {
-              sources[key].layers.push(layer.id)
-            }
+          // Create new objects before setState
+          const sources = Object.assign({}, {
+            [key]: this.state.sources[key],
+          });
 
-            console.debug("Updating source: "+key);
-            this.setState({
-              sources: sources
-            });
-          })
-          .catch((err) => {
-            console.error("Failed to process sources for '%s'", url, err);
-          })
+          for(let layer of json.vector_layers) {
+            sources[key].layers.push(layer.id)
+          }
+
+          console.debug("Updating source: "+key);
+          this.setState({
+            sources: sources
+          });
+        })
+        .catch(err => {
+          console.error("Failed to process sources for '%s'", url, err);
+        });
+      }
+      else {
+        sourceList[key] = this.state.sources[key] || this.state.mapStyle.sources[key];
       }
     }
 
