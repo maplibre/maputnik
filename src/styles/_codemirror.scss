@@ -62,3 +62,37 @@
   background-color: #bb0000;
   color: white !important;
 }
+
+@keyframes JSONEditor__animation-fade {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  } 
+}
+
+.JSONEditor__message {
+  position: absolute;
+  right: 0;
+  font-size: 0.85em;
+  z-index: 99999;
+  padding: 0.3em 0.5em;
+  background: hsla(0, 0%, 0%, 0.3);
+  color: $color-lowgray;
+  border-bottom-left-radius: 2px;
+  transition: opacity 320ms ease;
+  opacity: 0;
+  pointer-events: none;
+
+  &--on {
+    opacity: 1;
+    animation: 320ms ease 0s JSONEditor__animation-fade;
+    animation-delay: 2000ms;
+    animation-fill-mode: forwards;
+  }
+
+  kbd {
+    font-family: monospace;
+  }
+}
