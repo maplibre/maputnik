@@ -9,18 +9,18 @@ on:
 jobs:
 
   # post a comment linking to codesandbox with the current branch
-  meta-demo-comment:
-    name: meta/demo-comment
-    runs-on: ubuntu-latest
+  # meta-demo-comment:
+  #   name: meta/demo-comment
+  #   runs-on: ubuntu-latest
 
-    if: ${{ github.event_name == 'pull_request' }}
+  #   if: ${{ github.event_name == 'pull_request' }}
 
-    steps:
-    - uses: unsplash/comment-on-pr@v1.2.0
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-        msg: "Demo: <https://codesandbox.io/embed/github/${{ github.repository }}/tree/${{ github.head_ref }}?view=preview>"
+  #   steps:
+  #   - uses: unsplash/comment-on-pr@v1.2.0
+  #     env:
+  #       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  #     with:
+  #       msg: "Demo: <https://codesandbox.io/embed/github/${{ github.repository }}/tree/${{ github.head_ref }}?view=preview>"
 
   build-docker:
     name: build/docker
