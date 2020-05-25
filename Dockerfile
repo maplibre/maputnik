@@ -1,21 +1,22 @@
-FROM node:10-slim
+FROM node:10 as builder
+WORKDIR /maputnik
 
-RUN apt-get update && apt-get install -y --no-install-recommends \
-    git \
-    python \
- && rm -rf /var/lib/apt/lists/*
+# Only copy package.json to prevent npm install from running on every build
+COPY package.json package-lock.json ./
+RUN npm install
 
-EXPOSE 8888
-
-ENV HOME /maputnik
-RUN mkdir ${HOME}
-
-COPY . ${HOME}/
-
-WORKDIR ${HOME}
-
-RUN npm install -d
+# Build maputnik
+# TODO:  we should also do a   npm run test   here (needs more dependencies)
+COPY . .
 RUN npm run build
 
-WORKDIR ${HOME}/build/build
-CMD python -m SimpleHTTPServer 8888
+#---------------------------------------------------------------------------
+
+# Create a clean python-based image with just the build results
+FROM python:3-slim
+WORKDIR /maputnik
+
+COPY --from=builder /maputnik/build/build .
+
+EXPOSE 8888
+CMD python -m http.server 8888
