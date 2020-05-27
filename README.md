@@ -1,15 +1,14 @@
+<img width="200" alt="Maputnik logo" src="https://cdn.jsdelivr.net/gh/maputnik/design/logos/logo-color.png" />
+
 # Maputnik
-
-<img width="200" alt="Maputnik" src="https://cdn.jsdelivr.net/gh/maputnik/design/logos/logo-color.png" />
-
-A free and open visual editor for the [Mapbox GL styles](https://www.mapbox.com/mapbox-gl-style-spec/)
-targeted at developers and map designers.
-
 [![GitHub CI status](https://github.com/maputnik/editor/workflows/ci/badge.svg)][github-action-ci]
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)][license]
 
 [github-action-ci]: https://github.com/maputnik/editor/actions?query=workflow%3Aci
 [license]:          https://tldrlegal.com/license/mit-license
+
+A free and open visual editor for the [Mapbox GL styles](https://www.mapbox.com/mapbox-gl-style-spec/)
+targeted at developers and map designers.
 
 
 ## Usage
