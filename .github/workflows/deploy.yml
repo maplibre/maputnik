@@ -1,0 +1,28 @@
+name: deploy
+
+on:
+  push:
+    branches: [ master ]
+    push:
+      tags:
+      - 'v*'
+
+jobs:
+  # publish docker to github registry
+  deploy-docker:
+    name: deploy/docker
+    runs-on: ${{ matrix.os }}
+
+    if: ${{ github.event_name == 'push' }}
+
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest]
+
+    steps:
+    - uses: actions/checkout@v2
+    - run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login docker.pkg.github.com -u orangemug --password-stdin
+    - run: docker build -t docker.pkg.github.com/maputnik/editor/editor:master .
+    - run: docker push docker.pkg.github.com/maputnik/editor/editor:master
+

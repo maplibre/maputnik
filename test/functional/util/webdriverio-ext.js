@@ -42,8 +42,8 @@ try {
   })
 
   browser.addCommand('takeScreenShot', function(filepath) {
-    var data = browser.takeScreenshot();
-    fs.writeFileSync(path.join(SCREENSHOTS_PATH, filepath), data.value, 'base64');
+    var savepath = path.join(SCREENSHOTS_PATH, filepath);
+    browser.saveScreenshot(savepath);
   });
 
   browser.addCommand('flushReactUpdates', function() {

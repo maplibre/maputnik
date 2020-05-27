@@ -2,17 +2,24 @@ var wd = require("../wd-helper");
 var uuid = require('uuid/v1');
 var geoServer = require("../geojson-server");
 
-
-var geoserver = geoServer.listen(9002);
+var testNetwork = process.env.TEST_NETWORK || "localhost";
+var geoserver;
 
 module.exports = {
+  startGeoserver: function(done) {
+    geoserver = geoServer.listen(9002, "0.0.0.0", done);
+  },
+  stopGeoserver: function(done) {
+    geoserver.close(done);
+    geoserver = undefined;
+  },
   getStyleUrl: function(styles) {
     var port = geoserver.address().port;
-    return "http://localhost:"+port+"/styles/empty/"+styles.join(",");
+    return "http://"+testNetwork+":"+port+"/styles/empty/"+styles.join(",");
   },
   getGeoServerUrl: function(urlPath) {
     var port = geoserver.address().port;
-    return "http://localhost:"+port+"/"+urlPath;
+    return "http://"+testNetwork+":"+port+"/"+urlPath;
   },
   getStyleStore: function(browser) {
     var result = browser.executeAsync(function(done) {

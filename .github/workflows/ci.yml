@@ -1,0 +1,188 @@
+name: ci
+
+on:
+  pull_request:
+    branches: [ master ]
+  push:
+    branches: [ master ]
+
+jobs:
+
+  # post a comment linking to codesandbox with the current branch
+  # meta-demo-comment:
+  #   name: meta/demo-comment
+  #   runs-on: ubuntu-latest
+
+  #   if: ${{ github.event_name == 'pull_request' }}
+
+  #   steps:
+  #   - uses: unsplash/comment-on-pr@v1.2.0
+  #     env:
+  #       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  #     with:
+  #       msg: "Demo: <https://codesandbox.io/embed/github/${{ github.repository }}/tree/${{ github.head_ref }}?view=preview>"
+
+  build-docker:
+    name: build/docker
+    runs-on: ${{ matrix.os }}
+
+    if: ${{ github.event_name == 'push' || github.event_name == 'pull_request' }}
+
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest]
+
+    steps:
+    - uses: actions/checkout@v2
+    - run: docker build -t docker.pkg.github.com/maputnik/editor/editor:master .
+
+  # build the editor
+  build-node:
+    name: "build/node@${{ matrix.node-version }} (${{ matrix.os }})"
+    runs-on: ${{ matrix.os }}
+
+    if: ${{ github.event_name == 'push' || github.event_name == 'pull_request' }}
+
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+        node-version: [10.x, 12.x]
+
+    steps:
+    - uses: actions/checkout@v2
+    - uses: actions/setup-node@v1
+      with:
+        node-version: ${{ matrix.node-version }}
+    - uses: actions/cache@v1
+      with:
+        path: ~/.npm
+        key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+        restore-keys: |
+          ${{ runner.os }}-node-
+    - run: npm install
+    - run: npm run build
+
+
+  build-artifacts:
+    name: "build/artifacts (${{ matrix.os }})"
+    runs-on: ${{ matrix.os }}
+
+    if: ${{ github.event_name == 'push' || github.event_name == 'pull_request' }}
+
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest]
+        node-version: [10.x]
+
+    steps:
+    - uses: actions/checkout@v2
+    - uses: actions/setup-node@v1
+      with:
+        node-version: ${{ matrix.node-version }}
+    - uses: actions/cache@v1
+      with:
+        path: ~/.npm
+        key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+        restore-keys: |
+          ${{ runner.os }}-node-
+    - run: npm install
+    - run: npm run build
+    - name: artifacts/editor
+      uses: actions/upload-artifact@v1
+      with:
+        name: editor
+        path: build/build
+    - run: npm run profiling-build
+    - name: artifacts/editor-profiling
+      uses: actions/upload-artifact@v1
+      with:
+        name: editor-profiling
+        path: build/profiling
+
+  # build and test the editor in standalone-chrome
+  test_selenium_standalone_chrome:
+    name: "test/standalone-chrome (${{ matrix.os }})"
+    runs-on: ${{ matrix.os }}
+
+    if: ${{ github.event_name == 'push' || github.event_name == 'pull_request' }}
+
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest]
+        node-version: [10]
+
+    container:
+      image: node:${{ matrix.node-version }}
+      options: --network-alias testhost
+
+    services:
+      selenium:
+        image: selenium/standalone-chrome:3.141.59
+        ports:
+        - 4444:4444
+
+    steps:
+    - uses: actions/checkout@v2
+    - uses: actions/cache@v1
+      with:
+        path: ~/.npm
+        key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+        restore-keys: |
+          ${{ runner.os }}-node-
+    - run: npm install
+    - run: TEST_NETWORK=testhost DOCKER_HOST=selenium npm test
+    - run: ./node_modules/.bin/istanbul report --include build/coverage/coverage.json --dir build/coverage html lcov
+    - name: artifacts/coverage
+      uses: actions/upload-artifact@v1
+      with:
+        name: coverage
+        path: build/coverage
+    - name: artifacts/screenshots
+      uses: actions/upload-artifact@v1
+      with:
+        name: screenshots-chrome
+        path: build/screenshots
+
+  # build and test the editor in standalone-firefox
+  test_selenium_standalone_firefox:
+    name: "test/standalone-firefox (${{ matrix.os }})"
+    runs-on: ${{ matrix.os }}
+
+    if: ${{ github.event_name == 'push' || github.event_name == 'pull_request' }}
+
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest]
+        node-version: [10]
+
+    container:
+      image: node:${{ matrix.node-version }}
+      options: --network-alias testhost
+
+    services:
+      selenium:
+        image: selenium/standalone-firefox:3.141.59
+        ports:
+        - 4444:4444
+
+    steps:
+    - uses: actions/checkout@v2
+    - uses: actions/cache@v1
+      with:
+        path: ~/.npm
+        key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+        restore-keys: |
+          ${{ runner.os }}-node-
+    - run: npm install
+    - run: BROWSER=firefox TEST_NETWORK=testhost DOCKER_HOST=selenium npm test
+    - name: artifacts/screenshots
+      uses: actions/upload-artifact@v1
+      with:
+        name: screenshots-firefox
+        path: build/screenshots
+
