@@ -19,15 +19,15 @@ func main() {
 	app.Version = "Editor: 1.6.1; Desktop: 1.0.4"
 
 	app.Flags = []cli.Flag{
-		cli.StringFlag{
+		&cli.StringFlag{
 			Name:  "file, f",
 			Usage: "Allow access to JSON style from web client",
 		},
-		cli.BoolFlag{
+		&cli.BoolFlag{
 			Name:  "watch",
 			Usage: "Notify web client about JSON style file changes",
 		},
-		cli.IntFlag{
+		&cli.IntFlag{
 			Name: "port",
 			Value: 8000,
 			Usage: "TCP port to listen on",
