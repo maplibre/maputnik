@@ -1,7 +1,7 @@
 SOURCEDIR=.
 SOURCES := $(shell find $(SOURCEDIR) -name '*.go')
 BINARY=maputnik
-EDITOR_VERSION ?= v1.6.1
+EDITOR_VERSION ?= v1.7.0
 
 all: $(BINARY)
 
