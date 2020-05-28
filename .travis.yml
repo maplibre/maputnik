@@ -8,7 +8,7 @@ addons:
     paths:
     - bin
 install:
-- wget https://raw.githubusercontent.com/openmaptiles/klokantech-basic-gl-style/master/style.json
+- wget https://maputnik.github.io/osm-liberty/style.json
 script:
 - make
 - ./bin/linux/maputnik --help
