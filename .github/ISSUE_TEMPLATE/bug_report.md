@@ -9,9 +9,9 @@ assignees: ''
 
 <!-- Thanks for your feedback! Please complete the following information: -->
 
-**Maputnik version**:
+**Maputnik version**:<!-- e.g v1.7.0, master -->
 **Browser**:
-**OS (Windows, macOS, Linux)**:
+**OS**:<!-- (Windows, macOS, Linux) -->
 
 **Description of the bug**:
 
@@ -24,4 +24,4 @@ assignees: ''
 <!-- If applicable, attach a style file (zip) or provide a style URL. -->
 
 **Screenshots**:
-<!--  If applicable, add screenshots to help explain your problem. -->
+<!-- If applicable, add screenshots to help explain your problem. -->
