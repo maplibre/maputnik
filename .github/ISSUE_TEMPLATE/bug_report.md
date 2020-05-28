@@ -9,9 +9,9 @@ assignees: ''
 
 <!-- Thanks for your feedback! Please complete the following information: -->
 
-**Maputnik version**<!-- e.g v1.7.0, master -->:
+**Maputnik version**:<!-- e.g v1.7.0, master -->
 **Browser**:
-**OS**<!-- (Windows, macOS, Linux) -->:
+**OS**:<!-- (Windows, macOS, Linux) -->
 
 **Description of the bug**:
 
