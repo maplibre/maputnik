@@ -1,4 +1,4 @@
-# Maputnik Desktop [![Build Status](https://travis-ci.org/maputnik/desktop.svg?branch=master)](https://travis-ci.org/maputnik/desktop)
+# Maputnik Desktop [![GitHub CI status](https://github.com/maputnik/desktop/workflows/go/badge.svg)](https://github.com/maputnik/desktop/actions?query=workflow%3Ago)
 
 ---
 
