@@ -23,7 +23,7 @@ describe("history", function() {
   /**
    * See <https://github.com/webdriverio/webdriverio/issues/1126>
    */
-  it("undo/redo", function() {
+  it.skip("undo/redo", function() {
     var styleObj;
 
     browser.url(config.baseUrl+"?debug&style="+helper.getStyleUrl([
