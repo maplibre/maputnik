@@ -23,7 +23,8 @@ editor/create_folder: dependencies
 	mkdir -p editor
 
 editor/pull_release: editor/create_folder
-	cd editor && rm -rf public && curl -L https://github.com/maputnik/editor/releases/download/$(EDITOR_VERSION)/public.zip --output public.zip && unzip public.zip && rm public.zip
+        # if the directory /home/runner/work/editor/editor/build/build exists, we assume that we are are running the makefile within the editor ci workflow
+	test -d /home/runner/work/editor/editor/build/build && echo "exists" && cd editor && cp -R /home/runner/work/editor/editor/build/build public/ || (echo "does not exist" && cd editor && rm -rf public && curl -L https://github.com/maputnik/editor/releases/download/$(EDITOR_VERSION)/public.zip --output public.zip && unzip public.zip && rm public.zip)
 
 bindata_assetfs.go: editor/pull_release
 	go-bindata-assetfs --prefix "editor/" editor/public/...
