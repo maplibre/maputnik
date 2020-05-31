@@ -1,4 +1,4 @@
-name: go
+name: ci
 
 on:
   push:
@@ -35,10 +35,10 @@ jobs:
 
     - name: Test --help
       run: ./src/github.com/maputnik/desktop/bin/linux/maputnik --help
-   
+
     - name: Test --version
       run: ./src/github.com/maputnik/desktop/bin/linux/maputnik --version
-      
+
     - name: Test --watch
       run: ./src/github.com/maputnik/desktop/bin/linux/maputnik --watch --file style.json & sleep 5; kill $!
 
@@ -53,7 +53,7 @@ jobs:
       with:
         name: maputnik-darwin
         path: ./src/github.com/maputnik/desktop/bin/darwin/
-        
+
     - name: Artifacts/windows
       uses: actions/upload-artifact@v1
       with:
