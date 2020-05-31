@@ -191,7 +191,7 @@ class OpenModal extends React.Component {
     return  (
       <div>
         <Modal
-          data-wd-key="open-modal"
+          data-wd-key="modal:open"
           isOpen={this.props.isOpen}
           onOpenToggle={() => this.onOpenToggle()}
           title={'Open Style'}
@@ -212,7 +212,7 @@ class OpenModal extends React.Component {
             </p>
             <form onSubmit={this.onSubmitUrl}>
               <UrlInput
-                data-wd-key="open-modal.url.input"
+                data-wd-key="modal:open.url.input"
                 type="text"
                 className="maputnik-input"
                 default="Enter URL..."
@@ -222,7 +222,7 @@ class OpenModal extends React.Component {
               />
               <div>
                 <Button
-                  data-wd-key="open-modal.url.button"
+                  data-wd-key="modal:open.url.button"
                   type="submit"
                   className="maputnik-big-button"
                   disabled={this.state.styleUrl.length < 1}

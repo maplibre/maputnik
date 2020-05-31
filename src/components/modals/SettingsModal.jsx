@@ -81,29 +81,29 @@ class SettingsModal extends React.Component {
     const transition = this.props.mapStyle.transition || {};
 
     return <Modal
-      data-wd-key="modal-settings"
+      data-wd-key="modal:settings"
       isOpen={this.props.isOpen}
       onOpenToggle={this.props.onOpenToggle}
       title={'Style Settings'}
     >
-      <div className="modal-settings">
+      <div className="modal:settings">
       <InputBlock label={"Name"} fieldSpec={latest.$root.name}>
         <StringInput {...inputProps}
-          data-wd-key="modal-settings.name" 
+          data-wd-key="modal:settings.name" 
           value={this.props.mapStyle.name}
           onChange={this.changeStyleProperty.bind(this, "name")}
         />
       </InputBlock>
       <InputBlock label={"Owner"} fieldSpec={{doc: "Owner ID of the style. Used by Mapbox or future style APIs."}}>
         <StringInput {...inputProps}
-          data-wd-key="modal-settings.owner" 
+          data-wd-key="modal:settings.owner" 
           value={this.props.mapStyle.owner}
           onChange={this.changeStyleProperty.bind(this, "owner")}
         />
       </InputBlock>
       <InputBlock label={"Sprite URL"} fieldSpec={latest.$root.sprite}>
         <UrlInput {...inputProps}
-          data-wd-key="modal-settings.sprite" 
+          data-wd-key="modal:settings.sprite" 
           value={this.props.mapStyle.sprite}
           onChange={this.changeStyleProperty.bind(this, "sprite")}
         />
@@ -111,7 +111,7 @@ class SettingsModal extends React.Component {
 
       <InputBlock label={"Glyphs URL"} fieldSpec={latest.$root.glyphs}>
         <UrlInput {...inputProps}
-          data-wd-key="modal-settings.glyphs" 
+          data-wd-key="modal:settings.glyphs" 
           value={this.props.mapStyle.glyphs}
           onChange={this.changeStyleProperty.bind(this, "glyphs")}
         />
@@ -122,7 +122,7 @@ class SettingsModal extends React.Component {
         fieldSpec={fieldSpecAdditional.maputnik.mapbox_access_token}
       >
         <StringInput {...inputProps}
-          data-wd-key="modal-settings.maputnik:mapbox_access_token" 
+          data-wd-key="modal:settings.maputnik:mapbox_access_token" 
           value={metadata['maputnik:mapbox_access_token']}
           onChange={onChangeMetadataProperty.bind(this, "maputnik:mapbox_access_token")}
         />
@@ -133,7 +133,7 @@ class SettingsModal extends React.Component {
         fieldSpec={fieldSpecAdditional.maputnik.maptiler_access_token}
       >
         <StringInput {...inputProps}
-          data-wd-key="modal-settings.maputnik:openmaptiles_access_token" 
+          data-wd-key="modal:settings.maputnik:openmaptiles_access_token" 
           value={metadata['maputnik:openmaptiles_access_token']}
           onChange={onChangeMetadataProperty.bind(this, "maputnik:openmaptiles_access_token")}
         />
@@ -144,7 +144,7 @@ class SettingsModal extends React.Component {
         fieldSpec={fieldSpecAdditional.maputnik.thunderforest_access_token}
       >
         <StringInput {...inputProps}
-          data-wd-key="modal-settings.maputnik:thunderforest_access_token" 
+          data-wd-key="modal:settings.maputnik:thunderforest_access_token" 
           value={metadata['maputnik:thunderforest_access_token']}
           onChange={onChangeMetadataProperty.bind(this, "maputnik:thunderforest_access_token")}
         />
@@ -250,7 +250,7 @@ class SettingsModal extends React.Component {
         fieldSpec={fieldSpecAdditional.maputnik.style_renderer}
       >
         <SelectInput {...inputProps}
-          data-wd-key="modal-settings.maputnik:renderer" 
+          data-wd-key="modal:settings.maputnik:renderer" 
           options={[
             ['mbgljs', 'MapboxGL JS'],
             ['ol', 'Open Layers (experimental)'],

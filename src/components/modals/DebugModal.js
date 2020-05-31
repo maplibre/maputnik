@@ -24,7 +24,7 @@ class DebugModal extends React.Component {
     const osmLat = Number.parseFloat(mapView.center.lat).toFixed(5);
 
     return <Modal
-      data-wd-key="debug-modal"
+      data-wd-key="modal:debug"
       isOpen={this.props.isOpen}
       onOpenToggle={this.props.onOpenToggle}
       title={'Debug'}

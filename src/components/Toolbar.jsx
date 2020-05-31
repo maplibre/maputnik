@@ -185,18 +185,21 @@ export default class Toolbar extends React.Component {
         >
           {/* Keyboard accessible quick links */}
           <button
+            data-wd-key="root:skip:layer-list"
             className="maputnik-toolbar-skip"
             onClick={e => this.onSkip("layer-list")}
           >
             Layers list
           </button>
           <button
+            data-wd-key="root:skip:layer-editor"
             className="maputnik-toolbar-skip"
             onClick={e => this.onSkip("layer-editor")}
           >
             Layer editor
           </button>
           <button
+            data-wd-key="root:skip:map-view"
             className="maputnik-toolbar-skip"
             onClick={e => this.onSkip("map")}
           >

@@ -286,6 +286,7 @@ class SourcesModal extends React.Component {
 
     const inputProps = { }
     return <Modal
+      data-wd-key="modal:sources"
       isOpen={this.props.isOpen}
       onOpenToggle={this.props.onOpenToggle}
       title={'Sources'}

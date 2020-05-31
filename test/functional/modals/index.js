@@ -41,7 +41,7 @@ describe("modals", function() {
     });
 
     it("close", function() {
-      closeModal("open-modal");
+      closeModal("modal:open");
     });
 
     // "chooseFile" command currently not available for wdio v5 https://github.com/webdriverio/webdriverio/pull/3632
@@ -57,9 +57,9 @@ describe("modals", function() {
     it("load from url", function() {
       var styleFileUrl  = helper.getGeoServerUrl("example-style.json");
 
-      browser.setValueSafe(wd.$("open-modal.url.input"), styleFileUrl);
+      browser.setValueSafe(wd.$("modal:open.url.input"), styleFileUrl);
 
-      const selector = $(wd.$("open-modal.url.button"));
+      const selector = $(wd.$("modal:open.url.button"));
       selector.click();
 
       // Allow the network request to happen
@@ -73,6 +73,24 @@ describe("modals", function() {
     // TODO: Need to work out how to mock out the end points
     it("gallery")
   })
+
+  describe("shortcuts", function() {
+    it("open/close", function() {
+      browser.url(config.baseUrl+"?debug");
+
+      const elem = $(".maputnik-toolbar-link");
+      elem.waitForExist();
+      browser.flushReactUpdates();
+
+      browser.keys(["?"]);
+
+      const modalEl = $(wd.$("modal:shortcuts"))
+      assert(modalEl.isDisplayed());
+
+      closeModal("modal:shortcuts");
+    });
+
+  });
 
   describe("export", function() {
 
@@ -89,14 +107,12 @@ describe("modals", function() {
     });
 
     it("close", function() {
-      closeModal("export-modal");
+      closeModal("modal:export");
     });
 
     // TODO: Work out how to download a file and check the contents
     it("download")
 
-    // TODO: Work out how to mock the end git points
-    it("save to gist")
   })
 
   describe("sources", function() {
@@ -131,8 +147,8 @@ describe("modals", function() {
     });
 
     it("name", function() {
-      browser.setValueSafe(wd.$("modal-settings.name"), "foobar")
-      const elem = $(wd.$("modal-settings.owner"));
+      browser.setValueSafe(wd.$("modal:settings.name"), "foobar")
+      const elem = $(wd.$("modal:settings.owner"));
       elem.click();
       browser.flushReactUpdates();
 
@@ -140,8 +156,8 @@ describe("modals", function() {
       assert.equal(styleObj.name, "foobar");
     })
     it("owner", function() {
-      browser.setValueSafe(wd.$("modal-settings.owner"), "foobar")
-      const elem = $(wd.$("modal-settings.name"));
+      browser.setValueSafe(wd.$("modal:settings.owner"), "foobar")
+      const elem = $(wd.$("modal:settings.name"));
       elem.click();
       browser.flushReactUpdates();
 
@@ -149,8 +165,8 @@ describe("modals", function() {
       assert.equal(styleObj.owner, "foobar");
     })
     it("sprite url", function() {
-      browser.setValueSafe(wd.$("modal-settings.sprite"), "http://example.com")
-      const elem = $(wd.$("modal-settings.name"));
+      browser.setValueSafe(wd.$("modal:settings.sprite"), "http://example.com")
+      const elem = $(wd.$("modal:settings.name"));
       elem.click();
       browser.flushReactUpdates();
 
@@ -159,8 +175,8 @@ describe("modals", function() {
     })
     it("glyphs url", function() {
       var glyphsUrl = "http://example.com/{fontstack}/{range}.pbf"
-      browser.setValueSafe(wd.$("modal-settings.glyphs"), glyphsUrl)
-      const elem = $(wd.$("modal-settings.name"));
+      browser.setValueSafe(wd.$("modal:settings.glyphs"), glyphsUrl)
+      const elem = $(wd.$("modal:settings.name"));
       elem.click();
       browser.flushReactUpdates();
 
@@ -170,8 +186,8 @@ describe("modals", function() {
 
     it("mapbox access token", function() {
       var apiKey = "testing123";
-      browser.setValueSafe(wd.$("modal-settings.maputnik:mapbox_access_token"), apiKey);
-      const elem = $(wd.$("modal-settings.name"));
+      browser.setValueSafe(wd.$("modal:settings.maputnik:mapbox_access_token"), apiKey);
+      const elem = $(wd.$("modal:settings.name"));
       elem.click();
       browser.flushReactUpdates();
 
@@ -183,8 +199,8 @@ describe("modals", function() {
 
     it("maptiler access token", function() {
       var apiKey = "testing123";
-      browser.setValueSafe(wd.$("modal-settings.maputnik:openmaptiles_access_token"), apiKey);
-      const elem = $(wd.$("modal-settings.name"));
+      browser.setValueSafe(wd.$("modal:settings.maputnik:openmaptiles_access_token"), apiKey);
+      const elem = $(wd.$("modal:settings.name"));
       elem.click();
       browser.flushReactUpdates();
 
@@ -194,8 +210,8 @@ describe("modals", function() {
 
     it("thunderforest access token", function() {
       var apiKey = "testing123";
-      browser.setValueSafe(wd.$("modal-settings.maputnik:thunderforest_access_token"), apiKey);
-      const elem = $(wd.$("modal-settings.name"));
+      browser.setValueSafe(wd.$("modal:settings.maputnik:thunderforest_access_token"), apiKey);
+      const elem = $(wd.$("modal:settings.name"));
       elem.click();
       browser.flushReactUpdates();
 
@@ -204,9 +220,9 @@ describe("modals", function() {
     })
 
     it("style renderer", function() {
-      const selector = $(wd.$("modal-settings.maputnik:renderer"));
+      const selector = $(wd.$("modal:settings.maputnik:renderer"));
       selector.selectByAttribute('value', "ol");
-      const elem = $(wd.$("modal-settings.name"));
+      const elem = $(wd.$("modal:settings.name"));
       elem.click();
       browser.flushReactUpdates();
 

@@ -100,7 +100,7 @@ class ShortcutsModal extends React.Component {
 
 
     return <Modal
-      data-wd-key="shortcuts-modal"
+      data-wd-key="modal:shortcuts"
       isOpen={this.props.isOpen}
       onOpenToggle={this.props.onOpenToggle}
       title={'Shortcuts'}
