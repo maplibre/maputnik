@@ -61,7 +61,7 @@ class ExportModal extends React.Component {
 
   render() {
     return <Modal
-      data-wd-key="export-modal"
+      data-wd-key="modal:export"
       isOpen={this.props.isOpen}
       onOpenToggle={this.props.onOpenToggle}
       title={'Export Style'}

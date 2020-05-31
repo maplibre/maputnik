@@ -20,7 +20,7 @@ class LoadingModal extends React.Component {
 
   render() {
     return <Modal
-      data-wd-key="loading-modal"
+      data-wd-key="modal:loading"
       isOpen={this.props.isOpen}
       underlayClickExits={false}
       underlayProps={{

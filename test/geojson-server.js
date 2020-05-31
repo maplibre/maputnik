@@ -78,6 +78,14 @@ app.get("/styles/empty/:sources", function(req, res) {
   res.send(json);
 })
 
+app.get("/example-layer-style.json", function(req, res) {
+  res.json(
+    JSON.parse(
+      fs.readFileSync(__dirname+"/example-layer-style.json").toString()
+    )
+  );
+})
+
 app.get("/example-style.json", function(req, res) {
   res.json(
     JSON.parse(

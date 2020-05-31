@@ -37,6 +37,8 @@ describe('maputnik', function() {
   require("./map");
   require("./modals");
   require("./screenshots");
+  require("./accessibility");
+  require("./keyboard");
   // ------------------------
 
 });

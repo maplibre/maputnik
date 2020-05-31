@@ -3,17 +3,33 @@ var config = require("../../config/specs");
 var helper = require("../helper");
 
 
-describe.skip("history", function() {
+
+describe("history", function() {
+  let undoKeyCombo;
+  let undoKeyComboReset;
+  let redoKeyCombo;
+  let redoKeyComboReset;
+
+  before(function() {
+    const isMac = browser.execute(function() {
+      return navigator.platform.toUpperCase().indexOf('MAC') >= 0;
+    });
+    undoKeyCombo = ['Meta', 'z'];
+    undoKeyComboReset = ['Meta'];
+    redoKeyCombo = isMac ? ['Meta', 'Shift', 'z'] : ['Meta', 'y'];
+    redoKeyComboReset = isMac ? ['Meta', 'Shift'] : ['Meta'];
+  });
+
   /**
    * See <https://github.com/webdriverio/webdriverio/issues/1126>
    */
-  it("undo/redo", function() {
+  it.skip("undo/redo", function() {
     var styleObj;
 
     browser.url(config.baseUrl+"?debug&style="+helper.getStyleUrl([
       "geojson:example"
     ]));
-    browser.alertAccept();
+    browser.acceptAlert();
 
     helper.modal.addLayer.open();
 
@@ -51,9 +67,8 @@ describe.skip("history", function() {
       }
     ]);
 
-    browser
-      .keys(['Control', 'z'])
-      .keys(['Control']);
+    browser.keys(undoKeyCombo)
+    browser.keys(undoKeyComboReset);
     styleObj = helper.getStyleStore(browser);
     assert.deepEqual(styleObj.layers, [
       {
@@ -62,16 +77,14 @@ describe.skip("history", function() {
       }
     ]);
 
-    browser
-      .keys(['Control', 'z'])
-      .keys(['Control']);
+    browser.keys(undoKeyCombo)
+    browser.keys(undoKeyComboReset);
     styleObj = helper.getStyleStore(browser);
     assert.deepEqual(styleObj.layers, [
     ]);
 
-    browser
-      .keys(['Control', 'y'])
-      .keys(['Control']);
+    browser.keys(redoKeyCombo)
+    browser.keys(redoKeyComboReset);
     styleObj = helper.getStyleStore(browser);
     assert.deepEqual(styleObj.layers, [
       {
@@ -80,9 +93,8 @@ describe.skip("history", function() {
       }
     ]);
 
-    browser
-      .keys(['Control', 'y'])
-      .keys(['Control']);
+    browser.keys(redoKeyCombo)
+    browser.keys(redoKeyComboReset);
     styleObj = helper.getStyleStore(browser);
     assert.deepEqual(styleObj.layers, [
       {

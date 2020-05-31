@@ -115,12 +115,6 @@ describe("layers", function() {
     })
   })
 
-  describe("grouped", function() {
-    it("with underscore")
-    it("no without underscore")
-    it("double underscore only grouped once")
-  })
-
   describe("tooltips", function() {
   })
 
@@ -130,20 +124,18 @@ describe("layers", function() {
 
   describe('background', function () {
 
-    it.skip("add", function() {
+    it("add", function() {
       var id = helper.modal.addLayer.fill({
         type: "background"
       })
 
-      browser.waitUntil(function() {
-        var styleObj = helper.getStyleStore(browser);
-        assert.deepEqual(styleObj.layers, [
-          {
-            "id": id,
-            "type": 'background'
-          }
-        ]);
-      });
+      var styleObj = helper.getStyleStore(browser);
+      assert.deepEqual(styleObj.layers, [
+        {
+          "id": id,
+          "type": 'background'
+        }
+      ]);
     });
 
     describe("modify", function() {
@@ -191,9 +183,6 @@ describe("layers", function() {
             }
           ]);
         });
-
-        // NOTE: This needs to be removed from the code
-        it("type");
 
         it("min-zoom", function() {
           var bgId = createBackground();
@@ -340,7 +329,7 @@ describe("layers", function() {
   });
 
   describe('fill', function () {
-    it.skip("add", function() {
+    it("add", function() {
       // browser.debug();
 
       var id = helper.modal.addLayer.fill({
@@ -363,7 +352,7 @@ describe("layers", function() {
   });
 
   describe('line', function () {
-    it.skip("add", function() {
+    it("add", function() {
       var id = helper.modal.addLayer.fill({
         type: "line",
         layer: "example"
@@ -386,7 +375,7 @@ describe("layers", function() {
   });
 
   describe('symbol', function () {
-    it.skip("add", function() {
+    it("add", function() {
       var id = helper.modal.addLayer.fill({
         type: "symbol",
         layer: "example"
@@ -404,7 +393,7 @@ describe("layers", function() {
   });
 
   describe('raster', function () {
-    it.skip("add", function() {
+    it("add", function() {
       var id = helper.modal.addLayer.fill({
         type: "raster",
         layer: "raster"
@@ -422,7 +411,7 @@ describe("layers", function() {
   });
 
   describe('circle', function () {
-    it.skip("add", function() {
+    it("add", function() {
       var id = helper.modal.addLayer.fill({
         type: "circle",
         layer: "example"
@@ -441,7 +430,7 @@ describe("layers", function() {
   });
 
   describe('fill extrusion', function () {
-    it.skip("add", function() {
+    it("add", function() {
       var id = helper.modal.addLayer.fill({
         type: "fill-extrusion",
         layer: "example"
@@ -459,12 +448,12 @@ describe("layers", function() {
   });
 
 
-  describe.skip("groups", function() {
+  describe("groups", function() {
     it("simple", function() {
-      browser.url(config.baseUrl+"?debug&style="+getStyleUrl([
+      browser.url(config.baseUrl+"?debug&style="+helper.getStyleUrl([
         "geojson:example"
       ]));
-      browser.alertAccept();
+      browser.acceptAlert();
 
       helper.modal.addLayer.open();
       var aId = helper.modal.addLayer.fill({
@@ -480,21 +469,22 @@ describe("layers", function() {
 
       helper.modal.addLayer.open();
       var bId = helper.modal.addLayer.fill({
-        id: "foo_baz",
+        id: "foo_bar_baz",
         type: "background"
       })
 
-      browser.waitForExist(wd.$("layer-list-group:foo-0"));
+      const groupEl = $(wd.$("layer-list-group:foo-0"));
+      groupEl.isDisplayed();
 
-      assert.equal(browser.isVisibleWithinViewport(wd.$("layer-list-item:foo")), false);
-      assert.equal(browser.isVisibleWithinViewport(wd.$("layer-list-item:foo_bar")), false);
-      assert.equal(browser.isVisibleWithinViewport(wd.$("layer-list-item:foo_baz")), false);
+      assert.equal($(wd.$("layer-list-item:foo")).isDisplayedInViewport(), true);
+      assert.equal($(wd.$("layer-list-item:foo_bar")).isDisplayedInViewport(), false);
+      assert.equal($(wd.$("layer-list-item:foo_bar_baz")).isDisplayedInViewport(), false);
 
-      browser.click(wd.$("layer-list-group:foo-0"));
+      groupEl.click();
 
-      assert.equal(browser.isVisibleWithinViewport(wd.$("layer-list-item:foo")), true);
-      assert.equal(browser.isVisibleWithinViewport(wd.$("layer-list-item:foo_bar")), true);
-      assert.equal(browser.isVisibleWithinViewport(wd.$("layer-list-item:foo_baz")), true);
+      assert.equal($(wd.$("layer-list-item:foo")).isDisplayedInViewport(), true);
+      assert.equal($(wd.$("layer-list-item:foo_bar")).isDisplayedInViewport(), true);
+      assert.equal($(wd.$("layer-list-item:foo_bar_baz")).isDisplayedInViewport(), true);
     })
   })
 });

@@ -20,7 +20,7 @@ class SurveyModal extends React.Component {
 
   render() {
     return <Modal
-      data-wd-key="modal-survey"
+      data-wd-key="modal:survey"
       isOpen={this.props.isOpen}
       onOpenToggle={this.props.onOpenToggle}
       title="Maputnik Survey"
