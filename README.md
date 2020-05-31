@@ -1,4 +1,4 @@
-# Maputnik Desktop [![GitHub CI status](https://github.com/maputnik/desktop/workflows/go/badge.svg)](https://github.com/maputnik/desktop/actions?query=workflow%3Ago)
+# Maputnik Desktop [![GitHub CI status](https://github.com/maputnik/desktop/workflows/ci/badge.svg)](https://github.com/maputnik/desktop/actions?query=workflow%3Aci)
 
 ---
 
