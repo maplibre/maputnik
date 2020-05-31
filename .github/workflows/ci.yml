@@ -68,6 +68,9 @@ jobs:
   build-artifacts:
     name: "build/artifacts (${{ matrix.os }})"
     runs-on: ${{ matrix.os }}
+    env:
+      GOPATH: ${{ github.workspace }}
+      GO111MODULE: off
 
     if: ${{ github.event_name == 'push' || github.event_name == 'pull_request' }}
 
@@ -101,6 +104,52 @@ jobs:
       with:
         name: editor-profiling
         path: build/profiling
+
+    # Build, test and upload desktop CLI artifacts
+    - name: Set up Go
+      uses: actions/setup-go@v2
+      with:
+        go-version: ^1.14.x
+      id: go
+
+    - name: Check out code into the Go module directory
+      uses: actions/checkout@v2
+      with:
+        repository: maputnik/desktop
+        path: ./src/github.com/maputnik/desktop/
+
+    - name: Get style
+      run:  wget https://maputnik.github.io/osm-liberty/style.json
+
+    - name: Make
+      run: cd src/github.com/maputnik/desktop/ && make
+
+    - name: Test --help
+      run: ./src/github.com/maputnik/desktop/bin/linux/maputnik --help
+
+    - name: Test --version
+      run: ./src/github.com/maputnik/desktop/bin/linux/maputnik --version
+
+    - name: Test --watch
+      run: ./src/github.com/maputnik/desktop/bin/linux/maputnik --watch --file style.json & sleep 5; kill $!
+
+    - name: Artifacts/linux
+      uses: actions/upload-artifact@v1
+      with:
+        name: maputnik-linux
+        path: ./src/github.com/maputnik/desktop/bin/linux/
+
+    - name: Artifacts/darwin
+      uses: actions/upload-artifact@v1
+      with:
+        name: maputnik-darwin
+        path: ./src/github.com/maputnik/desktop/bin/darwin/
+
+    - name: Artifacts/windows
+      uses: actions/upload-artifact@v1
+      with:
+        name: maputnik-windows
+        path: ./src/github.com/maputnik/desktop/bin/windows/
 
   # build and test the editor in standalone-chrome
   test_selenium_standalone_chrome:
