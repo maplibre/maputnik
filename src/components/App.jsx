@@ -7,21 +7,21 @@ import {unset} from 'lodash'
 import arrayMove from 'array-move'
 import url from 'url'
 
-import MapboxGlMap from './map/MapboxGlMap'
-import OpenLayersMap from './map/OpenLayersMap'
-import LayerList from './layers/LayerList'
-import LayerEditor from './layers/LayerEditor'
-import Toolbar from './Toolbar'
+import MapMapboxGl from './MapMapboxGl'
+import MapOpenLayers from './MapOpenLayers'
+import LayerList from './LayerList'
+import LayerEditor from './LayerEditor'
+import AppToolbar from './AppToolbar'
 import AppLayout from './AppLayout'
-import MessagePanel from './MessagePanel'
+import MessagePanel from './AppMessagePanel'
 
-import SettingsModal from './modals/SettingsModal'
-import ExportModal from './modals/ExportModal'
-import SourcesModal from './modals/SourcesModal'
-import OpenModal from './modals/OpenModal'
-import ShortcutsModal from './modals/ShortcutsModal'
-import SurveyModal from './modals/SurveyModal'
-import DebugModal from './modals/DebugModal'
+import ModalSettings from './ModalSettings'
+import ModalExport from './ModalExport'
+import ModalSources from './ModalSources'
+import ModalOpen from './ModalOpen'
+import ModalShortcuts from './ModalShortcuts'
+import ModalSurvey from './ModalSurvey'
+import ModalDebug from './ModalDebug'
 
 import { downloadGlyphsMetadata, downloadSpriteMetadata } from '../libs/metadata'
 import {latest, validate} from '@mapbox/mapbox-gl-style-spec'
@@ -36,7 +36,7 @@ import tokens from '../config/tokens.json'
 import isEqual from 'lodash.isequal'
 import Debug from '../libs/debug'
 import queryUtil from '../libs/query-util'
-import {formatLayerId} from './util/format';
+import {formatLayerId} from '../util/format';
 
 import MapboxGl from 'mapbox-gl'
 
@@ -668,14 +668,14 @@ export default class App extends React.Component {
 
     // Check if OL code has been loaded?
     if(renderer === 'ol') {
-      mapElement = <OpenLayersMap
+      mapElement = <MapOpenLayers
         {...mapProps}
         onChange={this.onMapChange}
         debugToolbox={this.state.openlayersDebugOptions.debugToolbox}
         onLayerSelect={this.onLayerSelect}
       />
     } else {
-      mapElement = <MapboxGlMap {...mapProps}
+      mapElement = <MapMapboxGl {...mapProps}
         onChange={this.onMapChange}
         options={this.state.mapboxGlDebugOptions}
         inspectModeEnabled={this.state.mapState === "inspect"}
@@ -741,7 +741,7 @@ export default class App extends React.Component {
     const selectedLayer = layers.length > 0 ? layers[this.state.selectedLayerIndex] : null
     const metadata = this.state.mapStyle.metadata || {}
 
-    const toolbar = <Toolbar
+    const toolbar = <AppToolbar
       renderer={this._getRenderer()}
       mapState={this.state.mapState}
       mapStyle={this.state.mapStyle}
@@ -795,7 +795,7 @@ export default class App extends React.Component {
 
 
     const modals = <div>
-      <DebugModal
+      <ModalDebug
         renderer={this._getRenderer()}
         mapboxGlDebugOptions={this.state.mapboxGlDebugOptions}
         openlayersDebugOptions={this.state.openlayersDebugOptions}
@@ -805,12 +805,12 @@ export default class App extends React.Component {
         onOpenToggle={this.toggleModal.bind(this, 'debug')}
         mapView={this.state.mapView}
       />
-      <ShortcutsModal
+      <ModalShortcuts
         ref={(el) => this.shortcutEl = el}
         isOpen={this.state.isOpen.shortcuts}
         onOpenToggle={this.toggleModal.bind(this, 'shortcuts')}
       />
-      <SettingsModal
+      <ModalSettings
         mapStyle={this.state.mapStyle}
         onStyleChanged={this.onStyleChanged}
         onChangeMetadataProperty={this.onChangeMetadataProperty}
@@ -818,24 +818,24 @@ export default class App extends React.Component {
         onOpenToggle={this.toggleModal.bind(this, 'settings')}
         openlayersDebugOptions={this.state.openlayersDebugOptions}
       />
-      <ExportModal
+      <ModalExport
         mapStyle={this.state.mapStyle}
         onStyleChanged={this.onStyleChanged}
         isOpen={this.state.isOpen.export}
         onOpenToggle={this.toggleModal.bind(this, 'export')}
       />
-      <OpenModal
+      <ModalOpen
         isOpen={this.state.isOpen.open}
         onStyleOpen={this.openStyle}
         onOpenToggle={this.toggleModal.bind(this, 'open')}
       />
-      <SourcesModal
+      <ModalSources
         mapStyle={this.state.mapStyle}
         onStyleChanged={this.onStyleChanged}
         isOpen={this.state.isOpen.sources}
         onOpenToggle={this.toggleModal.bind(this, 'sources')}
       />
-      <SurveyModal
+      <ModalSurvey
         isOpen={this.state.isOpen.survey}
         onOpenToggle={this.toggleModal.bind(this, 'survey')}
       />
