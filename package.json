@@ -13,7 +13,9 @@
     "start-prod": "webpack-dev-server --progress --profile --colors --config config/webpack.production.config.js",
     "lint-js": "eslint --ext js --ext jsx src test",
     "lint-css": "stylelint \"src/styles/*.scss\"",
-    "lint": "npm run lint-js && npm run lint-css"
+    "lint": "npm run lint-js && npm run lint-css",
+    "storybook": "start-storybook -h 0.0.0.0 -p 6006",
+    "build-storybook": "build-storybook -o build/storybook"
   },
   "repository": {
     "type": "git",
@@ -119,6 +121,13 @@
     "@babel/preset-flow": "^7.0.0",
     "@babel/preset-react": "^7.6.3",
     "@mdi/js": "^5.0.45",
+    "@storybook/addon-a11y": "^5.3.19",
+    "@storybook/addon-actions": "^5.3.19",
+    "@storybook/addon-links": "^5.3.19",
+    "@storybook/addon-storysource": "^5.3.19",
+    "@storybook/addons": "^5.3.19",
+    "@storybook/react": "^5.3.19",
+    "@storybook/theming": "^5.3.19",
     "@wdio/cli": "^6.1.14",
     "@wdio/local-runner": "^6.1.14",
     "@wdio/mocha-framework": "^6.1.14",

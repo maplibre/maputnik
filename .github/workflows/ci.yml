@@ -93,6 +93,7 @@ jobs:
           ${{ runner.os }}-node-
     - run: npm install
     - run: npm run build
+    - run: npm run build-storybook
     - name: artifacts/editor
       uses: actions/upload-artifact@v1
       with:
@@ -104,6 +105,11 @@ jobs:
       with:
         name: editor-profiling
         path: build/profiling
+    - name: artifacts/storybook
+      uses: actions/upload-artifact@v1
+      with:
+        name: storybook
+        path: build/storybook
 
     # Build and upload desktop CLI artifacts
     - name: Set up Go

@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 
-class ScrollContainer extends React.Component {
+export default class ScrollContainer extends React.Component {
   static propTypes = {
     children: PropTypes.node
   }
@@ -13,4 +13,3 @@ class ScrollContainer extends React.Component {
   }
 }
 
-export default ScrollContainer
