@@ -116,7 +116,7 @@ jobs:
       uses: actions/checkout@v2
       with:
         repository: maputnik/desktop
-        ref: fda11e5
+        ref: fda11e52e7da1df3d758514ae7aba58d9acb6e0f
         path: ./src/github.com/maputnik/desktop/
 
     - name: Get style
