@@ -119,20 +119,8 @@ jobs:
         ref: fda11e52e7da1df3d758514ae7aba58d9acb6e0f
         path: ./src/github.com/maputnik/desktop/
 
-    - name: Get style
-      run:  wget https://maputnik.github.io/osm-liberty/style.json
-
     - name: Make
       run: cd src/github.com/maputnik/desktop/ && make
-
-    - name: Test --help
-      run: ./src/github.com/maputnik/desktop/bin/linux/maputnik --help
-
-    - name: Test --version
-      run: ./src/github.com/maputnik/desktop/bin/linux/maputnik --version
-
-    - name: Test --watch
-      run: ./src/github.com/maputnik/desktop/bin/linux/maputnik --watch --file style.json & sleep 5; kill $!
 
     - name: Artifacts/linux
       uses: actions/upload-artifact@v1
