@@ -3,9 +3,9 @@ import PropTypes from 'prop-types'
 
 import {latest} from '@mapbox/mapbox-gl-style-spec'
 import Block from './Block'
-import FieldString from './FieldString'
+import InputString from './InputString'
 
-export default class BlockId extends React.Component {
+export default class FieldId extends React.Component {
   static propTypes = {
     value: PropTypes.string.isRequired,
     wdKey: PropTypes.string.isRequired,
@@ -18,11 +18,10 @@ export default class BlockId extends React.Component {
       data-wd-key={this.props.wdKey}
       error={this.props.error}
     >
-      <FieldString
+      <InputString
         value={this.props.value}
         onChange={this.props.onChange}
       />
     </Block>
   }
 }
-

@@ -17,49 +17,7 @@ export const Basic = () => {
   return (
     <Wrapper>
       <FieldString
-        value={value}
-        onChange={setValue}
-      />
-    </Wrapper>
-  );
-};
-
-export const WithDefault = () => {
-  const [value, setValue] = useActionState("onChange", null);
-
-  return (
-    <Wrapper>
-      <FieldString
-        value={value}
-        default={"Edit me..."}
-        onChange={setValue}
-      />
-    </Wrapper>
-  );
-};
-
-export const Multiline = () => {
-  const [value, setValue] = useActionState("onChange", "Hello\nworld");
-
-  return (
-    <Wrapper>
-      <FieldString
-        multi={true}
-        value={value}
-        onChange={setValue}
-      />
-    </Wrapper>
-  );
-};
-
-export const MultilineWithDefault = () => {
-  const [value, setValue] = useActionState("onChange", null);
-
-  return (
-    <Wrapper>
-      <FieldString
-        multi={true}
-        default={"Edit\nme.."}
+        label="Foobar"
         value={value}
         onChange={setValue}
       />

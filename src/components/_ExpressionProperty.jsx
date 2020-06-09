@@ -2,13 +2,13 @@ import React from 'react'
 import PropTypes from 'prop-types'
 
 import Block from './Block'
-import Button from './Button'
+import InputButton from './InputButton'
 import {MdDelete, MdUndo} from 'react-icons/md'
 import FieldString from './FieldString'
 
 import labelFromFieldName from './_labelFromFieldName'
 import stringifyPretty from 'json-stringify-pretty-compact'
-import FieldJsonEditor from './FieldJsonEditor'
+import FieldJson from './FieldJson'
 
 
 export default class ExpressionProperty extends React.Component {
@@ -59,7 +59,7 @@ export default class ExpressionProperty extends React.Component {
     const deleteStopBtn = (
       <>
         {this.props.onUndo &&
-          <Button
+          <InputButton
             key="undo_action"
             onClick={this.props.onUndo}
             disabled={undoDisabled}
@@ -67,16 +67,16 @@ export default class ExpressionProperty extends React.Component {
             title="Revert from expression"
           >
             <MdUndo />
-          </Button>
+          </InputButton>
         }
-        <Button
+        <InputButton
           key="delete_action"
           onClick={this.props.onDelete}
           className="maputnik-delete-stop"
           title="Delete expression"
         >
           <MdDelete />
-        </Button>
+        </InputButton>
       </>
     );
 
@@ -114,7 +114,7 @@ export default class ExpressionProperty extends React.Component {
       action={deleteStopBtn}
       wideMode={true}
     >
-      <FieldJsonEditor
+      <FieldJson
         mode={{name: "mgl"}}
         lint={{
           context: "expression",

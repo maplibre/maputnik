@@ -87,169 +87,158 @@ export default class ModalSettings extends React.Component {
       title={'Style Settings'}
     >
       <div className="modal:settings">
-      <Block label={"Name"} fieldSpec={latest.$root.name}>
         <FieldString {...inputProps}
+          label={"Name"}
+          fieldSpec={latest.$root.name}
           data-wd-key="modal:settings.name" 
           value={this.props.mapStyle.name}
           onChange={this.changeStyleProperty.bind(this, "name")}
         />
-      </Block>
-      <Block label={"Owner"} fieldSpec={{doc: "Owner ID of the style. Used by Mapbox or future style APIs."}}>
         <FieldString {...inputProps}
+          label={"Owner"}
+          fieldSpec={{doc: "Owner ID of the style. Used by Mapbox or future style APIs."}}
           data-wd-key="modal:settings.owner" 
           value={this.props.mapStyle.owner}
           onChange={this.changeStyleProperty.bind(this, "owner")}
         />
-      </Block>
-      <Block label={"Sprite URL"} fieldSpec={latest.$root.sprite}>
         <FieldUrl {...inputProps}
+          fieldSpec={latest.$root.sprite}
+          label="Sprite URL"
           data-wd-key="modal:settings.sprite" 
           value={this.props.mapStyle.sprite}
           onChange={this.changeStyleProperty.bind(this, "sprite")}
         />
-      </Block>
 
-      <Block label={"Glyphs URL"} fieldSpec={latest.$root.glyphs}>
         <FieldUrl {...inputProps}
+          label="Glyphs URL"
+          fieldSpec={latest.$root.glyphs}
           data-wd-key="modal:settings.glyphs" 
           value={this.props.mapStyle.glyphs}
           onChange={this.changeStyleProperty.bind(this, "glyphs")}
         />
-      </Block>
 
-      <Block
-        label={fieldSpecAdditional.maputnik.mapbox_access_token.label} 
-        fieldSpec={fieldSpecAdditional.maputnik.mapbox_access_token}
-      >
         <FieldString {...inputProps}
+          label={fieldSpecAdditional.maputnik.mapbox_access_token.label} 
+          fieldSpec={fieldSpecAdditional.maputnik.mapbox_access_token}
           data-wd-key="modal:settings.maputnik:mapbox_access_token" 
           value={metadata['maputnik:mapbox_access_token']}
           onChange={onChangeMetadataProperty.bind(this, "maputnik:mapbox_access_token")}
         />
-      </Block>
 
-      <Block
-        label={fieldSpecAdditional.maputnik.maptiler_access_token.label} 
-        fieldSpec={fieldSpecAdditional.maputnik.maptiler_access_token}
-      >
         <FieldString {...inputProps}
+          label={fieldSpecAdditional.maputnik.maptiler_access_token.label} 
+          fieldSpec={fieldSpecAdditional.maputnik.maptiler_access_token}
           data-wd-key="modal:settings.maputnik:openmaptiles_access_token" 
           value={metadata['maputnik:openmaptiles_access_token']}
           onChange={onChangeMetadataProperty.bind(this, "maputnik:openmaptiles_access_token")}
         />
-      </Block>
 
-      <Block
-        label={fieldSpecAdditional.maputnik.thunderforest_access_token.label} 
-        fieldSpec={fieldSpecAdditional.maputnik.thunderforest_access_token}
-      >
         <FieldString {...inputProps}
+          label={fieldSpecAdditional.maputnik.thunderforest_access_token.label} 
+          fieldSpec={fieldSpecAdditional.maputnik.thunderforest_access_token}
           data-wd-key="modal:settings.maputnik:thunderforest_access_token" 
           value={metadata['maputnik:thunderforest_access_token']}
           onChange={onChangeMetadataProperty.bind(this, "maputnik:thunderforest_access_token")}
         />
-      </Block>
 
-      <Block label={"Center"} fieldSpec={latest.$root.center}>
         <FieldArray
+          label={"Center"}
+          fieldSpec={latest.$root.center}
           length={2}
           type="number"
           value={mapStyle.center}
           default={latest.$root.center.default || [0, 0]}
           onChange={this.changeStyleProperty.bind(this, "center")}
         />
-      </Block>
 
-      <Block label={"Zoom"} fieldSpec={latest.$root.zoom}>
         <FieldNumber
           {...inputProps}
+          label={"Zoom"}
+          fieldSpec={latest.$root.zoom}
           value={mapStyle.zoom}
           default={latest.$root.zoom.default || 0}
           onChange={this.changeStyleProperty.bind(this, "zoom")}
         />
-      </Block>
 
-      <Block label={"Bearing"} fieldSpec={latest.$root.bearing}>
         <FieldNumber
           {...inputProps}
+          label={"Bearing"}
+          fieldSpec={latest.$root.bearing}
           value={mapStyle.bearing}
           default={latest.$root.bearing.default}
           onChange={this.changeStyleProperty.bind(this, "bearing")}
         />
-      </Block>
 
-      <Block label={"Pitch"} fieldSpec={latest.$root.pitch}>
         <FieldNumber
           {...inputProps}
+          label={"Pitch"}
+          fieldSpec={latest.$root.pitch}
           value={mapStyle.pitch}
           default={latest.$root.pitch.default}
           onChange={this.changeStyleProperty.bind(this, "pitch")}
         />
-      </Block>
 
-      <Block label={"Light anchor"} fieldSpec={latest.light.anchor}>
         <FieldEnum
           {...inputProps}
+          label={"Light anchor"}
+          fieldSpec={latest.light.anchor}
           name="light-anchor"
           value={light.anchor}
           options={Object.keys(latest.light.anchor.values)}
           default={latest.light.anchor.default}
           onChange={this.changeLightProperty.bind(this, "anchor")}
         />
-      </Block>
 
-      <Block label={"Light color"} fieldSpec={latest.light.color}>
         <FieldColor
           {...inputProps}
+          label={"Light color"}
+          fieldSpec={latest.light.color}
           value={light.color}
           default={latest.light.color.default}
           onChange={this.changeLightProperty.bind(this, "color")}
         />
-      </Block>
 
-      <Block label={"Light intensity"} fieldSpec={latest.light.intensity}>
         <FieldNumber
           {...inputProps}
+          label={"Light intensity"}
+          fieldSpec={latest.light.intensity}
           value={light.intensity}
           default={latest.light.intensity.default}
           onChange={this.changeLightProperty.bind(this, "intensity")}
         />
-      </Block>
 
-      <Block label={"Light position"} fieldSpec={latest.light.position}>
         <FieldArray
           {...inputProps}
+          label={"Light position"}
+          fieldSpec={latest.light.position}
           type="number"
           length={latest.light.position.length}
           value={light.position}
           default={latest.light.position.default}
           onChange={this.changeLightProperty.bind(this, "position")}
         />
-      </Block>
 
-      <Block label={"Transition delay"} fieldSpec={latest.transition.delay}>
         <FieldNumber
           {...inputProps}
+          label={"Transition delay"}
+          fieldSpec={latest.transition.delay}
           value={transition.delay}
           default={latest.transition.delay.default}
           onChange={this.changeTransitionProperty.bind(this, "delay")}
         />
-      </Block>
 
-      <Block label={"Transition duration"} fieldSpec={latest.transition.duration}>
         <FieldNumber
           {...inputProps}
+          label={"Transition duration"}
+          fieldSpec={latest.transition.duration}
           value={transition.duration}
           default={latest.transition.duration.default}
           onChange={this.changeTransitionProperty.bind(this, "duration")}
         />
-      </Block>
 
-      <Block
-        label={fieldSpecAdditional.maputnik.style_renderer.label}
-        fieldSpec={fieldSpecAdditional.maputnik.style_renderer}
-      >
         <FieldSelect {...inputProps}
+          label={fieldSpecAdditional.maputnik.style_renderer.label}
+          fieldSpec={fieldSpecAdditional.maputnik.style_renderer}
           data-wd-key="modal:settings.maputnik:renderer" 
           options={[
             ['mbgljs', 'MapboxGL JS'],
@@ -258,10 +247,6 @@ export default class ModalSettings extends React.Component {
           value={metadata['maputnik:renderer'] || 'mbgljs'}
           onChange={onChangeMetadataProperty.bind(this, 'maputnik:renderer')}
         />
-      </Block>
-
-
-
       </div>
     </Modal>
   }

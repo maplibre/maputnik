@@ -2,12 +2,12 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import {mdiFunctionVariant, mdiTableRowPlusAfter} from '@mdi/js';
 
-import Button from './Button'
-import SpecField from './SpecField'
-import FieldNumber from './FieldNumber'
-import FieldString from './FieldString'
-import FieldSelect from './FieldSelect'
-import Doc from './Doc'
+import InputButton from './InputButton'
+import InputSpec from './InputSpec'
+import InputNumber from './InputNumber'
+import InputString from './InputString'
+import InputSelect from './InputSelect'
+import FieldDocLabel from './FieldDocLabel'
 import Block from './Block'
 import docUid from '../libs/document-uid'
 import sortNumerically from '../libs/sort-numerically'
@@ -149,8 +149,14 @@ export default class DataProperty extends React.Component {
 
   changeStop(changeIdx, stopData, value) {
     const stops = this.props.value.stops.slice(0)
-    const changedStop = stopData.zoom === undefined ? stopData.value : stopData
-    stops[changeIdx] = [changedStop, value]
+    // const changedStop = stopData.zoom === undefined ? stopData.value : stopData
+    stops[changeIdx] = [
+      {
+        ...stopData,
+        zoom: (stopData.zoom === undefined) ? 0 : stopData.zoom,
+      },
+      value
+    ];
 
     const orderedStops = this.orderStopsByZoom(stops);
 
@@ -188,6 +194,7 @@ export default class DataProperty extends React.Component {
         const deleteStopBtn = <DeleteStopButton onClick={this.props.onDeleteStop.bind(this, idx)} />
 
         const dataProps = {
+          'aria-label': "Input value",
           label: "Data value",
           value: dataLevel,
           onChange: newData => this.changeStop(idx, { zoom: zoomLevel, value: newData }, value)
@@ -195,16 +202,17 @@ export default class DataProperty extends React.Component {
 
         let dataInput;
         if(this.props.value.type === "categorical") {
-          dataInput = <FieldString {...dataProps} />
+          dataInput = <InputString {...dataProps} />
         }
         else {
-          dataInput = <FieldNumber {...dataProps} />
+          dataInput = <InputNumber {...dataProps} />
         }
 
         let zoomInput = null;
         if(zoomLevel !== undefined) {
-          zoomInput = <div className="maputnik-data-spec-property-stop-edit">
-            <FieldNumber
+          zoomInput = <div>
+            <InputNumber
+              aria-label="Zoom"
               value={zoomLevel}
               onChange={newZoom => this.changeStop(idx, {zoom: newZoom, value: dataLevel}, value)}
               min={0}
@@ -223,6 +231,27 @@ export default class DataProperty extends React.Component {
         }).join("");
         const error = message ? {message} : undefined;
 
+        return <tr key={key}>
+          <td>
+            {zoomInput}
+          </td>
+          <td>
+            {dataInput}
+          </td>
+          <td>
+            <InputSpec
+              aria-label="Output value"
+              fieldName={this.props.fieldName}
+              fieldSpec={this.props.fieldSpec}
+              value={value}
+              onChange={(_, newValue) => this.changeStop(idx, {zoom: zoomLevel, value: dataLevel}, newValue)}
+            />
+          </td>
+          <td>
+            {deleteStopBtn}
+          </td>
+        </tr>
+
         return <Block
           error={error}
           key={key}
@@ -234,7 +263,7 @@ export default class DataProperty extends React.Component {
             {dataInput}
           </div>
           <div className="maputnik-data-spec-property-stop-value">
-            <SpecField
+            <InputSpec
               fieldName={this.props.fieldName}
               fieldSpec={this.props.fieldSpec}
               value={value}
@@ -246,74 +275,83 @@ export default class DataProperty extends React.Component {
     }
 
     return <div className="maputnik-data-spec-block">
-      <div className="maputnik-data-spec-property">
-        <Block
-          fieldSpec={this.props.fieldSpec}
-          label={labelFromFieldName(this.props.fieldName)}
-        >
-          <div className="maputnik-data-spec-property-group">
-            <Doc
-              label="Type"
-            />
+      <fieldset className="maputnik-data-spec-property">
+        <legend>{labelFromFieldName(this.props.fieldName)}</legend>
+        <div className="maputnik-data-fieldset-inner">
+          <Block
+            label={"Function"}
+          >
             <div className="maputnik-data-spec-property-input">
-              <FieldSelect
+              <InputSelect
                 value={this.props.value.type}
                 onChange={propVal => this.changeDataProperty("type", propVal)}
                 title={"Select a type of data scale (default is 'categorical')."}
                 options={this.getDataFunctionTypes(this.props.fieldSpec)}
               />
             </div>
-          </div>
-          <div className="maputnik-data-spec-property-group">
-            <Doc
-              label="Property"
-            />
+          </Block>
+          <Block
+            label={"Property"}
+          >
             <div className="maputnik-data-spec-property-input">
-              <FieldString
+              <InputString
                 value={this.props.value.property}
                 title={"Input a data property to base styles off of."}
                 onChange={propVal => this.changeDataProperty("property", propVal)}
               />
             </div>
-          </div>
+          </Block>
           {dataFields &&
-            <div className="maputnik-data-spec-property-group">
-              <Doc
-                label="Default"
+            <Block
+              label={"Default"}
+            >
+              <InputSpec
+                fieldName={this.props.fieldName}
+                fieldSpec={this.props.fieldSpec}
+                value={this.props.value.default}
+                onChange={(_, propVal) => this.changeDataProperty("default", propVal)}
               />
-              <div className="maputnik-data-spec-property-input">
-                <SpecField
-                  fieldName={this.props.fieldName}
-                  fieldSpec={this.props.fieldSpec}
-                  value={this.props.value.default}
-                  onChange={(_, propVal) => this.changeDataProperty("default", propVal)}
-                />
-              </div>
+            </Block>
+          }
+          {dataFields &&
+            <div className="maputnik-function-stop">
+              <table className="maputnik-function-stop-table">
+                <caption>Stops</caption>
+                <thead>
+                  <tr>
+                    <th>Zoom</th>
+                    <th>Input value</th>
+                    <th rowSpan="2">Output value</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {dataFields}
+                </tbody>
+              </table>
             </div>
           }
-        </Block>
-      </div>
-      {dataFields &&
-        <>
-          {dataFields}
-          <Button
-            className="maputnik-add-stop"
-            onClick={this.props.onAddStop.bind(this)}
-          >
-            <svg style={{width:"14px", height:"14px", verticalAlign: "text-bottom"}} viewBox="0 0 24 24">
-              <path fill="currentColor" d={mdiTableRowPlusAfter} />
-            </svg> Add stop
-          </Button>
-        </>
-      }
-      <Button
-        className="maputnik-add-stop"
-        onClick={this.props.onExpressionClick.bind(this)}
-      >
-        <svg style={{width:"14px", height:"14px", verticalAlign: "text-bottom"}} viewBox="0 0 24 24">
-          <path fill="currentColor" d={mdiFunctionVariant} />
-        </svg> Convert to expression
-      </Button>
+          <div className="maputnik-toolbox">
+            {dataFields &&
+              <InputButton
+                className="maputnik-add-stop"
+                onClick={this.props.onAddStop.bind(this)}
+              >
+                <svg style={{width:"14px", height:"14px", verticalAlign: "text-bottom"}} viewBox="0 0 24 24">
+                  <path fill="currentColor" d={mdiTableRowPlusAfter} />
+                </svg> Add stop
+              </InputButton>
+            }
+            <InputButton
+              className="maputnik-add-stop"
+              onClick={this.props.onExpressionClick.bind(this)}
+            >
+              <svg style={{width:"14px", height:"14px", verticalAlign: "text-bottom"}} viewBox="0 0 24 24">
+                <path fill="currentColor" d={mdiFunctionVariant} />
+              </svg> Convert to expression
+            </InputButton>
+          </div>
+        </div>
+      </fieldset>
     </div>
   }
 }

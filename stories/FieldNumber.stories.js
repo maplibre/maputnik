@@ -16,7 +16,7 @@ export const Basic = () => {
   return (
     <Wrapper>
       <FieldNumber
-        name="number"
+        label="number"
         value={value}
         onChange={setValue}
       />
@@ -30,7 +30,7 @@ export const Range = () => {
   return (
     <Wrapper>
       <FieldNumber
-        name="number"
+        label="number"
         value={value}
         onChange={setValue}
         min={1}

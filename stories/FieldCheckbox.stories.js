@@ -17,6 +17,7 @@ export const BasicUnchecked = () => {
   return (
     <Wrapper>
       <FieldCheckbox
+        label="Foobar"
         value={value}
         onChange={setValue}
       />
@@ -30,6 +31,7 @@ export const BasicChecked = () => {
   return (
     <Wrapper>
       <FieldCheckbox
+        label="Foobar"
         value={value}
         onChange={setValue}
       />

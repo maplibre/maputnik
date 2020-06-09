@@ -50,44 +50,15 @@ export default class Block extends React.Component {
         "maputnik-input-block--wide": this.props.wideMode,
         "maputnik-action-block": this.props.action
       })}
-      >
-      {this.props.fieldSpec &&
-      <div className="maputnik-input-block-label">
-        <FieldDocLabel
-          label={this.props.label}
-          onToggleDoc={this.onToggleDoc}
-          fieldSpec={this.props.fieldSpec}
-        />
-      </div>
-      }
-      {!this.props.fieldSpec &&
-      <label className="maputnik-input-block-label">
-        {this.props.label}
-      </label>
-      }
-      {this.props.action &&
-      <div className="maputnik-input-block-action">
-        {this.props.action}
-      </div>
-      }
-      <div className="maputnik-input-block-content">
-        {this.props.children}
-      </div>
-      {errors.length > 0 &&
-        <div className="maputnik-inline-error">
-          {[].concat(this.props.error).map((error, idx) => {
-            return <div key={idx}>{error.message}</div>
-          })}
+    >
+      <label>
+        <div className="maputnik-input-block-label">
+          {this.props.label}
         </div>
-      }
-      {this.props.fieldSpec &&
-      <div
-        className="maputnik-doc-inline"
-        style={{display: this.state.showDoc ? '' : 'none'}}
-      >
-        <Doc fieldSpec={this.props.fieldSpec} />
-      </div>
-      }
+        <div className="maputnik-input-block-content">
+          {this.props.children}
+        </div>
+      </label>
     </div>
   }
 }

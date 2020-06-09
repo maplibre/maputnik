@@ -17,3 +17,11 @@ export function Wrapper ({children}) {
   );
 };
 
+export function InputContainer ({children}) {
+  return (
+    <div style={{maxWidth: "171px", margin: "0.4em"}}>
+      {children}
+    </div>
+  );
+};
+

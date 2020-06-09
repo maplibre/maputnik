@@ -315,6 +315,7 @@ export default class FieldFunction  extends React.Component {
       )
     }
     else if (dataType === "data_function") {
+      // TODO: Rename to FieldFunction **this file** shouldn't be called that
       specField = (
         <DataProperty
           errors={this.props.errors}

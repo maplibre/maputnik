@@ -77,13 +77,13 @@
     .maputnik-array-block-action {
       vertical-align: top;
       display: inline-block;
-      width: 14%;
+      width: 2em;
     }
 
     .maputnik-array-block-content {
       vertical-align: top;
       display: inline-block;
-      width: 86%;
+      width: calc(100% - 2em);
     }
   }
 

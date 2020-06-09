@@ -3,10 +3,10 @@ import PropTypes from 'prop-types'
 
 import {latest} from '@mapbox/mapbox-gl-style-spec'
 import Block from './Block'
-import FieldSelect from './FieldSelect'
-import FieldString from './FieldString'
+import InputSelect from './InputSelect'
+import InputString from './InputString'
 
-export default class BlockType extends React.Component {
+export default class FieldType extends React.Component {
   static propTypes = {
     value: PropTypes.string.isRequired,
     wdKey: PropTypes.string,
@@ -25,13 +25,13 @@ export default class BlockType extends React.Component {
       error={this.props.error}
     >
       {this.props.disabled &&
-        <FieldString
+        <InputString
           value={this.props.value}
           disabled={true}
         />
       }
       {!this.props.disabled &&
-        <FieldSelect
+        <InputSelect
           options={[
             ['background', 'Background'],
             ['fill', 'Fill'],
@@ -50,4 +50,3 @@ export default class BlockType extends React.Component {
     </Block>
   }
 }
-

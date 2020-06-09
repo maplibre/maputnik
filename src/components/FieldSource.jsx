@@ -3,9 +3,9 @@ import PropTypes from 'prop-types'
 
 import {latest} from '@mapbox/mapbox-gl-style-spec'
 import Block from './Block'
-import FieldAutocomplete from './FieldAutocomplete'
+import InputAutocomplete from './InputAutocomplete'
 
-export default class BlockSource extends React.Component {
+export default class FieldSource extends React.Component {
   static propTypes = {
     value: PropTypes.string,
     wdKey: PropTypes.string,
@@ -26,7 +26,7 @@ export default class BlockSource extends React.Component {
       error={this.props.error}
       data-wd-key={this.props.wdKey}
     >
-      <FieldAutocomplete
+      <InputAutocomplete
         value={this.props.value}
         onChange={this.props.onChange}
         options={this.props.sourceIds.map(src => [src, src])}
@@ -34,4 +34,3 @@ export default class BlockSource extends React.Component {
     </Block>
   }
 }
-

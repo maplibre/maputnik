@@ -2,9 +2,9 @@ import React from 'react'
 import PropTypes from 'prop-types'
 
 import Block from './Block'
-import FieldString from './FieldString'
+import InputString from './InputString'
 
-export default class BlockComment extends React.Component {
+export default class FieldComment extends React.Component {
   static propTypes = {
     value: PropTypes.string,
     onChange: PropTypes.func.isRequired,
@@ -20,7 +20,7 @@ export default class BlockComment extends React.Component {
       fieldSpec={fieldSpec}
       data-wd-key="layer-comment"
     >
-      <FieldString
+      <InputString
         multi={true}
         value={this.props.value}
         onChange={this.props.onChange}
@@ -29,4 +29,3 @@ export default class BlockComment extends React.Component {
     </Block>
   }
 }
-

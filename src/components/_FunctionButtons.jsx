@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 
-import Button from './Button'
+import InputButton from './InputButton'
 import {MdFunctions, MdInsertChart} from 'react-icons/md'
 import {mdiFunctionVariant} from '@mdi/js';
 
@@ -24,7 +24,7 @@ function isExpression(value, fieldSpec={}) {
   }
 }
 
-export default class FunctionButtons extends React.Component {
+export default class FunctionInputButtons extends React.Component {
   static propTypes = {
     fieldSpec: PropTypes.object,
     onZoomClick: PropTypes.func,
@@ -33,11 +33,11 @@ export default class FunctionButtons extends React.Component {
   }
 
   render() {
-    let makeZoomButton, makeDataButton, expressionButton;
+    let makeZoomInputButton, makeDataInputButton, expressionInputButton;
 
     if (this.props.fieldSpec.expression.parameters.includes('zoom')) {
-      expressionButton = (
-        <Button
+      expressionInputButton = (
+        <InputButton
           className="maputnik-make-zoom-function"
           onClick={this.props.onExpressionClick}
           title="Convert to expression"
@@ -45,34 +45,34 @@ export default class FunctionButtons extends React.Component {
           <svg style={{width:"14px", height:"14px", verticalAlign: "middle"}} viewBox="0 0 24 24">
             <path fill="currentColor" d={mdiFunctionVariant} />
           </svg>
-        </Button>
+        </InputButton>
       );
 
-      makeZoomButton = <Button
+      makeZoomInputButton = <InputButton
         className="maputnik-make-zoom-function"
         onClick={this.props.onZoomClick}
         title="Convert property into a zoom function"
       >
         <MdFunctions />
-      </Button>
+      </InputButton>
 
       if (this.props.fieldSpec['property-type'] === 'data-driven') {
-        makeDataButton = <Button
+        makeDataInputButton = <InputButton
           className="maputnik-make-data-function"
           onClick={this.props.onDataClick}
           title="Convert property to data function"
         >
           <MdInsertChart />
-        </Button>
+        </InputButton>
       }
       return <div>
-        {expressionButton}
-        {makeDataButton}
-        {makeZoomButton}
+        {expressionInputButton}
+        {makeDataInputButton}
+        {makeZoomInputButton}
       </div>
     }
     else {
-      return <div>{expressionButton}</div>
+      return <div>{expressionInputButton}</div>
     }
   }
 }

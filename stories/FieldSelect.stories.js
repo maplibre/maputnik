@@ -18,6 +18,7 @@ export const Basic = () => {
   return (
     <Wrapper>
       <FieldSelect
+        label="Foobar"
         options={options}
         value={value}
         onChange={setValue}

@@ -237,3 +237,4 @@ export default class MapMapboxGl extends React.Component {
     }
   }
 }
+

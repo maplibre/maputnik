@@ -8,6 +8,9 @@
   z-index: 3;
   position: relative;
   font-family: $font-family;
+  display: flex;
+  flex-direction: column;
+  max-height: 100vh;
 }
 
 .maputnik-modal-section {
@@ -50,7 +53,7 @@
 }
 
 .maputnik-modal-scroller {
-  max-height: calc(100vh - 35px);
+  flex: 1;
   overflow-y: auto;
 }
 

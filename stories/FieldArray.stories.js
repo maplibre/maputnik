@@ -17,6 +17,7 @@ export const NumberType = () => {
   return (
     <Wrapper>
       <FieldArray
+        label="Foobar"
         type="number"
         value={value}
         length={3}
@@ -32,6 +33,7 @@ export const StringType = () => {
   return (
     <Wrapper>
       <FieldArray
+        label="Foobar"
         type="string"
         value={value}
         length={3}

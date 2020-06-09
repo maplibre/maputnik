@@ -16,7 +16,7 @@ import stringifyPretty from 'json-stringify-pretty-compact'
 import '../util/codemirror-mgl';
 
 
-export default class FieldJsonEditor extends React.Component {
+export default class InputJson extends React.Component {
   static propTypes = {
     layer: PropTypes.any.isRequired,
     maxHeight: PropTypes.number,
@@ -172,4 +172,3 @@ export default class FieldJsonEditor extends React.Component {
     </div>
   }
 }
-

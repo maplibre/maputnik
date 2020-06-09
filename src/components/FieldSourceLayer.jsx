@@ -3,9 +3,9 @@ import PropTypes from 'prop-types'
 
 import {latest} from '@mapbox/mapbox-gl-style-spec'
 import Block from './Block'
-import FieldAutocomplete from './FieldAutocomplete'
+import InputAutocomplete from './InputAutocomplete'
 
-export default class BlockSourceLayer extends React.Component {
+export default class FieldSourceLayer extends React.Component {
   static propTypes = {
     value: PropTypes.string,
     onChange: PropTypes.func,
@@ -23,7 +23,7 @@ export default class BlockSourceLayer extends React.Component {
     return <Block label={"Source Layer"} fieldSpec={latest.layer['source-layer']}
       data-wd-key="layer-source-layer"
     >
-      <FieldAutocomplete
+      <InputAutocomplete
         keepMenuWithinWindowBounds={!!this.props.isFixed}
         value={this.props.value}
         onChange={this.props.onChange}
@@ -32,4 +32,3 @@ export default class BlockSourceLayer extends React.Component {
     </Block>
   }
 }
-

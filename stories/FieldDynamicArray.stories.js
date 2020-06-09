@@ -17,6 +17,7 @@ export const NumberType = () => {
   return (
     <Wrapper>
       <FieldDynamicArray
+        label="Foobar"
         type="number"
         value={value}
         onChange={setValue}
@@ -31,6 +32,7 @@ export const UrlType = () => {
   return (
     <Wrapper>
       <FieldDynamicArray
+        label="Foobar"
         type="url"
         value={value}
         onChange={setValue}
@@ -45,6 +47,7 @@ export const EnumType = () => {
   return (
     <Wrapper>
       <FieldDynamicArray
+        label="Foobar"
 	fieldSpec={{values: {"foo": null, "bar": null, "baz": null}}}
         type="enum"
         value={value}

@@ -2,9 +2,9 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import ModalLoading from './ModalLoading'
 import Modal from './Modal'
-import Button from './Button'
+import InputButton from './InputButton'
 import FileReaderInput from 'react-file-reader-input'
-import FieldUrl from './FieldUrl'
+import InputUrl from './InputUrl'
 
 import {MdFileUpload} from 'react-icons/md'
 import {MdAddCircleOutline} from 'react-icons/md'
@@ -22,7 +22,7 @@ class PublicStyle extends React.Component {
 
   render() {
     return <div className="maputnik-public-style">
-      <Button
+      <InputButton
         className="maputnik-public-style-button"
         aria-label={this.props.title}
         onClick={() => this.props.onSelect(this.props.url)}
@@ -38,7 +38,7 @@ class PublicStyle extends React.Component {
             backgroundImage: `url(${this.props.thumbnailUrl})`
           }}
         ></div>
-      </Button>
+      </InputButton>
     </div>
   }
 }
@@ -201,7 +201,7 @@ export default class ModalOpen extends React.Component {
             <h2>Upload Style</h2>
             <p>Upload a JSON style from your computer.</p>
             <FileReaderInput onChange={this.onUpload} tabIndex="-1">
-              <Button className="maputnik-upload-button"><MdFileUpload /> Upload</Button>
+              <InputButton className="maputnik-upload-button"><MdFileUpload /> Upload</InputButton>
             </FileReaderInput>
           </section>
 
@@ -211,7 +211,7 @@ export default class ModalOpen extends React.Component {
               Load from a URL. Note that the URL must have <a href="https://enable-cors.org" target="_blank" rel="noopener noreferrer">CORS enabled</a>.
             </p>
             <form onSubmit={this.onSubmitUrl}>
-              <FieldUrl
+              <InputUrl
                 data-wd-key="modal:open.url.input"
                 type="text"
                 className="maputnik-input"
@@ -221,12 +221,12 @@ export default class ModalOpen extends React.Component {
                 onChange={this.onChangeUrl}
               />
               <div>
-                <Button
+                <InputButton
                   data-wd-key="modal:open.url.button"
                   type="submit"
                   className="maputnik-big-button"
                   disabled={this.state.styleUrl.length < 1}
-                >Load from URL</Button>
+                >Load from URL</InputButton>
               </div>
             </form>
           </section>

@@ -3,9 +3,9 @@ import PropTypes from 'prop-types'
 
 import {latest} from '@mapbox/mapbox-gl-style-spec'
 import Block from './Block'
-import FieldNumber from './FieldNumber'
+import InputNumber from './InputNumber'
 
-export default class BlockMaxZoom extends React.Component {
+export default class FieldMaxZoom extends React.Component {
   static propTypes = {
     value: PropTypes.number,
     onChange: PropTypes.func.isRequired,
@@ -17,7 +17,7 @@ export default class BlockMaxZoom extends React.Component {
       error={this.props.error}
       data-wd-key="max-zoom"
     >
-      <FieldNumber
+      <InputNumber
         allowRange={true}
         value={this.props.value}
         onChange={this.props.onChange}
@@ -28,4 +28,3 @@ export default class BlockMaxZoom extends React.Component {
     </Block>
   }
 }
-

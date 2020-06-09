@@ -18,6 +18,7 @@ export const Basic = () => {
   return (
     <Wrapper>
       <FieldAutocomplete
+        label="Foobar"
         options={options}
         value={value}
         onChange={setValue}

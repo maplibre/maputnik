@@ -145,31 +145,37 @@ export default class AppToolbar extends React.Component {
     const views = [
       {
         id: "map",
+        group: "general",
         title: "Map",
       },
       {
         id: "inspect",
+        group: "general",
         title: "Inspect",
         disabled: this.props.renderer !== 'mbgljs',
       },
       {
         id: "filter-deuteranopia",
-        title: "Deuteranopia color filter",
+        group: "color-accessibility",
+        title: "Deuteranopia filter",
         disabled: !colorAccessibilityFiltersEnabled,
       },
       {
         id: "filter-protanopia",
-        title: "Protanopia color filter",
+        group: "color-accessibility",
+        title: "Protanopia filter",
         disabled: !colorAccessibilityFiltersEnabled,
       },
       {
         id: "filter-tritanopia",
-        title: "Tritanopia color filter",
+        group: "color-accessibility",
+        title: "Tritanopia filter",
         disabled: !colorAccessibilityFiltersEnabled,
       },
       {
         id: "filter-achromatopsia",
-        title: "Achromatopsia color filter",
+        group: "color-accessibility",
+        title: "Achromatopsia filter",
         disabled: !colorAccessibilityFiltersEnabled,
       },
     ];
@@ -242,13 +248,22 @@ export default class AppToolbar extends React.Component {
                 onChange={(e) => this.handleSelection(e.target.value)}
                 value={currentView.id}
               >
-                {views.map((item) => {
+                {views.filter(v => v.group === "general").map((item) => {
                   return (
                     <option key={item.id} value={item.id} disabled={item.disabled}>
                       {item.title}
                     </option>
                   );
                 })}
+                <optgroup label="Color accessibility">
+                  {views.filter(v => v.group === "color-accessibility").map((item) => {
+                    return (
+                      <option key={item.id} value={item.id} disabled={item.disabled}>
+                        {item.title}
+                      </option>
+                    );
+                  })}
+                </optgroup>
               </select>
             </label>
           </ToolbarSelect>

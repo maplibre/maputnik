@@ -1,45 +1,20 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import FieldSelect from './FieldSelect'
-import FieldMultiInput from './FieldMultiInput'
-
-
-function optionsLabelLength(options) {
-  let sum = 0;
-  options.forEach(([_, label]) => {
-    sum += label.length
-  })
-  return sum
-}
+import InputEnum from './InputEnum'
+import Block from './Block';
+import Fieldset from './Fieldset';
 
 
 export default class FieldEnum extends React.Component {
   static propTypes = {
-    "data-wd-key": PropTypes.string,
-    value: PropTypes.string,
-    style: PropTypes.object,
-    default: PropTypes.string,
-    name: PropTypes.string,
-    onChange: PropTypes.func,
-    options: PropTypes.array,
+    ...InputEnum.propTypes,
   }
 
   render() {
-    const {options, value, onChange, name} = this.props;
+    const {props} = this;
 
-    if(options.length <= 3 && optionsLabelLength(options) <= 20) {
-      return <FieldMultiInput
-        name={name}
-        options={options}
-        value={value || this.props.default}
-        onChange={onChange}
-      />
-    } else {
-      return <FieldSelect
-        options={options}
-        value={value || this.props.default}
-        onChange={onChange}
-      />
-    }
+    return <Fieldset label={props.label}>
+      <InputEnum {...props} />
+    </Fieldset>
   }
 }

@@ -1,13 +1,14 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 
-import Button from './Button'
+import {latest} from '@mapbox/mapbox-gl-style-spec'
+import InputButton from './InputButton'
 import Modal from './Modal'
 
-import BlockType from './BlockType'
-import BlockId from './BlockId'
-import BlockSource from './BlockSource'
-import BlockSourceLayer from './BlockSourceLayer'
+import FieldType from './FieldType'
+import FieldId from './FieldId'
+import FieldSource from './FieldSource'
+import FieldSourceLayer from './FieldSourceLayer'
 
 export default class ModalAdd extends React.Component {
   static propTypes = {
@@ -129,20 +130,22 @@ export default class ModalAdd extends React.Component {
       className="maputnik-add-modal"
     >
       <div className="maputnik-add-layer">
-      <BlockId
+      <FieldId
+        label="ID"
+        fieldSpec={latest.layer.id}
         value={this.state.id}
         wdKey="add-layer.layer-id"
         onChange={v => {
           this.setState({ id: v })
         }}
       />
-      <BlockType
+      <FieldType
         value={this.state.type}
         wdKey="add-layer.layer-type"
         onChange={v => this.setState({ type: v })}
       />
       {this.state.type !== 'background' &&
-      <BlockSource
+      <FieldSource
         sourceIds={sources}
         wdKey="add-layer.layer-source-block"
         value={this.state.source}
@@ -150,20 +153,20 @@ export default class ModalAdd extends React.Component {
       />
       }
       {['background', 'raster', 'hillshade', 'heatmap'].indexOf(this.state.type) < 0 &&
-      <BlockSourceLayer
+      <FieldSourceLayer
         isFixed={true}
         sourceLayerIds={layers}
         value={this.state['source-layer']}
         onChange={v => this.setState({ 'source-layer': v })}
       />
       }
-      <Button
+      <InputButton
         className="maputnik-add-layer-button"
         onClick={this.addLayer}
         data-wd-key="add-layer"
       >
         Add Layer
-      </Button>
+      </InputButton>
       </div>
     </Modal>
   }

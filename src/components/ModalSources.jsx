@@ -2,7 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import {latest} from '@mapbox/mapbox-gl-style-spec'
 import Modal from './Modal'
-import Button from './Button'
+import InputButton from './InputButton'
 import Block from './Block'
 import FieldString from './FieldString'
 import FieldSelect from './FieldSelect'
@@ -24,7 +24,7 @@ class PublicSource extends React.Component {
 
   render() {
     return <div className="maputnik-public-source">
-			<Button
+			<InputButton
         className="maputnik-public-source-select"
 				onClick={() => this.props.onSelect(this.props.id)}
 			>
@@ -34,7 +34,7 @@ class PublicSource extends React.Component {
 				</div>
 				<span className="maputnik-space" />
 				<MdAddCircleOutline />
-			</Button>
+			</InputButton>
     </div>
   }
 }
@@ -83,13 +83,13 @@ class ActiveModalSourcesTypeEditor extends React.Component {
       <div className="maputnik-active-source-type-editor-header">
         <span className="maputnik-active-source-type-editor-header-id">#{this.props.sourceId}</span>
         <span className="maputnik-space" />
-        <Button
+        <InputButton
           className="maputnik-active-source-type-editor-header-delete"
           onClick={()=> this.props.onDelete(this.props.sourceId)}
           style={{backgroundColor: 'transparent'}}
         >
           <MdDelete />
-        </Button>
+        </InputButton>
       </div>
       <div className="maputnik-active-source-type-editor-content">
         <ModalSourcesTypeEditor
@@ -207,41 +207,41 @@ class AddSource extends React.Component {
     };
 
     return <div className="maputnik-add-source">
-      <Block label={"Source ID"} fieldSpec={{doc: "Unique ID that identifies the source and is used in the layer to reference the source."}}>
-        <FieldString
-          value={this.state.sourceId}
-          onChange={v => this.setState({ sourceId: v})}
-        />
-      </Block>
-      <Block label={"Source Type"} fieldSpec={sourceTypeFieldSpec}>
-        <FieldSelect
-          options={[
-            ['geojson_json', 'GeoJSON (JSON)'],
-            ['geojson_url', 'GeoJSON (URL)'],
-            ['tilejson_vector', 'Vector (TileJSON URL)'],
-            ['tilexyz_vector', 'Vector (XYZ URLs)'],
-            ['tilejson_raster', 'Raster (TileJSON URL)'],
-            ['tilexyz_raster', 'Raster (XYZ URL)'],
-            ['tilejson_raster-dem', 'Raster DEM (TileJSON URL)'],
-            ['tilexyz_raster-dem', 'Raster DEM (XYZ URLs)'],
-            ['image', 'Image'],
-            ['video', 'Video'],
-          ]}
-          onChange={mode => this.setState({mode: mode, source: this.defaultSource(mode)})}
-          value={this.state.mode}
-        />
-      </Block>
+      <FieldString
+        label={"Source ID"}
+        fieldSpec={{doc: "Unique ID that identifies the source and is used in the layer to reference the source."}}
+        value={this.state.sourceId}
+        onChange={v => this.setState({ sourceId: v})}
+      />
+      <FieldSelect
+        label={"Source Type"}
+        fieldSpec={sourceTypeFieldSpec}
+        options={[
+          ['geojson_json', 'GeoJSON (JSON)'],
+          ['geojson_url', 'GeoJSON (URL)'],
+          ['tilejson_vector', 'Vector (TileJSON URL)'],
+          ['tilexyz_vector', 'Vector (XYZ URLs)'],
+          ['tilejson_raster', 'Raster (TileJSON URL)'],
+          ['tilexyz_raster', 'Raster (XYZ URL)'],
+          ['tilejson_raster-dem', 'Raster DEM (TileJSON URL)'],
+          ['tilexyz_raster-dem', 'Raster DEM (XYZ URLs)'],
+          ['image', 'Image'],
+          ['video', 'Video'],
+        ]}
+        onChange={mode => this.setState({mode: mode, source: this.defaultSource(mode)})}
+        value={this.state.mode}
+      />
       <ModalSourcesTypeEditor
         onChange={this.onChangeSource}
         mode={this.state.mode}
         source={this.state.source}
       />
-      <Button
+      <InputButton
         className="maputnik-add-source-button"
 				onClick={this.onAdd}
       >
         Add Source
-      </Button>
+      </InputButton>
     </div>
   }
 }
