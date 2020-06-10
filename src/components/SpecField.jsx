@@ -33,7 +33,7 @@ export default class SpecField extends React.Component {
       TypeBlock = Block;
     }
 
-    return <TypeBlock label={props.label}>
+    return <TypeBlock label={props.label} action={props.action}>
       <InputSpec {...props} />
     </TypeBlock>
   }

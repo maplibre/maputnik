@@ -168,9 +168,19 @@
     color: $color-lowgray;
     display: inline-block;
     user-select: none;
-    width: 50%;
+    width: 32%;
     vertical-align: top;
     font-size: 12px;
+  }
+
+  &-action {
+    color: $color-lowgray;
+    display: inline-block;
+    user-select: none;
+    width: 18%;
+    vertical-align: top;
+    font-size: 12px;
+    text-align: right;
   }
 
   &-content {

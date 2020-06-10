@@ -72,6 +72,9 @@ export default class Block extends React.Component {
         <div className="maputnik-input-block-label">
           {this.props.label}
         </div>
+        <div className="maputnik-input-block-action">
+          {this.props.action}
+        </div>
         <div className="maputnik-input-block-content" ref={el => this._blockEl = el}>
           {this.props.children}
         </div>
