@@ -302,12 +302,14 @@ class LayerListContainer extends React.Component {
           </div>
         </div>
       </header>
-      <ul className="maputnik-layer-list-container"
+      <div
         role="navigation"
         aria-label="Layers list"
       >
-        {listItems}
-      </ul>
+        <ul className="maputnik-layer-list-container">
+          {listItems}
+        </ul>
+      </div>
     </div>
   }
 }
