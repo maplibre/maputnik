@@ -27,7 +27,6 @@ export default class InputEnum extends React.Component {
 
   render() {
     const {options, value, onChange, name, label} = this.props;
-    console.log("this.props", this.props)
 
     if(options.length <= 3 && optionsLabelLength(options) <= 20) {
       return <InputMultiInput
