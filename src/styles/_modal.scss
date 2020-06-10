@@ -17,6 +17,14 @@
   padding-top: $margin-3;
   padding-bottom: $margin-3;
 
+  h1 {
+    font-size: $font-size-4;
+  }
+
+  h2 {
+    font-size: $font-size-5;
+  }
+
   /* Bug fix: <http://stackoverflow.com/questions/28636832/firefox-overflow-y-not-working-with-nested-flexbox> */
   min-height: 0;
 
