@@ -32,17 +32,12 @@ export default class Modal extends React.Component {
     });
   }
 
-  getApplicationNode() {
-    return document.getElementById('app');
-  }
-
   render() {
     if(this.props.isOpen) {
       return <AriaModal
         titleText={this.props.title}
         underlayClickExits={this.props.underlayClickExits}
         underlayProps={this.props.underlayProps}
-        getApplicationNode={this.getApplicationNode}
         data-wd-key={this.props["data-wd-key"]}
         verticallyCenter={true}
         onExit={this.onClose}
