@@ -44,7 +44,7 @@ export default class FieldFont extends React.Component {
         key={i}
       >
         <InputAutocomplete
-          aria-label={this.props['aria-label']}
+          aria-label={this.props['aria-label'] || this.props.name}
           value={value}
           options={this.props.fonts.map(f => [f, f])}
           onChange={this.changeFont.bind(this, i)}

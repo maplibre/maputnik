@@ -56,7 +56,6 @@ export default class InputAutocomplete extends React.Component {
       }}
     >
       <Autocomplete
-        aria-label={this.props['aria-label']}
         menuStyle={{
           position: "fixed",
           overflow: "auto",
@@ -68,6 +67,7 @@ export default class InputAutocomplete extends React.Component {
           style: null
         }}
         inputProps={{
+          'aria-label': this.props['aria-label'],
           className: "maputnik-string",
           spellCheck: false
         }}

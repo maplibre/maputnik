@@ -6,14 +6,15 @@ import Fieldset from './Fieldset'
 
 
 const typeMap = {
-  color: Block,
-  enum: Fieldset,
-  number: Block,
-  boolean: Block,
-  array: Fieldset,
-  resolvedImage: Block,
-  number: Block,
-  string: Block
+  color: () => Block,
+  enum: ({fieldSpec}) => (Object.keys(fieldSpec.values).length <= 3 ? Fieldset : Block),
+  number: () => Block,
+  boolean: () => Block,
+  array: () => Fieldset,
+  resolvedImage: () => Block,
+  number: () => Block,
+  string: () => Block,
+  formatted: () => Block,
 };
 
 export default class SpecField extends React.Component {
@@ -26,9 +27,14 @@ export default class SpecField extends React.Component {
     const {props} = this;
 
     const fieldType = props.fieldSpec.type;
-    let TypeBlock = typeMap[fieldType];
 
-    if (!TypeBlock) {
+    const typeBlockFn = typeMap[fieldType];
+
+    let TypeBlock;
+    if (typeBlockFn) {
+      TypeBlock = typeBlockFn(props);
+    }
+    else {
       console.warn("No such type for '%s'", fieldType);
       TypeBlock = Block;
     }

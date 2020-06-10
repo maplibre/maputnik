@@ -150,6 +150,7 @@ export default class ZoomProperty extends React.Component {
       >
         <td>
           <InputNumber
+            aria-label="Zoom"
             value={zoomLevel}
             onChange={changedStop => this.changeZoomStop(idx, changedStop, value)}
             min={0}
@@ -158,6 +159,7 @@ export default class ZoomProperty extends React.Component {
         </td>
         <td>
           <InputSpec
+            aria-label="Output value"
             fieldName={this.props.fieldName}
             fieldSpec={this.props.fieldSpec}
             value={value}

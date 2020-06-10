@@ -65,27 +65,30 @@ export default class FieldDynamicArray extends React.Component {
         input = <InputUrl
           value={v}
           onChange={this.changeValue.bind(this, i)}
+          aria-label={this.props['aria-label'] || this.props.label}
         />
       }
       else if (this.props.type === 'number') {
         input = <InputNumber
           value={v}
           onChange={this.changeValue.bind(this, i)}
+          aria-label={this.props['aria-label'] || this.props.label}
         />
       }
       else if (this.props.type === 'enum') {
         const options = Object.keys(this.props.fieldSpec.values).map(v => [v, capitalize(v)]);
-
         input = <InputEnum
           options={options}
           value={v}
           onChange={this.changeValue.bind(this, i)}
+          aria-label={this.props['aria-label'] || this.props.label}
         />
       }
       else {
         input = <InputString
           value={v}
           onChange={this.changeValue.bind(this, i)}
+          aria-label={this.props['aria-label'] || this.props.label}
         />
       }
 

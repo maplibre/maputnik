@@ -26,7 +26,8 @@ export default class InputEnum extends React.Component {
   }
 
   render() {
-    const {options, value, onChange, name} = this.props;
+    const {options, value, onChange, name, label} = this.props;
+    console.log("this.props", this.props)
 
     if(options.length <= 3 && optionsLabelLength(options) <= 20) {
       return <InputMultiInput
@@ -34,14 +35,14 @@ export default class InputEnum extends React.Component {
         options={options}
         value={value || this.props.default}
         onChange={onChange}
-        aria-label={this.props['aria-label']}
+        aria-label={this.props['aria-label'] || label}
       />
     } else {
       return <InputSelect
         options={options}
         value={value || this.props.default}
         onChange={onChange}
-        aria-label={this.props['aria-label']}
+        aria-label={this.props['aria-label'] || label}
       />
     }
   }

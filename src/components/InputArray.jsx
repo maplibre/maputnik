@@ -89,7 +89,7 @@ export default class FieldArray extends React.Component {
           value={value[i]}
           required={containsValues ? true : false}
           onChange={this.changeValue.bind(this, i)}
-          aria-label={this.props['aria-label']}
+          aria-label={this.props['aria-label'] || this.props.label}
         />
       } else {
         return <InputString
@@ -98,7 +98,7 @@ export default class FieldArray extends React.Component {
           value={value[i]}
           required={containsValues ? true : false}
           onChange={this.changeValue.bind(this, i)}
-          aria-label={this.props['aria-label']}
+          aria-label={this.props['aria-label'] || this.props.label}
         />
       }
     })
