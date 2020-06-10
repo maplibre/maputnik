@@ -126,6 +126,12 @@ export default class ZoomProperty extends React.Component {
     this.props.onChange(this.props.fieldName, changedValue)
   }
 
+  changeDataType = (type) => {
+    if (type !== "interpolate") {
+      this.props.onChangeToDataFunction(type);
+    }
+  }
+
   render() {
     const {fieldName, fieldType, errors} = this.props;
 
@@ -183,7 +189,7 @@ export default class ZoomProperty extends React.Component {
             <div className="maputnik-data-spec-property-input">
               <InputSelect
                 value={"interpolate"}
-                onChange={propVal => this.changeDataProperty("type", propVal)}
+                onChange={propVal => this.changeDataType(propVal)}
                 title={"Select a type of data scale (default is 'categorical')."}
                 options={this.getDataFunctionTypes(this.props.fieldSpec)}
               />
@@ -227,11 +233,11 @@ export default class ZoomProperty extends React.Component {
   }
 
   getDataFunctionTypes(fieldSpec) {
-    if (fieldSpec.expression.interpolated) {
-      return ["categorical", "interval", "exponential", "identity", "interpolate"]
+    if (fieldSpec['property-type'] === 'data-driven') {
+      return ["interpolate", "categorical", "interval", "exponential", "identity"];
     }
     else {
-      return ["categorical", "interval", "identity", "interpolate"]
+      return ["interpolate"];
     }
   }
 

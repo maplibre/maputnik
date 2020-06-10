@@ -91,7 +91,7 @@ export default class DataProperty extends React.Component {
 
   getDataFunctionTypes(fieldSpec) {
     if (fieldSpec.expression.interpolated) {
-      return ["categorical", "interval", "exponential", "identity"]
+      return ["interpolate", "categorical", "interval", "exponential", "identity"]
     }
     else {
       return ["categorical", "interval", "identity"]
@@ -165,6 +165,18 @@ export default class DataProperty extends React.Component {
       stops: orderedStops,
     }
     this.onChange(this.props.fieldName, changedValue)
+  }
+
+  changeDataType(propVal) {
+    if (propVal === "interpolate") {
+      this.props.onChangeToZoomFunction();
+    }
+    else {
+      this.onChange(this.props.fieldName, {
+        ...this.props.value,
+        type: propVal,
+      });
+    }
   }
 
   changeDataProperty(propName, propVal) {
@@ -284,7 +296,7 @@ export default class DataProperty extends React.Component {
             <div className="maputnik-data-spec-property-input">
               <InputSelect
                 value={this.props.value.type}
-                onChange={propVal => this.changeDataProperty("type", propVal)}
+                onChange={propVal => this.changeDataType(propVal)}
                 title={"Select a type of data scale (default is 'categorical')."}
                 options={this.getDataFunctionTypes(this.props.fieldSpec)}
               />
