@@ -51,35 +51,34 @@ export default class Block extends React.Component {
     const nativeEvent = event.nativeEvent;
     const contains = this._blockEl.contains(el);
 
-    if (event.nativeEvent.target.nodeName !== "INPUT" && contains) {
+    if (event.nativeEvent.target.nodeName !== "INPUT" && !contains) {
       event.stopPropagation();
-      event.preventDefault();
     }
+		event.preventDefault();
   }
 
   render() {
     const errors = [].concat(this.props.error || []);
 
-    return <div style={this.props.style}
+    return <label style={this.props.style}
       data-wd-key={this.props["data-wd-key"]}
       className={classnames({
         "maputnik-input-block": true,
         "maputnik-input-block--wide": this.props.wideMode,
         "maputnik-action-block": this.props.action
       })}
+      onClick={this.onLabelClick}
     >
-      <label onClick={this.onLabelClick}>
-        <div className="maputnik-input-block-label">
-          {this.props.label}
-        </div>
-        <div className="maputnik-input-block-action">
-          {this.props.action}
-        </div>
-        <div className="maputnik-input-block-content" ref={el => this._blockEl = el}>
-          {this.props.children}
-        </div>
-      </label>
-    </div>
+      <div className="maputnik-input-block-label">
+        {this.props.label}
+      </div>
+      <div className="maputnik-input-block-action">
+        {this.props.action}
+      </div>
+      <div className="maputnik-input-block-content" ref={el => this._blockEl = el}>
+        {this.props.children}
+      </div>
+    </label>
   }
 }
 
