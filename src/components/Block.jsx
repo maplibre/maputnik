@@ -51,7 +51,7 @@ export default class Block extends React.Component {
     const nativeEvent = event.nativeEvent;
     const contains = this._blockEl.contains(el);
 
-    if (contains) {
+    if (event.nativeEvent.target.nodeName !== "INPUT" && contains) {
       event.stopPropagation();
       event.preventDefault();
     }
