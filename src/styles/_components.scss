@@ -164,6 +164,7 @@
 .maputnik-input-block {
   margin: $margin-3;
   display: flex;
+  flex-wrap: wrap;
 
   &-label {
     color: $color-lowgray;
@@ -279,6 +280,7 @@
   .maputnik-input-block-content {
     display: block;
     width: auto;
+    flex: 1;
   }
 
   .maputnik-input-block-label {
