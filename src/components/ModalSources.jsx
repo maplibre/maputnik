@@ -84,6 +84,7 @@ class ActiveModalSourcesTypeEditor extends React.Component {
         <span className="maputnik-active-source-type-editor-header-id">#{this.props.sourceId}</span>
         <span className="maputnik-space" />
         <InputButton
+          aria-label={`Remove '${this.props.sourceId}' source`}
           className="maputnik-active-source-type-editor-header-delete"
           onClick={()=> this.props.onDelete(this.props.sourceId)}
           style={{backgroundColor: 'transparent'}}
@@ -291,28 +292,28 @@ export default class ModalSources extends React.Component {
       onOpenToggle={this.props.onOpenToggle}
       title={'Sources'}
     >
-      <div className="maputnik-modal-section">
-        <h4>Active Sources</h4>
+      <section className="maputnik-modal-section">
+        <h1>Active Sources</h1>
         {activeSources}
-      </div>
+      </section>
 
-      <div className="maputnik-modal-section">
-        <h4>Choose Public Source</h4>
+      <section className="maputnik-modal-section">
+        <h1>Choose Public Source</h1>
         <p>
           Add one of the publicly available sources to your style.
         </p>
         <div className="maputnik-public-sources" style={{maxwidth: 500}}>
         {tilesetOptions}
         </div>
-      </div>
+      </section>
 
-      <div className="maputnik-modal-section">
-				<h4>Add New Source</h4>
+      <section className="maputnik-modal-section">
+				<h1>Add New Source</h1>
 				<p>Add a new source to your style. You can only choose the source type and id at creation time!</p>
 				<AddSource
 					onAdd={(sourceId, source) => this.props.onStyleChanged(addSource(mapStyle, sourceId, source))}
 				/>
-      </div>
+      </section>
     </Modal>
   }
 }

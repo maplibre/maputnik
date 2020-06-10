@@ -163,10 +163,10 @@
 // INPUT BLOCK
 .maputnik-input-block {
   margin: $margin-3;
+  display: flex;
 
   &-label {
     color: $color-lowgray;
-    display: inline-block;
     user-select: none;
     width: 32%;
     vertical-align: top;
@@ -175,7 +175,6 @@
 
   &-action {
     color: $color-lowgray;
-    display: inline-block;
     user-select: none;
     width: 18%;
     vertical-align: top;
@@ -184,7 +183,6 @@
   }
 
   &-content {
-    display: inline-block;
     width: 50%;
   }
 }

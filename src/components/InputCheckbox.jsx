@@ -13,7 +13,7 @@ export default class InputCheckbox extends React.Component {
   }
 
   render() {
-    return <label className="maputnik-checkbox-wrapper">
+    return <div className="maputnik-checkbox-wrapper">
       <input
         className="maputnik-checkbox"
         type="checkbox"
@@ -28,7 +28,7 @@ export default class InputCheckbox extends React.Component {
           <path d='M1 14 L5 10 L13 18 L27 4 L31 8 L13 26 z' />
         </svg>
       </div>
-    </label>
+    </div>
   }
 }
 

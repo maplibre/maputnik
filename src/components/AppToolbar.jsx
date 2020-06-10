@@ -184,7 +184,7 @@ export default class AppToolbar extends React.Component {
       return view.id === this.props.mapState;
     });
 
-    return <div className='maputnik-toolbar'>
+    return <nav className='maputnik-toolbar'>
       <div className="maputnik-toolbar__inner">
         <div
           className="maputnik-toolbar-logo-container"
@@ -278,6 +278,6 @@ export default class AppToolbar extends React.Component {
           </ToolbarLinkHighlighted>
         </div>
       </div>
-    </div>
+    </nav>
   }
 }

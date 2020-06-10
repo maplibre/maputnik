@@ -172,7 +172,6 @@ export default class InputNumber extends React.Component {
           step="any"
           spellCheck="false"
           value={value === undefined ? defaultValue : value}
-          aria-hidden="true"
           onChange={this.onChangeRange}
           onKeyDown={() => {
             this._keyboardEvent = true;

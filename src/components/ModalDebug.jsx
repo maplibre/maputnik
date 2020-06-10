@@ -29,8 +29,8 @@ export default class ModalDebug extends React.Component {
       onOpenToggle={this.props.onOpenToggle}
       title={'Debug'}
     >
-      <div className="maputnik-modal-section maputnik-modal-shortcuts">
-        <h4>Options</h4>
+      <section className="maputnik-modal-section maputnik-modal-shortcuts">
+        <h1>Options</h1>
         {this.props.renderer === 'mbgljs' &&
           <ul>
             {Object.entries(this.props.mapboxGlDebugOptions).map(([key, val]) => {
@@ -53,9 +53,9 @@ export default class ModalDebug extends React.Component {
             })}
           </ul>
         }
-      </div>
-      <div className="maputnik-modal-section">
-        <h4>Links</h4>
+      </section>
+      <section className="maputnik-modal-section">
+        <h1>Links</h1>
         <p>
           <a
             target="_blank"
@@ -65,7 +65,7 @@ export default class ModalDebug extends React.Component {
             Open in OSM
           </a> &mdash; Opens the current view on openstreetmap.org
         </p>
-      </div>
+      </section>
     </Modal>
   }
 }

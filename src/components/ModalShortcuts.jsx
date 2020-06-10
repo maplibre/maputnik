@@ -105,7 +105,7 @@ export default class ModalShortcuts extends React.Component {
       onOpenToggle={this.props.onOpenToggle}
       title={'Shortcuts'}
     >
-      <div className="maputnik-modal-section maputnik-modal-shortcuts">
+      <section className="maputnik-modal-section maputnik-modal-shortcuts">
         <p>
           Press <code>ESC</code> to lose focus of any active elements, then press one of:
         </p>
@@ -125,7 +125,7 @@ export default class ModalShortcuts extends React.Component {
             </li>
           })}
         </ul>
-      </div>
+      </section>
     </Modal>
   }
 }

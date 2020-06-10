@@ -290,7 +290,7 @@ export default class LayerEditor extends React.Component {
       items[id].handler();
     }
 
-    return <div className="maputnik-layer-editor"
+    return <section className="maputnik-layer-editor"
       role="main"
       aria-label="Layer editor"
     >
@@ -332,6 +332,6 @@ export default class LayerEditor extends React.Component {
       >
         {groups}
       </Accordion>
-    </div>
+    </section>
   }
 }

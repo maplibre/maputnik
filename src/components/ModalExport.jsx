@@ -67,8 +67,8 @@ export default class ModalExport extends React.Component {
       className="maputnik-export-modal"
     >
 
-      <div className="maputnik-modal-section">
-        <h4>Download Style</h4>
+      <section className="maputnik-modal-section">
+        <h1>Download Style</h1>
         <p>
           Download a JSON style to your computer.
         </p>
@@ -101,7 +101,7 @@ export default class ModalExport extends React.Component {
           <MdFileDownload />
           Download
         </InputButton>
-      </div>
+      </section>
 
     </Modal>
   }
