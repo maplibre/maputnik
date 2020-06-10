@@ -198,7 +198,7 @@ export default class ModalOpen extends React.Component {
         >
           {errorElement}
           <section className="maputnik-modal-section">
-            <h2>Upload Style</h2>
+            <h1>Upload Style</h1>
             <p>Upload a JSON style from your computer.</p>
             <FileReaderInput onChange={this.onUpload} tabIndex="-1" aria-label="Style file">
               <InputButton className="maputnik-upload-button"><MdFileUpload /> Upload</InputButton>
@@ -207,7 +207,7 @@ export default class ModalOpen extends React.Component {
 
           <section className="maputnik-modal-section">
             <form onSubmit={this.onSubmitUrl}>
-              <h2>Load from URL</h2>
+              <h1>Load from URL</h1>
               <p>
                 Load from a URL. Note that the URL must have <a href="https://enable-cors.org" target="_blank" rel="noopener noreferrer">CORS enabled</a>.
               </p>
@@ -233,7 +233,7 @@ export default class ModalOpen extends React.Component {
           </section>
 
           <section className="maputnik-modal-section maputnik-modal-section--shrink">
-            <h2>Gallery Styles</h2>
+            <h1>Gallery Styles</h1>
             <p>
               Open one of the publicly available styles to start from.
             </p>
