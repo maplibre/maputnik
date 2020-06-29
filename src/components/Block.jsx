@@ -12,7 +12,7 @@ export default class Block extends React.Component {
     label: PropTypes.oneOfType([
       PropTypes.string,
       PropTypes.element,
-    ]).isRequired,
+    ]),
     action: PropTypes.element,
     children: PropTypes.node.isRequired,
     style: PropTypes.object,
