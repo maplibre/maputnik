@@ -278,8 +278,8 @@ export default class FieldFunction  extends React.Component {
     this.props.onChange(this.props.fieldName, expression);
   }
 
-  makeDataFunction = (functionType) => {
-    functionType = functionType || this.getFieldFunctionType(this.props.fieldSpec);
+  makeDataFunction = () => {
+    const functionType = this.getFieldFunctionType(this.props.fieldSpec);
     const stopValue = functionType === 'categorical' ? '' : 0;
     const {value} = this.props;
     let dataFunc;
