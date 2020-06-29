@@ -97,6 +97,16 @@ export default class MapMapboxGl extends React.Component {
     )
   }
 
+  shouldComponentUpdate(nextProps, nextState) {
+    let should = false;
+    try {
+      should = JSON.stringify(this.props) !== JSON.stringify(nextProps) || JSON.stringify(this.state) !== JSON.stringify(nextState);
+    } catch(e) {
+      // no biggie, carry on
+    }
+    return should;
+  }
+
   componentDidUpdate(prevProps) {
     if(!IS_SUPPORTED) return;
 
