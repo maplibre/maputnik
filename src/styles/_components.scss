@@ -36,9 +36,6 @@
 
 // DOC LABEL
 .maputnik-doc {
-  &-target {
-    cursor: help;
-  }
 
   &-wrapper {
     display: inline-block;
@@ -70,7 +67,7 @@
     background: $color-black;
     color: white;
     border: none;
-    padding: 0;
+    padding: 4px;
 
     svg {
       pointer-events: none;
