@@ -2,9 +2,9 @@ import React from 'react'
 import PropTypes from 'prop-types'
 
 import { otherFilterOps } from '../libs/filterops.js'
-import FieldString from './FieldString'
-import FieldAutocomplete from './FieldAutocomplete'
-import FieldSelect from './FieldSelect'
+import InputString from './InputString'
+import InputAutocomplete from './InputAutocomplete'
+import InputSelect from './InputSelect'
 
 function tryParseInt(v) {
   if (v === '') return v
@@ -64,14 +64,16 @@ export default class SingleFilterEditor extends React.Component {
 
     return <div className="maputnik-filter-editor-single">
       <div className="maputnik-filter-editor-property">
-        <FieldAutocomplete
+        <InputAutocomplete
+          aria-label="key"
           value={propertyName}
           options={Object.keys(this.props.properties).map(propName => [propName, propName])}
           onChange={newPropertyName => this.onFilterPartChanged(filterOp, newPropertyName, filterArgs)}
         />
       </div>
       <div className="maputnik-filter-editor-operator">
-        <FieldSelect
+        <InputSelect
+          aria-label="function"
           value={filterOp}
           onChange={newFilterOp => this.onFilterPartChanged(newFilterOp, propertyName, filterArgs)}
           options={otherFilterOps}
@@ -79,7 +81,8 @@ export default class SingleFilterEditor extends React.Component {
       </div>
       {filterArgs.length > 0 &&
       <div className="maputnik-filter-editor-args">
-        <FieldString
+        <InputString
+          aria-label="value"
           value={filterArgs.join(',')}
           onChange={ v=> this.onFilterPartChanged(filterOp, propertyName, v.split(','))}
         />

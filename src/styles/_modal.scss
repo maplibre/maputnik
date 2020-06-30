@@ -8,11 +8,22 @@
   z-index: 3;
   position: relative;
   font-family: $font-family;
+  display: flex;
+  flex-direction: column;
+  max-height: 100vh;
 }
 
 .maputnik-modal-section {
   padding-top: $margin-3;
   padding-bottom: $margin-3;
+
+  h1 {
+    font-size: $font-size-4;
+  }
+
+  h2 {
+    font-size: $font-size-5;
+  }
 
   /* Bug fix: <http://stackoverflow.com/questions/28636832/firefox-overflow-y-not-working-with-nested-flexbox> */
   min-height: 0;
@@ -50,7 +61,7 @@
 }
 
 .maputnik-modal-scroller {
-  max-height: calc(100vh - 35px);
+  flex: 1;
   overflow-y: auto;
 }
 
@@ -116,6 +127,15 @@
 .maputnik-export-modal {
   width: 400px;
   max-width: 100%;
+
+  .maputnik-input-block-label {
+    width: 50%;
+    align-self: center;
+  }
+
+  .maputnik-input-block-action {
+    width: 0;
+  }
 }
 
 .maputnik-add-layer {
@@ -195,8 +215,8 @@
     width: 30%;
   }
 
-  .maputnik-input-block-content {
-    width: 70%;
+  .maputnik-input-block-action {
+    width: 20%;
   }
 }
 
@@ -207,8 +227,8 @@
     width: 30%;
   }
 
-  .maputnik-input-block-content {
-    width: 70%;
+  .maputnik-input-block-action {
+    width: 20%;
   }
 }
 

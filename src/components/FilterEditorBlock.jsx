@@ -1,6 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import Button from './Button'
+import InputButton from './InputButton'
 import {MdDelete} from 'react-icons/md'
 
 export default class FilterEditorBlock extends React.Component {
@@ -12,13 +12,13 @@ export default class FilterEditorBlock extends React.Component {
   render() {
     return <div className="maputnik-filter-editor-block">
       <div className="maputnik-filter-editor-block-action">
-        <Button
+        <InputButton
           className="maputnik-delete-filter"
           onClick={this.props.onDelete}
           title="Delete filter block"
         >
           <MdDelete />
-        </Button>
+        </InputButton>
       </div>
       <div className="maputnik-filter-editor-block-content">
         {this.props.children}

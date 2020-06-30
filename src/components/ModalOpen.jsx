@@ -2,9 +2,9 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import ModalLoading from './ModalLoading'
 import Modal from './Modal'
-import Button from './Button'
+import InputButton from './InputButton'
 import FileReaderInput from 'react-file-reader-input'
-import FieldUrl from './FieldUrl'
+import InputUrl from './InputUrl'
 
 import {MdFileUpload} from 'react-icons/md'
 import {MdAddCircleOutline} from 'react-icons/md'
@@ -22,23 +22,23 @@ class PublicStyle extends React.Component {
 
   render() {
     return <div className="maputnik-public-style">
-      <Button
+      <InputButton
         className="maputnik-public-style-button"
         aria-label={this.props.title}
         onClick={() => this.props.onSelect(this.props.url)}
       >
-        <header className="maputnik-public-style-header">
-          <h4>{this.props.title}</h4>
+        <div className="maputnik-public-style-header">
+          <div>{this.props.title}</div>
           <span className="maputnik-space" />
           <MdAddCircleOutline />
-        </header>
+        </div>
         <div
           className="maputnik-public-style-thumbnail"
           style={{
             backgroundImage: `url(${this.props.thumbnailUrl})`
           }}
         ></div>
-      </Button>
+      </InputButton>
     </div>
   }
 }
@@ -198,20 +198,21 @@ export default class ModalOpen extends React.Component {
         >
           {errorElement}
           <section className="maputnik-modal-section">
-            <h2>Upload Style</h2>
+            <h1>Upload Style</h1>
             <p>Upload a JSON style from your computer.</p>
-            <FileReaderInput onChange={this.onUpload} tabIndex="-1">
-              <Button className="maputnik-upload-button"><MdFileUpload /> Upload</Button>
+            <FileReaderInput onChange={this.onUpload} tabIndex="-1" aria-label="Style file">
+              <InputButton className="maputnik-upload-button"><MdFileUpload /> Upload</InputButton>
             </FileReaderInput>
           </section>
 
           <section className="maputnik-modal-section">
-            <h2>Load from URL</h2>
-            <p>
-              Load from a URL. Note that the URL must have <a href="https://enable-cors.org" target="_blank" rel="noopener noreferrer">CORS enabled</a>.
-            </p>
             <form onSubmit={this.onSubmitUrl}>
-              <FieldUrl
+              <h1>Load from URL</h1>
+              <p>
+                Load from a URL. Note that the URL must have <a href="https://enable-cors.org" target="_blank" rel="noopener noreferrer">CORS enabled</a>.
+              </p>
+              <InputUrl
+                aria-label="Style URL"
                 data-wd-key="modal:open.url.input"
                 type="text"
                 className="maputnik-input"
@@ -221,18 +222,18 @@ export default class ModalOpen extends React.Component {
                 onChange={this.onChangeUrl}
               />
               <div>
-                <Button
+                <InputButton
                   data-wd-key="modal:open.url.button"
                   type="submit"
                   className="maputnik-big-button"
                   disabled={this.state.styleUrl.length < 1}
-                >Load from URL</Button>
+                >Load from URL</InputButton>
               </div>
             </form>
           </section>
 
           <section className="maputnik-modal-section maputnik-modal-section--shrink">
-            <h2>Gallery Styles</h2>
+            <h1>Gallery Styles</h1>
             <p>
               Open one of the publicly available styles to start from.
             </p>

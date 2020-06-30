@@ -46,7 +46,7 @@
     "lodash.throttle": "^4.1.1",
     "mapbox-gl": "^1.11.0",
     "mapbox-gl-inspect": "^1.3.1",
-    "maputnik-design": "github:maputnik/design#f7a2b4d",
+    "maputnik-design": "github:maputnik/design#172b06c",
     "ol": "^6.3.1",
     "ol-mapbox-style": "^6.0.1",
     "prop-types": "^15.7.2",
@@ -66,6 +66,7 @@
     "react-sortable-hoc": "^1.11.0",
     "reconnecting-websocket": "^4.4.0",
     "slugify": "^1.3.6",
+    "string-hash": "^1.1.3",
     "url": "^0.11.0"
   },
   "jshintConfig": {

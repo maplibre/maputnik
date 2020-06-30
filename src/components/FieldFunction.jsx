@@ -200,12 +200,35 @@ export default class FieldFunction  extends React.Component {
   }
 
   makeZoomFunction = () => {
-    const zoomFunc = {
-      stops: [
-        [6, this.props.value || findDefaultFromSpec(this.props.fieldSpec)],
-        [10, this.props.value || findDefaultFromSpec(this.props.fieldSpec)]
-      ]
+    const {value} = this.props;
+
+    let zoomFunc;
+    if (typeof(value) === "object") {
+      if (value.stops) {
+        zoomFunc = {
+          stops: value.stops.map(stop => {
+            return [stop[0].zoom, stop[1] || findDefaultFromSpec(this.props.fieldSpec)];
+          })
+        }
+      }
+      else {
+        zoomFunc = {
+          stops: [
+            [6, findDefaultFromSpec(this.props.fieldSpec)],
+            [10, findDefaultFromSpec(this.props.fieldSpec)]
+          ]
+        }
+      }
     }
+    else {
+      zoomFunc = {
+        stops: [
+          [6, value || findDefaultFromSpec(this.props.fieldSpec)],
+          [10, value || findDefaultFromSpec(this.props.fieldSpec)]
+        ]
+      }
+    }
+
     this.props.onChange(this.props.fieldName, zoomFunc)
   }
 
@@ -258,14 +281,41 @@ export default class FieldFunction  extends React.Component {
   makeDataFunction = () => {
     const functionType = this.getFieldFunctionType(this.props.fieldSpec);
     const stopValue = functionType === 'categorical' ? '' : 0;
-    const dataFunc = {
-      property: "",
-      type: functionType,
-      stops: [
-        [{zoom: 6, value: stopValue}, this.props.value || findDefaultFromSpec(this.props.fieldSpec)],
-        [{zoom: 10, value: stopValue}, this.props.value || findDefaultFromSpec(this.props.fieldSpec)]
-      ]
+    const {value} = this.props;
+    let dataFunc;
+
+    if (typeof(value) === "object") {
+      if (value.stops) {
+        dataFunc = {
+          property: "",
+          type: functionType,
+          stops: value.stops.map(stop => {
+            return [{zoom: stop[0], value: stopValue}, stop[1] || findDefaultFromSpec(this.props.fieldSpec)];
+          })
+        }
+      }
+      else {
+        dataFunc = {
+          property: "",
+          type: functionType,
+          stops: [
+            [{zoom: 6, value: stopValue}, findDefaultFromSpec(this.props.fieldSpec)],
+            [{zoom: 10, value: stopValue}, findDefaultFromSpec(this.props.fieldSpec)]
+          ]
+        }
+      }
     }
+    else {
+      dataFunc = {
+        property: "",
+        type: functionType,
+        stops: [
+          [{zoom: 6, value: stopValue}, this.props.value || findDefaultFromSpec(this.props.fieldSpec)],
+          [{zoom: 10, value: stopValue}, this.props.value || findDefaultFromSpec(this.props.fieldSpec)]
+        ]
+      }
+    }
+
     this.props.onChange(this.props.fieldName, dataFunc)
   }
 
@@ -310,11 +360,13 @@ export default class FieldFunction  extends React.Component {
           value={this.props.value}
           onDeleteStop={this.deleteStop}
           onAddStop={this.addStop}
+          onChangeToDataFunction={this.makeDataFunction}
           onExpressionClick={this.makeExpression} 
         />
       )
     }
     else if (dataType === "data_function") {
+      // TODO: Rename to FieldFunction **this file** shouldn't be called that
       specField = (
         <DataProperty
           errors={this.props.errors}
@@ -325,6 +377,7 @@ export default class FieldFunction  extends React.Component {
           value={this.props.value}
           onDeleteStop={this.deleteStop}
           onAddStop={this.addStop}
+          onChangeToZoomFunction={this.makeZoomFunction}
           onExpressionClick={this.makeExpression} 
         />
       )

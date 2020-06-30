@@ -73,8 +73,8 @@
     width: 30%;
   }
 
-  .maputnik-input-block:not(:first-child) .maputnik-input-block-label {
-    visibility: hidden;
+  .maputnik-input-block-action {
+    display: none;
   }
 
   .maputnik-input-block-content {

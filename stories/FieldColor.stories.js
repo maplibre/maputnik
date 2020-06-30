@@ -17,7 +17,7 @@ export const Basic = () => {
   return (
     <Wrapper>
       <FieldColor
-        name="color"
+        label="Foobar"
         value={color}
         onChange={setColor}
       />

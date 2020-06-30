@@ -11,7 +11,15 @@ export function Describe ({children}) {
 
 export function Wrapper ({children}) {
   return (
-    <div style={{maxWidth: "180px", margin: "0.4em"}}>
+    <div style={{maxWidth: "260px", margin: "0.4em"}}>
+      {children}
+    </div>
+  );
+};
+
+export function InputContainer ({children}) {
+  return (
+    <div style={{maxWidth: "171px", margin: "0.4em"}}>
       {children}
     </div>
   );

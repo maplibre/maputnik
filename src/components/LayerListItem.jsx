@@ -100,6 +100,7 @@ class LayerListItem extends React.Component {
     const visibilityAction = this.props.visibility === 'visible' ? 'show' : 'hide';
 
     return <li
+      id={this.props.id}
       key={this.props.layerId}
       onClick={e => this.props.onLayerSelect(this.props.layerIndex)}
       data-wd-key={"layer-list-item:"+this.props.layerId}

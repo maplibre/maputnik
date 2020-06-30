@@ -1,33 +1,20 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+import Block from './Block'
+import InputSelect from './InputSelect'
+
 
 export default class FieldSelect extends React.Component {
   static propTypes = {
-    value: PropTypes.string.isRequired,
-    "data-wd-key": PropTypes.string,
-    options: PropTypes.array.isRequired,
-    style: PropTypes.object,
-    onChange: PropTypes.func.isRequired,
-    title: PropTypes.string,
+    ...InputSelect.propTypes,
   }
 
-
   render() {
-    let options = this.props.options
-    if(options.length > 0 && !Array.isArray(options[0])) {
-      options = options.map(v => [v, v])
-    }
+    const {props} = this;
 
-    return <select
-      className="maputnik-select"
-      data-wd-key={this.props["data-wd-key"]}
-      style={this.props.style}
-      title={this.props.title}
-      value={this.props.value}
-      onChange={e => this.props.onChange(e.target.value)}
-    >
-      { options.map(([val, label]) => <option key={val} value={val}>{label}</option>) }
-    </select>
+    return <Block label={props.label}>
+      <InputSelect {...props}/>
+    </Block>
   }
 }
 

@@ -18,6 +18,7 @@ export const BasicFew = () => {
   return (
     <Wrapper>
       <FieldEnum
+        label="Foobar"
         options={options}
         value={value}
         onChange={setValue}
@@ -33,6 +34,7 @@ export const BasicFewWithDefault = () => {
   return (
     <Wrapper>
       <FieldEnum
+        label="Foobar"
         options={options}
         default={"Baz"}
         value={value}
@@ -49,6 +51,7 @@ export const BasicMany = () => {
   return (
     <Wrapper>
       <FieldEnum
+        label="Foobar"
         options={options}
         value={value}
         onChange={setValue}
@@ -64,7 +67,8 @@ export const BasicManyWithDefault = () => {
   return (
     <Wrapper>
       <FieldEnum
-        options={options}A
+        label="Foobar"
+        options={options}
         default={"h"}
         value={value}
         onChange={setValue}

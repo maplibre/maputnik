@@ -4,10 +4,9 @@ import Slugify from 'slugify'
 import { saveAs } from 'file-saver'
 
 import {format} from '@mapbox/mapbox-gl-style-spec'
-import Block from './Block'
 import FieldString from './FieldString'
 import FieldCheckbox from './FieldCheckbox'
-import Button from './Button'
+import InputButton from './InputButton'
 import Modal from './Modal'
 import {MdFileDownload} from 'react-icons/md'
 import style from '../libs/style'
@@ -68,50 +67,41 @@ export default class ModalExport extends React.Component {
       className="maputnik-export-modal"
     >
 
-      <div className="maputnik-modal-section">
-        <h4>Download Style</h4>
+      <section className="maputnik-modal-section">
+        <h1>Download Style</h1>
         <p>
           Download a JSON style to your computer.
         </p>
 
         <div>
-          <Block
+          <FieldString
             label={fieldSpecAdditional.maputnik.mapbox_access_token.label}
             fieldSpec={fieldSpecAdditional.maputnik.mapbox_access_token}
-          >
-            <FieldString
-              value={(this.props.mapStyle.metadata || {})['maputnik:mapbox_access_token']}
-              onChange={this.changeMetadataProperty.bind(this, "maputnik:mapbox_access_token")}
-            />
-          </Block>
-          <Block
+            value={(this.props.mapStyle.metadata || {})['maputnik:mapbox_access_token']}
+            onChange={this.changeMetadataProperty.bind(this, "maputnik:mapbox_access_token")}
+          />
+          <FieldString
             label={fieldSpecAdditional.maputnik.maptiler_access_token.label}
             fieldSpec={fieldSpecAdditional.maputnik.maptiler_access_token}
-          >
-            <FieldString
-              value={(this.props.mapStyle.metadata || {})['maputnik:openmaptiles_access_token']}
-              onChange={this.changeMetadataProperty.bind(this, "maputnik:openmaptiles_access_token")}
-            />
-          </Block>
-          <Block
+            value={(this.props.mapStyle.metadata || {})['maputnik:openmaptiles_access_token']}
+            onChange={this.changeMetadataProperty.bind(this, "maputnik:openmaptiles_access_token")}
+          />
+          <FieldString
             label={fieldSpecAdditional.maputnik.thunderforest_access_token.label}
             fieldSpec={fieldSpecAdditional.maputnik.thunderforest_access_token}
-          >
-            <FieldString
-              value={(this.props.mapStyle.metadata || {})['maputnik:thunderforest_access_token']}
-              onChange={this.changeMetadataProperty.bind(this, "maputnik:thunderforest_access_token")}
-            />
-          </Block>
+            value={(this.props.mapStyle.metadata || {})['maputnik:thunderforest_access_token']}
+            onChange={this.changeMetadataProperty.bind(this, "maputnik:thunderforest_access_token")}
+          />
         </div>
 
-        <Button
+        <InputButton
           onClick={this.downloadStyle.bind(this)}
           title="Download style"
         >
           <MdFileDownload />
           Download
-        </Button>
-      </div>
+        </InputButton>
+      </section>
 
     </Modal>
   }

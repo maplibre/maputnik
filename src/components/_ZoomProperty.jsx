@@ -2,9 +2,11 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import {mdiFunctionVariant, mdiTableRowPlusAfter} from '@mdi/js';
 
-import Button from './Button'
-import SpecField from './SpecField'
-import FieldNumber from './FieldNumber'
+import InputButton from './InputButton'
+import InputSpec from './InputSpec'
+import InputNumber from './InputNumber'
+import InputSelect from './InputSelect'
+import FieldDocLabel from './FieldDocLabel'
 import Block from './Block'
 
 import DeleteStopButton from './_DeleteStopButton'
@@ -124,6 +126,12 @@ export default class ZoomProperty extends React.Component {
     this.props.onChange(this.props.fieldName, changedValue)
   }
 
+  changeDataType = (type) => {
+    if (type !== "interpolate") {
+      this.props.onChangeToDataFunction(type);
+    }
+  }
+
   render() {
     const {fieldName, fieldType, errors} = this.props;
 
@@ -143,52 +151,94 @@ export default class ZoomProperty extends React.Component {
       }).join("");
       const error = message ? {message} : undefined;
 
-      return <Block
-        error={error}
+      return <tr
         key={key}
-        fieldSpec={this.props.fieldSpec}
-        label={labelFromFieldName(this.props.fieldName)}
-        action={deleteStopBtn}
       >
-        <div>
-          <div className="maputnik-zoom-spec-property-stop-edit">
-            <FieldNumber
-              value={zoomLevel}
-              onChange={changedStop => this.changeZoomStop(idx, changedStop, value)}
-              min={0}
-              max={22}
-            />
-          </div>
-          <div className="maputnik-zoom-spec-property-stop-value">
-            <SpecField
-              fieldName={this.props.fieldName}
-              fieldSpec={this.props.fieldSpec}
-              value={value}
-              onChange={(_, newValue) => this.changeZoomStop(idx, zoomLevel, newValue)}
-            />
-          </div>
-        </div>
-      </Block>
+        <td>
+          <InputNumber
+            aria-label="Zoom"
+            value={zoomLevel}
+            onChange={changedStop => this.changeZoomStop(idx, changedStop, value)}
+            min={0}
+            max={22}
+          />
+        </td>
+        <td>
+          <InputSpec
+            aria-label="Output value"
+            fieldName={this.props.fieldName}
+            fieldSpec={this.props.fieldSpec}
+            value={value}
+            onChange={(_, newValue) => this.changeZoomStop(idx, zoomLevel, newValue)}
+          />
+        </td>
+        <td>
+          {deleteStopBtn}
+        </td>
+      </tr>
     });
 
-    return <div className="maputnik-zoom-spec-property">
-      {zoomFields}
-      <Button
-        className="maputnik-add-stop"
-        onClick={this.props.onAddStop.bind(this)}
-      >
-        <svg style={{width:"14px", height:"14px", verticalAlign: "text-bottom"}} viewBox="0 0 24 24">
-          <path fill="currentColor" d={mdiTableRowPlusAfter} />
-        </svg> Add stop
-      </Button>
-      <Button
-        className="maputnik-add-stop"
-        onClick={this.props.onExpressionClick.bind(this)}
-      >
-        <svg style={{width:"14px", height:"14px", verticalAlign: "text-bottom"}} viewBox="0 0 24 24">
-          <path fill="currentColor" d={mdiFunctionVariant} />
-        </svg> Convert to expression
-      </Button>
+    // return <div className="maputnik-zoom-spec-property">
+    return <div className="maputnik-data-spec-block">
+      <fieldset className="maputnik-data-spec-property">
+        <legend>{labelFromFieldName(this.props.fieldName)}</legend>
+        <div className="maputnik-data-fieldset-inner">
+          <Block
+            label={"Function"}
+          >
+            <div className="maputnik-data-spec-property-input">
+              <InputSelect
+                value={"interpolate"}
+                onChange={propVal => this.changeDataType(propVal)}
+                title={"Select a type of data scale (default is 'categorical')."}
+                options={this.getDataFunctionTypes(this.props.fieldSpec)}
+              />
+            </div>
+          </Block>
+          <div className="maputnik-function-stop">
+            <table className="maputnik-function-stop-table maputnik-function-stop-table--zoom">
+              <caption>Stops</caption>
+              <thead>
+                <tr>
+                  <th>Zoom</th>
+                  <th rowSpan="2">Output value</th>
+                </tr>
+              </thead>
+              <tbody>
+                {zoomFields}
+              </tbody>
+            </table>
+          </div>
+          <div className="maputnik-toolbox">
+            <InputButton
+              className="maputnik-add-stop"
+              onClick={this.props.onAddStop.bind(this)}
+            >
+              <svg style={{width:"14px", height:"14px", verticalAlign: "text-bottom"}} viewBox="0 0 24 24">
+                <path fill="currentColor" d={mdiTableRowPlusAfter} />
+              </svg> Add stop
+            </InputButton>
+            <InputButton
+              className="maputnik-add-stop"
+              onClick={this.props.onExpressionClick.bind(this)}
+            >
+              <svg style={{width:"14px", height:"14px", verticalAlign: "text-bottom"}} viewBox="0 0 24 24">
+                <path fill="currentColor" d={mdiFunctionVariant} />
+              </svg> Convert to expression
+            </InputButton>
+          </div>
+        </div>
+      </fieldset>
     </div>
   }
+
+  getDataFunctionTypes(fieldSpec) {
+    if (fieldSpec['property-type'] === 'data-driven') {
+      return ["interpolate", "categorical", "interval", "exponential", "identity"];
+    }
+    else {
+      return ["interpolate"];
+    }
+  }
+
 }

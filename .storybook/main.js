@@ -16,7 +16,6 @@ module.exports = {
       ...config,
       module: {
         rules: [
-          ...config.module.rules,
           ...rules,
         ]
       }

@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 
-import Button from './Button'
+import InputButton from './InputButton'
 import Modal from './Modal'
 
 
@@ -34,9 +34,9 @@ export default class ModalLoading extends React.Component {
         {this.props.message}
       </p>
       <p className="maputnik-dialog__buttons">
-        <Button onClick={(e) => this.props.onCancel(e)}>
+        <InputButton onClick={(e) => this.props.onCancel(e)}>
           Cancel
-        </Button>
+        </InputButton>
       </p>
     </Modal>
   }

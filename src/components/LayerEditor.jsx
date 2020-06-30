@@ -2,17 +2,17 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { Wrapper, Button, Menu, MenuItem } from 'react-aria-menubutton'
 
-import FieldJsonEditor from './FieldJsonEditor'
+import FieldJson from './FieldJson'
 import FilterEditor from './FilterEditor'
 import PropertyGroup from './PropertyGroup'
 import LayerEditorGroup from './LayerEditorGroup'
-import BlockType from './BlockType'
-import BlockId from './BlockId'
-import BlockMinZoom from './BlockMinZoom'
-import BlockMaxZoom from './BlockMaxZoom'
-import BlockComment from './BlockComment'
-import BlockSource from './BlockSource'
-import BlockSourceLayer from './BlockSourceLayer'
+import FieldType from './FieldType'
+import FieldId from './FieldId'
+import FieldMinZoom from './FieldMinZoom'
+import FieldMaxZoom from './FieldMaxZoom'
+import FieldComment from './FieldComment'
+import FieldSource from './FieldSource'
+import FieldSourceLayer from './FieldSourceLayer'
 import {Accordion} from 'react-accessible-accordion';
 
 import {MdMoreVert} from 'react-icons/md'
@@ -152,13 +152,13 @@ export default class LayerEditor extends React.Component {
 
     switch(type) {
       case 'layer': return <div>
-        <BlockId
+        <FieldId
           value={this.props.layer.id}
           wdKey="layer-editor.layer-id"
           error={errorData.id}
           onChange={newId => this.props.onLayerIdChange(this.props.layerIndex, this.props.layer.id, newId)}
         />
-        <BlockType
+        <FieldType
           disabled={true}
           error={errorData.type}
           value={this.props.layer.type}
@@ -167,7 +167,7 @@ export default class LayerEditor extends React.Component {
             changeType(this.props.layer, newType)
           )}
         />
-        {this.props.layer.type !== 'background' && <BlockSource
+        {this.props.layer.type !== 'background' && <FieldSource
           error={errorData.source}
           sourceIds={Object.keys(this.props.sources)}
           value={this.props.layer.source}
@@ -175,24 +175,24 @@ export default class LayerEditor extends React.Component {
         />
         }
         {['background', 'raster', 'hillshade', 'heatmap'].indexOf(this.props.layer.type) < 0 &&
-        <BlockSourceLayer
+        <FieldSourceLayer
           error={errorData['source-layer']}
           sourceLayerIds={sourceLayerIds}
           value={this.props.layer['source-layer']}
           onChange={v => this.changeProperty(null, 'source-layer', v)}
         />
         }
-        <BlockMinZoom
+        <FieldMinZoom
           error={errorData.minzoom}
           value={this.props.layer.minzoom}
           onChange={v => this.changeProperty(null, 'minzoom', v)}
         />
-        <BlockMaxZoom
+        <FieldMaxZoom
           error={errorData.maxzoom}
           value={this.props.layer.maxzoom}
           onChange={v => this.changeProperty(null, 'maxzoom', v)}
         />
-        <BlockComment
+        <FieldComment
           error={errorData.comment}
           value={comment}
           onChange={v => this.changeProperty('metadata', 'maputnik:comment', v == ""  ? undefined : v)}
@@ -208,22 +208,24 @@ export default class LayerEditor extends React.Component {
           />
         </div>
       </div>
-      case 'properties': return <PropertyGroup
-        errors={errorData}
-        layer={this.props.layer}
-        groupFields={fields}
-        spec={this.props.spec}
-        onChange={this.changeProperty.bind(this)}
-      />
-      case 'jsoneditor': return <FieldJsonEditor
-        layer={this.props.layer}
-        onChange={(layer) => {
-          this.props.onLayerChanged(
-            this.props.layerIndex,
-            layer
-          );
-        }}
-      />
+      case 'properties':
+        return <PropertyGroup
+          errors={errorData}
+          layer={this.props.layer}
+          groupFields={fields}
+          spec={this.props.spec}
+          onChange={this.changeProperty.bind(this)}
+        />
+      case 'jsoneditor':
+        return <FieldJson
+          layer={this.props.layer}
+          onChange={(layer) => {
+            this.props.onLayerChanged(
+              this.props.layerIndex,
+              layer
+            );
+          }}
+        />
     }
   }
 
@@ -288,7 +290,7 @@ export default class LayerEditor extends React.Component {
       items[id].handler();
     }
 
-    return <div className="maputnik-layer-editor"
+    return <section className="maputnik-layer-editor"
       role="main"
       aria-label="Layer editor"
     >
@@ -330,6 +332,6 @@ export default class LayerEditor extends React.Component {
       >
         {groups}
       </Accordion>
-    </div>
+    </section>
   }
 }

@@ -145,31 +145,37 @@ export default class AppToolbar extends React.Component {
     const views = [
       {
         id: "map",
+        group: "general",
         title: "Map",
       },
       {
         id: "inspect",
+        group: "general",
         title: "Inspect",
         disabled: this.props.renderer !== 'mbgljs',
       },
       {
         id: "filter-deuteranopia",
-        title: "Deuteranopia color filter",
+        group: "color-accessibility",
+        title: "Deuteranopia filter",
         disabled: !colorAccessibilityFiltersEnabled,
       },
       {
         id: "filter-protanopia",
-        title: "Protanopia color filter",
+        group: "color-accessibility",
+        title: "Protanopia filter",
         disabled: !colorAccessibilityFiltersEnabled,
       },
       {
         id: "filter-tritanopia",
-        title: "Tritanopia color filter",
+        group: "color-accessibility",
+        title: "Tritanopia filter",
         disabled: !colorAccessibilityFiltersEnabled,
       },
       {
         id: "filter-achromatopsia",
-        title: "Achromatopsia color filter",
+        group: "color-accessibility",
+        title: "Achromatopsia filter",
         disabled: !colorAccessibilityFiltersEnabled,
       },
     ];
@@ -178,7 +184,7 @@ export default class AppToolbar extends React.Component {
       return view.id === this.props.mapState;
     });
 
-    return <div className='maputnik-toolbar'>
+    return <nav className='maputnik-toolbar'>
       <div className="maputnik-toolbar__inner">
         <div
           className="maputnik-toolbar-logo-container"
@@ -205,16 +211,18 @@ export default class AppToolbar extends React.Component {
           >
             Map view
           </button>
-          <div
+          <a
             className="maputnik-toolbar-logo"
-            tabIndex="-1"
+            target="blank"
+            rel="noreferrer noopener"
+            href="https://github.com/maputnik/editor"
           >
             <span dangerouslySetInnerHTML={{__html: logoImage}} />
             <h1>
               <span className="maputnik-toolbar-name">{pkgJson.name}</span>
               <span className="maputnik-toolbar-version">v{pkgJson.version}</span>
             </h1>
-          </div>
+          </a>
         </div>
         <div className="maputnik-toolbar__actions" role="navigation" aria-label="Toolbar">
           <ToolbarAction wdKey="nav:open" onClick={this.props.onToggleModal.bind(this, 'open')}>
@@ -242,13 +250,22 @@ export default class AppToolbar extends React.Component {
                 onChange={(e) => this.handleSelection(e.target.value)}
                 value={currentView.id}
               >
-                {views.map((item) => {
+                {views.filter(v => v.group === "general").map((item) => {
                   return (
                     <option key={item.id} value={item.id} disabled={item.disabled}>
                       {item.title}
                     </option>
                   );
                 })}
+                <optgroup label="Color accessibility">
+                  {views.filter(v => v.group === "color-accessibility").map((item) => {
+                    return (
+                      <option key={item.id} value={item.id} disabled={item.disabled}>
+                        {item.title}
+                      </option>
+                    );
+                  })}
+                </optgroup>
               </select>
             </label>
           </ToolbarSelect>
@@ -263,6 +280,6 @@ export default class AppToolbar extends React.Component {
           </ToolbarLinkHighlighted>
         </div>
       </div>
-    </div>
+    </nav>
   }
 }

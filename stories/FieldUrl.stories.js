@@ -17,6 +17,7 @@ export const Valid = () => {
   return (
     <Wrapper>
       <FieldUrl
+        label="Foobar"
         value={value}
         onChange={setValue}
         onInput={setValue}
@@ -31,6 +32,7 @@ export const Invalid = () => {
   return (
     <Wrapper>
       <FieldUrl
+        label="Foobar"
         value={value}
         onChange={setValue}
         onInput={setValue}

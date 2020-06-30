@@ -4,11 +4,11 @@ import { combiningFilterOps } from '../libs/filterops.js'
 import {mdiTableRowPlusAfter} from '@mdi/js';
 
 import {latest, validate, migrate} from '@mapbox/mapbox-gl-style-spec'
-import FieldSelect from './FieldSelect'
+import InputSelect from './InputSelect'
 import Block from './Block'
 import SingleFilterEditor from './SingleFilterEditor'
 import FilterEditorBlock from './FilterEditorBlock'
-import Button from './Button'
+import InputButton from './InputButton'
 import Doc from './Doc'
 import ExpressionProperty from './_ExpressionProperty';
 import {mdiFunctionVariant} from '@mdi/js';
@@ -191,7 +191,7 @@ export default class FilterEditor extends React.Component {
         <p>
           Nested filters are not supported.
         </p>
-        <Button
+        <InputButton
           onClick={this.makeExpression}
           title="Convert to expression"
         >
@@ -199,7 +199,7 @@ export default class FilterEditor extends React.Component {
             <path fill="currentColor" d={mdiFunctionVariant} />
           </svg>
           Upgrade to expression
-        </Button>
+        </InputButton>
       </div>
     }
     else if (displaySimpleFilter) {
@@ -209,7 +209,7 @@ export default class FilterEditor extends React.Component {
 
       const actions = (
         <div>
-          <Button
+          <InputButton
             onClick={this.makeExpression}
             title="Convert to expression"
             className="maputnik-make-zoom-function"
@@ -217,7 +217,7 @@ export default class FilterEditor extends React.Component {
             <svg style={{width:"14px", height:"14px", verticalAlign: "middle"}} viewBox="0 0 24 24">
               <path fill="currentColor" d={mdiFunctionVariant} />
             </svg>
-          </Button>
+          </InputButton>
         </div>
       );
 
@@ -249,7 +249,7 @@ export default class FilterEditor extends React.Component {
             label={"Filter"}
             action={actions}
           >
-            <FieldSelect
+            <InputSelect
               value={combiningOp}
               onChange={this.onFilterPartChanged.bind(this, 0)}
               options={[["all", "every filter matches"], ["none", "no filter matches"], ["any", "any filter matches"]]}
@@ -260,7 +260,7 @@ export default class FilterEditor extends React.Component {
             key="buttons"
             className="maputnik-filter-editor-add-wrapper"
           >
-            <Button
+            <InputButton
               data-wd-key="layer-filter-button"
               className="maputnik-add-filter"
               onClick={this.addFilterItem}
@@ -268,7 +268,7 @@ export default class FilterEditor extends React.Component {
               <svg style={{width:"14px", height:"14px", verticalAlign: "text-bottom"}} viewBox="0 0 24 24">
                 <path fill="currentColor" d={mdiTableRowPlusAfter} />
               </svg> Add filter
-            </Button>
+            </InputButton>
           </div>
           <div
             key="doc"

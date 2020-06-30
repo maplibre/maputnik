@@ -35,3 +35,135 @@
   height: 14px;
 }
 
+.maputnik-data-spec-property {
+}
+
+.maputnik-data-fieldset-inner {
+  background: $color-black;
+  border: solid 1px $color-midgray;
+  border-radius: 2px;
+  position: relative;
+
+  // HACK: Overide
+  .maputnik-input-block {
+    margin: $margin-2;
+  }
+
+  .maputnik-add-stop {
+    display: inline-block;
+    float: none;
+
+    &:last-child {
+      margin-right: 0;
+    }
+  }
+
+  .maputnik-toolbox {
+    margin: $margin-3;
+    margin-top: $margin-3;
+    text-align: right;
+  }
+
+}
+
+.maputnik-data-spec-property {
+  legend {
+    font-size: $font-size-6;
+    color: $color-lowgray;
+    margin-bottom: $margin-3;
+  }
+
+  .maputnik-data-spec-property-group {
+    margin-bottom: $margin-2;
+  }
+}
+
+.maputnik-data-spec-block {
+  margin: $margin-3;
+}
+
+.maputnik-function-stop {
+  padding-left: $margin-2;
+  padding-right: $margin-2;
+}
+
+.maputnik-function-stop-table {
+  text-align: left;
+  margin-bottom: $margin-2;
+  box-sizing: border-box;
+  width: 100%;
+
+  thead th {
+    padding: $margin-1 $margin-2;
+    padding-left: 0;
+    color: $color-lowgray;
+  }
+
+  td, th {
+    font-size: $font-size-6;
+    color: $color-white;
+
+    // HACK
+    > * {
+      display: inline-block;
+      width: 100%;
+      vertical-align: text-top;
+    }
+
+    &:not(:first-child)
+    {
+      padding-top: $margin-1;
+      padding-left: $margin-2;
+    }
+
+    &:nth-child(1) {
+      width: 2em;
+    }
+
+    &:nth-child(2) {
+      width: 6em;
+    }
+
+    &:nth-child(3) {
+      width: auto;
+    }
+
+    &:nth-child(4) {
+      // HACK
+      width: 1.8em;
+
+      .maputnik-delete-stop {
+        padding: 0;
+        width: 1em;
+      }
+    }
+  }
+
+  &--zoom {
+    td, th {
+      &:nth-child(2) {
+        width: auto;
+      }
+
+      &:nth-child(3) {
+        // HACK
+        width: 1.8em;
+
+        .maputnik-delete-stop {
+          padding: 0;
+          width: 1em;
+        }
+      }
+    }
+  }
+
+  caption {
+    color: $color-lowgray;
+    text-align: left;
+    border-top: solid 1px $color-black;
+    font-size: $font-size-6;
+    height: 0px;
+    overflow: hidden;
+  }
+}
+

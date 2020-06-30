@@ -1,6 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import FieldAutocomplete from './FieldAutocomplete'
+import InputAutocomplete from './InputAutocomplete'
 
 export default class FieldFont extends React.Component {
   static propTypes = {
@@ -9,6 +9,7 @@ export default class FieldFont extends React.Component {
     fonts: PropTypes.array,
     style: PropTypes.object,
     onChange: PropTypes.func.isRequired,
+    'aria-label': PropTypes.string,
   }
 
   static defaultProps = {
@@ -39,17 +40,22 @@ export default class FieldFont extends React.Component {
 
   render() {
     const inputs = this.values.map((value, i) => {
-      return <FieldAutocomplete
+      return <li
         key={i}
-        value={value}
-        options={this.props.fonts.map(f => [f, f])}
-        onChange={this.changeFont.bind(this, i)}
-      />
+      >
+        <InputAutocomplete
+          aria-label={this.props['aria-label'] || this.props.name}
+          value={value}
+          options={this.props.fonts.map(f => [f, f])}
+          onChange={this.changeFont.bind(this, i)}
+        />
+      </li>
     })
 
-    return <div className="maputnik-font">
-      {inputs}
-    </div>
+    return (
+      <ul className="maputnik-font">
+        {inputs}
+      </ul>
+    );
   }
 }
-

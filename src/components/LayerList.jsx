@@ -248,6 +248,7 @@ class LayerListContainer extends React.Component {
           })}
           index={idx}
           key={layer.key}
+          id={layer.key}
           layerId={layer.id}
           layerIndex={idx}
           layerType={layer.type}
@@ -264,7 +265,7 @@ class LayerListContainer extends React.Component {
       })
     })
 
-    return <div
+    return <section
       className="maputnik-layer-list"
       role="complementary"
       aria-label="Layers list"
@@ -302,13 +303,15 @@ class LayerListContainer extends React.Component {
           </div>
         </div>
       </header>
-      <ul className="maputnik-layer-list-container"
+      <div
         role="navigation"
         aria-label="Layers list"
       >
-        {listItems}
-      </ul>
-    </div>
+        <ul className="maputnik-layer-list-container">
+          {listItems}
+        </ul>
+      </div>
+    </section>
   }
 }
 

@@ -30,14 +30,12 @@
   .maputnik-doc-button {
     opacity: 1;
     pointer-events: all;
+    cursor: pointer;
   }
 }
 
 // DOC LABEL
 .maputnik-doc {
-  &-target {
-    cursor: help;
-  }
 
   &-wrapper {
     display: inline-block;
@@ -69,7 +67,7 @@
     background: $color-black;
     color: white;
     border: none;
-    padding: 0;
+    padding: 4px;
 
     svg {
       pointer-events: none;
@@ -89,6 +87,7 @@
   font-size: 12px;
   margin-top: $margin-3;
   line-height: 1.5;
+  flex: 1 0;
 }
 
 .maputnik-doc-target:hover .maputnik-doc-popup {
@@ -163,18 +162,27 @@
 // INPUT BLOCK
 .maputnik-input-block {
   margin: $margin-3;
+  display: flex;
+  flex-wrap: wrap;
 
   &-label {
     color: $color-lowgray;
-    display: inline-block;
     user-select: none;
-    width: 50%;
+    width: 32%;
     vertical-align: top;
     font-size: 12px;
   }
 
+  &-action {
+    color: $color-lowgray;
+    user-select: none;
+    width: 18%;
+    vertical-align: top;
+    font-size: 12px;
+    text-align: right;
+  }
+
   &-content {
-    display: inline-block;
     width: 50%;
   }
 }
@@ -183,6 +191,7 @@
   .maputnik-input-block-label {
     display: inline-block;
     width: 32%;
+    margin-bottom: $margin-3;
   }
 
   .maputnik-input-block-action {
@@ -270,6 +279,7 @@
   .maputnik-input-block-content {
     display: block;
     width: auto;
+    flex: 1;
   }
 
   .maputnik-input-block-label {

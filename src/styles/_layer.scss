@@ -143,6 +143,8 @@
     color: inherit;
     text-decoration: none;
     cursor: pointer;
+    // HACK: Remove important
+    outline: none !important;
   }
 
   &-group-header {

@@ -37,13 +37,12 @@ export default class SpecProperty extends React.Component {
 
     const error = errors[fieldType+"."+fieldName];
 
-    return <Block
+    return <SpecField
+      {...this.props}
       error={error}
       fieldSpec={this.props.fieldSpec}
       label={labelFromFieldName(this.props.fieldName)}
       action={functionBtn}
-    >
-      <SpecField {...this.props} />
-    </Block>
+    />
   }
 }

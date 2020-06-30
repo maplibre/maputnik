@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 
-import Button from './Button'
+import InputButton from './InputButton'
 import {MdDelete} from 'react-icons/md'
 
 
@@ -11,12 +11,12 @@ export default class DeleteStopButton extends React.Component {
   }
 
   render() {
-    return <Button
+    return <InputButton
       className="maputnik-delete-stop"
       onClick={this.props.onClick}
       title={"Remove zoom level from stop"}
     >
       <MdDelete />
-    </Button>
+    </InputButton>
   }
 }
