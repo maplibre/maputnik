@@ -211,16 +211,18 @@ export default class AppToolbar extends React.Component {
           >
             Map view
           </button>
-          <div
+          <a
             className="maputnik-toolbar-logo"
-            tabIndex="-1"
+            target="blank"
+            rel="noreferrer noopener"
+            href="https://github.com/maputnik/editor"
           >
             <span dangerouslySetInnerHTML={{__html: logoImage}} />
             <h1>
               <span className="maputnik-toolbar-name">{pkgJson.name}</span>
               <span className="maputnik-toolbar-version">v{pkgJson.version}</span>
             </h1>
-          </div>
+          </a>
         </div>
         <div className="maputnik-toolbar__actions" role="navigation" aria-label="Toolbar">
           <ToolbarAction wdKey="nav:open" onClick={this.props.onToggleModal.bind(this, 'open')}>
