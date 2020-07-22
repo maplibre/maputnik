@@ -95,14 +95,19 @@ export default class App extends React.Component {
 
     this.revisionStore = new RevisionStore()
     const params = new URLSearchParams(window.location.search.substring(1))
-    let port = params.get("localport")
+    // `localport` param is a legacy undocumented feature. Possibly deprecate this in future if not required?
+    let port = params.get("localport") || params.get("styleApiPort")
     if (port == null && (window.location.port != 80 && window.location.port != 443)) {
       port = window.location.port
     }
     this.styleStore = new ApiStyleStore({
       onLocalStyleChange: mapStyle => this.onStyleChanged(mapStyle, {save: false}),
       port: port,
-      host: params.get("localhost")
+      // `localhost` param is a legacy undocumented feature. Possibly deprecate this in future if not required?
+      host: params.get("localhost") || params.get("styleApiHost"),
+      protocol: params.get("styleApiProtocol"),
+      path: params.get("styleApiPath"),
+      preselectedId: params.get("styleApiPreselectedId"),
     })
 
 

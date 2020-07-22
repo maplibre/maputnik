@@ -8,13 +8,20 @@ export class ApiStyleStore {
     this.onLocalStyleChange = opts.onLocalStyleChange || (() => {})
     const port = opts.port || '8000'
     const host = opts.host || 'localhost'
-    this.localUrl = `http://${host}:${port}`
+    const path = opts.path || '/style'
+    const protocol = opts.protocol || 'http'
+    this.apiUrl = `${protocol}://${host}:${port}${path}`
     this.websocketUrl = `ws://${host}:${port}/ws`
+    this.latestStyleId = opts.preselectedId
     this.init = this.init.bind(this)
   }
 
   init(cb) {
-    fetch(this.localUrl + '/styles', {
+    if (this.latestStyleId) {
+      this.notifyLocalChanges()
+      return cb(null)
+    }
+    fetch(this.apiUrl, {
       mode: 'cors',
     })
     .then((response) =>  {
@@ -49,7 +56,7 @@ export class ApiStyleStore {
 
   latestStyle(cb) {
     if(this.latestStyleId) {
-      fetch(this.localUrl + '/styles/' + this.latestStyleId, {
+      fetch(`${this.apiUrl}/${this.latestStyleId}`, {
         mode: 'cors',
       })
       .then(function(response) {
@@ -71,8 +78,7 @@ export class ApiStyleStore {
       )
     );
 
-    const id = mapStyle.id
-    fetch(this.localUrl + '/styles/' + id, {
+    fetch(`${this.apiUrl}/${mapStyle.id}`, {
       method: "PUT",
       mode: 'cors',
       headers: {
