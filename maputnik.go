@@ -32,6 +32,10 @@ func main() {
 			Value: 8000,
 			Usage: "TCP port to listen on",
 		},
+		cli.StringFlag{
+			Name:  "static",
+			Usage: "Serve directory under /static/",
+		}
 	}
 
 	app.Action = func(c *cli.Context) error {
@@ -56,6 +60,12 @@ func main() {
 				})
 			}
 		}
+
+		staticDir := c.String("static")
+    if staticDir != "" {
+	    h := http.StripPrefix("/static/", http.FileServer(http.Dir(staticDir)))
+	    router.PathPrefix("/static/").Handler(h)
+    }
 
 		router.PathPrefix("/").Handler(http.StripPrefix("/", gui))
 		loggedRouter := handlers.LoggingHandler(os.Stdout, router)
