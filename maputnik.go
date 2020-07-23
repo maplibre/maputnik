@@ -62,10 +62,10 @@ func main() {
 		}
 
 		staticDir := c.String("static")
-    if staticDir != "" {
-	    h := http.StripPrefix("/static/", http.FileServer(http.Dir(staticDir)))
-	    router.PathPrefix("/static/").Handler(h)
-    }
+		if staticDir != "" {
+			h := http.StripPrefix("/static/", http.FileServer(http.Dir(staticDir)))
+			router.PathPrefix("/static/").Handler(h)
+		}
 
 		router.PathPrefix("/").Handler(http.StripPrefix("/", gui))
 		loggedRouter := handlers.LoggingHandler(os.Stdout, router)
