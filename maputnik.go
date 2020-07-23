@@ -32,7 +32,7 @@ func main() {
 			Value: 8000,
 			Usage: "TCP port to listen on",
 		},
-		cli.StringFlag{
+		&cli.StringFlag{
 			Name:  "static",
 			Usage: "Serve directory under /static/",
 		},
