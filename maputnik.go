@@ -35,7 +35,7 @@ func main() {
 		cli.StringFlag{
 			Name:  "static",
 			Usage: "Serve directory under /static/",
-		}
+		},
 	}
 
 	app.Action = func(c *cli.Context) error {
