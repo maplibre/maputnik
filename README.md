@@ -18,14 +18,14 @@ You can download a single binary for Linux, OSX or Windows from [the latest rele
 
 Simply start up a web server and access the Maputnik editor GUI at `localhost:8000`.
 
-```
+```bash
 maputnik
 ```
 
 Expose a local style file to Maputnik allowing the web based editor
 to save to the local filesystem.
 
-```
+```bash
 maputnik --file basic-v9.json
 ```
 
@@ -33,14 +33,21 @@ Watch the local style for changes and inform the editor via web socket.
 This makes it possible to edit the style with a local text editor and still
 use Maputnik.
 
-```
+```bash
 maputnik --watch --file basic-v9.json
 ```
 
 Choose a local port to listen on, instead of using the default port 8000.
 
-```
+```bash
 maputnik --port 8001
+```
+
+Specify a path to a directory which, if it exists, will be served under http://localhost:8000/static/ .
+Could be used to serve sprites and glyphs.
+
+```bash
+maputnik --static ./localFolder
 ```
 
 ### API

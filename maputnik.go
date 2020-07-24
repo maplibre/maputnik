@@ -16,7 +16,7 @@ func main() {
 	app := cli.NewApp()
 	app.Name = "maputnik"
 	app.Usage = "Server for integrating Maputnik locally"
-	app.Version = "Editor: 1.7.0; Desktop: 1.0.6"
+	app.Version = "Editor: 1.7.0; Desktop: 1.0.7"
 
 	app.Flags = []cli.Flag{
 		&cli.StringFlag{
@@ -31,6 +31,10 @@ func main() {
 			Name: "port",
 			Value: 8000,
 			Usage: "TCP port to listen on",
+		},
+		&cli.StringFlag{
+			Name:  "static",
+			Usage: "Serve directory under /static/",
 		},
 	}
 
@@ -55,6 +59,12 @@ func main() {
 					filewatch.ServeWebsocketFileWatcher(filename, w, r)
 				})
 			}
+		}
+
+		staticDir := c.String("static")
+		if staticDir != "" {
+			h := http.StripPrefix("/static/", http.FileServer(http.Dir(staticDir)))
+			router.PathPrefix("/static/").Handler(h)
 		}
 
 		router.PathPrefix("/").Handler(http.StripPrefix("/", gui))
