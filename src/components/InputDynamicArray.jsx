@@ -54,7 +54,7 @@ export default class FieldDynamicArray extends React.Component {
     const values = this.values.slice(0)
     values.splice(valueIdx, 1)
 
-    this.props.onChange(values)
+    this.props.onChange(values.length > 0 ? values : undefined);
   }
 
   render() {
