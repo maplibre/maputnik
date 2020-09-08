@@ -772,7 +772,10 @@ export default class App extends React.Component {
           }
         }
         if (!invalid) {
-          this.setState({selectedLayerIndex});
+          this.setState({
+            selectedLayerIndex,
+            selectedLayerOriginalId: this.state.mapStyle.layers[selectedLayerIndex].id,
+          });
         }
       }
       catch (err) {
@@ -782,7 +785,10 @@ export default class App extends React.Component {
   }
 
   onLayerSelect = (index) => {
-    this.setState({ selectedLayerIndex: index }, this.setStateInUrl);
+    this.setState({
+      selectedLayerIndex: index,
+      selectedLayerOriginalId: this.state.mapStyle.layers[index].id,
+    }, this.setStateInUrl);
   }
 
   setModal(modalName, value) {
@@ -851,7 +857,7 @@ export default class App extends React.Component {
     />
 
     const layerEditor = selectedLayer ? <LayerEditor
-      key={selectedLayer.id}
+      key={this.state.selectedLayerOriginalId}
       layer={selectedLayer}
       layerIndex={this.state.selectedLayerIndex}
       isFirstLayer={this.state.selectedLayerIndex < 1}
