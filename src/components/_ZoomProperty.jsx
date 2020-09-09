@@ -1,6 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import {mdiFunctionVariant, mdiTableRowPlusAfter} from '@mdi/js';
+import {latest} from '@mapbox/mapbox-gl-style-spec'
 
 import InputButton from './InputButton'
 import InputSpec from './InputSpec'
@@ -126,6 +127,18 @@ export default class ZoomProperty extends React.Component {
     this.props.onChange(this.props.fieldName, changedValue)
   }
 
+  changeBase(newValue) {
+    const changedValue = {
+      ...this.props.value,
+      base: newValue
+    }
+
+    if (changedValue.base === undefined) {
+      delete changedValue["base"];
+    }
+    this.props.onChange(this.props.fieldName, changedValue)
+  }
+
   changeDataType = (type) => {
     if (type !== "interpolate") {
       this.props.onChangeToDataFunction(type);
@@ -192,6 +205,18 @@ export default class ZoomProperty extends React.Component {
                 onChange={propVal => this.changeDataType(propVal)}
                 title={"Select a type of data scale (default is 'categorical')."}
                 options={this.getDataFunctionTypes(this.props.fieldSpec)}
+              />
+            </div>
+          </Block>
+          <Block
+            label={"Base"}
+          >
+            <div className="maputnik-data-spec-property-input">
+              <InputSpec
+                fieldName={"base"}
+                fieldSpec={latest.function.base}
+                value={this.props.value.base}
+                onChange={(_, newValue) => this.changeBase(newValue)}
               />
             </div>
           </Block>

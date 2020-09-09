@@ -1,6 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import {mdiFunctionVariant, mdiTableRowPlusAfter} from '@mdi/js';
+import {latest} from '@mapbox/mapbox-gl-style-spec'
 
 import InputButton from './InputButton'
 import InputSpec from './InputSpec'
@@ -167,6 +168,18 @@ export default class DataProperty extends React.Component {
     this.onChange(this.props.fieldName, changedValue)
   }
 
+  changeBase(newValue) {
+    const changedValue = {
+      ...this.props.value,
+      base: newValue
+    }
+
+    if (changedValue.base === undefined) {
+      delete changedValue["base"];
+    }
+    this.props.onChange(this.props.fieldName, changedValue)
+  }
+
   changeDataType(propVal) {
     if (propVal === "interpolate") {
       this.props.onChangeToZoomFunction();
@@ -292,6 +305,7 @@ export default class DataProperty extends React.Component {
         <div className="maputnik-data-fieldset-inner">
           <Block
             label={"Function"}
+            key="function"
           >
             <div className="maputnik-data-spec-property-input">
               <InputSelect
@@ -302,8 +316,24 @@ export default class DataProperty extends React.Component {
               />
             </div>
           </Block>
+          {this.props.value.type !== "identity" &&
+            <Block
+              label={"Base"}
+              key="base"
+            >
+              <div className="maputnik-data-spec-property-input">
+                <InputSpec
+                  fieldName={"base"}
+                  fieldSpec={latest.function.base}
+                  value={this.props.value.base}
+                  onChange={(_, newValue) => this.changeBase(newValue)}
+                />
+              </div>
+            </Block>
+          }
           <Block
             label={"Property"}
+            key="property"
           >
             <div className="maputnik-data-spec-property-input">
               <InputString
@@ -316,6 +346,7 @@ export default class DataProperty extends React.Component {
           {dataFields &&
             <Block
               label={"Default"}
+              key="default"
             >
               <InputSpec
                 fieldName={this.props.fieldName}
