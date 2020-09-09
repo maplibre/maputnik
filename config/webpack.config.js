@@ -53,7 +53,7 @@ module.exports = {
       // See <https://webpack.js.org/configuration/watch/#watchoptions-poll> for details
       poll: (!!process.env.WEBPACK_DEV_SERVER_POLLING ? true : false),
       watch: false
-    }
+    },
   },
   plugins: [
     new webpack.NoEmitOnErrorsPlugin(),
