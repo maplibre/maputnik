@@ -11,6 +11,7 @@
     "test-watch": "cross-env NODE_ENV=test wdio config/wdio.conf.js --watch",
     "start": "webpack-dev-server --progress --profile --colors --config config/webpack.config.js",
     "start-prod": "webpack-dev-server --progress --profile --colors --config config/webpack.production.config.js",
+    "start-sandbox": "webpack-dev-server --host 0.0.0.0 --progress --profile --colors --config config/webpack.production.config.js",
     "lint-js": "eslint --ext js --ext jsx src test",
     "lint-css": "stylelint \"src/styles/*.scss\"",
     "lint": "npm run lint-js && npm run lint-css",
