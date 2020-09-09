@@ -2,8 +2,9 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { combiningFilterOps } from '../libs/filterops.js'
 import {mdiTableRowPlusAfter} from '@mdi/js';
+import {isEqual} from 'lodash';
 
-import {latest, validate, migrate} from '@mapbox/mapbox-gl-style-spec'
+import {latest, validate, migrate, convertFilter} from '@mapbox/mapbox-gl-style-spec'
 import InputSelect from './InputSelect'
 import Block from './Block'
 import SingleFilterEditor from './SingleFilterEditor'
@@ -155,7 +156,11 @@ export default class FilterEditor extends React.Component {
 
   static getDerivedStateFromProps (props, currentState) {
     const {filter} = props;
-    const displaySimpleFilter = checkIfSimpleFilter(combiningFilter(props));
+    const tempFilter = combiningFilter(props);
+    const expression = convertFilter(tempFilter);
+
+    // If we convert a filter that is an expression to an expression it'll remain the same in value
+    const displaySimpleFilter = !isEqual(expression, tempFilter);
 
     // Upgrade but never downgrade
     if (!displaySimpleFilter && currentState.displaySimpleFilter === true) {
