@@ -62,24 +62,19 @@ function createStyleFromFilter (filter) {
   };
 }
 
-/**
- * This is doing way more work than we need it to, however validating a whole
- * style if the only thing that's exported from mapbox-gl-style-spec at the
- * moment. Not really an issue though as it take ~0.1ms to calculate.
- */
+const FILTER_OPS = [
+  "all",
+  "any",
+  "none"
+];
+
+// If we convert a filter that is an expression to an expression it'll remain the same in value
 function checkIfSimpleFilter (filter) {
-  if (!filter || !combiningFilterOps.includes(filter[0])) {
-    return false;
+  if (filter.length === 1 && FILTER_OPS.includes(filter[0])) {
+    return true;
   }
-
-  // Because "none" isn't supported by the next expression syntax we can test
-  // with ["none", ...] because it'll return false if it's a new style
-  // expression.
-  const moddedFilter = ["none", ...filter.slice(1)];
-  const tmpStyle = createStyleFromFilter(moddedFilter)
-
-  const errors = validate(tmpStyle);
-  return (errors.length < 1);
+  const expression = convertFilter(filter);
+  return !isEqual(expression, filter);
 }
 
 function hasCombiningFilter(filter) {
@@ -156,11 +151,7 @@ export default class FilterEditor extends React.Component {
 
   static getDerivedStateFromProps (props, currentState) {
     const {filter} = props;
-    const tempFilter = combiningFilter(props);
-    const expression = convertFilter(tempFilter);
-
-    // If we convert a filter that is an expression to an expression it'll remain the same in value
-    const displaySimpleFilter = !isEqual(expression, tempFilter);
+    const displaySimpleFilter = checkIfSimpleFilter(combiningFilter(props));
 
     // Upgrade but never downgrade
     if (!displaySimpleFilter && currentState.displaySimpleFilter === true) {
