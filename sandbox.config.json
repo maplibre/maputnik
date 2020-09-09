@@ -1,5 +1,5 @@
 {
   "container": {
-    "startScript": "start-prod"
+    "startScript": "start-sandbox"
   }
 }
