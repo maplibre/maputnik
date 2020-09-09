@@ -54,7 +54,6 @@ module.exports = {
       poll: (!!process.env.WEBPACK_DEV_SERVER_POLLING ? true : false),
       watch: false
     },
-    disableHostCheck: !!process.env.CODESANDBOX_SSE,
   },
   plugins: [
     new webpack.NoEmitOnErrorsPlugin(),
