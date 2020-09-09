@@ -122,7 +122,7 @@ jobs:
       uses: actions/checkout@v2
       with:
         repository: maputnik/desktop
-        ref: v1.0.6
+        ref: v1.0.7
         path: ./src/github.com/maputnik/desktop/
 
     - name: Make
