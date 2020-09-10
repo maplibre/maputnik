@@ -331,3 +331,13 @@
 .modal-settings {
   width: 400px;
 }
+
+.maputnik-modal-export-buttons {
+  display: flex;
+  justify-content: flex-end;
+
+  .maputnik-button {
+    margin-left: 4px;
+  }
+}
+
