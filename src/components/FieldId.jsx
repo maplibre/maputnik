@@ -20,7 +20,7 @@ export default class FieldId extends React.Component {
     >
       <InputString
         value={this.props.value}
-        onChange={this.props.onChange}
+        onInput={this.props.onChange}
       />
     </Block>
   }
