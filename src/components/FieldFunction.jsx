@@ -206,6 +206,7 @@ export default class FieldFunction  extends React.Component {
     if (typeof(value) === "object") {
       if (value.stops) {
         zoomFunc = {
+          base: value.base,
           stops: value.stops.map(stop => {
             return [stop[0].zoom, stop[1] || findDefaultFromSpec(this.props.fieldSpec)];
           })
@@ -213,6 +214,7 @@ export default class FieldFunction  extends React.Component {
       }
       else {
         zoomFunc = {
+          base: value.base,
           stops: [
             [6, findDefaultFromSpec(this.props.fieldSpec)],
             [10, findDefaultFromSpec(this.props.fieldSpec)]
@@ -289,6 +291,7 @@ export default class FieldFunction  extends React.Component {
         dataFunc = {
           property: "",
           type: functionType,
+          base: value.base,
           stops: value.stops.map(stop => {
             return [{zoom: stop[0], value: stopValue}, stop[1] || findDefaultFromSpec(this.props.fieldSpec)];
           })
@@ -298,6 +301,7 @@ export default class FieldFunction  extends React.Component {
         dataFunc = {
           property: "",
           type: functionType,
+          base: value.base,
           stops: [
             [{zoom: 6, value: stopValue}, findDefaultFromSpec(this.props.fieldSpec)],
             [{zoom: 10, value: stopValue}, findDefaultFromSpec(this.props.fieldSpec)]
@@ -309,6 +313,7 @@ export default class FieldFunction  extends React.Component {
       dataFunc = {
         property: "",
         type: functionType,
+        base: value.base,
         stops: [
           [{zoom: 6, value: stopValue}, this.props.value || findDefaultFromSpec(this.props.fieldSpec)],
           [{zoom: 10, value: stopValue}, this.props.value || findDefaultFromSpec(this.props.fieldSpec)]
