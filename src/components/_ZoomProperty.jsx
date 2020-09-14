@@ -17,6 +17,20 @@ import docUid from '../libs/document-uid'
 import sortNumerically from '../libs/sort-numerically'
 
 
+function getType (value) {
+  // TODO: Should be from default values.
+  const type = value.type || "exponential";
+  if (
+    (type === "exponential" || type === "interval") &&
+    value.property === undefined
+  ) {
+    return "zoom-"+type;
+  }
+  else {
+    return "property-"+type;
+  }
+}
+
 /**
  * We cache a reference for each stop by its index.
  *
@@ -139,10 +153,18 @@ export default class ZoomProperty extends React.Component {
     this.props.onChange(this.props.fieldName, changedValue)
   }
 
-  changeDataType = (type) => {
-    if (type !== "interpolate") {
-      this.props.onChangeToDataFunction(type);
+  changeDataType = (propVal) => {
+    const [catType,type]  = propVal.split("-");
+    const value = {
+      ...this.props.value,
+      type: type,
+    };
+
+    if (catType === "property") {
+      value.property = "";
     }
+
+    this.props.onChange(this.props.fieldName, value);
   }
 
   render() {
@@ -200,12 +222,14 @@ export default class ZoomProperty extends React.Component {
             label={"Function"}
           >
             <div className="maputnik-data-spec-property-input">
-              <InputSelect
-                value={"interpolate"}
-                onChange={propVal => this.changeDataType(propVal)}
+              <select
+                className="maputnik-select"
+                value={getType(this.props.value)}
+                onChange={e => this.changeDataType(e.target.value)}
                 title={"Select a type of data scale (default is 'categorical')."}
-                options={this.getDataFunctionTypes(this.props.fieldSpec)}
-              />
+              >
+                {this.getDataFunctionTypes(this.props.fieldSpec)}
+              </select>
             </div>
           </Block>
           <Block
@@ -258,12 +282,21 @@ export default class ZoomProperty extends React.Component {
   }
 
   getDataFunctionTypes(fieldSpec) {
-    if (fieldSpec['property-type'] === 'data-driven') {
-      return ["interpolate", "categorical", "interval", "exponential", "identity"];
-    }
-    else {
-      return ["interpolate"];
-    }
+    const allowsInterpolation = fieldSpec.expression.interpolated;
+    const supportsFeatureExpressions = fieldSpec.expression.parameters.includes("feature");
+
+    return <>
+      <optgroup key="property" label="by property" disabled={!supportsFeatureExpressions}>
+        <option key="categorical" value="property-categorical">categorical</option>
+        <option key="interval" value="property-interval">interval</option>
+        <option disabled={!allowsInterpolation} key="exponential" value="property-exponential">exponential</option>
+        <option key="identity" value="property-identity">identity</option>
+      </optgroup>
+      <optgroup key="zoom" label="by zoom">
+        <option key="interval" value="zoom-interval">interval</option>
+        <option disabled={!allowsInterpolation} key="exponential" value="zoom-exponential">exponential</option>
+      </optgroup>
+    </>
   }
 
 }

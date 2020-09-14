@@ -50,13 +50,12 @@ function isDataStopProperty (value) {
     typeof(value) === 'object' &&
     value.stops &&
     typeof(value.property) !== 'undefined' &&
-    value.stops.length > 1 &&
+    value.stops.length > 0 &&
     Array.isArray(value.stops) &&
     value.stops.every(stop => {
       return (
         Array.isArray(stop) &&
-        stop.length === 2 &&
-        typeof(stop[0]) === 'object'
+        stop.length === 2
       );
     })
   );

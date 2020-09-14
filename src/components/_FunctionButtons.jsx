@@ -33,10 +33,8 @@ export default class FunctionInputButtons extends React.Component {
   }
 
   render() {
-    let makeZoomInputButton, makeDataInputButton, expressionInputButton;
-
     if (this.props.fieldSpec.expression.parameters.includes('zoom')) {
-      expressionInputButton = (
+      const expressionInputButton = (
         <InputButton
           className="maputnik-make-zoom-function"
           onClick={this.props.onExpressionClick}
@@ -48,31 +46,18 @@ export default class FunctionInputButtons extends React.Component {
         </InputButton>
       );
 
-      makeZoomInputButton = <InputButton
+      const functionInputButton = <InputButton
         className="maputnik-make-zoom-function"
         onClick={this.props.onZoomClick}
-        title="Convert property into a zoom function"
+        title="Convert property into a function"
       >
         <MdFunctions />
       </InputButton>
 
-      if (this.props.fieldSpec['property-type'] === 'data-driven') {
-        makeDataInputButton = <InputButton
-          className="maputnik-make-data-function"
-          onClick={this.props.onDataClick}
-          title="Convert property to data function"
-        >
-          <MdInsertChart />
-        </InputButton>
-      }
       return <div>
         {expressionInputButton}
-        {makeDataInputButton}
-        {makeZoomInputButton}
+        {functionInputButton}
       </div>
-    }
-    else {
-      return <div>{expressionInputButton}</div>
     }
   }
 }
