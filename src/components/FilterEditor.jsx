@@ -2,8 +2,9 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { combiningFilterOps } from '../libs/filterops.js'
 import {mdiTableRowPlusAfter} from '@mdi/js';
+import {isEqual} from 'lodash';
 
-import {latest, validate, migrate} from '@mapbox/mapbox-gl-style-spec'
+import {latest, validate, migrate, convertFilter} from '@mapbox/mapbox-gl-style-spec'
 import InputSelect from './InputSelect'
 import Block from './Block'
 import SingleFilterEditor from './SingleFilterEditor'
@@ -61,24 +62,19 @@ function createStyleFromFilter (filter) {
   };
 }
 
-/**
- * This is doing way more work than we need it to, however validating a whole
- * style if the only thing that's exported from mapbox-gl-style-spec at the
- * moment. Not really an issue though as it take ~0.1ms to calculate.
- */
+const FILTER_OPS = [
+  "all",
+  "any",
+  "none"
+];
+
+// If we convert a filter that is an expression to an expression it'll remain the same in value
 function checkIfSimpleFilter (filter) {
-  if (!filter || !combiningFilterOps.includes(filter[0])) {
-    return false;
+  if (filter.length === 1 && FILTER_OPS.includes(filter[0])) {
+    return true;
   }
-
-  // Because "none" isn't supported by the next expression syntax we can test
-  // with ["none", ...] because it'll return false if it's a new style
-  // expression.
-  const moddedFilter = ["none", ...filter.slice(1)];
-  const tmpStyle = createStyleFromFilter(moddedFilter)
-
-  const errors = validate(tmpStyle);
-  return (errors.length < 1);
+  const expression = convertFilter(filter);
+  return !isEqual(expression, filter);
 }
 
 function hasCombiningFilter(filter) {
