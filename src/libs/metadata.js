@@ -1,20 +1,26 @@
 import npmurl from 'url'
 
 function loadJSON(url, defaultValue, cb) {
-  fetch(url, {
+  return fetch(url, {
     mode: 'cors',
     credentials: "same-origin"
   })
   .then(function(response) {
     return response.json();
   })
-  .then(function(body) {
-    cb(body)
-  })
   .catch(function() {
     console.warn('Can not metadata for ' + url)
-    cb(defaultValue)
+    return defaultValue;
   })
+}
+
+function loadImage(url) {
+  return new Promise((resolve, reject) => {
+    const img = new Image();
+    img.onload = () => resolve(img);
+    img.onerror = (err) => reject(err);
+    img.src = url;
+  });
 }
 
 export function downloadGlyphsMetadata(urlTemplate, cb) {
@@ -31,11 +37,30 @@ export function downloadGlyphsMetadata(urlTemplate, cb) {
   }
   let url = npmurl.format(urlObj);
 
-  loadJSON(url, [], cb)
+  loadJSON(url, []).then(cb);
 }
 
 export function downloadSpriteMetadata(baseUrl, cb) {
   if(!baseUrl) return cb([])
-  const url = baseUrl + '.json'
-  loadJSON(url, {}, glyphs => cb(Object.keys(glyphs)))
+  const jsonUrl = baseUrl + '.json'
+  const imageUrl = baseUrl + '.png'
+
+  Promise.all([
+    loadImage(imageUrl).catch(() => undefined),
+    loadJSON(jsonUrl, {}),
+  ])
+  .then(([image, data]) => {
+    const out = {
+      jsonUrl,
+      imageUrl,
+      data
+    };
+    if (image) {
+      out.image = {
+        width: image.naturalWidth,
+        height: image.naturalHeight,
+      }
+    }
+    cb(out);
+  });
 }

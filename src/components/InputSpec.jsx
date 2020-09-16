@@ -12,6 +12,7 @@ import InputDynamicArray from './InputDynamicArray'
 import InputFont from './InputFont'
 import InputAutocomplete from './InputAutocomplete'
 import InputEnum from './InputEnum'
+import SpriteIcon from './SpriteIcon'
 import capitalize from 'lodash.capitalize'
 
 const iconProperties = ['background-pattern', 'fill-pattern', 'line-pattern', 'fill-extrusion-pattern', 'icon-image']
@@ -85,10 +86,21 @@ export default class SpecField extends React.Component {
         case 'formatted':
         case 'string':
           if (iconProperties.indexOf(this.props.fieldName) >= 0) {
-            const options = this.props.fieldSpec.values || [];
+            const {metadata} = this.props.fieldSpec;
+            const options = Object.entries(metadata && metadata.data ? metadata.data : {});
             return <InputAutocomplete
               {...commonProps}
-              options={options.map(f => [f, f])}
+              options={options.map(([k,v]) => {
+                return [
+                  k,
+                  <SpriteIcon
+                    metadata={metadata}
+                    maxWidth={120}
+                    id={k}
+                    data={v}
+                  />
+                ];
+              })}
             />
           } else {
             return <InputString

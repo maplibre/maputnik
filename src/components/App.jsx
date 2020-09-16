@@ -293,8 +293,20 @@ export default class App extends React.Component {
   }
 
   updateIcons(baseUrl) {
-    downloadSpriteMetadata(baseUrl, icons => {
-      this.setState({ spec: updateRootSpec(this.state.spec, 'sprite', icons)})
+    downloadSpriteMetadata(baseUrl, metadata => {
+      const {spec} = this.state;
+      this.setState({
+        spec: {
+          ...spec,
+          $root: {
+            ...spec.$root,
+            sprite: {
+              ...spec.$root["sprite"],
+              metadata: metadata
+            }
+          }
+        }
+      })
     })
   }
 

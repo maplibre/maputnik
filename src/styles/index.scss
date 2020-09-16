@@ -167,3 +167,18 @@
   }
 }
 
+.maputnik-sprite-icon {
+  display: flex;
+}
+
+.maputnik-sprite-icon__text {
+  flex: 1;
+}
+
+.maputnik-sprite-icon__icon {
+  margin-left: 0.6em;
+  padding: 2px;
+  background-color: white;
+  background-size: 8px 8px;
+  background-position: 0 0, 4px 4px;
+}

@@ -13,7 +13,7 @@ function getFieldSpec(spec, layerType, fieldName) {
   if(iconProperties.indexOf(fieldName) >= 0) {
     return {
       ...fieldSpec,
-      values: spec.$root.sprite.values
+      metadata: spec.$root.sprite.metadata
     }
   }
   if(fieldName === 'text-font') {
