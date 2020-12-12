@@ -154,7 +154,7 @@
     "istanbul": "^0.4.5",
     "istanbul-lib-coverage": "^3.0.0",
     "mkdirp": "^1.0.4",
-    "mocha": "^7.1.2",
+    "mocha": "^8.2.1",
     "node-sass": "^5.0.0",
     "react-hot-loader": "^4.12.19",
     "sass-loader": "^10.1.0",
