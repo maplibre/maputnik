@@ -38,8 +38,8 @@ module.exports = {
   },
   devServer: {
     contentBase: "./public",
-    // do not print bundle build stats
-    noInfo: true,
+    // See <https://webpack.js.org/configuration/stats/> for details
+    stats: 'minimal',
     // enable HMR
     hot: true,
     // embed the webpack-dev-server runtime into the bundle
