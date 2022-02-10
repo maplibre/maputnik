@@ -155,7 +155,7 @@
     "istanbul-lib-coverage": "^3.0.0",
     "mkdirp": "^1.0.4",
     "mocha": "^7.1.2",
-    "node-sass": "^4.14.1",
+    "node-sass": "^7.0.0",
     "react-hot-loader": "^4.12.19",
     "sass-loader": "^8.0.2",
     "selenium-standalone": "^6.17.0",
