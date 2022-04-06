@@ -169,6 +169,8 @@ jobs:
         image: selenium/standalone-${{ matrix.browser }}
         ports:
         - 4444:4444
+        volumes: # share shm with host: https://stackoverflow.com/questions/53902507/unknown-error-session-deleted-because-of-page-crash-from-unknown-error-cannot
+        - /dev/shm:/dev/shm
 
     steps:
     - uses: actions/checkout@v2
