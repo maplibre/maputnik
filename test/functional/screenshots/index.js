@@ -7,105 +7,105 @@ var wd        = require("../../wd-helper");
 // NOTE: These duplicate some of the tests, however this is indended becuase it's likely these will change for aesthetic reasons over time
 describe('screenshots', function() {
 
-  beforeEach(function() {
-    browser.setWindowSize(1280, 800)
+  beforeEach(async function() {
+    await browser.setWindowSize(1280, 800)
   })
 
-  it("front_page", function() {
-    browser.url(config.baseUrl+"?debug&style="+helper.getStyleUrl([
+  it("front_page", async function() {
+    await browser.url(config.baseUrl+"?debug&style="+helper.getStyleUrl([
       "geojson:example"
     ]));
-    browser.acceptAlert();
-    const elem = $(".maputnik-toolbar-link");
-    elem.waitForExist();  
-    browser.flushReactUpdates();
+    await browser.acceptAlert();
+    const elem = await $(".maputnik-toolbar-link");
+    await elem.waitForExist();  
+    await browser.flushReactUpdates();
 
-    browser.takeScreenShot("/front_page.png")
+    await browser.takeScreenShot("/front_page.png")
   })
 
-  it("open", function() {
-    browser.url(config.baseUrl+"?debug&style="+helper.getStyleUrl([
+  it("open", async function() {
+    await browser.url(config.baseUrl+"?debug&style="+helper.getStyleUrl([
       "geojson:example"
     ]));
-    browser.acceptAlert();
-    const elem = $(".maputnik-toolbar-link");
-    elem.waitForExist();  
-    browser.flushReactUpdates();
+    await browser.acceptAlert();
+    const elem = await $(".maputnik-toolbar-link");
+    await elem.waitForExist();  
+    await browser.flushReactUpdates();
 
-    const nav_open = $(wd.$("nav:open"));
-    nav_open.click();
-    nav_open.waitForExist(); 
-    browser.flushReactUpdates();
+    const nav_open = await $(wd.$("nav:open"));
+    await nav_open.click();
+    await nav_open.waitForExist(); 
+    await browser.flushReactUpdates();
 
-    browser.takeScreenShot("/open.png")
+    await browser.takeScreenShot("/open.png")
   })
 
-  it("export", function() {
-    browser.url(config.baseUrl+"?debug&style="+helper.getStyleUrl([
+  it("export", async function() {
+    await browser.url(config.baseUrl+"?debug&style="+helper.getStyleUrl([
       "geojson:example"
     ]));
-    browser.acceptAlert();
-    const elem = $(".maputnik-toolbar-link")
-    elem.waitForExist()  
-    browser.flushReactUpdates();
+    await browser.acceptAlert();
+    const elem = await $(".maputnik-toolbar-link")
+    await elem.waitForExist()  
+    await browser.flushReactUpdates();
 
-    const nav_export = $(wd.$("nav:export"));
-    nav_export.click();
-    nav_export.waitForExist(); 
-    browser.flushReactUpdates();
+    const nav_export = await $(wd.$("nav:export"));
+    await nav_export.click();
+    await nav_export.waitForExist(); 
+    await browser.flushReactUpdates();
 
-    browser.takeScreenShot("/export.png")
+    await browser.takeScreenShot("/export.png")
   })
 
-  it("sources", function() {
-    browser.url(config.baseUrl+"?debug&style="+helper.getStyleUrl([
+  it("sources", async function() {
+    await browser.url(config.baseUrl+"?debug&style="+helper.getStyleUrl([
       "geojson:example"
     ]));
-    browser.acceptAlert();
-    const elem = $(".maputnik-toolbar-link")
-    elem.waitForExist()  
-    browser.flushReactUpdates();
+    await browser.acceptAlert();
+    const elem = await $(".maputnik-toolbar-link")
+    await elem.waitForExist()  
+    await browser.flushReactUpdates();
 
-    const nav_sources = $(wd.$("nav:sources"));
-    nav_sources.click();
-    nav_sources.waitForExist(); 
-    browser.flushReactUpdates();
+    const nav_sources = await $(wd.$("nav:sources"));
+    await nav_sources.click();
+    await nav_sources.waitForExist(); 
+    await browser.flushReactUpdates();
 
-    browser.takeScreenShot("/sources.png")
+    await browser.takeScreenShot("/sources.png")
   })
 
-  it("style settings", function() {
-    browser.url(config.baseUrl+"?debug&style="+helper.getStyleUrl([
+  it("style settings", async function() {
+    await browser.url(config.baseUrl+"?debug&style="+helper.getStyleUrl([
       "geojson:example"
     ]));
-    browser.acceptAlert();
-    const elem = $(".maputnik-toolbar-link")
-    elem.waitForExist()  
-    browser.flushReactUpdates();
+    await browser.acceptAlert();
+    const elem = await $(".maputnik-toolbar-link")
+    await elem.waitForExist()  
+    await browser.flushReactUpdates();
 
-    const nav_settings = $(wd.$("nav:settings"));
-    nav_settings.click();
-    nav_settings.waitForExist(); 
-    browser.flushReactUpdates();
+    const nav_settings = await $(wd.$("nav:settings"));
+    await nav_settings.click();
+    await nav_settings.waitForExist(); 
+    await browser.flushReactUpdates();
 
-    browser.takeScreenShot("/settings.png")
+    await browser.takeScreenShot("/settings.png")
   })
 
-  it("inspect", function() {
-    browser.url(config.baseUrl+"?debug&style="+helper.getStyleUrl([
+  it("inspect", async function() {
+    await browser.url(config.baseUrl+"?debug&style="+helper.getStyleUrl([
       "geojson:example"
     ]));
-    browser.acceptAlert();
-    const elem = $(".maputnik-toolbar-link")
-    elem.waitForExist()  
-    browser.flushReactUpdates();
+    await browser.acceptAlert();
+    const elem = await $(".maputnik-toolbar-link")
+    await elem.waitForExist()  
+    await browser.flushReactUpdates();
 
-    const selectBox = $(wd.$("nav:inspect", "select"));
-    selectBox.selectByAttribute('value', 'inspect');
+    const selectBox = await $(wd.$("nav:inspect", "select"));
+    await selectBox.selectByAttribute('value', 'inspect');
 
-    browser.flushReactUpdates();
+    await browser.flushReactUpdates();
 
-    browser.takeScreenShot("/inspect.png")
+    await browser.takeScreenShot("/inspect.png")
   })
 })
 

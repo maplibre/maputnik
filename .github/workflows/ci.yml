@@ -48,7 +48,7 @@ jobs:
       fail-fast: false
       matrix:
         os: [ubuntu-latest, windows-latest, macos-latest]
-        node-version: [10.x, 12.x, 14.x]
+        node-version: [12.x, 14.x, 16.x]
 
     steps:
     - uses: actions/checkout@v2
@@ -146,9 +146,9 @@ jobs:
         name: maputnik-windows
         path: ./src/github.com/maputnik/desktop/bin/windows/
 
-  # build and test the editor in standalone-chrome
-  test_selenium_standalone_chrome:
-    name: "test/standalone-chrome (${{ matrix.os }})"
+  # build and test the editor
+  test_selenium_standalone:
+    name: "test/standalone-${{ matrix.browser }} (${{ matrix.os }})"
     runs-on: ${{ matrix.os }}
 
     if: ${{ github.event_name == 'push' || github.event_name == 'pull_request' }}
@@ -157,7 +157,8 @@ jobs:
       fail-fast: false
       matrix:
         os: [ubuntu-latest]
-        node-version: [10]
+        node-version: [16]
+        browser: [chrome, firefox]
 
     container:
       image: node:${{ matrix.node-version }}
@@ -165,7 +166,7 @@ jobs:
 
     services:
       selenium:
-        image: selenium/standalone-chrome:3.141.59
+        image: selenium/standalone-${{ matrix.browser }}
         ports:
         - 4444:4444
 
@@ -178,9 +179,11 @@ jobs:
         restore-keys: |
           ${{ runner.os }}-node-
     - run: npm install
-    - run: TEST_NETWORK=testhost DOCKER_HOST=selenium npm test
-    - run: ./node_modules/.bin/istanbul report --include build/coverage/coverage.json --dir build/coverage html lcov
-    - name: artifacts/coverage
+    - run: BROWSER=${{ matrix.browser }} TEST_NETWORK=testhost DOCKER_HOST=selenium npm run test
+    - if: ${{ matrix.browser == 'chrome' }}
+      run: ./node_modules/.bin/istanbul report --include build/coverage/coverage.json --dir build/coverage html lcov
+    - if: ${{ matrix.browser == 'chrome' }}
+      name: artifacts/coverage
       uses: actions/upload-artifact@v1
       with:
         name: coverage
@@ -188,45 +191,5 @@ jobs:
     - name: artifacts/screenshots
       uses: actions/upload-artifact@v1
       with:
-        name: screenshots-chrome
+        name: screenshots-${{ matrix.browser }}
         path: build/screenshots
-
-  # build and test the editor in standalone-firefox
-  test_selenium_standalone_firefox:
-    name: "test/standalone-firefox (${{ matrix.os }})"
-    runs-on: ${{ matrix.os }}
-
-    if: ${{ github.event_name == 'push' || github.event_name == 'pull_request' }}
-
-    strategy:
-      fail-fast: false
-      matrix:
-        os: [ubuntu-latest]
-        node-version: [10]
-
-    container:
-      image: node:${{ matrix.node-version }}
-      options: --network-alias testhost
-
-    services:
-      selenium:
-        image: selenium/standalone-firefox:3.141.59
-        ports:
-        - 4444:4444
-
-    steps:
-    - uses: actions/checkout@v2
-    - uses: actions/cache@v1
-      with:
-        path: ~/.npm
-        key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
-        restore-keys: |
-          ${{ runner.os }}-node-
-    - run: npm install
-    - run: BROWSER=firefox TEST_NETWORK=testhost DOCKER_HOST=selenium npm test
-    - name: artifacts/screenshots
-      uses: actions/upload-artifact@v1
-      with:
-        name: screenshots-firefox
-        path: build/screenshots
-
