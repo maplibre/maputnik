@@ -4,7 +4,7 @@ import cloneDeep from 'lodash.clonedeep'
 import clamp from 'lodash.clamp'
 import get from 'lodash.get'
 import {unset} from 'lodash'
-import arrayMove from 'array-move'
+import {arrayMoveImmutable} from 'array-move'
 import url from 'url'
 import hash from "string-hash";
 
@@ -486,7 +486,7 @@ export default class App extends React.Component {
     }
 
     layers = layers.slice(0);
-    layers = arrayMove(layers, oldIndex, newIndex);
+    layers = arrayMoveMutable(layers, oldIndex, newIndex);
     this.onLayersChange(layers);
   }
 

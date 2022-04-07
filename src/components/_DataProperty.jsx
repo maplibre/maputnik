@@ -276,26 +276,6 @@ export default class DataProperty extends React.Component {
             {deleteStopBtn}
           </td>
         </tr>
-
-        return <Block
-          error={error}
-          key={key}
-          action={deleteStopBtn}
-          label=""
-        >
-          {zoomInput}
-          <div className="maputnik-data-spec-property-stop-data">
-            {dataInput}
-          </div>
-          <div className="maputnik-data-spec-property-stop-value">
-            <InputSpec
-              fieldName={this.props.fieldName}
-              fieldSpec={this.props.fieldSpec}
-              value={value}
-              onChange={(_, newValue) => this.changeStop(idx, {zoom: zoomLevel, value: dataLevel}, newValue)}
-            />
-          </div>
-        </Block>
       })
     }
 
