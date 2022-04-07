@@ -6,27 +6,27 @@ var wd     = require("../../wd-helper");
 
 
 describe("layers", function() {
-  beforeEach(function() {
-    browser.url(config.baseUrl+"?debug&style="+helper.getStyleUrl([
+  beforeEach(async function() {
+    await browser.url(config.baseUrl+"?debug&style="+helper.getStyleUrl([
       "geojson:example",
       "raster:raster"
     ]));
-    browser.acceptAlert();
-    const elem = $(".maputnik-toolbar-link");
-    elem.waitForExist();
-    browser.flushReactUpdates();
+    await browser.acceptAlert();
+    const elem = await $(".maputnik-toolbar-link");
+    await elem.waitForExist();
+    await browser.flushReactUpdates();
 
-    helper.modal.addLayer.open();
+    await helper.modal.addLayer.open();
   });
 
   describe("ops", function() {
-    it("delete", function() {
+    it("delete", async function() {
       var styleObj;
-      var id = helper.modal.addLayer.fill({
+      var id = await helper.modal.addLayer.fill({
         type: "background"
       })
 
-      styleObj = helper.getStyleStore(browser);
+      styleObj = await helper.getStyleStore(browser);
       assert.deepEqual(styleObj.layers, [
         {
           "id": id,
@@ -34,21 +34,21 @@ describe("layers", function() {
         },
       ]);
 
-      const elem = $(wd.$("layer-list-item:"+id+":delete", ""));
-      elem.click();
+      const elem = await $(wd.$("layer-list-item:"+id+":delete", ""));
+      await elem.click();
 
-      styleObj = helper.getStyleStore(browser);
+      styleObj = await helper.getStyleStore(browser);
       assert.deepEqual(styleObj.layers, [
       ]);
     });
 
-    it("duplicate", function() {
+    it("duplicate", async function() {
       var styleObj;
-      var id = helper.modal.addLayer.fill({
+      var id = await helper.modal.addLayer.fill({
         type: "background"
       })
 
-      styleObj = helper.getStyleStore(browser);
+      styleObj = await helper.getStyleStore(browser);
       assert.deepEqual(styleObj.layers, [
         {
           "id": id,
@@ -56,10 +56,10 @@ describe("layers", function() {
         },
       ]);
 
-      const elem = $(wd.$("layer-list-item:"+id+":copy", ""));
-      elem.click();
+      const elem = await $(wd.$("layer-list-item:"+id+":copy", ""));
+      await elem.click();
 
-      styleObj = helper.getStyleStore(browser);
+      styleObj = await helper.getStyleStore(browser);
       assert.deepEqual(styleObj.layers, [
         {
           "id": id+"-copy",
@@ -72,13 +72,13 @@ describe("layers", function() {
       ]);
     });
 
-    it("hide", function() {
+    it("hide", async function() {
       var styleObj;
-      var id = helper.modal.addLayer.fill({
+      var id = await helper.modal.addLayer.fill({
         type: "background"
       })
 
-      styleObj = helper.getStyleStore(browser);
+      styleObj = await helper.getStyleStore(browser);
       assert.deepEqual(styleObj.layers, [
         {
           "id": id,
@@ -86,10 +86,10 @@ describe("layers", function() {
         },
       ]);
 
-      const elem = $(wd.$("layer-list-item:"+id+":toggle-visibility", ""));
-      elem.click();
+      const elem = await $(wd.$("layer-list-item:"+id+":toggle-visibility", ""));
+      await elem.click();
 
-      styleObj = helper.getStyleStore(browser);
+      styleObj = await helper.getStyleStore(browser);
       assert.deepEqual(styleObj.layers, [
         {
           "id": id,
@@ -100,9 +100,9 @@ describe("layers", function() {
         },
       ]);
 
-      elem.click();
+      await elem.click();
 
-      styleObj = helper.getStyleStore(browser);
+      styleObj = await helper.getStyleStore(browser);
       assert.deepEqual(styleObj.layers, [
         {
           "id": id,
@@ -124,12 +124,12 @@ describe("layers", function() {
 
   describe('background', function () {
 
-    it("add", function() {
-      var id = helper.modal.addLayer.fill({
+    it("add", async function() {
+      var id = await helper.modal.addLayer.fill({
         type: "background"
       })
 
-      var styleObj = helper.getStyleStore(browser);
+      var styleObj = await helper.getStyleStore(browser);
       assert.deepEqual(styleObj.layers, [
         {
           "id": id,
@@ -139,19 +139,19 @@ describe("layers", function() {
     });
 
     describe("modify", function() {
-      function createBackground() {
+      async function createBackground() {
         // Setup
         var id = uuid();
 
-        const selectBox = $(wd.$("add-layer.layer-type", "select"));
-        selectBox.selectByAttribute('value', "background");
-        browser.flushReactUpdates();
-        browser.setValueSafe(wd.$("add-layer.layer-id", "input"), "background:"+id);
+        const selectBox = await $(wd.$("add-layer.layer-type", "select"));
+        await selectBox.selectByAttribute('value', "background");
+        await browser.flushReactUpdates();
+        await browser.setValueSafe(wd.$("add-layer.layer-id", "input"), "background:"+id);
 
-        const elem = $(wd.$("add-layer"));
-        elem.click();
+        const elem = await $(wd.$("add-layer"));
+        await elem.click();
 
-        var styleObj = helper.getStyleStore(browser);
+        var styleObj = await helper.getStyleStore(browser);
         assert.deepEqual(styleObj.layers, [
           {
             "id": 'background:'+id,
@@ -164,18 +164,18 @@ describe("layers", function() {
       // ====> THESE SHOULD BE FROM THE SPEC
       describe("layer", function() {
         it("expand/collapse");
-        it("id", function() {
-          var bgId = createBackground();
+        it("id", async function() {
+          var bgId = await createBackground();
 
-          const elem = $(wd.$("layer-list-item:background:"+bgId));
-          elem.click();
+          const elem = await $(wd.$("layer-list-item:background:"+bgId));
+          await elem.click();
 
           var id = uuid();
-          browser.setValueSafe(wd.$("layer-editor.layer-id", "input"), "foobar:"+id)
-          const elem2 = $(wd.$("min-zoom"));
-          elem2.click();
+          await browser.setValueSafe(wd.$("layer-editor.layer-id", "input"), "foobar:"+id)
+          const elem2 = await $(wd.$("min-zoom"));
+          await elem2.click();
 
-          var styleObj = helper.getStyleStore(browser);
+          var styleObj = await helper.getStyleStore(browser);
           assert.deepEqual(styleObj.layers, [
             {
               "id": 'foobar:'+id,
@@ -184,16 +184,16 @@ describe("layers", function() {
           ]);
         });
 
-        it("min-zoom", function() {
-          var bgId = createBackground();
+        it("min-zoom", async function() {
+          var bgId = await createBackground();
 
-          const elem = $(wd.$("layer-list-item:background:"+bgId));
-          elem.click();
-          browser.setValueSafe(wd.$("min-zoom", 'input[type="text"]'), 1)
-          const elem2 = $(wd.$("layer-editor.layer-id", "input"));
-          elem2.click();
+          const elem = await $(wd.$("layer-list-item:background:"+bgId));
+          await elem.click();
+          await browser.setValueSafe(wd.$("min-zoom", 'input[type="text"]'), 1)
+          const elem2 = await $(wd.$("layer-editor.layer-id", "input"));
+          await elem2.click();
 
-          var styleObj = helper.getStyleStore(browser);
+          var styleObj = await helper.getStyleStore(browser);
           assert.deepEqual(styleObj.layers, [
             {
               "id": 'background:'+bgId,
@@ -203,10 +203,10 @@ describe("layers", function() {
           ]);
 
           // AND RESET!
-          // browser.setValueSafe(wd.$("min-zoom", "input"), "")
-          // browser.click(wd.$("max-zoom", "input"));
+          // await browser.setValueSafe(wd.$("min-zoom", "input"), "")
+          // await browser.click(wd.$("max-zoom", "input"));
 
-          // var styleObj = helper.getStyleStore(browser);
+          // var styleObj = await helper.getStyleStore(browser);
 
           // assert.deepEqual(styleObj.layers, [
           //   {
@@ -216,16 +216,16 @@ describe("layers", function() {
           // ]);
         });
 
-        it("max-zoom", function() {
-          var bgId = createBackground();
+        it("max-zoom", async function() {
+          var bgId = await createBackground();
 
-          const elem = $(wd.$("layer-list-item:background:"+bgId));
-          elem.click();
-          browser.setValueSafe(wd.$("max-zoom", 'input[type="text"]'), 1)
-          const elem2 = $(wd.$("layer-editor.layer-id", "input"));
-          elem2.click();
+          const elem = await $(wd.$("layer-list-item:background:"+bgId));
+          await elem.click();
+          await browser.setValueSafe(wd.$("max-zoom", 'input[type="text"]'), 1)
+          const elem2 = await $(wd.$("layer-editor.layer-id", "input"));
+          await elem2.click();
 
-          var styleObj = helper.getStyleStore(browser);
+          var styleObj = await helper.getStyleStore(browser);
           assert.deepEqual(styleObj.layers, [
             {
               "id": 'background:'+bgId,
@@ -235,17 +235,17 @@ describe("layers", function() {
           ]);
         });
 
-        it("comments", function() {
-          var bgId = createBackground();
+        it("comments", async function() {
+          var bgId = await createBackground();
           var id = uuid();
 
-          const elem = $(wd.$("layer-list-item:background:"+bgId));
-          elem.click();
-          browser.setValueSafe(wd.$("layer-comment", "textarea"), id);
-          const elem2 = $(wd.$("layer-editor.layer-id", "input"));
-          elem2.click();
+          const elem = await $(wd.$("layer-list-item:background:"+bgId));
+          await elem.click();
+          await browser.setValueSafe(wd.$("layer-comment", "textarea"), id);
+          const elem2 = await $(wd.$("layer-editor.layer-id", "input"));
+          await elem2.click();
 
-          var styleObj = helper.getStyleStore(browser);
+          var styleObj = await helper.getStyleStore(browser);
           assert.deepEqual(styleObj.layers, [
             {
               "id": 'background:'+bgId,
@@ -258,11 +258,11 @@ describe("layers", function() {
 
           // Unset it again.
           // TODO: This fails
-          // browser.setValueSafe(wd.$("layer-comment", "textarea"), "");
-          // browser.click(wd.$("min-zoom", "input"));
-          // browser.flushReactUpdates();
+          // await browser.setValueSafe(wd.$("layer-comment", "textarea"), "");
+          // await browser.click(wd.$("min-zoom", "input"));
+          // await browser.flushReactUpdates();
 
-          // var styleObj = helper.getStyleStore(browser);
+          // var styleObj = await helper.getStyleStore(browser);
           // assert.deepEqual(styleObj.layers, [
           //   {
           //     "id": 'background:'+bgId,
@@ -271,16 +271,15 @@ describe("layers", function() {
           // ]);
         });
 
-        it("color", null, function() {
-          var bgId = createBackground();
-          var id = uuid();
+        it("color", null, async function() {
+          var bgId = await createBackground();
 
-          browser.click(wd.$("layer-list-item:background:"+bgId));
+          await browser.click(wd.$("layer-list-item:background:"+bgId));
 
-          browser.click(wd.$("spec-field:background-color", "input"))
-          // browser.debug();
+          await browser.click(wd.$("spec-field:background-color", "input"))
+          // await browser.debug();
 
-          var styleObj = helper.getStyleStore(browser);
+          var styleObj = await helper.getStyleStore(browser);
           assert.deepEqual(styleObj.layers, [
             {
               "id": 'background:'+bgId,
@@ -309,35 +308,34 @@ describe("layers", function() {
         it("modify");
 
         // TODO
-        it.skip("parse error", function() {
-          var bgId = createBackground();
-          var id = uuid();
+        it.skip("parse error", async function() {
+          var bgId = await createBackground();
 
-          browser.click(wd.$("layer-list-item:background:"+bgId));
+          await browser.click(wd.$("layer-list-item:background:"+bgId));
 
           var errorSelector = ".CodeMirror-lint-marker-error";
-          assert.equal(browser.isExisting(errorSelector), false);
+          assert.equal(await browser.isExisting(errorSelector), false);
 
-          browser.click(".CodeMirror")
-          browser.keys("\uE013\uE013\uE013\uE013\uE013\uE013\uE013\uE013\uE013\uE013\uE013\uE013 {");
-          browser.waitForExist(errorSelector)
+          await browser.click(".CodeMirror")
+          await browser.keys("\uE013\uE013\uE013\uE013\uE013\uE013\uE013\uE013\uE013\uE013\uE013\uE013 {");
+          await browser.waitForExist(errorSelector)
 
-          browser.click(wd.$("layer-editor.layer-id"));
+          await browser.click(wd.$("layer-editor.layer-id"));
         });
       });
     })
   });
 
   describe('fill', function () {
-    it("add", function() {
-      // browser.debug();
+    it("add", async function() {
+      // await browser.debug();
 
-      var id = helper.modal.addLayer.fill({
+      var id = await helper.modal.addLayer.fill({
         type: "fill",
         layer: "example"
       });
 
-      var styleObj = helper.getStyleStore(browser);
+      var styleObj = await helper.getStyleStore(browser);
       assert.deepEqual(styleObj.layers, [
         {
           "id": id,
@@ -352,13 +350,13 @@ describe("layers", function() {
   });
 
   describe('line', function () {
-    it("add", function() {
-      var id = helper.modal.addLayer.fill({
+    it("add", async function() {
+      var id = await helper.modal.addLayer.fill({
         type: "line",
         layer: "example"
       });
 
-      var styleObj = helper.getStyleStore(browser);
+      var styleObj = await helper.getStyleStore(browser);
       assert.deepEqual(styleObj.layers, [
         {
           "id": id,
@@ -375,13 +373,13 @@ describe("layers", function() {
   });
 
   describe('symbol', function () {
-    it("add", function() {
-      var id = helper.modal.addLayer.fill({
+    it("add", async function() {
+      var id = await helper.modal.addLayer.fill({
         type: "symbol",
         layer: "example"
       });
 
-      var styleObj = helper.getStyleStore(browser);
+      var styleObj = await helper.getStyleStore(browser);
       assert.deepEqual(styleObj.layers, [
         {
           "id": id,
@@ -393,13 +391,13 @@ describe("layers", function() {
   });
 
   describe('raster', function () {
-    it("add", function() {
-      var id = helper.modal.addLayer.fill({
+    it("add", async function() {
+      var id = await helper.modal.addLayer.fill({
         type: "raster",
         layer: "raster"
       });
 
-      var styleObj = helper.getStyleStore(browser);
+      var styleObj = await helper.getStyleStore(browser);
       assert.deepEqual(styleObj.layers, [
         {
           "id": id,
@@ -411,13 +409,13 @@ describe("layers", function() {
   });
 
   describe('circle', function () {
-    it("add", function() {
-      var id = helper.modal.addLayer.fill({
+    it("add", async function() {
+      var id = await helper.modal.addLayer.fill({
         type: "circle",
         layer: "example"
       });
 
-      var styleObj = helper.getStyleStore(browser);
+      var styleObj = await helper.getStyleStore(browser);
       assert.deepEqual(styleObj.layers, [
         {
           "id": id,
@@ -430,13 +428,13 @@ describe("layers", function() {
   });
 
   describe('fill extrusion', function () {
-    it("add", function() {
-      var id = helper.modal.addLayer.fill({
+    it("add", async function() {
+      var id = await helper.modal.addLayer.fill({
         type: "fill-extrusion",
         layer: "example"
       });
 
-      var styleObj = helper.getStyleStore(browser);
+      var styleObj = await helper.getStyleStore(browser);
       assert.deepEqual(styleObj.layers, [
         {
           "id": id,
@@ -449,42 +447,42 @@ describe("layers", function() {
 
 
   describe("groups", function() {
-    it("simple", function() {
-      browser.url(config.baseUrl+"?debug&style="+helper.getStyleUrl([
+    it("simple", async function() {
+      await browser.url(config.baseUrl+"?debug&style="+helper.getStyleUrl([
         "geojson:example"
       ]));
-      browser.acceptAlert();
+      await browser.acceptAlert(); 
 
-      helper.modal.addLayer.open();
-      var aId = helper.modal.addLayer.fill({
+      await helper.modal.addLayer.open();
+      await helper.modal.addLayer.fill({
         id: "foo",
         type: "background"
       })
 
-      helper.modal.addLayer.open();
-      var bId = helper.modal.addLayer.fill({
+      await helper.modal.addLayer.open();
+      await helper.modal.addLayer.fill({
         id: "foo_bar",
         type: "background"
       })
 
-      helper.modal.addLayer.open();
-      var bId = helper.modal.addLayer.fill({
+      await helper.modal.addLayer.open();
+      await helper.modal.addLayer.fill({
         id: "foo_bar_baz",
         type: "background"
       })
 
-      const groupEl = $(wd.$("layer-list-group:foo-0"));
-      groupEl.isDisplayed();
+      const groupEl = await $(wd.$("layer-list-group:foo-0"));
+      await groupEl.isDisplayed();
 
-      assert.equal($(wd.$("layer-list-item:foo")).isDisplayedInViewport(), true);
-      assert.equal($(wd.$("layer-list-item:foo_bar")).isDisplayedInViewport(), false);
-      assert.equal($(wd.$("layer-list-item:foo_bar_baz")).isDisplayedInViewport(), false);
+      assert.equal(await (await $(wd.$("layer-list-item:foo"))).isDisplayedInViewport(), true);
+      assert.equal(await (await $(wd.$("layer-list-item:foo_bar"))).isDisplayedInViewport(), false);
+      assert.equal(await (await $(wd.$("layer-list-item:foo_bar_baz"))).isDisplayedInViewport(), false);
 
-      groupEl.click();
+      await groupEl.click();
 
-      assert.equal($(wd.$("layer-list-item:foo")).isDisplayedInViewport(), true);
-      assert.equal($(wd.$("layer-list-item:foo_bar")).isDisplayedInViewport(), true);
-      assert.equal($(wd.$("layer-list-item:foo_bar_baz")).isDisplayedInViewport(), true);
+      assert.equal(await (await $(wd.$("layer-list-item:foo"))).isDisplayedInViewport(), true);
+      assert.equal(await (await $(wd.$("layer-list-item:foo_bar"))).isDisplayedInViewport(), true);
+      assert.equal(await (await $(wd.$("layer-list-item:foo_bar_baz"))).isDisplayedInViewport(), true);
     })
   })
 });
