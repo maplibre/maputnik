@@ -1,5 +1,4 @@
 "use strict";
-var webpack = require('webpack');
 var path = require('path');
 var rules = require('./webpack.rules');
 var HtmlWebpackPlugin = require('html-webpack-plugin');
@@ -52,9 +51,10 @@ module.exports = {
       }
     }
   },
+  optimization: {
+    noEmitOnErrors: true,
+  },
   plugins: [
-    new webpack.NoEmitOnErrorsPlugin(),
-    new webpack.HotModuleReplacementPlugin(),
     new HtmlWebpackPlugin({
       title: 'Maputnik',
       template: './src/template.html'

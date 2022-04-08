@@ -3,7 +3,6 @@ var WebpackDevServer = require("webpack-dev-server");
 var webpackConfig    = require("./webpack.config");
 var testConfig       = require("../test/config/specs");
 var artifacts        = require("../test/artifacts");
-var isDocker         = require("is-docker");
 
 
 var server;
@@ -22,6 +21,7 @@ exports.config = {
       browserName: (process.env.BROWSER || 'chrome'),
     }
   ],
+  services: ['selenium-standalone'],
   logLevel: 'info',
   bail: 0,
   screenshotPath: SCREENSHOT_PATH,
@@ -33,39 +33,14 @@ exports.config = {
     // Because we don't know how long the initial build will take...
     timeout: 4*60*1000,
   },
-  onPrepare: function (config, capabilities) {
-    return new Promise(function(resolve, reject) {
-      var compiler = webpack(webpackConfig);
-      const serverHost = "0.0.0.0";
-
-      server = new WebpackDevServer(compiler, {
-        host: serverHost,
-        disableHostCheck: true,
-        stats: {
-          colors: true
-        }
-      });
-
-      server.listen(testConfig.port, serverHost, function(err) {
-        if(err) {
-          reject(err);
-        }
-        else {
-          resolve();
-        }
-      });
-    })
+  onPrepare: async function (config, capabilities) {
+    webpackConfig.devServer.host = testConfig.testNetwork;
+    webpackConfig.devServer.port = testConfig.port;
+    const compiler = webpack(webpackConfig);
+    server = new WebpackDevServer(webpackConfig.devServer, compiler);
+    await server.start();
   },
-  onComplete: function(exitCode) {
-    return new Promise(function(resolve, reject) {
-      server.close(function (err) {
-        if (err) {
-          reject(err)
-        }
-        else {
-          resolve();
-        }
-      })
-    });
+  onComplete: async function (exitCode, config, capabilities) {
+    await server.stop();
   }
 }
