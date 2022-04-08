@@ -4,7 +4,7 @@ import cloneDeep from 'lodash.clonedeep'
 import clamp from 'lodash.clamp'
 import get from 'lodash.get'
 import {unset} from 'lodash'
-import {arrayMoveImmutable} from 'array-move'
+import {arrayMoveMutable} from 'array-move'
 import url from 'url'
 import hash from "string-hash";
 
