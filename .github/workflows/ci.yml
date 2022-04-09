@@ -61,7 +61,7 @@ jobs:
         key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
         restore-keys: |
           ${{ runner.os }}-node-
-    - run: npm install
+    - run: npm ci
     - run: npm run build
 
 
@@ -91,7 +91,7 @@ jobs:
         key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
         restore-keys: |
           ${{ runner.os }}-node-
-    - run: npm install
+    - run: npm ci
     - run: npm run build
     - run: npm run build-storybook
     - name: artifacts/editor
@@ -180,7 +180,7 @@ jobs:
         key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
         restore-keys: |
           ${{ runner.os }}-node-
-    - run: npm install
+    - run: npm ci
     - run: BROWSER=${{ matrix.browser }} TEST_NETWORK=testhost DOCKER_HOST=selenium npm run test
     - if: ${{ matrix.browser == 'chrome' }}
       run: ./node_modules/.bin/istanbul report --include build/coverage/coverage.json --dir build/coverage html lcov
