@@ -486,7 +486,7 @@ export default class App extends React.Component {
     }
 
     layers = layers.slice(0);
-    layers = arrayMoveMutable(layers, oldIndex, newIndex);
+    arrayMoveMutable(layers, oldIndex, newIndex);
     this.onLayersChange(layers);
   }
 
@@ -764,17 +764,17 @@ export default class App extends React.Component {
           parseInt(parts[1], 10),
         ];
 
-        let invalid = false;
+        let valid = true;
         if (hashVal !== "-") {
           const currentHashVal = hash(JSON.stringify(mapStyle));
           if (currentHashVal !== parseInt(hashVal, 10)) {
-            invalid = true;
+            valid = false;
           }
         }
-        if (!invalid) {
+        if (valid) {
           this.setState({
             selectedLayerIndex,
-            selectedLayerOriginalId: this.state.mapStyle.layers[selectedLayerIndex].id,
+            selectedLayerOriginalId: mapStyle.layers[selectedLayerIndex].id,
           });
         }
       }
