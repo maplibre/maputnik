@@ -166,11 +166,11 @@ jobs:
 
     services:
       selenium:
-        image: selenium/standalone-${{ matrix.browser }}
+        # geckodriver-0.31 seems to have problems as of 2022 May 1
+        image: selenium/standalone-${{ matrix.browser == 'firefox' && 'firefox:99.0-geckodriver-0.30-20220427' || matrix.browser }}
         ports:
         - 4444:4444
-        volumes: # share shm with host: https://stackoverflow.com/questions/53902507/unknown-error-session-deleted-because-of-page-crash-from-unknown-error-cannot
-        - /dev/shm:/dev/shm
+        options: --shm-size=2gb
 
     steps:
     - uses: actions/checkout@v2
