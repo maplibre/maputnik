@@ -4,7 +4,7 @@ import cloneDeep from 'lodash.clonedeep'
 import clamp from 'lodash.clamp'
 import get from 'lodash.get'
 import {unset} from 'lodash'
-import arrayMove from 'array-move'
+import {arrayMoveMutable} from 'array-move'
 import url from 'url'
 import hash from "string-hash";
 
@@ -486,7 +486,7 @@ export default class App extends React.Component {
     }
 
     layers = layers.slice(0);
-    layers = arrayMove(layers, oldIndex, newIndex);
+    arrayMoveMutable(layers, oldIndex, newIndex);
     this.onLayersChange(layers);
   }
 
@@ -764,17 +764,17 @@ export default class App extends React.Component {
           parseInt(parts[1], 10),
         ];
 
-        let invalid = false;
+        let valid = true;
         if (hashVal !== "-") {
           const currentHashVal = hash(JSON.stringify(mapStyle));
           if (currentHashVal !== parseInt(hashVal, 10)) {
-            invalid = true;
+            valid = false;
           }
         }
-        if (!invalid) {
+        if (valid) {
           this.setState({
             selectedLayerIndex,
-            selectedLayerOriginalId: this.state.mapStyle.layers[selectedLayerIndex].id,
+            selectedLayerOriginalId: mapStyle.layers[selectedLayerIndex].id,
           });
         }
       }

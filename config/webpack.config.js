@@ -1,5 +1,4 @@
 "use strict";
-var webpack = require('webpack');
 var path = require('path');
 var rules = require('./webpack.rules');
 var HtmlWebpackPlugin = require('html-webpack-plugin');
@@ -37,27 +36,25 @@ module.exports = {
     tls: 'empty'
   },
   devServer: {
-    contentBase: "./public",
-    // See <https://webpack.js.org/configuration/stats/> for details
-    stats: 'minimal',
     // enable HMR
     hot: true,
-    // embed the webpack-dev-server runtime into the bundle
-    inline: true,
     // serve index.html in place of 404 responses to allow HTML5 history
     historyApiFallback: true,
     port: PORT,
     host: HOST,
-    watchOptions: {
-      // Disabled polling by default as it causes lots of CPU usage and hence drains laptop batteries. To enable polling add WEBPACK_DEV_SERVER_POLLING to your environment
-      // See <https://webpack.js.org/configuration/watch/#watchoptions-poll> for details
-      poll: (!!process.env.WEBPACK_DEV_SERVER_POLLING ? true : false),
-      watch: false
-    },
+    watchFiles: {
+      options: {
+        // Disabled polling by default as it causes lots of CPU usage and hence drains laptop batteries. To enable polling add WEBPACK_DEV_SERVER_POLLING to your environment
+        // See <https://webpack.js.org/configuration/watch/#watchoptions-poll> for details
+        usePolling: (!!process.env.WEBPACK_DEV_SERVER_POLLING ? true : false),
+        watch: false
+      }
+    }
+  },
+  optimization: {
+    noEmitOnErrors: true,
   },
   plugins: [
-    new webpack.NoEmitOnErrorsPlugin(),
-    new webpack.HotModuleReplacementPlugin(),
     new HtmlWebpackPlugin({
       title: 'Maputnik',
       template: './src/template.html'
@@ -65,11 +62,13 @@ module.exports = {
     new HtmlWebpackInlineSVGPlugin({
       runPreEmit: true,
     }),
-    new CopyWebpackPlugin([
-      {
-        from: './src/manifest.json',
-        to: 'manifest.json'
-      }
-    ])
+    new CopyWebpackPlugin({
+      patterns: [
+        {
+          from: './src/manifest.json',
+          to: 'manifest.json'
+        }
+      ]
+    })
   ]
 };

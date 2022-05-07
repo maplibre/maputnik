@@ -46,14 +46,14 @@ Install the deps, start the dev server and open the web browser on `http://local
 # install dependencies
 npm install
 # start dev server
-npm start
+npm run start
 ```
 
 If you want Maputnik to be accessible externally use the [`--host` option](https://webpack.js.org/configuration/dev-server/#devserverhost):
 
 ```bash
 # start externally accessible dev server
-npm start -- --host 0.0.0.0
+npm run start -- --host 0.0.0.0
 ```
 
 The build process will watch for changes to the filesystem, rebuild and autoreload the editor. However note this from the [webpack-dev-server docs](https://webpack.js.org/configuration/dev-server/):
@@ -76,26 +76,18 @@ npm run lint-styles
 
 
 ## Tests
-For testing we use [webdriverio](http://webdriver.io) and [selenium-standalone](https://github.com/vvo/selenium-standalone)
+For testing we use [webdriverio](https://webdriver.io) and [selenium-standalone](https://github.com/webdriverio/selenium-standalone).
 
-[selenium-standalone](https://github.com/vvo/selenium-standalone) starts a server that will launch browsers on your local machine. We use chrome so you **must** have chrome installed on your machine.
+[selenium-standalone](https://github.com/webdriverio/selenium-standalone) starts a server that will launch browsers on your local machine. You need to have Java installed on your machine as well as *chrome* or *firefox*.
 
-Now open a terminal and run the following. This will install the drivers on your local machine
-
-```
-./node_modules/.bin/selenium-standalone install
-```
-
-Now start the standalone server
+Now open a terminal and run the following using *chrome*:
 
 ```
-./node_modules/.bin/selenium-standalone start
+npm run test
 ```
-
-Then open another terminal and run
-
+or *firefox*:
 ```
-npm test
+BROWSER=firefox npm run test
 ```
 
 After some time you should see a browser launch which will be automated by the test runner.

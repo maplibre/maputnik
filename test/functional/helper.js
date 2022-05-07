@@ -1,5 +1,5 @@
 var wd = require("../wd-helper");
-var uuid = require('uuid/v1');
+var {v1: uuid} = require('uuid');
 var geoServer = require("../geojson-server");
 
 var testNetwork = process.env.TEST_NETWORK || "localhost";

@@ -326,6 +326,7 @@ export default class LayerList extends React.Component {
       helperClass='sortableHelper'
       onSortEnd={this.props.onMoveLayer.bind(this)}
       useDragHandle={true}
+      shouldCancelStart={() => false}
     />
   }
 }

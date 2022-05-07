@@ -1,7 +1,7 @@
 var assert = require("assert");
 var config = require("../../config/specs");
 var helper = require("../helper");
-var uuid   = require('uuid/v1');
+var {v1: uuid} = require('uuid');
 var wd     = require("../../wd-helper");
 
 

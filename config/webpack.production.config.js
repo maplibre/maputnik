@@ -48,12 +48,14 @@ module.exports = {
     new HtmlWebpackInlineSVGPlugin({
       runPreEmit: true,
     }),
-    new CopyWebpackPlugin([
-      {
-        from: './src/manifest.json',
-        to: 'manifest.json'
-    }
-  ]),
+    new CopyWebpackPlugin({
+      patterns: [
+        {
+          from: './src/manifest.json',
+          to: 'manifest.json'
+        }
+      ]
+    }),
     new BundleAnalyzerPlugin({
       analyzerMode: 'static',
       defaultSizes: 'gzip',
