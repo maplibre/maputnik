@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 import ReactDOM from 'react-dom'
 import MapboxGl from 'mapbox-gl'
 import MapboxInspect from 'mapbox-gl-inspect'
+import MapboxGeocoder from '@mapbox/mapbox-gl-geocoder'
 import MapMapboxGlLayerPopup from './MapMapboxGlLayerPopup'
 import MapMapboxGlFeaturePropertyPopup from './MapMapboxGlFeaturePropertyPopup'
 import tokens from '../config/tokens.json'
@@ -11,6 +12,7 @@ import Color from 'color'
 import ZoomControl from '../libs/zoomcontrol'
 import { colorHighlightedLayer } from '../libs/highlight'
 import 'mapbox-gl/dist/mapbox-gl.css'
+import '@mapbox/mapbox-gl-geocoder/lib/mapbox-gl-geocoder.css'
 import '../mapboxgl.css'
 import '../libs/mapbox-rtl'
 
@@ -62,6 +64,7 @@ export default class MapMapboxGl extends React.Component {
     options: PropTypes.object,
     replaceAccessTokens: PropTypes.func.isRequired,
     onChange: PropTypes.func.isRequired,
+    showGeocoder: PropTypes.bool,
   }
 
   static defaultProps = {
@@ -136,6 +139,15 @@ export default class MapMapboxGl extends React.Component {
       map.showCollisionBoxes = this.props.options.showCollisionBoxes;
       map.showOverdrawInspector = this.props.options.showOverdrawInspector;
     }
+
+    if (this.geocoder && (this.props.showGeocoder !== prevProps.showGeocoder)) {
+      if (this.props.showGeocoder) {
+        map.addControl(this.geocoder);
+      }
+      else {
+        map.removeControl(this.geocoder);
+      }
+    }
   }
 
   componentDidMount() {
@@ -167,6 +179,18 @@ export default class MapMapboxGl extends React.Component {
 
     const nav = new MapboxGl.NavigationControl({visualizePitch:true});
     map.addControl(nav, 'top-right');
+
+    if (this.props.showGeocoder) {
+      this.geocoder = new MapboxGeocoder({
+        accessToken: MapboxGl.accessToken,
+        collapsed: true,
+        marker: false,
+        flyTo: { duration: 0 },
+        clearAndBlurOnEsc: true,
+        clearOnBlur: true
+      });
+      map.addControl(this.geocoder, "top-right");
+    }
 
     const tmpNode = document.createElement('div');
 

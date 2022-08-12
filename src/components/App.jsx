@@ -687,7 +687,9 @@ export default class App extends React.Component {
         options={this.state.mapboxGlDebugOptions}
         inspectModeEnabled={this.state.mapState === "inspect"}
         highlightedLayer={this.state.mapStyle.layers[this.state.selectedLayerIndex]}
-        onLayerSelect={this.onLayerSelect} />
+        onLayerSelect={this.onLayerSelect}
+        showGeocoder={true}
+      />
     }
 
     let filterName;
