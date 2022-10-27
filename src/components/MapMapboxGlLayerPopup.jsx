@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import IconLayer from './IconLayer'
-import {latest, expression, function as styleFunction} from '@mapbox/mapbox-gl-style-spec'
+import {latest} from '@maplibre/maplibre-gl-style-spec'
 
 function groupFeaturesBySourceLayer(features) {
   const sources = {}
@@ -11,7 +11,7 @@ function groupFeaturesBySourceLayer(features) {
   features.forEach(feature => {
     if(returnedFeatures.hasOwnProperty(feature.layer.id)) {
       returnedFeatures[feature.layer.id]++
-      
+
       const featureObject = sources[feature.layer['source-layer']].find(f => f.layer.id === feature.layer.id)
 
       featureObject.counter = returnedFeatures[feature.layer.id]
@@ -86,7 +86,7 @@ class FeatureLayerPopup extends React.Component {
             className="maputnik-popup-layer"
         >
           <div
-            className="maputnik-popup-layer__swatch" 
+            className="maputnik-popup-layer__swatch"
             style={{background: featureColor}}
           ></div>
           <label
@@ -95,7 +95,7 @@ class FeatureLayerPopup extends React.Component {
               this.props.onLayerSelect(feature.layer.id)
             }}
           >
-            {feature.layer.type && 
+            {feature.layer.type &&
               <IconLayer type={feature.layer.type} style={{
                 width: 14,
                 height: 14,

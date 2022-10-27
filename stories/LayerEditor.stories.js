@@ -2,7 +2,7 @@ import React from 'react';
 import LayerEditor from '../src/components/LayerEditor';
 import {action} from '@storybook/addon-actions';
 import {withA11y} from '@storybook/addon-a11y';
-import {latest} from '@mapbox/mapbox-gl-style-spec'
+import {latest} from '@maplibre/maplibre-gl-style-spec'
 
 
 export default {

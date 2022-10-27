@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import ReactDOM from 'react-dom'
-import MapboxGl from 'mapbox-gl'
+import MapLibreGl from 'maplibre-gl'
 import MapboxInspect from 'mapbox-gl-inspect'
 import MapMapboxGlLayerPopup from './MapMapboxGlLayerPopup'
 import MapMapboxGlFeaturePropertyPopup from './MapMapboxGlFeaturePropertyPopup'
@@ -10,12 +10,12 @@ import colors from 'mapbox-gl-inspect/lib/colors'
 import Color from 'color'
 import ZoomControl from '../libs/zoomcontrol'
 import { colorHighlightedLayer } from '../libs/highlight'
-import 'mapbox-gl/dist/mapbox-gl.css'
+import 'maplibre-gl/dist/maplibre-gl.css'
 import '../mapboxgl.css'
 import '../libs/mapbox-rtl'
 
 
-const IS_SUPPORTED = MapboxGl.supported();
+const IS_SUPPORTED = MapLibreGl.supported();
 
 function renderPopup(popup, mountNode) {
   ReactDOM.render(popup, mountNode);
@@ -107,7 +107,7 @@ export default class MapMapboxGl extends React.Component {
     return should;
   }
 
-  componentDidUpdate(prevProps) {
+  componentDidUpdate(prevProps, prevState, snapshot) {
     if(!IS_SUPPORTED) return;
 
     const map = this.state.map;

@@ -25,7 +25,7 @@ import ModalSurvey from './ModalSurvey'
 import ModalDebug from './ModalDebug'
 
 import { downloadGlyphsMetadata, downloadSpriteMetadata } from '../libs/metadata'
-import {latest, validate} from '@mapbox/mapbox-gl-style-spec'
+import {latest, validate} from '@maplibre/maplibre-gl-style-spec'
 import style from '../libs/style'
 import { initialStyleUrl, loadStyleUrl, removeStyleQuerystring } from '../libs/urlopen'
 import { undoMessages, redoMessages } from '../libs/diffmessage'
@@ -441,7 +441,7 @@ export default class App extends React.Component {
     if (opts.save) {
       this.saveStyle(newStyle);
     }
-       
+
     this.setState({
       mapStyle: newStyle,
       dirtyMapStyle: dirtyMapStyle,

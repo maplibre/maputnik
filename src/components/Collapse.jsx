@@ -1,6 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import Collapse as ReactCollapse from 'react-collapse'
+import { Collapse as ReactCollapse } from 'react-collapse'
 import accessibility from '../../libs/accessibility'
 
 

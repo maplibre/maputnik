@@ -1,4 +1,4 @@
-import {latest} from '@mapbox/mapbox-gl-style-spec'
+import {latest} from '@maplibre/maplibre-gl-style-spec'
 
 export function changeType(layer, newType) {
   const changedPaintProps = { ...layer.paint }

@@ -4,7 +4,7 @@ import Slugify from 'slugify'
 import { saveAs } from 'file-saver'
 import pkgLockJson from '../../package-lock.json'
 
-import {format} from '@mapbox/mapbox-gl-style-spec'
+import {format} from '@maplibre/maplibre-gl-style-spec'
 import FieldString from './FieldString'
 import FieldCheckbox from './FieldCheckbox'
 import InputButton from './InputButton'

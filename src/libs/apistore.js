@@ -1,5 +1,5 @@
 import style from './style.js'
-import {format} from '@mapbox/mapbox-gl-style-spec'
+import {format} from '@maplibre/maplibre-gl-style-spec'
 import ReconnectingWebSocket from 'reconnecting-websocket'
 
 export class ApiStyleStore {
