@@ -36,23 +36,8 @@ import LayerWatcher from '../libs/layerwatcher'
 import tokens from '../config/tokens.json'
 import isEqual from 'lodash.isequal'
 import Debug from '../libs/debug'
-import queryUtil from '../libs/query-util'
 import {formatLayerId} from '../util/format';
 
-import MapboxGl from 'mapbox-gl'
-
-
-// Similar functionality as <https://github.com/mapbox/mapbox-gl-js/blob/7e30aadf5177486c2cfa14fe1790c60e217b5e56/src/util/mapbox.js>
-function normalizeSourceURL (url, apiToken="") {
-  const matches = url.match(/^mapbox:\/\/(.*)/);
-  if (matches) {
-    // mapbox://mapbox.mapbox-streets-v7
-    return `https://api.mapbox.com/v4/${matches[1]}.json?secure&access_token=${apiToken}`
-  }
-  else {
-    return url;
-  }
-}
 
 function setFetchAccessToken(url, mapStyle) {
   const matchesTilehosting = url.match(/\.tilehosting\.com/);
@@ -588,11 +573,6 @@ export default class App extends React.Component {
         };
 
         let url = val.url;
-        try {
-          url = normalizeSourceURL(url, MapboxGl.accessToken);
-        } catch(err) {
-          console.warn("Failed to normalizeSourceURL: ", err);
-        }
 
         try {
           url = setFetchAccessToken(url, this.state.mapStyle)
@@ -697,7 +677,7 @@ export default class App extends React.Component {
     const elementStyle = {};
     if (filterName) {
       elementStyle.filter = `url('#${filterName}')`;
-    };
+    }
 
     return <div style={elementStyle} className="maputnik-map__container">
       {mapElement}
