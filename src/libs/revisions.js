@@ -1,3 +1,5 @@
+import {diff} from '@mapbox/mapbox-gl-style-spec'
+
 export class RevisionStore {
   constructor(initialRevisions=[]) {
     this.revisions = initialRevisions
@@ -13,10 +15,17 @@ export class RevisionStore {
   }
 
   addRevision(revision) {
-    //TODO: compare new revision style id with old ones
-    //and ensure that it is always the same id
-    this.revisions.push(revision)
-    this.currentIdx++
+    // only store revision if has changes
+    const changes = diff(revision, this.current);
+    if (changes.length > 0) {
+
+      // clear any "redo" revisions once a change is made
+      // and ensure current index is at end of list
+      this.revisions = this.revisions.slice(0, this.currentIdx + 1);
+
+      this.revisions.push(revision)
+      this.currentIdx++
+    }
   }
 
   undo() {
