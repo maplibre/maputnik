@@ -12,11 +12,8 @@ RUN npm run build
 
 #---------------------------------------------------------------------------
 
-# Create a clean python-based image with just the build results
-FROM python:3-slim
-WORKDIR /maputnik
+# Create a clean nginx-alpine image with just the build results
 
-COPY --from=builder /maputnik/build/build .
+FROM nginx:alpine
 
-EXPOSE 8888
-CMD python -m http.server 8888
+COPY --from=builder /maputnik/build/build /usr/share/nginx/html/
