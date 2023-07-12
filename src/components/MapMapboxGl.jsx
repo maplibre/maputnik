@@ -75,7 +75,6 @@ export default class MapMapboxGl extends React.Component {
 
   constructor(props) {
     super(props)
-    MapboxGl.accessToken = tokens.mapbox
     this.state = {
       map: null,
       inspect: null,
@@ -86,8 +85,6 @@ export default class MapMapboxGl extends React.Component {
     if(!IS_SUPPORTED) return;
 
     if(!this.state.map) return
-    const metadata = props.mapStyle.metadata || {}
-    MapboxGl.accessToken = metadata['maputnik:mapbox_access_token'] || tokens.mapbox
 
     //Mapbox GL now does diffing natively so we don't need to calculate
     //the necessary operations ourselves!
@@ -149,7 +146,7 @@ export default class MapMapboxGl extends React.Component {
       maxZoom: 24
     }
 
-    const map = new MapboxGl.Map(mapOpts);
+    const map = new MapLibreGl.Map(mapOpts);
 
     const mapViewChange = () => {
       const center = map.getCenter();
@@ -165,13 +162,13 @@ export default class MapMapboxGl extends React.Component {
     const zoomControl = new ZoomControl;
     map.addControl(zoomControl, 'top-right');
 
-    const nav = new MapboxGl.NavigationControl({visualizePitch:true});
+    const nav = new MapLibreGl.NavigationControl({visualizePitch:true});
     map.addControl(nav, 'top-right');
 
     const tmpNode = document.createElement('div');
 
     const inspect = new MapboxInspect({
-      popup: new MapboxGl.Popup({
+      popup: new MapLibreGl.Popup({
         closeOnClick: false
       }),
       showMapPopup: true,
