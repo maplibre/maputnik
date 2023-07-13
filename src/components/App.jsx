@@ -2,6 +2,7 @@ import autoBind from 'react-autobind';
 import React from 'react'
 import cloneDeep from 'lodash.clonedeep'
 import clamp from 'lodash.clamp'
+import buffer from 'buffer'
 import get from 'lodash.get'
 import {unset} from 'lodash'
 import {arrayMoveMutable} from 'array-move'
@@ -38,6 +39,8 @@ import isEqual from 'lodash.isequal'
 import Debug from '../libs/debug'
 import {formatLayerId} from '../util/format';
 
+// Buffer must be defined globally for @maplibre/maplibre-gl-style-spec validate() function to succeed.
+window.Buffer = buffer.Buffer;
 
 function setFetchAccessToken(url, mapStyle) {
   const matchesTilehosting = url.match(/\.tilehosting\.com/);
