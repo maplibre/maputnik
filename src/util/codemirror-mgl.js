@@ -97,9 +97,7 @@ CodeMirror.registerHelper("lint", "mgl", function(text, opts, doc) {
   let out;
   if (context === "layer") {
     // Just an empty style so we can validate a layer.
-    // TODO: this seems to be a hack caused by TypeScript or something causing issues.
-    // TODO: Needs to be investigated and fixed.
-    const errors = validate(JSON.stringify({
+    const errors = validate({
       "version": 8,
       "name": "Empty Style",
       "metadata": {},
@@ -109,7 +107,7 @@ CodeMirror.registerHelper("lint", "mgl", function(text, opts, doc) {
       "layers": [
         input
       ]
-    }));
+    });
 
     if (errors) {
       out = {
