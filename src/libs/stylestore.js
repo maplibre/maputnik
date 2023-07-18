@@ -30,7 +30,7 @@ function loadStoredStyles() {
 
 function isStyleKey(key) {
   const parts = key.split(":")
-  return parts.length == 3 && parts[0] === storagePrefix && parts[1] === stylePrefix
+  return parts.length === 3 && parts[0] === storagePrefix && parts[1] === stylePrefix
 }
 
 // Load style id from key

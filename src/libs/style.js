@@ -1,4 +1,4 @@
-import deref from '@mapbox/mapbox-gl-style-spec/deref'
+import {derefLayers} from '@maplibre/maplibre-gl-style-spec'
 import tokens from '../config/tokens.json'
 
 // Empty style is always used if no style could be restored or fetched
@@ -25,19 +25,17 @@ function ensureHasNoInteractive(style) {
     return changedLayer
   })
 
-  const nonInteractiveStyle = {
+  return {
     ...style,
     layers: changedLayers
   }
-  return nonInteractiveStyle
 }
 
 function ensureHasNoRefs(style) {
-  const derefedStyle = {
+  return {
     ...style,
-    layers: deref(style.layers)
+    layers: derefLayers(style.layers)
   }
-  return derefedStyle
 }
 
 function ensureStyleValidity(style) {

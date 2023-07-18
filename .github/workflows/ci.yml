@@ -48,7 +48,7 @@ jobs:
       fail-fast: false
       matrix:
         os: [ubuntu-latest, windows-latest, macos-latest]
-        node-version: [12.x, 14.x, 16.x]
+        node-version: [16.x]
 
     steps:
     - uses: actions/checkout@v2
@@ -68,10 +68,6 @@ jobs:
   build-artifacts:
     name: "build/artifacts (${{ matrix.os }})"
     runs-on: ${{ matrix.os }}
-    env:
-      GOPATH: ${{ github.workspace }}
-      GO111MODULE: off
-
     if: ${{ github.event_name == 'push' || github.event_name == 'pull_request' }}
 
     strategy:
@@ -113,16 +109,16 @@ jobs:
 
     # Build and upload desktop CLI artifacts
     - name: Set up Go
-      uses: actions/setup-go@v2
+      uses: actions/setup-go@v3
       with:
-        go-version: ^1.14.x
+        go-version: ^1.19.x
       id: go
 
     - name: Check out code into the Go module directory
       uses: actions/checkout@v2
       with:
         repository: maputnik/desktop
-        ref: v1.0.7
+        ref: master
         path: ./src/github.com/maputnik/desktop/
 
     - name: Make

@@ -1,7 +1,7 @@
 import jsonlint from 'jsonlint';
 import CodeMirror from 'codemirror';
 import jsonToAst from 'json-to-ast';
-import {expression, validate, latest} from '@mapbox/mapbox-gl-style-spec';
+import {expression, validate} from '@maplibre/maplibre-gl-style-spec';
 
 
 CodeMirror.defineMode("mgl", function(config, parserConfig) {
@@ -115,12 +115,7 @@ CodeMirror.registerHelper("lint", "mgl", function(text, opts, doc) {
         value: errors
           .filter(err => {
             // Remove missing 'layer source' errors, because we don't include them
-            if (err.message.match(/^layers\[0\]: source ".*" not found$/)) {
-              return false;
-            }
-            else {
-              return true;
-            }
+            return !err.message.match(/^layers\[0\]: source ".*" not found$/);
           })
           .map(err => {
             // Remove the 'layers[0].' as we're validating the layer only here

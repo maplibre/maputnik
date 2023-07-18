@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 
-import {latest} from '@mapbox/mapbox-gl-style-spec'
+import {latest} from '@maplibre/maplibre-gl-style-spec'
 import Block from './Block'
 import InputString from './InputString'
 

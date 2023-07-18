@@ -1,11 +1,6 @@
 function asBool(queryObj, key) {
   if(queryObj.hasOwnProperty(key)) {
-    if(queryObj[key].match(/^false|0$/)) {
-      return false;
-    }
-    else {
-      return true;
-    }
+    return !queryObj[key].match(/^false|0$/);
   }
   else {
     return false;

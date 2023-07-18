@@ -1,6 +1,6 @@
 export default function(a, b) {
-  a = parseFloat(a, 10);
-  b = parseFloat(b, 10);
+  a = parseFloat(a);
+  b = parseFloat(b);
 
   if(a < b) {
     return -1

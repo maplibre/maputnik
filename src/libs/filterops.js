@@ -1,4 +1,4 @@
-import {latest} from '@mapbox/mapbox-gl-style-spec'
+import {latest} from '@maplibre/maplibre-gl-style-spec'
 export const combiningFilterOps = ['all', 'any', 'none']
 export const setFilterOps = ['in', '!in']
 export const otherFilterOps = Object

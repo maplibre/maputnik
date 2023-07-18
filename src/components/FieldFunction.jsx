@@ -5,7 +5,7 @@ import SpecProperty from './_SpecProperty'
 import DataProperty from './_DataProperty'
 import ZoomProperty from './_ZoomProperty'
 import ExpressionProperty from './_ExpressionProperty'
-import {function as styleFunction} from '@mapbox/mapbox-gl-style-spec';
+import {function as styleFunction} from '@maplibre/maplibre-gl-style-spec';
 import {findDefaultFromSpec} from '../util/spec-helper';
 
 
@@ -366,7 +366,7 @@ export default class FieldFunction  extends React.Component {
           onDeleteStop={this.deleteStop}
           onAddStop={this.addStop}
           onChangeToDataFunction={this.makeDataFunction}
-          onExpressionClick={this.makeExpression} 
+          onExpressionClick={this.makeExpression}
         />
       )
     }
@@ -383,7 +383,7 @@ export default class FieldFunction  extends React.Component {
           onDeleteStop={this.deleteStop}
           onAddStop={this.addStop}
           onChangeToZoomFunction={this.makeZoomFunction}
-          onExpressionClick={this.makeExpression} 
+          onExpressionClick={this.makeExpression}
         />
       )
     }
@@ -397,8 +397,8 @@ export default class FieldFunction  extends React.Component {
           fieldSpec={this.props.fieldSpec}
           value={this.props.value}
           onZoomClick={this.makeZoomFunction}
-          onDataClick={this.makeDataFunction} 
-          onExpressionClick={this.makeExpression} 
+          onDataClick={this.makeDataFunction}
+          onExpressionClick={this.makeExpression}
         />
       )
     }

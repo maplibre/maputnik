@@ -1,6 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import {latest} from '@mapbox/mapbox-gl-style-spec'
+import {latest} from '@maplibre/maplibre-gl-style-spec'
 import Modal from './Modal'
 import InputButton from './InputButton'
 import Block from './Block'
@@ -197,7 +197,7 @@ class AddSource extends React.Component {
 
   render() {
     // Kind of a hack because the type changes, however maputnik has 1..n
-    // options per type, for example 
+    // options per type, for example
     //
     //  - 'geojson' - 'GeoJSON (URL)' and 'GeoJSON (JSON)'
     //  - 'raster' - 'Raster (TileJSON URL)' and 'Raster (XYZ URL)'

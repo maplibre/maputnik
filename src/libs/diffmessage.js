@@ -1,4 +1,4 @@
-import {diff} from '@mapbox/mapbox-gl-style-spec'
+import {diff} from '@maplibre/maplibre-gl-style-spec'
 
 export function diffMessages(beforeStyle, afterStyle) {
   const changes = diff(beforeStyle, afterStyle)

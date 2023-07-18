@@ -4,7 +4,7 @@ import { combiningFilterOps } from '../libs/filterops.js'
 import {mdiTableRowPlusAfter} from '@mdi/js';
 import {isEqual} from 'lodash';
 
-import {latest, validate, migrate, convertFilter} from '@mapbox/mapbox-gl-style-spec'
+import {latest, migrate, convertFilter} from '@maplibre/maplibre-gl-style-spec'
 import InputSelect from './InputSelect'
 import Block from './Block'
 import SingleFilterEditor from './SingleFilterEditor'
