@@ -1,61 +1,49 @@
 name: ci
 
-on:
-  push:
-    branches: [ master ]
-  pull_request:
-    branches: [ master ]
+on: [push]
 
 jobs:
-
   build:
-    name: Build
+
     runs-on: ubuntu-latest
-    env:
-      GOPATH: ${{ github.workspace }}
-      GO111MODULE: off
+
     steps:
+      - uses: actions/checkout@v3
 
-    - name: Set up Go
-      uses: actions/setup-go@v2
-      with:
-        go-version: ^1.14.x
-      id: go
+      - name: Set up Go
+        uses: actions/setup-go@v3
+        with:
+          go-version: 1.18
 
-    - name: Check out code into the Go module directory
-      uses: actions/checkout@v2
-      with:
-        path: ./src/github.com/maputnik/desktop/
+      - name: Make
+        run: make
 
-    - name: Get style
-      run:  wget https://maputnik.github.io/osm-liberty/style.json
+      - name: Test --help
+        run: ./bin/linux/maputnik --help
 
-    - name: Make
-      run: cd src/github.com/maputnik/desktop/ && make
+      - name: Test --version
+        run: ./bin/linux/maputnik --version
 
-    - name: Test --help
-      run: ./src/github.com/maputnik/desktop/bin/linux/maputnik --help
+      - name: Get style
+        run:  wget https://maputnik.github.io/osm-liberty/style.json
 
-    - name: Test --version
-      run: ./src/github.com/maputnik/desktop/bin/linux/maputnik --version
+      - name: Test --watch
+        run: ./bin/linux/maputnik --watch --file style.json & sleep 5; kill $!
 
-    - name: Test --watch
-      run: ./src/github.com/maputnik/desktop/bin/linux/maputnik --watch --file style.json & sleep 5; kill $!
+      - name: Artifacts/linux
+        uses: actions/upload-artifact@v3
+        with:
+          name: maputnik-linux
+          path: bin/linux/
 
-    - name: Artifacts/linux
-      uses: actions/upload-artifact@v1
-      with:
-        name: maputnik-linux
-        path: ./src/github.com/maputnik/desktop/bin/linux/
+      - name: Artifacts/darwin
+        uses: actions/upload-artifact@v3
+        with:
+          name: maputnik-darwin
+          path: bin/darwin/
 
-    - name: Artifacts/darwin
-      uses: actions/upload-artifact@v1
-      with:
-        name: maputnik-darwin
-        path: ./src/github.com/maputnik/desktop/bin/darwin/
-
-    - name: Artifacts/windows
-      uses: actions/upload-artifact@v1
-      with:
-        name: maputnik-windows
-        path: ./src/github.com/maputnik/desktop/bin/windows/
+      - name: Artifacts/windows
+        uses: actions/upload-artifact@v3
+        with:
+          name: maputnik-windows
+          path: bin/windows/

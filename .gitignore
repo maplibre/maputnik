@@ -24,9 +24,8 @@ _testmain.go
 *.test
 *.prof
 
-# Bindata
-bindata_assetfs.go
-bindata.go
+# Binary version of pubilic/editor
+rice-box.go
 
 # Built binary
 maputnik
