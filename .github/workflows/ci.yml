@@ -70,7 +70,6 @@ jobs:
     runs-on: ${{ matrix.os }}
     env:
       GOPATH: ${{ github.workspace }}
-      GO111MODULE: off
 
     if: ${{ github.event_name == 'push' || github.event_name == 'pull_request' }}
 
