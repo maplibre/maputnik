@@ -68,10 +68,6 @@ jobs:
   build-artifacts:
     name: "build/artifacts (${{ matrix.os }})"
     runs-on: ${{ matrix.os }}
-    env:
-      GOPATH: ${{ github.workspace }}
-      GOBIN: ${{ github.workspace }}/bin
-
     if: ${{ github.event_name == 'push' || github.event_name == 'pull_request' }}
 
     strategy:
@@ -113,7 +109,7 @@ jobs:
 
     # Build and upload desktop CLI artifacts
     - name: Set up Go
-      uses: actions/setup-go@v2
+      uses: actions/setup-go@v3
       with:
         go-version: ^1.19.x
       id: go
