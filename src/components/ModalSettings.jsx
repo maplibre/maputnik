@@ -118,14 +118,6 @@ export default class ModalSettings extends React.Component {
         />
 
         <FieldString {...inputProps}
-          label={fieldSpecAdditional.maputnik.mapbox_access_token.label}
-          fieldSpec={fieldSpecAdditional.maputnik.mapbox_access_token}
-          data-wd-key="modal:settings.maputnik:mapbox_access_token"
-          value={metadata['maputnik:mapbox_access_token']}
-          onChange={onChangeMetadataProperty.bind(this, "maputnik:mapbox_access_token")}
-        />
-
-        <FieldString {...inputProps}
           label={fieldSpecAdditional.maputnik.maptiler_access_token.label}
           fieldSpec={fieldSpecAdditional.maputnik.maptiler_access_token}
           data-wd-key="modal:settings.maputnik:openmaptiles_access_token"
@@ -241,10 +233,10 @@ export default class ModalSettings extends React.Component {
           fieldSpec={fieldSpecAdditional.maputnik.style_renderer}
           data-wd-key="modal:settings.maputnik:renderer"
           options={[
-            ['mbgljs', 'MapboxGL JS'],
+            ['mlgljs', 'MapLibreGL JS'],
             ['ol', 'Open Layers (experimental)'],
           ]}
-          value={metadata['maputnik:renderer'] || 'mbgljs'}
+          value={metadata['maputnik:renderer'] || 'mlgljs'}
           onChange={onChangeMetadataProperty.bind(this, 'maputnik:renderer')}
         />
       </div>

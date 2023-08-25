@@ -32,7 +32,7 @@ function optionsLabelLength(options) {
   return sum
 }
 
-/** Display any field from the Mapbox GL style spec and
+/** Display any field from the Maplibre GL style spec and
  * choose the correct field component based on the @{fieldSpec}
  * to display @{value}. */
 export default class SpecField extends React.Component {

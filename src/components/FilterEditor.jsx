@@ -42,7 +42,7 @@ function createStyleFromFilter (filter) {
     "id": "tmp",
     "version": 8,
     "name": "Empty Style",
-    "metadata": {"maputnik:renderer": "mbgljs"},
+    "metadata": {"maputnik:renderer": "mlgljs"},
     "sources": {
       "tmp": {
         "type": "geojson",

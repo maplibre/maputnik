@@ -32,7 +32,7 @@ export function changeProperty(layer, group, property, newValue) {
     if(group) {
       const newLayer = {
         ...layer,
-        // Change object so the diff works in ./src/components/map/MapboxGlMap.jsx
+        // Change object so the diff works in ./src/components/map/MaplibreGlMap.jsx
         [group]: {
           ...layer[group]
         }

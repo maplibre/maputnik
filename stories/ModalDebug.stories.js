@@ -16,7 +16,7 @@ export const Basic = () => (
     <div style={{maxHeight: "200px"}}>
       <ModalDebug
         isOpen={true}
-        renderer="mbgljs"
+        renderer="mlgljs"
         mapboxGlDebugOptions={{}}
         mapView={{zoom: 1, center: {lat: 0, lng: 0}}}
       />

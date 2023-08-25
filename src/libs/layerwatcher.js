@@ -21,8 +21,8 @@ export default class LayerWatcher {
     const previousSources = { ...this._sources }
 
     Object.keys(map.style.sourceCaches).forEach(sourceId => {
-      //NOTE: This heavily depends on the internal API of Mapbox GL
-      //so this breaks between Mapbox GL JS releases
+      //NOTE: This heavily depends on the internal API of Maplibre GL
+      //so this breaks between Maplibre GL JS releases
       this._sources[sourceId] = map.style.sourceCaches[sourceId]._source.vectorLayerIds
     })
 

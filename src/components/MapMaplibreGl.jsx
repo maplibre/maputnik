@@ -3,16 +3,16 @@ import PropTypes from 'prop-types'
 import ReactDOM from 'react-dom'
 import MapLibreGl from 'maplibre-gl'
 import MapboxInspect from 'mapbox-gl-inspect'
-import MapMapboxGlLayerPopup from './MapMapboxGlLayerPopup'
-import MapMapboxGlFeaturePropertyPopup from './MapMapboxGlFeaturePropertyPopup'
+import MapMaplibreGlLayerPopup from './MapMaplibreGlLayerPopup'
+import MapMaplibreGlFeaturePropertyPopup from './MapMaplibreGlFeaturePropertyPopup'
 import tokens from '../config/tokens.json'
 import colors from 'mapbox-gl-inspect/lib/colors'
 import Color from 'color'
 import ZoomControl from '../libs/zoomcontrol'
 import { colorHighlightedLayer } from '../libs/highlight'
 import 'maplibre-gl/dist/maplibre-gl.css'
-import '../mapboxgl.css'
-import '../libs/mapbox-rtl'
+import '../maplibregl.css'
+import '../libs/maplibre-rtl'
 
 
 const IS_SUPPORTED = MapLibreGl.supported();
@@ -52,7 +52,7 @@ function buildInspectStyle(originalMapStyle, coloredLayers, highlightedLayer) {
   return inspectStyle
 }
 
-export default class MapMapboxGl extends React.Component {
+export default class MapMaplibreGl extends React.Component {
   static propTypes = {
     onDataChange: PropTypes.func,
     onLayerSelect: PropTypes.func.isRequired,
@@ -69,7 +69,6 @@ export default class MapMapboxGl extends React.Component {
     onDataChange: () => {},
     onLayerSelect: () => {},
     onChange: () => {},
-    mapboxAccessToken: tokens.mapbox,
     options: {},
   }
 
@@ -86,7 +85,7 @@ export default class MapMapboxGl extends React.Component {
 
     if(!this.state.map) return
 
-    //Mapbox GL now does diffing natively so we don't need to calculate
+    //Maplibre GL now does diffing natively so we don't need to calculate
     //the necessary operations ourselves!
     this.state.map.setStyle(
       this.props.replaceAccessTokens(props.mapStyle),
@@ -120,7 +119,7 @@ export default class MapMapboxGl extends React.Component {
     if (map) {
       if (this.props.inspectModeEnabled) {
         // HACK: We need to work out why we need to do this and what's causing
-        // this error. I'm assuming an issue with mapbox-gl update and
+        // this error. I'm assuming an issue with maplibre-gl update and
         // mapbox-gl-inspect.
         try {
           this.state.inspect.render();
@@ -182,9 +181,9 @@ export default class MapMapboxGl extends React.Component {
       buildInspectStyle: (originalMapStyle, coloredLayers) => buildInspectStyle(originalMapStyle, coloredLayers, this.props.highlightedLayer),
       renderPopup: features => {
         if(this.props.inspectModeEnabled) {
-          return renderPopup(<MapMapboxGlFeaturePropertyPopup features={features} />, tmpNode);
+          return renderPopup(<MapMaplibreGlFeaturePropertyPopup features={features} />, tmpNode);
         } else {
-          return renderPopup(<MapMapboxGlLayerPopup features={features} onLayerSelect={this.onLayerSelectById} zoom={this.state.zoom} />, tmpNode);
+          return renderPopup(<MapMaplibreGlLayerPopup features={features} onLayerSelect={this.onLayerSelectById} zoom={this.state.zoom} />, tmpNode);
         }
       }
     })
@@ -238,7 +237,7 @@ export default class MapMapboxGl extends React.Component {
         className="maputnik-map maputnik-map--error"
       >
         <div className="maputnik-map__error-message">
-          Error: Cannot load MapboxGL, WebGL is either unsupported or disabled
+          Error: Cannot load MaplibreGL, WebGL is either unsupported or disabled
         </div>
       </div>
     }
