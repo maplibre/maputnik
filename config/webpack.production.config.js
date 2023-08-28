@@ -23,7 +23,6 @@ module.exports = {
     extensions: ['.js', '.jsx']
   },
   module: {
-    noParse: [],
     rules: rules
   },
   node: {
