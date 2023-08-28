@@ -17,7 +17,7 @@ export const Basic = () => (
       <ModalDebug
         isOpen={true}
         renderer="mlgljs"
-        mapboxGlDebugOptions={{}}
+        maplibreGlDebugOptions={{}}
         mapView={{zoom: 1, center: {lat: 0, lng: 0}}}
       />
     </div>
