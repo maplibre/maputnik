@@ -14,7 +14,7 @@ import style from '../libs/style'
 import fieldSpecAdditional from '../libs/field-spec-additional'
 
 
-const MAPBOX_GL_VERSION = pkgLockJson.dependencies["mapbox-gl"].version;
+const MAPLIBRE_GL_VERSION = pkgLockJson.dependencies["maplibre-gl"].version;
 
 
 export default class ModalExport extends React.Component {
@@ -58,8 +58,8 @@ export default class ModalExport extends React.Component {
   <meta charset="utf-8" />
   <title>${htmlTitle}</title>
   <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no" />
-  <script src="https://api.mapbox.com/mapbox-gl-js/v${MAPBOX_GL_VERSION}/mapbox-gl.js"></script>
-  <link href="https://api.mapbox.com/mapbox-gl-js/v${MAPBOX_GL_VERSION}/mapbox-gl.css" rel="stylesheet" />
+  <script src="https://unpkg.com/maplibre-gl@${MAPLIBRE_GL_VERSION}/dist/maplibre-gl.js"></script>
+  <link href="https://unpkg.com/maplibre-gl@${MAPLIBRE_GL_VERSION}/dist/maplibre-gl.css" rel="stylesheet" />
   <style>
     body { margin: 0; padding: 0; }
     #map { position: absolute; top: 0; bottom: 0; width: 100%; }
@@ -68,12 +68,11 @@ export default class ModalExport extends React.Component {
 <body>
   <div id="map"></div>
   <script>
-      mapboxgl.accessToken = 'access_token';
-      const map = new mapboxgl.Map({
+      const map = new maplibregl.Map({
          container: 'map',
          style: ${tokenStyle},
       });
-      map.addControl(new mapboxgl.NavigationControl());
+      map.addControl(new maplibregl.NavigationControl());
   </script>
 </body>
 </html>
@@ -119,12 +118,6 @@ export default class ModalExport extends React.Component {
         </p>
 
         <div>
-          <FieldString
-            label={fieldSpecAdditional.maputnik.mapbox_access_token.label}
-            fieldSpec={fieldSpecAdditional.maputnik.mapbox_access_token}
-            value={(this.props.mapStyle.metadata || {})['maputnik:mapbox_access_token']}
-            onChange={this.changeMetadataProperty.bind(this, "maputnik:mapbox_access_token")}
-          />
           <FieldString
             label={fieldSpecAdditional.maputnik.maptiler_access_token.label}
             fieldSpec={fieldSpecAdditional.maputnik.maptiler_access_token}

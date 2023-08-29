@@ -116,7 +116,6 @@ function stripAccessTokens(mapStyle) {
   const changedMetadata = {
     ...mapStyle.metadata
   };
-  delete changedMetadata['maputnik:mapbox_access_token'];
   delete changedMetadata['maputnik:openmaptiles_access_token'];
   return {
     ...mapStyle,

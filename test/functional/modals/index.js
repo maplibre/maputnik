@@ -184,19 +184,6 @@ describe("modals", function() {
       assert.equal(styleObj.glyphs, glyphsUrl);
     })
 
-    it("mapbox access token", async function() {
-      var apiKey = "testing123";
-      await browser.setValueSafe(wd.$("modal:settings.maputnik:mapbox_access_token"), apiKey);
-      const elem = await $(wd.$("modal:settings.name"));
-      await elem.click();
-      await browser.flushReactUpdates();
-
-      var styleObj = await helper.getStyleStore(browser);
-      await browser.waitUntil(function() {
-        return styleObj.metadata["maputnik:mapbox_access_token"] == apiKey;
-      })
-    })
-
     it("maptiler access token", async function() {
       var apiKey = "testing123";
       await browser.setValueSafe(wd.$("modal:settings.maputnik:openmaptiles_access_token"), apiKey);

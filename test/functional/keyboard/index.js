@@ -44,7 +44,7 @@ describe("keyboard", function() {
 
     it("'m' should focus map", async function() {
       await browser.keys(["m"]);
-      assert(await (await $(".mapboxgl-canvas")).isFocused());
+      assert(await (await $(".maplibregl-canvas")).isFocused());
     });
 
     it("'!' should show debug modal", async function() {

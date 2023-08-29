@@ -13,8 +13,8 @@ describe("map", function() {
 
       await browser.waitUntil(async function () {
         return (
-          await browser.isVisible(".mapboxgl-ctrl-zoom")
-          && await browser.getText(".mapboxgl-ctrl-zoom") === "Zoom level: "+(zoomLevel)
+          await browser.isVisible(".maplibregl-ctrl-zoom")
+          && await browser.getText(".maplibregl-ctrl-zoom") === "Zoom level: "+(zoomLevel)
         );
       }, 10*1000)
     })
@@ -25,9 +25,9 @@ describe("map", function() {
       ])+"#"+zoomLevel+"/41.3805/2.1635");
       await browser.alertAccept();
 
-      await browser.click(".mapboxgl-ctrl-zoom-in")
+      await browser.click(".maplibregl-ctrl-zoom-in")
       await browser.waitUntil(async function () {
-        var text = await browser.getText(".mapboxgl-ctrl-zoom")
+        var text = await browser.getText(".maplibregl-ctrl-zoom")
         return text === "Zoom level: "+(zoomLevel+1);
       }, 10*1000)
     })

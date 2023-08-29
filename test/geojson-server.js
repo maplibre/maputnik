@@ -20,7 +20,7 @@ function buildStyle(opts) {
     "version": 8,
     "name": "Test Style",
     "metadata": {
-      "maputnik:renderer": "mbgljs"
+      "maputnik:renderer": "mlgljs"
     },
     "sources": opts.sources,
     "glyphs": "https://example.local/fonts/{fontstack}/{range}.pbf",

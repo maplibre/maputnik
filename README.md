@@ -7,7 +7,7 @@
 [github-action-ci]: https://github.com/maputnik/editor/actions?query=workflow%3Aci
 [license]:          https://tldrlegal.com/license/mit-license
 
-A free and open visual editor for the [Mapbox GL styles](https://www.mapbox.com/mapbox-gl-style-spec/)
+A free and open visual editor for the [MapLibre GL styles](https://maplibre.org/maplibre-style-spec/)
 targeted at developers and map designers.
 
 
@@ -36,7 +36,7 @@ The documentation can be found in the [Wiki](https://github.com/maputnik/editor/
 
 ## Develop
 
-Maputnik is written in ES6 and is using [React](https://github.com/facebook/react) and [Mapbox GL JS](https://www.mapbox.com/mapbox-gl-js/api/).
+Maputnik is written in ES6 and is using [React](https://github.com/facebook/react) and [MapLibre GL JS](https://maplibre.org/projects/maplibre-gl-js/).
 
 We ensure building and developing Maputnik works with the [current active LTS Node.js version and above](https://github.com/nodejs/Release#release-schedule).
 

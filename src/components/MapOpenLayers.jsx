@@ -3,7 +3,7 @@ import {throttle} from 'lodash';
 import PropTypes from 'prop-types'
 import { loadJSON } from '../libs/urlopen'
 
-import MapMapboxGlLayerPopup from './MapMapboxGlLayerPopup';
+import MapMaplibreGlLayerPopup from './MapMaplibreGlLayerPopup';
 
 import 'ol/ol.css'
 import {apply} from 'ol-mapbox-style';
@@ -146,13 +146,13 @@ export default class MapOpenLayers extends React.Component {
         className="maputnik-popup"
       >
         <button
-          className="mapboxgl-popup-close-button"
+          className="maplibregl-popup-close-button"
           onClick={this.closeOverlay}
           aria-label="Close popup"
         >
           ×
         </button>
-        <MapMapboxGlLayerPopup
+        <MapMaplibreGlLayerPopup
           features={this.state.selectedFeatures || []}
           onLayerSelect={this.props.onLayerSelect}
         />

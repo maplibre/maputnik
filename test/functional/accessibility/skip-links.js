@@ -45,7 +45,7 @@ describe("skip links", function() {
     assert(await elem.isFocused());
     await elem.click();
 
-    const targetEl = await $(".mapboxgl-canvas");
+    const targetEl = await $(".maplibregl-canvas");
     assert(await targetEl.isFocused());
   });
 });
