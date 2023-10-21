@@ -152,7 +152,7 @@ export default class AppToolbar extends React.Component {
         id: "inspect",
         group: "general",
         title: "Inspect",
-        disabled: this.props.renderer === 'ol',
+        disabled: this.props.renderer !== 'mlgljs',
       },
       {
         id: "filter-deuteranopia",
