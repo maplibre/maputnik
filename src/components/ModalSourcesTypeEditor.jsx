@@ -8,7 +8,6 @@ import FieldSelect from './FieldSelect'
 import FieldDynamicArray from './FieldDynamicArray'
 import FieldArray from './FieldArray'
 import FieldJson from './FieldJson'
-import FieldCheckbox from './FieldCheckbox'
 
 
 class TileJSONSourceEditor extends React.Component {
@@ -81,7 +80,7 @@ class TileURLSourceEditor extends React.Component {
         })}
       />
       {this.props.children}
-    </div>
+  </div>
 
   }
 }
@@ -206,35 +205,23 @@ class GeoJSONSourceFieldJsonEditor extends React.Component {
   }
 
   render() {
-    return <div>
-      <Block label={"GeoJSON"} fieldSpec={latest.source_geojson.data}>
-        <FieldJson
-          layer={this.props.source.data}
-          maxHeight={200}
-          mode={{
-            name: "javascript",
-            json: true
-          }}
-          lint={true}
-          onChange={data => {
-            this.props.onChange({
-              ...this.props.source,
-              data,
-            })
-          }}
-        />
-      </Block>
-      <FieldCheckbox
-        label={'Cluster'}
-        value={this.props.source.cluster}
-        onChange={cluster => {
+    return <Block label={"GeoJSON"} fieldSpec={latest.source_geojson.data}>
+      <FieldJson
+        layer={this.props.source.data}
+        maxHeight={200}
+        mode={{
+          name: "javascript",
+          json: true
+        }}
+        lint={true}
+        onChange={data => {
           this.props.onChange({
             ...this.props.source,
-            cluster: cluster,
+            data,
           })
         }}
       />
-    </div>
+    </Block>
   }
 }
 
