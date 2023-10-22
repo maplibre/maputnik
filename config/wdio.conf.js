@@ -11,6 +11,7 @@ var SCREENSHOT_PATH = artifacts.pathSync("screenshots");
 exports.config = {
   runner: 'local',
   path: '/wd/hub',
+
   specs: [
     './test/functional/index.js'
   ],
@@ -19,6 +20,9 @@ exports.config = {
     {
       maxInstances: 5,
       browserName: (process.env.BROWSER || 'chrome'),
+      'goog:chromeOptions': {
+        args: ['headless=new']
+      }
     }
   ],
   // geckodriver-0.31 seems to have problems as of 2022 May 1
