@@ -162,8 +162,7 @@ jobs:
 
     services:
       selenium:
-        # geckodriver-0.31 seems to have problems as of 2022 May 1
-        image: selenium/standalone-${{ matrix.browser == 'firefox' && 'firefox:99.0-geckodriver-0.30-20220427' || matrix.browser }}
+        image: selenium/standalone-${{ matrix.browser }}
         ports:
         - 4444:4444
         options: --shm-size=2gb
