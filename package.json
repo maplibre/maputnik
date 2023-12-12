@@ -1,20 +1,16 @@
 {
   "name": "maputnik",
-  "version": "2.0.0-pre.1",
+  "version": "2.0.0-pre.2",
   "description": "A MapLibre GL visual style editor",
   "main": "''",
   "scripts": {
-    "stats": "cross-env NODE_OPTIONS=--openssl-legacy-provider webpack --config config/webpack.production.config.js --progress=profile --json > stats.json",
-    "build": "cross-env NODE_OPTIONS=--openssl-legacy-provider webpack --config config/webpack.production.config.js --progress=profile --color",
-    "profiling-build": "cross-env NODE_OPTIONS=--openssl-legacy-provider webpack --config config/webpack.profiling.config.js --progress=profile --color",
+    "start": "vite",
+    "build": "tsc && vite build",
+    "lint": "eslint ./src --ext ts,tsx,js,jsx --report-unused-disable-directives --max-warnings 0 && npm run lint-css",
     "test": "cross-env NODE_OPTIONS=--openssl-legacy-provider cross-env NODE_ENV=test wdio config/wdio.conf.js",
     "test-watch": "cross-env NODE_OPTIONS=--openssl-legacy-provider cross-env NODE_ENV=test wdio config/wdio.conf.js --watch",
-    "start": "cross-env NODE_OPTIONS=--openssl-legacy-provider webpack-dev-server --progress=profile --color --config config/webpack.config.js",
-    "start-prod": "cross-env NODE_OPTIONS=--openssl-legacy-provider webpack-dev-server --progress=profile --color --config config/webpack.production.config.js",
     "start-sandbox": "cross-env NODE_OPTIONS=--openssl-legacy-provider webpack-dev-server --disable-host-check --host 0.0.0.0 --progress=profile --color --config config/webpack.production.config.js",
-    "lint-js": "eslint --ext js --ext jsx src test",
     "lint-css": "stylelint \"src/styles/*.scss\"",
-    "lint": "npm run lint-js && npm run lint-css",
     "storybook": "cross-env NODE_OPTIONS=--openssl-legacy-provider start-storybook -h 0.0.0.0 -p 6006",
     "build-storybook": "cross-env NODE_OPTIONS=--openssl-legacy-provider build-storybook -o build/storybook"
   },
@@ -26,7 +22,6 @@
   "license": "MIT",
   "homepage": "https://github.com/maputnik/editor#readme",
   "dependencies": {
-    "@babel/runtime": "^7.17.9",
     "@mapbox/mapbox-gl-rtl-text": "^0.2.3",
     "@maplibre/maplibre-gl-style-spec": "^17.0.1",
     "@mdi/react": "^1.5.0",
@@ -89,43 +84,9 @@
       ]
     }
   },
-  "eslintConfig": {
-    "plugins": [
-      "react"
-    ],
-    "extends": [
-      "plugin:react/recommended"
-    ],
-    "env": {
-      "browser": true,
-      "node": true,
-      "es6": true
-    },
-    "parser": "@babel/eslint-parser",
-    "parserOptions": {
-      "ecmaVersion": 6,
-      "sourceType": "module",
-      "ecmaFeatures": {
-        "impliedStrict": true,
-        "experimentalObjectRestSpread": true,
-        "jsx": true
-      }
-    },
-    "settings": {
-      "react": {
-        "version": "detect"
-      }
-    }
-  },
   "devDependencies": {
-    "@babel/core": "^7.17.9",
-    "@babel/eslint-parser": "^7.19.1",
-    "@babel/plugin-proposal-class-properties": "^7.16.7",
-    "@babel/plugin-transform-runtime": "^7.17.0",
-    "@babel/preset-env": "^7.16.11",
-    "@babel/preset-flow": "^7.16.7",
-    "@babel/preset-react": "^7.16.7",
     "@mdi/js": "^6.6.96",
+    "@rollup/plugin-replace": "^5.0.5",
     "@storybook/addon-a11y": "^6.4.20",
     "@storybook/addon-actions": "^6.4.20",
     "@storybook/addon-links": "^6.4.20",
@@ -133,20 +94,21 @@
     "@storybook/addons": "^6.4.20",
     "@storybook/react": "^6.4.20",
     "@storybook/theming": "^6.4.20",
+    "@types/react": "^16.14.52",
+    "@types/react-dom": "^16.9.24",
+    "@vitejs/plugin-react": "^4.2.0",
     "@wdio/cli": "^7.19.3",
     "@wdio/local-runner": "^7.19.3",
     "@wdio/mocha-framework": "^7.19.3",
     "@wdio/selenium-standalone-service": "^7.19.1",
     "@wdio/spec-reporter": "^7.19.1",
-    "babel-loader": "^8.2.4",
-    "babel-plugin-istanbul": "^6.1.1",
-    "babel-plugin-static-fs": "^3.0.0",
-    "copy-webpack-plugin": "^6.4.1",
     "cors": "^2.8.5",
     "cross-env": "^7.0.3",
     "css-loader": "^5.2.7",
-    "eslint": "^8.12.0",
-    "eslint-plugin-react": "^7.29.4",
+    "eslint": "^8.53.0",
+    "eslint-plugin-react": "^7.33.2",
+    "eslint-plugin-react-hooks": "^4.6.0",
+    "eslint-plugin-react-refresh": "^0.4.4",
     "express": "^4.17.3",
     "html-webpack-inline-svg-plugin": "^2.3.0",
     "html-webpack-plugin": "^4.5.2",
@@ -163,13 +125,9 @@
     "stylelint-scss": "^4.2.0",
     "svg-inline-loader": "^0.8.2",
     "transform-loader": "^0.2.4",
-    "typescript": "^4.6.3",
+    "typescript": "^5.3.3",
     "uuid": "^8.3.2",
-    "webdriverio": "^7.19.3",
-    "webpack": "^4.46.0",
-    "webpack-bundle-analyzer": "^4.5.0",
-    "webpack-cleanup-plugin": "^0.5.1",
-    "webpack-cli": "^4.9.2",
-    "webpack-dev-server": "^4.8.1"
+    "vite": "^5.0.0",
+    "webdriverio": "^7.19.3"
   }
 }

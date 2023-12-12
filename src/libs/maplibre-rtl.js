@@ -1,11 +1,3 @@
 import MapLibreGl from "maplibre-gl"
-import {readFileSync} from 'fs'
 
-const data = readFileSync(__dirname+"/../../node_modules/@mapbox/mapbox-gl-rtl-text/mapbox-gl-rtl-text.js", "utf8");
-
-const blob = new window.Blob([data], {
-  type: "text/javascript"
-});
-const objectUrl = window.URL.createObjectURL(blob);
-
-MapLibreGl.setRTLTextPlugin(objectUrl, () => {});
+MapLibreGl.setRTLTextPlugin('https://unpkg.com/@mapbox/mapbox-gl-rtl-text@0.2.3/mapbox-gl-rtl-text.min.js');

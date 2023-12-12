@@ -2,9 +2,9 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <title><%= htmlWebpackPlugin.options.title %></title>
+  <title>Maputnik</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="manifest" href="manifest.json">
+  <link rel="manifest" href="src/manifest.json">
   <style>
     html {
       background-color: rgb(28, 31, 36);
@@ -23,7 +23,7 @@
       align-items: center;
     }
 
-    .loading__logo svg {
+    .loading__logo img {
       width: 200px;
       height: 200px;
     }
@@ -38,7 +38,6 @@
   </style>
 </head>
 <body>
-  <!-- TODO: Import dynamically -->
   <!-- From <https://github.com/hail2u/color-blindness-emulation> -->
   <svg
     aria-hidden="true"
@@ -123,10 +122,10 @@
   <div id="app"></div>
   <div class="loading">
     <div class="loading__logo">
-      <!-- replaced by 'html-webpack-inline-svg-plugin' -->
       <img inline src="node_modules/maputnik-design/logos/logo-loading.svg" />
     </div>
     <div class="loading__text">Loading&hellip;</div>
   </div>
+  <script type="module" src="/src/index.jsx"></script>
 </body>
 </html>

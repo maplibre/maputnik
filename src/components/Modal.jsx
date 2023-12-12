@@ -27,9 +27,9 @@ export default class Modal extends React.Component {
       document.activeElement.blur();
     }
 
-    setImmediate(() => {
+    setTimeout(() => {
       this.props.onOpenToggle(false);
-    });
+    }, 0);
   }
 
   render() {

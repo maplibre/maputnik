@@ -8,7 +8,6 @@ import Fieldset from './Fieldset'
 const typeMap = {
   color: () => Block,
   enum: ({fieldSpec}) => (Object.keys(fieldSpec.values).length <= 3 ? Fieldset : Block),
-  number: () => Block,
   boolean: () => Block,
   array: () => Fieldset,
   resolvedImage: () => Block,

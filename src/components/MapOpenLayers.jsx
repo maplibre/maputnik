@@ -1,13 +1,12 @@
 import React from 'react'
 import {throttle} from 'lodash';
 import PropTypes from 'prop-types'
-import { loadJSON } from '../libs/urlopen'
 
 import MapMaplibreGlLayerPopup from './MapMaplibreGlLayerPopup';
 
 import 'ol/ol.css'
 import {apply} from 'ol-mapbox-style';
-import {Map, View, Proj, Overlay} from 'ol';
+import {Map, View, Overlay} from 'ol';
 
 import {toLonLat} from 'ol/proj';
 import {toStringHDMS} from 'ol/coordinate';
