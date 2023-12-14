@@ -1,55 +1,55 @@
 var assert = require("assert");
-var wd     = require("../../wd-helper");
-
+var driver = require("../driver");
 
 describe("keyboard", function() {
   describe("shortcuts", function() {
     it("ESC should unfocus", async function() {
-      const tmpTargetEl = await $(wd.$("nav:inspect") + " select");
-      await tmpTargetEl.click();
-      assert(await tmpTargetEl.isFocused());
+      const targetSelector = driver.getDataAttribute("nav:inspect") + " select";
+      driver.click(targetSelector);
+      assert(await driver.isFocused(targetSelector));
 
-      await browser.keys(["Escape"]);
+      await driver.typeKeys(["Escape"]);
       assert(await (await $("body")).isFocused());
     });
 
     it("'?' should show shortcuts modal", async function() {
-      await browser.keys(["?"]);
-      assert(await (await $(wd.$("modal:shortcuts"))).isDisplayed());
+      await driver.typeKeys(["?"]);
+      assert(await driver.isDisplayedInViewport(driver.getDataAttribute("modal:shortcuts")));
     });
 
     it("'o' should show open modal", async function() {
-      await browser.keys(["o"]);
-      assert(await (await $(wd.$("modal:open"))).isDisplayed());
+      await driver.typeKeys(["o"]);
+      assert(await driver.isDisplayedInViewport(driver.getDataAttribute("modal:open")));
     });
 
     it("'e' should show export modal", async function() {
-      await browser.keys(["e"]);
-      assert(await (await $(wd.$("modal:export"))).isDisplayed());
+      await driver.typeKeys(["e"]);
+      await driver.sleep(100);
+      assert(await driver.isDisplayedInViewport(driver.getDataAttribute("modal:export")));
     });
 
     it("'d' should show sources modal", async function() {
-      await browser.keys(["d"]);
-      assert(await (await $(wd.$("modal:sources"))).isDisplayed());
+      await driver.typeKeys(["d"]);
+      assert(await driver.isDisplayedInViewport(driver.getDataAttribute("modal:sources")));
     });
 
     it("'s' should show settings modal", async function() {
-      await browser.keys(["s"]);
-      assert(await (await $(wd.$("modal:settings"))).isDisplayed());
+      await driver.typeKeys(["s"]);
+      assert(await driver.isDisplayedInViewport(driver.getDataAttribute("modal:settings")));
     });
 
     it.skip("'i' should change map to inspect mode", async function() {
-      // await browser.keys(["i"]);
+      // await driver.typeKeys(["i"]);
     });
 
     it("'m' should focus map", async function() {
-      await browser.keys(["m"]);
-      assert(await (await $(".maplibregl-canvas")).isFocused());
+      await driver.typeKeys(["m"]);
+      assert(await driver.isFocused(".maplibregl-canvas"));
     });
 
     it("'!' should show debug modal", async function() {
-      await browser.keys(["!"]);
-      assert(await (await $(wd.$("modal:debug"))).isDisplayed());
+      await driver.typeKeys(["!"]);
+      assert(await driver.isDisplayedInViewport(driver.getDataAttribute("modal:debug")));
     });
   });
 

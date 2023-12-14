@@ -27,7 +27,7 @@ exports.config = {
   ],
   // geckodriver-0.31 seems to have problems as of 2022 May 1
   services: process.env.DOCKER_HOST ? [] : [ ['selenium-standalone', { drivers: { firefox: 'latest', chrome: 'latest' } } ] ],
-  logLevel: 'info',
+  logLevel: 'warn',
   bail: 0,
   screenshotPath: SCREENSHOT_PATH,
   hostname: process.env.DOCKER_HOST || "0.0.0.0",

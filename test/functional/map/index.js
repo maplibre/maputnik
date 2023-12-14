@@ -1,16 +1,10 @@
-var config = require("../../config/specs");
-var helper = require("../helper");
-
+var driver = require("../driver");
 
 describe("map", function() {
   describe.skip("zoom level", function() {
     it("via url", async function() {
-      var zoomLevel = "12.37"
-      await browser.url(config.baseUrl+"?debug&style="+helper.getStyleUrl([
-        "geojson:example"
-      ])+"#"+zoomLevel+"/41.3805/2.1635");
-      await browser.alertAccept();
-
+      var zoomLevel = "12.37";
+      await driver.setStyle(["geojson:example"], zoomLevel);
       await browser.waitUntil(async function () {
         return (
           await browser.isVisible(".maplibregl-ctrl-zoom")
@@ -20,12 +14,9 @@ describe("map", function() {
     })
     it("via map controls", async function() {
       var zoomLevel = 12.37;
-      await browser.url(config.baseUrl+"?debug&style="+helper.getStyleUrl([
-        "geojson:example"
-      ])+"#"+zoomLevel+"/41.3805/2.1635");
-      await browser.alertAccept();
+      await driver.setStyle(["geojson:example"], zoomLevel);
 
-      await browser.click(".maplibregl-ctrl-zoom-in")
+      await driver.click(".maplibregl-ctrl-zoom-in");
       await browser.waitUntil(async function () {
         var text = await browser.getText(".maplibregl-ctrl-zoom")
         return text === "Zoom level: "+(zoomLevel+1);
