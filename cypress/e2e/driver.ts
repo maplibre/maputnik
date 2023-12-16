@@ -16,7 +16,8 @@ export default {
       cy.intercept('GET', 'http://localhost:8888/geojson-style.json', { fixture: 'geojson-style.json' });
       cy.intercept('GET', 'http://localhost:8888/raster-style.json', { fixture: 'raster-style.json' });
       cy.intercept('GET', 'http://localhost:8888/geojson-raster-style.json', { fixture: 'geojson-raster-style.json' });
-      cy.intercept({method: 'GET', url: '*example.com/*', },[]);
+      cy.intercept({method: 'GET', url: '*example.local/*' }, []);
+      cy.intercept({method: 'GET', url: '*example.com/*' }, []);
     },
 
     setStyle(styleProperties: 'geojson' | 'raster' | 'both' | 'layer' | '', zoom? : number) {
@@ -66,11 +67,24 @@ export default {
         cy.get(this.getDataAttribute('modal:add-layer')).should('be.visible');
       },
 
-      async getStyleStore(): Promise<any> {
-        return new Promise((resolve) => {
-            cy.window().then((win: any) => {
-                return win.debug.get("maputnik", "styleStore").latestStyle(resolve);
-            });
+      getStyleFromWindow(win: Window) {
+        const styleId = win.localStorage.getItem("maputnik:latest_style");
+        const styleItem = win.localStorage.getItem(`maputnik:style:${styleId}`)
+        const obj = JSON.parse(styleItem || "");
+        return obj;
+      },
+
+      isStyleStoreEqual(getter: (obj:any) => any, styleObj: any) {
+        cy.window().then((win: any) => {
+          const obj = this.getStyleFromWindow(win);
+          assert.deepEqual(getter(obj), styleObj);
+        });
+      },
+
+      isStyleStoreEqualToExampleFileData() {
+        cy.window().then((win: any) => {
+          const obj = this.getStyleFromWindow(win);
+          cy.fixture('example-style.json').should('deep.equal', obj);
         });
       },
 
@@ -142,10 +156,6 @@ export default {
 
       chooseExampleFile() {
         cy.get("input[type='file']").selectFile('cypress/fixtures/example-style.json', {force: true});
-      },
-
-      isEqualToExampleFileData(styleObject: any) {
-        return cy.fixture('example-style.json').should('deep.equal', styleObject);
       },
 
       getExampleFileUrl() {

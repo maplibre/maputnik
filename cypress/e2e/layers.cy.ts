@@ -10,14 +10,12 @@ describe("layers", () => {
   });
 
   describe("ops", () => {
-    it("delete", async () => {
-      var styleObj;
+    it("delete", () => {
       var id = driver.fillLayersModal({
         type: "background"
       })
 
-      styleObj = await driver.getStyleStore();
-      assert.deepEqual(styleObj.layers, [
+      driver.isStyleStoreEqual((a: any) => a.layers, [
         {
           "id": id,
           "type": 'background'
@@ -26,18 +24,16 @@ describe("layers", () => {
 
       driver.click(driver.getDataAttribute("layer-list-item:"+id+":delete", ""))
 
-      styleObj = await driver.getStyleStore();
-      assert.deepEqual(styleObj.layers, []);
+      driver.isStyleStoreEqual((a: any) => a.layers, []);
     });
 
-    it("duplicate", async () => {
+    it("duplicate", () => {
       var styleObj;
       var id = driver.fillLayersModal({
         type: "background"
       })
 
-      styleObj = await driver.getStyleStore();
-      assert.deepEqual(styleObj.layers, [
+      driver.isStyleStoreEqual((a: any) => a.layers, [
         {
           "id": id,
           "type": 'background'
@@ -46,8 +42,7 @@ describe("layers", () => {
 
       driver.click(driver.getDataAttribute("layer-list-item:"+id+":copy", ""));
 
-      styleObj = await driver.getStyleStore();
-      assert.deepEqual(styleObj.layers, [
+      driver.isStyleStoreEqual((a: any) => a.layers, [
         {
           "id": id+"-copy",
           "type": "background"
@@ -59,14 +54,13 @@ describe("layers", () => {
       ]);
     });
 
-    it("hide", async () => {
+    it("hide", () => {
       var styleObj;
       var id = driver.fillLayersModal({
         type: "background"
       })
 
-      styleObj = await driver.getStyleStore();
-      assert.deepEqual(styleObj.layers, [
+      driver.isStyleStoreEqual((a: any) => a.layers, [
         {
           "id": id,
           "type": 'background'
@@ -75,8 +69,7 @@ describe("layers", () => {
 
       driver.click(driver.getDataAttribute("layer-list-item:"+id+":toggle-visibility", ""));
 
-      styleObj = await driver.getStyleStore();
-      assert.deepEqual(styleObj.layers, [
+      driver.isStyleStoreEqual((a: any) => a.layers, [
         {
           "id": id,
           "type": "background",
@@ -86,10 +79,9 @@ describe("layers", () => {
         },
       ]);
 
-      await driver.click(driver.getDataAttribute("layer-list-item:"+id+":toggle-visibility", ""));
+      driver.click(driver.getDataAttribute("layer-list-item:"+id+":toggle-visibility", ""));
 
-      styleObj = await driver.getStyleStore();
-      assert.deepEqual(styleObj.layers, [
+      driver.isStyleStoreEqual((a: any) => a.layers, [
         {
           "id": id,
           "type": "background",
@@ -102,15 +94,14 @@ describe("layers", () => {
   })
 
 
-  describe('background', function () {
+  describe('background', () => {
 
-    it("add", async () => {
+    it("add", () => {
       var id = driver.fillLayersModal({
         type: "background"
       })
 
-      var styleObj = await driver.getStyleStore();
-      assert.deepEqual(styleObj.layers, [
+      driver.isStyleStoreEqual((a: any) => a.layers, [
         {
           "id": id,
           "type": 'background'
@@ -119,7 +110,7 @@ describe("layers", () => {
     });
 
     describe("modify", () => {
-      async function createBackground() {
+      function createBackground() {
         // Setup
         var id = uuid();
 
@@ -128,8 +119,7 @@ describe("layers", () => {
 
         driver.click(driver.getDataAttribute("add-layer"));
 
-        var styleObj = await driver.getStyleStore();
-        assert.deepEqual(styleObj.layers, [
+        driver.isStyleStoreEqual((a: any) => a.layers, [
           {
             "id": 'background:'+id,
             "type": 'background'
@@ -141,8 +131,8 @@ describe("layers", () => {
       // ====> THESE SHOULD BE FROM THE SPEC
       describe("layer", () => {
         it("expand/collapse");
-        it("id", async () => {
-          var bgId = await createBackground();
+        it("id", () => {
+          var bgId = createBackground();
 
           driver.click(driver.getDataAttribute("layer-list-item:background:"+bgId));
 
@@ -150,8 +140,7 @@ describe("layers", () => {
           driver.setValue(driver.getDataAttribute("layer-editor.layer-id", "input"), "foobar:"+id)
           driver.click(driver.getDataAttribute("min-zoom"));
 
-          var styleObj = await driver.getStyleStore();
-          assert.deepEqual(styleObj.layers, [
+          driver.isStyleStoreEqual((a: any) => a.layers, [
             {
               "id": 'foobar:'+id,
               "type": 'background'
@@ -159,16 +148,15 @@ describe("layers", () => {
           ]);
         });
 
-        it("min-zoom", async () => {
-          var bgId = await createBackground();
+        it("min-zoom", () => {
+          var bgId = createBackground();
 
           driver.click(driver.getDataAttribute("layer-list-item:background:"+bgId));
           driver.setValue(driver.getDataAttribute("min-zoom", 'input[type="text"]'), "1");
 
           driver.click(driver.getDataAttribute("layer-editor.layer-id", "input"));
 
-          var styleObj = await driver.getStyleStore();
-          assert.deepEqual(styleObj.layers, [
+          driver.isStyleStoreEqual((a: any) => a.layers, [
             {
               "id": 'background:'+bgId,
               "type": 'background',
@@ -177,12 +165,10 @@ describe("layers", () => {
           ]);
 
           // AND RESET!
-          // await driver.setValue(driver.getDataAttribute("min-zoom", "input"), "")
-          // await driver.click(driver.getDataAttribute("max-zoom", "input"));
+          // driver.setValue(driver.getDataAttribute("min-zoom", "input"), "")
+          // driver.click(driver.getDataAttribute("max-zoom", "input"));
 
-          // var styleObj = await driver.getStyleStore();
-
-          // assert.deepEqual(styleObj.layers, [
+          // driver.isStyleStoreEqual((a: any) => a.layers, [
           //   {
           //     "id": 'background:'+bgId,
           //     "type": 'background'
@@ -190,16 +176,15 @@ describe("layers", () => {
           // ]);
         });
 
-        it("max-zoom", async () => {
-          var bgId = await createBackground();
+        it("max-zoom", () => {
+          var bgId = createBackground();
 
           driver.click(driver.getDataAttribute("layer-list-item:background:"+bgId));
           driver.setValue(driver.getDataAttribute("max-zoom", 'input[type="text"]'), "1")
 
           driver.click(driver.getDataAttribute("layer-editor.layer-id", "input"));
 
-          var styleObj = await driver.getStyleStore();
-          assert.deepEqual(styleObj.layers, [
+          driver.isStyleStoreEqual((a: any) => a.layers, [
             {
               "id": 'background:'+bgId,
               "type": 'background',
@@ -208,17 +193,16 @@ describe("layers", () => {
           ]);
         });
 
-        it("comments", async () => {
-          var bgId = await createBackground();
+        it("comments", () => {
+          var bgId = createBackground();
           var id = uuid();
 
-          await driver.click(driver.getDataAttribute("layer-list-item:background:"+bgId));
-          await driver.setValue(driver.getDataAttribute("layer-comment", "textarea"), id);
+          driver.click(driver.getDataAttribute("layer-list-item:background:"+bgId));
+          driver.setValue(driver.getDataAttribute("layer-comment", "textarea"), id);
 
-          await driver.click(driver.getDataAttribute("layer-editor.layer-id", "input"));
+          driver.click(driver.getDataAttribute("layer-editor.layer-id", "input"));
 
-          var styleObj = await driver.getStyleStore();
-          assert.deepEqual(styleObj.layers, [
+          driver.isStyleStoreEqual((a: any) => a.layers, [
             {
               "id": 'background:'+bgId,
               "type": 'background',
@@ -230,12 +214,10 @@ describe("layers", () => {
 
           // Unset it again.
           // TODO: This fails
-          // await driver.setValue(driver.getDataAttribute("layer-comment", "textarea"), "");
-          // await driver.click(driver.getDataAttribute("min-zoom", "input"));
-          // await driver.zeroTimeout();
+          // driver.setValue(driver.getDataAttribute("layer-comment", "textarea"), "");
+          // driver.click(driver.getDataAttribute("min-zoom", "input"));
 
-          // var styleObj = await driver.getStyleStore();
-          // assert.deepEqual(styleObj.layers, [
+          // driver.isStyleStoreEqual((a: any) => a.layers, [
           //   {
           //     "id": 'background:'+bgId,
           //     "type": 'background'
@@ -243,15 +225,14 @@ describe("layers", () => {
           // ]);
         });
 
-        it("color", async () => {
-          var bgId = await createBackground();
+        it("color", () => {
+          var bgId = createBackground();
 
-          await driver.click(driver.getDataAttribute("layer-list-item:background:"+bgId));
+          driver.click(driver.getDataAttribute("layer-list-item:background:"+bgId));
 
-          await driver.click(driver.getDataAttribute("spec-field:background-color", "input"));
+          driver.click(driver.getDataAttribute("spec-field:background-color", "input"));
 
-          var styleObj = await driver.getStyleStore();
-          assert.deepEqual(styleObj.layers, [
+          driver.isStyleStoreEqual((a: any) => a.layers, [
             {
               "id": 'background:'+bgId,
               "type": 'background'
@@ -279,8 +260,8 @@ describe("layers", () => {
         it("modify");
 
         // TODO
-        it.skip("parse error", async () => {
-          var bgId = await createBackground();
+        it.skip("parse error", () => {
+          var bgId = createBackground();
 
           driver.click(driver.getDataAttribute("layer-list-item:background:"+bgId));
 
@@ -298,15 +279,14 @@ describe("layers", () => {
   });
 
   describe('fill', () => {
-    it("add", async () => {
+    it("add", () => {
 
       var id = driver.fillLayersModal({
         type: "fill",
         layer: "example"
       });
 
-      var styleObj = await driver.getStyleStore();
-      assert.deepEqual(styleObj.layers, [
+      driver.isStyleStoreEqual((a: any) => a.layers, [
         {
           "id": id,
           "type": 'fill',
@@ -320,14 +300,13 @@ describe("layers", () => {
   });
 
   describe('line', () => {
-    it("add", async () => {
+    it("add", () => {
       var id = driver.fillLayersModal({
         type: "line",
         layer: "example"
       });
 
-      var styleObj = await driver.getStyleStore();
-      assert.deepEqual(styleObj.layers, [
+      driver.isStyleStoreEqual((a: any) => a.layers, [
         {
           "id": id,
           "type": "line",
@@ -343,14 +322,13 @@ describe("layers", () => {
   });
 
   describe('symbol', () => {
-    it("add", async () => {
+    it("add", () => {
       var id = driver.fillLayersModal({
         type: "symbol",
         layer: "example"
       });
 
-      var styleObj = await driver.getStyleStore();
-      assert.deepEqual(styleObj.layers, [
+      driver.isStyleStoreEqual((a: any) => a.layers, [
         {
           "id": id,
           "type": "symbol",
@@ -361,14 +339,13 @@ describe("layers", () => {
   });
 
   describe('raster', () => {
-    it("add", async () => {
+    it("add", () => {
       var id = driver.fillLayersModal({
         type: "raster",
         layer: "raster"
       });
 
-      var styleObj = await driver.getStyleStore();
-      assert.deepEqual(styleObj.layers, [
+      driver.isStyleStoreEqual((a: any) => a.layers, [
         {
           "id": id,
           "type": "raster",
@@ -379,14 +356,13 @@ describe("layers", () => {
   });
 
   describe('circle', () => {
-    it("add", async () => {
+    it("add", () => {
       var id = driver.fillLayersModal({
         type: "circle",
         layer: "example"
       });
 
-      var styleObj = await driver.getStyleStore();
-      assert.deepEqual(styleObj.layers, [
+      driver.isStyleStoreEqual((a: any) => a.layers, [
         {
           "id": id,
           "type": "circle",
@@ -398,14 +374,13 @@ describe("layers", () => {
   });
 
   describe('fill extrusion', () => {
-    it("add", async () => {
+    it("add", () => {
       var id = driver.fillLayersModal({
         type: "fill-extrusion",
         layer: "example"
       });
 
-      var styleObj = await driver.getStyleStore();
-      assert.deepEqual(styleObj.layers, [
+      driver.isStyleStoreEqual((a: any) => a.layers, [
         {
           "id": id,
           "type": 'fill-extrusion',
@@ -417,7 +392,7 @@ describe("layers", () => {
 
 
   describe("groups", () => {
-    it("simple", async () => {
+    it("simple", () => {
       driver.setStyle("geojson");
 
       driver.openLayersModal();

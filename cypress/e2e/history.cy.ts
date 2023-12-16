@@ -11,22 +11,18 @@ describe("history", () => {
     driver.beforeEach();
   });
 
-  it("undo/redo", async () => {
-    var styleObj;
-
+  it("undo/redo", () => {
     driver.setStyle('geojson');
     driver.openLayersModal();
 
-    styleObj = await driver.getStyleStore();
-    assert.deepEqual(styleObj.layers, []);
+    driver.isStyleStoreEqual((a: any) => a.layers, []);
 
     driver.fillLayersModal({
       id: "step 1",
       type: "background"
     })
 
-    styleObj = await driver.getStyleStore();
-    assert.deepEqual(styleObj.layers, [
+    driver.isStyleStoreEqual((a: any) => a.layers, [
       {
         "id": "step 1",
         "type": 'background'
@@ -39,8 +35,7 @@ describe("history", () => {
       type: "background"
     })
 
-    styleObj = await driver.getStyleStore();
-    assert.deepEqual(styleObj.layers, [
+    driver.isStyleStoreEqual((a: any) => a.layers, [
       {
         "id": "step 1",
         "type": 'background'
@@ -52,8 +47,7 @@ describe("history", () => {
     ]);
 
     driver.typeKeys(undoKeyCombo);
-    styleObj = await driver.getStyleStore();
-    assert.deepEqual(styleObj.layers, [
+    driver.isStyleStoreEqual((a: any) => a.layers, [
       {
         "id": "step 1",
         "type": 'background'
@@ -61,13 +55,10 @@ describe("history", () => {
     ]);
 
     driver.typeKeys(undoKeyCombo)
-    styleObj = await driver.getStyleStore();
-    assert.deepEqual(styleObj.layers, [
-    ]);
+    driver.isStyleStoreEqual((a: any) => a.layers, []);
 
     driver.typeKeys(redoKeyCombo)
-    styleObj = await driver.getStyleStore();
-    assert.deepEqual(styleObj.layers, [
+    driver.isStyleStoreEqual((a: any) => a.layers, [
       {
         "id": "step 1",
         "type": 'background'
@@ -75,8 +66,7 @@ describe("history", () => {
     ]);
 
     driver.typeKeys(redoKeyCombo)
-    styleObj = await driver.getStyleStore();
-    assert.deepEqual(styleObj.layers, [
+    driver.isStyleStoreEqual((a: any) => a.layers, [
       {
         "id": "step 1",
         "type": 'background'
@@ -86,7 +76,5 @@ describe("history", () => {
         "type": 'background'
       }
     ]);
-
   });
-
 })
