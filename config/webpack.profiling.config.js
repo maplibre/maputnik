@@ -5,7 +5,7 @@ module.exports = {
   ...webpackProdConfig,
   output: {
     ...webpackProdConfig.output,
-    path: path.join(__dirname, '..', 'build' , 'profiling'),
+    path: path.join(__dirname, '..', 'build', 'profiling'),
   },
   resolve: {
     ...webpackProdConfig.resolve,
