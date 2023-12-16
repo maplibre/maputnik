@@ -6,8 +6,8 @@ describe("history", () => {
 
   before(() => {
     const isMac = driver.isMac();
-    undoKeyCombo = '{meta}z';
-    redoKeyCombo = isMac ? '{meta}{shift}z' : '{meta}y';
+    undoKeyCombo = isMac ? '{meta}z' : '{ctrl}z';
+    redoKeyCombo = isMac ? '{meta}{shift}z' : '{ctrl}y';
     driver.beforeEach();
   });
 
