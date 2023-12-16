@@ -143,6 +143,11 @@ jobs:
         path: ./src/github.com/maputnik/desktop/bin/windows/
   
   cypress-run:
+    strategy:
+      fail-fast: false
+      matrix:
+        browser: [chrome, firefox]
+
     runs-on: ubuntu-22.04
     steps:
       - name: Checkout
@@ -155,3 +160,4 @@ jobs:
         with:
           build: npm run build
           start: npm run start
+          browser: ${{ matrix.browser }}
