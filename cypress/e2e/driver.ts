@@ -16,6 +16,7 @@ export default {
       cy.intercept('GET', 'http://localhost:8888/geojson-style.json', { fixture: 'geojson-style.json' });
       cy.intercept('GET', 'http://localhost:8888/raster-style.json', { fixture: 'raster-style.json' });
       cy.intercept('GET', 'http://localhost:8888/geojson-raster-style.json', { fixture: 'geojson-raster-style.json' });
+      cy.intercept({method: 'GET', url: '*example.com/*', },[]);
     },
 
     setStyle(styleProperties: 'geojson' | 'raster' | 'both' | 'layer' | '', zoom? : number) {

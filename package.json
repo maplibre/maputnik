@@ -8,6 +8,7 @@
     "build": "cross-env NODE_OPTIONS=--openssl-legacy-provider webpack --config config/webpack.production.config.js --progress=profile --color",
     "profiling-build": "cross-env NODE_OPTIONS=--openssl-legacy-provider webpack --config config/webpack.profiling.config.js --progress=profile --color",
     "test": "cross-env NODE_OPTIONS=--openssl-legacy-provider cross-env NODE_ENV=test wdio config/wdio.conf.js",
+    "cy:run": "cypress run",
     "test-watch": "cross-env NODE_OPTIONS=--openssl-legacy-provider cross-env NODE_ENV=test wdio config/wdio.conf.js --watch",
     "start": "cross-env NODE_OPTIONS=--openssl-legacy-provider webpack-dev-server --progress=profile --color --config config/webpack.config.js",
     "start-prod": "cross-env NODE_OPTIONS=--openssl-legacy-provider webpack-dev-server --progress=profile --color --config config/webpack.production.config.js",
