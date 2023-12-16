@@ -10,7 +10,6 @@
     "test": "cross-env NODE_OPTIONS=--openssl-legacy-provider cross-env NODE_ENV=test wdio config/wdio.conf.js",
     "cy:run": "cypress run",
     "cy:open": "cypress open",
-    "test-watch": "cross-env NODE_OPTIONS=--openssl-legacy-provider cross-env NODE_ENV=test wdio config/wdio.conf.js --watch",
     "start": "cross-env NODE_OPTIONS=--openssl-legacy-provider webpack-dev-server --progress=profile --color --config config/webpack.config.js",
     "start-prod": "cross-env NODE_OPTIONS=--openssl-legacy-provider webpack-dev-server --progress=profile --color --config config/webpack.production.config.js",
     "start-sandbox": "cross-env NODE_OPTIONS=--openssl-legacy-provider webpack-dev-server --disable-host-check --host 0.0.0.0 --progress=profile --color --config config/webpack.production.config.js",

@@ -1,13 +1,10 @@
 const webpackProdConfig = require('./webpack.production.config');
-const artifacts = require("../test/artifacts");
-
-const OUTPATH = artifacts.pathSync("/profiling");
 
 module.exports = {
   ...webpackProdConfig,
   output: {
     ...webpackProdConfig.output,
-    path: OUTPATH,
+    path: "./build/profiling/",
   },
   resolve: {
     ...webpackProdConfig.resolve,
