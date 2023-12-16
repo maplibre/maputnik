@@ -13,7 +13,7 @@ module.exports = {
     app: './src/index.jsx',
   },
   output: {
-    path: "./build/build/",
+    path: path.join(__dirname, '..', 'build' , 'build'),
     filename: '[name].[contenthash].js',
     chunkFilename: '[contenthash].js'
   },

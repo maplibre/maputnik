@@ -1,10 +1,11 @@
 const webpackProdConfig = require('./webpack.production.config');
+var path = require('path');
 
 module.exports = {
   ...webpackProdConfig,
   output: {
     ...webpackProdConfig.output,
-    path: "./build/profiling/",
+    path: path.join(__dirname, '..', 'build' , 'profiling'),
   },
   resolve: {
     ...webpackProdConfig.resolve,
