@@ -1,8 +1,5 @@
 var assert = require("assert");
-var config = require("../../config/specs");
-var helper = require("../helper");
-
-
+var driver = require("../driver");
 
 describe("history", function() {
   let undoKeyCombo;
@@ -11,9 +8,7 @@ describe("history", function() {
   let redoKeyComboReset;
 
   before(async function() {
-    const isMac = await browser.execute(function() {
-      return navigator.platform.toUpperCase().indexOf('MAC') >= 0;
-    });
+    const isMac = await driver.isMac();
     undoKeyCombo = ['Meta', 'z'];
     undoKeyComboReset = ['Meta'];
     redoKeyCombo = isMac ? ['Meta', 'Shift', 'z'] : ['Meta', 'y'];
@@ -26,22 +21,18 @@ describe("history", function() {
   it.skip("undo/redo", async function() {
     var styleObj;
 
-    await browser.url(config.baseUrl+"?debug&style="+helper.getStyleUrl([
-      "geojson:example"
-    ]));
-    await browser.acceptAlert();
+    await driver.setStyle(["geojson:example"])
+    await driver.openLayersModal();
 
-    await helper.modal.addLayer.open();
-
-    styleObj = await helper.getStyleStore(browser);
+    styleObj = await driver.getStyleStore();
     assert.deepEqual(styleObj.layers, []);
 
-    await helper.modal.addLayer.fill({
+    await driver.fillLayersModal({
       id: "step 1",
       type: "background"
     })
 
-    styleObj = await helper.getStyleStore(browser);
+    styleObj = await driver.getStyleStore();
     assert.deepEqual(styleObj.layers, [
       {
         "id": "step 1",
@@ -49,13 +40,13 @@ describe("history", function() {
       }
     ]);
 
-    await helper.modal.addLayer.open();
-    await helper.modal.addLayer.fill({
+    await driver.openLayersModal();
+    await driver.fillLayersModal({
       id: "step 2",
       type: "background"
     })
 
-    styleObj = await helper.getStyleStore(browser);
+    styleObj = await driver.getStyleStore();
     assert.deepEqual(styleObj.layers, [
       {
         "id": "step 1",
@@ -67,9 +58,9 @@ describe("history", function() {
       }
     ]);
 
-    await browser.keys(undoKeyCombo)
-    await browser.keys(undoKeyComboReset);
-    styleObj = await helper.getStyleStore(browser);
+    await driver.typeKeys(undoKeyCombo);
+    await driver.typeKeys(undoKeyComboReset);
+    styleObj = await driver.getStyleStore();
     assert.deepEqual(styleObj.layers, [
       {
         "id": "step 1",
@@ -77,15 +68,15 @@ describe("history", function() {
       }
     ]);
 
-    await browser.keys(undoKeyCombo)
-    await browser.keys(undoKeyComboReset);
-    styleObj = await helper.getStyleStore(browser);
+    await driver.typeKeys(undoKeyCombo)
+    await driver.typeKeys(undoKeyComboReset);
+    styleObj = await driver.getStyleStore();
     assert.deepEqual(styleObj.layers, [
     ]);
 
-    await browser.keys(redoKeyCombo)
-    await browser.keys(redoKeyComboReset);
-    styleObj = await helper.getStyleStore(browser);
+    await driver.typeKeys(redoKeyCombo)
+    await driver.typeKeys(redoKeyComboReset);
+    styleObj = await driver.getStyleStore();
     assert.deepEqual(styleObj.layers, [
       {
         "id": "step 1",
@@ -93,9 +84,9 @@ describe("history", function() {
       }
     ]);
 
-    await browser.keys(redoKeyCombo)
-    await browser.keys(redoKeyComboReset);
-    styleObj = await helper.getStyleStore(browser);
+    await driver.typeKeys(redoKeyCombo)
+    await driver.typeKeys(redoKeyComboReset);
+    styleObj = await driver.getStyleStore();
     assert.deepEqual(styleObj.layers, [
       {
         "id": "step 1",

@@ -1,31 +1,20 @@
-var config      = require("../config/specs");
-var helper      = require("./helper");
-var extendWebdriverIO = require("./util/webdriverio-ext");
-
+var driver      = require("./driver");
 
 describe('maputnik', function() {
 
   before(async function(done) {
-    await extendWebdriverIO();
-    helper.startGeoserver(done);
+    await browser.setTimeout({ 'script': 20 * 1000 });
+    await browser.setTimeout({ 'implicit': 20 * 1000 });
+    driver.geoserver.start(done);
   });
 
   after(function(done) {
-    helper.stopGeoserver(done);
+    driver.geoserver.stop(done);
   });
 
   beforeEach(async function() {
-    await browser.url(config.baseUrl+"?debug&style="+helper.getStyleUrl([
-      "geojson:example",
-      "raster:raster"
-    ]));
-    await browser.acceptAlert();
-    await browser.execute(function() {
-      localStorage.setItem("survey", true);
-    });
-    const elem = await $(".maputnik-toolbar-link");
-    await elem.waitForExist();
-    await browser.flushReactUpdates();
+    await driver.setStyle(["geojson:example","raster:raster"]);
+    await driver.setSurvey();
   });
 
   // -------- setup --------
