@@ -21,5 +21,12 @@
       "noFallthroughCasesInSwitch": true
     },
     "include": ["src"],
-    "references": [{ "path": "./tsconfig.node.json" }]
+    "references": [{ "path": "./tsconfig.node.json" }],
+    // TODO: Remove when issue is resolved https://github.com/cypress-io/cypress/issues/27448
+    "ts-node": {
+      "compilerOptions": {
+        "module": "ESNext",
+        "moduleResolution": "Node"
+      }
+    }
 }
