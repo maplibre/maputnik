@@ -118,7 +118,7 @@ jobs:
       uses: actions/checkout@v4
       with:
         repository: maputnik/desktop
-        ref: main
+        ref: master
         path: ./src/github.com/maputnik/desktop/
 
     - name: Make
