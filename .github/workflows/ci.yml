@@ -7,21 +7,6 @@ on:
     branches: [ master ]
 
 jobs:
-
-  # post a comment linking to codesandbox with the current branch
-  # meta-demo-comment:
-  #   name: meta/demo-comment
-  #   runs-on: ubuntu-latest
-
-  #   if: ${{ github.event_name == 'pull_request' }}
-
-  #   steps:
-  #   - uses: unsplash/comment-on-pr@v1.2.0
-  #     env:
-  #       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-  #     with:
-  #       msg: "Demo: <https://codesandbox.io/embed/github/${{ github.repository }}/tree/${{ github.head_ref }}?view=preview>"
-
   build-docker:
     name: build/docker
     runs-on: ${{ matrix.os }}
@@ -94,13 +79,7 @@ jobs:
       uses: actions/upload-artifact@v1
       with:
         name: editor
-        path: build/build
-    - run: npm run profiling-build
-    - name: artifacts/editor-profiling
-      uses: actions/upload-artifact@v1
-      with:
-        name: editor-profiling
-        path: build/profiling
+        path: dist
     - name: artifacts/storybook
       uses: actions/upload-artifact@v1
       with:
