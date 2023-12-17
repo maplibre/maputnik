@@ -141,52 +141,21 @@ jobs:
       with:
         name: maputnik-windows
         path: ./src/github.com/maputnik/desktop/bin/windows/
-
-  # build and test the editor
-  test_selenium_standalone:
-    name: "test/standalone-${{ matrix.browser }} (${{ matrix.os }})"
-    runs-on: ${{ matrix.os }}
-
-    if: ${{ github.event_name == 'push' || github.event_name == 'pull_request' }}
-
+  
+  cypress-run:
     strategy:
       fail-fast: false
       matrix:
-        os: [ubuntu-latest]
-        node-version: [18]
         browser: [chrome, firefox]
 
-    container:
-      image: node:${{ matrix.node-version }}
-      options: --network-alias testhost
-
-    services:
-      selenium:
-        image: selenium/standalone-${{ matrix.browser }}
-        ports:
-        - 4444:4444
-        options: --shm-size=2gb
-
+    runs-on: ubuntu-22.04
     steps:
-    - uses: actions/checkout@v4
-    - uses: actions/cache@v1
-      with:
-        path: ~/.npm
-        key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
-        restore-keys: |
-          ${{ runner.os }}-node-
-    - run: npm ci
-    - run: BROWSER=${{ matrix.browser }} TEST_NETWORK=testhost DOCKER_HOST=selenium npm run test
-    - if: ${{ matrix.browser == 'chrome' }}
-      run: ./node_modules/.bin/istanbul report --include build/coverage/coverage.json --dir build/coverage html lcov
-    - if: ${{ matrix.browser == 'chrome' }}
-      name: artifacts/coverage
-      uses: actions/upload-artifact@v1
-      with:
-        name: coverage
-        path: build/coverage
-    - name: artifacts/screenshots
-      uses: actions/upload-artifact@v1
-      with:
-        name: screenshots-${{ matrix.browser }}
-        path: build/screenshots
+      - name: Checkout
+        uses: actions/checkout@v4
+      - run: npm ci
+      - name: Cypress run
+        uses: cypress-io/github-action@v6
+        with:
+          build: npm run build
+          start: npm run start
+          browser: ${{ matrix.browser }}

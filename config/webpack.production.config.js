@@ -6,16 +6,14 @@ var HtmlWebpackInlineSVGPlugin = require('html-webpack-inline-svg-plugin');
 var WebpackCleanupPlugin = require('webpack-cleanup-plugin');
 var BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 var CopyWebpackPlugin = require('copy-webpack-plugin');
-var artifacts = require("../test/artifacts");
 
-var OUTPATH = artifacts.pathSync("/build");
 
 module.exports = {
   entry: {
     app: './src/index.jsx',
   },
   output: {
-    path: OUTPATH,
+    path: path.join(__dirname, '..', 'build', 'build'),
     filename: '[name].[contenthash].js',
     chunkFilename: '[contenthash].js'
   },
