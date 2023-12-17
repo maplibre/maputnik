@@ -3,16 +3,17 @@ import driver from "./driver";
 describe("keyboard", () => {
   describe("shortcuts", () => {
     beforeEach(() => {
-        driver.setupInterception();
-        driver.setStyle('');
-    })
+      driver.setupInterception();
+      driver.setStyle("");
+    });
 
     it("ESC should unfocus", () => {
       const targetSelector = driver.getDataAttribute("nav:inspect") + " select";
       driver.focus(targetSelector);
       driver.isFocused(targetSelector);
 
-      //driver.typeKeys("{esc}");
+      driver.typeKeys("{esc}");
+      expect(driver.shouldNotBeCFocused(targetSelector));
       //driver.isFocused('body');
     });
 
@@ -56,5 +57,4 @@ describe("keyboard", () => {
       driver.isDisplayedInViewport(driver.getDataAttribute("modal:debug"));
     });
   });
-
 });

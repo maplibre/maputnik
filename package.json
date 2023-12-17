@@ -127,6 +127,7 @@
     "@babel/preset-flow": "^7.16.7",
     "@babel/preset-react": "^7.16.7",
     "@mdi/js": "^6.6.96",
+    "@shellygo/cypress-test-utils": "^2.0.9",
     "@storybook/addon-a11y": "^6.4.20",
     "@storybook/addon-actions": "^6.4.20",
     "@storybook/addon-links": "^6.4.20",
