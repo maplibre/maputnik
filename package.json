@@ -23,6 +23,7 @@
   "dependencies": {
     "@mapbox/mapbox-gl-rtl-text": "^0.2.3",
     "@maplibre/maplibre-gl-style-spec": "^17.0.1",
+    "@mdi/js": "^6.6.96",
     "@mdi/react": "^1.5.0",
     "array-move": "^4.0.0",
     "buffer": "^6.0.3",
@@ -84,7 +85,6 @@
     }
   },
   "devDependencies": {
-    "@mdi/js": "^6.6.96",
     "@rollup/plugin-replace": "^5.0.5",
     "@storybook/addon-a11y": "^7.6.5",
     "@storybook/addon-actions": "^7.6.5",
