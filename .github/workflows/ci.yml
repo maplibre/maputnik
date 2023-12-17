@@ -2,9 +2,9 @@ name: ci
 
 on:
   pull_request:
-    branches: [ master ]
+    branches: [ main ]
   push:
-    branches: [ master ]
+    branches: [ main ]
 
 jobs:
 
@@ -35,7 +35,7 @@ jobs:
 
     steps:
     - uses: actions/checkout@v4
-    - run: docker build -t docker.pkg.github.com/maputnik/editor/editor:master .
+    - run: docker build -t docker.pkg.github.com/maputnik/editor/editor:main .
 
   # build the editor
   build-node:
@@ -118,7 +118,7 @@ jobs:
       uses: actions/checkout@v4
       with:
         repository: maputnik/desktop
-        ref: master
+        ref: main
         path: ./src/github.com/maputnik/desktop/
 
     - name: Make

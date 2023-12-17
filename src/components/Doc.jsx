@@ -21,14 +21,14 @@ export default class Doc extends React.Component {
 
     const renderValues = (
       !!values &&
-      // HACK: Currently we merge additional values into the stylespec, so this is required
-      // See <https://github.com/maputnik/editor/blob/master/src/components/fields/PropertyGroup.jsx#L16>
+      // HACK: Currently we merge additional values into the style spec, so this is required
+      // See <https://github.com/maputnik/editor/blob/main/src/components/PropertyGroup.jsx#L16>
       !Array.isArray(values)
     );
 
     return (
       <>
-        {doc && 
+        {doc &&
           <div className="SpecDoc">
             <div className="SpecDoc__doc">{doc}</div>
             {renderValues &&
