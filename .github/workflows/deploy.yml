@@ -2,7 +2,7 @@ name: deploy
 
 on:
   push:
-    branches: [ master ]
+    branches: [ main ]
     push:
       tags:
       - 'v*'
@@ -23,5 +23,5 @@ jobs:
     steps:
     - uses: actions/checkout@v4
     - run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login docker.pkg.github.com -u orangemug --password-stdin
-    - run: docker build -t docker.pkg.github.com/maputnik/editor/editor:master .
-    - run: docker push docker.pkg.github.com/maputnik/editor/editor:master
+    - run: docker build -t docker.pkg.github.com/maputnik/editor/editor:main .
+    - run: docker push docker.pkg.github.com/maputnik/editor/editor:main
