@@ -7,8 +7,8 @@
     "start": "vite",
     "build": "tsc && vite build",
     "lint": "eslint ./src --ext ts,tsx,js,jsx --report-unused-disable-directives --max-warnings 0 && npm run lint-css",
-    "test": "cross-env NODE_OPTIONS=--openssl-legacy-provider cross-env NODE_ENV=test wdio config/wdio.conf.js",
-    "test-watch": "cross-env NODE_OPTIONS=--openssl-legacy-provider cross-env NODE_ENV=test wdio config/wdio.conf.js --watch",
+    "test": "cypress run",
+    "cy:open": "cypress open",
     "start-sandbox": "cross-env NODE_OPTIONS=--openssl-legacy-provider webpack-dev-server --disable-host-check --host 0.0.0.0 --progress=profile --color --config config/webpack.production.config.js",
     "lint-css": "stylelint \"src/styles/*.scss\"",
     "storybook": "cross-env NODE_OPTIONS=--openssl-legacy-provider start-storybook -h 0.0.0.0 -p 6006",
@@ -94,14 +94,11 @@
     "@storybook/addons": "^6.4.20",
     "@storybook/react": "^6.4.20",
     "@storybook/theming": "^6.4.20",
+    "@types/cors": "^2.8.17",
+    "@types/uuid": "^9.0.7",
     "@types/react": "^16.14.52",
     "@types/react-dom": "^16.9.24",
     "@vitejs/plugin-react": "^4.2.0",
-    "@wdio/cli": "^7.19.3",
-    "@wdio/local-runner": "^7.19.3",
-    "@wdio/mocha-framework": "^7.19.3",
-    "@wdio/selenium-standalone-service": "^7.19.1",
-    "@wdio/spec-reporter": "^7.19.1",
     "cors": "^2.8.5",
     "cross-env": "^7.0.3",
     "css-loader": "^5.2.7",
@@ -127,7 +124,6 @@
     "transform-loader": "^0.2.4",
     "typescript": "^5.3.3",
     "uuid": "^8.3.2",
-    "vite": "^5.0.0",
-    "webdriverio": "^7.19.3"
+    "vite": "^5.0.0"
   }
 }
