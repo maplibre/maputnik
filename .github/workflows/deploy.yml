@@ -3,9 +3,8 @@ name: deploy
 on:
   push:
     branches: [ main ]
-    push:
-      tags:
-      - 'v*'
+    tags:
+    - 'v*'
 
 jobs:
   # publish docker to GitHub registry
