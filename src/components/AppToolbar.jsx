@@ -4,9 +4,6 @@ import classnames from 'classnames'
 import {detect} from 'detect-browser';
 
 import {MdFileDownload, MdOpenInBrowser, MdSettings, MdLayers, MdHelpOutline, MdFindInPage, MdAssignmentTurnedIn} from 'react-icons/md'
-
-
-import logoImage from 'maputnik-design/logos/logo-color.svg'
 import pkgJson from '../../package.json'
 
 
@@ -217,7 +214,7 @@ export default class AppToolbar extends React.Component {
             rel="noreferrer noopener"
             href="https://github.com/maputnik/editor"
           >
-            <span dangerouslySetInnerHTML={{__html: logoImage}} />
+            <img src="node_modules/maputnik-design/logos/logo-color.svg" />
             <h1>
               <span className="maputnik-toolbar-name">{pkgJson.name}</span>
               <span className="maputnik-toolbar-version">v{pkgJson.version}</span>

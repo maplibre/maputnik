@@ -1,12 +1,10 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import Slugify from 'slugify'
-import { saveAs } from 'file-saver'
-import pkgLockJson from '../../package-lock.json'
-
+import {saveAs} from 'file-saver'
+import {version} from 'maplibre-gl'
 import {format} from '@maplibre/maplibre-gl-style-spec'
 import FieldString from './FieldString'
-import FieldCheckbox from './FieldCheckbox'
 import InputButton from './InputButton'
 import Modal from './Modal'
 import {MdFileDownload} from 'react-icons/md'
@@ -14,7 +12,7 @@ import style from '../libs/style'
 import fieldSpecAdditional from '../libs/field-spec-additional'
 
 
-const MAPLIBRE_GL_VERSION = pkgLockJson.dependencies["maplibre-gl"].version;
+const MAPLIBRE_GL_VERSION = version;
 
 
 export default class ModalExport extends React.Component {

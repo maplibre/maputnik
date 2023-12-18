@@ -16,7 +16,7 @@ RUN npm run build
 FROM python:3-slim
 WORKDIR /maputnik
 
-COPY --from=builder /maputnik/build/build .
+COPY --from=builder /maputnik/dist .
 
 EXPOSE 8888
 CMD python -m http.server 8888
