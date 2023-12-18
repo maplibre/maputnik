@@ -1,80 +1,97 @@
-import driver from "./driver";
+import MaputnikDriver from "./driver";
 
 describe("history", () => {
+  let { beforeAndAfter, given, when, get, should } = new MaputnikDriver();
+  beforeAndAfter();
+
   let undoKeyCombo: string;
   let redoKeyCombo: string;
 
   before(() => {
-    const isMac = driver.isMac();
-    undoKeyCombo = isMac ? '{meta}z' : '{ctrl}z';
-    redoKeyCombo = isMac ? '{meta}{shift}z' : '{ctrl}y';
-    driver.beforeEach();
+    const isMac = get.isMac();
+    undoKeyCombo = isMac ? "{meta}z" : "{ctrl}z";
+    redoKeyCombo = isMac ? "{meta}{shift}z" : "{ctrl}y";
   });
 
   it("undo/redo", () => {
-    driver.setStyle('geojson');
-    driver.openLayersModal();
+    when.setStyle("geojson");
+    when.openLayersModal();
 
-    driver.isStyleStoreEqual((a: any) => a.layers, []);
+    should.equalStyleStore((a: any) => a.layers, []);
 
-    driver.fillLayersModal({
+    when.fillLayersModal({
       id: "step 1",
-      type: "background"
-    })
+      type: "background",
+    });
 
-    driver.isStyleStoreEqual((a: any) => a.layers, [
-      {
-        "id": "step 1",
-        "type": 'background'
-      }
-    ]);
+    should.equalStyleStore(
+      (a: any) => a.layers,
+      [
+        {
+          id: "step 1",
+          type: "background",
+        },
+      ]
+    );
 
-    driver.openLayersModal();
-    driver.fillLayersModal({
+    when.openLayersModal();
+    when.fillLayersModal({
       id: "step 2",
-      type: "background"
-    })
+      type: "background",
+    });
 
-    driver.isStyleStoreEqual((a: any) => a.layers, [
-      {
-        "id": "step 1",
-        "type": 'background'
-      },
-      {
-        "id": "step 2",
-        "type": 'background'
-      }
-    ]);
+    should.equalStyleStore(
+      (a: any) => a.layers,
+      [
+        {
+          id: "step 1",
+          type: "background",
+        },
+        {
+          id: "step 2",
+          type: "background",
+        },
+      ]
+    );
 
-    driver.typeKeys(undoKeyCombo);
-    driver.isStyleStoreEqual((a: any) => a.layers, [
-      {
-        "id": "step 1",
-        "type": 'background'
-      }
-    ]);
+    when.typeKeys(undoKeyCombo);
+    should.equalStyleStore(
+      (a: any) => a.layers,
+      [
+        {
+          id: "step 1",
+          type: "background",
+        },
+      ]
+    );
 
-    driver.typeKeys(undoKeyCombo)
-    driver.isStyleStoreEqual((a: any) => a.layers, []);
+    when.typeKeys(undoKeyCombo);
+    should.equalStyleStore((a: any) => a.layers, []);
 
-    driver.typeKeys(redoKeyCombo)
-    driver.isStyleStoreEqual((a: any) => a.layers, [
-      {
-        "id": "step 1",
-        "type": 'background'
-      }
-    ]);
+    when.typeKeys(redoKeyCombo);
+    should.equalStyleStore(
+      (a: any) => a.layers,
+      [
+        {
+          id: "step 1",
+          type: "background",
+        },
+      ]
+    );
 
-    driver.typeKeys(redoKeyCombo)
-    driver.isStyleStoreEqual((a: any) => a.layers, [
-      {
-        "id": "step 1",
-        "type": 'background'
-      },
-      {
-        "id": "step 2",
-        "type": 'background'
-      }
-    ]);
+    when.typeKeys(redoKeyCombo);
+    should.equalStyleStore(
+      (a: any) => a.layers,
+      [
+        {
+          id: "step 1",
+          type: "background",
+        },
+        {
+          id: "step 2",
+          type: "background",
+        },
+      ]
+    );
   });
-})
+});
