@@ -76,9 +76,9 @@ npm run lint-styles
 
 
 ## Tests
-For testing we use [webdriverio](https://webdriver.io) and [selenium-standalone](https://github.com/webdriverio/selenium-standalone).
+For E2E testing we use [Cypress](https://www.cypress.io/)
 
-[selenium-standalone](https://github.com/webdriverio/selenium-standalone) starts a server that will launch browsers on your local machine. You need to have Java installed on your machine as well as *chrome* or *firefox*.
+ [Cypress](https://www.cypress.io/) doesn't starts a server so you'll need to start one manually by running `npm run start`.
 
 Now open a terminal and run the following using *chrome*:
 
@@ -87,10 +87,16 @@ npm run test
 ```
 or *firefox*:
 ```
-BROWSER=firefox npm run test
+npm run test -- --browser firefox
 ```
 
-After some time you should see a browser launch which will be automated by the test runner.
+See the following docs for more info: (Launching Browsers)[https://docs.cypress.io/guides/guides/launching-browsers]
+
+You can also see the tests as they run or select which suites to run by executing:
+
+```
+npm run cy:open
+```
 
 
 ## Related Projects
@@ -155,6 +161,5 @@ Sina Martinelli, Nicholas Doiron, Neil Cawse, Urs42, Benedikt Groß, Manuel Roth
 
 Maputnik is [licensed under MIT](LICENSE) and is Copyright (c) Lukas Martinelli and contributors.
 
-**Disclaimer** This project is not affiliated with Mapbox or Mapbox Studio. It is an independent style editor for the
-open source technology in the Mapbox GL ecosystem.
+**Disclaimer** This is an independent style editor.
 As contributor please take extra care of not violating any Mapbox trademarks. Do not get inspired by Mapbox Studio and make your own decisions for a good style editor.

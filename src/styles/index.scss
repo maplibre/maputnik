@@ -18,13 +18,6 @@
 @import 'codemirror';
 @import 'react-collapse';
 
-/**
- * Hacks for webdriverio isVisibleWithinViewport
- */
-#app {
-  height: 100vh;
-}
-
 .maputnik-layout {
   height: 100vh;
 }
