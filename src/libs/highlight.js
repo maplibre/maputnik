@@ -16,7 +16,7 @@ export function colorHighlightedLayer(layer) {
     } else {
       delete l['filter']
     }
-    l.id = l.id + '_highlight'
+    l.id = `${l.id}_highlight`
     return l
   }
 

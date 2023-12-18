@@ -37,9 +37,9 @@ export default {
             break;
         }
         if (zoom) {
-          url += "#" + zoom + "/41.3805/2.1635";
+          url += `#${zoom}/41.3805/2.1635`;
         }
-        cy.visit("http://localhost:8888/" + url);
+        cy.visit(`http://localhost:8888/${url}`);
         if (styleProperties) {
             cy.on('window:confirm', () => true)
         }
@@ -55,7 +55,7 @@ export default {
       
         this.isDisplayedInViewport(selector);
       
-        this.click(this.getDataAttribute(key + ".close-modal"));
+        this.click(this.getDataAttribute(`${key}.close-modal`));
       
         this.doesNotExists(selector);
       },
@@ -70,8 +70,7 @@ export default {
       getStyleFromWindow(win: Window) {
         const styleId = win.localStorage.getItem("maputnik:latest_style");
         const styleItem = win.localStorage.getItem(`maputnik:style:${styleId}`)
-        const obj = JSON.parse(styleItem || "");
-        return obj;
+        return JSON.parse(styleItem || "");
       },
 
       isStyleStoreEqual(getter: (obj:any) => any, styleObj: any) {
@@ -89,9 +88,9 @@ export default {
       },
 
       fillLayersModal(opts: any) {
-        var type = opts.type;
-        var layer = opts.layer;
-        var id;
+        const type = opts.type;
+        const layer = opts.layer;
+        let id;
         if(opts.id) {
           id = opts.id
         }
@@ -162,9 +161,7 @@ export default {
         return "http://localhost:8888/example-style.json";
       },
 
-      waitForExampleFileRequset() {
+      waitForExampleFileRequest() {
         cy.wait('@example-style.json');
       }
-
-
 }

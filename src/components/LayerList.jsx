@@ -180,8 +180,7 @@ class LayerListContainer extends React.Component {
       withoutLayers(nextProps)
     );
 
-    const propsChanged = !(layersEqual && propsEqual);
-    return propsChanged;
+    return !(layersEqual && propsEqual);
   }
 
   componentDidUpdate (prevProps) {

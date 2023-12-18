@@ -14,7 +14,7 @@ export class ApiStyleStore {
   }
 
   init(cb) {
-    fetch(this.localUrl + '/styles', {
+    fetch(`${this.localUrl}/styles`, {
       mode: 'cors',
     })
     .then((response) =>  {
@@ -49,7 +49,7 @@ export class ApiStyleStore {
 
   latestStyle(cb) {
     if(this.latestStyleId) {
-      fetch(this.localUrl + '/styles/' + this.latestStyleId, {
+      fetch(`${this.localUrl}/styles/${this.latestStyleId}`, {
         mode: 'cors',
       })
       .then(function(response) {
@@ -72,7 +72,7 @@ export class ApiStyleStore {
     );
 
     const id = mapStyle.id
-    fetch(this.localUrl + '/styles/' + id, {
+    fetch(`${this.localUrl}/styles/${id}`, {
       method: "PUT",
       mode: 'cors',
       headers: {

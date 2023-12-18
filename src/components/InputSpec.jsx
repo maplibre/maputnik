@@ -131,7 +131,7 @@ export default class SpecField extends React.Component {
     }
 
     return (
-      <div data-wd-key={"spec-field:"+this.props.fieldName}>
+      <div data-wd-key={`spec-field:${this.props.fieldName}`}>
         {childNodes.call(this)}
       </div>
     );

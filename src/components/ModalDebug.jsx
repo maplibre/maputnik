@@ -8,7 +8,7 @@ export default class ModalDebug extends React.Component {
   static propTypes = {
     isOpen: PropTypes.bool.isRequired,
     renderer: PropTypes.string.isRequired,
-    onChangeMaboxGlDebug: PropTypes.func.isRequired,
+    onChangeMaplibreGlDebug: PropTypes.func.isRequired,
     onChangeOpenlayersDebug: PropTypes.func.isRequired,
     onOpenToggle: PropTypes.func.isRequired,
     maplibreGlDebugOptions: PropTypes.object,
@@ -36,7 +36,7 @@ export default class ModalDebug extends React.Component {
             {Object.entries(this.props.maplibreGlDebugOptions).map(([key, val]) => {
               return <li key={key}>
                 <label>
-                  <input type="checkbox" checked={val} onClick={(e) => this.props.onChangeMaboxGlDebug(key, e.target.checked)} /> {key}
+                  <input type="checkbox" checked={val} onClick={(e) => this.props.onChangeMaplibreGlDebug(key, e.target.checked)} /> {key}
                 </label>
               </li>
             })}
@@ -69,4 +69,3 @@ export default class ModalDebug extends React.Component {
     </Modal>
   }
 }
-

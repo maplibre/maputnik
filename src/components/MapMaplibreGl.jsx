@@ -5,11 +5,10 @@ import MapLibreGl from 'maplibre-gl'
 import MapboxInspect from 'mapbox-gl-inspect'
 import MapMaplibreGlLayerPopup from './MapMaplibreGlLayerPopup'
 import MapMaplibreGlFeaturePropertyPopup from './MapMaplibreGlFeaturePropertyPopup'
-import tokens from '../config/tokens.json'
 import colors from 'mapbox-gl-inspect/lib/colors'
 import Color from 'color'
 import ZoomControl from '../libs/zoomcontrol'
-import { colorHighlightedLayer } from '../libs/highlight'
+import {colorHighlightedLayer} from '../libs/highlight'
 import 'maplibre-gl/dist/maplibre-gl.css'
 import '../maplibregl.css'
 import '../libs/maplibre-rtl'
@@ -44,12 +43,11 @@ function buildInspectStyle(originalMapStyle, coloredLayers, highlightedLayer) {
     }
   })
 
-  const inspectStyle = {
+  return {
     ...originalMapStyle,
     sources: sources,
     layers: [backgroundLayer].concat(coloredLayers)
   }
-  return inspectStyle
 }
 
 export default class MapMaplibreGl extends React.Component {
@@ -85,7 +83,7 @@ export default class MapMaplibreGl extends React.Component {
 
     if(!this.state.map) return
 
-    //Maplibre GL now does diffing natively so we don't need to calculate
+    //Maplibre GL now does diffing natively, so we don't need to calculate
     //the necessary operations ourselves!
     this.state.map.setStyle(
       this.props.replaceAccessTokens(props.mapStyle),
@@ -243,4 +241,3 @@ export default class MapMaplibreGl extends React.Component {
     }
   }
 }
-

@@ -247,10 +247,9 @@ export default class ModalOpen extends React.Component {
           isOpen={!!this.state.activeRequest}
           title={'Loading style'}
           onCancel={(e) => this.onCancelActiveRequest(e)}
-          message={"Loading: "+this.state.activeRequestUrl}
+          message={`Loading: ${this.state.activeRequestUrl}`}
         />
       </div>
     )
   }
 }
-

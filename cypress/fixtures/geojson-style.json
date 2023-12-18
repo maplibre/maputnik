@@ -26,4 +26,4 @@
     "glyphs": "https://example.local/fonts/{fontstack}/{range}.pbf",
     "sprites": "https://example.local/fonts/{fontstack}/{range}.pbf",
     "layers": []
-  }
+}

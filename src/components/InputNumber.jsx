@@ -133,7 +133,7 @@ export default class InputNumber extends React.Component {
         }
         else {
           value = value + (step - snap);
-        };
+        }
       }
     }
 
@@ -230,5 +230,3 @@ export default class InputNumber extends React.Component {
     }
   }
 }
-
-

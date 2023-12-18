@@ -32,4 +32,3 @@ export default class BlockSourceLayer extends React.Component {
     </Block>
   }
 }
-

@@ -74,7 +74,7 @@ export default class InputColor extends React.Component {
 
   render() {
     const offset = this.calcPickerOffset()
-    var currentColor = this.color.object()
+    let currentColor = this.color.object()
     currentColor = {
       r: currentColor.r,
       g: currentColor.g,
@@ -109,7 +109,7 @@ export default class InputColor extends React.Component {
       />
     </div>
 
-    var swatchStyle = {
+    const swatchStyle = {
       backgroundColor: this.props.value
     };
 
@@ -132,4 +132,3 @@ export default class InputColor extends React.Component {
     </div>
   }
 }
-

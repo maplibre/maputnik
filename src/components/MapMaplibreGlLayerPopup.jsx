@@ -57,7 +57,7 @@ class FeatureLayerPopup extends React.Component {
       }
 
       if(propName) {
-        const propertySpec = latest["paint_"+feature.layer.type][propName];
+        const propertySpec = latest[`paint_${feature.layer.type}`][propName];
         let color = feature.layer.paint[propName];
         return String(color);
       }
@@ -66,7 +66,7 @@ class FeatureLayerPopup extends React.Component {
         return "black";
       }
     }
-    // This is quite complex, just incase there's an edgecase we're missing
+    // This is quite complex, just incase there's an edge case we're missing
     // always return black if we get an unexpected error.
     catch (err) {
       console.warn("Unable to get feature color, error:", err);

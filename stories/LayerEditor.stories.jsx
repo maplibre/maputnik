@@ -112,7 +112,7 @@ export const Raster = () => (
   </div>
 );
 
-export const Cirlce = () => (
+export const Circle = () => (
   <div>
     <LayerEditor
       layer={{id: "circle", type: "circle", source: "openmaptiles"}}
@@ -195,4 +195,3 @@ export const Hillshade = () => (
     />
   </div>
 );
-

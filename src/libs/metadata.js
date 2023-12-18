@@ -12,7 +12,7 @@ function loadJSON(url, defaultValue, cb) {
     cb(body)
   })
   .catch(function() {
-    console.warn('Can not metadata for ' + url)
+    console.warn(`Can not metadata for ${url}`)
     cb(defaultValue)
   })
 }
@@ -36,6 +36,6 @@ export function downloadGlyphsMetadata(urlTemplate, cb) {
 
 export function downloadSpriteMetadata(baseUrl, cb) {
   if(!baseUrl) return cb([])
-  const url = baseUrl + '.json'
+  const url = `${baseUrl}.json`
   loadJSON(url, {}, glyphs => cb(Object.keys(glyphs)))
 }

@@ -1,4 +1,4 @@
-var assert = require("assert");
+const assert = require("assert");
 import driver from "./driver";
 import { v1 as uuid } from 'uuid';
 
@@ -11,9 +11,9 @@ describe("layers", () => {
 
   describe("ops", () => {
     it("delete", () => {
-      var id = driver.fillLayersModal({
+      const id = driver.fillLayersModal({
         type: "background"
-      })
+      });
 
       driver.isStyleStoreEqual((a: any) => a.layers, [
         {
@@ -22,16 +22,15 @@ describe("layers", () => {
         },
       ]);
 
-      driver.click(driver.getDataAttribute("layer-list-item:"+id+":delete", ""))
+      driver.click(driver.getDataAttribute(`layer-list-item:${id}:delete`, ""))
 
       driver.isStyleStoreEqual((a: any) => a.layers, []);
     });
 
     it("duplicate", () => {
-      var styleObj;
-      var id = driver.fillLayersModal({
+      const id = driver.fillLayersModal({
         type: "background"
-      })
+      });
 
       driver.isStyleStoreEqual((a: any) => a.layers, [
         {
@@ -40,11 +39,11 @@ describe("layers", () => {
         },
       ]);
 
-      driver.click(driver.getDataAttribute("layer-list-item:"+id+":copy", ""));
+      driver.click(driver.getDataAttribute(`layer-list-item:${id}:copy`, ""));
 
       driver.isStyleStoreEqual((a: any) => a.layers, [
         {
-          "id": id+"-copy",
+          "id": `${id}-copy`,
           "type": "background"
         },
         {
@@ -55,10 +54,9 @@ describe("layers", () => {
     });
 
     it("hide", () => {
-      var styleObj;
-      var id = driver.fillLayersModal({
+      const id = driver.fillLayersModal({
         type: "background"
-      })
+      });
 
       driver.isStyleStoreEqual((a: any) => a.layers, [
         {
@@ -67,7 +65,7 @@ describe("layers", () => {
         },
       ]);
 
-      driver.click(driver.getDataAttribute("layer-list-item:"+id+":toggle-visibility", ""));
+      driver.click(driver.getDataAttribute(`layer-list-item:${id}:toggle-visibility`, ""));
 
       driver.isStyleStoreEqual((a: any) => a.layers, [
         {
@@ -79,7 +77,7 @@ describe("layers", () => {
         },
       ]);
 
-      driver.click(driver.getDataAttribute("layer-list-item:"+id+":toggle-visibility", ""));
+      driver.click(driver.getDataAttribute(`layer-list-item:${id}:toggle-visibility`, ""));
 
       driver.isStyleStoreEqual((a: any) => a.layers, [
         {
@@ -97,7 +95,7 @@ describe("layers", () => {
   describe('background', () => {
 
     it("add", () => {
-      var id = driver.fillLayersModal({
+      const id = driver.fillLayersModal({
         type: "background"
       })
 
@@ -112,16 +110,16 @@ describe("layers", () => {
     describe("modify", () => {
       function createBackground() {
         // Setup
-        var id = uuid();
+        const id = uuid();
 
         driver.select(driver.getDataAttribute("add-layer.layer-type", "select"), "background");
-        driver.setValue(driver.getDataAttribute("add-layer.layer-id", "input"), "background:"+id);
+        driver.setValue(driver.getDataAttribute("add-layer.layer-id", "input"), `background:${id}`);
 
         driver.click(driver.getDataAttribute("add-layer"));
 
         driver.isStyleStoreEqual((a: any) => a.layers, [
           {
-            "id": 'background:'+id,
+            "id": `background:${id}`,
             "type": 'background'
           }
         ]);
@@ -132,33 +130,33 @@ describe("layers", () => {
       describe("layer", () => {
         it("expand/collapse");
         it("id", () => {
-          var bgId = createBackground();
+          const bgId = createBackground();
 
-          driver.click(driver.getDataAttribute("layer-list-item:background:"+bgId));
+          driver.click(driver.getDataAttribute(`layer-list-item:background:${bgId}`));
 
-          var id = uuid();
-          driver.setValue(driver.getDataAttribute("layer-editor.layer-id", "input"), "foobar:"+id)
+          const id = uuid();
+          driver.setValue(driver.getDataAttribute("layer-editor.layer-id", "input"), `foobar:${id}`)
           driver.click(driver.getDataAttribute("min-zoom"));
 
           driver.isStyleStoreEqual((a: any) => a.layers, [
             {
-              "id": 'foobar:'+id,
+              "id": `foobar:${id}`,
               "type": 'background'
             }
           ]);
         });
 
         it("min-zoom", () => {
-          var bgId = createBackground();
+          const bgId = createBackground();
 
-          driver.click(driver.getDataAttribute("layer-list-item:background:"+bgId));
+          driver.click(driver.getDataAttribute(`layer-list-item:background:${bgId}`));
           driver.setValue(driver.getDataAttribute("min-zoom", 'input[type="text"]'), "1");
 
           driver.click(driver.getDataAttribute("layer-editor.layer-id", "input"));
 
           driver.isStyleStoreEqual((a: any) => a.layers, [
             {
-              "id": 'background:'+bgId,
+              "id": `background:${bgId}`,
               "type": 'background',
               "minzoom": 1
             }
@@ -170,23 +168,23 @@ describe("layers", () => {
 
           // driver.isStyleStoreEqual((a: any) => a.layers, [
           //   {
-          //     "id": 'background:'+bgId,
+          //     "id": `background:${bgId}`,
           //     "type": 'background'
           //   }
           // ]);
         });
 
         it("max-zoom", () => {
-          var bgId = createBackground();
+          const bgId = createBackground();
 
-          driver.click(driver.getDataAttribute("layer-list-item:background:"+bgId));
+          driver.click(driver.getDataAttribute(`layer-list-item:background:${bgId}`));
           driver.setValue(driver.getDataAttribute("max-zoom", 'input[type="text"]'), "1")
 
           driver.click(driver.getDataAttribute("layer-editor.layer-id", "input"));
 
           driver.isStyleStoreEqual((a: any) => a.layers, [
             {
-              "id": 'background:'+bgId,
+              "id": `background:${bgId}`,
               "type": 'background',
               "maxzoom": 1
             }
@@ -194,17 +192,17 @@ describe("layers", () => {
         });
 
         it("comments", () => {
-          var bgId = createBackground();
-          var id = uuid();
+          const bgId = createBackground();
+          const id = uuid();
 
-          driver.click(driver.getDataAttribute("layer-list-item:background:"+bgId));
+          driver.click(driver.getDataAttribute(`layer-list-item:background:${bgId}`));
           driver.setValue(driver.getDataAttribute("layer-comment", "textarea"), id);
 
           driver.click(driver.getDataAttribute("layer-editor.layer-id", "input"));
 
           driver.isStyleStoreEqual((a: any) => a.layers, [
             {
-              "id": 'background:'+bgId,
+              "id": `background:${bgId}`,
               "type": 'background',
               metadata: {
                 'maputnik:comment': id
@@ -219,22 +217,22 @@ describe("layers", () => {
 
           // driver.isStyleStoreEqual((a: any) => a.layers, [
           //   {
-          //     "id": 'background:'+bgId,
+          //     "id": `background:${bgId}`,
           //     "type": 'background'
           //   }
           // ]);
         });
 
         it("color", () => {
-          var bgId = createBackground();
+          const bgId = createBackground();
 
-          driver.click(driver.getDataAttribute("layer-list-item:background:"+bgId));
+          driver.click(driver.getDataAttribute(`layer-list-item:background:${bgId}`));
 
           driver.click(driver.getDataAttribute("spec-field:background-color", "input"));
 
           driver.isStyleStoreEqual((a: any) => a.layers, [
             {
-              "id": 'background:'+bgId,
+              "id": `background:${bgId}`,
               "type": 'background'
             }
           ]);
@@ -261,11 +259,11 @@ describe("layers", () => {
 
         // TODO
         it.skip("parse error", () => {
-          var bgId = createBackground();
+          const bgId = createBackground();
 
-          driver.click(driver.getDataAttribute("layer-list-item:background:"+bgId));
+          driver.click(driver.getDataAttribute(`layer-list-item:background:${bgId}`));
 
-          var errorSelector = ".CodeMirror-lint-marker-error";
+          const errorSelector = ".CodeMirror-lint-marker-error";
           driver.doesNotExists(errorSelector);
 
           driver.click(".CodeMirror");
@@ -281,7 +279,7 @@ describe("layers", () => {
   describe('fill', () => {
     it("add", () => {
 
-      var id = driver.fillLayersModal({
+      const id = driver.fillLayersModal({
         type: "fill",
         layer: "example"
       });
@@ -301,7 +299,7 @@ describe("layers", () => {
 
   describe('line', () => {
     it("add", () => {
-      var id = driver.fillLayersModal({
+      const id = driver.fillLayersModal({
         type: "line",
         layer: "example"
       });
@@ -323,7 +321,7 @@ describe("layers", () => {
 
   describe('symbol', () => {
     it("add", () => {
-      var id = driver.fillLayersModal({
+      const id = driver.fillLayersModal({
         type: "symbol",
         layer: "example"
       });
@@ -340,7 +338,7 @@ describe("layers", () => {
 
   describe('raster', () => {
     it("add", () => {
-      var id = driver.fillLayersModal({
+      const id = driver.fillLayersModal({
         type: "raster",
         layer: "raster"
       });
@@ -357,7 +355,7 @@ describe("layers", () => {
 
   describe('circle', () => {
     it("add", () => {
-      var id = driver.fillLayersModal({
+      const id = driver.fillLayersModal({
         type: "circle",
         layer: "example"
       });
@@ -370,12 +368,11 @@ describe("layers", () => {
         }
       ]);
     });
-
   });
 
   describe('fill extrusion', () => {
     it("add", () => {
-      var id = driver.fillLayersModal({
+      const id = driver.fillLayersModal({
         type: "fill-extrusion",
         layer: "example"
       });

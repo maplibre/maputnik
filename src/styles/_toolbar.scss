@@ -136,7 +136,7 @@
   border: solid 1px transparent;
   position: absolute;
   overflow: hidden;
-  width: 0px;
+  width: 0;
   height: 100%;
   text-align: center;
   display: block;
@@ -152,4 +152,3 @@
     border-color: $color-lowgray;
   }
 }
-

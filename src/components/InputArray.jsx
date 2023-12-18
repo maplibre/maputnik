@@ -87,7 +87,7 @@ export default class FieldArray extends React.Component {
           key={i}
           default={containsValues ? undefined : this.props.default[i]}
           value={value[i]}
-          required={containsValues ? true : false}
+          required={!!containsValues}
           onChange={this.changeValue.bind(this, i)}
           aria-label={this.props['aria-label'] || this.props.label}
         />
@@ -96,7 +96,7 @@ export default class FieldArray extends React.Component {
           key={i}
           default={containsValues ? undefined : this.props.default[i]}
           value={value[i]}
-          required={containsValues ? true : false}
+          required={!!containsValues}
           onChange={this.changeValue.bind(this, i)}
           aria-label={this.props['aria-label'] || this.props.label}
         />
@@ -110,4 +110,3 @@ export default class FieldArray extends React.Component {
     )
   }
 }
-

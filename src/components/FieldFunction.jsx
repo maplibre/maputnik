@@ -69,14 +69,14 @@ function isDataField(value) {
   );
 }
 
-function isPrimative (value) {
+function isPrimitive (value) {
   const valid = ["string", "boolean", "number"];
   return valid.includes(typeof(value));
 }
 
 function isArrayOfPrimatives (values) {
   if (Array.isArray(values)) {
-    return values.every(isPrimative);
+    return values.every(isPrimitive);
   }
   return false;
 }
@@ -85,7 +85,7 @@ function getDataType (value, fieldSpec={}) {
   if (value === undefined) {
     return "value";
   }
-  else if (isPrimative(value)) {
+  else if (isPrimitive(value)) {
     return "value";
   }
   else if (fieldSpec.type === "array" && isArrayOfPrimatives(value)) {
@@ -259,7 +259,7 @@ export default class FieldFunction  extends React.Component {
     return (
       isGetExpression(value) ||
       isLiteralExpression(value) ||
-      isPrimative(value) ||
+      isPrimitive(value) ||
       (Array.isArray(value) && fieldSpec.type === "array")
     );
   }
@@ -402,9 +402,8 @@ export default class FieldFunction  extends React.Component {
         />
       )
     }
-    return <div className={propClass} data-wd-key={"spec-field:"+this.props.fieldName}>
+    return <div className={propClass} data-wd-key={`spec-field:${this.props.fieldName}`}>
       {specField}
     </div>
   }
 }
-

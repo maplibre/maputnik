@@ -78,14 +78,14 @@ export default class ModalExport extends React.Component {
 
     const blob = new Blob([html], {type: "text/html;charset=utf-8"});
     const exportName = this.exportName();
-    saveAs(blob, exportName + ".html");
+    saveAs(blob, `${exportName}.html`);
   }
 
   downloadStyle() {
     const tokenStyle = this.tokenizedStyle();
     const blob = new Blob([tokenStyle], {type: "application/json;charset=utf-8"});
     const exportName = this.exportName();
-    saveAs(blob, exportName + ".json");
+    saveAs(blob, `${exportName}.json`);
   }
 
   changeMetadataProperty(property, value) {
@@ -150,4 +150,3 @@ export default class ModalExport extends React.Component {
     </Modal>
   }
 }
-

@@ -87,7 +87,7 @@ export default class MapOpenLayers extends React.Component {
     });
 
     map.on('pointermove', (evt) => {
-      var coords = toLonLat(evt.coordinate);
+      const coords = toLonLat(evt.coordinate);
       this.setState({
         cursor: [
           coords[0].toFixed(2),
@@ -187,4 +187,3 @@ export default class MapOpenLayers extends React.Component {
     </div>
   }
 }
-

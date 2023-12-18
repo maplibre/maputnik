@@ -8,7 +8,7 @@ const iconProperties = ['background-pattern', 'fill-pattern', 'line-pattern', 'f
  * style specification from either the paint or layout group */
 function getFieldSpec(spec, layerType, fieldName) {
   const groupName = getGroupName(spec, layerType, fieldName)
-  const group = spec[groupName + '_' + layerType]
+  const group = spec[`${groupName}_${layerType}`]
   const fieldSpec = group[fieldName]
   if(iconProperties.indexOf(fieldName) >= 0) {
     return {
@@ -26,7 +26,7 @@ function getFieldSpec(spec, layerType, fieldName) {
 }
 
 function getGroupName(spec, layerType, fieldName) {
-  const paint  = spec['paint_' + layerType] || {}
+  const paint  = spec[`paint_${layerType}`] || {}
   if (fieldName in paint) {
     return 'paint'
   } else {

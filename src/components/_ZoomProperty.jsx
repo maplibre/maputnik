@@ -23,7 +23,7 @@ import sortNumerically from '../libs/sort-numerically'
  * When the stops are reordered the references are also updated (see this.orderStops) this allows React to use the same key for the element and keep keyboard focus.
  */
 function setStopRefs(props, state) {
-  // This is initialsed below only if required to improved performance.
+  // This is initialized below only if required to improved performance.
   let newRefs;
 
   if(props.value && props.value.stops) {

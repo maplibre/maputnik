@@ -20,7 +20,7 @@ import DeleteStopButton from './_DeleteStopButton'
 
 
 function setStopRefs(props, state) {
-  // This is initialsed below only if required to improved performance.
+  // This is initialized below only if required to improved performance.
   let newRefs;
 
   if(props.value && props.value.stops) {

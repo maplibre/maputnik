@@ -26,7 +26,7 @@ export default class LayerEditorGroup extends React.Component {
   render() {
     return <AccordionItem uuid={this.props.id}>
       <AccordionItemHeading className="maputnik-layer-editor-group"
-        data-wd-key={"layer-editor-group:"+this.props["data-wd-key"]}
+        data-wd-key={`layer-editor-group:${this.props["data-wd-key"]}`}
         onClick={e => this.props.onActiveToggle(!this.props.isActive)}
       >
         <AccordionItemButton className="maputnik-layer-editor-group__button">

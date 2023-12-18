@@ -56,5 +56,4 @@ describe("keyboard", () => {
       driver.isDisplayedInViewport(driver.getDataAttribute("modal:debug"));
     });
   });
-
 });

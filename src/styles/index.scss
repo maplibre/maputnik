@@ -37,7 +37,7 @@
   border-radius: 2px;
   position: relative;
 
-  // HACK: Overide
+  // HACK: Override
   .maputnik-input-block {
     margin: $margin-2;
   }
@@ -155,8 +155,7 @@
     text-align: left;
     border-top: solid 1px $color-black;
     font-size: $font-size-6;
-    height: 0px;
+    height: 0;
     overflow: hidden;
   }
 }
-

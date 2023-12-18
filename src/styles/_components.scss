@@ -268,7 +268,7 @@
   font-size: 0.9em;
   border: solid 1px $color-red;
   border-radius: 2px;
-  margin: $margin-2 0px;
+  margin: $margin-2 0;
 }
 
 .maputnik-expression-editor {
@@ -296,8 +296,8 @@
   background: $color-midgray;
   padding: $margin-2;
   border-radius: 2px;
-  border-top-right-radius: 0px;
-  border-top-left-radius: 0px;
+  border-top-right-radius: 0;
+  border-top-left-radius: 0;
   color: $color-white;
 }
 
@@ -309,4 +309,3 @@
   color: currentColor;
   cursor: pointer;
 }
-

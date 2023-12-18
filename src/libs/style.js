@@ -85,11 +85,10 @@ function replaceSourceAccessToken(mapStyle, sourceName, opts={}) {
       url: source.url.replace('{key}', accessToken)
     }
   }
-  const changedStyle = {
+  return {
     ...mapStyle,
     sources: changedSources
   }
-  return changedStyle
 }
 
 function replaceAccessTokens(mapStyle, opts={}) {

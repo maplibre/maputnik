@@ -133,7 +133,7 @@ export default class AppToolbar extends React.Component {
       document.querySelector(".maplibregl-canvas").focus();
     }
     else {
-      const el = document.querySelector("#skip-target-"+target);
+      const el = document.querySelector(`#skip-target-${target}`);
       el.focus();
     }
   }

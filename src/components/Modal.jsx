@@ -51,7 +51,7 @@ export default class Modal extends React.Component {
             <button className="maputnik-modal-header-toggle"
               title="Close modal"
               onClick={this.onClose}
-              data-wd-key={this.props["data-wd-key"]+".close-modal"}
+              data-wd-key={`${this.props["data-wd-key"]}.close-modal`}
             >
               <MdClose />
             </button>
@@ -67,4 +67,3 @@ export default class Modal extends React.Component {
     }
   }
 }
-

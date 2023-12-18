@@ -41,7 +41,7 @@ export default class InputString extends React.Component {
     let tag;
     let classes;
 
-    if(!!this.props.multi) {
+    if(this.props.multi) {
       tag = "textarea"
       classes = [
         "maputnik-string",
@@ -55,7 +55,7 @@ export default class InputString extends React.Component {
       ]
     }
 
-    if(!!this.props.disabled) {
+    if(this.props.disabled) {
       classes.push("maputnik-string--disabled");
     }
 
@@ -91,5 +91,3 @@ export default class InputString extends React.Component {
     });
   }
 }
-
-

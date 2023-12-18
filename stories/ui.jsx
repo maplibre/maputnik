@@ -15,7 +15,7 @@ export function Wrapper ({children}) {
       {children}
     </div>
   );
-};
+}
 
 export function InputContainer ({children}) {
   return (
@@ -23,5 +23,4 @@ export function InputContainer ({children}) {
       {children}
     </div>
   );
-};
-
+}

@@ -203,7 +203,7 @@ class AddSource extends React.Component {
     //  - 'geojson' - 'GeoJSON (URL)' and 'GeoJSON (JSON)'
     //  - 'raster' - 'Raster (TileJSON URL)' and 'Raster (XYZ URL)'
     //
-    // So we just ignore the values entirely as they are self explanatory
+    // So we just ignore the values entirely as they are self-explanatory
     const sourceTypeFieldSpec = {
       doc: latest.source_vector.type.doc
     };
@@ -318,4 +318,3 @@ export default class ModalSources extends React.Component {
     </Modal>
   }
 }
-

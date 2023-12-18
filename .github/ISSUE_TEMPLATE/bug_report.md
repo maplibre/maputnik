@@ -9,7 +9,7 @@ assignees: ''
 
 <!-- Thanks for your feedback! Please complete the following information: -->
 
-**Maputnik version**:<!-- e.g v1.7.0, main -->
+**Maputnik version**:<!-- e.g. v1.7.0, main -->
 **Browser**:
 **OS**:<!-- (Windows, macOS, Linux) -->
 

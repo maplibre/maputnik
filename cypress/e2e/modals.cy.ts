@@ -22,11 +22,11 @@ describe("modals", () => {
     });
 
     it("load from url", () => {
-      var styleFileUrl = driver.getExampleFileUrl();
+      const styleFileUrl = driver.getExampleFileUrl();
 
       driver.setValue(driver.getDataAttribute("modal:open.url.input"), styleFileUrl);
       driver.click(driver.getDataAttribute("modal:open.url.button"))
-      driver.waitForExampleFileRequset();
+      driver.waitForExampleFileRequest();
 
       driver.isStyleStoreEqualToExampleFileData();
     });
@@ -97,7 +97,7 @@ describe("modals", () => {
       driver.isStyleStoreEqual((obj) => obj.sprite, "http://example.com");
     })
     it("glyphs url", () => {
-      var glyphsUrl = "http://example.com/{fontstack}/{range}.pbf"
+      const glyphsUrl = "http://example.com/{fontstack}/{range}.pbf"
       driver.setValue(driver.getDataAttribute("modal:settings.glyphs"), glyphsUrl);
       driver.click(driver.getDataAttribute("modal:settings.name"));
 
@@ -105,7 +105,7 @@ describe("modals", () => {
     })
 
     it("maptiler access token", () => {
-      var apiKey = "testing123";
+      const apiKey = "testing123";
       driver.setValue(driver.getDataAttribute("modal:settings.maputnik:openmaptiles_access_token"), apiKey);
       driver.click(driver.getDataAttribute("modal:settings.name"));
 
@@ -113,7 +113,7 @@ describe("modals", () => {
     })
 
     it("thunderforest access token", () => {
-      var apiKey = "testing123";
+      const apiKey = "testing123";
       driver.setValue(driver.getDataAttribute("modal:settings.maputnik:thunderforest_access_token"), apiKey);
       driver.click(driver.getDataAttribute("modal:settings.name"));
 

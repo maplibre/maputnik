@@ -103,7 +103,7 @@ class LayerListItem extends React.Component {
       id={this.props.id}
       key={this.props.layerId}
       onClick={e => this.props.onLayerSelect(this.props.layerIndex)}
-      data-wd-key={"layer-list-item:"+this.props.layerId}
+      data-wd-key={`layer-list-item:${this.props.layerId}`}
       className={classnames({
         "maputnik-layer-list-item": true,
         "maputnik-layer-list-item-selected": this.props.isSelected,
@@ -112,19 +112,19 @@ class LayerListItem extends React.Component {
         <DraggableLabel {...this.props} />
         <span style={{flexGrow: 1}} />
         <IconAction
-          wdKey={"layer-list-item:"+this.props.layerId+":delete"}
+          wdKey={`layer-list-item:${this.props.layerId}:delete`}
           action={'delete'}
           classBlockName="delete"
           onClick={e => this.props.onLayerDestroy(this.props.layerIndex)}
         />
         <IconAction
-          wdKey={"layer-list-item:"+this.props.layerId+":copy"}
+          wdKey={`layer-list-item:${this.props.layerId}:copy`}
           action={'duplicate'}
           classBlockName="duplicate"
           onClick={e => this.props.onLayerCopy(this.props.layerIndex)}
         />
         <IconAction
-          wdKey={"layer-list-item:"+this.props.layerId+":toggle-visibility"}
+          wdKey={`layer-list-item:${this.props.layerId}:toggle-visibility`}
           action={visibilityAction}
           classBlockName="visibility"
           classBlockModifier={visibilityAction}

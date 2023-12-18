@@ -112,8 +112,8 @@ export default class ModalShortcuts extends React.Component {
         <dl>
           {help.map((item, idx) => {
             return <div key={idx} className="maputnik-modal-shortcuts__shortcut">
-              <dt key={"dt"+idx}>{item.key}</dt>
-              <dd key={"dd"+idx}>{item.text}</dd>
+              <dt key={`dt${idx}`}>{item.key}</dt>
+              <dd key={`dd${idx}`}>{item.text}</dd>
             </div>
           })}
         </dl>
@@ -129,4 +129,3 @@ export default class ModalShortcuts extends React.Component {
     </Modal>
   }
 }
-

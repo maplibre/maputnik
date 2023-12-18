@@ -13,7 +13,7 @@ export default class LayerWatcher {
 
     // Since we scan over all features we want to avoid this as much as
     // possible and only do it after a batch of data has loaded because
-    // we only care eventuall about knowing the fields in the vector layers
+    // we only care eventually about knowing the fields in the vector layers
     this.throttledAnalyzeVectorLayerFields = throttle(this.analyzeVectorLayerFields, 5000)
   }
 

@@ -44,13 +44,13 @@ export default class AppMessagePanel extends React.Component {
       else {
         content = error.message;
       }
-      return <p key={"error-"+idx} className="maputnik-message-panel-error">
+      return <p key={`error-${idx}`} className="maputnik-message-panel-error">
         {content}
       </p>
     })
 
     const infos = this.props.infos.map((m, i) => {
-      return <p key={"info-"+i}>{m}</p>
+      return <p key={`info-${i}`}>{m}</p>
     })
 
     return <div className="maputnik-message-panel">
@@ -59,4 +59,3 @@ export default class AppMessagePanel extends React.Component {
     </div>
   }
 }
-

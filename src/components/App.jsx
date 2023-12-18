@@ -165,7 +165,7 @@ export default class App extends React.Component {
     })
 
     const styleUrl = initialStyleUrl()
-    if(styleUrl && window.confirm("Load style from URL: " + styleUrl + " and discard current changes?")) {
+    if(styleUrl && window.confirm(`Load style from URL: ${styleUrl} and discard current changes?`)) {
       this.styleStore = new StyleStore()
       loadStyleUrl(styleUrl, mapStyle => this.onStyleChanged(mapStyle))
       removeStyleQuerystring()
@@ -405,7 +405,7 @@ export default class App extends React.Component {
         if (message) {
           try {
             const objPath = message.split(":")[0];
-            // Errors can be deply nested for example 'layers[0].filter[1][1][0]' we only care upto the property 'layers[0].filter'
+            // Errors can be deeply nested for example 'layers[0].filter[1][1][0]' we only care upto the property 'layers[0].filter'
             const unsetPath = objPath.match(/^\S+?\[\d+\]\.[^\[]+/)[0];
             unset(dirtyMapStyle, unsetPath);
           }
@@ -498,7 +498,7 @@ export default class App extends React.Component {
     const changedLayers = layers.slice(0)
 
     const clonedLayer = cloneDeep(changedLayers[index])
-    clonedLayer.id = clonedLayer.id + "-copy"
+    clonedLayer.id = `${clonedLayer.id}-copy`
     changedLayers.splice(index, 0, clonedLayer)
     this.onLayersChange(changedLayers)
   }
@@ -543,14 +543,13 @@ export default class App extends React.Component {
   setDefaultValues = (styleObj) => {
     const metadata = styleObj.metadata || {}
     if(metadata['maputnik:renderer'] === undefined) {
-      const changedStyle = {
+      return {
         ...styleObj,
         metadata: {
           ...styleObj.metadata,
           'maputnik:renderer': 'mlgljs'
         }
       }
-      return changedStyle
     } else {
       return styleObj
     }
@@ -602,7 +601,7 @@ export default class App extends React.Component {
             sources[key].layers.push(layer.id)
           }
 
-          console.debug("Updating source: "+key);
+          console.debug(`Updating source: ${key}`);
           this.setState({
             sources: sources
           });

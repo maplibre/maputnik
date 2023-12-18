@@ -1,5 +1,5 @@
 import style from './style.js'
-import { loadStyleUrl } from './urlopen'
+import {loadStyleUrl} from './urlopen'
 import publicSources from '../config/styles.json'
 
 const storagePrefix = "maputnik"
@@ -40,8 +40,7 @@ function fromKey(key) {
   }
 
   const parts = key.split(":")
-  const styleId = parts[2]
-  return styleId
+  return parts[2]
 }
 
 // Calculate key that identifies the style with a version
@@ -52,7 +51,7 @@ function styleKey(styleId) {
 // Manages many possible styles that are stored in the local storage
 export class StyleStore {
   // Tile store will load all items from local storage and
-  // assume they do not change will working on it
+  // assume they do not change will work on it
   constructor() {
     this.mapStyles = loadStoredStyles()
   }
