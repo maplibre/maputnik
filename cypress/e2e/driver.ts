@@ -73,7 +73,7 @@ export default class MaputnikDriver {
       }
       cy.get(".maputnik-toolbar-link").should("be.visible");
     },
-    fillLayersModal: (opts: any) => {
+    fillLayersModal: (opts: {type: string, layer?: string, id?: string}) => {
       var type = opts.type;
       var layer = opts.layer;
       var id;
@@ -84,12 +84,12 @@ export default class MaputnikDriver {
       }
 
       cy.get(
-        this.get.getDataAttribute("add-layer.layer-type", "select")
+        this.get.dataAttribute("add-layer.layer-type", "select")
       ).select(type);
-      cy.get(this.get.getDataAttribute("add-layer.layer-id", "input")).type(id);
+      cy.get(this.get.dataAttribute("add-layer.layer-id", "input")).type(id);
       if (layer) {
         cy.get(
-          this.get.getDataAttribute("add-layer.layer-source-block", "input")
+          this.get.dataAttribute("add-layer.layer-source-block", "input")
         ).type(layer);
       }
       this.when.click("add-layer");
@@ -103,11 +103,20 @@ export default class MaputnikDriver {
 
     click: (selector: string) => {
       this.helper.when.click(selector);
-      // cy.get(selector).click({ force: true });
+    },
+
+    clickZoomin: () => {
+      cy.get(".maplibregl-ctrl-zoom-in").click();
+    },
+
+    selectWithin: (selector: string, value: string) => {
+      this.when.within(selector, () => {
+        cy.get("select").select(value);
+      });
     },
 
     select: (selector: string, value: string) => {
-      cy.get(selector).select(value);
+      this.helper.get.element(selector).select(value);
     },
 
     focus: (selector: string) => {
@@ -126,8 +135,8 @@ export default class MaputnikDriver {
     openLayersModal: () => {
       this.helper.when.click("layer-list:add-layer");
 
-      cy.get(this.get.getDataAttribute("modal:add-layer")).should("exist");
-      cy.get(this.get.getDataAttribute("modal:add-layer")).should("be.visible");
+      cy.get(this.get.dataAttribute("modal:add-layer")).should("exist");
+      cy.get(this.get.dataAttribute("modal:add-layer")).should("be.visible");
     },
   };
 
@@ -135,16 +144,16 @@ export default class MaputnikDriver {
     isMac: () => {
       return Cypress.platform === "darwin";
     },
-    getStyleFromWindow: (win: Window) => {
+    styleFromWindow: (win: Window) => {
       const styleId = win.localStorage.getItem("maputnik:latest_style");
       const styleItem = win.localStorage.getItem(`maputnik:style:${styleId}`);
       const obj = JSON.parse(styleItem || "");
       return obj;
     },
-    getExampleFileUrl: () => {
+    exampleFileUrl: () => {
       return "http://localhost:8888/example-style.json";
     },
-    getDataAttribute: (key: string, selector?: string): string => {
+    dataAttribute: (key: string, selector?: string): string => {
       return `*[data-wd-key='${key}'] ${selector || ""}`;
     },
   };
@@ -176,23 +185,26 @@ export default class MaputnikDriver {
 
     equalStyleStore: (getter: (obj: any) => any, styleObj: any) => {
       cy.window().then((win: any) => {
-        const obj = this.get.getStyleFromWindow(win);
+        const obj = this.get.styleFromWindow(win);
         assert.deepEqual(getter(obj), styleObj);
       });
     },
 
-    isStyleStoreEqualToExampleFileData: () => {
+    styleStoreEqualToExampleFileData: () => {
       cy.window().then((win: any) => {
-        const obj = this.get.getStyleFromWindow(win);
+        const obj = this.get.styleFromWindow(win);
         cy.fixture("example-style.json").should("deep.equal", obj);
       });
     },
 
-    isExists: (selector: string) => {
+    exist: (selector: string) => {
       this.helper.get.element(selector).should("exist");
     },
-    isSelected: (selector: string, value: string) => {
-      cy.get(selector).find(`option[value="${value}"]`).should("be.selected");
+    beSelected: (selector: string, value: string) => {
+      this.helper.get.element(selector).find(`option[value="${value}"]`).should("be.selected");
     },
+    containText: (selector: string, text: string) => {
+      this.helper.get.element(selector).should("contain.text", text);
+    }
   };
 }

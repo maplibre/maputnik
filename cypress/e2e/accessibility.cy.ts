@@ -11,7 +11,7 @@ describe("accessibility", () => {
 
     it("skip link to layer list", () => {
       const selector = "root:skip:layer-list";
-      should.isExists(selector);
+      should.exist(selector);
       when.tab();
       should.beFocused(selector);
       when.click(selector);
@@ -20,7 +20,7 @@ describe("accessibility", () => {
 
     it("skip link to layer editor", () => {
       const selector = "root:skip:layer-editor";
-      should.isExists(selector);
+      should.exist(selector);
       when.tab().tab();
       should.beFocused(selector);
       when.click(selector);
@@ -29,7 +29,7 @@ describe("accessibility", () => {
 
     it("skip link to map view", () => {
       const selector = "root:skip:map-view";
-      should.isExists(selector);
+      should.exist(selector);
       when.tab().tab().tab();
       should.beFocused(selector);
       when.click(selector);

@@ -1,4 +1,3 @@
-var assert = require("assert");
 import { v1 as uuid } from "uuid";
 import MaputnikDriver from "./driver";
 
@@ -134,12 +133,9 @@ describe("layers", () => {
         // Setup
         var id = uuid();
 
-        when.select(
-          get.getDataAttribute("add-layer.layer-type", "select"),
-          "background"
-        );
+        when.selectWithin("add-layer.layer-type", "background");
         when.setValue(
-          get.getDataAttribute("add-layer.layer-id", "input"),
+          get.dataAttribute("add-layer.layer-id", "input"),
           "background:" + id
         );
 
@@ -167,7 +163,7 @@ describe("layers", () => {
 
           var id = uuid();
           when.setValue(
-            get.getDataAttribute("layer-editor.layer-id", "input"),
+            get.dataAttribute("layer-editor.layer-id", "input"),
             "foobar:" + id
           );
           when.click("min-zoom");
@@ -188,7 +184,7 @@ describe("layers", () => {
 
           when.click("layer-list-item:background:" + bgId);
           when.setValue(
-            get.getDataAttribute("min-zoom", 'input[type="text"]'),
+            get.dataAttribute("min-zoom", 'input[type="text"]'),
             "1"
           );
 
@@ -206,8 +202,8 @@ describe("layers", () => {
           );
 
           // AND RESET!
-          // driver.setValue(driver.getDataAttribute("min-zoom", "input"), "")
-          // driver.click(driver.getDataAttribute("max-zoom", "input"));
+          // driver.setValue(driver.get.dataAttribute("min-zoom", "input"), "")
+          // driver.click(driver.get.dataAttribute("max-zoom", "input"));
 
           // driver.isStyleStoreEqual((a: any) => a.layers, [
           //   {
@@ -222,7 +218,7 @@ describe("layers", () => {
 
           when.click("layer-list-item:background:" + bgId);
           when.setValue(
-            get.getDataAttribute("max-zoom", 'input[type="text"]'),
+            get.dataAttribute("max-zoom", 'input[type="text"]'),
             "1"
           );
 
@@ -245,7 +241,7 @@ describe("layers", () => {
           var id = uuid();
 
           when.click("layer-list-item:background:" + bgId);
-          when.setValue(get.getDataAttribute("layer-comment", "textarea"), id);
+          when.setValue(get.dataAttribute("layer-comment", "textarea"), id);
 
           when.click("layer-editor.layer-id");
 
@@ -324,9 +320,7 @@ describe("layers", () => {
           when.typeKeys(
             "\uE013\uE013\uE013\uE013\uE013\uE013\uE013\uE013\uE013\uE013\uE013\uE013 {"
           );
-          should.isExists(errorSelector);
-
-          when.click("layer-editor.layer-id");
+          should.exist(errorSelector);
         });
       });
     });

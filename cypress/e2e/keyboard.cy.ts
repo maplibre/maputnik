@@ -1,4 +1,4 @@
-import { default as MaputnikDriver } from "./driver";
+import MaputnikDriver from "./driver";
 
 describe("keyboard", () => {
   let { beforeAndAfter, given, when, get, should } = new MaputnikDriver();
@@ -45,12 +45,12 @@ describe("keyboard", () => {
 
     it("'i' should change map to inspect mode", () => {
       when.typeKeys("i");
-      should.isSelected(get.getDataAttribute("nav:inspect"), "inspect");
+      should.beSelected("nav:inspect", "inspect");
     });
 
     it("'m' should focus map", () => {
       when.typeKeys("m");
-      should.beFocused(".maplibregl-canvas");
+      should.canvasBeFocused();
     });
 
     it("'!' should show debug modal", () => {

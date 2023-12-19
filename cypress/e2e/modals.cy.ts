@@ -20,17 +20,17 @@ describe("modals", () => {
       // HM: I was not able to make the following choose file actually to select a file and close the modal...
       when.chooseExampleFile();
 
-      should.isStyleStoreEqualToExampleFileData();
+      should.styleStoreEqualToExampleFileData();
     });
 
     it("load from url", () => {
-      var styleFileUrl = get.getExampleFileUrl();
+      var styleFileUrl = get.exampleFileUrl();
 
-      when.setValue(get.getDataAttribute("modal:open.url.input"), styleFileUrl);
+      when.setValue(get.dataAttribute("modal:open.url.input"), styleFileUrl);
       when.click("modal:open.url.button");
       when.waitForExampleFileRequset();
 
-      should.isStyleStoreEqualToExampleFileData();
+      should.styleStoreEqualToExampleFileData();
     });
   });
 
@@ -67,7 +67,7 @@ describe("modals", () => {
     it("toggle", () => {
       when.setStyle("geojson");
 
-      when.select(get.getDataAttribute("nav:inspect", "select"), "inspect");
+      when.selectWithin("nav:inspect", "inspect");
     });
   });
 
@@ -77,20 +77,20 @@ describe("modals", () => {
     });
 
     it("name", () => {
-      when.setValue(get.getDataAttribute("modal:settings.name"), "foobar");
+      when.setValue(get.dataAttribute("modal:settings.name"), "foobar");
       when.click("modal:settings.owner");
 
       should.equalStyleStore((obj) => obj.name, "foobar");
     });
     it("owner", () => {
-      when.setValue(get.getDataAttribute("modal:settings.owner"), "foobar");
+      when.setValue(get.dataAttribute("modal:settings.owner"), "foobar");
       when.click("modal:settings.name");
 
       should.equalStyleStore((obj) => obj.owner, "foobar");
     });
     it("sprite url", () => {
       when.setValue(
-        get.getDataAttribute("modal:settings.sprite"),
+        get.dataAttribute("modal:settings.sprite"),
         "http://example.com"
       );
       when.click("modal:settings.name");
@@ -99,7 +99,7 @@ describe("modals", () => {
     });
     it("glyphs url", () => {
       var glyphsUrl = "http://example.com/{fontstack}/{range}.pbf";
-      when.setValue(get.getDataAttribute("modal:settings.glyphs"), glyphsUrl);
+      when.setValue(get.dataAttribute("modal:settings.glyphs"), glyphsUrl);
       when.click("modal:settings.name");
 
       should.equalStyleStore((obj) => obj.glyphs, glyphsUrl);
@@ -108,7 +108,7 @@ describe("modals", () => {
     it("maptiler access token", () => {
       var apiKey = "testing123";
       when.setValue(
-        get.getDataAttribute(
+        get.dataAttribute(
           "modal:settings.maputnik:openmaptiles_access_token"
         ),
         apiKey
@@ -124,7 +124,7 @@ describe("modals", () => {
     it("thunderforest access token", () => {
       var apiKey = "testing123";
       when.setValue(
-        get.getDataAttribute(
+        get.dataAttribute(
           "modal:settings.maputnik:thunderforest_access_token"
         ),
         apiKey
@@ -139,14 +139,8 @@ describe("modals", () => {
 
     it("style renderer", () => {
       cy.on("uncaught:exception", () => false); // this is due to the fact that this is an invalid style for openlayers
-      when.select(
-        get.getDataAttribute("modal:settings.maputnik:renderer"),
-        "ol"
-      );
-      should.isSelected(
-        get.getDataAttribute("modal:settings.maputnik:renderer"),
-        "ol"
-      );
+      when.select("modal:settings.maputnik:renderer", "ol");
+      should.beSelected("modal:settings.maputnik:renderer", "ol");
 
       when.click("modal:settings.name");
 

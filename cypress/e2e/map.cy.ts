@@ -8,18 +8,16 @@ describe("map", () => {
       var zoomLevel = 12.37;
       when.setStyle("geojson", zoomLevel);
       should.beVisible("maplibre:ctrl-zoom");
-      // HM TODO
-      //driver.getText(".maplibregl-ctrl-zoom") === "Zoom "+(zoomLevel);
+      should.containText("maplibre:ctrl-zoom", "Zoom: " + zoomLevel);
     });
 
     it("via map controls", () => {
       var zoomLevel = 12.37;
       when.setStyle("geojson", zoomLevel);
 
-      when.click("maplibre:ctrl-zoom");
       should.beVisible("maplibre:ctrl-zoom");
-      // HM TODO
-      //driver.getText(".maplibregl-ctrl-zoom") === "Zoom "+(zoomLevel + 1);
+      when.clickZoomin();
+      should.containText("maplibre:ctrl-zoom", "Zoom: "+(zoomLevel + 1));
     });
   });
 });
