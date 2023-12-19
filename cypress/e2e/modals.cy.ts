@@ -1,137 +1,160 @@
-import driver from "./driver";
+import MaputnikDriver from "./driver";
 
 describe("modals", () => {
+  let { beforeAndAfter, given, when, get, should } = new MaputnikDriver();
+  beforeAndAfter();
   beforeEach(() => {
-    driver.beforeEach();
-    driver.setStyle('');
+    when.setStyle("");
   });
   describe("open", () => {
     beforeEach(() => {
-        driver.click(driver.getDataAttribute("nav:open"));
+      when.click("nav:open");
     });
 
     it("close", () => {
-      driver.closeModal("modal:open");
+      when.closeModal("modal:open");
+      should.notExist("modal:open");
     });
 
     it.skip("upload", () => {
       // HM: I was not able to make the following choose file actually to select a file and close the modal...
-      driver.chooseExampleFile();
+      when.chooseExampleFile();
 
-      driver.isStyleStoreEqualToExampleFileData();
+      should.isStyleStoreEqualToExampleFileData();
     });
 
     it("load from url", () => {
-      var styleFileUrl = driver.getExampleFileUrl();
+      var styleFileUrl = get.getExampleFileUrl();
 
-      driver.setValue(driver.getDataAttribute("modal:open.url.input"), styleFileUrl);
-      driver.click(driver.getDataAttribute("modal:open.url.button"))
-      driver.waitForExampleFileRequset();
+      when.setValue(get.getDataAttribute("modal:open.url.input"), styleFileUrl);
+      when.click("modal:open.url.button");
+      when.waitForExampleFileRequset();
 
-      driver.isStyleStoreEqualToExampleFileData();
+      should.isStyleStoreEqualToExampleFileData();
     });
-  })
+  });
 
   describe("shortcuts", () => {
     it("open/close", () => {
-      driver.setStyle('');
-
-      driver.typeKeys("?");
-
-      driver.isDisplayedInViewport(driver.getDataAttribute("modal:shortcuts"));
-
-      driver.closeModal("modal:shortcuts");
+      when.setStyle("");
+      when.typeKeys("?");
+      when.closeModal("modal:shortcuts");
+      should.notExist("modal:shortcuts");
     });
-
   });
 
   describe("export", () => {
     beforeEach(() => {
-      driver.click(driver.getDataAttribute("nav:export"));
+      when.click("nav:export");
     });
 
     it("close", () => {
-      driver.closeModal("modal:export");
+      when.closeModal("modal:export");
+      should.notExist("modal:export");
     });
 
     // TODO: Work out how to download a file and check the contents
-    it("download")
-
-  })
+    it("download");
+  });
 
   describe("sources", () => {
-    it("active sources")
-    it("public source")
-    it("add new source")
-  })
+    it("active sources");
+    it("public source");
+    it("add new source");
+  });
 
   describe("inspect", () => {
     it("toggle", () => {
-      driver.setStyle('geojson');
+      when.setStyle("geojson");
 
-      driver.select(driver.getDataAttribute("nav:inspect", "select"), "inspect");
-    })
-  })
+      when.select(get.getDataAttribute("nav:inspect", "select"), "inspect");
+    });
+  });
 
   describe("style settings", () => {
     beforeEach(() => {
-      driver.click(driver.getDataAttribute("nav:settings"));
+      when.click("nav:settings");
     });
 
     it("name", () => {
-      driver.setValue(driver.getDataAttribute("modal:settings.name"), "foobar");
-      driver.click(driver.getDataAttribute("modal:settings.owner"));
+      when.setValue(get.getDataAttribute("modal:settings.name"), "foobar");
+      when.click("modal:settings.owner");
 
-      driver.isStyleStoreEqual((obj) => obj.name, "foobar");
-    })
+      should.equalStyleStore((obj) => obj.name, "foobar");
+    });
     it("owner", () => {
-      driver.setValue(driver.getDataAttribute("modal:settings.owner"), "foobar")
-      driver.click(driver.getDataAttribute("modal:settings.name"));
+      when.setValue(get.getDataAttribute("modal:settings.owner"), "foobar");
+      when.click("modal:settings.name");
 
-      driver.isStyleStoreEqual((obj) => obj.owner, "foobar");
-    })
+      should.equalStyleStore((obj) => obj.owner, "foobar");
+    });
     it("sprite url", () => {
-      driver.setValue(driver.getDataAttribute("modal:settings.sprite"), "http://example.com")
-      driver.click(driver.getDataAttribute("modal:settings.name"));
+      when.setValue(
+        get.getDataAttribute("modal:settings.sprite"),
+        "http://example.com"
+      );
+      when.click("modal:settings.name");
 
-      driver.isStyleStoreEqual((obj) => obj.sprite, "http://example.com");
-    })
+      should.equalStyleStore((obj) => obj.sprite, "http://example.com");
+    });
     it("glyphs url", () => {
-      var glyphsUrl = "http://example.com/{fontstack}/{range}.pbf"
-      driver.setValue(driver.getDataAttribute("modal:settings.glyphs"), glyphsUrl);
-      driver.click(driver.getDataAttribute("modal:settings.name"));
+      var glyphsUrl = "http://example.com/{fontstack}/{range}.pbf";
+      when.setValue(get.getDataAttribute("modal:settings.glyphs"), glyphsUrl);
+      when.click("modal:settings.name");
 
-      driver.isStyleStoreEqual((obj) => obj.glyphs, glyphsUrl);
-    })
+      should.equalStyleStore((obj) => obj.glyphs, glyphsUrl);
+    });
 
     it("maptiler access token", () => {
       var apiKey = "testing123";
-      driver.setValue(driver.getDataAttribute("modal:settings.maputnik:openmaptiles_access_token"), apiKey);
-      driver.click(driver.getDataAttribute("modal:settings.name"));
+      when.setValue(
+        get.getDataAttribute(
+          "modal:settings.maputnik:openmaptiles_access_token"
+        ),
+        apiKey
+      );
+      when.click("modal:settings.name");
 
-      driver.isStyleStoreEqual((obj) => obj.metadata["maputnik:openmaptiles_access_token"], apiKey);
-    })
+      should.equalStyleStore(
+        (obj) => obj.metadata["maputnik:openmaptiles_access_token"],
+        apiKey
+      );
+    });
 
     it("thunderforest access token", () => {
       var apiKey = "testing123";
-      driver.setValue(driver.getDataAttribute("modal:settings.maputnik:thunderforest_access_token"), apiKey);
-      driver.click(driver.getDataAttribute("modal:settings.name"));
+      when.setValue(
+        get.getDataAttribute(
+          "modal:settings.maputnik:thunderforest_access_token"
+        ),
+        apiKey
+      );
+      when.click("modal:settings.name");
 
-      driver.isStyleStoreEqual((obj) => obj.metadata["maputnik:thunderforest_access_token"], apiKey);
-    })
+      should.equalStyleStore(
+        (obj) => obj.metadata["maputnik:thunderforest_access_token"],
+        apiKey
+      );
+    });
 
     it("style renderer", () => {
-      cy.on('uncaught:exception', () => false); // this is due to the fact that this is an invalid style for openlayers
-      driver.select(driver.getDataAttribute("modal:settings.maputnik:renderer"), "ol");
-      driver.isSelected(driver.getDataAttribute("modal:settings.maputnik:renderer"), "ol");
-      
-      driver.click(driver.getDataAttribute("modal:settings.name"));
+      cy.on("uncaught:exception", () => false); // this is due to the fact that this is an invalid style for openlayers
+      when.select(
+        get.getDataAttribute("modal:settings.maputnik:renderer"),
+        "ol"
+      );
+      should.isSelected(
+        get.getDataAttribute("modal:settings.maputnik:renderer"),
+        "ol"
+      );
 
-      driver.isStyleStoreEqual((obj) => obj.metadata["maputnik:renderer"], "ol");
-    })
-  })
+      when.click("modal:settings.name");
+
+      should.equalStyleStore((obj) => obj.metadata["maputnik:renderer"], "ol");
+    });
+  });
 
   describe("sources", () => {
-    it("toggle")
-  })
-})
+    it("toggle");
+  });
+});

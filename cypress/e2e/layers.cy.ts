@@ -1,112 +1,132 @@
 var assert = require("assert");
-import driver from "./driver";
-import { v1 as uuid } from 'uuid';
+import { v1 as uuid } from "uuid";
+import MaputnikDriver from "./driver";
 
 describe("layers", () => {
+  let { beforeAndAfter, given, when, get, should } = new MaputnikDriver();
+  beforeAndAfter();
   beforeEach(() => {
-    driver.beforeEach();
-    driver.setStyle('both');
-    driver.openLayersModal();
+    when.setStyle("both");
+    when.openLayersModal();
   });
 
   describe("ops", () => {
     it("delete", () => {
-      var id = driver.fillLayersModal({
-        type: "background"
-      })
+      var id = when.fillLayersModal({
+        type: "background",
+      });
 
-      driver.isStyleStoreEqual((a: any) => a.layers, [
-        {
-          "id": id,
-          "type": 'background'
-        },
-      ]);
+      should.equalStyleStore(
+        (a: any) => a.layers,
+        [
+          {
+            id: id,
+            type: "background",
+          },
+        ]
+      );
 
-      driver.click(driver.getDataAttribute("layer-list-item:"+id+":delete", ""))
+      when.click("layer-list-item:" + id + ":delete");
 
-      driver.isStyleStoreEqual((a: any) => a.layers, []);
+      should.equalStyleStore((a: any) => a.layers, []);
     });
 
     it("duplicate", () => {
       var styleObj;
-      var id = driver.fillLayersModal({
-        type: "background"
-      })
+      var id = when.fillLayersModal({
+        type: "background",
+      });
 
-      driver.isStyleStoreEqual((a: any) => a.layers, [
-        {
-          "id": id,
-          "type": 'background'
-        },
-      ]);
+      should.equalStyleStore(
+        (a: any) => a.layers,
+        [
+          {
+            id: id,
+            type: "background",
+          },
+        ]
+      );
 
-      driver.click(driver.getDataAttribute("layer-list-item:"+id+":copy", ""));
+      when.click("layer-list-item:" + id + ":copy");
 
-      driver.isStyleStoreEqual((a: any) => a.layers, [
-        {
-          "id": id+"-copy",
-          "type": "background"
-        },
-        {
-          "id": id,
-          "type": "background"
-        },
-      ]);
+      should.equalStyleStore(
+        (a: any) => a.layers,
+        [
+          {
+            id: id + "-copy",
+            type: "background",
+          },
+          {
+            id: id,
+            type: "background",
+          },
+        ]
+      );
     });
 
     it("hide", () => {
       var styleObj;
-      var id = driver.fillLayersModal({
-        type: "background"
-      })
+      var id = when.fillLayersModal({
+        type: "background",
+      });
 
-      driver.isStyleStoreEqual((a: any) => a.layers, [
-        {
-          "id": id,
-          "type": 'background'
-        },
-      ]);
+      should.equalStyleStore(
+        (a: any) => a.layers,
+        [
+          {
+            id: id,
+            type: "background",
+          },
+        ]
+      );
 
-      driver.click(driver.getDataAttribute("layer-list-item:"+id+":toggle-visibility", ""));
+      when.click("layer-list-item:" + id + ":toggle-visibility");
 
-      driver.isStyleStoreEqual((a: any) => a.layers, [
-        {
-          "id": id,
-          "type": "background",
-          "layout": {
-            "visibility": "none"
-          }
-        },
-      ]);
+      should.equalStyleStore(
+        (a: any) => a.layers,
+        [
+          {
+            id: id,
+            type: "background",
+            layout: {
+              visibility: "none",
+            },
+          },
+        ]
+      );
 
-      driver.click(driver.getDataAttribute("layer-list-item:"+id+":toggle-visibility", ""));
+      when.click("layer-list-item:" + id + ":toggle-visibility");
 
-      driver.isStyleStoreEqual((a: any) => a.layers, [
-        {
-          "id": id,
-          "type": "background",
-          "layout": {
-            "visibility": "visible"
-          }
-        },
-      ]);
-    })
-  })
+      should.equalStyleStore(
+        (a: any) => a.layers,
+        [
+          {
+            id: id,
+            type: "background",
+            layout: {
+              visibility: "visible",
+            },
+          },
+        ]
+      );
+    });
+  });
 
-
-  describe('background', () => {
-
+  describe("background", () => {
     it("add", () => {
-      var id = driver.fillLayersModal({
-        type: "background"
-      })
+      var id = when.fillLayersModal({
+        type: "background",
+      });
 
-      driver.isStyleStoreEqual((a: any) => a.layers, [
-        {
-          "id": id,
-          "type": 'background'
-        }
-      ]);
+      should.equalStyleStore(
+        (a: any) => a.layers,
+        [
+          {
+            id: id,
+            type: "background",
+          },
+        ]
+      );
     });
 
     describe("modify", () => {
@@ -114,17 +134,26 @@ describe("layers", () => {
         // Setup
         var id = uuid();
 
-        driver.select(driver.getDataAttribute("add-layer.layer-type", "select"), "background");
-        driver.setValue(driver.getDataAttribute("add-layer.layer-id", "input"), "background:"+id);
+        when.select(
+          get.getDataAttribute("add-layer.layer-type", "select"),
+          "background"
+        );
+        when.setValue(
+          get.getDataAttribute("add-layer.layer-id", "input"),
+          "background:" + id
+        );
 
-        driver.click(driver.getDataAttribute("add-layer"));
+        when.click("add-layer");
 
-        driver.isStyleStoreEqual((a: any) => a.layers, [
-          {
-            "id": 'background:'+id,
-            "type": 'background'
-          }
-        ]);
+        should.equalStyleStore(
+          (a: any) => a.layers,
+          [
+            {
+              id: "background:" + id,
+              type: "background",
+            },
+          ]
+        );
         return id;
       }
 
@@ -134,35 +163,47 @@ describe("layers", () => {
         it("id", () => {
           var bgId = createBackground();
 
-          driver.click(driver.getDataAttribute("layer-list-item:background:"+bgId));
+          when.click("layer-list-item:background:" + bgId);
 
           var id = uuid();
-          driver.setValue(driver.getDataAttribute("layer-editor.layer-id", "input"), "foobar:"+id)
-          driver.click(driver.getDataAttribute("min-zoom"));
+          when.setValue(
+            get.getDataAttribute("layer-editor.layer-id", "input"),
+            "foobar:" + id
+          );
+          when.click("min-zoom");
 
-          driver.isStyleStoreEqual((a: any) => a.layers, [
-            {
-              "id": 'foobar:'+id,
-              "type": 'background'
-            }
-          ]);
+          should.equalStyleStore(
+            (a: any) => a.layers,
+            [
+              {
+                id: "foobar:" + id,
+                type: "background",
+              },
+            ]
+          );
         });
 
         it("min-zoom", () => {
           var bgId = createBackground();
 
-          driver.click(driver.getDataAttribute("layer-list-item:background:"+bgId));
-          driver.setValue(driver.getDataAttribute("min-zoom", 'input[type="text"]'), "1");
+          when.click("layer-list-item:background:" + bgId);
+          when.setValue(
+            get.getDataAttribute("min-zoom", 'input[type="text"]'),
+            "1"
+          );
 
-          driver.click(driver.getDataAttribute("layer-editor.layer-id", "input"));
+          when.click("layer-editor.layer-id");
 
-          driver.isStyleStoreEqual((a: any) => a.layers, [
-            {
-              "id": 'background:'+bgId,
-              "type": 'background',
-              "minzoom": 1
-            }
-          ]);
+          should.equalStyleStore(
+            (a: any) => a.layers,
+            [
+              {
+                id: "background:" + bgId,
+                type: "background",
+                minzoom: 1,
+              },
+            ]
+          );
 
           // AND RESET!
           // driver.setValue(driver.getDataAttribute("min-zoom", "input"), "")
@@ -179,38 +220,47 @@ describe("layers", () => {
         it("max-zoom", () => {
           var bgId = createBackground();
 
-          driver.click(driver.getDataAttribute("layer-list-item:background:"+bgId));
-          driver.setValue(driver.getDataAttribute("max-zoom", 'input[type="text"]'), "1")
+          when.click("layer-list-item:background:" + bgId);
+          when.setValue(
+            get.getDataAttribute("max-zoom", 'input[type="text"]'),
+            "1"
+          );
 
-          driver.click(driver.getDataAttribute("layer-editor.layer-id", "input"));
+          when.click("layer-editor.layer-id");
 
-          driver.isStyleStoreEqual((a: any) => a.layers, [
-            {
-              "id": 'background:'+bgId,
-              "type": 'background',
-              "maxzoom": 1
-            }
-          ]);
+          should.equalStyleStore(
+            (a: any) => a.layers,
+            [
+              {
+                id: "background:" + bgId,
+                type: "background",
+                maxzoom: 1,
+              },
+            ]
+          );
         });
 
         it("comments", () => {
           var bgId = createBackground();
           var id = uuid();
 
-          driver.click(driver.getDataAttribute("layer-list-item:background:"+bgId));
-          driver.setValue(driver.getDataAttribute("layer-comment", "textarea"), id);
+          when.click("layer-list-item:background:" + bgId);
+          when.setValue(get.getDataAttribute("layer-comment", "textarea"), id);
 
-          driver.click(driver.getDataAttribute("layer-editor.layer-id", "input"));
+          when.click("layer-editor.layer-id");
 
-          driver.isStyleStoreEqual((a: any) => a.layers, [
-            {
-              "id": 'background:'+bgId,
-              "type": 'background',
-              metadata: {
-                'maputnik:comment': id
-              }
-            }
-          ]);
+          should.equalStyleStore(
+            (a: any) => a.layers,
+            [
+              {
+                id: "background:" + bgId,
+                type: "background",
+                metadata: {
+                  "maputnik:comment": id,
+                },
+              },
+            ]
+          );
 
           // Unset it again.
           // TODO: This fails
@@ -228,31 +278,33 @@ describe("layers", () => {
         it("color", () => {
           var bgId = createBackground();
 
-          driver.click(driver.getDataAttribute("layer-list-item:background:"+bgId));
+          when.click("layer-list-item:background:" + bgId);
 
-          driver.click(driver.getDataAttribute("spec-field:background-color", "input"));
+          when.click("spec-field:background-color");
 
-          driver.isStyleStoreEqual((a: any) => a.layers, [
-            {
-              "id": 'background:'+bgId,
-              "type": 'background'
-            }
-          ]);
-
-        })
-      })
+          should.equalStyleStore(
+            (a: any) => a.layers,
+            [
+              {
+                id: "background:" + bgId,
+                type: "background",
+              },
+            ]
+          );
+        });
+      });
 
       describe("filter", () => {
         it("expand/collapse");
         it("compound filter");
-      })
+      });
 
       describe("paint", () => {
         it("expand/collapse");
         it("color");
         it("pattern");
         it("opacity");
-      })
+      });
       // <=====
 
       describe("json-editor", () => {
@@ -263,165 +315,183 @@ describe("layers", () => {
         it.skip("parse error", () => {
           var bgId = createBackground();
 
-          driver.click(driver.getDataAttribute("layer-list-item:background:"+bgId));
+          when.click("layer-list-item:background:" + bgId);
 
           var errorSelector = ".CodeMirror-lint-marker-error";
-          driver.doesNotExists(errorSelector);
+          should.notExist(errorSelector);
 
-          driver.click(".CodeMirror");
-          driver.typeKeys("\uE013\uE013\uE013\uE013\uE013\uE013\uE013\uE013\uE013\uE013\uE013\uE013 {");
-          driver.isExists(errorSelector);
+          when.click(".CodeMirror");
+          when.typeKeys(
+            "\uE013\uE013\uE013\uE013\uE013\uE013\uE013\uE013\uE013\uE013\uE013\uE013 {"
+          );
+          should.isExists(errorSelector);
 
-          driver.click(driver.getDataAttribute("layer-editor.layer-id"));
+          when.click("layer-editor.layer-id");
         });
       });
-    })
+    });
   });
 
-  describe('fill', () => {
+  describe("fill", () => {
     it("add", () => {
-
-      var id = driver.fillLayersModal({
+      var id = when.fillLayersModal({
         type: "fill",
-        layer: "example"
+        layer: "example",
       });
 
-      driver.isStyleStoreEqual((a: any) => a.layers, [
-        {
-          "id": id,
-          "type": 'fill',
-          "source": "example"
-        }
-      ]);
-    })
+      should.equalStyleStore(
+        (a: any) => a.layers,
+        [
+          {
+            id: id,
+            type: "fill",
+            source: "example",
+          },
+        ]
+      );
+    });
 
     // TODO: Change source
-    it("change source")
+    it("change source");
   });
 
-  describe('line', () => {
+  describe("line", () => {
     it("add", () => {
-      var id = driver.fillLayersModal({
+      var id = when.fillLayersModal({
         type: "line",
-        layer: "example"
+        layer: "example",
       });
 
-      driver.isStyleStoreEqual((a: any) => a.layers, [
-        {
-          "id": id,
-          "type": "line",
-          "source": "example",
-        }
-      ]);
+      should.equalStyleStore(
+        (a: any) => a.layers,
+        [
+          {
+            id: id,
+            type: "line",
+            source: "example",
+          },
+        ]
+      );
     });
 
     it("groups", () => {
       // TODO
       // Click each of the layer groups.
-    })
+    });
   });
 
-  describe('symbol', () => {
+  describe("symbol", () => {
     it("add", () => {
-      var id = driver.fillLayersModal({
+      var id = when.fillLayersModal({
         type: "symbol",
-        layer: "example"
+        layer: "example",
       });
 
-      driver.isStyleStoreEqual((a: any) => a.layers, [
-        {
-          "id": id,
-          "type": "symbol",
-          "source": "example",
-        }
-      ]);
+      should.equalStyleStore(
+        (a: any) => a.layers,
+        [
+          {
+            id: id,
+            type: "symbol",
+            source: "example",
+          },
+        ]
+      );
     });
   });
 
-  describe('raster', () => {
+  describe("raster", () => {
     it("add", () => {
-      var id = driver.fillLayersModal({
+      var id = when.fillLayersModal({
         type: "raster",
-        layer: "raster"
+        layer: "raster",
       });
 
-      driver.isStyleStoreEqual((a: any) => a.layers, [
-        {
-          "id": id,
-          "type": "raster",
-          "source": "raster",
-        }
-      ]);
+      should.equalStyleStore(
+        (a: any) => a.layers,
+        [
+          {
+            id: id,
+            type: "raster",
+            source: "raster",
+          },
+        ]
+      );
     });
   });
 
-  describe('circle', () => {
+  describe("circle", () => {
     it("add", () => {
-      var id = driver.fillLayersModal({
+      var id = when.fillLayersModal({
         type: "circle",
-        layer: "example"
+        layer: "example",
       });
 
-      driver.isStyleStoreEqual((a: any) => a.layers, [
-        {
-          "id": id,
-          "type": "circle",
-          "source": "example",
-        }
-      ]);
+      should.equalStyleStore(
+        (a: any) => a.layers,
+        [
+          {
+            id: id,
+            type: "circle",
+            source: "example",
+          },
+        ]
+      );
     });
-
   });
 
-  describe('fill extrusion', () => {
+  describe("fill extrusion", () => {
     it("add", () => {
-      var id = driver.fillLayersModal({
+      var id = when.fillLayersModal({
         type: "fill-extrusion",
-        layer: "example"
+        layer: "example",
       });
 
-      driver.isStyleStoreEqual((a: any) => a.layers, [
-        {
-          "id": id,
-          "type": 'fill-extrusion',
-          "source": "example"
-        }
-      ]);
+      should.equalStyleStore(
+        (a: any) => a.layers,
+        [
+          {
+            id: id,
+            type: "fill-extrusion",
+            source: "example",
+          },
+        ]
+      );
     });
   });
-
 
   describe("groups", () => {
     it("simple", () => {
-      driver.setStyle("geojson");
+      when.setStyle("geojson");
 
-      driver.openLayersModal();
-      driver.fillLayersModal({
+      when.openLayersModal();
+      when.fillLayersModal({
         id: "foo",
-        type: "background"
-      })
+        type: "background",
+      });
 
-      driver.openLayersModal();
-      driver.fillLayersModal({
+      when.openLayersModal();
+      when.fillLayersModal({
         id: "foo_bar",
-        type: "background"
-      })
+        type: "background",
+      });
 
-      driver.openLayersModal();
-      driver.fillLayersModal({
+      when.openLayersModal();
+      when.fillLayersModal({
         id: "foo_bar_baz",
-        type: "background"
-      })
+        type: "background",
+      });
 
-      driver.isDisplayedInViewport(driver.getDataAttribute("layer-list-item:foo"));
-      driver.isNotDisplayedInViewport(driver.getDataAttribute("layer-list-item:foo_bar"));
-      driver.isNotDisplayedInViewport(driver.getDataAttribute("layer-list-item:foo_bar_baz"));
+      should.beVisible("layer-list-item:foo");
 
-      driver.click(driver.getDataAttribute("layer-list-group:foo-0"));
+      should.notBeVisible("layer-list-item:foo_bar");
+      should.notBeVisible("layer-list-item:foo_bar_baz");
 
-      driver.isDisplayedInViewport(driver.getDataAttribute("layer-list-item:foo"));
-      driver.isDisplayedInViewport(driver.getDataAttribute("layer-list-item:foo_bar"));
-      driver.isDisplayedInViewport(driver.getDataAttribute("layer-list-item:foo_bar_baz"));
-    })
-  })
+      when.click("layer-list-group:foo-0");
+
+      should.beVisible("layer-list-item:foo");
+      should.beVisible("layer-list-item:foo_bar");
+      should.beVisible("layer-list-item:foo_bar_baz");
+    });
+  });
 });
