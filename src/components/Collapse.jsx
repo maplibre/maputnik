@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { Collapse as ReactCollapse } from 'react-collapse'
-import accessibility from '../../libs/accessibility'
+import {reducedMotionEnabled} from '../../libs/accessibility'
 
 
 export default class Collapse extends React.Component {
@@ -15,7 +15,7 @@ export default class Collapse extends React.Component {
   }
 
   render() {
-    if (accessibility.reducedMotionEnabled()) {
+    if (reducedMotionEnabled()) {
       return (
         <div style={{display: this.props.isActive ? "block" : "none"}}>
           {this.props.children}

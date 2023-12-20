@@ -97,6 +97,7 @@
     "@storybook/react-vite": "^7.6.5",
     "@storybook/theming": "^7.6.5",
     "@types/cors": "^2.8.17",
+    "@types/lodash.throttle": "^4.1.9",
     "@types/react": "^16.14.52",
     "@types/react-dom": "^16.9.24",
     "@types/uuid": "^9.0.7",
