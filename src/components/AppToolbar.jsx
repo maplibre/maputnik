@@ -244,12 +244,13 @@ export default class AppToolbar extends React.Component {
             <label>View
               <select
                 className="maputnik-select"
+                data-wd-key="maputnik-select"
                 onChange={(e) => this.handleSelection(e.target.value)}
                 value={currentView.id}
               >
                 {views.filter(v => v.group === "general").map((item) => {
                   return (
-                    <option key={item.id} value={item.id} disabled={item.disabled}>
+                    <option key={item.id} value={item.id} disabled={item.disabled} data-wd-key={item.id}>
                       {item.title}
                     </option>
                   );

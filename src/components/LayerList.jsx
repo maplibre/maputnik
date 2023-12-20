@@ -286,6 +286,7 @@ class LayerListContainer extends React.Component {
           <div className="maputnik-multibutton">
             <button
               id="skip-target-layer-list"
+              data-wd-key="skip-target-layer-list"
               onClick={this.toggleLayers}
               className="maputnik-button">
               {this.state.areAllGroupsExpanded === true ? "Collapse" : "Expand"}

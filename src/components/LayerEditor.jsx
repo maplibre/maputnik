@@ -305,7 +305,7 @@ export default class LayerEditor extends React.Component {
               onSelection={handleSelection}
               closeOnSelection={false}
             >
-              <Button id="skip-target-layer-editor" className='more-menu__button' title="Layer options">
+              <Button id="skip-target-layer-editor" data-wd-key="skip-target-layer-editor" className='more-menu__button' title="Layer options">
                 <MdMoreVert className="more-menu__button__svg" />
               </Button>
               <Menu>

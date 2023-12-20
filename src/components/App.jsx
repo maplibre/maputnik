@@ -682,7 +682,7 @@ export default class App extends React.Component {
       elementStyle.filter = `url('#${filterName}')`;
     }
 
-    return <div style={elementStyle} className="maputnik-map__container">
+    return <div style={elementStyle} className="maputnik-map__container" data-wd-key="maplibre:container">
       {mapElement}
     </div>
   }

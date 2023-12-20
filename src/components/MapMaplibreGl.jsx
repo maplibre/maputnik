@@ -230,6 +230,7 @@ export default class MapMaplibreGl extends React.Component {
         role="region"
         aria-label="Map view"
         ref={x => this.container = x}
+        data-wd-key="maplibre:map"
       ></div>
     }
     else {
