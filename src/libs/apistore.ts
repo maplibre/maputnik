@@ -37,7 +37,7 @@ export class ApiStyleStore {
       this.notifyLocalChanges()
       cb(null)
     })
-    .catch(function(e) {
+    .catch(() => {
       cb(new Error('Can not connect to style API'))
     })
   }
