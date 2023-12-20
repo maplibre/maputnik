@@ -1,5 +1,11 @@
+import {Map} from 'maplibre-gl';
+
 export default class ZoomControl {
-  onAdd(map) {
+  _map: Map| undefined = undefined;
+  _container: HTMLDivElement | undefined = undefined;
+  _textEl: HTMLSpanElement | null = null;
+
+  onAdd(map: Map) {
     this._map = map;
     this._container = document.createElement('div');
     this._container.className = 'maplibregl-ctrl maplibregl-ctrl-group maplibregl-ctrl-zoom';
@@ -15,17 +21,17 @@ export default class ZoomControl {
   }
   
   updateZoomLevel() {
-    this._textEl.innerHTML = this._map.getZoom().toFixed(2);
+    this._textEl!.innerHTML = this._map!.getZoom().toFixed(2);
   }
   
   addEventListeners (){
-    this._map.on('render', this.updateZoomLevel.bind(this) );
-    this._map.on('zoomIn', this.updateZoomLevel.bind(this) );
-    this._map.on('zoomOut', this.updateZoomLevel.bind(this) );
+    this._map!.on('render', () => this.updateZoomLevel());
+    this._map!.on('zoomIn', () => this.updateZoomLevel());
+    this._map!.on('zoomOut', () => this.updateZoomLevel());
   }
 
   onRemove() {
-    this._container.parentNode.removeChild(this._container);
+    this._container!.parentNode!.removeChild(this._container!);
     this._map = undefined;
   }
 }

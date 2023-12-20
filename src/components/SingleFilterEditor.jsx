@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 
-import { otherFilterOps } from '../libs/filterops.js'
+import {otherFilterOps} from '../libs/filterops'
 import InputString from './InputString'
 import InputAutocomplete from './InputAutocomplete'
 import InputSelect from './InputSelect'
