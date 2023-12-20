@@ -1,10 +1,22 @@
 import throttle from 'lodash.throttle'
 import isEqual from 'lodash.isequal'
+import { Map } from 'maplibre-gl';
+
+export type LayerWatcherOptions = {
+  onSourcesChange?: (sources: { [sourceId: string]: string[] }) => void;
+  onVectorLayersChange?: (vectorLayers: { [vectorLayerId: string]: { [propertyName: string]: { [propertyValue: string]: {} } } }) => void;
+}
 
 /** Listens to map events to build up a store of available vector
  * layers contained in the tiles */
 export default class LayerWatcher {
-  constructor(opts = {}) {
+  onSourcesChange: (sources: { [sourceId: string]: string[] }) => void;
+  onVectorLayersChange: (vectorLayers: { [vectorLayerId: string]: { [propertyName: string]: { [propertyValue: string]: {} } } }) => void;
+  throttledAnalyzeVectorLayerFields: (map: any) => void;
+  _sources: { [sourceId: string]: string[] };
+  _vectorLayers: { [vectorLayerId: string]: { [propertyName: string]: { [propertyValue: string]: {} } } };
+
+  constructor(opts: LayerWatcherOptions = {}) {
     this.onSourcesChange = opts.onSourcesChange || (() => {})
     this.onVectorLayersChange = opts.onVectorLayersChange || (() => {})
 
@@ -17,13 +29,13 @@ export default class LayerWatcher {
     this.throttledAnalyzeVectorLayerFields = throttle(this.analyzeVectorLayerFields, 5000)
   }
 
-  analyzeMap(map) {
+  analyzeMap(map: Map) {
     const previousSources = { ...this._sources }
 
     Object.keys(map.style.sourceCaches).forEach(sourceId => {
       //NOTE: This heavily depends on the internal API of Maplibre GL
       //so this breaks between Maplibre GL JS releases
-      this._sources[sourceId] = map.style.sourceCaches[sourceId]._source.vectorLayerIds
+      this._sources[sourceId] = map.style.sourceCaches[sourceId]._source.vectorLayerIds as string[];
     })
 
     if(!isEqual(previousSources, this._sources)) {
@@ -33,14 +45,14 @@ export default class LayerWatcher {
     this.throttledAnalyzeVectorLayerFields(map)
   }
 
-  analyzeVectorLayerFields(map) {
+  analyzeVectorLayerFields(map: Map) {
     const previousVectorLayers = { ...this._vectorLayers }
 
     Object.keys(this._sources).forEach(sourceId => {
       (this._sources[sourceId] || []).forEach(vectorLayerId => {
         const knownProperties = this._vectorLayers[vectorLayerId] || {}
         const params = { sourceLayer: vectorLayerId }
-        map.querySourceFeatures(sourceId, params).forEach(feature => {
+        map.querySourceFeatures(sourceId, params as any).forEach(feature => {
           Object.keys(feature.properties).forEach(propertyName => {
             const knownPropertyValues = knownProperties[propertyName] || {}
             knownPropertyValues[feature.properties[propertyName]] = {}

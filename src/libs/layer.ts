@@ -1,17 +1,18 @@
 import {latest} from '@maplibre/maplibre-gl-style-spec'
+import { LayerSpecification } from 'maplibre-gl'
 
-export function changeType(layer, newType) {
-  const changedPaintProps = { ...layer.paint }
+export function changeType(layer: LayerSpecification, newType: string) {
+  const changedPaintProps: LayerSpecification["paint"] = { ...layer.paint }
   Object.keys(changedPaintProps).forEach(propertyName => {
     if(!(propertyName in latest['paint_' + newType])) {
-      delete changedPaintProps[propertyName]
+      delete changedPaintProps[propertyName as keyof LayerSpecification["paint"]]
     }
   })
 
-  const changedLayoutProps = { ...layer.layout }
+  const changedLayoutProps: LayerSpecification["layout"] = { ...layer.layout }
   Object.keys(changedLayoutProps).forEach(propertyName => {
     if(!(propertyName in latest['layout_' + newType])) {
-      delete changedLayoutProps[propertyName]
+      delete changedLayoutProps[propertyName as keyof LayerSpecification["layout"]]
     }
   })
 
@@ -26,15 +27,15 @@ export function changeType(layer, newType) {
 /** A {@property} in either the paint our layout {@group} has changed
  * to a {@newValue}.
  */
-export function changeProperty(layer, group, property, newValue) {
+export function changeProperty(layer: LayerSpecification, group: keyof LayerSpecification, property: string, newValue: any) {
   // Remove the property if undefined
   if(newValue === undefined) {
     if(group) {
-      const newLayer = {
+      const newLayer: any = {
         ...layer,
         // Change object so the diff works in ./src/components/map/MaplibreGlMap.jsx
         [group]: {
-          ...layer[group]
+          ...layer[group] as any
         }
       };
       delete newLayer[group][property];
@@ -45,7 +46,7 @@ export function changeProperty(layer, group, property, newValue) {
       }
       return newLayer;
     } else {
-      const newLayer = {
+      const newLayer: any = {
         ...layer
       };
       delete newLayer[property];
@@ -57,7 +58,7 @@ export function changeProperty(layer, group, property, newValue) {
       return {
         ...layer,
         [group]: {
-          ...layer[group],
+          ...layer[group] as any,
           [property]: newValue
         }
       }

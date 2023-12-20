@@ -1,4 +1,4 @@
-import {derefLayers} from '@maplibre/maplibre-gl-style-spec'
+import {derefLayers, StyleSpecification, LayerSpecification} from '@maplibre/maplibre-gl-style-spec'
 import tokens from '../config/tokens.json'
 
 // Empty style is always used if no style could be restored or fetched
@@ -9,18 +9,20 @@ const emptyStyle = ensureStyleValidity({
 })
 
 function generateId() {
-  return Math.random().toString(36).substr(2, 9)
+  return Math.random().toString(36).substring(2, 9)
 }
 
-function ensureHasId(style) {
-  if('id' in style) return style
-  style.id = generateId()
-  return style
+function ensureHasId(style: StyleSpecification & { id?: string }): StyleSpecification & { id: string } {
+  if(!('id' in style) || !style.id) {
+    style.id = generateId();
+    return style as StyleSpecification & { id: string };
+  }
+  return style as StyleSpecification & { id: string };
 }
 
-function ensureHasNoInteractive(style) {
+function ensureHasNoInteractive(style: StyleSpecification & {id: string}) {
   const changedLayers = style.layers.map(layer => {
-    const changedLayer = { ...layer }
+    const changedLayer: LayerSpecification & { interactive?: any } = { ...layer }
     delete changedLayer.interactive
     return changedLayer
   })
@@ -31,18 +33,18 @@ function ensureHasNoInteractive(style) {
   }
 }
 
-function ensureHasNoRefs(style) {
+function ensureHasNoRefs(style: StyleSpecification & {id: string}) {
   return {
     ...style,
     layers: derefLayers(style.layers)
   }
 }
 
-function ensureStyleValidity(style) {
+function ensureStyleValidity(style: StyleSpecification): StyleSpecification & { id: string } {
   return ensureHasNoInteractive(ensureHasNoRefs(ensureHasId(style)))
 }
 
-function indexOfLayer(layers, layerId) {
+function indexOfLayer(layers: LayerSpecification[], layerId: string) {
   for (let i = 0; i < layers.length; i++) {
     if(layers[i].id === layerId) {
       return i
@@ -51,25 +53,25 @@ function indexOfLayer(layers, layerId) {
   return null
 }
 
-function getAccessToken(sourceName, mapStyle, opts) {
+function getAccessToken(sourceName: string, mapStyle: StyleSpecification, opts: {allowFallback?: boolean}) {
   if(sourceName === "thunderforest_transport" || sourceName === "thunderforest_outdoors") {
     sourceName = "thunderforest"
   }
 
-  const metadata = mapStyle.metadata || {}
+  const metadata = mapStyle.metadata || {} as any;
   let accessToken = metadata[`maputnik:${sourceName}_access_token`]
 
   if(opts.allowFallback && !accessToken) {
-    accessToken = tokens[sourceName]
+    accessToken = tokens[sourceName as keyof typeof tokens]
   }
 
   return accessToken;
 }
 
-function replaceSourceAccessToken(mapStyle, sourceName, opts={}) {
+function replaceSourceAccessToken(mapStyle: StyleSpecification, sourceName: string, opts={}) {
   const source = mapStyle.sources[sourceName]
   if(!source) return mapStyle
-  if(!source.hasOwnProperty("url")) return mapStyle
+  if(!("url" in source) || !source.url) return mapStyle
 
   const accessToken = getAccessToken(sourceName, mapStyle, opts)
 
@@ -92,7 +94,7 @@ function replaceSourceAccessToken(mapStyle, sourceName, opts={}) {
   return changedStyle
 }
 
-function replaceAccessTokens(mapStyle, opts={}) {
+function replaceAccessTokens(mapStyle: StyleSpecification, opts={}) {
   let changedStyle = mapStyle
 
   Object.keys(mapStyle.sources).forEach((sourceName) => {
@@ -112,9 +114,9 @@ function replaceAccessTokens(mapStyle, opts={}) {
   return changedStyle
 }
 
-function stripAccessTokens(mapStyle) {
+function stripAccessTokens(mapStyle: StyleSpecification) {
   const changedMetadata = {
-    ...mapStyle.metadata
+    ...mapStyle.metadata as any
   };
   delete changedMetadata['maputnik:openmaptiles_access_token'];
   return {

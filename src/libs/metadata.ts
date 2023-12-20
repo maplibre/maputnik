@@ -1,6 +1,6 @@
 import npmurl from 'url'
 
-function loadJSON(url, defaultValue, cb) {
+function loadJSON(url: string, defaultValue: any, cb: (...args: any[]) => void) {
   fetch(url, {
     mode: 'cors',
     credentials: "same-origin"
@@ -17,7 +17,7 @@ function loadJSON(url, defaultValue, cb) {
   })
 }
 
-export function downloadGlyphsMetadata(urlTemplate, cb) {
+export function downloadGlyphsMetadata(urlTemplate: string, cb: (...args: any[]) => void) {
   if(!urlTemplate) return cb([])
 
   // Special handling because Tileserver GL serves the fontstacks metadata differently
@@ -27,14 +27,14 @@ export function downloadGlyphsMetadata(urlTemplate, cb) {
   if(urlObj.pathname === normPathPart) {
     urlObj.pathname = '/fontstacks.json';
   } else {
-    urlObj.pathname = urlObj.pathname.replace(normPathPart, '.json');
+    urlObj.pathname = urlObj.pathname!.replace(normPathPart, '.json');
   }
   let url = npmurl.format(urlObj);
 
   loadJSON(url, [], cb)
 }
 
-export function downloadSpriteMetadata(baseUrl, cb) {
+export function downloadSpriteMetadata(baseUrl: string, cb: (...args: any[]) => void) {
   if(!baseUrl) return cb([])
   const url = baseUrl + '.json'
   loadJSON(url, {}, glyphs => cb(Object.keys(glyphs)))
