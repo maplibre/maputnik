@@ -1,10 +1,21 @@
 import style from './style.js'
-import {format} from '@maplibre/maplibre-gl-style-spec'
+import {StyleSpecification, format} from '@maplibre/maplibre-gl-style-spec'
 import ReconnectingWebSocket from 'reconnecting-websocket'
+
+export type ApiStyleStoreOptions = {
+  port?: string
+  host?: string
+  onLocalStyleChange?: (style: any) => void
+}
 
 export class ApiStyleStore {
 
-  constructor(opts) {
+  localUrl: string;
+  websocketUrl: string;
+  latestStyleId: string | undefined = undefined;
+  onLocalStyleChange: (style: any) => void;
+
+  constructor(opts: ApiStyleStoreOptions) {
     this.onLocalStyleChange = opts.onLocalStyleChange || (() => {})
     const port = opts.port || '8000'
     const host = opts.host || 'localhost'
@@ -13,7 +24,7 @@ export class ApiStyleStore {
     this.init = this.init.bind(this)
   }
 
-  init(cb) {
+  init(cb: (...args: any[]) => void) {
     fetch(this.localUrl + '/styles', {
       mode: 'cors',
     })
@@ -26,7 +37,7 @@ export class ApiStyleStore {
       this.notifyLocalChanges()
       cb(null)
     })
-    .catch(function(e) {
+    .catch(() => {
       cb(new Error('Can not connect to style API'))
     })
   }
@@ -47,7 +58,7 @@ export class ApiStyleStore {
     }
   }
 
-  latestStyle(cb) {
+  latestStyle(cb: (...args: any[]) => void) {
     if(this.latestStyleId) {
       fetch(this.localUrl + '/styles/' + this.latestStyleId, {
         mode: 'cors',
@@ -64,7 +75,7 @@ export class ApiStyleStore {
   }
 
   // Save current style replacing previous version
-  save(mapStyle) {
+  save(mapStyle: StyleSpecification & { id: string }) {
     const styleJSON = format(
       style.stripAccessTokens(
         style.replaceAccessTokens(mapStyle)

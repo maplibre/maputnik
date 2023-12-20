@@ -9,7 +9,7 @@ import InputUrl from './InputUrl'
 import {MdFileUpload} from 'react-icons/md'
 import {MdAddCircleOutline} from 'react-icons/md'
 
-import style from '../libs/style.js'
+import style from '../libs/style'
 import publicStyles from '../config/styles.json'
 
 class PublicStyle extends React.Component {

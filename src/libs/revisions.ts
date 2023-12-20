@@ -1,4 +1,10 @@
+import type {StyleSpecification} from "@maplibre/maplibre-gl-style-spec";
+
 export class RevisionStore {
+  revisions: StyleSpecification[];
+  currentIdx: number;
+
+
   constructor(initialRevisions=[]) {
     this.revisions = initialRevisions
     this.currentIdx = initialRevisions.length - 1
@@ -12,7 +18,7 @@ export class RevisionStore {
     return this.revisions[this.currentIdx]
   }
 
-  addRevision(revision) {
+  addRevision(revision: StyleSpecification) {
     //TODO: compare new revision style id with old ones
     //and ensure that it is always the same id
     this.revisions.push(revision)
@@ -21,15 +27,15 @@ export class RevisionStore {
 
   undo() {
     if(this.currentIdx > 0) {
-      this.currentIdx--
+      this.currentIdx--;
     }
-    return this.current
+    return this.current;
   }
 
   redo() {
     if(this.currentIdx < this.revisions.length - 1) {
       this.currentIdx++
     }
-    return this.current
+    return this.current;
   }
 }

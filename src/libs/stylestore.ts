@@ -1,6 +1,7 @@
-import style from './style.js'
-import { loadStyleUrl } from './urlopen'
+import style from './style'
+import {loadStyleUrl} from './urlopen'
 import publicSources from '../config/styles.json'
+import { StyleSpecification } from '@maplibre/maplibre-gl-style-spec'
 
 const storagePrefix = "maputnik"
 const stylePrefix = 'style'
@@ -12,7 +13,7 @@ const storageKeys = {
 const defaultStyleUrl = publicSources[0].url
 
 // Fetch a default style via URL and return it or a fallback style via callback
-export function loadDefaultStyle(cb) {
+export function loadDefaultStyle(cb: (...args: any[]) => void) {
   loadStyleUrl(defaultStyleUrl, cb)
 }
 
@@ -21,20 +22,20 @@ function loadStoredStyles() {
   const styles = []
   for (let i = 0; i < window.localStorage.length; i++) {
       const key = window.localStorage.key(i)
-      if(isStyleKey(key)) {
-        styles.push(fromKey(key))
+      if(isStyleKey(key!)) {
+        styles.push(fromKey(key!))
       }
   }
   return styles
 }
 
-function isStyleKey(key) {
+function isStyleKey(key: string) {
   const parts = key.split(":")
   return parts.length === 3 && parts[0] === storagePrefix && parts[1] === stylePrefix
 }
 
 // Load style id from key
-function fromKey(key) {
+function fromKey(key: string) {
   if(!isStyleKey(key)) {
     throw "Key is not a valid style key"
   }
@@ -45,26 +46,31 @@ function fromKey(key) {
 }
 
 // Calculate key that identifies the style with a version
-function styleKey(styleId) {
+function styleKey(styleId: string) {
   return [storagePrefix, stylePrefix, styleId].join(":")
 }
 
 // Manages many possible styles that are stored in the local storage
 export class StyleStore {
+  /**
+   * List of style ids
+   */
+  mapStyles: string[];
+
   // Tile store will load all items from local storage and
   // assume they do not change will working on it
   constructor() {
-    this.mapStyles = loadStoredStyles()
+    this.mapStyles = loadStoredStyles();
   }
 
-  init(cb) {
+  init(cb: (...args: any[]) => void) {
     cb(null)
   }
 
   // Delete entire style history
   purge() {
     for (let i = 0; i < window.localStorage.length; i++) {
-        const key = window.localStorage.key(i)
+        const key = window.localStorage.key(i) as string;
         if(key.startsWith(storagePrefix)) {
           window.localStorage.removeItem(key)
         }
@@ -72,9 +78,9 @@ export class StyleStore {
   }
 
   // Find the last edited style
-  latestStyle(cb) {
+  latestStyle(cb: (...args: any[]) => void) {
     if(this.mapStyles.length === 0) return loadDefaultStyle(cb)
-    const styleId = window.localStorage.getItem(storageKeys.latest)
+    const styleId = window.localStorage.getItem(storageKeys.latest) as string;
     const styleItem = window.localStorage.getItem(styleKey(styleId))
 
     if(styleItem) return cb(JSON.parse(styleItem))
@@ -82,7 +88,7 @@ export class StyleStore {
   }
 
   // Save current style replacing previous version
-  save(mapStyle) {
+  save(mapStyle: StyleSpecification & { id: string }) {
     mapStyle = style.ensureStyleValidity(mapStyle)
     const key = styleKey(mapStyle.id)
     window.localStorage.setItem(key, JSON.stringify(mapStyle))
