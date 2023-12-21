@@ -1,19 +1,19 @@
 import React from 'react'
-import PropTypes from 'prop-types'
 
 import InputButton from './InputButton'
 import Modal from './Modal'
 
 
-export default class ModalLoading extends React.Component {
-  static propTypes = {
-    isOpen: PropTypes.bool.isRequired,
-    onCancel: PropTypes.func.isRequired,
-    title: PropTypes.string.isRequired,
-    message: PropTypes.node.isRequired,
-  }
+type ModalLoadingProps = {
+  isOpen: boolean
+  onCancel(...args: unknown[]): unknown
+  title: string
+  message: React.ReactNode
+};
 
-  underlayOnClick(e) {
+
+export default class ModalLoading extends React.Component<ModalLoadingProps> {
+  underlayOnClick(e: Event) {
     // This stops click events falling through to underlying modals.
     e.stopPropagation();
   }
@@ -24,9 +24,9 @@ export default class ModalLoading extends React.Component {
       isOpen={this.props.isOpen}
       underlayClickExits={false}
       underlayProps={{
-        onClick: (e) => underlayProps(e)
+        // @ts-ignore
+        onClick: (e: Event) => underlayProps(e)
       }}
-      closeable={false}
       title={this.props.title}
       onOpenToggle={() => this.props.onCancel()}
     >

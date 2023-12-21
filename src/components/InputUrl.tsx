@@ -57,6 +57,8 @@ export type FieldUrlProps = {
   multi?: boolean
   required?: boolean
   'aria-label'?: string
+  type?: string
+  className?: string
 };
 
 type FieldUrlState = {

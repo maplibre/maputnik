@@ -1,25 +1,24 @@
-import React from 'react'
-import PropTypes from 'prop-types'
+import React, { FormEvent } from 'react'
+import {MdFileUpload} from 'react-icons/md'
+import {MdAddCircleOutline} from 'react-icons/md'
+import FileReaderInput, { Result } from 'react-file-reader-input'
+
 import ModalLoading from './ModalLoading'
 import Modal from './Modal'
 import InputButton from './InputButton'
-import FileReaderInput from 'react-file-reader-input'
 import InputUrl from './InputUrl'
-
-import {MdFileUpload} from 'react-icons/md'
-import {MdAddCircleOutline} from 'react-icons/md'
 
 import style from '../libs/style'
 import publicStyles from '../config/styles.json'
 
-class PublicStyle extends React.Component {
-  static propTypes = {
-    url: PropTypes.string.isRequired,
-    thumbnailUrl: PropTypes.string.isRequired,
-    title: PropTypes.string.isRequired,
-    onSelect: PropTypes.func.isRequired,
-  }
+type PublicStyleProps = {
+  url: string
+  thumbnailUrl: string
+  title: string
+  onSelect(...args: unknown[]): unknown
+};
 
+class PublicStyle extends React.Component<PublicStyleProps> {
   render() {
     return <div className="maputnik-public-style">
       <InputButton
@@ -43,14 +42,21 @@ class PublicStyle extends React.Component {
   }
 }
 
-export default class ModalOpen extends React.Component {
-  static propTypes = {
-    isOpen: PropTypes.bool.isRequired,
-    onOpenToggle: PropTypes.func.isRequired,
-    onStyleOpen: PropTypes.func.isRequired,
-  }
+type ModalOpenProps = {
+  isOpen: boolean
+  onOpenToggle(...args: unknown[]): unknown
+  onStyleOpen(...args: unknown[]): unknown
+};
 
-  constructor(props) {
+type ModalOpenState = {
+  styleUrl: string
+  error?: string | null
+  activeRequest?: any
+  activeRequestUrl?: string | null
+};
+
+export default class ModalOpen extends React.Component<ModalOpenProps, ModalOpenState> {
+  constructor(props: ModalOpenProps) {
     super(props);
     this.state = {
       styleUrl: ""
@@ -63,7 +69,7 @@ export default class ModalOpen extends React.Component {
     })
   }
 
-  onCancelActiveRequest(e) {
+  onCancelActiveRequest(e: Event) {
     // Else the click propagates to the underlying modal
     if(e) e.stopPropagation();
 
@@ -76,12 +82,12 @@ export default class ModalOpen extends React.Component {
     }
   }
 
-  onStyleSelect = (styleUrl) => {
+  onStyleSelect = (styleUrl: string) => {
     this.clearError();
 
-    let canceled;
+    let canceled: boolean = false;
 
-    const activeRequest = fetch(styleUrl, {
+    fetch(styleUrl, {
       mode: 'cors',
       credentials: "same-origin"
     })
@@ -123,13 +129,13 @@ export default class ModalOpen extends React.Component {
     })
   }
 
-  onSubmitUrl = (e) => {
+  onSubmitUrl = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     this.onStyleSelect(this.state.styleUrl);
   }
 
-  onUpload = (_, files) => {
-    const [e, file] = files[0];
+  onUpload = (_: any, files: Result[]) => {
+    const [_e, file] = files[0];
     const reader = new FileReader();
 
     this.clearError();
@@ -138,11 +144,11 @@ export default class ModalOpen extends React.Component {
     reader.onload = e => {
       let mapStyle;
       try {
-        mapStyle = JSON.parse(e.target.result)
+        mapStyle = JSON.parse(e.target?.result as string)
       }
       catch(err) {
         this.setState({
-          error: err.toString()
+          error: (err as Error).toString()
         });
         return;
       }
@@ -161,7 +167,7 @@ export default class ModalOpen extends React.Component {
     this.props.onOpenToggle();
   }
 
-  onChangeUrl = (url) => {
+  onChangeUrl = (url: string) => {
     this.setState({
       styleUrl: url,
     });
@@ -200,7 +206,7 @@ export default class ModalOpen extends React.Component {
           <section className="maputnik-modal-section">
             <h1>Upload Style</h1>
             <p>Upload a JSON style from your computer.</p>
-            <FileReaderInput onChange={this.onUpload} tabIndex="-1" aria-label="Style file">
+            <FileReaderInput onChange={this.onUpload} tabIndex={-1} aria-label="Style file">
               <InputButton className="maputnik-upload-button"><MdFileUpload /> Upload</InputButton>
             </FileReaderInput>
           </section>
@@ -246,7 +252,7 @@ export default class ModalOpen extends React.Component {
         <ModalLoading
           isOpen={!!this.state.activeRequest}
           title={'Loading style'}
-          onCancel={(e) => this.onCancelActiveRequest(e)}
+          onCancel={(e: Event) => this.onCancelActiveRequest(e)}
           message={"Loading: "+this.state.activeRequestUrl}
         />
       </div>
