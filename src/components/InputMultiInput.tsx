@@ -1,16 +1,15 @@
 import React from 'react'
-import PropTypes from 'prop-types'
 import classnames from 'classnames'
-import InputButton from './InputButton'
 
-export default class InputMultiInput extends React.Component {
-  static propTypes = {
-    name: PropTypes.string.isRequired,
-    value: PropTypes.string.isRequired,
-    options: PropTypes.array.isRequired,
-    onChange: PropTypes.func.isRequired,
-  }
+type InputMultiInputProps = {
+  name: string
+  value: string
+  options: any[]
+  onChange(...args: unknown[]): unknown
+  'aria-label'?: string
+};
 
+export default class InputMultiInput extends React.Component<InputMultiInputProps> {
   render() {
     let options = this.props.options
     if(options.length > 0 && !Array.isArray(options[0])) {
@@ -25,7 +24,7 @@ export default class InputMultiInput extends React.Component {
       >
         <input type="radio"
           name={this.props.name}
-          onChange={e => this.props.onChange(val)}
+          onChange={_e => this.props.onChange(val)}
           value={val}
           checked={val === selectedValue}
         />

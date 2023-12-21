@@ -1,24 +1,29 @@
 import React from 'react'
-import PropTypes from 'prop-types'
 import InputString from './InputString'
 import InputNumber from './InputNumber'
 
-export default class FieldArray extends React.Component {
-  static propTypes = {
-    value: PropTypes.array,
-    type: PropTypes.string,
-    length: PropTypes.number,
-    default: PropTypes.array,
-    onChange: PropTypes.func,
-    'aria-label': PropTypes.string,
-  }
+type FieldArrayProps = {
+  value: string[]
+  type?: string
+  length?: number
+  default?: string[] | number[]
+  onChange?(...args: unknown[]): unknown
+  'aria-label'?: string
+  label?: string
+};
 
+type FieldArrayState = {
+  value: string[] | number[]
+  initialPropsValue: unknown[]
+}
+
+export default class FieldArray extends React.Component<FieldArrayProps, FieldArrayState> {
   static defaultProps = {
     value: [],
     default: [],
   }
 
-  constructor (props) {
+  constructor (props: FieldArrayProps) {
     super(props);
     this.state = {
       value: this.props.value.slice(0),
@@ -27,8 +32,8 @@ export default class FieldArray extends React.Component {
     };
   }
 
-  static getDerivedStateFromProps(props, state) {
-    const value = [];
+  static getDerivedStateFromProps(props: FieldArrayProps, state: FieldArrayState) {
+    const value: any[] = [];
     const initialPropsValue = state.initialPropsValue.slice(0);
 
     Array(props.length).fill(null).map((_, i) => {
@@ -47,24 +52,24 @@ export default class FieldArray extends React.Component {
     };
   }
 
-  isComplete (value) {
+  isComplete(value: unknown[]) {
     return Array(this.props.length).fill(null).every((_, i) => {
       const val = value[i]
       return !(val === undefined || val === "");
     });
   }
 
-  changeValue(idx, newValue) {
+  changeValue(idx: number, newValue: string) {
     const value = this.state.value.slice(0);
     value[idx] = newValue;
 
     this.setState({
       value,
     }, () => {
-      if (this.isComplete(value)) {
+      if (this.isComplete(value) && this.props.onChange) {
         this.props.onChange(value);
       }
-      else {
+      else if (this.props.onChange){
         // Unset until complete
         this.props.onChange(undefined);
       }
@@ -85,8 +90,8 @@ export default class FieldArray extends React.Component {
       if(this.props.type === 'number') {
         return <InputNumber
           key={i}
-          default={containsValues ? undefined : this.props.default[i]}
-          value={value[i]}
+          default={containsValues || !this.props.default ? undefined : this.props.default[i] as number}
+          value={value[i] as number}
           required={containsValues ? true : false}
           onChange={this.changeValue.bind(this, i)}
           aria-label={this.props['aria-label'] || this.props.label}
@@ -94,8 +99,8 @@ export default class FieldArray extends React.Component {
       } else {
         return <InputString
           key={i}
-          default={containsValues ? undefined : this.props.default[i]}
-          value={value[i]}
+          default={containsValues || !this.props.default ? undefined : this.props.default[i] as string}
+          value={value[i] as string}
           required={containsValues ? true : false}
           onChange={this.changeValue.bind(this, i)}
           aria-label={this.props['aria-label'] || this.props.label}

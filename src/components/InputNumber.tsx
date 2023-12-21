@@ -1,27 +1,35 @@
-import React from 'react'
-import PropTypes from 'prop-types'
+import React, { BaseSyntheticEvent } from 'react'
 
 let IDX = 0;
 
-export default class InputNumber extends React.Component {
-  static propTypes = {
-    value: PropTypes.number,
-    default: PropTypes.number,
-    min: PropTypes.number,
-    max: PropTypes.number,
-    onChange: PropTypes.func,
-    allowRange: PropTypes.bool,
-    rangeStep: PropTypes.number,
-    wdKey: PropTypes.string,
-    required: PropTypes.bool,
-    "aria-label": PropTypes.string,
-  }
+type InputNumberProps = {
+  value?: number
+  default?: number
+  min?: number
+  max?: number
+  onChange?(...args: unknown[]): unknown
+  allowRange?: boolean
+  rangeStep?: number
+  wdKey?: string
+  required?: boolean
+  "aria-label"?: string
+};
 
+type InputNumberState = {
+  uuid: number
+  editing: boolean
+  editingRange?: boolean
+  value?: number
+  dirtyValue?: number
+}
+
+export default class InputNumber extends React.Component<InputNumberProps, InputNumberState> {
   static defaultProps = {
     rangeStep: 1
   }
+  _keyboardEvent: boolean = false;
 
-  constructor(props) {
+  constructor(props: InputNumberProps) {
     super(props)
     this.state = {
       uuid: IDX++,
@@ -31,7 +39,7 @@ export default class InputNumber extends React.Component {
     }
   }
 
-  static getDerivedStateFromProps(props, state) {
+  static getDerivedStateFromProps(props: InputNumberProps, state: InputNumberState) {
     if (!state.editing && props.value !== state.value) {
       return {
         value: props.value,
@@ -41,16 +49,15 @@ export default class InputNumber extends React.Component {
     return null;
   }
 
-  changeValue(newValue) {
+  changeValue(newValue: number | string | undefined) {
     const value = (newValue === "" || newValue === undefined) ?
-      undefined :
-      parseFloat(newValue);
+      undefined : +newValue;
 
     const hasChanged = this.props.value !== value;
     if(this.isValid(value) && hasChanged) {
-      this.props.onChange(value)
+      if (this.props.onChange) this.props.onChange(value)
       this.setState({
-        value: newValue,
+        value: value,
       });
     }
     else if (!this.isValid(value) && hasChanged) {
@@ -60,25 +67,25 @@ export default class InputNumber extends React.Component {
     }
 
     this.setState({
-      dirtyValue: newValue === "" ? undefined : newValue,
+      dirtyValue: newValue === "" ? undefined : value,
     })
   }
 
-  isValid(v) {
+  isValid(v: number | string | undefined) {
     if (v === undefined) {
       return true;
     }
 
-    const value = parseFloat(v)
+    const value = +v;
     if(isNaN(value)) {
       return false
     }
 
-    if(!isNaN(this.props.min) && value < this.props.min) {
+    if(!isNaN(this.props.min!) && value < this.props.min!) {
       return false
     }
 
-    if(!isNaN(this.props.max) && value > this.props.max) {
+    if(!isNaN(this.props.max!) && value > this.props.max!) {
       return false
     }
 
@@ -88,7 +95,7 @@ export default class InputNumber extends React.Component {
   resetValue = () => {
     this.setState({editing: false});
     // Reset explicitly to default value if value has been cleared
-    if(this.state.value === "") {
+    if(!this.state.value) {
       return;
     }
 
@@ -104,8 +111,8 @@ export default class InputNumber extends React.Component {
     }
   }
 
-  onChangeRange = (e) => {
-    let value = parseFloat(e.target.value, 10);
+  onChangeRange = (e: BaseSyntheticEvent<Event, HTMLInputElement, HTMLInputElement>) => {
+    let value = parseFloat(e.target.value);
     const step = this.props.rangeStep;
     let dirtyValue = value;
 
@@ -119,11 +126,11 @@ export default class InputNumber extends React.Component {
         // for example we might go from 13 to 13.23, however because we know
         // that came from a keyboard event we always want to increase by a
         // single step value.
-        if (value < this.state.dirtyValue) {
-          value = this.state.value - step;
+        if (value < this.state.dirtyValue!) {
+          value = this.state.value! - step;
         }
         else {
-          value = this.state.value + step
+          value = this.state.value! + step
         }
         dirtyValue = value;
       }
@@ -140,10 +147,10 @@ export default class InputNumber extends React.Component {
     this._keyboardEvent = false;
 
     // Clamp between min/max
-    value = Math.max(this.props.min, Math.min(this.props.max, value));
+    value = Math.max(this.props.min!, Math.min(this.props.max!, value));
 
     this.setState({value, dirtyValue});
-    this.props.onChange(value);
+    if (this.props.onChange) this.props.onChange(value);
   }
 
   render() {
@@ -196,15 +203,15 @@ export default class InputNumber extends React.Component {
           type="text"
           spellCheck="false"
           className="maputnik-number"
-          placeholder={this.props.default}
+          placeholder={this.props.default?.toString()}
           value={inputValue === undefined ? "" : inputValue}
-          onFocus={e => {
+          onFocus={_e => {
             this.setState({editing: true});
           }}
           onChange={e => {
             this.changeValue(e.target.value);
           }}
-          onBlur={e => {
+          onBlur={_e => {
             this.setState({editing: false});
             this.resetValue()
           }}
@@ -218,7 +225,7 @@ export default class InputNumber extends React.Component {
         aria-label={this.props['aria-label']}
         spellCheck="false"
         className="maputnik-number"
-        placeholder={this.props.default}
+        placeholder={this.props.default?.toString()}
         value={value === undefined ? "" : value}
         onChange={e => this.changeValue(e.target.value)}
         onFocus={() => {

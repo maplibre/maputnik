@@ -5,7 +5,7 @@ type InputStringProps = {
   value?: string
   style?: object
   default?: string
-  onChange(...args: unknown[]): unknown
+  onChange?(...args: unknown[]): unknown
   onInput(...args: unknown[]): unknown
   multi?: boolean
   required?: boolean
@@ -83,11 +83,11 @@ export default class InputString extends React.Component<InputStringProps, Input
       onBlur: () => {
         if(this.state.value!==this.props.value) {
           this.setState({editing: false});
-          this.props.onChange(this.state.value);
+          if (this.props.onChange) this.props.onChange(this.state.value);
         }
       },
       onKeyDown: (e) => {
-        if (e.keyCode === 13) {
+        if (e.keyCode === 13 && this.props.onChange) {
           this.props.onChange(this.state.value);
         }
       },

@@ -1,17 +1,17 @@
 import React from 'react'
-import PropTypes from 'prop-types'
 import InputAutocomplete from './InputAutocomplete'
 
-export default class FieldFont extends React.Component {
-  static propTypes = {
-    value: PropTypes.array,
-    default: PropTypes.array,
-    fonts: PropTypes.array,
-    style: PropTypes.object,
-    onChange: PropTypes.func.isRequired,
-    'aria-label': PropTypes.string,
-  }
+type FieldFontProps = {
+  name: string
+  value?: string[]
+  default?: string[]
+  fonts?: unknown[]
+  style?: object
+  onChange(...args: unknown[]): unknown
+  'aria-label'?: string
+};
 
+export default class FieldFont extends React.Component<FieldFontProps> {
   static defaultProps = {
     fonts: []
   }
@@ -28,7 +28,7 @@ export default class FieldFont extends React.Component {
     }
   }
 
-  changeFont(idx, newValue) {
+  changeFont(idx: number, newValue: string) {
     const changedValues = this.values.slice(0)
     changedValues[idx] = newValue
     const filteredValues = changedValues
@@ -46,7 +46,7 @@ export default class FieldFont extends React.Component {
         <InputAutocomplete
           aria-label={this.props['aria-label'] || this.props.name}
           value={value}
-          options={this.props.fonts.map(f => [f, f])}
+          options={this.props.fonts?.map(f => [f, f])}
           onChange={this.changeFont.bind(this, i)}
         />
       </li>

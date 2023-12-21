@@ -1,10 +1,9 @@
 import React from 'react'
-import PropTypes from 'prop-types'
 import InputSelect from './InputSelect'
 import InputMultiInput from './InputMultiInput'
 
 
-function optionsLabelLength(options) {
+function optionsLabelLength(options: any[]) {
   let sum = 0;
   options.forEach(([_, label]) => {
     sum += label.length
@@ -13,18 +12,20 @@ function optionsLabelLength(options) {
 }
 
 
-export default class InputEnum extends React.Component {
-  static propTypes = {
-    "data-wd-key": PropTypes.string,
-    value: PropTypes.string,
-    style: PropTypes.object,
-    default: PropTypes.string,
-    name: PropTypes.string,
-    onChange: PropTypes.func,
-    options: PropTypes.array,
-    'aria-label': PropTypes.string,
-  }
+export type InputEnumProps = {
+  "data-wd-key"?: string
+  value?: string
+  style?: object
+  default?: string
+  name: string
+  onChange(...args: unknown[]): unknown
+  options: any[]
+  'aria-label'?: string
+  label?: string
+};
 
+
+export default class InputEnum extends React.Component<InputEnumProps> {
   render() {
     const {options, value, onChange, name, label} = this.props;
 
@@ -32,14 +33,14 @@ export default class InputEnum extends React.Component {
       return <InputMultiInput
         name={name}
         options={options}
-        value={value || this.props.default}
+        value={(value || this.props.default)!}
         onChange={onChange}
         aria-label={this.props['aria-label'] || label}
       />
     } else {
       return <InputSelect
         options={options}
-        value={value || this.props.default}
+        value={(value || this.props.default)!}
         onChange={onChange}
         aria-label={this.props['aria-label'] || label}
       />
