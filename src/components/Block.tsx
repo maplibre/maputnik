@@ -9,7 +9,7 @@ type BlockProps = {
   label?: string
   action?: React.ReactElement
   style?: object
-  onChange(...args: unknown[]): unknown
+  onChange?(...args: unknown[]): unknown
   fieldSpec?: object
   wideMode?: boolean
   error?: unknown[]
@@ -32,7 +32,9 @@ export default class Block extends React.Component<BlockProps, BlockState> {
 
   onChange(e: React.BaseSyntheticEvent<Event, HTMLInputElement, HTMLInputElement>) {
     const value = e.target.value
-    return this.props.onChange(value === "" ? undefined : value)
+    if (this.props.onChange) {
+      return this.props.onChange(value === "" ? undefined : value)
+    }
   }
 
   onToggleDoc = (val: boolean) => {

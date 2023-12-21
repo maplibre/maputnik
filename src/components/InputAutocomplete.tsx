@@ -1,23 +1,24 @@
 import React from 'react'
-import PropTypes from 'prop-types'
 import classnames from 'classnames'
 import Autocomplete from 'react-autocomplete'
 
 
 const MAX_HEIGHT = 140;
 
-export default class InputAutocomplete extends React.Component {
-  static propTypes = {
-    value: PropTypes.string,
-    options: PropTypes.array,
-    onChange: PropTypes.func,
-    keepMenuWithinWindowBounds: PropTypes.bool,
-    'aria-label': PropTypes.string,
-  }
+type InputAutocompleteProps = {
+  value?: string
+  options: any[]
+  onChange(...args: unknown[]): unknown
+  keepMenuWithinWindowBounds?: boolean
+  'aria-label'?: string
+};
 
+export default class InputAutocomplete extends React.Component<InputAutocompleteProps> {
   state = {
     maxHeight: MAX_HEIGHT
   }
+
+  autocompleteMenuEl: HTMLDivElement | null = null;
 
   static defaultProps = {
     onChange: () => {},
@@ -26,7 +27,7 @@ export default class InputAutocomplete extends React.Component {
 
   calcMaxHeight() {
     if(this.props.keepMenuWithinWindowBounds) {
-      const maxHeight = window.innerHeight - this.autocompleteMenuEl.getBoundingClientRect().top;
+      const maxHeight = window.innerHeight - this.autocompleteMenuEl!.getBoundingClientRect().top;
       const limitedMaxHeight = Math.min(maxHeight, MAX_HEIGHT);
 
       if(limitedMaxHeight != this.state.maxHeight) {
@@ -45,7 +46,7 @@ export default class InputAutocomplete extends React.Component {
     this.calcMaxHeight();
   }
 
-  onChange (v) {
+  onChange(v: string) {
     this.props.onChange(v === "" ? undefined : v);
   }
 
@@ -64,7 +65,7 @@ export default class InputAutocomplete extends React.Component {
         }}
         wrapperProps={{
           className: "maputnik-autocomplete",
-          style: null
+          style: {}
         }}
         inputProps={{
           'aria-label': this.props['aria-label'],
@@ -75,11 +76,12 @@ export default class InputAutocomplete extends React.Component {
         items={this.props.options}
         getItemValue={(item) => item[0]}
         onSelect={v => this.onChange(v)}
-        onChange={(e, v) => this.onChange(v)}
+        onChange={(_e, v) => this.onChange(v)}
         shouldItemRender={(item, value="") => {
           if (typeof(value) === "string") {
             return item[0].toLowerCase().indexOf(value.toLowerCase()) > -1
           }
+          return false
         }}
         renderItem={(item, isHighlighted) => (
           <div

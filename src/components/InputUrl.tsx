@@ -1,16 +1,15 @@
-import React, {Fragment} from 'react'
-import PropTypes from 'prop-types'
+import React from 'react'
 import InputString from './InputString'
 import SmallError from './SmallError'
 
 
-function validate (url) {
+function validate(url: string) {
   if (url === "") {
     return;
   }
 
   let error;
-  const getProtocol = (url) => {
+  const getProtocol = (url: string) => {
     try {
       const urlObj = new URL(url);
       return urlObj.protocol;
@@ -48,38 +47,42 @@ function validate (url) {
   return error;
 }
 
-export default class FieldUrl extends React.Component {
-  static propTypes = {
-    "data-wd-key": PropTypes.string,
-    value: PropTypes.string,
-    style: PropTypes.object,
-    default: PropTypes.string,
-    onChange: PropTypes.func,
-    onInput: PropTypes.func,
-    multi: PropTypes.bool,
-    required: PropTypes.bool,
-    'aria-label': PropTypes.string,
-  }
+export type FieldUrlProps = {
+  "data-wd-key"?: string
+  value: string
+  style?: object
+  default?: string
+  onChange(...args: unknown[]): unknown
+  onInput(...args: unknown[]): unknown
+  multi?: boolean
+  required?: boolean
+  'aria-label'?: string
+};
 
+type FieldUrlState = {
+  error?: React.ReactNode
+}
+
+export default class FieldUrl extends React.Component<FieldUrlProps, FieldUrlState> {
   static defaultProps = {
     onInput: () => {},
   }
 
-  constructor (props) {
+  constructor (props: FieldUrlProps) {
     super(props);
     this.state = {
       error: validate(props.value)
     };
   }
 
-  onInput = (url) => {
+  onInput = (url: string) => {
     this.setState({
       error: validate(url)
     });
     this.props.onInput(url);
   }
 
-  onChange = (url) => {
+  onChange = (url: string) => {
     this.setState({
       error: validate(url)
     });
