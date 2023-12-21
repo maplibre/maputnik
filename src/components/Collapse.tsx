@@ -1,15 +1,15 @@
 import React from 'react'
-import PropTypes from 'prop-types'
 import { Collapse as ReactCollapse } from 'react-collapse'
-import {reducedMotionEnabled} from '../../libs/accessibility'
+import {reducedMotionEnabled} from '../libs/accessibility'
 
 
-export default class Collapse extends React.Component {
-  static propTypes = {
-    isActive: PropTypes.bool.isRequired,
-    children: PropTypes.element.isRequired
-  }
+type CollapseProps = {
+  isActive: boolean
+  children: React.ReactElement
+};
 
+
+export default class Collapse extends React.Component<CollapseProps> {
   static defaultProps = {
     isActive: true
   }

@@ -106,6 +106,7 @@
     "@types/react": "^16.14.52",
     "@types/react-aria-modal": "^4.0.9",
     "@types/react-autocomplete": "^1.8.9",
+    "@types/react-collapse": "^5.0.4",
     "@types/react-color": "^3.0.10",
     "@types/react-dom": "^16.9.24",
     "@types/react-file-reader-input": "^2.0.4",

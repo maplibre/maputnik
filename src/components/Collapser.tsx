@@ -1,13 +1,12 @@
 import React from 'react'
-import PropTypes from 'prop-types'
 import {MdArrowDropDown, MdArrowDropUp} from 'react-icons/md'
 
-export default class Collapser extends React.Component {
-  static propTypes = {
-    isCollapsed: PropTypes.bool.isRequired,
-    style: PropTypes.object,
-  }
+type CollapserProps = {
+  isCollapsed: boolean
+  style?: object
+};
 
+export default class Collapser extends React.Component<CollapserProps> {
   render() {
     const iconStyle = {
       width: 20,
