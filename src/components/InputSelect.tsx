@@ -14,7 +14,7 @@ export default class InputSelect extends React.Component<InputSelectProps> {
   render() {
     let options = this.props.options;
     if(options.length > 0 && !Array.isArray(options[0])) {
-      options = options.map((v) => [v as string, v as any])
+      options = options.map((v) => [v, v]) as [string, any][];
     }
 
     return <select
