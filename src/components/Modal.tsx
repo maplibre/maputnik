@@ -1,22 +1,21 @@
 import React from 'react'
-import PropTypes from 'prop-types'
 import {MdClose} from 'react-icons/md'
 import AriaModal from 'react-aria-modal'
 import classnames from 'classnames';
 
 
-export default class Modal extends React.Component {
-  static propTypes = {
-    "data-wd-key": PropTypes.string,
-    isOpen: PropTypes.bool.isRequired,
-    title: PropTypes.string.isRequired,
-    onOpenToggle: PropTypes.func.isRequired,
-    children: PropTypes.node,
-    underlayClickExits: PropTypes.bool,
-    underlayProps: PropTypes.object,
-    className: PropTypes.string,
-  }
+type ModalProps = {
+  "data-wd-key"?: string
+  isOpen: boolean
+  title: string
+  onOpenToggle(...args: unknown[]): unknown
+  underlayClickExits?: boolean
+  underlayProps?: any
+  className?: string
+};
 
+
+export default class Modal extends React.Component<ModalProps> {
   static defaultProps = {
     underlayClickExits: true
   }
@@ -24,7 +23,7 @@ export default class Modal extends React.Component {
   // See <https://github.com/maputnik/editor/issues/416>
   onClose = () => {
     if (document.activeElement) {
-      document.activeElement.blur();
+      (document.activeElement as HTMLElement).blur();
     }
 
     setTimeout(() => {
@@ -37,6 +36,7 @@ export default class Modal extends React.Component {
       return <AriaModal
         titleText={this.props.title}
         underlayClickExits={this.props.underlayClickExits}
+        // @ts-ignore
         underlayProps={this.props.underlayProps}
         data-wd-key={this.props["data-wd-key"]}
         verticallyCenter={true}

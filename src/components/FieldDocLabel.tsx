@@ -1,26 +1,27 @@
 import React from 'react'
-import PropTypes from 'prop-types'
-
 import {MdInfoOutline, MdHighlightOff} from 'react-icons/md'
 
-export default class FieldDocLabel extends React.Component {
-  static propTypes = {
-    label: PropTypes.oneOfType([
-      PropTypes.object,
-      PropTypes.string
-    ]).isRequired,
-    fieldSpec: PropTypes.object,
-    onToggleDoc: PropTypes.func,
+type FieldDocLabelProps = {
+  label: object | string
+  fieldSpec?: {
+    doc?: string
   }
+  onToggleDoc?(...args: unknown[]): unknown
+};
 
-  constructor (props) {
+type FieldDocLabelState = {
+  open: boolean
+};
+
+export default class FieldDocLabel extends React.Component<FieldDocLabelProps, FieldDocLabelState> {
+  constructor (props: FieldDocLabelProps) {
     super(props);
     this.state = {
       open: false,
     }
   }
 
-  onToggleDoc = (open) => {
+  onToggleDoc = (open: boolean) => {
     this.setState({
       open,
     }, () => {

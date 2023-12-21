@@ -100,6 +100,7 @@
     "@types/lodash.isequal": "^4.5.8",
     "@types/lodash.throttle": "^4.1.9",
     "@types/react": "^16.14.52",
+    "@types/react-aria-modal": "^4.0.9",
     "@types/react-dom": "^16.9.24",
     "@types/uuid": "^9.0.7",
     "@vitejs/plugin-react": "^4.2.0",
