@@ -1,40 +1,41 @@
-import React from 'react'
-import PropTypes from 'prop-types'
+import React, {SyntheticEvent} from 'react'
 import classnames from 'classnames'
 import FieldDocLabel from './FieldDocLabel'
 import Doc from './Doc'
 
 
-/** Wrap a component with a label */
-export default class Block extends React.Component {
-  static propTypes = {
-    "data-wd-key": PropTypes.string,
-    label: PropTypes.oneOfType([
-      PropTypes.string,
-      PropTypes.element,
-    ]),
-    action: PropTypes.element,
-    children: PropTypes.node.isRequired,
-    style: PropTypes.object,
-    onChange: PropTypes.func,
-    fieldSpec: PropTypes.object,
-    wideMode: PropTypes.bool,
-    error: PropTypes.array,
-  }
+type BlockProps = {
+  "data-wd-key"?: string
+  label?: string
+  action?: React.ReactElement
+  style?: object
+  onChange(...args: unknown[]): unknown
+  fieldSpec?: object
+  wideMode?: boolean
+  error?: unknown[]
+};
 
-  constructor (props) {
+type BlockState = {
+  showDoc: boolean
+};
+
+/** Wrap a component with a label */
+export default class Block extends React.Component<BlockProps, BlockState> {
+  _blockEl: HTMLDivElement | null = null;
+
+  constructor (props: BlockProps) {
     super(props);
     this.state = {
       showDoc: false,
     }
   }
 
-  onChange(e) {
+  onChange(e: React.BaseSyntheticEvent<Event, HTMLInputElement, HTMLInputElement>) {
     const value = e.target.value
     return this.props.onChange(value === "" ? undefined : value)
   }
 
-  onToggleDoc = (val) => {
+  onToggleDoc = (val: boolean) => {
     this.setState({
       showDoc: val
     });
@@ -46,20 +47,17 @@ export default class Block extends React.Component {
    * causing the picker to reopen. This causes a scenario where the picker can
    * never be closed once open.
    */
-  onLabelClick = (event) => {
+  onLabelClick = (event: SyntheticEvent<any, any>) => {
     const el = event.nativeEvent.target;
-    const nativeEvent = event.nativeEvent;
-    const contains = this._blockEl.contains(el);
+    const contains = this._blockEl?.contains(el);
 
     if (event.nativeEvent.target.nodeName !== "INPUT" && !contains) {
       event.stopPropagation();
     }
-		event.preventDefault();
+        event.preventDefault();
   }
 
   render() {
-    const errors = [].concat(this.props.error || []);
-
     return <label style={this.props.style}
       data-wd-key={this.props["data-wd-key"]}
       className={classnames({

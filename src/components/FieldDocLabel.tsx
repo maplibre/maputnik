@@ -2,7 +2,7 @@ import React from 'react'
 import {MdInfoOutline, MdHighlightOff} from 'react-icons/md'
 
 type FieldDocLabelProps = {
-  label: object | string
+  label: object | string | undefined
   fieldSpec?: {
     doc?: string
   }
