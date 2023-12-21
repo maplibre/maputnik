@@ -77,11 +77,18 @@ describe("modals", () => {
     });
 
     it("name", () => {
+      when.click("field-doc-button-Name");
+
+      should.containText("spec-field-doc", "name for the style");
+    });
+
+    it("show name specifications", () => {
       when.setValue(get.dataAttribute("modal:settings.name"), "foobar");
       when.click("modal:settings.owner");
 
       should.equalStyleStore((obj) => obj.name, "foobar");
     });
+
     it("owner", () => {
       when.setValue(get.dataAttribute("modal:settings.owner"), "foobar");
       when.click("modal:settings.name");
