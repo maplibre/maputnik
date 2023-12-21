@@ -1,13 +1,12 @@
 import React from 'react'
-import PropTypes from 'prop-types'
 
-export default class InputCheckbox extends React.Component {
-  static propTypes = {
-    value: PropTypes.bool,
-    style: PropTypes.object,
-    onChange: PropTypes.func,
-  }
+type InputCheckboxProps = {
+  value?: boolean
+  style?: object
+  onChange(...args: unknown[]): unknown
+};
 
+export default class InputCheckbox extends React.Component<InputCheckboxProps> {
   static defaultProps = {
     value: false,
   }
@@ -36,4 +35,3 @@ export default class InputCheckbox extends React.Component {
     </div>
   }
 }
-

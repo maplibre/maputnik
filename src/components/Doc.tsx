@@ -1,23 +1,32 @@
 import React from 'react'
-import PropTypes from 'prop-types'
 
-export default class Doc extends React.Component {
-  static propTypes = {
-    fieldSpec: PropTypes.object.isRequired,
+const headers = {
+  js: "JS",
+  android: "Android",
+  ios: "iOS",
+  macos: "macOS",
+};
+
+type DocProps = {
+  fieldSpec: {
+    doc?: string
+    values?: {
+      [key: string]: {
+        doc?: string
+      }
+    }
+    'sdk-support'?: {
+      [key: string]: typeof headers
+    }
   }
+};
 
+export default class Doc extends React.Component<DocProps> {
   render () {
     const {fieldSpec} = this.props;
 
     const {doc, values} = fieldSpec;
     const sdkSupport = fieldSpec['sdk-support'];
-
-    const headers = {
-      js: "JS",
-      android: "Android",
-      ios: "iOS",
-      macos: "macOS",
-    };
 
     const renderValues = (
       !!values &&
@@ -61,10 +70,9 @@ export default class Doc extends React.Component {
                   return (
                     <tr key={key}>
                       <td>{key}</td>
-                      {Object.keys(headers).map(k => {
-                        const value = supportObj[k];
+                      {Object.keys(headers).map((k) => {
                         if (supportObj.hasOwnProperty(k)) {
-                          return <td key={k}>{supportObj[k]}</td>;
+                          return <td key={k}>{supportObj[k as keyof typeof headers]}</td>;
                         }
                         else {
                           return <td key={k}>no</td>;

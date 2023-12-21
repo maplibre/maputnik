@@ -1,22 +1,20 @@
 import React from 'react'
-import PropTypes from 'prop-types'
 
-export default class InputSelect extends React.Component {
-  static propTypes = {
-    value: PropTypes.string.isRequired,
-    "data-wd-key": PropTypes.string,
-    options: PropTypes.array.isRequired,
-    style: PropTypes.object,
-    onChange: PropTypes.func.isRequired,
-    title: PropTypes.string,
-    'aria-label': PropTypes.string,
-  }
+type InputSelectProps = {
+  value: string
+  "data-wd-key"?: string
+  options: [string, any][] | string[]
+  style?: object
+  onChange(...args: unknown[]): unknown
+  title?: string
+  'aria-label'?: string
+};
 
-
+export default class InputSelect extends React.Component<InputSelectProps> {
   render() {
-    let options = this.props.options
+    let options = this.props.options;
     if(options.length > 0 && !Array.isArray(options[0])) {
-      options = options.map(v => [v, v])
+      options = options.map((v) => [v as string, v as any])
     }
 
     return <select

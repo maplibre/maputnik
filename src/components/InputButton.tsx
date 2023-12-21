@@ -1,21 +1,20 @@
 import React from 'react'
-import PropTypes from 'prop-types'
 import classnames from 'classnames'
 
-export default class InputButton extends React.Component {
-  static propTypes = {
-    "data-wd-key": PropTypes.string,
-    "aria-label": PropTypes.string,
-    onClick: PropTypes.func,
-    style: PropTypes.object,
-    className: PropTypes.string,
-    children: PropTypes.node,
-    disabled: PropTypes.bool,
-    type: PropTypes.string,
-    id: PropTypes.string,
-    title: PropTypes.string,
-  }
+type InputButtonProps = {
+  "data-wd-key"?: string
+  "aria-label"?: string
+  onClick?(...args: unknown[]): unknown
+  style?: object
+  className?: string
+  children?: React.ReactNode
+  disabled?: boolean
+  type?: typeof HTMLButtonElement.prototype.type
+  id?: string
+  title?: string
+};
 
+export default class InputButton extends React.Component<InputButtonProps> {
   render() {
     return <button
       id={this.props.id}
@@ -32,4 +31,3 @@ export default class InputButton extends React.Component {
     </button>
   }
 }
-

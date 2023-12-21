@@ -1,26 +1,30 @@
 import React from 'react'
-import PropTypes from 'prop-types'
 
-export default class InputString extends React.Component {
-  static propTypes = {
-    "data-wd-key": PropTypes.string,
-    value: PropTypes.string,
-    style: PropTypes.object,
-    default: PropTypes.string,
-    onChange: PropTypes.func,
-    onInput: PropTypes.func,
-    multi: PropTypes.bool,
-    required: PropTypes.bool,
-    disabled: PropTypes.bool,
-    spellCheck: PropTypes.bool,
-    'aria-label': PropTypes.string,
-  }
+type InputStringProps = {
+  "data-wd-key"?: string
+  value?: string
+  style?: object
+  default?: string
+  onChange(...args: unknown[]): unknown
+  onInput(...args: unknown[]): unknown
+  multi?: boolean
+  required?: boolean
+  disabled?: boolean
+  spellCheck?: boolean
+  'aria-label'?: string
+};
 
+type InputStringState = {
+  editing: boolean
+  value?: string
+}
+
+export default class InputString extends React.Component<InputStringProps, InputStringState> {
   static defaultProps = {
     onInput: () => {},
   }
 
-  constructor(props) {
+  constructor(props: InputStringProps) {
     super(props)
     this.state = {
       editing: false,
@@ -28,7 +32,7 @@ export default class InputString extends React.Component {
     }
   }
 
-  static getDerivedStateFromProps(props, state) {
+  static getDerivedStateFromProps(props: InputStringProps, state: InputStringState) {
     if (!state.editing) {
       return {
         value: props.value
@@ -68,7 +72,7 @@ export default class InputString extends React.Component {
       style: this.props.style,
       value: this.state.value === undefined ? "" : this.state.value,
       placeholder: this.props.default,
-      onChange: e => {
+      onChange: (e: React.BaseSyntheticEvent<Event, HTMLInputElement, HTMLInputElement>) => {
         this.setState({
           editing: true,
           value: e.target.value
