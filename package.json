@@ -96,6 +96,7 @@
     "@storybook/react": "^7.6.5",
     "@storybook/react-vite": "^7.6.5",
     "@storybook/theming": "^7.6.5",
+    "@types/codemirror": "^5.60.15",
     "@types/color": "^3.0.6",
     "@types/cors": "^2.8.17",
     "@types/lodash.capitalize": "^4.2.9",

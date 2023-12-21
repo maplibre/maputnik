@@ -1,47 +1,45 @@
 import React from 'react'
-import PropTypes from 'prop-types'
 import classnames from 'classnames';
-
-import Block from './Block'
-import FieldString from './FieldString'
-import CodeMirror from 'codemirror';
+import CodeMirror, { ModeSpec } from 'codemirror';
 
 import 'codemirror/mode/javascript/javascript'
 import 'codemirror/addon/lint/lint'
 import 'codemirror/addon/edit/matchbrackets'
 import 'codemirror/lib/codemirror.css'
 import 'codemirror/addon/lint/lint.css'
-import jsonlint from 'jsonlint'
 import stringifyPretty from 'json-stringify-pretty-compact'
 import '../util/codemirror-mgl';
 
 
-export default class InputJson extends React.Component {
-  static propTypes = {
-    layer: PropTypes.any.isRequired,
-    maxHeight: PropTypes.number,
-    onChange: PropTypes.func,
-    lineNumbers: PropTypes.bool,
-    lineWrapping: PropTypes.bool,
-    getValue: PropTypes.func,
-    gutters: PropTypes.array,
-    className: PropTypes.string,
-    onFocus: PropTypes.func,
-    onBlur: PropTypes.func,
-    onJSONValid: PropTypes.func,
-    onJSONInvalid: PropTypes.func,
-    mode: PropTypes.object,
-    lint: PropTypes.oneOfType([
-      PropTypes.bool,
-      PropTypes.object,
-    ]),
-  }
+type InputJsonProps = {
+  layer: any
+  maxHeight?: number
+  onChange?(...args: unknown[]): unknown
+  lineNumbers?: boolean
+  lineWrapping?: boolean
+  getValue(data: any): string
+  gutters?: string[]
+  className?: string
+  onFocus?(...args: unknown[]): unknown
+  onBlur?(...args: unknown[]): unknown
+  onJSONValid?(...args: unknown[]): unknown
+  onJSONInvalid?(...args: unknown[]): unknown
+  mode?: ModeSpec<any>
+  lint?: boolean | object
+};
 
+type InputJsonState = {
+  isEditing: boolean
+  showMessage: boolean
+  prevValue: string
+};
+
+export default class InputJson extends React.Component<InputJsonProps, InputJsonState> {
   static defaultProps = {
     lineNumbers: true,
     lineWrapping: false,
     gutters: ["CodeMirror-lint-markers"],
-    getValue: (data) => {
+    getValue: (data: any) => {
       return stringifyPretty(data, {indent: 2, maxLength: 40});
     },
     onFocus: () => {},
@@ -49,8 +47,12 @@ export default class InputJson extends React.Component {
     onJSONInvalid: () => {},
     onJSONValid: () => {},
   }
+  _keyEvent: string;
+  _doc: CodeMirror.Editor | undefined;
+  _el: HTMLDivElement | null = null;
+  _cancelNextChange: boolean = false;
 
-  constructor(props) {
+  constructor(props: InputJsonProps) {
     super(props);
     this._keyEvent = "keyboard";
     this.state = {
@@ -61,7 +63,7 @@ export default class InputJson extends React.Component {
   }
 
   componentDidMount () {
-    this._doc = CodeMirror(this._el, {
+    this._doc = CodeMirror(this._el!, {
       value: this.props.getValue(this.props.layer),
       mode: this.props.mode || {
         name: "mgl",
@@ -84,12 +86,12 @@ export default class InputJson extends React.Component {
     this._doc.on('blur', this.onBlur);
   }
 
-  onPointerDown = (cm, e) => {
+  onPointerDown = () => {
     this._keyEvent = "pointer";
   }
 
-  onFocus = (cm, e) => {
-    this.props.onFocus();
+  onFocus = () => {
+    if (this.props.onFocus) this.props.onFocus();
     this.setState({
       isEditing: true,
       showMessage: (this._keyEvent === "keyboard"),
@@ -98,7 +100,7 @@ export default class InputJson extends React.Component {
 
   onBlur = () => {
     this._keyEvent = "keyboard";
-    this.props.onBlur();
+    if (this.props.onBlur) this.props.onBlur();
     this.setState({
       isEditing: false,
       showMessage: false,
@@ -106,29 +108,29 @@ export default class InputJson extends React.Component {
   }
 
   componentWillUnMount () {
-    this._doc.off('change', this.onChange);
-    this._doc.off('focus', this.onFocus);
-    this._doc.off('blur', this.onBlur);
+    this._doc!.off('change', this.onChange);
+    this._doc!.off('focus', this.onFocus);
+    this._doc!.off('blur', this.onBlur);
   }
 
-  componentDidUpdate(prevProps) {
+  componentDidUpdate(prevProps: InputJsonProps) {
     if (!this.state.isEditing && prevProps.layer !== this.props.layer) {
       this._cancelNextChange = true;
-      this._doc.setValue(
+      this._doc!.setValue(
         this.props.getValue(this.props.layer),
       )
     }
   }
 
-  onChange = (e) => {
+  onChange = (_e: unknown) => {
     if (this._cancelNextChange) {
       this._cancelNextChange = false;
       this.setState({
-        prevValue: this._doc.getValue(),
+        prevValue: this._doc!.getValue(),
       })
       return;
     }
-    const newCode = this._doc.getValue();
+    const newCode = this._doc!.getValue();
 
     if (this.state.prevValue !== newCode) {
       let parsedLayer, err;
@@ -139,12 +141,12 @@ export default class InputJson extends React.Component {
         console.warn(_err)
       }
 
-      if (err) {
+      if (err && this.props.onJSONInvalid) {
         this.props.onJSONInvalid();
       }
       else {
-        this.props.onChange(parsedLayer)
-        this.props.onJSONValid();
+        if (this.props.onChange) this.props.onChange(parsedLayer)
+        if (this.props.onJSONValid) this.props.onJSONValid();
       }
     }
 
@@ -155,7 +157,7 @@ export default class InputJson extends React.Component {
 
   render() {
     const {showMessage} = this.state;
-    const style = {};
+    const style = {} as {maxHeight?: number};
     if (this.props.maxHeight) {
       style.maxHeight = this.props.maxHeight;
     }

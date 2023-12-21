@@ -1,18 +1,17 @@
 import React from 'react'
-import PropTypes from 'prop-types'
 
 import {otherFilterOps} from '../libs/filterops'
 import InputString from './InputString'
 import InputAutocomplete from './InputAutocomplete'
 import InputSelect from './InputSelect'
 
-function tryParseInt(v) {
+function tryParseInt(v: string | number) {
   if (v === '') return v
-  if (isNaN(v)) return v
-  return parseFloat(v)
+  if (isNaN(v as number)) return v
+  return parseFloat(v as string)
 }
 
-function tryParseBool(v) {
+function tryParseBool(v: string | boolean) {
   const isString = (typeof(v) === "string");
   if(!isString) {
     return v;
@@ -29,24 +28,24 @@ function tryParseBool(v) {
   }
 }
 
-function parseFilter(v) {
-  v = tryParseInt(v);
-  v = tryParseBool(v);
+function parseFilter(v: string | boolean | number) {
+  v = tryParseInt(v as any);
+  v = tryParseBool(v as any);
   return v;
 }
 
-export default class SingleFilterEditor extends React.Component {
-  static propTypes = {
-    filter: PropTypes.array.isRequired,
-    onChange: PropTypes.func.isRequired,
-    properties: PropTypes.object,
-  }
+type SingleFilterEditorProps = {
+  filter: any[]
+  onChange(...args: unknown[]): unknown
+  properties?: {[key: string]: string}
+};
 
+export default class SingleFilterEditor extends React.Component<SingleFilterEditorProps> {
   static defaultProps = {
     properties: {},
   }
 
-  onFilterPartChanged(filterOp, propertyName, filterArgs) {
+  onFilterPartChanged(filterOp: string, propertyName: string, filterArgs: string[]) {
     let newFilter = [filterOp, propertyName, ...filterArgs.map(parseFilter)]
     if(filterOp === 'has' || filterOp === '!has') {
       newFilter = [filterOp, propertyName]
@@ -67,15 +66,15 @@ export default class SingleFilterEditor extends React.Component {
         <InputAutocomplete
           aria-label="key"
           value={propertyName}
-          options={Object.keys(this.props.properties).map(propName => [propName, propName])}
-          onChange={newPropertyName => this.onFilterPartChanged(filterOp, newPropertyName, filterArgs)}
+          options={Object.keys(this.props.properties!).map(propName => [propName, propName])}
+          onChange={(newPropertyName: string) => this.onFilterPartChanged(filterOp, newPropertyName, filterArgs)}
         />
       </div>
       <div className="maputnik-filter-editor-operator">
         <InputSelect
           aria-label="function"
           value={filterOp}
-          onChange={newFilterOp => this.onFilterPartChanged(newFilterOp, propertyName, filterArgs)}
+          onChange={(newFilterOp: string) => this.onFilterPartChanged(newFilterOp, propertyName, filterArgs)}
           options={otherFilterOps}
         />
       </div>
@@ -84,12 +83,11 @@ export default class SingleFilterEditor extends React.Component {
         <InputString
           aria-label="value"
           value={filterArgs.join(',')}
-          onChange={ v=> this.onFilterPartChanged(filterOp, propertyName, v.split(','))}
+          onChange={(v: string) => this.onFilterPartChanged(filterOp, propertyName, v.split(','))}
         />
       </div>
       }
     </div>
   }
-
 }
 
