@@ -1,17 +1,16 @@
 import React from 'react'
-import PropTypes from 'prop-types'
 
 import {latest} from '@maplibre/maplibre-gl-style-spec'
 import Block from './Block'
 import InputNumber from './InputNumber'
 
-export default class FieldMaxZoom extends React.Component {
-  static propTypes = {
-    value: PropTypes.number,
-    onChange: PropTypes.func.isRequired,
-    error: PropTypes.object,
-  }
+type FieldMaxZoomProps = {
+  value?: number
+  onChange(...args: unknown[]): unknown
+  error?: unknown[]
+};
 
+export default class FieldMaxZoom extends React.Component<FieldMaxZoomProps> {
   render() {
     return <Block label={"Max Zoom"} fieldSpec={latest.layer.maxzoom}
       error={this.props.error}

@@ -3,7 +3,7 @@ import InputString from './InputString'
 import InputNumber from './InputNumber'
 
 export type FieldArrayProps = {
-  value: string[]
+  value: string[] | number[]
   type?: string
   length?: number
   default?: string[] | number[]

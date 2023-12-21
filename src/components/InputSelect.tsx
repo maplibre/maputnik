@@ -1,6 +1,6 @@
 import React from 'react'
 
-type InputSelectProps = {
+export type InputSelectProps = {
   value: string
   "data-wd-key"?: string
   options: [string, any][] | string[]

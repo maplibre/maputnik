@@ -3,7 +3,7 @@ import FieldDocLabel from './FieldDocLabel'
 import Doc from './Doc'
 
 type FieldsetProps = {
-  label: string,
+  label?: string,
   fieldSpec?: { doc?: string },
   action?: ReactElement,
 };

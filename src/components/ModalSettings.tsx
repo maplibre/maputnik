@@ -1,8 +1,6 @@
 import React from 'react'
-import PropTypes from 'prop-types'
+import {LightSpecification, StyleSpecification, TransitionSpecification, latest} from '@maplibre/maplibre-gl-style-spec'
 
-import {latest} from '@maplibre/maplibre-gl-style-spec'
-import Block from './Block'
 import FieldArray from './FieldArray'
 import FieldNumber from './FieldNumber'
 import FieldString from './FieldString'
@@ -13,16 +11,16 @@ import FieldColor from './FieldColor'
 import Modal from './Modal'
 import fieldSpecAdditional from '../libs/field-spec-additional'
 
-export default class ModalSettings extends React.Component {
-  static propTypes = {
-    mapStyle: PropTypes.object.isRequired,
-    onStyleChanged: PropTypes.func.isRequired,
-    onChangeMetadataProperty: PropTypes.func.isRequired,
-    isOpen: PropTypes.bool.isRequired,
-    onOpenToggle: PropTypes.func.isRequired,
-  }
+type ModalSettingsProps = {
+  mapStyle: StyleSpecification
+  onStyleChanged(...args: unknown[]): unknown
+  onChangeMetadataProperty(...args: unknown[]): unknown
+  isOpen: boolean
+  onOpenToggle(...args: unknown[]): unknown
+};
 
-  changeTransitionProperty(property, value) {
+export default class ModalSettings extends React.Component<ModalSettingsProps> {
+  changeTransitionProperty(property: keyof TransitionSpecification, value: number | undefined) {
     const transition = {
       ...this.props.mapStyle.transition,
     }
@@ -40,7 +38,7 @@ export default class ModalSettings extends React.Component {
     });
   }
 
-  changeLightProperty(property, value) {
+  changeLightProperty(property: keyof LightSpecification, value: any) {
     const light = {
       ...this.props.mapStyle.light,
     }
@@ -49,6 +47,7 @@ export default class ModalSettings extends React.Component {
       delete light[property];
     }
     else {
+      // @ts-ignore
       light[property] = value;
     }
 
@@ -58,22 +57,24 @@ export default class ModalSettings extends React.Component {
     });
   }
 
-  changeStyleProperty(property, value) {
+  changeStyleProperty(property: keyof StyleSpecification | "owner", value: any) {
     const changedStyle = {
       ...this.props.mapStyle,
     };
 
     if (value === undefined) {
+      // @ts-ignore
       delete changedStyle[property];
     }
     else {
+      // @ts-ignore
       changedStyle[property] = value;
     }
     this.props.onStyleChanged(changedStyle);
   }
 
   render() {
-    const metadata = this.props.mapStyle.metadata || {}
+    const metadata = this.props.mapStyle.metadata || {} as any;
     const {onChangeMetadataProperty, mapStyle} = this.props;
     const inputProps = { }
 
@@ -98,14 +99,14 @@ export default class ModalSettings extends React.Component {
           label={"Owner"}
           fieldSpec={{doc: "Owner ID of the style. Used by Mapbox or future style APIs."}}
           data-wd-key="modal:settings.owner"
-          value={this.props.mapStyle.owner}
+          value={(this.props.mapStyle as any).owner}
           onChange={this.changeStyleProperty.bind(this, "owner")}
         />
         <FieldUrl {...inputProps}
           fieldSpec={latest.$root.sprite}
           label="Sprite URL"
           data-wd-key="modal:settings.sprite"
-          value={this.props.mapStyle.sprite}
+          value={this.props.mapStyle.sprite as string}
           onChange={this.changeStyleProperty.bind(this, "sprite")}
         />
 
@@ -113,7 +114,7 @@ export default class ModalSettings extends React.Component {
           label="Glyphs URL"
           fieldSpec={latest.$root.glyphs}
           data-wd-key="modal:settings.glyphs"
-          value={this.props.mapStyle.glyphs}
+          value={this.props.mapStyle.glyphs as string}
           onChange={this.changeStyleProperty.bind(this, "glyphs")}
         />
 
@@ -138,7 +139,7 @@ export default class ModalSettings extends React.Component {
           fieldSpec={latest.$root.center}
           length={2}
           type="number"
-          value={mapStyle.center}
+          value={mapStyle.center || []}
           default={latest.$root.center.default || [0, 0]}
           onChange={this.changeStyleProperty.bind(this, "center")}
         />
@@ -175,7 +176,7 @@ export default class ModalSettings extends React.Component {
           label={"Light anchor"}
           fieldSpec={latest.light.anchor}
           name="light-anchor"
-          value={light.anchor}
+          value={light.anchor as string}
           options={Object.keys(latest.light.anchor.values)}
           default={latest.light.anchor.default}
           onChange={this.changeLightProperty.bind(this, "anchor")}
@@ -185,7 +186,7 @@ export default class ModalSettings extends React.Component {
           {...inputProps}
           label={"Light color"}
           fieldSpec={latest.light.color}
-          value={light.color}
+          value={light.color as string}
           default={latest.light.color.default}
           onChange={this.changeLightProperty.bind(this, "color")}
         />
@@ -194,7 +195,7 @@ export default class ModalSettings extends React.Component {
           {...inputProps}
           label={"Light intensity"}
           fieldSpec={latest.light.intensity}
-          value={light.intensity}
+          value={light.intensity as number}
           default={latest.light.intensity.default}
           onChange={this.changeLightProperty.bind(this, "intensity")}
         />
@@ -205,7 +206,7 @@ export default class ModalSettings extends React.Component {
           fieldSpec={latest.light.position}
           type="number"
           length={latest.light.position.length}
-          value={light.position}
+          value={light.position as number[]}
           default={latest.light.position.default}
           onChange={this.changeLightProperty.bind(this, "position")}
         />

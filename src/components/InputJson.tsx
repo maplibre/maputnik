@@ -11,7 +11,7 @@ import stringifyPretty from 'json-stringify-pretty-compact'
 import '../util/codemirror-mgl';
 
 
-type InputJsonProps = {
+export type InputJsonProps = {
   layer: any
   maxHeight?: number
   onChange?(...args: unknown[]): unknown

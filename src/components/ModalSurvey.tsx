@@ -1,17 +1,17 @@
 import React from 'react'
-import PropTypes from 'prop-types'
 
 import InputButton from './InputButton'
 import Modal from './Modal'
 
+// @ts-ignore
 import logoImage from 'maputnik-design/logos/logo-color.svg'
 
-export default class ModalSurvey extends React.Component {
-  static propTypes = {
-    isOpen: PropTypes.bool.isRequired,
-    onOpenToggle: PropTypes.func.isRequired,
-  }
+type ModalSurveyProps = {
+  isOpen: boolean
+  onOpenToggle(...args: unknown[]): unknown
+};
 
+export default class ModalSurvey extends React.Component<ModalSurveyProps> {
   onClick = () => {
     window.open('https://gregorywolanski.typeform.com/to/cPgaSY', '_blank');
 

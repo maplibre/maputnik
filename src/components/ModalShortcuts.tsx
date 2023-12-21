@@ -1,15 +1,15 @@
 import React from 'react'
-import PropTypes from 'prop-types'
 
 import Modal from './Modal'
 
 
-export default class ModalShortcuts extends React.Component {
-  static propTypes = {
-    isOpen: PropTypes.bool.isRequired,
-    onOpenToggle: PropTypes.func.isRequired,
-  }
+type ModalShortcutsProps = {
+  isOpen: boolean
+  onOpenToggle(...args: unknown[]): unknown
+};
 
+
+export default class ModalShortcuts extends React.Component<ModalShortcutsProps> {
   render() {
     const help = [
       {

@@ -53,7 +53,7 @@ export type FieldUrlProps = {
   style?: object
   default?: string
   onChange(...args: unknown[]): unknown
-  onInput(...args: unknown[]): unknown
+  onInput?(...args: unknown[]): unknown
   multi?: boolean
   required?: boolean
   'aria-label'?: string
@@ -79,7 +79,7 @@ export default class FieldUrl extends React.Component<FieldUrlProps, FieldUrlSta
     this.setState({
       error: validate(url)
     });
-    this.props.onInput(url);
+    if (this.props.onInput) this.props.onInput(url);
   }
 
   onChange = (url: string) => {

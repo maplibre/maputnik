@@ -1,17 +1,16 @@
 import React from 'react'
-import PropTypes from 'prop-types'
 
 import {latest} from '@maplibre/maplibre-gl-style-spec'
 import Block from './Block'
 import InputNumber from './InputNumber'
 
-export default class FieldMinZoom extends React.Component {
-  static propTypes = {
-    value: PropTypes.number,
-    onChange: PropTypes.func.isRequired,
-    error: PropTypes.object,
-  }
+type FieldMinZoomProps = {
+  value?: number
+  onChange(...args: unknown[]): unknown
+  error?: unknown[]
+};
 
+export default class FieldMinZoom extends React.Component<FieldMinZoomProps> {
   render() {
     return <Block label={"Min Zoom"} fieldSpec={latest.layer.minzoom}
       error={this.props.error}

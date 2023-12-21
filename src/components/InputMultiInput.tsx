@@ -1,7 +1,7 @@
 import React from 'react'
 import classnames from 'classnames'
 
-type InputMultiInputProps = {
+export type InputMultiInputProps = {
   name?: string
   value: string
   options: any[]
