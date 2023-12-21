@@ -5,7 +5,7 @@ import Autocomplete from 'react-autocomplete'
 
 const MAX_HEIGHT = 140;
 
-type InputAutocompleteProps = {
+export type InputAutocompleteProps = {
   value?: string
   options: any[]
   onChange(...args: unknown[]): unknown

@@ -1,13 +1,12 @@
 import React from 'react'
-import PropTypes from 'prop-types'
 import Block from './Block'
-import InputSpec from './InputSpec'
+import InputSpec, { SpecFieldProps as InputFieldSpecProps } from './InputSpec'
 import Fieldset from './Fieldset'
 
 
 const typeMap = {
   color: () => Block,
-  enum: ({fieldSpec}) => (Object.keys(fieldSpec.values).length <= 3 ? Fieldset : Block),
+  enum: ({fieldSpec}: any) => (Object.keys(fieldSpec.values).length <= 3 ? Fieldset : Block),
   boolean: () => Block,
   array: () => Fieldset,
   resolvedImage: () => Block,
@@ -16,12 +15,11 @@ const typeMap = {
   formatted: () => Block,
 };
 
-export default class SpecField extends React.Component {
-  static propTypes = {
-    ...InputSpec.propTypes,
-    name: PropTypes.string,
-  }
+type SpecFieldProps = InputFieldSpecProps & {
+  name?: string
+};
 
+export default class SpecField extends React.Component<SpecFieldProps> {
   render() {
     const {props} = this;
 

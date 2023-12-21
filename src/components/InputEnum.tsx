@@ -17,7 +17,7 @@ export type InputEnumProps = {
   value?: string
   style?: object
   default?: string
-  name: string
+  name?: string
   onChange(...args: unknown[]): unknown
   options: any[]
   'aria-label'?: string

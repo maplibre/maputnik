@@ -2,7 +2,7 @@ import React, { BaseSyntheticEvent } from 'react'
 
 let IDX = 0;
 
-type InputNumberProps = {
+export type InputNumberProps = {
   value?: number
   default?: number
   min?: number

@@ -2,7 +2,7 @@ import React from 'react'
 import InputString from './InputString'
 import InputNumber from './InputNumber'
 
-type FieldArrayProps = {
+export type FieldArrayProps = {
   value: string[]
   type?: string
   length?: number

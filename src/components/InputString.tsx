@@ -6,7 +6,7 @@ export type InputStringProps = {
   style?: object
   default?: string
   onChange?(...args: unknown[]): unknown
-  onInput(...args: unknown[]): unknown
+  onInput?(...args: unknown[]): unknown
   multi?: boolean
   required?: boolean
   disabled?: boolean
@@ -77,7 +77,7 @@ export default class InputString extends React.Component<InputStringProps, Input
           editing: true,
           value: e.target.value
         }, () => {
-          this.props.onInput(this.state.value);
+          if (this.props.onInput) this.props.onInput(this.state.value);
         });
       },
       onBlur: () => {

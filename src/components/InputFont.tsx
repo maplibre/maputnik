@@ -1,7 +1,7 @@
 import React from 'react'
 import InputAutocomplete from './InputAutocomplete'
 
-type FieldFontProps = {
+export type FieldFontProps = {
   name: string
   value?: string[]
   default?: string[]

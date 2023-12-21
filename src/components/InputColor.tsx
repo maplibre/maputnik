@@ -9,7 +9,7 @@ function formatColor(color: ColorResult): string {
   return `rgba(${rgb.r}, ${rgb.g}, ${rgb.b}, ${rgb.a})`
 }
 
-type InputColorProps = {
+export type InputColorProps = {
   onChange(...args: unknown[]): unknown
   name?: string
   value?: string

@@ -2,7 +2,7 @@ import React from 'react'
 import classnames from 'classnames'
 
 type InputMultiInputProps = {
-  name: string
+  name?: string
   value: string
   options: any[]
   onChange(...args: unknown[]): unknown

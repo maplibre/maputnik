@@ -1,11 +1,11 @@
-import React from 'react'
+import React, { ReactElement } from 'react'
 import FieldDocLabel from './FieldDocLabel'
 import Doc from './Doc'
 
 type FieldsetProps = {
   label: string,
   fieldSpec?: { doc?: string },
-  action?: string,
+  action?: ReactElement,
 };
 
 type FieldsetState = {

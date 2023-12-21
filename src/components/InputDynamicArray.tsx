@@ -1,30 +1,34 @@
 import React from 'react'
-import PropTypes from 'prop-types'
+import capitalize from 'lodash.capitalize'
+import {MdDelete} from 'react-icons/md'
+
 import InputString from './InputString'
 import InputNumber from './InputNumber'
 import InputButton from './InputButton'
-import {MdDelete} from 'react-icons/md'
 import FieldDocLabel from './FieldDocLabel'
 import InputEnum from './InputEnum'
-import capitalize from 'lodash.capitalize'
 import InputUrl from './InputUrl'
 
 
-export default class FieldDynamicArray extends React.Component {
-  static propTypes = {
-    value: PropTypes.array,
-    type: PropTypes.string,
-    default: PropTypes.array,
-    onChange: PropTypes.func,
-    style: PropTypes.object,
-    fieldSpec: PropTypes.object,
-    'aria-label': PropTypes.string,
+export type FieldDynamicArrayProps = {
+  value?: (string | number)[]
+  type?: 'url' | 'number' | 'enum'
+  default?: (string | number)[]
+  onChange?(...args: unknown[]): unknown
+  style?: object
+  fieldSpec?: {
+    values?: any
   }
+  'aria-label'?: string
+  label: string
+};
 
-  changeValue(idx, newValue) {
+
+export default class FieldDynamicArray extends React.Component<FieldDynamicArrayProps> {
+  changeValue(idx: number, newValue: string | number) {
     const values = this.values.slice(0)
     values[idx] = newValue
-    this.props.onChange(values)
+    if (this.props.onChange) this.props.onChange(values)
   }
 
   get values() {
@@ -41,20 +45,20 @@ export default class FieldDynamicArray extends React.Component {
     }
     else if (this.props.type === 'enum') {
       const {fieldSpec} = this.props;
-      const defaultValue = Object.keys(fieldSpec.values)[0];
+      const defaultValue = Object.keys(fieldSpec!.values)[0];
       values.push(defaultValue);
     } else {
       values.push("")
     }
 
-    this.props.onChange(values)
+    if (this.props.onChange) this.props.onChange(values)
   }
 
-  deleteValue(valueIdx) {
+  deleteValue(valueIdx: number) {
     const values = this.values.slice(0)
     values.splice(valueIdx, 1)
 
-    this.props.onChange(values.length > 0 ? values : undefined);
+    if (this.props.onChange) this.props.onChange(values.length > 0 ? values : undefined);
   }
 
   render() {
@@ -63,30 +67,30 @@ export default class FieldDynamicArray extends React.Component {
       let input;
       if(this.props.type === 'url') {
         input = <InputUrl
-          value={v}
+          value={v as string}
           onChange={this.changeValue.bind(this, i)}
           aria-label={this.props['aria-label'] || this.props.label}
         />
       }
       else if (this.props.type === 'number') {
         input = <InputNumber
-          value={v}
+          value={v as number}
           onChange={this.changeValue.bind(this, i)}
           aria-label={this.props['aria-label'] || this.props.label}
         />
       }
       else if (this.props.type === 'enum') {
-        const options = Object.keys(this.props.fieldSpec.values).map(v => [v, capitalize(v)]);
+        const options = Object.keys(this.props.fieldSpec?.values).map(v => [v, capitalize(v)]);
         input = <InputEnum
           options={options}
-          value={v}
+          value={v as string}
           onChange={this.changeValue.bind(this, i)}
           aria-label={this.props['aria-label'] || this.props.label}
         />
       }
       else {
         input = <InputString
-          value={v}
+          value={v as string}
           onChange={this.changeValue.bind(this, i)}
           aria-label={this.props['aria-label'] || this.props.label}
         />
@@ -120,11 +124,11 @@ export default class FieldDynamicArray extends React.Component {
   }
 }
 
-class DeleteValueInputButton extends React.Component {
-  static propTypes = {
-    onClick: PropTypes.func,
-  }
+type DeleteValueInputButtonProps = {
+  onClick?(...args: unknown[]): unknown
+};
 
+class DeleteValueInputButton extends React.Component<DeleteValueInputButtonProps> {
   render() {
     return <InputButton
       className="maputnik-delete-stop"
@@ -133,7 +137,7 @@ class DeleteValueInputButton extends React.Component {
     >
       <FieldDocLabel
         label={<MdDelete />}
-        doc={"Remove array item."}
+        fieldSpec={{doc:" Remove array item."}}
       />
     </InputButton>
   }

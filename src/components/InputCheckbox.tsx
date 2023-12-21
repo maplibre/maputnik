@@ -1,6 +1,6 @@
 import React from 'react'
 
-type InputCheckboxProps = {
+export type InputCheckboxProps = {
   value?: boolean
   style?: object
   onChange(...args: unknown[]): unknown
