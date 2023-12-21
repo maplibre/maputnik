@@ -1,37 +1,17 @@
 import React from 'react'
-import PropTypes from 'prop-types'
 
 import InputButton from './InputButton'
 import {MdFunctions, MdInsertChart} from 'react-icons/md'
 import {mdiFunctionVariant} from '@mdi/js';
 
+type FunctionInputButtonsProps = {
+  fieldSpec?: any
+  onZoomClick?(...args: unknown[]): unknown
+  onDataClick?(...args: unknown[]): unknown
+  onExpressionClick?(...args: unknown[]): unknown
+};
 
-/**
- * So here we can't just check is `Array.isArray(value)` because certain
- * properties accept arrays as values, for example `text-font`. So we must try
- * and create an expression.
- */
-function isExpression(value, fieldSpec={}) {
-  if (!Array.isArray(value)) {
-    return false;
-  }
-  try {
-    expression.createExpression(value, fieldSpec);
-    return true;
-  }
-  catch (err) {
-    return false;
-  }
-}
-
-export default class FunctionInputButtons extends React.Component {
-  static propTypes = {
-    fieldSpec: PropTypes.object,
-    onZoomClick: PropTypes.func,
-    onDataClick: PropTypes.func,
-    onExpressionClick: PropTypes.func,
-  }
-
+export default class FunctionInputButtons extends React.Component<FunctionInputButtonsProps> {
   render() {
     let makeZoomInputButton, makeDataInputButton, expressionInputButton;
 

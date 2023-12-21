@@ -21,15 +21,13 @@ type SpecFieldProps = InputFieldSpecProps & {
 
 export default class SpecField extends React.Component<SpecFieldProps> {
   render() {
-    const {props} = this;
-
-    const fieldType = props.fieldSpec.type;
+    const fieldType = this.props.fieldSpec.type;
 
     const typeBlockFn = typeMap[fieldType];
 
     let TypeBlock;
     if (typeBlockFn) {
-      TypeBlock = typeBlockFn(props);
+      TypeBlock = typeBlockFn(this.props);
     }
     else {
       console.warn("No such type for '%s'", fieldType);
@@ -37,11 +35,11 @@ export default class SpecField extends React.Component<SpecFieldProps> {
     }
 
     return <TypeBlock
-      label={props.label}
-      action={props.action}
+      label={this.props.label}
+      action={this.props.action}
       fieldSpec={this.props.fieldSpec}
     >
-      <InputSpec {...props} />
+      <InputSpec {...this.props} />
     </TypeBlock>
   }
 }

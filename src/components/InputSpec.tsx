@@ -14,8 +14,8 @@ import capitalize from 'lodash.capitalize'
 const iconProperties = ['background-pattern', 'fill-pattern', 'line-pattern', 'fill-extrusion-pattern', 'icon-image']
 
 export type SpecFieldProps = {
-  onChange(...args: unknown[]): unknown
-  fieldName: string
+  onChange?(...args: unknown[]): unknown
+  fieldName?: string
   fieldSpec: {
     default?: unknown
     type: 'number' | 'enum' | 'resolvedImage' | 'formatted' | 'string' | 'color' | 'boolean' | 'array'
@@ -49,7 +49,7 @@ export default class SpecField extends React.Component<SpecFieldProps> {
       value: this.props.value,
       default: this.props.fieldSpec.default,
       name: this.props.fieldName,
-      onChange: (newValue: string) => this.props.onChange(this.props.fieldName, newValue),
+      onChange: (newValue: string) => this.props.onChange!(this.props.fieldName, newValue),
       'aria-label': this.props['aria-label'],
     }
     switch(this.props.fieldSpec.type) {
@@ -70,7 +70,7 @@ export default class SpecField extends React.Component<SpecFieldProps> {
       case 'resolvedImage':
       case 'formatted':
       case 'string':
-        if (iconProperties.indexOf(this.props.fieldName) >= 0) {
+        if (iconProperties.indexOf(this.props.fieldName!) >= 0) {
           const options = this.props.fieldSpec.values || [];
           return <InputAutocomplete
             {...commonProps as Omit<InputAutocompleteProps, "options">}

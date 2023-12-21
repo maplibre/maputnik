@@ -1,25 +1,24 @@
 import React from 'react'
-import PropTypes from 'prop-types'
 
 import SpecField from './SpecField'
 import FunctionButtons from './_FunctionButtons'
-import Block from './Block'
 
 import labelFromFieldName from './_labelFromFieldName'
 
 
-export default class SpecProperty extends React.Component {
-  static propTypes = {
-    onZoomClick: PropTypes.func.isRequired,
-    onDataClick: PropTypes.func.isRequired,
-    fieldName: PropTypes.string,
-    fieldType: PropTypes.string,
-    fieldSpec: PropTypes.object,
-    value: PropTypes.any,
-    errors: PropTypes.object,
-    onExpressionClick: PropTypes.func,
-  }
+type SpecPropertyProps = {
+  onZoomClick(...args: unknown[]): unknown
+  onDataClick(...args: unknown[]): unknown
+  fieldName?: string
+  fieldType?: string
+  fieldSpec?: any
+  value?: any
+  errors?: unknown[]
+  onExpressionClick?(...args: unknown[]): unknown
+};
 
+
+export default class SpecProperty extends React.Component<SpecPropertyProps> {
   static defaultProps = {
     errors: {},
   }
@@ -31,17 +30,16 @@ export default class SpecProperty extends React.Component {
       fieldSpec={this.props.fieldSpec}
       onZoomClick={this.props.onZoomClick}
       onDataClick={this.props.onDataClick} 
-      value={this.props.value}
       onExpressionClick={this.props.onExpressionClick} 
     />
 
-    const error = errors[fieldType+"."+fieldName];
+    const error = errors![fieldType+"."+fieldName as any] as any;
 
     return <SpecField
       {...this.props}
       error={error}
       fieldSpec={this.props.fieldSpec}
-      label={labelFromFieldName(this.props.fieldName)}
+      label={labelFromFieldName(this.props.fieldName || '')}
       action={functionBtn}
     />
   }

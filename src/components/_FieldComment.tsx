@@ -1,15 +1,14 @@
 import React from 'react'
-import PropTypes from 'prop-types'
 
 import Block from './Block'
 import FieldString from './FieldString'
 
-export default class BlockComment extends React.Component {
-  static propTypes = {
-    value: PropTypes.string,
-    onChange: PropTypes.func.isRequired,
-  }
+type BlockCommentProps = {
+  value?: string
+  onChange(...args: unknown[]): unknown
+};
 
+export default class BlockComment extends React.Component<BlockCommentProps> {
   render() {
     const fieldSpec = {
       doc: "Comments for the current layer. This is non-standard and not in the spec."

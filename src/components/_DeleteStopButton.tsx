@@ -1,15 +1,15 @@
 import React from 'react'
-import PropTypes from 'prop-types'
 
 import InputButton from './InputButton'
 import {MdDelete} from 'react-icons/md'
 
 
-export default class DeleteStopButton extends React.Component {
-  static propTypes = {
-    onClick: PropTypes.func,
-  }
+type DeleteStopButtonProps = {
+  onClick?(...args: unknown[]): unknown
+};
 
+
+export default class DeleteStopButton extends React.Component<DeleteStopButtonProps> {
   render() {
     return <InputButton
       className="maputnik-delete-stop"

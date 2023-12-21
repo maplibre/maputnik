@@ -1,6 +1,6 @@
 import capitalize from 'lodash.capitalize'
 
-export default function labelFromFieldName(fieldName) {
+export default function labelFromFieldName(fieldName: string) {
   let label;
   const parts = fieldName.split('-');
   if (parts.length > 1) {

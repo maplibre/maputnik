@@ -1,20 +1,19 @@
 import React from 'react'
-import PropTypes from 'prop-types'
 
 import {latest} from '@maplibre/maplibre-gl-style-spec'
 import Block from './Block'
 import FieldSelect from './FieldSelect'
 import FieldString from './FieldString'
 
-export default class BlockType extends React.Component {
-  static propTypes = {
-    value: PropTypes.string.isRequired,
-    wdKey: PropTypes.string,
-    onChange: PropTypes.func.isRequired,
-    error: PropTypes.object,
-    disabled: PropTypes.bool,
-  }
+type BlockTypeProps = {
+  value: string
+  wdKey?: string
+  onChange(...args: unknown[]): unknown
+  error?: unknown[]
+  disabled?: boolean
+};
 
+export default class BlockType extends React.Component<BlockTypeProps> {
   static defaultProps = {
     disabled: false,
   }

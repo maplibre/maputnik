@@ -1,17 +1,17 @@
 import React from 'react'
 import Block from './Block'
-import PropTypes from 'prop-types'
 import FieldAutocomplete from './FieldAutocomplete'
 
-export default class FieldFont extends React.Component {
-  static propTypes = {
-    value: PropTypes.array,
-    default: PropTypes.array,
-    fonts: PropTypes.array,
-    style: PropTypes.object,
-    onChange: PropTypes.func.isRequired,
-  }
+type FieldFontProps = {
+  value?: string[]
+  default?: string[]
+  fonts?: unknown[]
+  style?: object
+  onChange(...args: unknown[]): unknown
+  label?: string
+};
 
+export default class FieldFont extends React.Component<FieldFontProps> {
   static defaultProps = {
     fonts: []
   }
@@ -28,7 +28,7 @@ export default class FieldFont extends React.Component {
     }
   }
 
-  changeFont(idx, newValue) {
+  changeFont(idx: number, newValue: string) {
     const changedValues = this.values.slice(0)
     changedValues[idx] = newValue
     const filteredValues = changedValues
@@ -45,7 +45,7 @@ export default class FieldFont extends React.Component {
       >
         <FieldAutocomplete
           value={value}
-          options={this.props.fonts.map(f => [f, f])}
+          options={this.props.fonts!.map(f => [f, f])}
           onChange={this.changeFont.bind(this, i)}
         />
       </li>
