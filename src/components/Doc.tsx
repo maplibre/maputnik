@@ -39,7 +39,7 @@ export default class Doc extends React.Component<DocProps> {
       <>
         {doc &&
           <div className="SpecDoc">
-            <div className="SpecDoc__doc">{doc}</div>
+            <div className="SpecDoc__doc" data-wd-key='spec-field-doc'>{doc}</div>
             {renderValues &&
               <ul className="SpecDoc__values">
                 {Object.entries(values).map(([key, value]) => {

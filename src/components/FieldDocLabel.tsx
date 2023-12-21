@@ -44,6 +44,7 @@ export default class FieldDocLabel extends React.Component<FieldDocLabelProps, F
             aria-label={this.state.open ? "close property documentation" : "open property documentation"}
             className={`maputnik-doc-button maputnik-doc-button--${this.state.open ? 'open' : 'closed'}`}
             onClick={() => this.onToggleDoc(!this.state.open)}
+            data-wd-key={'field-doc-button-'+label}
           >
             {this.state.open ? <MdHighlightOff /> : <MdInfoOutline />}
           </button>
