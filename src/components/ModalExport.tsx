@@ -1,13 +1,13 @@
 import React from 'react'
-import PropTypes from 'prop-types'
 import Slugify from 'slugify'
 import {saveAs} from 'file-saver'
-import {version} from 'maplibre-gl'
-import {format} from '@maplibre/maplibre-gl-style-spec'
+import {version} from 'maplibre-gl/package.json'
+import {StyleSpecification, format} from '@maplibre/maplibre-gl-style-spec'
+import {MdFileDownload} from 'react-icons/md'
+
 import FieldString from './FieldString'
 import InputButton from './InputButton'
 import Modal from './Modal'
-import {MdFileDownload} from 'react-icons/md'
 import style from '../libs/style'
 import fieldSpecAdditional from '../libs/field-spec-additional'
 
@@ -15,17 +15,15 @@ import fieldSpecAdditional from '../libs/field-spec-additional'
 const MAPLIBRE_GL_VERSION = version;
 
 
-export default class ModalExport extends React.Component {
-  static propTypes = {
-    mapStyle: PropTypes.object.isRequired,
-    onStyleChanged: PropTypes.func.isRequired,
-    isOpen: PropTypes.bool.isRequired,
-    onOpenToggle: PropTypes.func.isRequired,
-  }
+type ModalExportProps = {
+  mapStyle: StyleSpecification & { id: string }
+  onStyleChanged(...args: unknown[]): unknown
+  isOpen: boolean
+  onOpenToggle(...args: unknown[]): unknown
+};
 
-  constructor(props) {
-    super(props);
-  }
+
+export default class ModalExport extends React.Component<ModalExportProps> {
 
   tokenizedStyle () {
     return format(
@@ -88,11 +86,11 @@ export default class ModalExport extends React.Component {
     saveAs(blob, exportName + ".json");
   }
 
-  changeMetadataProperty(property, value) {
+  changeMetadataProperty(property: string, value: any) {
     const changedStyle = {
       ...this.props.mapStyle,
       metadata: {
-        ...this.props.mapStyle.metadata,
+        ...this.props.mapStyle.metadata as any,
         [property]: value
       }
     }
@@ -119,13 +117,13 @@ export default class ModalExport extends React.Component {
           <FieldString
             label={fieldSpecAdditional.maputnik.maptiler_access_token.label}
             fieldSpec={fieldSpecAdditional.maputnik.maptiler_access_token}
-            value={(this.props.mapStyle.metadata || {})['maputnik:openmaptiles_access_token']}
+            value={(this.props.mapStyle.metadata || {} as any)['maputnik:openmaptiles_access_token']}
             onChange={this.changeMetadataProperty.bind(this, "maputnik:openmaptiles_access_token")}
           />
           <FieldString
             label={fieldSpecAdditional.maputnik.thunderforest_access_token.label}
             fieldSpec={fieldSpecAdditional.maputnik.thunderforest_access_token}
-            value={(this.props.mapStyle.metadata || {})['maputnik:thunderforest_access_token']}
+            value={(this.props.mapStyle.metadata || {} as any)['maputnik:thunderforest_access_token']}
             onChange={this.changeMetadataProperty.bind(this, "maputnik:thunderforest_access_token")}
           />
         </div>

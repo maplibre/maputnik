@@ -1,12 +1,10 @@
 import React from 'react'
-import PropTypes from 'prop-types'
-import {latest} from '@maplibre/maplibre-gl-style-spec'
+import {GeoJSONSourceSpecification, RasterDEMSourceSpecification, RasterSourceSpecification, SourceSpecification, StyleSpecification, VectorSourceSpecification, latest} from '@maplibre/maplibre-gl-style-spec'
 import Modal from './Modal'
 import InputButton from './InputButton'
-import Block from './Block'
 import FieldString from './FieldString'
 import FieldSelect from './FieldSelect'
-import ModalSourcesTypeEditor from './ModalSourcesTypeEditor'
+import ModalSourcesTypeEditor, { EditorMode } from './ModalSourcesTypeEditor'
 
 import style from '../libs/style'
 import { deleteSource, addSource, changeSource } from '../libs/source'
@@ -14,32 +12,32 @@ import publicSources from '../config/tilesets.json'
 
 import {MdAddCircleOutline, MdDelete} from 'react-icons/md'
 
-class PublicSource extends React.Component {
-  static propTypes = {
-    id: PropTypes.string.isRequired,
-    type: PropTypes.string.isRequired,
-    title: PropTypes.string.isRequired,
-    onSelect: PropTypes.func.isRequired,
-  }
+type PublicSourceProps = {
+  id: string
+  type: string
+  title: string
+  onSelect(...args: unknown[]): unknown
+};
 
+class PublicSource extends React.Component<PublicSourceProps> {
   render() {
     return <div className="maputnik-public-source">
-			<InputButton
+            <InputButton
         className="maputnik-public-source-select"
-				onClick={() => this.props.onSelect(this.props.id)}
-			>
-				<div className="maputnik-public-source-info">
-					<p className="maputnik-public-source-name">{this.props.title}</p>
-					<p className="maputnik-public-source-id">#{this.props.id}</p>
-				</div>
-				<span className="maputnik-space" />
-				<MdAddCircleOutline />
-			</InputButton>
+                onClick={() => this.props.onSelect(this.props.id)}
+            >
+                <div className="maputnik-public-source-info">
+                    <p className="maputnik-public-source-name">{this.props.title}</p>
+                    <p className="maputnik-public-source-id">#{this.props.id}</p>
+                </div>
+                <span className="maputnik-space" />
+                <MdAddCircleOutline />
+            </InputButton>
     </div>
   }
 }
 
-function editorMode(source) {
+function editorMode(source: SourceSpecification) {
   if(source.type === 'raster') {
     if(source.tiles) return 'tilexyz_raster'
     return 'tilejson_raster'
@@ -69,16 +67,15 @@ function editorMode(source) {
   return null
 }
 
-class ActiveModalSourcesTypeEditor extends React.Component {
-  static propTypes = {
-    sourceId: PropTypes.string.isRequired,
-    source: PropTypes.object.isRequired,
-    onDelete: PropTypes.func.isRequired,
-    onChange: PropTypes.func.isRequired,
-  }
+type ActiveModalSourcesTypeEditorProps = {
+  sourceId: string
+  source: SourceSpecification
+  onDelete(...args: unknown[]): unknown
+  onChange(...args: unknown[]): unknown
+};
 
+class ActiveModalSourcesTypeEditor extends React.Component<ActiveModalSourcesTypeEditorProps> {
   render() {
-    const inputProps = { }
     return <div className="maputnik-active-source-type-editor">
       <div className="maputnik-active-source-type-editor-header">
         <span className="maputnik-active-source-type-editor-header-id">#{this.props.sourceId}</span>
@@ -103,12 +100,18 @@ class ActiveModalSourcesTypeEditor extends React.Component {
   }
 }
 
-class AddSource extends React.Component {
-  static propTypes = {
-    onAdd: PropTypes.func.isRequired,
-  }
+type AddSourceProps = {
+  onAdd(...args: unknown[]): unknown
+};
 
-  constructor(props) {
+type AddSourceState = {
+  mode: EditorMode
+  sourceId: string
+  source: SourceSpecification
+};
+
+class AddSource extends React.Component<AddSourceProps, AddSourceState> {
+  constructor(props: AddSourceProps) {
     super(props)
     this.state = {
       mode: 'tilejson_vector',
@@ -117,7 +120,7 @@ class AddSource extends React.Component {
     }
   }
 
-  defaultSource(mode) {
+  defaultSource(mode: EditorMode): SourceSpecification {
     const source = (this.state || {}).source || {}
     const {protocol} = window.location;
 
@@ -128,38 +131,38 @@ class AddSource extends React.Component {
       }
       case 'geojson_json': return {
         type: 'geojson',
-        cluster: source.cluster || false,
+        cluster: (source as GeoJSONSourceSpecification).cluster || false,
         data: {}
       }
       case 'tilejson_vector': return {
         type: 'vector',
-        url: source.url || `${protocol}//localhost:3000/tilejson.json`
+        url: (source as VectorSourceSpecification).url || `${protocol}//localhost:3000/tilejson.json`
       }
       case 'tilexyz_vector': return {
         type: 'vector',
-        tiles: source.tiles || [`${protocol}//localhost:3000/{x}/{y}/{z}.pbf`],
-        minZoom: source.minzoom || 0,
-        maxZoom: source.maxzoom || 14
+        tiles: (source as VectorSourceSpecification).tiles || [`${protocol}//localhost:3000/{x}/{y}/{z}.pbf`],
+        minzoom: (source as VectorSourceSpecification).minzoom || 0,
+        maxzoom: (source as VectorSourceSpecification).maxzoom || 14
       }
       case 'tilejson_raster': return {
         type: 'raster',
-        url: source.url || `${protocol}//localhost:3000/tilejson.json`
+        url: (source as RasterSourceSpecification).url || `${protocol}//localhost:3000/tilejson.json`
       }
       case 'tilexyz_raster': return {
         type: 'raster',
-        tiles: source.tiles || [`${protocol}//localhost:3000/{x}/{y}/{z}.pbf`],
-        minzoom: source.minzoom || 0,
-        maxzoom: source.maxzoom || 14
+        tiles: (source as RasterSourceSpecification).tiles || [`${protocol}//localhost:3000/{x}/{y}/{z}.pbf`],
+        minzoom: (source as RasterSourceSpecification).minzoom || 0,
+        maxzoom: (source as RasterSourceSpecification).maxzoom || 14
       }
       case 'tilejson_raster-dem': return {
         type: 'raster-dem',
-        url: source.url || `${protocol}//localhost:3000/tilejson.json`
+        url: (source as RasterDEMSourceSpecification).url || `${protocol}//localhost:3000/tilejson.json`
       }
       case 'tilexyz_raster-dem': return {
         type: 'raster-dem',
-        tiles: source.tiles || [`${protocol}//localhost:3000/{x}/{y}/{z}.pbf`],
-        minzoom: source.minzoom || 0,
-        maxzoom: source.maxzoom || 14
+        tiles: (source as RasterDEMSourceSpecification).tiles || [`${protocol}//localhost:3000/{x}/{y}/{z}.pbf`],
+        minzoom: (source as RasterDEMSourceSpecification).minzoom || 0,
+        maxzoom: (source as RasterDEMSourceSpecification).maxzoom || 14
       }
       case 'image': return {
         type: 'image',
@@ -183,7 +186,7 @@ class AddSource extends React.Component {
           [0,0],
         ],
       }
-      default: return {}
+      default: return {} as any
     }
   }
 
@@ -192,7 +195,7 @@ class AddSource extends React.Component {
     this.props.onAdd(sourceId, source);
   }
 
-  onChangeSource = (source) => {
+  onChangeSource = (source: SourceSpecification) => {
     this.setState({source});
   }
 
@@ -213,7 +216,7 @@ class AddSource extends React.Component {
         label={"Source ID"}
         fieldSpec={{doc: "Unique ID that identifies the source and is used in the layer to reference the source."}}
         value={this.state.sourceId}
-        onChange={v => this.setState({ sourceId: v})}
+        onChange={(v: string) => this.setState({ sourceId: v})}
       />
       <FieldSelect
         label={"Source Type"}
@@ -230,8 +233,8 @@ class AddSource extends React.Component {
           ['image', 'Image'],
           ['video', 'Video'],
         ]}
-        onChange={mode => this.setState({mode: mode, source: this.defaultSource(mode)})}
-        value={this.state.mode}
+        onChange={(mode: EditorMode) => this.setState({mode: mode, source: this.defaultSource(mode)})}
+        value={this.state.mode as string}
       />
       <ModalSourcesTypeEditor
         onChange={this.onChangeSource}
@@ -240,7 +243,7 @@ class AddSource extends React.Component {
       />
       <InputButton
         className="maputnik-add-source-button"
-				onClick={this.onAdd}
+                onClick={this.onAdd}
       >
         Add Source
       </InputButton>
@@ -248,15 +251,15 @@ class AddSource extends React.Component {
   }
 }
 
-export default class ModalSources extends React.Component {
-  static propTypes = {
-    mapStyle: PropTypes.object.isRequired,
-    isOpen: PropTypes.bool.isRequired,
-    onOpenToggle: PropTypes.func.isRequired,
-    onStyleChanged: PropTypes.func.isRequired,
-  }
+type ModalSourcesProps = {
+  mapStyle: StyleSpecification
+  isOpen: boolean
+  onOpenToggle(...args: unknown[]): unknown
+  onStyleChanged(...args: unknown[]): unknown
+};
 
-  stripTitle(source) {
+export default class ModalSources extends React.Component<ModalSourcesProps> {
+  stripTitle(source: SourceSpecification & {title?: string}): SourceSpecification {
     const strippedSource = {...source}
     delete strippedSource['title']
     return strippedSource
@@ -270,13 +273,13 @@ export default class ModalSources extends React.Component {
         key={sourceId}
         sourceId={sourceId}
         source={source}
-        onChange={src => this.props.onStyleChanged(changeSource(mapStyle, sourceId, src))}
+        onChange={(src: SourceSpecification) => this.props.onStyleChanged(changeSource(mapStyle, sourceId, src))}
         onDelete={() => this.props.onStyleChanged(deleteSource(mapStyle, sourceId))}
       />
     })
 
-    const tilesetOptions = Object.keys(publicSources).filter(sourceId => !(sourceId in mapStyle.sources)).map(sourceId => {
-      const source = publicSources[sourceId]
+    const tilesetOptions = Object.keys(publicSources).filter((sourceId: string) => !(sourceId in mapStyle.sources)).map((sourceId: string) => {
+      const source = publicSources[sourceId as keyof typeof publicSources] as SourceSpecification & {title: string};
       return <PublicSource
         key={sourceId}
         id={sourceId}
@@ -286,7 +289,6 @@ export default class ModalSources extends React.Component {
       />
     })
 
-    const inputProps = { }
     return <Modal
       data-wd-key="modal:sources"
       isOpen={this.props.isOpen}
@@ -303,17 +305,17 @@ export default class ModalSources extends React.Component {
         <p>
           Add one of the publicly available sources to your style.
         </p>
-        <div className="maputnik-public-sources" style={{maxwidth: 500}}>
+        <div className="maputnik-public-sources" style={{maxWidth: 500}}>
         {tilesetOptions}
         </div>
       </section>
 
       <section className="maputnik-modal-section">
-				<h1>Add New Source</h1>
-				<p>Add a new source to your style. You can only choose the source type and id at creation time!</p>
-				<AddSource
-					onAdd={(sourceId, source) => this.props.onStyleChanged(addSource(mapStyle, sourceId, source))}
-				/>
+                <h1>Add New Source</h1>
+                <p>Add a new source to your style. You can only choose the source type and id at creation time!</p>
+                <AddSource
+                    onAdd={(sourceId: string, source: SourceSpecification) => this.props.onStyleChanged(addSource(mapStyle, sourceId, source))}
+                />
       </section>
     </Modal>
   }

@@ -1,29 +1,32 @@
 import React from 'react'
-import PropTypes from 'prop-types'
 
-import {latest} from '@maplibre/maplibre-gl-style-spec'
 import InputButton from './InputButton'
 import Modal from './Modal'
-
 import FieldType from './FieldType'
 import FieldId from './FieldId'
 import FieldSource from './FieldSource'
 import FieldSourceLayer from './FieldSourceLayer'
 
-export default class ModalAdd extends React.Component {
-  static propTypes = {
-    layers: PropTypes.array.isRequired,
-    onLayersChange: PropTypes.func.isRequired,
-    isOpen: PropTypes.bool.isRequired,
-    onOpenToggle: PropTypes.func.isRequired,
+type ModalAddProps = {
+  layers: unknown[]
+  onLayersChange(...args: unknown[]): unknown
+  isOpen: boolean
+  onOpenToggle(...args: unknown[]): unknown
+  // A dict of source id's and the available source layers
+  sources: any
+};
 
-    // A dict of source id's and the available source layers
-    sources: PropTypes.object.isRequired,
-  }
+type ModalAddState = {
+  type: string
+  id: string
+  source?: string
+  'source-layer'?: string
+};
 
+export default class ModalAdd extends React.Component<ModalAddProps, ModalAddState> {
   addLayer = () => {
     const changedLayers = this.props.layers.slice(0)
-    const layer = {
+    const layer: ModalAddState = {
       id: this.state.id,
       type: this.state.type,
     }
@@ -41,20 +44,21 @@ export default class ModalAdd extends React.Component {
     this.props.onOpenToggle(false)
   }
 
-  constructor(props) {
+  constructor(props: ModalAddProps) {
     super(props)
-    this.state = {
+    const state: ModalAddState = {
       type: 'fill',
       id: '',
     }
 
     if(props.sources.length > 0) {
-      this.state.source = Object.keys(this.props.sources)[0]
-      this.state['source-layer'] = this.props.sources[this.state.source][0]
+      state.source = Object.keys(this.props.sources)[0];
+      state['source-layer'] = this.props.sources[state.source as keyof ModalAddProps["sources"]][0]
     }
+    this.state = state;
   }
 
-  componentDidUpdate(prevProps, prevState) {
+  componentDidUpdate(_prevProps: ModalAddProps, prevState: ModalAddState) {
     // Check if source is valid for new type
     const oldType = prevState.type;
     const newType = this.state.type;
@@ -67,9 +71,9 @@ export default class ModalAdd extends React.Component {
       oldType !== newType
       && prevState.source !== ""
       // Was a valid source previously
-      && availableSourcesOld.indexOf(prevState.source) > -1
+      && availableSourcesOld.indexOf(prevState.source!) > -1
       // And is not a valid source now
-      && availableSourcesNew.indexOf(this.state.source) < 0
+      && availableSourcesNew.indexOf(this.state.source!) < 0
     ) {
       // Clear the source
       this.setState({
@@ -78,12 +82,12 @@ export default class ModalAdd extends React.Component {
     }
   }
 
-  getLayersForSource(source) {
+  getLayersForSource(source: string) {
     const sourceObj = this.props.sources[source] || {};
     return sourceObj.layers || [];
   }
 
-  getSources(type) {
+  getSources(type: string) {
     const sources = [];
 
     const types = {
@@ -108,8 +112,9 @@ export default class ModalAdd extends React.Component {
       ]
     }
 
-    for(let [key, val] of Object.entries(this.props.sources)) {
-      if(types[val.type] && types[val.type].indexOf(type) > -1) {
+    for(let [key, val] of Object.entries(this.props.sources) as any) {
+      const valType = val.type as keyof typeof types;
+      if(types[valType] && types[valType].indexOf(type) > -1) {
         sources.push(key);
       }
     }
@@ -120,7 +125,7 @@ export default class ModalAdd extends React.Component {
 
   render() {
     const sources = this.getSources(this.state.type);
-    const layers = this.getLayersForSource(this.state.source);
+    const layers = this.getLayersForSource(this.state.source!);
 
     return <Modal
       isOpen={this.props.isOpen}
@@ -131,25 +136,23 @@ export default class ModalAdd extends React.Component {
     >
       <div className="maputnik-add-layer">
       <FieldId
-        label="ID"
-        fieldSpec={latest.layer.id}
         value={this.state.id}
         wdKey="add-layer.layer-id"
-        onChange={v => {
+        onChange={(v: string) => {
           this.setState({ id: v })
         }}
       />
       <FieldType
         value={this.state.type}
         wdKey="add-layer.layer-type"
-        onChange={v => this.setState({ type: v })}
+        onChange={(v: string) => this.setState({ type: v })}
       />
       {this.state.type !== 'background' &&
       <FieldSource
         sourceIds={sources}
         wdKey="add-layer.layer-source-block"
         value={this.state.source}
-        onChange={v => this.setState({ source: v })}
+        onChange={(v: string) => this.setState({ source: v })}
       />
       }
       {['background', 'raster', 'hillshade', 'heatmap'].indexOf(this.state.type) < 0 &&
@@ -157,7 +160,7 @@ export default class ModalAdd extends React.Component {
         isFixed={true}
         sourceLayerIds={layers}
         value={this.state['source-layer']}
-        onChange={v => this.setState({ 'source-layer': v })}
+        onChange={(v: string) => this.setState({ 'source-layer': v })}
       />
       }
       <InputButton

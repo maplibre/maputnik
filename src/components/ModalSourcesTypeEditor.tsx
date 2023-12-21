@@ -1,5 +1,4 @@
 import React from 'react'
-import PropTypes from 'prop-types'
 import {latest} from '@maplibre/maplibre-gl-style-spec'
 import Block from './Block'
 import FieldUrl from './FieldUrl'
@@ -10,14 +9,18 @@ import FieldArray from './FieldArray'
 import FieldJson from './FieldJson'
 import FieldCheckbox from './FieldCheckbox'
 
+export type EditorMode = "video" | "image" | "tilejson_vector" | "tilexyz_raster" | "tilejson_raster" | "tilexyz_raster-dem" | "tilejson_raster-dem" | "tilexyz_vector" | "geojson_url" | "geojson_json" | null;
 
-class TileJSONSourceEditor extends React.Component {
-  static propTypes = {
-    source: PropTypes.object.isRequired,
-    onChange: PropTypes.func.isRequired,
-    children: PropTypes.node,
+type TileJSONSourceEditorProps = {
+  source: {
+    url: string
   }
+  onChange(...args: unknown[]): unknown
+  children?: React.ReactNode
+};
 
+
+class TileJSONSourceEditor extends React.Component<TileJSONSourceEditorProps> {
   render() {
     return <div>
       <FieldUrl
@@ -34,14 +37,18 @@ class TileJSONSourceEditor extends React.Component {
   }
 }
 
-class TileURLSourceEditor extends React.Component {
-  static propTypes = {
-    source: PropTypes.object.isRequired,
-    onChange: PropTypes.func.isRequired,
-    children: PropTypes.node,
+type TileURLSourceEditorProps = {
+  source: {
+    tiles: string[]
+    minzoom: number
+    maxzoom: number
   }
+  onChange(...args: unknown[]): unknown
+  children?: React.ReactNode
+};
 
-  changeTileUrls(tiles) {
+class TileURLSourceEditor extends React.Component<TileURLSourceEditorProps> {
+  changeTileUrls(tiles: string[]) {
     this.props.onChange({
       ...this.props.source,
       tiles,
@@ -86,14 +93,17 @@ class TileURLSourceEditor extends React.Component {
   }
 }
 
-class ImageSourceEditor extends React.Component {
-  static propTypes = {
-    source: PropTypes.object.isRequired,
-    onChange: PropTypes.func.isRequired,
+type ImageSourceEditorProps = {
+  source: {
+    coordinates: [number, number][]
+    url: string
   }
+  onChange(...args: unknown[]): unknown
+};
 
+class ImageSourceEditor extends React.Component<ImageSourceEditorProps> {
   render() {
-    const changeCoord = (idx, val) => {
+    const changeCoord = (idx: number, val: [number, number]) => {
       const coordinates = this.props.source.coordinates.slice(0);
       coordinates[idx] = val;
 
@@ -122,7 +132,7 @@ class ImageSourceEditor extends React.Component {
             type="number"
             value={this.props.source.coordinates[idx]}
             default={[0, 0]}
-            onChange={(val) => changeCoord(idx, val)}
+            onChange={(val: [number, number]) => changeCoord(idx, val)}
           />
         );
       })}
@@ -130,14 +140,17 @@ class ImageSourceEditor extends React.Component {
   }
 }
 
-class VideoSourceEditor extends React.Component {
-  static propTypes = {
-    source: PropTypes.object.isRequired,
-    onChange: PropTypes.func.isRequired,
+type VideoSourceEditorProps = {
+  source: {
+    coordinates: [number, number][]
+    urls: string[]
   }
+  onChange(...args: unknown[]): unknown
+};
 
+class VideoSourceEditor extends React.Component<VideoSourceEditorProps> {
   render() {
-    const changeCoord = (idx, val) => {
+    const changeCoord = (idx: number, val: [number, number]) => {
       const coordinates = this.props.source.coordinates.slice(0);
       coordinates[idx] = val;
 
@@ -147,7 +160,7 @@ class VideoSourceEditor extends React.Component {
       });
     }
 
-    const changeUrls = (urls) => {
+    const changeUrls = (urls: string[]) => {
       this.props.onChange({
         ...this.props.source,
         urls,
@@ -160,7 +173,7 @@ class VideoSourceEditor extends React.Component {
         fieldSpec={latest.source_video.urls}
         type="string"
         value={this.props.source.urls}
-        default={""}
+        default={[]}
         onChange={changeUrls}
       />
       {["top left", "top right", "bottom right", "bottom left"].map((label, idx) => {
@@ -172,7 +185,7 @@ class VideoSourceEditor extends React.Component {
             type="number"
             value={this.props.source.coordinates[idx]}
             default={[0, 0]}
-            onChange={val => changeCoord(idx, val)}
+            onChange={(val: [number, number]) => changeCoord(idx, val)}
           />
         );
       })}
@@ -180,12 +193,14 @@ class VideoSourceEditor extends React.Component {
   }
 }
 
-class GeoJSONSourceUrlEditor extends React.Component {
-  static propTypes = {
-    source: PropTypes.object.isRequired,
-    onChange: PropTypes.func.isRequired,
+type GeoJSONSourceUrlEditorProps = {
+  source: {
+    data: string
   }
+  onChange(...args: unknown[]): unknown
+};
 
+class GeoJSONSourceUrlEditor extends React.Component<GeoJSONSourceUrlEditorProps> {
   render() {
     return <FieldUrl
       label={"GeoJSON URL"}
@@ -199,12 +214,15 @@ class GeoJSONSourceUrlEditor extends React.Component {
   }
 }
 
-class GeoJSONSourceFieldJsonEditor extends React.Component {
-  static propTypes = {
-    source: PropTypes.object.isRequired,
-    onChange: PropTypes.func.isRequired,
+type GeoJSONSourceFieldJsonEditorProps = {
+  source: {
+    data: any,
+    cluster: boolean
   }
+  onChange(...args: unknown[]): unknown
+};
 
+class GeoJSONSourceFieldJsonEditor extends React.Component<GeoJSONSourceFieldJsonEditorProps> {
   render() {
     return <div>
       <Block label={"GeoJSON"} fieldSpec={latest.source_geojson.data}>
@@ -238,13 +256,13 @@ class GeoJSONSourceFieldJsonEditor extends React.Component {
   }
 }
 
-export default class ModalSourcesTypeEditor extends React.Component {
-  static propTypes = {
-    mode: PropTypes.string.isRequired,
-    source: PropTypes.object.isRequired,
-    onChange: PropTypes.func.isRequired,
-  }
+type ModalSourcesTypeEditorProps = {
+  mode: EditorMode
+  source: any
+  onChange(...args: unknown[]): unknown
+};
 
+export default class ModalSourcesTypeEditor extends React.Component<ModalSourcesTypeEditorProps> {
   render() {
     const commonProps = {
       source: this.props.source,

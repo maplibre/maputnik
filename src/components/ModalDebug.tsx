@@ -1,21 +1,27 @@
 import React from 'react'
-import PropTypes from 'prop-types'
 
 import Modal from './Modal'
 
 
-export default class ModalDebug extends React.Component {
-  static propTypes = {
-    isOpen: PropTypes.bool.isRequired,
-    renderer: PropTypes.string.isRequired,
-    onChangeMaboxGlDebug: PropTypes.func.isRequired,
-    onChangeOpenlayersDebug: PropTypes.func.isRequired,
-    onOpenToggle: PropTypes.func.isRequired,
-    maplibreGlDebugOptions: PropTypes.object,
-    openlayersDebugOptions: PropTypes.object,
-    mapView: PropTypes.object,
+type ModalDebugProps = {
+  isOpen: boolean
+  renderer: string
+  onChangeMaboxGlDebug(...args: unknown[]): unknown
+  onChangeOpenlayersDebug(...args: unknown[]): unknown
+  onOpenToggle(...args: unknown[]): unknown
+  maplibreGlDebugOptions?: object
+  openlayersDebugOptions?: object
+  mapView: {
+    zoom: number
+    center: {
+      lng: string
+      lat: string
+    }
   }
+};
 
+
+export default class ModalDebug extends React.Component<ModalDebugProps> {
   render() {
     const {mapView} = this.props;
 
@@ -33,10 +39,10 @@ export default class ModalDebug extends React.Component {
         <h1>Options</h1>
         {this.props.renderer === 'mlgljs' &&
           <ul>
-            {Object.entries(this.props.maplibreGlDebugOptions).map(([key, val]) => {
+            {Object.entries(this.props.maplibreGlDebugOptions!).map(([key, val]) => {
               return <li key={key}>
                 <label>
-                  <input type="checkbox" checked={val} onClick={(e) => this.props.onChangeMaboxGlDebug(key, e.target.checked)} /> {key}
+                  <input type="checkbox" checked={val} onChange={(e) => this.props.onChangeMaboxGlDebug(key, e.target.checked)} /> {key}
                 </label>
               </li>
             })}
@@ -44,10 +50,10 @@ export default class ModalDebug extends React.Component {
         }
         {this.props.renderer === 'ol' &&
           <ul>
-            {Object.entries(this.props.openlayersDebugOptions).map(([key, val]) => {
+            {Object.entries(this.props.openlayersDebugOptions!).map(([key, val]) => {
               return <li key={key}>
                 <label>
-                  <input type="checkbox" checked={val} onClick={(e) => this.props.onChangeOpenlayersDebug(key, e.target.checked)} /> {key}
+                  <input type="checkbox" checked={val} onChange={(e) => this.props.onChangeOpenlayersDebug(key, e.target.checked)} /> {key}
                 </label>
               </li>
             })}

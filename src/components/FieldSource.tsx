@@ -1,19 +1,18 @@
 import React from 'react'
-import PropTypes from 'prop-types'
 
 import {latest} from '@maplibre/maplibre-gl-style-spec'
 import Block from './Block'
 import InputAutocomplete from './InputAutocomplete'
 
-export default class FieldSource extends React.Component {
-  static propTypes = {
-    value: PropTypes.string,
-    wdKey: PropTypes.string,
-    onChange: PropTypes.func,
-    sourceIds: PropTypes.array,
-    error: PropTypes.object,
-  }
+type FieldSourceProps = {
+  value?: string
+  wdKey?: string
+  onChange?(...args: unknown[]): unknown
+  sourceIds?: unknown[]
+  error?: unknown[]
+};
 
+export default class FieldSource extends React.Component<FieldSourceProps> {
   static defaultProps = {
     onChange: () => {},
     sourceIds: [],
@@ -29,7 +28,7 @@ export default class FieldSource extends React.Component {
       <InputAutocomplete
         value={this.props.value}
         onChange={this.props.onChange}
-        options={this.props.sourceIds.map(src => [src, src])}
+        options={this.props.sourceIds?.map(src => [src, src])}
       />
     </Block>
   }

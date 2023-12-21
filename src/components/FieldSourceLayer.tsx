@@ -1,18 +1,17 @@
 import React from 'react'
-import PropTypes from 'prop-types'
 
 import {latest} from '@maplibre/maplibre-gl-style-spec'
 import Block from './Block'
 import InputAutocomplete from './InputAutocomplete'
 
-export default class FieldSourceLayer extends React.Component {
-  static propTypes = {
-    value: PropTypes.string,
-    onChange: PropTypes.func,
-    sourceLayerIds: PropTypes.array,
-    isFixed: PropTypes.bool,
-  }
+type FieldSourceLayerProps = {
+  value?: string
+  onChange?(...args: unknown[]): unknown
+  sourceLayerIds?: unknown[]
+  isFixed?: boolean
+};
 
+export default class FieldSourceLayer extends React.Component<FieldSourceLayerProps> {
   static defaultProps = {
     onChange: () => {},
     sourceLayerIds: [],
@@ -27,7 +26,7 @@ export default class FieldSourceLayer extends React.Component {
         keepMenuWithinWindowBounds={!!this.props.isFixed}
         value={this.props.value}
         onChange={this.props.onChange}
-        options={this.props.sourceLayerIds.map(l => [l, l])}
+        options={this.props.sourceLayerIds?.map(l => [l, l])}
       />
     </Block>
   }

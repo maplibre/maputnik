@@ -12,7 +12,7 @@ import InputUrl from './InputUrl'
 
 export type FieldDynamicArrayProps = {
   value?: (string | number)[]
-  type?: 'url' | 'number' | 'enum'
+  type?: 'url' | 'number' | 'enum' | 'string'
   default?: (string | number)[]
   onChange?(...args: unknown[]): unknown
   style?: object
