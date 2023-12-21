@@ -1,6 +1,6 @@
 import React from 'react'
 
-type InputStringProps = {
+export type InputStringProps = {
   "data-wd-key"?: string
   value?: string
   style?: object

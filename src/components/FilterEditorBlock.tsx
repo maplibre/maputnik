@@ -1,14 +1,12 @@
 import React from 'react'
-import PropTypes from 'prop-types'
 import InputButton from './InputButton'
 import {MdDelete} from 'react-icons/md'
 
-export default class FilterEditorBlock extends React.Component {
-  static propTypes = {
-    onDelete: PropTypes.func.isRequired,
-    children: PropTypes.element.isRequired,
-  }
+type FilterEditorBlockProps = {
+  onDelete(...args: unknown[]): unknown
+};
 
+export default class FilterEditorBlock extends React.Component<FilterEditorBlockProps> {
   render() {
     return <div className="maputnik-filter-editor-block">
       <div className="maputnik-filter-editor-block-action">

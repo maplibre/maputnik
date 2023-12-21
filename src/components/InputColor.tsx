@@ -1,36 +1,37 @@
 import React from 'react'
 import Color from 'color'
 import ChromePicker from 'react-color/lib/components/chrome/Chrome'
-import PropTypes from 'prop-types'
+import {ColorResult} from 'react-color';
 import lodash from 'lodash';
 
-function formatColor(color) {
+function formatColor(color: ColorResult): string {
   const rgb = color.rgb
   return `rgba(${rgb.r}, ${rgb.g}, ${rgb.b}, ${rgb.a})`
 }
 
-/*** Number fields with support for min, max and units and documentation*/
-export default class InputColor extends React.Component {
-  static propTypes = {
-    onChange: PropTypes.func.isRequired,
-    name: PropTypes.string,
-    value: PropTypes.string,
-    doc: PropTypes.string,
-    style: PropTypes.object,
-    default: PropTypes.string,
-    'aria-label': PropTypes.string,
-  }
+type InputColorProps = {
+  onChange(...args: unknown[]): unknown
+  name?: string
+  value?: string
+  doc?: string
+  style?: object
+  default?: string
+  'aria-label'?: string
+};
 
+/*** Number fields with support for min, max and units and documentation*/
+export default class InputColor extends React.Component<InputColorProps> {
   state = {
     pickerOpened: false
   }
+  colorInput: HTMLInputElement | null = null;
 
-  constructor () {
-    super();
+  constructor (props: InputColorProps) {
+    super(props);
     this.onChangeNoCheck = lodash.throttle(this.onChangeNoCheck, 1000/30);
   }
 
-  onChangeNoCheck (v) {
+  onChangeNoCheck(v: string) {
     this.props.onChange(v);
   }
 
@@ -68,31 +69,31 @@ export default class InputColor extends React.Component {
     }
   }
 
-  onChange (v) {
+  onChange (v: string) {
     this.props.onChange(v === "" ? undefined : v);
   }
 
   render() {
     const offset = this.calcPickerOffset()
-    var currentColor = this.color.object()
-    currentColor = {
+    const currentColor = this.color.object();
+    const currentChromeColor = {
       r: currentColor.r,
       g: currentColor.g,
       b: currentColor.b,
       // Rename alpha -> a for ChromePicker
-      a: currentColor.alpha
+      a: currentColor.alpha!
     }
 
     const picker = <div
       className="maputnik-color-picker-offset"
       style={{
-	      position: 'fixed',
-	      zIndex: 1,
+          position: 'fixed',
+          zIndex: 1,
         left: offset.left,
         top: offset.top,
       }}>
       <ChromePicker
-        color={currentColor}
+        color={currentChromeColor}
         onChange={c => this.onChangeNoCheck(formatColor(c))}
       />
       <div

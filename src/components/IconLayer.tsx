@@ -1,5 +1,4 @@
 import React from 'react'
-import PropTypes from 'prop-types'
 
 import IconLine from './IconLine'
 import IconFill from './IconFill'
@@ -8,12 +7,12 @@ import IconBackground from './IconBackground'
 import IconCircle from './IconCircle'
 import IconMissing from './IconMissing'
 
-export default class IconLayer extends React.Component {
-  static propTypes = {
-    type: PropTypes.string.isRequired,
-    style: PropTypes.object,
-  }
+type IconLayerProps = {
+  type: string
+  style?: object
+};
 
+export default class IconLayer extends React.Component<IconLayerProps> {
   render() {
     const iconProps = { style: this.props.style }
     switch(this.props.type) {
