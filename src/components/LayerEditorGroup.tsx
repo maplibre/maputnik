@@ -1,5 +1,4 @@
 import React from 'react'
-import PropTypes from 'prop-types'
 import Icon from '@mdi/react'
 import {
   mdiMenuDown,
@@ -13,21 +12,22 @@ import {
 } from 'react-accessible-accordion';
 
 
-export default class LayerEditorGroup extends React.Component {
-  static propTypes = {
-    "id": PropTypes.string,
-    "data-wd-key": PropTypes.string,
-    title: PropTypes.string.isRequired,
-    isActive: PropTypes.bool.isRequired,
-    children: PropTypes.element.isRequired,
-    onActiveToggle: PropTypes.func.isRequired
-  }
+type LayerEditorGroupProps = {
+  "id"?: string
+  "data-wd-key"?: string
+  title: string
+  isActive: boolean
+  children: React.ReactElement
+  onActiveToggle(...args: unknown[]): unknown
+};
 
+
+export default class LayerEditorGroup extends React.Component<LayerEditorGroupProps> {
   render() {
     return <AccordionItem uuid={this.props.id}>
       <AccordionItemHeading className="maputnik-layer-editor-group"
         data-wd-key={"layer-editor-group:"+this.props["data-wd-key"]}
-        onClick={e => this.props.onActiveToggle(!this.props.isActive)}
+        onClick={_e => this.props.onActiveToggle(!this.props.isActive)}
       >
         <AccordionItemButton className="maputnik-layer-editor-group__button">
           <span style={{flexGrow: 1}}>{this.props.title}</span>

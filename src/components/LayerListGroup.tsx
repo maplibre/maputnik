@@ -1,21 +1,20 @@
 import React from 'react'
-import PropTypes from 'prop-types'
 import Collapser from './Collapser'
 
-export default class LayerListGroup extends React.Component {
-  static propTypes = {
-    title: PropTypes.string.isRequired,
-    "data-wd-key": PropTypes.string,
-    isActive: PropTypes.bool.isRequired,
-    onActiveToggle: PropTypes.func.isRequired,
-    'aria-controls': PropTypes.string,
-  }
+type LayerListGroupProps = {
+  title: string
+  "data-wd-key"?: string
+  isActive: boolean
+  onActiveToggle(...args: unknown[]): unknown
+  'aria-controls'?: string
+};
 
+export default class LayerListGroup extends React.Component<LayerListGroupProps> {
   render() {
     return <li className="maputnik-layer-list-group">
       <div className="maputnik-layer-list-group-header"
         data-wd-key={"layer-list-group:"+this.props["data-wd-key"]}
-        onClick={e => this.props.onActiveToggle(!this.props.isActive)}
+        onClick={_e => this.props.onActiveToggle(!this.props.isActive)}
       >
         <button
           className="maputnik-layer-list-group-title"
