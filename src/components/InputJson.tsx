@@ -17,7 +17,7 @@ export type InputJsonProps = {
   onChange?(...args: unknown[]): unknown
   lineNumbers?: boolean
   lineWrapping?: boolean
-  getValue(data: any): string
+  getValue?(data: any): string
   gutters?: string[]
   className?: string
   onFocus?(...args: unknown[]): unknown
@@ -58,13 +58,13 @@ export default class InputJson extends React.Component<InputJsonProps, InputJson
     this.state = {
       isEditing: false,
       showMessage: false,
-      prevValue: this.props.getValue(this.props.layer),
+      prevValue: this.props.getValue!(this.props.layer),
     };
   }
 
   componentDidMount () {
     this._doc = CodeMirror(this._el!, {
-      value: this.props.getValue(this.props.layer),
+      value: this.props.getValue!(this.props.layer),
       mode: this.props.mode || {
         name: "mgl",
       },
@@ -117,7 +117,7 @@ export default class InputJson extends React.Component<InputJsonProps, InputJson
     if (!this.state.isEditing && prevProps.layer !== this.props.layer) {
       this._cancelNextChange = true;
       this._doc!.setValue(
-        this.props.getValue(this.props.layer),
+        this.props.getValue!(this.props.layer),
       )
     }
   }

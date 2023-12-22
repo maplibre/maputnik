@@ -5,7 +5,7 @@ export type InputSelectProps = {
   "data-wd-key"?: string
   options: [string, any][] | string[]
   style?: object
-  onChange(...args: unknown[]): unknown
+  onChange(value: string): unknown
   title?: string
   'aria-label'?: string
 };

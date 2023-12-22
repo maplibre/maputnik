@@ -3,17 +3,17 @@ import InputString from './InputString'
 import InputNumber from './InputNumber'
 
 export type FieldArrayProps = {
-  value: string[] | number[]
+  value: (string | number | undefined)[]
   type?: string
   length?: number
-  default?: string[] | number[]
-  onChange?(...args: unknown[]): unknown
+  default?: (string | number | undefined)[]
+  onChange?(value: (string | number | undefined)[] | undefined): unknown
   'aria-label'?: string
   label?: string
 };
 
 type FieldArrayState = {
-  value: string[] | number[]
+  value: (string | number | undefined)[]
   initialPropsValue: unknown[]
 }
 
@@ -59,7 +59,7 @@ export default class FieldArray extends React.Component<FieldArrayProps, FieldAr
     });
   }
 
-  changeValue(idx: number, newValue: string) {
+  changeValue(idx: number, newValue: string | number | undefined) {
     const value = this.state.value.slice(0);
     value[idx] = newValue;
 
@@ -93,7 +93,7 @@ export default class FieldArray extends React.Component<FieldArrayProps, FieldAr
           default={containsValues || !this.props.default ? undefined : this.props.default[i] as number}
           value={value[i] as number}
           required={containsValues ? true : false}
-          onChange={this.changeValue.bind(this, i)}
+          onChange={(v) => this.changeValue(i, v)}
           aria-label={this.props['aria-label'] || this.props.label}
         />
       } else {

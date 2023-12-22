@@ -10,10 +10,8 @@ type FieldMultiInputProps = InputMultiInputProps & {
 
 export default class FieldMultiInput extends React.Component<FieldMultiInputProps> {
   render() {
-    const {props} = this;
-
-    return <Fieldset label={props.label}>
-      <InputMultiInput {...props} />
+    return <Fieldset label={this.props.label}>
+      <InputMultiInput {...this.props} />
     </Fieldset>
   }
 }

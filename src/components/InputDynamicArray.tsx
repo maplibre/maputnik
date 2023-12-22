@@ -11,10 +11,10 @@ import InputUrl from './InputUrl'
 
 
 export type FieldDynamicArrayProps = {
-  value?: (string | number)[]
-  type?: 'url' | 'number' | 'enum'
-  default?: (string | number)[]
-  onChange?(...args: unknown[]): unknown
+  value?: (string | number | undefined)[]
+  type?: 'url' | 'number' | 'enum' | 'string'
+  default?: (string | number | undefined)[]
+  onChange?(values: (string | number | undefined)[] | undefined): unknown
   style?: object
   fieldSpec?: {
     values?: any
@@ -25,7 +25,7 @@ export type FieldDynamicArrayProps = {
 
 
 export default class FieldDynamicArray extends React.Component<FieldDynamicArrayProps> {
-  changeValue(idx: number, newValue: string | number) {
+  changeValue(idx: number, newValue: string | number | undefined) {
     const values = this.values.slice(0)
     values[idx] = newValue
     if (this.props.onChange) this.props.onChange(values)
