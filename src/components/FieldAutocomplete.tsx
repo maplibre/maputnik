@@ -10,10 +10,8 @@ type FieldAutocompleteProps = InputAutocompleteProps & {
 
 export default class FieldAutocomplete extends React.Component<FieldAutocompleteProps> {
   render() {
-    const {props} = this;
-
-    return <Block label={props.label}>
-      <InputAutocomplete {...props} />
+    return <Block label={this.props.label}>
+      <InputAutocomplete {...this.props} />
     </Block>
   }
 }
