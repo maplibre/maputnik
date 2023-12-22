@@ -1,12 +1,12 @@
 import React from 'react'
-import PropTypes from 'prop-types'
 
 import FieldFunction from './FieldFunction'
+import { LayerSpecification } from '@maplibre/maplibre-gl-style-spec'
 const iconProperties = ['background-pattern', 'fill-pattern', 'line-pattern', 'fill-extrusion-pattern', 'icon-image']
 
 /** Extract field spec by {@fieldName} from the {@layerType} in the
  * style specification from either the paint or layout group */
-function getFieldSpec(spec, layerType, fieldName) {
+function getFieldSpec(spec: any, layerType: LayerSpecification["type"], fieldName: string) {
   const groupName = getGroupName(spec, layerType, fieldName)
   const group = spec[groupName + '_' + layerType]
   const fieldSpec = group[fieldName]
@@ -25,7 +25,7 @@ function getFieldSpec(spec, layerType, fieldName) {
   return fieldSpec
 }
 
-function getGroupName(spec, layerType, fieldName) {
+function getGroupName(spec: any, layerType: LayerSpecification["type"], fieldName: string) {
   const paint  = spec['paint_' + layerType] || {}
   if (fieldName in paint) {
     return 'paint'
@@ -34,18 +34,18 @@ function getGroupName(spec, layerType, fieldName) {
   }
 }
 
-export default class PropertyGroup extends React.Component {
-  static propTypes = {
-    layer: PropTypes.object.isRequired,
-    groupFields: PropTypes.array.isRequired,
-    onChange: PropTypes.func.isRequired,
-    spec: PropTypes.object.isRequired,
-    errors: PropTypes.object,
-  }
+type PropertyGroupProps = {
+  layer: LayerSpecification
+  groupFields: string[]
+  onChange(...args: unknown[]): unknown
+  spec: any
+  errors?: unknown[]
+};
 
-  onPropertyChange = (property, newValue) => {
+export default class PropertyGroup extends React.Component<PropertyGroupProps> {
+  onPropertyChange = (property: string, newValue: any) => {
     const group = getGroupName(this.props.spec, this.props.layer.type, property)
-    this.props.onChange(group , property, newValue)
+    this.props.onChange(group ,property, newValue)
   }
 
   render() {
@@ -55,7 +55,9 @@ export default class PropertyGroup extends React.Component {
 
       const paint = this.props.layer.paint || {}
       const layout = this.props.layer.layout || {}
-      const fieldValue = fieldName in paint ? paint[fieldName] : layout[fieldName]
+      const fieldValue = fieldName in paint 
+        ? paint[fieldName as keyof typeof paint] 
+        : layout[fieldName as keyof typeof layout]
       const fieldType = fieldName in paint ? 'paint' : 'layout';
 
       return <FieldFunction

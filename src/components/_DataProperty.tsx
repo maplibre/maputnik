@@ -57,13 +57,13 @@ type DataPropertyValue = {
   property?: string
   base?: number
   type?: string
-  stops: Stops
+  stops: Stop[]
 }
 
-type Stops = [{
+export type Stop = [{
   zoom: number
   value: number
-}, number][]
+}, number]
 
 export default class DataProperty extends React.Component<DataPropertyProps, DataPropertyState> {
   state = {
@@ -110,7 +110,7 @@ export default class DataProperty extends React.Component<DataPropertyProps, Dat
   }
 
   // Order the stops altering the refs to reflect their new position.
-  orderStopsByZoom(stops: Stops) {
+  orderStopsByZoom(stops: Stop[]) {
     const mappedWithRef = stops
       .map((stop, idx) => {
         return {

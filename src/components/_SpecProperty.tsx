@@ -1,12 +1,12 @@
 import React from 'react'
 
-import SpecField from './SpecField'
+import SpecField, {SpecFieldProps} from './SpecField'
 import FunctionButtons from './_FunctionButtons'
 
 import labelFromFieldName from './_labelFromFieldName'
 
 
-type SpecPropertyProps = {
+type SpecPropertyProps = SpecFieldProps & {
   onZoomClick(...args: unknown[]): unknown
   onDataClick(...args: unknown[]): unknown
   fieldName?: string

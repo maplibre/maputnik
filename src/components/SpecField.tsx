@@ -15,7 +15,7 @@ const typeMap = {
   formatted: () => Block,
 };
 
-type SpecFieldProps = InputFieldSpecProps & {
+export type SpecFieldProps = InputFieldSpecProps & {
   name?: string
 };
 

@@ -1,19 +1,18 @@
 import React from 'react'
-import PropTypes from 'prop-types'
 
 import SpecProperty from './_SpecProperty'
-import DataProperty from './_DataProperty'
+import DataProperty, { Stop } from './_DataProperty'
 import ZoomProperty from './_ZoomProperty'
 import ExpressionProperty from './_ExpressionProperty'
 import {function as styleFunction} from '@maplibre/maplibre-gl-style-spec';
 import {findDefaultFromSpec} from '../util/spec-helper';
 
 
-function isLiteralExpression (value) {
+function isLiteralExpression(value: any) {
   return (Array.isArray(value) && value.length === 2 && value[0] === "literal");
 }
 
-function isGetExpression (value) {
+function isGetExpression(value: any) {
   return (
     Array.isArray(value) &&
     value.length === 2 &&
@@ -21,14 +20,14 @@ function isGetExpression (value) {
   );
 }
 
-function isZoomField(value) {
+function isZoomField(value: any) {
   return (
     typeof(value) === 'object' &&
     value.stops &&
     typeof(value.property) === 'undefined' &&
     Array.isArray(value.stops) &&
     value.stops.length > 1 &&
-    value.stops.every(stop => {
+    value.stops.every((stop: Stop) => {
       return (
         Array.isArray(stop) &&
         stop.length === 2
@@ -37,7 +36,7 @@ function isZoomField(value) {
   );
 }
 
-function isIdentityProperty (value) {
+function isIdentityProperty(value: any) {
   return (
     typeof(value) === 'object' &&
     value.type === "identity" &&
@@ -45,14 +44,14 @@ function isIdentityProperty (value) {
   );
 }
 
-function isDataStopProperty (value) {
+function isDataStopProperty(value: any) {
   return (
     typeof(value) === 'object' &&
     value.stops &&
     typeof(value.property) !== 'undefined' &&
     value.stops.length > 1 &&
     Array.isArray(value.stops) &&
-    value.stops.every(stop => {
+    value.stops.every((stop: Stop) => {
       return (
         Array.isArray(stop) &&
         stop.length === 2 &&
@@ -62,26 +61,26 @@ function isDataStopProperty (value) {
   );
 }
 
-function isDataField(value) {
+function isDataField(value: any) {
   return (
     isIdentityProperty(value) ||
     isDataStopProperty(value)
   );
 }
 
-function isPrimative (value) {
+function isPrimative(value: any): value is string | boolean | number {
   const valid = ["string", "boolean", "number"];
   return valid.includes(typeof(value));
 }
 
-function isArrayOfPrimatives (values) {
+function isArrayOfPrimatives(values: any): values is Array<string | boolean | number> {
   if (Array.isArray(values)) {
     return values.every(isPrimative);
   }
   return false;
 }
 
-function getDataType (value, fieldSpec={}) {
+function getDataType(value: any, fieldSpec={} as any) {
   if (value === undefined) {
     return "value";
   }
@@ -103,35 +102,33 @@ function getDataType (value, fieldSpec={}) {
 }
 
 
+type FieldFunctionProps = {
+  onChange(fieldName: string, value: any): unknown
+  fieldName: string
+  fieldType: string
+  fieldSpec: any
+  errors?: unknown[]
+  value?: any
+};
+
+type FieldFunctionState = {
+  dataType: string
+  isEditing: boolean
+}
+
 /** Supports displaying spec field for zoom function objects
  * https://www.mapbox.com/mapbox-gl-style-spec/#types-function-zoom-property
  */
-export default class FieldFunction  extends React.Component {
-  static propTypes = {
-      onChange: PropTypes.func.isRequired,
-      fieldName: PropTypes.string.isRequired,
-      fieldType: PropTypes.string.isRequired,
-      fieldSpec: PropTypes.object.isRequired,
-      errors: PropTypes.object,
-
-      value: PropTypes.oneOfType([
-      PropTypes.object,
-      PropTypes.string,
-      PropTypes.number,
-      PropTypes.bool,
-      PropTypes.array
-    ]),
-  }
-
-  constructor (props) {
-    super();
+export default class FieldFunction extends React.Component<FieldFunctionProps, FieldFunctionState> {
+  constructor (props: FieldFunctionProps) {
+    super(props);
     this.state = {
       dataType: getDataType(props.value, props.fieldSpec),
       isEditing: false,
     }
   }
 
-  static getDerivedStateFromProps(props, state) {
+  static getDerivedStateFromProps(props: FieldFunctionProps, state: FieldFunctionState) {
     // Because otherwise when editing values we end up accidentally changing field type.
     if (state.isEditing) {
       return {};
@@ -144,7 +141,7 @@ export default class FieldFunction  extends React.Component {
     }
   }
 
-  getFieldFunctionType(fieldSpec) {
+  getFieldFunctionType(fieldSpec: any) {
     if (fieldSpec.expression.interpolated) {
       return "exponential"
     }
@@ -183,7 +180,7 @@ export default class FieldFunction  extends React.Component {
     });
   }
 
-  deleteStop = (stopIdx) => {
+  deleteStop = (stopIdx: number) => {
     const stops = this.props.value.stops.slice(0)
     stops.splice(stopIdx, 1)
 
@@ -207,7 +204,7 @@ export default class FieldFunction  extends React.Component {
       if (value.stops) {
         zoomFunc = {
           base: value.base,
-          stops: value.stops.map(stop => {
+          stops: value.stops.map((stop: Stop) => {
             return [stop[0].zoom, stop[1] || findDefaultFromSpec(this.props.fieldSpec)];
           })
         }
@@ -292,7 +289,7 @@ export default class FieldFunction  extends React.Component {
           property: "",
           type: functionType,
           base: value.base,
-          stops: value.stops.map(stop => {
+          stops: value.stops.map((stop: Stop) => {
             return [{zoom: stop[0], value: stopValue}, stop[1] || findDefaultFromSpec(this.props.fieldSpec)];
           })
         }
