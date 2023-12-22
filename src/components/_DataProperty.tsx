@@ -316,6 +316,7 @@ export default class DataProperty extends React.Component<DataPropertyProps, Dat
             <div className="maputnik-data-spec-property-input">
               <InputString
                 value={this.props.value?.property}
+                title={"Input a data property to base styles off of."}
                 onChange={propVal => this.changeDataProperty("property", propVal)}
               />
             </div>

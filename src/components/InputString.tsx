@@ -12,6 +12,7 @@ export type InputStringProps = {
   disabled?: boolean
   spellCheck?: boolean
   'aria-label'?: string
+  title?: string
 };
 
 type InputStringState = {
@@ -72,6 +73,7 @@ export default class InputString extends React.Component<InputStringProps, Input
       style: this.props.style,
       value: this.state.value === undefined ? "" : this.state.value,
       placeholder: this.props.default,
+      title: this.props.title,
       onChange: (e: React.BaseSyntheticEvent<Event, HTMLInputElement, HTMLInputElement>) => {
         this.setState({
           editing: true,
