@@ -1,29 +1,28 @@
 import React from 'react'
-import PropTypes from 'prop-types'
 import {formatLayerId} from '../util/format';
+import { StyleSpecification } from '@maplibre/maplibre-gl-style-spec';
 
-export default class AppMessagePanel extends React.Component {
-  static propTypes = {
-    errors: PropTypes.array,
-    infos: PropTypes.array,
-    mapStyle: PropTypes.object,
-    onLayerSelect: PropTypes.func,
-    currentLayer: PropTypes.object,
-    selectedLayerIndex: PropTypes.number,
-  }
+type AppMessagePanelProps = {
+  errors?: unknown[]
+  infos?: unknown[]
+  mapStyle?: StyleSpecification
+  onLayerSelect?(...args: unknown[]): unknown
+  currentLayer?: object
+  selectedLayerIndex?: number
+};
 
+export default class AppMessagePanel extends React.Component<AppMessagePanelProps> {
   static defaultProps = {
     onLayerSelect: () => {},
   }
 
   render() {
     const {selectedLayerIndex} = this.props;
-    const errors = this.props.errors.map((error, idx) => {
+    const errors = this.props.errors?.map((error: any, idx) => {
       let content;
       if (error.parsed && error.parsed.type === "layer") {
         const {parsed} = error;
-        const {mapStyle, currentLayer} = this.props;
-        const layerId = mapStyle.layers[parsed.data.index].id;
+        const layerId = this.props.mapStyle?.layers[parsed.data.index].id;
         content = (
           <>
             Layer <span>{formatLayerId(layerId)}</span>: {parsed.data.message}
@@ -32,7 +31,7 @@ export default class AppMessagePanel extends React.Component {
                 &nbsp;&mdash;&nbsp;
                 <button
                   className="maputnik-message-panel__switch-button"
-                  onClick={() => this.props.onLayerSelect(parsed.data.index)}
+                  onClick={() => this.props.onLayerSelect!(parsed.data.index)}
                 >
                   switch to layer
                 </button>
@@ -49,7 +48,7 @@ export default class AppMessagePanel extends React.Component {
       </p>
     })
 
-    const infos = this.props.infos.map((m, i) => {
+    const infos = this.props.infos?.map((m, i) => {
       return <p key={"info-"+i}>{m}</p>
     })
 

@@ -1,5 +1,4 @@
 import React from 'react'
-import PropTypes from 'prop-types'
 import classnames from 'classnames'
 import {detect} from 'detect-browser';
 
@@ -9,27 +8,28 @@ import pkgJson from '../../package.json'
 
 // This is required because of <https://stackoverflow.com/a/49846426>, there isn't another way to detect support that I'm aware of.
 const browser = detect();
-const colorAccessibilityFiltersEnabled = ['chrome', 'firefox'].indexOf(browser.name) > -1;
+const colorAccessibilityFiltersEnabled = ['chrome', 'firefox'].indexOf(browser!.name) > -1;
 
 
-class IconText extends React.Component {
-  static propTypes = {
-    children: PropTypes.node,
-  }
+type IconTextProps = {
+  children?: React.ReactNode
+};
 
+
+class IconText extends React.Component<IconTextProps> {
   render() {
     return <span className="maputnik-icon-text">{this.props.children}</span>
   }
 }
 
-class ToolbarLink extends React.Component {
-  static propTypes = {
-    className: PropTypes.string,
-    children: PropTypes.node,
-    href: PropTypes.string,
-    onToggleModal: PropTypes.func,
-  }
+type ToolbarLinkProps = {
+  className?: string
+  children?: React.ReactNode
+  href?: string
+  onToggleModal?(...args: unknown[]): unknown
+};
 
+class ToolbarLink extends React.Component<ToolbarLinkProps> {
   render() {
     return <a
       className={classnames('maputnik-toolbar-link', this.props.className)}
@@ -42,14 +42,14 @@ class ToolbarLink extends React.Component {
   }
 }
 
-class ToolbarLinkHighlighted extends React.Component {
-  static propTypes = {
-    className: PropTypes.string,
-    children: PropTypes.node,
-    href: PropTypes.string,
-    onToggleModal: PropTypes.func
-  }
+type ToolbarLinkHighlightedProps = {
+  className?: string
+  children?: React.ReactNode
+  href?: string
+  onToggleModal?(...args: unknown[]): unknown
+};
 
+class ToolbarLinkHighlighted extends React.Component<ToolbarLinkHighlightedProps> {
   render() {
     return <a
       className={classnames('maputnik-toolbar-link', "maputnik-toolbar-link--highlighted", this.props.className)}
@@ -64,12 +64,12 @@ class ToolbarLinkHighlighted extends React.Component {
   }
 }
 
-class ToolbarSelect extends React.Component {
-  static propTypes = {
-    children: PropTypes.node,
-    wdKey: PropTypes.string
-  }
+type ToolbarSelectProps = {
+  children?: React.ReactNode
+  wdKey?: string
+};
 
+class ToolbarSelect extends React.Component<ToolbarSelectProps> {
   render() {
     return <div
       className='maputnik-toolbar-select'
@@ -80,13 +80,13 @@ class ToolbarSelect extends React.Component {
   }
 }
 
-class ToolbarAction extends React.Component {
-  static propTypes = {
-    children: PropTypes.node,
-    onClick: PropTypes.func,
-    wdKey: PropTypes.string
-  }
+type ToolbarActionProps = {
+  children?: React.ReactNode
+  onClick?(...args: unknown[]): unknown
+  wdKey?: string
+};
 
+class ToolbarAction extends React.Component<ToolbarActionProps> {
   render() {
     return <button
       className='maputnik-toolbar-action'
@@ -98,22 +98,22 @@ class ToolbarAction extends React.Component {
   }
 }
 
-export default class AppToolbar extends React.Component {
-  static propTypes = {
-    mapStyle: PropTypes.object.isRequired,
-    inspectModeEnabled: PropTypes.bool.isRequired,
-    onStyleChanged: PropTypes.func.isRequired,
-    // A new style has been uploaded
-    onStyleOpen: PropTypes.func.isRequired,
-    // A dict of source id's and the available source layers
-    sources: PropTypes.object.isRequired,
-    children: PropTypes.node,
-    onToggleModal: PropTypes.func,
-    onSetMapState: PropTypes.func,
-    mapState: PropTypes.string,
-    renderer: PropTypes.string,
-  }
+type AppToolbarProps = {
+  mapStyle: object
+  inspectModeEnabled: boolean
+  onStyleChanged(...args: unknown[]): unknown
+  // A new style has been uploaded
+  onStyleOpen(...args: unknown[]): unknown
+  // A dict of source id's and the available source layers
+  sources: object
+  children?: React.ReactNode
+  onToggleModal(...args: unknown[]): unknown
+  onSetMapState(...args: unknown[]): unknown
+  mapState?: string
+  renderer?: string
+};
 
+export default class AppToolbar extends React.Component<AppToolbarProps> {
   state = {
     isOpen: {
       settings: false,
@@ -124,16 +124,16 @@ export default class AppToolbar extends React.Component {
     }
   }
 
-  handleSelection(val) {
+  handleSelection(val: string | undefined) {
     this.props.onSetMapState(val);
   }
 
-  onSkip = (target) => {
+  onSkip = (target: string) => {
     if (target === "map") {
-      document.querySelector(".maplibregl-canvas").focus();
+      (document.querySelector(".maplibregl-canvas") as HTMLCanvasElement).focus();
     }
     else {
-      const el = document.querySelector("#skip-target-"+target);
+      const el = document.querySelector("#skip-target-"+target) as HTMLButtonElement;
       el.focus();
     }
   }
@@ -190,21 +190,21 @@ export default class AppToolbar extends React.Component {
           <button
             data-wd-key="root:skip:layer-list"
             className="maputnik-toolbar-skip"
-            onClick={e => this.onSkip("layer-list")}
+            onClick={_e => this.onSkip("layer-list")}
           >
             Layers list
           </button>
           <button
             data-wd-key="root:skip:layer-editor"
             className="maputnik-toolbar-skip"
-            onClick={e => this.onSkip("layer-editor")}
+            onClick={_e => this.onSkip("layer-editor")}
           >
             Layer editor
           </button>
           <button
             data-wd-key="root:skip:map-view"
             className="maputnik-toolbar-skip"
-            onClick={e => this.onSkip("map")}
+            onClick={_e => this.onSkip("map")}
           >
             Map view
           </button>
@@ -246,7 +246,7 @@ export default class AppToolbar extends React.Component {
                 className="maputnik-select"
                 data-wd-key="maputnik-select"
                 onChange={(e) => this.handleSelection(e.target.value)}
-                value={currentView.id}
+                value={currentView?.id}
               >
                 {views.filter(v => v.group === "general").map((item) => {
                   return (

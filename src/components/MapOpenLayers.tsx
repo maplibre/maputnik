@@ -1,6 +1,5 @@
 import React from 'react'
 import {throttle} from 'lodash';
-import PropTypes from 'prop-types'
 
 import MapMaplibreGlLayerPopup from './MapMaplibreGlLayerPopup';
 
@@ -9,10 +8,10 @@ import {apply} from 'ol-mapbox-style';
 import {Map, View, Overlay} from 'ol';
 
 import {toLonLat} from 'ol/proj';
-import {toStringHDMS} from 'ol/coordinate';
+import { StyleSpecification } from '@maplibre/maplibre-gl-style-spec';
 
 
-function renderCoords (coords) {
+function renderCoords (coords: string[]) {
   if (!coords || coords.length < 2) {
     return null;
   }
@@ -23,36 +22,49 @@ function renderCoords (coords) {
   }
 }
 
-export default class MapOpenLayers extends React.Component {
-  static propTypes = {
-    onDataChange: PropTypes.func,
-    mapStyle: PropTypes.object.isRequired,
-    accessToken: PropTypes.string,
-    style: PropTypes.object,
-    onLayerSelect: PropTypes.func.isRequired,
-    debugToolbox: PropTypes.bool.isRequired,
-    replaceAccessTokens: PropTypes.func.isRequired,
-    onChange: PropTypes.func.isRequired,
-  }
+type MapOpenLayersProps = {
+  onDataChange?(...args: unknown[]): unknown
+  mapStyle: object
+  accessToken?: string
+  style?: object
+  onLayerSelect(...args: unknown[]): unknown
+  debugToolbox: boolean
+  replaceAccessTokens(...args: unknown[]): unknown
+  onChange(...args: unknown[]): unknown
+};
 
+type MapOpenLayersState = {
+  zoom: string
+  rotation: string
+  cursor: string[]
+  center: string[]
+  selectedFeatures?: any[]
+};
+
+export default class MapOpenLayers extends React.Component<MapOpenLayersProps, MapOpenLayersState> {
   static defaultProps = {
     onMapLoaded: () => {},
     onDataChange: () => {},
     onLayerSelect: () => {},
   }
+  updateStyle: any;
+  map: any;
+  container: HTMLDivElement | null = null;
+  overlay: Overlay | undefined;
+  popupContainer: HTMLElement | null = null;
 
-  constructor(props) {
+  constructor(props: MapOpenLayersProps) {
     super(props);
     this.state = {
-      zoom: 0,
-      rotation: 0,
-      cursor: [],
+      zoom: "0",
+      rotation: "0",
+      cursor: [] as string[],
       center: [],
     };
     this.updateStyle = throttle(this._updateStyle.bind(this), 200);
   }
 
-  _updateStyle(newMapStyle) {
+  _updateStyle(newMapStyle: StyleSpecification) {
     if(!this.map) return;
 
     // See <https://github.com/openlayers/ol-mapbox-style/issues/215#issuecomment-493198815>
@@ -60,7 +72,7 @@ export default class MapOpenLayers extends React.Component {
     apply(this.map, newMapStyle);
   }
 
-  componentDidUpdate(prevProps) {
+  componentDidUpdate(prevProps: MapOpenLayersProps) {
     if (this.props.mapStyle !== prevProps.mapStyle) {
       this.updateStyle(
         this.props.replaceAccessTokens(this.props.mapStyle)
@@ -70,7 +82,7 @@ export default class MapOpenLayers extends React.Component {
 
   componentDidMount() {
     this.overlay = new Overlay({
-      element: this.popupContainer,
+      element: this.popupContainer!,
       autoPan: true,
       autoPanAnimation: {
         duration: 250
@@ -78,7 +90,7 @@ export default class MapOpenLayers extends React.Component {
     });
 
     const map = new Map({
-      target: this.container,
+      target: this.container!,
       overlays: [this.overlay],
       view: new View({
         zoom: 1,
@@ -98,7 +110,7 @@ export default class MapOpenLayers extends React.Component {
 
     const onMoveEnd = () => {
       const zoom = map.getView().getZoom();
-      const center = toLonLat(map.getView().getCenter());
+      const center = toLonLat(map.getView().getCenter()!);
 
       this.props.onChange({
         zoom,
@@ -112,15 +124,15 @@ export default class MapOpenLayers extends React.Component {
     onMoveEnd();
     map.on('moveend', onMoveEnd);
 
-    map.on('postrender', (evt) => {
-      const center = toLonLat(map.getView().getCenter());
+    map.on('postrender', (_e) => {
+      const center = toLonLat(map.getView().getCenter()!);
       this.setState({
         center: [
           center[0].toFixed(2),
           center[1].toFixed(2),
         ],
         rotation: map.getView().getRotation().toFixed(2),
-        zoom: map.getView().getZoom().toFixed(2)
+        zoom: map.getView().getZoom()!.toFixed(2)
       });
     });
 
@@ -132,9 +144,9 @@ export default class MapOpenLayers extends React.Component {
     );
   }
 
-  closeOverlay = (e) => {
+  closeOverlay = (e: any) => {
     e.target.blur();
-    this.overlay.setPosition(undefined);
+    this.overlay!.setPosition(undefined);
   }
 
   render() {

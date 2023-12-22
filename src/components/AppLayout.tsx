@@ -2,16 +2,16 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import ScrollContainer from './ScrollContainer'
 
-class AppLayout extends React.Component {
-  static propTypes = {
-    toolbar: PropTypes.element.isRequired,
-    layerList: PropTypes.element.isRequired,
-    layerEditor: PropTypes.element,
-    map: PropTypes.element.isRequired,
-    bottom: PropTypes.element,
-    modals: PropTypes.node,
-  }
+type AppLayoutProps = {
+  toolbar: React.ReactElement
+  layerList: React.ReactElement
+  layerEditor?: React.ReactElement
+  map: React.ReactElement
+  bottom?: React.ReactElement
+  modals?: React.ReactNode
+};
 
+class AppLayout extends React.Component<AppLayoutProps> {
   static childContextTypes = {
     reactIconBase: PropTypes.object
   }
