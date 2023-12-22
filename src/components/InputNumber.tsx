@@ -7,7 +7,7 @@ export type InputNumberProps = {
   default?: number
   min?: number
   max?: number
-  onChange?(...args: unknown[]): unknown
+  onChange?(value: number | undefined): unknown
   allowRange?: boolean
   rangeStep?: number
   wdKey?: string

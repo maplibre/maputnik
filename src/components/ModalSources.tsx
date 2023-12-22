@@ -233,7 +233,7 @@ class AddSource extends React.Component<AddSourceProps, AddSourceState> {
           ['image', 'Image'],
           ['video', 'Video'],
         ]}
-        onChange={(mode: EditorMode) => this.setState({mode: mode, source: this.defaultSource(mode)})}
+        onChange={mode => this.setState({mode: mode as EditorMode, source: this.defaultSource(mode as EditorMode)})}
         value={this.state.mode as string}
       />
       <ModalSourcesTypeEditor

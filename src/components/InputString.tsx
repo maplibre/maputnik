@@ -5,8 +5,8 @@ export type InputStringProps = {
   value?: string
   style?: object
   default?: string
-  onChange?(...args: unknown[]): unknown
-  onInput?(...args: unknown[]): unknown
+  onChange?(value: string | undefined): unknown
+  onInput?(value: string | undefined): unknown
   multi?: boolean
   required?: boolean
   disabled?: boolean

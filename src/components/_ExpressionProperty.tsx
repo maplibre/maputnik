@@ -1,45 +1,46 @@
 import React from 'react'
-import PropTypes from 'prop-types'
+import {MdDelete, MdUndo} from 'react-icons/md'
+import stringifyPretty from 'json-stringify-pretty-compact'
 
 import Block from './Block'
 import InputButton from './InputButton'
-import {MdDelete, MdUndo} from 'react-icons/md'
-import FieldString from './FieldString'
-
 import labelFromFieldName from './_labelFromFieldName'
-import stringifyPretty from 'json-stringify-pretty-compact'
 import FieldJson from './FieldJson'
 
 
-export default class ExpressionProperty extends React.Component {
-  static propTypes = {
-    onDelete: PropTypes.func,
-    fieldName: PropTypes.string,
-    fieldType: PropTypes.string,
-    fieldSpec: PropTypes.object,
-    value: PropTypes.any,
-    errors: PropTypes.object,
-    onChange: PropTypes.func,
-    onUndo: PropTypes.func,
-    canUndo: PropTypes.func,
-    onFocus: PropTypes.func,
-    onBlur: PropTypes.func,
-  }
+type ExpressionPropertyProps = {
+  onDelete?(...args: unknown[]): unknown
+  fieldName: string
+  fieldType?: string
+  fieldSpec?: object
+  value?: any
+  errors?: {[key: string]: any}
+  onChange?(...args: unknown[]): unknown
+  onUndo?(...args: unknown[]): unknown
+  canUndo?(...args: unknown[]): unknown
+  onFocus?(...args: unknown[]): unknown
+  onBlur?(...args: unknown[]): unknown
+};
 
+type ExpressionPropertyState = {
+  jsonError: boolean
+};
+
+export default class ExpressionProperty extends React.Component<ExpressionPropertyProps, ExpressionPropertyState> {
   static defaultProps = {
     errors: {},
     onFocus: () => {},
     onBlur: () => {},
   }
 
-  constructor (props) {
-    super();
+  constructor (props:ExpressionPropertyProps) {
+    super(props);
     this.state = {
       jsonError: false,
     };
   }
 
-  onJSONInvalid = (err) => {
+  onJSONInvalid = (_err: Error) => {
     this.setState({
       jsonError: true,
     })
@@ -82,11 +83,11 @@ export default class ExpressionProperty extends React.Component {
 
     const fieldKey = fieldType === undefined ? fieldName : `${fieldType}.${fieldName}`;
 
-    const fieldError = errors[fieldKey];
+    const fieldError = errors![fieldKey];
     const errorKeyStart = `${fieldKey}[`;
     const foundErrors = [];
 
-    function getValue (data) {
+    function getValue(data: any) {
       return stringifyPretty(data, {indent: 2, maxLength: 38})
     }
     
@@ -94,11 +95,11 @@ export default class ExpressionProperty extends React.Component {
       foundErrors.push({message: "Invalid JSON"});
     }
     else {
-      Object.entries(errors)
-      .filter(([key, error]) => {
+      Object.entries(errors!)
+      .filter(([key, _error]) => {
         return key.startsWith(errorKeyStart);
       })
-      .forEach(([key, error]) => {
+      .forEach(([_key, error]) => {
         return foundErrors.push(error);
       })
 

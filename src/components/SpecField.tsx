@@ -21,9 +21,9 @@ type SpecFieldProps = InputFieldSpecProps & {
 
 export default class SpecField extends React.Component<SpecFieldProps> {
   render() {
-    const fieldType = this.props.fieldSpec.type;
+    const fieldType = this.props.fieldSpec?.type;
 
-    const typeBlockFn = typeMap[fieldType];
+    const typeBlockFn = typeMap[fieldType!];
 
     let TypeBlock;
     if (typeBlockFn) {
