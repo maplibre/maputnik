@@ -10,6 +10,7 @@ import IconMissing from './IconMissing'
 type IconLayerProps = {
   type: string
   style?: object
+  className?: string
 };
 
 export default class IconLayer extends React.Component<IconLayerProps> {
