@@ -1,15 +1,15 @@
 import React from 'react'
-import PropTypes from 'prop-types'
 import ReactDOM from 'react-dom'
-import MapLibreGl from 'maplibre-gl'
+import MapLibreGl, {LayerSpecification, Map, MapOptions, SourceSpecification, StyleSpecification} from 'maplibre-gl'
+// @ts-ignore
 import MapboxInspect from 'mapbox-gl-inspect'
-import MapMaplibreGlLayerPopup from './MapMaplibreGlLayerPopup'
-import MapMaplibreGlFeaturePropertyPopup from './MapMaplibreGlFeaturePropertyPopup'
-import tokens from '../config/tokens.json'
+// @ts-ignore
 import colors from 'mapbox-gl-inspect/lib/colors'
+import MapMaplibreGlLayerPopup from './MapMaplibreGlLayerPopup'
+import MapMaplibreGlFeaturePropertyPopup, { InspectFeature } from './MapMaplibreGlFeaturePropertyPopup'
 import Color from 'color'
 import ZoomControl from '../libs/zoomcontrol'
-import { colorHighlightedLayer } from '../libs/highlight'
+import { HighlightedLayer, colorHighlightedLayer } from '../libs/highlight'
 import 'maplibre-gl/dist/maplibre-gl.css'
 import '../maplibregl.css'
 import '../libs/maplibre-rtl'
@@ -17,26 +17,26 @@ import '../libs/maplibre-rtl'
 
 const IS_SUPPORTED = MapLibreGl.supported();
 
-function renderPopup(popup, mountNode) {
+function renderPopup(popup: JSX.Element, mountNode: ReactDOM.Container) {
   ReactDOM.render(popup, mountNode);
   return mountNode;
 }
 
-function buildInspectStyle(originalMapStyle, coloredLayers, highlightedLayer) {
+function buildInspectStyle(originalMapStyle: StyleSpecification, coloredLayers: HighlightedLayer[], highlightedLayer?: HighlightedLayer) {
   const backgroundLayer = {
     "id": "background",
     "type": "background",
     "paint": {
       "background-color": '#1c1f24',
     }
-  }
+  } as LayerSpecification
 
   const layer = colorHighlightedLayer(highlightedLayer)
   if(layer) {
     coloredLayers.push(layer)
   }
 
-  const sources = {}
+  const sources: {[key:string]: SourceSpecification} = {}
   Object.keys(originalMapStyle.sources).forEach(sourceId => {
     const source = originalMapStyle.sources[sourceId]
     if(source.type !== 'raster' && source.type !== 'raster-dem') {
@@ -47,32 +47,43 @@ function buildInspectStyle(originalMapStyle, coloredLayers, highlightedLayer) {
   const inspectStyle = {
     ...originalMapStyle,
     sources: sources,
-    layers: [backgroundLayer].concat(coloredLayers)
+    layers: [backgroundLayer].concat(coloredLayers as LayerSpecification[])
   }
   return inspectStyle
 }
 
-export default class MapMaplibreGl extends React.Component {
-  static propTypes = {
-    onDataChange: PropTypes.func,
-    onLayerSelect: PropTypes.func.isRequired,
-    mapStyle: PropTypes.object.isRequired,
-    inspectModeEnabled: PropTypes.bool.isRequired,
-    highlightedLayer: PropTypes.object,
-    options: PropTypes.object,
-    replaceAccessTokens: PropTypes.func.isRequired,
-    onChange: PropTypes.func.isRequired,
+type MapMaplibreGlProps = {
+  onDataChange?(...args: unknown[]): unknown
+  onLayerSelect(...args: unknown[]): unknown
+  mapStyle: StyleSpecification
+  inspectModeEnabled: boolean
+  highlightedLayer?: HighlightedLayer
+  options?: MapOptions & {
+    showTileBoundaries?: boolean
+    showCollisionBoxes?: boolean
+    showOverdrawInspector?: boolean
   }
+  replaceAccessTokens(mapStyle: StyleSpecification): StyleSpecification
+  onChange(...args: unknown[]): unknown
+};
 
+type MapMaplibreGlState = {
+  map: Map | null
+  inspect: MapboxInspect | null
+  zoom?: number
+};
+
+export default class MapMaplibreGl extends React.Component<MapMaplibreGlProps, MapMaplibreGlState> {
   static defaultProps = {
     onMapLoaded: () => {},
     onDataChange: () => {},
     onLayerSelect: () => {},
     onChange: () => {},
-    options: {},
+    options: {} as MapOptions,
   }
+  container: HTMLDivElement | null = null
 
-  constructor(props) {
+  constructor(props: MapMaplibreGlProps) {
     super(props)
     this.state = {
       map: null,
@@ -80,7 +91,7 @@ export default class MapMaplibreGl extends React.Component {
     }
   }
 
-  updateMapFromProps(props) {
+  updateMapFromProps(props: MapMaplibreGlProps) {
     if(!IS_SUPPORTED) return;
 
     if(!this.state.map) return
@@ -93,7 +104,7 @@ export default class MapMaplibreGl extends React.Component {
     )
   }
 
-  shouldComponentUpdate(nextProps, nextState) {
+  shouldComponentUpdate(nextProps: MapMaplibreGlProps, nextState: MapMaplibreGlState) {
     let should = false;
     try {
       should = JSON.stringify(this.props) !== JSON.stringify(nextProps) || JSON.stringify(this.state) !== JSON.stringify(nextState);
@@ -103,7 +114,7 @@ export default class MapMaplibreGl extends React.Component {
     return should;
   }
 
-  componentDidUpdate(prevProps, prevState, snapshot) {
+  componentDidUpdate() {
     if(!IS_SUPPORTED) return;
 
     const map = this.state.map;
@@ -128,9 +139,9 @@ export default class MapMaplibreGl extends React.Component {
         }
       }
 
-      map.showTileBoundaries = this.props.options.showTileBoundaries;
-      map.showCollisionBoxes = this.props.options.showCollisionBoxes;
-      map.showOverdrawInspector = this.props.options.showOverdrawInspector;
+      map.showTileBoundaries = this.props.options?.showTileBoundaries!;
+      map.showCollisionBoxes = this.props.options?.showCollisionBoxes!;
+      map.showOverdrawInspector = this.props.options?.showOverdrawInspector!;
     }
   }
 
@@ -139,7 +150,7 @@ export default class MapMaplibreGl extends React.Component {
 
     const mapOpts = {
       ...this.props.options,
-      container: this.container,
+      container: this.container!,
       style: this.props.mapStyle,
       hash: true,
       maxZoom: 24
@@ -154,9 +165,9 @@ export default class MapMaplibreGl extends React.Component {
     }
     mapViewChange();
 
-    map.showTileBoundaries = mapOpts.showTileBoundaries;
-    map.showCollisionBoxes = mapOpts.showCollisionBoxes;
-    map.showOverdrawInspector = mapOpts.showOverdrawInspector;
+    map.showTileBoundaries = mapOpts.showTileBoundaries!;
+    map.showCollisionBoxes = mapOpts.showCollisionBoxes!;
+    map.showOverdrawInspector = mapOpts.showOverdrawInspector!;
 
     const zoomControl = new ZoomControl;
     map.addControl(zoomControl, 'top-right');
@@ -175,11 +186,11 @@ export default class MapMaplibreGl extends React.Component {
       showInspectMapPopupOnHover: true,
       showInspectButton: false,
       blockHoverPopupOnClick: true,
-      assignLayerColor: (layerId, alpha) => {
+      assignLayerColor: (layerId: string, alpha: number) => {
         return Color(colors.brightColor(layerId, alpha)).desaturate(0.5).string()
       },
-      buildInspectStyle: (originalMapStyle, coloredLayers) => buildInspectStyle(originalMapStyle, coloredLayers, this.props.highlightedLayer),
-      renderPopup: features => {
+      buildInspectStyle: (originalMapStyle: StyleSpecification, coloredLayers: HighlightedLayer[]) => buildInspectStyle(originalMapStyle, coloredLayers, this.props.highlightedLayer),
+      renderPopup: (features: InspectFeature[]) => {
         if(this.props.inspectModeEnabled) {
           return renderPopup(<MapMaplibreGlFeaturePropertyPopup features={features} />, tmpNode);
         } else {
@@ -199,7 +210,7 @@ export default class MapMaplibreGl extends React.Component {
 
     map.on("data", e => {
       if(e.dataType !== 'tile') return
-      this.props.onDataChange({
+      this.props.onDataChange!({
         map: this.state.map
       })
     })
@@ -208,7 +219,7 @@ export default class MapMaplibreGl extends React.Component {
       console.log("ERROR", e);
     })
 
-    map.on("zoom", e => {
+    map.on("zoom", _e => {
       this.setState({
         zoom: map.getZoom()
       });
@@ -218,7 +229,7 @@ export default class MapMaplibreGl extends React.Component {
     map.on("zoomend", mapViewChange);
   }
 
-  onLayerSelectById = (id) => {
+  onLayerSelectById = (id: string) => {
     const index = this.props.mapStyle.layers.findIndex(layer => layer.id === id);
     this.props.onLayerSelect(index);
   }
