@@ -36,7 +36,7 @@ function parseFilter(v: string | boolean | number) {
 
 type SingleFilterEditorProps = {
   filter: any[]
-  onChange(...args: unknown[]): unknown
+  onChange(filter: any[]): unknown
   properties?: {[key: string]: string}
 };
 

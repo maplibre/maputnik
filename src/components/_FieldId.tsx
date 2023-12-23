@@ -8,7 +8,7 @@ type BlockIdProps = {
   value: string
   wdKey: string
   onChange(...args: unknown[]): unknown
-  error?: unknown[]
+  error?: {message: string}
 };
 
 export default class BlockId extends React.Component<BlockIdProps> {

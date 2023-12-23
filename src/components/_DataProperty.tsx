@@ -288,7 +288,7 @@ export default class DataProperty extends React.Component<DataPropertyProps, Dat
             <div className="maputnik-data-spec-property-input">
               <InputSelect
                 value={this.props.value!.type}
-                onChange={propVal => this.changeDataType(propVal)}
+                onChange={(propVal: string) => this.changeDataType(propVal)}
                 title={"Select a type of data scale (default is 'categorical')."}
                 options={this.getDataFunctionTypes(this.props.fieldSpec)}
               />

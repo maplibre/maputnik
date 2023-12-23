@@ -104,6 +104,7 @@
     "@types/lodash.isequal": "^4.5.8",
     "@types/lodash.throttle": "^4.1.9",
     "@types/react": "^16.14.52",
+    "@types/react-aria-menubutton": "^6.2.13",
     "@types/react-aria-modal": "^4.0.9",
     "@types/react-autocomplete": "^1.8.9",
     "@types/react-collapse": "^5.0.4",

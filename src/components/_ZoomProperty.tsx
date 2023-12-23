@@ -195,7 +195,7 @@ export default class ZoomProperty extends React.Component<ZoomPropertyProps, Zoo
             <div className="maputnik-data-spec-property-input">
               <InputSelect
                 value={"interpolate"}
-                onChange={propVal => this.changeDataType(propVal)}
+                onChange={(propVal: string) => this.changeDataType(propVal)}
                 title={"Select a type of data scale (default is 'categorical')."}
                 options={this.getDataFunctionTypes(this.props.fieldSpec!)}
               />

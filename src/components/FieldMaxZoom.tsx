@@ -6,8 +6,8 @@ import InputNumber from './InputNumber'
 
 type FieldMaxZoomProps = {
   value?: number
-  onChange(...args: unknown[]): unknown
-  error?: unknown[]
+  onChange(value: number | undefined): unknown
+  error?: {message: string}
 };
 
 export default class FieldMaxZoom extends React.Component<FieldMaxZoomProps> {

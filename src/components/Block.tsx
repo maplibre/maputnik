@@ -12,7 +12,7 @@ type BlockProps = {
   onChange?(...args: unknown[]): unknown
   fieldSpec?: object
   wideMode?: boolean
-  error?: unknown[]
+  error?: {message: string}
 };
 
 type BlockState = {

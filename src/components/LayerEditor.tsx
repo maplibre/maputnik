@@ -1,6 +1,8 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { Wrapper, Button, Menu, MenuItem } from 'react-aria-menubutton'
+import {Accordion} from 'react-accessible-accordion';
+import {MdMoreVert} from 'react-icons/md'
 
 import FieldJson from './FieldJson'
 import FilterEditor from './FilterEditor'
@@ -13,20 +15,18 @@ import FieldMaxZoom from './FieldMaxZoom'
 import FieldComment from './FieldComment'
 import FieldSource from './FieldSource'
 import FieldSourceLayer from './FieldSourceLayer'
-import {Accordion} from 'react-accessible-accordion';
-
-import {MdMoreVert} from 'react-icons/md'
-
 import { changeType, changeProperty } from '../libs/layer'
 import layout from '../config/layout.json'
 import {formatLayerId} from '../util/format';
+import { SourceSpecification } from '@maplibre/maplibre-gl-style-spec';
+import { BackgroundLayerSpecification, LayerSpecification } from 'maplibre-gl';
 
 
-function getLayoutForType (type) {
+function getLayoutForType(type: LayerSpecification["type"]) {
   return layout[type] ? layout[type] : layout.invalid;
 }
 
-function layoutGroups(layerType) {
+function layoutGroups(layerType: LayerSpecification["type"]): {title: string, type: string, fields?: string[]}[] {
   const layerGroup = {
     title: 'Layer',
     type: 'layer'
@@ -44,25 +44,29 @@ function layoutGroups(layerType) {
     .concat([editorGroup])
 }
 
-/** Layer editor supporting multiple types of layers. */
-export default class LayerEditor extends React.Component {
-  static propTypes = {
-    layer: PropTypes.object.isRequired,
-    sources: PropTypes.object,
-    vectorLayers: PropTypes.object,
-    spec: PropTypes.object.isRequired,
-    onLayerChanged: PropTypes.func,
-    onLayerIdChange: PropTypes.func,
-    onMoveLayer: PropTypes.func,
-    onLayerDestroy: PropTypes.func,
-    onLayerCopy: PropTypes.func,
-    onLayerVisibilityToggle: PropTypes.func,
-    isFirstLayer: PropTypes.bool,
-    isLastLayer: PropTypes.bool,
-    layerIndex: PropTypes.number,
-    errors: PropTypes.array,
-  }
+type LayerEditorProps = {
+  layer: LayerSpecification
+  sources?: SourceSpecification
+  vectorLayers: {[key: string]: any}
+  spec: object
+  onLayerChanged(...args: unknown[]): unknown
+  onLayerIdChange(...args: unknown[]): unknown
+  onMoveLayer(...args: unknown[]): unknown
+  onLayerDestroy(...args: unknown[]): unknown
+  onLayerCopy(...args: unknown[]): unknown
+  onLayerVisibilityToggle(...args: unknown[]): unknown
+  isFirstLayer?: boolean
+  isLastLayer?: boolean
+  layerIndex: number
+  errors?: any[]
+};
 
+type LayerEditorState = {
+  editorGroups: {[keys:string]: boolean}
+};
+
+/** Layer editor supporting multiple types of layers. */
+export default class LayerEditor extends React.Component<LayerEditorProps, LayerEditorState> {
   static defaultProps = {
     onLayerChanged: () => {},
     onLayerIdChange: () => {},
@@ -73,11 +77,11 @@ export default class LayerEditor extends React.Component {
     reactIconBase: PropTypes.object
   }
 
-  constructor(props) {
+  constructor(props: LayerEditorProps) {
     super(props)
 
     //TODO: Clean this up and refactor into function
-    const editorGroups = {}
+    const editorGroups: {[keys:string]: boolean} = {}
     layoutGroups(this.props.layer.type).forEach(group => {
       editorGroups[group.title] = true
     })
@@ -85,7 +89,7 @@ export default class LayerEditor extends React.Component {
     this.state = { editorGroups }
   }
 
-  static getDerivedStateFromProps(props, state) {
+  static getDerivedStateFromProps(props: LayerEditorProps, state: LayerEditorState) {
     const additionalGroups = { ...state.editorGroups }
 
     getLayoutForType(props.layer.type).groups.forEach(group => {
@@ -108,14 +112,14 @@ export default class LayerEditor extends React.Component {
     }
   }
 
-  changeProperty(group, property, newValue) {
+  changeProperty(group: keyof LayerSpecification | null, property: string, newValue: any) {
     this.props.onLayerChanged(
       this.props.layerIndex,
       changeProperty(this.props.layer, group, property, newValue)
     )
   }
 
-  onGroupToggle(groupTitle, active) {
+  onGroupToggle(groupTitle: string, active: boolean) {
     const changedActiveGroups = {
       ...this.state.editorGroups,
       [groupTitle]: active,
@@ -125,15 +129,15 @@ export default class LayerEditor extends React.Component {
     })
   }
 
-  renderGroupType(type, fields) {
+  renderGroupType(type: string, fields?: string[]): JSX.Element {
     let comment = ""
     if(this.props.layer.metadata) {
-      comment = this.props.layer.metadata['maputnik:comment']
+      comment = (this.props.layer.metadata as any)['maputnik:comment']
     }
     const {errors, layerIndex} = this.props;
 
-    const errorData = {};
-    errors.forEach(error => {
+    const errorData: {[key in LayerSpecification as string]: {message: string}} = {};
+    errors!.forEach(error => {
       if (
         error.parsed &&
         error.parsed.type === "layer" &&
@@ -146,8 +150,8 @@ export default class LayerEditor extends React.Component {
     })
 
     let sourceLayerIds;
-    if(this.props.sources.hasOwnProperty(this.props.layer.source)) {
-      sourceLayerIds = this.props.sources[this.props.layer.source].layers;
+    if(this.props.sources?.hasOwnProperty((this.props.layer as Exclude<LayerSpecification, BackgroundLayerSpecification>).source)) {
+      sourceLayerIds = (this.props.sources as any)[(this.props.layer as any).source].layers;
     }
 
     switch(type) {
@@ -169,7 +173,7 @@ export default class LayerEditor extends React.Component {
         />
         {this.props.layer.type !== 'background' && <FieldSource
           error={errorData.source}
-          sourceIds={Object.keys(this.props.sources)}
+          sourceIds={Object.keys(this.props.sources!)}
           value={this.props.layer.source}
           onChange={v => this.changeProperty(null, 'source', v)}
         />
@@ -178,7 +182,7 @@ export default class LayerEditor extends React.Component {
         <FieldSourceLayer
           error={errorData['source-layer']}
           sourceLayerIds={sourceLayerIds}
-          value={this.props.layer['source-layer']}
+          value={(this.props.layer as any)['source-layer']}
           onChange={v => this.changeProperty(null, 'source-layer', v)}
         />
         }
@@ -202,8 +206,8 @@ export default class LayerEditor extends React.Component {
         <div className="maputnik-filter-editor-wrapper">
           <FilterEditor
             errors={errorData}
-            filter={this.props.layer.filter}
-            properties={this.props.vectorLayers[this.props.layer['source-layer']]}
+            filter={(this.props.layer as any).filter}
+            properties={this.props.vectorLayers[(this.props.layer as any)['source-layer']]}
             onChange={f => this.changeProperty(null, 'filter', f)}
           />
         </div>
@@ -212,7 +216,7 @@ export default class LayerEditor extends React.Component {
         return <PropertyGroup
           errors={errorData}
           layer={this.props.layer}
-          groupFields={fields}
+          groupFields={fields!}
           spec={this.props.spec}
           onChange={this.changeProperty.bind(this)}
         />
@@ -226,10 +230,11 @@ export default class LayerEditor extends React.Component {
             );
           }}
         />
+        default: return <></>
     }
   }
 
-  moveLayer(offset) {
+  moveLayer(offset: number) {
     this.props.onMoveLayer({
       oldIndex: this.props.layerIndex,
       newIndex: this.props.layerIndex+offset
@@ -237,7 +242,7 @@ export default class LayerEditor extends React.Component {
   }
 
   render() {
-    const groupIds = [];
+    const groupIds: string[] = [];
     const layerType = this.props.layer.type
     const groups = layoutGroups(layerType).filter(group => {
       return !(layerType === 'background' && group.type === 'source')
@@ -258,7 +263,7 @@ export default class LayerEditor extends React.Component {
 
     const layout = this.props.layer.layout || {}
 
-    const items = {
+    const items: {[key: string]: {text: string, handler: () => void, disabled?: boolean}} = {
       delete: {
         text: "Delete",
         handler: () => this.props.onLayerDestroy(this.props.layerIndex)
@@ -285,8 +290,8 @@ export default class LayerEditor extends React.Component {
       }
     }
 
-    function handleSelection(id, event) {
-      event.stopPropagation;
+    function handleSelection(id: string, event: React.SyntheticEvent) {
+      event.stopPropagation();
       items[id].handler();
     }
 
@@ -310,7 +315,7 @@ export default class LayerEditor extends React.Component {
               </Button>
               <Menu>
                 <ul className="more-menu__menu">
-                  {Object.keys(items).map((id, idx) => {
+                  {Object.keys(items).map((id) => {
                     const item = items[id];
                     return <li key={id}>
                       <MenuItem value={id} className='more-menu__menu__item'>

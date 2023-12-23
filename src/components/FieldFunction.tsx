@@ -107,7 +107,7 @@ type FieldFunctionProps = {
   fieldName: string
   fieldType: string
   fieldSpec: any
-  errors?: unknown[]
+  errors?: {[key: string]: {message: string}}
   value?: any
 };
 

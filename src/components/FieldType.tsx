@@ -8,8 +8,8 @@ import InputString from './InputString'
 type FieldTypeProps = {
   value: string
   wdKey?: string
-  onChange(...args: unknown[]): unknown
-  error?: unknown[] | undefined
+  onChange(value: string): unknown
+  error?: {message: string}
   disabled?: boolean
 };
 

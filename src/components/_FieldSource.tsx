@@ -9,7 +9,7 @@ type BlockSourceProps = {
   wdKey?: string
   onChange?(...args: unknown[]): unknown
   sourceIds?: unknown[]
-  error?: unknown[]
+  error?: {message: string}
 };
 
 export default class BlockSource extends React.Component<BlockSourceProps> {

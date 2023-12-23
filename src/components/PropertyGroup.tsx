@@ -39,7 +39,7 @@ type PropertyGroupProps = {
   groupFields: string[]
   onChange(...args: unknown[]): unknown
   spec: any
-  errors?: unknown[]
+  errors?: {[key: string]: {message: string}}
 };
 
 export default class PropertyGroup extends React.Component<PropertyGroupProps> {
