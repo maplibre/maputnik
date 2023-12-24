@@ -1,5 +1,5 @@
-// @ts-ignore
-import autoBind from 'react-autobind'; // this can be easily replaced with arrow functions
+// @ts-ignore - this can be easily replaced with arrow functions
+import autoBind from 'react-autobind';
 import React from 'react'
 import cloneDeep from 'lodash.clonedeep'
 import clamp from 'lodash.clamp'

@@ -100,6 +100,7 @@
     "@types/color": "^3.0.6",
     "@types/cors": "^2.8.17",
     "@types/file-saver": "^2.0.7",
+    "@types/json-to-ast": "^2.1.4",
     "@types/lodash.capitalize": "^4.2.9",
     "@types/lodash.clamp": "^4.0.9",
     "@types/lodash.clonedeep": "^4.5.9",

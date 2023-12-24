@@ -1,24 +1,27 @@
+// @ts-ignore - this is a fork of jsonlint
 import jsonlint from 'jsonlint';
-import CodeMirror from 'codemirror';
+import CodeMirror, { MarkerRange } from 'codemirror';
 import jsonToAst from 'json-to-ast';
 import {expression, validate} from '@maplibre/maplibre-gl-style-spec';
 
+type MarkerRangeWithMessage = MarkerRange & {message: string};
 
-CodeMirror.defineMode("mgl", function(config, parserConfig) {
+
+CodeMirror.defineMode("mgl", (config, parserConfig) => {
   // Just using the javascript mode with json enabled. Our logic is in the linter below.
   return CodeMirror.modes.javascript(
-    {...config, json: true},
+    {...config, json: true} as any,
     parserConfig
   );
 });
 
-CodeMirror.registerHelper("lint", "json", function(text) {
-  const found = [];
+CodeMirror.registerHelper("lint", "json", (text: string) => {
+  const found: MarkerRangeWithMessage[] = [];
 
   // NOTE: This was modified from the original to remove the global, also the
   // old jsonlint API was 'jsonlint.parseError' its now
   // 'jsonlint.parser.parseError'
-  jsonlint.parser.parseError = function(str, hash) {
+  (jsonlint as any).parser.parseError = (str: string, hash: any) => {
     const loc = hash.loc;
     found.push({
       from:    CodeMirror.Pos(loc.first_line - 1, loc.first_column),
@@ -36,12 +39,12 @@ CodeMirror.registerHelper("lint", "json", function(text) {
   return found;
 });
 
-CodeMirror.registerHelper("lint", "mgl", function(text, opts, doc) {
-  const found = [];
-  const {parser} = jsonlint;
+CodeMirror.registerHelper("lint", "mgl", (text: string, opts: any, doc: any) => {
+  const found: MarkerRangeWithMessage[] = [];
+  const {parser} = jsonlint as any;
   const {context} = opts;
 
-  parser.parseError = function(str, hash) {
+  parser.parseError = (str: string, hash: any) => {
     const loc = hash.loc;
     found.push({
       from: CodeMirror.Pos(loc.first_line - 1, loc.first_column),
@@ -62,7 +65,7 @@ CodeMirror.registerHelper("lint", "mgl", function(text, opts, doc) {
   const ast = jsonToAst(text);
   const input = JSON.parse(text);
 
-  function getArrayPositionalFromAst (node, path) {
+  function getArrayPositionalFromAst(node: any, path: string[]) {
     if (!node) {
       return undefined;
     }
@@ -79,7 +82,7 @@ CodeMirror.registerHelper("lint", "mgl", function(text, opts, doc) {
         newNode = node.children[path[0]];
       }
       else {
-        newNode = node.children.find(childNode => {
+        newNode = node.children.find((childNode: any) => {
           return (
             childNode.key &&
             childNode.key.type === "Identifier" &&
@@ -94,7 +97,7 @@ CodeMirror.registerHelper("lint", "mgl", function(text, opts, doc) {
     }
   }
 
-  let out;
+  let out: ReturnType<typeof expression.createExpression> | null = null;
   if (context === "layer") {
     // Just an empty style so we can validate a layer.
     const errors = validate({
@@ -121,6 +124,7 @@ CodeMirror.registerHelper("lint", "mgl", function(text, opts, doc) {
             // Remove the 'layers[0].' as we're validating the layer only here
             const errMessageParts = err.message.replace(/^layers\[0\]./, "").split(":");
             return {
+              name: '',
               key: errMessageParts[0],
               message: errMessageParts[1],
             };
@@ -135,7 +139,7 @@ CodeMirror.registerHelper("lint", "mgl", function(text, opts, doc) {
     throw new Error(`Invalid context ${context}`);
   }
 
-  if (out.result === "error") {
+  if (out?.result === "error") {
     const errors = out.value;
     errors.forEach(error => {
       const {key, message} = error;
