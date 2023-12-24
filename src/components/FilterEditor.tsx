@@ -1,9 +1,11 @@
 import React from 'react'
-import {combiningFilterOps} from '../libs/filterops'
 import {mdiTableRowPlusAfter} from '@mdi/js';
 import {isEqual} from 'lodash';
+import {ExpressionSpecification, LegacyFilterSpecification, StyleSpecification} from 'maplibre-gl'
+import {latest, migrate, convertFilter} from '@maplibre/maplibre-gl-style-spec'
+import {mdiFunctionVariant} from '@mdi/js';
 
-import {latest, migrate, convertFilter, ExpressionSpecification, LegacyFilterSpecification, StyleSpecification} from '@maplibre/maplibre-gl-style-spec'
+import {combiningFilterOps} from '../libs/filterops'
 import InputSelect from './InputSelect'
 import Block from './Block'
 import SingleFilterEditor from './SingleFilterEditor'
@@ -11,7 +13,6 @@ import FilterEditorBlock from './FilterEditorBlock'
 import InputButton from './InputButton'
 import Doc from './Doc'
 import ExpressionProperty from './_ExpressionProperty';
-import {mdiFunctionVariant} from '@mdi/js';
 
 
 function combiningFilter(props: FilterEditorProps): LegacyFilterSpecification | ExpressionSpecification {
@@ -33,7 +34,8 @@ function combiningFilter(props: FilterEditorProps): LegacyFilterSpecification | 
 }
 
 function migrateFilter(filter: LegacyFilterSpecification | ExpressionSpecification) {
-  return (migrate(createStyleFromFilter(filter)).layers[0] as any).filter;
+  // This "any" can be removed in latest version of maplibre where maplibre re-exported types from style-spec
+  return (migrate(createStyleFromFilter(filter) as any).layers[0] as any).filter;
 }
 
 function createStyleFromFilter(filter: LegacyFilterSpecification | ExpressionSpecification): StyleSpecification & {id: string} {

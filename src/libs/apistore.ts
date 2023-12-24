@@ -1,10 +1,11 @@
 import style from './style.js'
-import {StyleSpecification, format} from '@maplibre/maplibre-gl-style-spec'
+import {format} from '@maplibre/maplibre-gl-style-spec'
+import type {StyleSpecification} from 'maplibre-gl'
 import ReconnectingWebSocket from 'reconnecting-websocket'
 
 export type ApiStyleStoreOptions = {
-  port?: string
-  host?: string
+  port: string | null
+  host: string | null
   onLocalStyleChange?: (style: any) => void
 }
 

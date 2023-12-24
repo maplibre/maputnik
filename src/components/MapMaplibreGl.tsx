@@ -1,6 +1,6 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
-import MapLibreGl, {LayerSpecification, Map, MapOptions, SourceSpecification, StyleSpecification} from 'maplibre-gl'
+import MapLibreGl, {LayerSpecification, LngLat, Map, MapOptions, SourceSpecification, StyleSpecification} from 'maplibre-gl'
 // @ts-ignore
 import MapboxInspect from 'mapbox-gl-inspect'
 // @ts-ignore
@@ -53,18 +53,18 @@ function buildInspectStyle(originalMapStyle: StyleSpecification, coloredLayers: 
 }
 
 type MapMaplibreGlProps = {
-  onDataChange?(...args: unknown[]): unknown
+  onDataChange?(event: {map: Map | null}): unknown
   onLayerSelect(...args: unknown[]): unknown
   mapStyle: StyleSpecification
   inspectModeEnabled: boolean
   highlightedLayer?: HighlightedLayer
-  options?: MapOptions & {
+  options?: Partial<MapOptions> & {
     showTileBoundaries?: boolean
     showCollisionBoxes?: boolean
     showOverdrawInspector?: boolean
   }
   replaceAccessTokens(mapStyle: StyleSpecification): StyleSpecification
-  onChange(...args: unknown[]): unknown
+  onChange(value: {center: LngLat, zoom: number}): unknown
 };
 
 type MapMaplibreGlState = {

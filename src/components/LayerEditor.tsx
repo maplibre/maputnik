@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 import { Wrapper, Button, Menu, MenuItem } from 'react-aria-menubutton'
 import {Accordion} from 'react-accessible-accordion';
 import {MdMoreVert} from 'react-icons/md'
+import {BackgroundLayerSpecification, LayerSpecification, SourceSpecification} from 'maplibre-gl';
 
 import FieldJson from './FieldJson'
 import FilterEditor from './FilterEditor'
@@ -18,8 +19,6 @@ import FieldSourceLayer from './FieldSourceLayer'
 import { changeType, changeProperty } from '../libs/layer'
 import layout from '../config/layout.json'
 import {formatLayerId} from '../util/format';
-import { SourceSpecification } from '@maplibre/maplibre-gl-style-spec';
-import { BackgroundLayerSpecification, LayerSpecification } from 'maplibre-gl';
 
 
 function getLayoutForType(type: LayerSpecification["type"]) {
@@ -46,7 +45,7 @@ function layoutGroups(layerType: LayerSpecification["type"]): {title: string, ty
 
 type LayerEditorProps = {
   layer: LayerSpecification
-  sources?: SourceSpecification
+  sources: {[key: string]: SourceSpecification}
   vectorLayers: {[key: string]: any}
   spec: object
   onLayerChanged(...args: unknown[]): unknown
@@ -150,8 +149,9 @@ export default class LayerEditor extends React.Component<LayerEditorProps, Layer
     })
 
     let sourceLayerIds;
-    if(this.props.sources?.hasOwnProperty((this.props.layer as Exclude<LayerSpecification, BackgroundLayerSpecification>).source)) {
-      sourceLayerIds = (this.props.sources as any)[(this.props.layer as any).source].layers;
+    const layer = this.props.layer as Exclude<LayerSpecification, BackgroundLayerSpecification>;
+    if(this.props.sources.hasOwnProperty(layer.source)) {
+      sourceLayerIds = (this.props.sources[layer.source] as any).layers;
     }
 
     switch(type) {

@@ -98,6 +98,8 @@ class ToolbarAction extends React.Component<ToolbarActionProps> {
   }
 }
 
+export type MapState = "map" | "inspect" | "filter-achromatopsia" | "filter-deuteranopia" | "filter-protanopia" | "filter-tritanopia";
+
 type AppToolbarProps = {
   mapStyle: object
   inspectModeEnabled: boolean
@@ -108,8 +110,8 @@ type AppToolbarProps = {
   sources: object
   children?: React.ReactNode
   onToggleModal(...args: unknown[]): unknown
-  onSetMapState(...args: unknown[]): unknown
-  mapState?: string
+  onSetMapState(mapState: MapState): unknown
+  mapState?: MapState
   renderer?: string
 };
 
@@ -124,7 +126,7 @@ export default class AppToolbar extends React.Component<AppToolbarProps> {
     }
   }
 
-  handleSelection(val: string | undefined) {
+  handleSelection(val: MapState) {
     this.props.onSetMapState(val);
   }
 
@@ -245,7 +247,7 @@ export default class AppToolbar extends React.Component<AppToolbarProps> {
               <select
                 className="maputnik-select"
                 data-wd-key="maputnik-select"
-                onChange={(e) => this.handleSelection(e.target.value)}
+                onChange={(e) => this.handleSelection(e.target.value as MapState)}
                 value={currentView?.id}
               >
                 {views.filter(v => v.group === "general").map((item) => {

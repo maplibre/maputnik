@@ -8,7 +8,7 @@ type ModalProps = {
   "data-wd-key"?: string
   isOpen: boolean
   title: string
-  onOpenToggle(...args: unknown[]): unknown
+  onOpenToggle(value: boolean): unknown
   underlayClickExits?: boolean
   underlayProps?: any
   className?: string

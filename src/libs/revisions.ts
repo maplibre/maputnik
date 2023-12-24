@@ -1,7 +1,7 @@
-import type {StyleSpecification} from "@maplibre/maplibre-gl-style-spec";
+import type {StyleSpecification} from "maplibre-gl";
 
 export class RevisionStore {
-  revisions: StyleSpecification[];
+  revisions: (StyleSpecification & {id: string})[];
   currentIdx: number;
 
 
@@ -18,7 +18,7 @@ export class RevisionStore {
     return this.revisions[this.currentIdx]
   }
 
-  addRevision(revision: StyleSpecification) {
+  addRevision(revision: StyleSpecification & {id: string}) {
     //TODO: compare new revision style id with old ones
     //and ensure that it is always the same id
     this.revisions.push(revision)

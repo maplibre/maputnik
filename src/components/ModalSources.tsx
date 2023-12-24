@@ -1,5 +1,8 @@
 import React from 'react'
-import {GeoJSONSourceSpecification, RasterDEMSourceSpecification, RasterSourceSpecification, SourceSpecification, StyleSpecification, VectorSourceSpecification, latest} from '@maplibre/maplibre-gl-style-spec'
+import {MdAddCircleOutline, MdDelete} from 'react-icons/md'
+import {latest} from '@maplibre/maplibre-gl-style-spec'
+import type {GeoJSONSourceSpecification, RasterDEMSourceSpecification, RasterSourceSpecification, SourceSpecification, StyleSpecification, VectorSourceSpecification} from 'maplibre-gl'
+
 import Modal from './Modal'
 import InputButton from './InputButton'
 import FieldString from './FieldString'
@@ -10,7 +13,6 @@ import style from '../libs/style'
 import { deleteSource, addSource, changeSource } from '../libs/source'
 import publicSources from '../config/tilesets.json'
 
-import {MdAddCircleOutline, MdDelete} from 'react-icons/md'
 
 type PublicSourceProps = {
   id: string

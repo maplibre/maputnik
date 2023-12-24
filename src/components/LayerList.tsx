@@ -6,8 +6,8 @@ import LayerListGroup from './LayerListGroup'
 import LayerListItem from './LayerListItem'
 import ModalAdd from './ModalAdd'
 
-import {SortableContainer} from 'react-sortable-hoc';
-import { LayerSpecification } from '@maplibre/maplibre-gl-style-spec';
+import {SortEndHandler, SortableContainer} from 'react-sortable-hoc';
+import type {LayerSpecification} from 'maplibre-gl';
 
 function layerPrefix(name: string) {
   return name.replace(' ', '-').replace('_', '-').split('-')[0]
@@ -32,7 +32,7 @@ let UID = 0;
 type LayerListContainerProps = {
   layers: LayerSpecification[]
   selectedLayerIndex: number
-  onLayersChange(...args: unknown[]): unknown
+  onLayersChange(layers: LayerSpecification[]): unknown
   onLayerSelect(...args: unknown[]): unknown
   onLayerDestroy?(...args: unknown[]): unknown
   onLayerCopy(...args: unknown[]): unknown
@@ -331,7 +331,7 @@ class LayerListContainer extends React.Component<LayerListContainerProps, LayerL
 const LayerListContainerSortable = SortableContainer((props: LayerListContainerProps) => <LayerListContainer {...props} />)
 
 type LayerListProps = LayerListContainerProps & {
-  onMoveLayer(...args: unknown[]): unknown
+  onMoveLayer: SortEndHandler
 };
 
 export default class LayerList extends React.Component<LayerListProps> {

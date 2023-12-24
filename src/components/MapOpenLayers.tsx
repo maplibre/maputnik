@@ -8,7 +8,7 @@ import {apply} from 'ol-mapbox-style';
 import {Map, View, Overlay} from 'ol';
 
 import {toLonLat} from 'ol/proj';
-import { StyleSpecification } from '@maplibre/maplibre-gl-style-spec';
+import type {StyleSpecification} from 'maplibre-gl';
 
 
 function renderCoords (coords: string[]) {

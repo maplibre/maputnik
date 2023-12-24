@@ -2,7 +2,7 @@
 import stylegen from 'mapbox-gl-inspect/lib/stylegen'
 // @ts-ignore
 import colors from 'mapbox-gl-inspect/lib/colors'
-import {FilterSpecification,LayerSpecification } from '@maplibre/maplibre-gl-style-spec'
+import type {FilterSpecification,LayerSpecification } from 'maplibre-gl'
 
 export type HighlightedLayer = LayerSpecification & {filter?: FilterSpecification};
 
