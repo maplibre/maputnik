@@ -1,9 +1,18 @@
 import React from 'react'
-import PropTypes from 'prop-types'
 import Block from './Block'
 import FieldString from './FieldString'
 
-function displayValue(value) {
+export type InspectFeature = {
+  id: string
+  properties: {[key:string]: any}
+  layer: {[key:string]: any}
+  geometry: GeoJSON.Geometry
+  sourceLayer: string
+  inspectModeCounter?: number
+  counter?: number
+}
+
+function displayValue(value: string | number | Date | object) {
   if (typeof value === 'undefined' || value === null) return value;
   if (value instanceof Date) return value.toLocaleString();
   if (typeof value === 'object' ||
@@ -12,7 +21,7 @@ function displayValue(value) {
   return value;
 }
 
-function renderProperties(feature) {
+function renderProperties(feature: InspectFeature) {
   return Object.keys(feature.properties).map(propertyName => {
     const property = feature.properties[propertyName]
     return <Block key={propertyName} label={propertyName}>
@@ -21,13 +30,13 @@ function renderProperties(feature) {
   })
 }
 
-function renderFeatureId(feature) {
+function renderFeatureId(feature: InspectFeature) {
   return <Block key={"feature-id"} label={"feature_id"}>
     <FieldString value={displayValue(feature.id)} style={{backgroundColor: 'transparent'}} />
   </Block>
   }
 
-function renderFeature(feature, idx) {
+function renderFeature(feature: InspectFeature, idx: number) {
   return <div key={`${feature.sourceLayer}-${idx}`}>
     <div className="maputnik-popup-layer-id">{feature.layer['source']}: {feature.layer['source-layer']}{feature.inspectModeCounter && <span> × {feature.inspectModeCounter}</span>}</div>
     <Block key={"property-type"} label={"$type"}>
@@ -38,8 +47,8 @@ function renderFeature(feature, idx) {
   </div>
 }
 
-function removeDuplicatedFeatures(features) {
-  let uniqueFeatures = [];
+function removeDuplicatedFeatures(features: InspectFeature[]) {
+  let uniqueFeatures: InspectFeature[] = [];
 
   features.forEach(feature => {
     const featureIndex = uniqueFeatures.findIndex(feature2 => {
@@ -50,8 +59,8 @@ function removeDuplicatedFeatures(features) {
     if(featureIndex === -1) {
       uniqueFeatures.push(feature)
     } else {
-      if(uniqueFeatures[featureIndex].hasOwnProperty('inspectModeCounter')) {
-        uniqueFeatures[featureIndex].inspectModeCounter++
+      if('inspectModeCounter' in uniqueFeatures[featureIndex]) {
+        uniqueFeatures[featureIndex].inspectModeCounter!++
       } else {
         uniqueFeatures[featureIndex].inspectModeCounter = 2
       }
@@ -61,11 +70,11 @@ function removeDuplicatedFeatures(features) {
   return uniqueFeatures
 }
 
-class FeaturePropertyPopup extends React.Component {
-  static propTypes = {
-    features: PropTypes.array
-  }
+type FeaturePropertyPopupProps = {
+  features: InspectFeature[]
+};
 
+class FeaturePropertyPopup extends React.Component<FeaturePropertyPopupProps> {
   render() {
     const features = removeDuplicatedFeatures(this.props.features)
     return <div className="maputnik-feature-property-popup">

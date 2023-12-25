@@ -13,6 +13,7 @@ const typeMap = {
   number: () => Block,
   string: () => Block,
   formatted: () => Block,
+  padding: () => Block,
 };
 
 export type SpecFieldProps = InputFieldSpecProps & {

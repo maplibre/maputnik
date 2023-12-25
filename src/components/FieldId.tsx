@@ -7,8 +7,8 @@ import InputString from './InputString'
 type FieldIdProps = {
   value: string
   wdKey: string
-  onChange(...args: unknown[]): unknown
-  error?: unknown[]
+  onChange(value: string | undefined): unknown
+  error?: {message: string}
 };
 
 export default class FieldId extends React.Component<FieldIdProps> {

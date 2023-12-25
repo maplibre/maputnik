@@ -13,7 +13,7 @@ type SpecPropertyProps = SpecFieldProps & {
   fieldType?: string
   fieldSpec?: any
   value?: any
-  errors?: unknown[]
+  errors?: {[key: string]: {message: string}}
   onExpressionClick?(...args: unknown[]): unknown
 };
 

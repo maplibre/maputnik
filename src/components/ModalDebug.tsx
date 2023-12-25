@@ -6,16 +6,16 @@ import Modal from './Modal'
 type ModalDebugProps = {
   isOpen: boolean
   renderer: string
-  onChangeMaboxGlDebug(...args: unknown[]): unknown
-  onChangeOpenlayersDebug(...args: unknown[]): unknown
-  onOpenToggle(...args: unknown[]): unknown
+  onChangeMaplibreGlDebug(key: string, checked: boolean): unknown
+  onChangeOpenlayersDebug(key: string, checked: boolean): unknown
+  onOpenToggle(value: boolean): unknown
   maplibreGlDebugOptions?: object
   openlayersDebugOptions?: object
   mapView: {
     zoom: number
     center: {
-      lng: string
-      lat: string
+      lng: number
+      lat: number
     }
   }
 };
@@ -26,8 +26,8 @@ export default class ModalDebug extends React.Component<ModalDebugProps> {
     const {mapView} = this.props;
 
     const osmZoom = Math.round(mapView.zoom)+1;
-    const osmLon = Number.parseFloat(mapView.center.lng).toFixed(5);
-    const osmLat = Number.parseFloat(mapView.center.lat).toFixed(5);
+    const osmLon = +(mapView.center.lng).toFixed(5);
+    const osmLat = +(mapView.center.lat).toFixed(5);
 
     return <Modal
       data-wd-key="modal:debug"
@@ -42,7 +42,7 @@ export default class ModalDebug extends React.Component<ModalDebugProps> {
             {Object.entries(this.props.maplibreGlDebugOptions!).map(([key, val]) => {
               return <li key={key}>
                 <label>
-                  <input type="checkbox" checked={val} onChange={(e) => this.props.onChangeMaboxGlDebug(key, e.target.checked)} /> {key}
+                  <input type="checkbox" checked={val} onChange={(e) => this.props.onChangeMaplibreGlDebug(key, e.target.checked)} /> {key}
                 </label>
               </li>
             })}

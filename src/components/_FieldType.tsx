@@ -9,7 +9,7 @@ type BlockTypeProps = {
   value: string
   wdKey?: string
   onChange(...args: unknown[]): unknown
-  error?: unknown[]
+  error?: {message: string}
   disabled?: boolean
 };
 

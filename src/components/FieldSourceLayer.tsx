@@ -9,6 +9,7 @@ type FieldSourceLayerProps = {
   onChange?(...args: unknown[]): unknown
   sourceLayerIds?: unknown[]
   isFixed?: boolean
+  error?: {message: string}
 };
 
 export default class FieldSourceLayer extends React.Component<FieldSourceLayerProps> {
@@ -19,8 +20,11 @@ export default class FieldSourceLayer extends React.Component<FieldSourceLayerPr
   }
 
   render() {
-    return <Block label={"Source Layer"} fieldSpec={latest.layer['source-layer']}
+    return <Block 
+      label={"Source Layer"} 
+      fieldSpec={latest.layer['source-layer']}
       data-wd-key="layer-source-layer"
+      error={this.props.error}
     >
       <InputAutocomplete
         keepMenuWithinWindowBounds={!!this.props.isFixed}

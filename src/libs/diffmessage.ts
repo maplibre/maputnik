@@ -1,4 +1,5 @@
-import {StyleSpecification, diff} from '@maplibre/maplibre-gl-style-spec'
+import {diff} from '@maplibre/maplibre-gl-style-spec'
+import type {StyleSpecification} from 'maplibre-gl'
 
 function diffMessages(beforeStyle: StyleSpecification, afterStyle: StyleSpecification) {
   const changes = diff(beforeStyle, afterStyle)

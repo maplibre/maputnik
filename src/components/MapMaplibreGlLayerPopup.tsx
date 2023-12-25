@@ -1,18 +1,19 @@
 import React from 'react'
 import IconLayer from './IconLayer'
+import type {InspectFeature} from './MapMaplibreGlFeaturePropertyPopup';
 
-function groupFeaturesBySourceLayer(features: any[]) {
-  const sources = {} as any
+function groupFeaturesBySourceLayer(features: InspectFeature[]) {
+  const sources: {[key: string]: InspectFeature[]} = {}
 
-  let returnedFeatures = {} as any;
+  let returnedFeatures: {[key: string]: number} = {}
 
   features.forEach(feature => {
     if(returnedFeatures.hasOwnProperty(feature.layer.id)) {
       returnedFeatures[feature.layer.id]++
 
-      const featureObject = sources[feature.layer['source-layer']].find((f: any) => f.layer.id === feature.layer.id)
+      const featureObject = sources[feature.layer['source-layer']].find((f: InspectFeature) => f.layer.id === feature.layer.id)
 
-      featureObject.counter = returnedFeatures[feature.layer.id]
+      featureObject!.counter = returnedFeatures[feature.layer.id]
     } else {
       sources[feature.layer['source-layer']] = sources[feature.layer['source-layer']] || []
       sources[feature.layer['source-layer']].push(feature)
@@ -25,13 +26,13 @@ function groupFeaturesBySourceLayer(features: any[]) {
 }
 
 type FeatureLayerPopupProps = {
-  onLayerSelect(...args: unknown[]): unknown
-  features: any[]
+  onLayerSelect(layerId: string): unknown
+  features: InspectFeature[]
   zoom?: number
 };
 
 class FeatureLayerPopup extends React.Component<FeatureLayerPopupProps> {
-  _getFeatureColor(feature: any, _zoom?: number) {
+  _getFeatureColor(feature: InspectFeature, _zoom?: number) {
     // Guard because openlayers won't have this
     if (!feature.layer.paint) {
       return;
@@ -75,7 +76,7 @@ class FeatureLayerPopup extends React.Component<FeatureLayerPopupProps> {
     const sources = groupFeaturesBySourceLayer(this.props.features)
 
     const items = Object.keys(sources).map(vectorLayerId => {
-      const layers = sources[vectorLayerId].map((feature: any, idx: number) => {
+      const layers = sources[vectorLayerId].map((feature: InspectFeature, idx: number) => {
         const featureColor = this._getFeatureColor(feature, this.props.zoom);
 
         return <div

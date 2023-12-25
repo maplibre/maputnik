@@ -6,18 +6,19 @@ import FieldType from './FieldType'
 import FieldId from './FieldId'
 import FieldSource from './FieldSource'
 import FieldSourceLayer from './FieldSourceLayer'
+import type {LayerSpecification} from 'maplibre-gl'
 
 type ModalAddProps = {
-  layers: unknown[]
-  onLayersChange(...args: unknown[]): unknown
+  layers: LayerSpecification[]
+  onLayersChange(layers: LayerSpecification[]): unknown
   isOpen: boolean
-  onOpenToggle(...args: unknown[]): unknown
+  onOpenToggle(open: boolean): unknown
   // A dict of source id's and the available source layers
   sources: any
 };
 
 type ModalAddState = {
-  type: string
+  type: LayerSpecification["type"]
   id: string
   source?: string
   'source-layer'?: string
@@ -38,7 +39,7 @@ export default class ModalAdd extends React.Component<ModalAddProps, ModalAddSta
       }
     }
 
-    changedLayers.push(layer)
+    changedLayers.push(layer as LayerSpecification)
 
     this.props.onLayersChange(changedLayers)
     this.props.onOpenToggle(false)
@@ -145,7 +146,7 @@ export default class ModalAdd extends React.Component<ModalAddProps, ModalAddSta
       <FieldType
         value={this.state.type}
         wdKey="add-layer.layer-type"
-        onChange={(v: string) => this.setState({ type: v })}
+        onChange={(v: LayerSpecification["type"]) => this.setState({ type: v })}
       />
       {this.state.type !== 'background' &&
       <FieldSource

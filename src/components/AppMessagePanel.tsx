@@ -1,13 +1,13 @@
 import React from 'react'
 import {formatLayerId} from '../util/format';
-import { StyleSpecification } from '@maplibre/maplibre-gl-style-spec';
+import {LayerSpecification, StyleSpecification} from 'maplibre-gl';
 
 type AppMessagePanelProps = {
   errors?: unknown[]
   infos?: unknown[]
   mapStyle?: StyleSpecification
   onLayerSelect?(...args: unknown[]): unknown
-  currentLayer?: object
+  currentLayer?: LayerSpecification
   selectedLayerIndex?: number
 };
 

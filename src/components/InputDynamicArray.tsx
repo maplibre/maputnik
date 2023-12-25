@@ -137,7 +137,6 @@ class DeleteValueInputButton extends React.Component<DeleteValueInputButtonProps
     >
       <FieldDocLabel
         label={<MdDelete />}
-        fieldSpec={{doc:" Remove array item."}}
       />
     </InputButton>
   }

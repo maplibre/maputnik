@@ -18,7 +18,7 @@ type LayerEditorGroupProps = {
   title: string
   isActive: boolean
   children: React.ReactElement
-  onActiveToggle(...args: unknown[]): unknown
+  onActiveToggle(active: boolean): unknown
 };
 
 
