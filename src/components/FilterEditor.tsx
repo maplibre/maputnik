@@ -1,10 +1,11 @@
 import React from 'react'
-import PropTypes from 'prop-types'
-import {combiningFilterOps} from '../libs/filterops'
 import {mdiTableRowPlusAfter} from '@mdi/js';
 import {isEqual} from 'lodash';
-
+import {ExpressionSpecification, LegacyFilterSpecification, StyleSpecification} from 'maplibre-gl'
 import {latest, migrate, convertFilter} from '@maplibre/maplibre-gl-style-spec'
+import {mdiFunctionVariant} from '@mdi/js';
+
+import {combiningFilterOps} from '../libs/filterops'
 import InputSelect from './InputSelect'
 import Block from './Block'
 import SingleFilterEditor from './SingleFilterEditor'
@@ -12,10 +13,9 @@ import FilterEditorBlock from './FilterEditorBlock'
 import InputButton from './InputButton'
 import Doc from './Doc'
 import ExpressionProperty from './_ExpressionProperty';
-import {mdiFunctionVariant} from '@mdi/js';
 
 
-function combiningFilter (props) {
+function combiningFilter(props: FilterEditorProps): LegacyFilterSpecification | ExpressionSpecification {
   let filter = props.filter || ['all'];
 
   if (!Array.isArray(filter)) {
@@ -30,14 +30,15 @@ function combiningFilter (props) {
     filters = [filter.slice(0)];
   }
 
-  return [combiningOp, ...filters];
+  return [combiningOp, ...filters] as LegacyFilterSpecification | ExpressionSpecification;
 }
 
-function migrateFilter (filter) {
-  return migrate(createStyleFromFilter(filter)).layers[0].filter;
+function migrateFilter(filter: LegacyFilterSpecification | ExpressionSpecification) {
+  // This "any" can be removed in latest version of maplibre where maplibre re-exported types from style-spec
+  return (migrate(createStyleFromFilter(filter) as any).layers[0] as any).filter;
 }
 
-function createStyleFromFilter (filter) {
+function createStyleFromFilter(filter: LegacyFilterSpecification | ExpressionSpecification): StyleSpecification & {id: string} {
   return {
     "id": "tmp",
     "version": 8,
@@ -69,7 +70,7 @@ const FILTER_OPS = [
 ];
 
 // If we convert a filter that is an expression to an expression it'll remain the same in value
-function checkIfSimpleFilter (filter) {
+function checkIfSimpleFilter (filter: LegacyFilterSpecification | ExpressionSpecification) {
   if (filter.length === 1 && FILTER_OPS.includes(filter[0])) {
     return true;
   }
@@ -77,33 +78,38 @@ function checkIfSimpleFilter (filter) {
   return !isEqual(expression, filter);
 }
 
-function hasCombiningFilter(filter) {
+function hasCombiningFilter(filter: LegacyFilterSpecification | ExpressionSpecification) {
   return combiningFilterOps.indexOf(filter[0]) >= 0
 }
 
-function hasNestedCombiningFilter(filter) {
+function hasNestedCombiningFilter(filter: LegacyFilterSpecification | ExpressionSpecification) {
   if(hasCombiningFilter(filter)) {
-    const combinedFilters = filter.slice(1)
-    return filter.slice(1).map(f => hasCombiningFilter(f)).filter(f => f == true).length > 0
+    return filter.slice(1).map(f => hasCombiningFilter(f as any)).filter(f => f == true).length > 0
   }
   return false
 }
 
-export default class FilterEditor extends React.Component {
-  static propTypes = {
-    /** Properties of the vector layer and the available fields */
-    properties: PropTypes.object,
-    filter: PropTypes.array,
-    errors: PropTypes.object,
-    onChange: PropTypes.func.isRequired,
-  }
+type FilterEditorProps = {
+  /** Properties of the vector layer and the available fields */
+  properties?: {[key:string]: any}
+  filter?: any[]
+  errors?: {[key:string]: any}
+  onChange(value: LegacyFilterSpecification | ExpressionSpecification): unknown
+};
 
+type FilterEditorState = {
+  showDoc: boolean
+  displaySimpleFilter: boolean
+  valueIsSimpleFilter?: boolean
+};
+
+export default class FilterEditor extends React.Component<FilterEditorProps, FilterEditorState> {
   static defaultProps = {
     filter: ["all"],
   }
 
-  constructor (props) {
-    super();
+  constructor (props: FilterEditorProps) {
+    super(props);
     this.state = {
       showDoc: false,
       displaySimpleFilter: checkIfSimpleFilter(combiningFilter(props)),
@@ -111,25 +117,25 @@ export default class FilterEditor extends React.Component {
   }
 
   // Convert filter to combining filter
-  onFilterPartChanged(filterIdx, newPart) {
-    const newFilter = combiningFilter(this.props).slice(0)
+  onFilterPartChanged(filterIdx: number, newPart: any[]) {
+    const newFilter = combiningFilter(this.props).slice(0) as LegacyFilterSpecification | ExpressionSpecification
     newFilter[filterIdx] = newPart
     this.props.onChange(newFilter)
   }
 
-  deleteFilterItem(filterIdx) {
-    const newFilter = combiningFilter(this.props).slice(0)
+  deleteFilterItem(filterIdx: number) {
+    const newFilter = combiningFilter(this.props).slice(0) as LegacyFilterSpecification | ExpressionSpecification
     newFilter.splice(filterIdx + 1, 1)
     this.props.onChange(newFilter)
   }
 
   addFilterItem = () => {
-    const newFilterItem = combiningFilter(this.props).slice(0)
-    newFilterItem.push(['==', 'name', ''])
+    const newFilterItem = combiningFilter(this.props).slice(0) as LegacyFilterSpecification | ExpressionSpecification
+    (newFilterItem as any[]).push(['==', 'name', ''])
     this.props.onChange(newFilterItem)
   }
 
-  onToggleDoc = (val) => {
+  onToggleDoc = (val: boolean) => {
     this.setState({
       showDoc: val
     });
@@ -149,8 +155,7 @@ export default class FilterEditor extends React.Component {
     })
   }
 
-  static getDerivedStateFromProps (props, currentState) {
-    const {filter} = props;
+  static getDerivedStateFromProps(props: FilterEditorProps, currentState: FilterEditorState) {
     const displaySimpleFilter = checkIfSimpleFilter(combiningFilter(props));
 
     // Upgrade but never downgrade
@@ -178,7 +183,7 @@ export default class FilterEditor extends React.Component {
     const fieldSpec={
       doc: latest.layer.filter.doc + " Combine multiple filters together by using a compound filter."
     };
-    const defaultFilter = ["all"];
+    const defaultFilter = ["all"] as LegacyFilterSpecification | ExpressionSpecification;
 
     const isNestedCombiningFilter = displaySimpleFilter && hasNestedCombiningFilter(combiningFilter(this.props));
 
@@ -201,7 +206,7 @@ export default class FilterEditor extends React.Component {
     else if (displaySimpleFilter) {
       const filter = combiningFilter(this.props);
       let combiningOp = filter[0];
-      let filters = filter.slice(1)
+      let filters = filter.slice(1) as (LegacyFilterSpecification | ExpressionSpecification)[];
 
       const actions = (
         <div>
@@ -218,7 +223,7 @@ export default class FilterEditor extends React.Component {
       );
 
       const editorBlocks = filters.map((f, idx) => {
-        const error = errors[`filter[${idx+1}]`];
+        const error = errors![`filter[${idx+1}]`];
 
         return (
           <div key={`block-${idx}`}>
@@ -247,7 +252,7 @@ export default class FilterEditor extends React.Component {
           >
             <InputSelect
               value={combiningOp}
-              onChange={this.onFilterPartChanged.bind(this, 0)}
+              onChange={(v: [string, any]) => this.onFilterPartChanged(0, v)}
               options={[["all", "every filter matches"], ["none", "no filter matches"], ["any", "any filter matches"]]}
             />
           </Block>

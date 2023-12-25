@@ -7,7 +7,7 @@ import InputNumber from './InputNumber'
 type FieldMinZoomProps = {
   value?: number
   onChange(...args: unknown[]): unknown
-  error?: unknown[]
+  error?: {message: string}
 };
 
 export default class FieldMinZoom extends React.Component<FieldMinZoomProps> {

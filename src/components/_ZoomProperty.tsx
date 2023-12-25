@@ -31,10 +31,11 @@ function setStopRefs(props: ZoomPropertyProps, state: ZoomPropertyState) {
           newRefs = {...state};
         }
         newRefs[idx] = docUid("stop-");
+      } else {
+        newRefs[idx] = state.refs[idx];
       }
     })
   }
-
   return newRefs;
 }
 
@@ -156,7 +157,6 @@ export default class ZoomProperty extends React.Component<ZoomPropertyProps, Zoo
       const key  = this.state.refs[idx];
       const value = stop[1]
       const deleteStopBtn= <DeleteStopButton onClick={this.props.onDeleteStop?.bind(this, idx)} />
-
       return <tr
         key={key}
       >
@@ -195,7 +195,7 @@ export default class ZoomProperty extends React.Component<ZoomPropertyProps, Zoo
             <div className="maputnik-data-spec-property-input">
               <InputSelect
                 value={"interpolate"}
-                onChange={propVal => this.changeDataType(propVal)}
+                onChange={(propVal: string) => this.changeDataType(propVal)}
                 title={"Select a type of data scale (default is 'categorical')."}
                 options={this.getDataFunctionTypes(this.props.fieldSpec!)}
               />

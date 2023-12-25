@@ -1,7 +1,8 @@
 import React from 'react'
 
 import FieldFunction from './FieldFunction'
-import { LayerSpecification } from '@maplibre/maplibre-gl-style-spec'
+import type {LayerSpecification} from 'maplibre-gl'
+
 const iconProperties = ['background-pattern', 'fill-pattern', 'line-pattern', 'fill-extrusion-pattern', 'icon-image']
 
 /** Extract field spec by {@fieldName} from the {@layerType} in the
@@ -39,7 +40,7 @@ type PropertyGroupProps = {
   groupFields: string[]
   onChange(...args: unknown[]): unknown
   spec: any
-  errors?: unknown[]
+  errors?: {[key: string]: {message: string}}
 };
 
 export default class PropertyGroup extends React.Component<PropertyGroupProps> {

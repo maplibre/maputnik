@@ -1,4 +1,5 @@
-import {derefLayers, StyleSpecification, LayerSpecification} from '@maplibre/maplibre-gl-style-spec'
+import {derefLayers} from '@maplibre/maplibre-gl-style-spec'
+import type {StyleSpecification, LayerSpecification} from 'maplibre-gl'
 import tokens from '../config/tokens.json'
 
 // Empty style is always used if no style could be restored or fetched

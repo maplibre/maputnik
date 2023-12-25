@@ -27,7 +27,7 @@ export function changeType(layer: LayerSpecification, newType: string) {
 /** A {@property} in either the paint our layout {@group} has changed
  * to a {@newValue}.
  */
-export function changeProperty(layer: LayerSpecification, group: keyof LayerSpecification, property: string, newValue: any) {
+export function changeProperty(layer: LayerSpecification, group: keyof LayerSpecification | null, property: string, newValue: any) {
   // Remove the property if undefined
   if(newValue === undefined) {
     if(group) {

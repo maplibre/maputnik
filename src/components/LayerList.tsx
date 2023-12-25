@@ -1,5 +1,4 @@
 import React from 'react'
-import PropTypes from 'prop-types'
 import classnames from 'classnames'
 import lodash from 'lodash';
 
@@ -7,21 +6,14 @@ import LayerListGroup from './LayerListGroup'
 import LayerListItem from './LayerListItem'
 import ModalAdd from './ModalAdd'
 
-import {SortableContainer} from 'react-sortable-hoc';
+import {SortEndHandler, SortableContainer} from 'react-sortable-hoc';
+import type {LayerSpecification} from 'maplibre-gl';
 
-const layerListPropTypes = {
-  layers: PropTypes.array.isRequired,
-  selectedLayerIndex: PropTypes.number.isRequired,
-  onLayersChange: PropTypes.func.isRequired,
-  onLayerSelect: PropTypes.func,
-  sources: PropTypes.object.isRequired,
-}
-
-function layerPrefix(name) {
+function layerPrefix(name: string) {
   return name.replace(' ', '-').replace('_', '-').split('-')[0]
 }
 
-function findClosestCommonPrefix(layers, idx) {
+function findClosestCommonPrefix(layers: LayerSpecification[], idx: number) {
   const currentLayerPrefix = layerPrefix(layers[idx].id)
   let closestIdx = idx
   for (let i = idx; i > 0; i--) {
@@ -37,14 +29,34 @@ function findClosestCommonPrefix(layers, idx) {
 
 let UID = 0;
 
+type LayerListContainerProps = {
+  layers: LayerSpecification[]
+  selectedLayerIndex: number
+  onLayersChange(layers: LayerSpecification[]): unknown
+  onLayerSelect(...args: unknown[]): unknown
+  onLayerDestroy?(...args: unknown[]): unknown
+  onLayerCopy(...args: unknown[]): unknown
+  onLayerVisibilityToggle(...args: unknown[]): unknown
+  sources: object
+  errors: any[]
+};
+
+type LayerListContainerState = {
+  collapsedGroups: {[ket: string]: boolean}
+  areAllGroupsExpanded: boolean
+  keys: {[key: string]: number}
+  isOpen: {[key: string]: boolean}
+};
+
 // List of collapsible layer editors
-class LayerListContainer extends React.Component {
-  static propTypes = {...layerListPropTypes}
+class LayerListContainer extends React.Component<LayerListContainerProps, LayerListContainerState> {
   static defaultProps = {
     onLayerSelect: () => {},
   }
+  selectedItemRef: React.RefObject<any>;
+  scrollContainerRef: React.RefObject<HTMLElement>;
 
-  constructor(props) {
+  constructor(props: LayerListContainerProps) {
     super(props);
     this.selectedItemRef = React.createRef();
     this.scrollContainerRef = React.createRef();
@@ -60,7 +72,7 @@ class LayerListContainer extends React.Component {
     }
   }
 
-  toggleModal(modalName) {
+  toggleModal(modalName: string) {
     this.setState({
       keys: {
         ...this.state.keys,
@@ -74,9 +86,9 @@ class LayerListContainer extends React.Component {
   }
 
   toggleLayers = () => {
-    let idx=0
+    let idx = 0
 
-    let newGroups=[]
+    let newGroups: {[key:string]: boolean} = {}
 
     this.groupedLayers().forEach(layers => {
       const groupPrefix = layerPrefix(layers[0].id)
@@ -87,7 +99,7 @@ class LayerListContainer extends React.Component {
         newGroups[lookupKey] = this.state.areAllGroupsExpanded
       }
 
-      layers.forEach((layer) => {
+      layers.forEach((_layer) => {
         idx += 1
       })
     });
@@ -98,7 +110,7 @@ class LayerListContainer extends React.Component {
     })
   }
 
-  groupedLayers() {
+  groupedLayers(): (LayerSpecification & {key: string})[][] {
     const groups = []
     const layerIdCount = new Map();
 
@@ -122,7 +134,7 @@ class LayerListContainer extends React.Component {
     return groups
   }
 
-  toggleLayerGroup(groupPrefix, idx) {
+  toggleLayerGroup(groupPrefix: string, idx: number) {
     const lookupKey = [groupPrefix, idx].join('-')
     const newGroups = { ...this.state.collapsedGroups }
     if(lookupKey in this.state.collapsedGroups) {
@@ -135,12 +147,12 @@ class LayerListContainer extends React.Component {
     })
   }
 
-  isCollapsed(groupPrefix, idx) {
+  isCollapsed(groupPrefix: string, idx: number) {
     const collapsed = this.state.collapsedGroups[[groupPrefix, idx].join('-')]
     return collapsed === undefined ? true : collapsed
   }
 
-  shouldComponentUpdate (nextProps, nextState) {
+  shouldComponentUpdate (nextProps: LayerListContainerProps, nextState: LayerListContainerState) {
     // Always update on state change
     if (this.state !== nextState) {
       return true;
@@ -148,8 +160,8 @@ class LayerListContainer extends React.Component {
 
     // This component tree only requires id and visibility from the layers
     // objects
-    function getRequiredProps (layer) {
-      const out = {
+    function getRequiredProps(layer: LayerSpecification) {
+      const out: {id: string, layout?: { visibility: any}} = {
         id: layer.id,
       };
 
@@ -165,10 +177,10 @@ class LayerListContainer extends React.Component {
       this.props.layers.map(getRequiredProps),
     );
 
-    function withoutLayers (props) {
+    function withoutLayers(props: LayerListContainerProps) {
       const out = {
         ...props
-      };
+      } as LayerListContainerProps & { layers?: any };
       delete out['layers'];
       return out;
     }
@@ -184,7 +196,7 @@ class LayerListContainer extends React.Component {
     return propsChanged;
   }
 
-  componentDidUpdate (prevProps) {
+  componentDidUpdate (prevProps: LayerListContainerProps) {
     if (prevProps.selectedLayerIndex !== this.props.selectedLayerIndex) {
       const selectedItemNode = this.selectedItemRef.current;
       if (selectedItemNode && selectedItemNode.node) {
@@ -207,7 +219,7 @@ class LayerListContainer extends React.Component {
 
   render() {
 
-    const listItems = []
+    const listItems: JSX.Element[] = []
     let idx = 0
     const layersByGroup = this.groupedLayers();
     layersByGroup.forEach(layers => {
@@ -235,7 +247,7 @@ class LayerListContainer extends React.Component {
           );
         });
 
-        const additionalProps = {};
+        const additionalProps: {ref?: React.RefObject<any>} = {};
         if (idx === this.props.selectedLayerIndex) {
           additionalProps.ref = this.selectedItemRef;
         }
@@ -255,7 +267,7 @@ class LayerListContainer extends React.Component {
           visibility={(layer.layout || {}).visibility}
           isSelected={idx === this.props.selectedLayerIndex}
           onLayerSelect={this.props.onLayerSelect}
-          onLayerDestroy={this.props.onLayerDestroy.bind(this)}
+          onLayerDestroy={this.props.onLayerDestroy?.bind(this)}
           onLayerCopy={this.props.onLayerCopy.bind(this)}
           onLayerVisibilityToggle={this.props.onLayerVisibilityToggle.bind(this)}
           {...additionalProps}
@@ -316,11 +328,13 @@ class LayerListContainer extends React.Component {
   }
 }
 
-const LayerListContainerSortable = SortableContainer((props) => <LayerListContainer {...props} />)
+const LayerListContainerSortable = SortableContainer((props: LayerListContainerProps) => <LayerListContainer {...props} />)
 
-export default class LayerList extends React.Component {
-  static propTypes = {...layerListPropTypes}
+type LayerListProps = LayerListContainerProps & {
+  onMoveLayer: SortEndHandler
+};
 
+export default class LayerList extends React.Component<LayerListProps> {
   render() {
     return <LayerListContainerSortable
       {...this.props}

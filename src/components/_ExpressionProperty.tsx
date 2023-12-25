@@ -14,7 +14,7 @@ type ExpressionPropertyProps = {
   fieldType?: string
   fieldSpec?: object
   value?: any
-  errors?: {[key: string]: any}
+  errors?: {[key: string]: {message: string}}
   onChange?(...args: unknown[]): unknown
   onUndo?(...args: unknown[]): unknown
   canUndo?(...args: unknown[]): unknown
@@ -109,7 +109,8 @@ export default class ExpressionProperty extends React.Component<ExpressionProper
     }
 
     return <Block
-      error={foundErrors}
+      // this feels like an incorrect type...? `foundErrors` is an array of objects, not a single object
+      error={foundErrors as any}
       fieldSpec={this.props.fieldSpec}
       label={labelFromFieldName(this.props.fieldName)}
       action={deleteStopBtn}

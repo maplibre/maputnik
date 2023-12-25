@@ -8,7 +8,7 @@ const MAX_HEIGHT = 140;
 export type InputAutocompleteProps = {
   value?: string
   options: any[]
-  onChange(...args: unknown[]): unknown
+  onChange(value: string | undefined): unknown
   keepMenuWithinWindowBounds?: boolean
   'aria-label'?: string
 };

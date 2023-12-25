@@ -1,5 +1,6 @@
 import React from 'react'
-import {LightSpecification, StyleSpecification, TransitionSpecification, latest} from '@maplibre/maplibre-gl-style-spec'
+import {latest} from '@maplibre/maplibre-gl-style-spec'
+import type {LightSpecification, StyleSpecification, TransitionSpecification} from 'maplibre-gl'
 
 import FieldArray from './FieldArray'
 import FieldNumber from './FieldNumber'

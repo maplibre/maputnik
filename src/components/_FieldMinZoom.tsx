@@ -7,7 +7,7 @@ import FieldNumber from './FieldNumber'
 type BlockMinZoomProps = {
   value?: number
   onChange(...args: unknown[]): unknown
-  error?: unknown[]
+  error?: {message: string}
 };
 
 export default class BlockMinZoom extends React.Component<BlockMinZoomProps> {

@@ -7,9 +7,9 @@ import InputAutocomplete from './InputAutocomplete'
 type FieldSourceProps = {
   value?: string
   wdKey?: string
-  onChange?(...args: unknown[]): unknown
+  onChange?(value: string| undefined): unknown
   sourceIds?: unknown[]
-  error?: unknown[]
+  error?: {message: string}
 };
 
 export default class FieldSource extends React.Component<FieldSourceProps> {

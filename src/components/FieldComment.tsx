@@ -5,7 +5,8 @@ import InputString from './InputString'
 
 type FieldCommentProps = {
   value?: string
-  onChange(...args: unknown[]): unknown
+  onChange(value: string | undefined): unknown
+  error: {message: string}
 };
 
 export default class FieldComment extends React.Component<FieldCommentProps> {
@@ -18,6 +19,7 @@ export default class FieldComment extends React.Component<FieldCommentProps> {
       label={"Comments"}
       fieldSpec={fieldSpec}
       data-wd-key="layer-comment"
+      error={this.props.error}
     >
       <InputString
         multi={true}

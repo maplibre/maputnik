@@ -1,7 +1,7 @@
 import style from './style'
 import {loadStyleUrl} from './urlopen'
 import publicSources from '../config/styles.json'
-import { StyleSpecification } from '@maplibre/maplibre-gl-style-spec'
+import type {StyleSpecification} from 'maplibre-gl'
 
 const storagePrefix = "maputnik"
 const stylePrefix = 'style'

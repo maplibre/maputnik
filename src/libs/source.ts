@@ -1,4 +1,4 @@
-import type {StyleSpecification, SourceSpecification} from "@maplibre/maplibre-gl-style-spec";
+import type {StyleSpecification, SourceSpecification} from "maplibre-gl";
 
 export function deleteSource(mapStyle: StyleSpecification, sourceId: string) {
   const remainingSources = { ...mapStyle.sources}
