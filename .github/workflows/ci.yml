@@ -8,7 +8,7 @@ on:
 
 jobs:
   build-docker:
-    name: build/docker
+    name: build docker
     runs-on: ubuntu-latest
 
     if: ${{ github.event_name == 'push' || github.event_name == 'pull_request' }}
@@ -19,7 +19,7 @@ jobs:
 
   # build the editor
   build-node:
-    name: "build on (${{ matrix.os }})"
+    name: "build on ${{ matrix.os }}"
     runs-on: ${{ matrix.os }}
 
     if: ${{ github.event_name == 'push' || github.event_name == 'pull_request' }}
@@ -45,7 +45,7 @@ jobs:
 
 
   build-artifacts:
-    name: "build artifacts on ubuntu-latest"
+    name: "build artifacts"
     runs-on: ubuntu-latest
     if: ${{ github.event_name == 'push' || github.event_name == 'pull_request' }}
 
@@ -109,7 +109,8 @@ jobs:
         name: maputnik-windows
         path: ./src/github.com/maputnik/desktop/bin/windows/
   
-  cypress-run:
+  e2e-tests:
+    name: "E2E tests using ${{ matrix.browser }}"
     strategy:
       fail-fast: false
       matrix:
