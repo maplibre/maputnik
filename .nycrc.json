@@ -11,7 +11,6 @@
     "./coverage/**",
     "./cypress/**",
     "./dist/**",
-    "**/*.cy.ts",
     "node_modules"
   ],
   "report-dir": "coverage",
