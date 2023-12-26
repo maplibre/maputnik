@@ -8,7 +8,7 @@
 }
 
 .maputnik-filter-editor {
-  @extend .clearfix;
+  @extend .clearfix; /* stylelint-disable-line */
   color: $color-lowgray;
 }
 
@@ -62,7 +62,7 @@
 }
 
 .maputnik-delete-filter {
-  @extend .maputnik-icon-button;
+  @extend .maputnik-icon-button; /* stylelint-disable-line */
 }
 
 .maputnik-filter-editor-block-action {
@@ -79,7 +79,7 @@
 }
 
 .maputnik-radio-as-button {
-  @extend .maputnik-button;
+  @extend .maputnik-button; /* stylelint-disable-line */
 
   border: solid 1px transparent;
 

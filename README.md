@@ -7,7 +7,7 @@
 [github-action-ci]: https://github.com/maputnik/editor/actions?query=workflow%3Aci
 [license]:          https://tldrlegal.com/license/mit-license
 
-A free and open visual editor for the [Mapbox GL styles](https://www.mapbox.com/mapbox-gl-style-spec/)
+A free and open visual editor for the [MapLibre GL styles](https://maplibre.org/maplibre-style-spec/)
 targeted at developers and map designers.
 
 
@@ -36,7 +36,7 @@ The documentation can be found in the [Wiki](https://github.com/maputnik/editor/
 
 ## Develop
 
-Maputnik is written in ES6 and is using [React](https://github.com/facebook/react) and [Mapbox GL JS](https://www.mapbox.com/mapbox-gl-js/api/).
+Maputnik is written in ES6 and is using [React](https://github.com/facebook/react) and [MapLibre GL JS](https://maplibre.org/projects/maplibre-gl-js/).
 
 We ensure building and developing Maputnik works with the [current active LTS Node.js version and above](https://github.com/nodejs/Release#release-schedule).
 
@@ -49,18 +49,14 @@ npm install
 npm run start
 ```
 
-If you want Maputnik to be accessible externally use the [`--host` option](https://webpack.js.org/configuration/dev-server/#devserverhost):
+If you want Maputnik to be accessible externally use the [`--host` option](https://vitejs.dev/config/server-options.html#server-host):
 
 ```bash
 # start externally accessible dev server
 npm run start -- --host 0.0.0.0
 ```
 
-The build process will watch for changes to the filesystem, rebuild and autoreload the editor. However note this from the [webpack-dev-server docs](https://webpack.js.org/configuration/dev-server/):
-
-> webpack uses the file system to get notified of file changes. In some cases this does not work. For example, when using Network File System (NFS). Vagrant also has a lot of problems with this. ([snippet source](https://webpack.js.org/configuration/dev-server/#devserverwatchoptions-))
-
-To enable polling add `export WEBPACK_DEV_SERVER_POLLING=1` to your environment.
+The build process will watch for changes to the filesystem, rebuild and autoreload the editor.
 
 ```
 npm run build
@@ -76,9 +72,9 @@ npm run lint-styles
 
 
 ## Tests
-For testing we use [webdriverio](https://webdriver.io) and [selenium-standalone](https://github.com/webdriverio/selenium-standalone).
+For E2E testing we use [Cypress](https://www.cypress.io/)
 
-[selenium-standalone](https://github.com/webdriverio/selenium-standalone) starts a server that will launch browsers on your local machine. You need to have Java installed on your machine as well as *chrome* or *firefox*.
+ [Cypress](https://www.cypress.io/) doesn't starts a server so you'll need to start one manually by running `npm run start`.
 
 Now open a terminal and run the following using *chrome*:
 
@@ -87,10 +83,16 @@ npm run test
 ```
 or *firefox*:
 ```
-BROWSER=firefox npm run test
+npm run test -- --browser firefox
 ```
 
-After some time you should see a browser launch which will be automated by the test runner.
+See the following docs for more info: (Launching Browsers)[https://docs.cypress.io/guides/guides/launching-browsers]
+
+You can also see the tests as they run or select which suites to run by executing:
+
+```
+npm run cy:open
+```
 
 
 ## Related Projects
@@ -155,6 +157,5 @@ Sina Martinelli, Nicholas Doiron, Neil Cawse, Urs42, Benedikt Groß, Manuel Roth
 
 Maputnik is [licensed under MIT](LICENSE) and is Copyright (c) Lukas Martinelli and contributors.
 
-**Disclaimer** This project is not affiliated with Mapbox or Mapbox Studio. It is an independent style editor for the
-open source technology in the Mapbox GL ecosystem.
+**Disclaimer** This is an independent style editor.
 As contributor please take extra care of not violating any Mapbox trademarks. Do not get inspired by Mapbox Studio and make your own decisions for a good style editor.

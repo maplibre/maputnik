@@ -1,3 +1,4 @@
+@use 'sass:color';
 // TOOLBAR
 .maputnik-toolbar {
   position: fixed;
@@ -30,7 +31,7 @@
     line-height: 26px;
   }
 
-  svg {
+  img {
     width: 30px;
     padding-right: $margin-2;
     vertical-align: top;
@@ -75,7 +76,7 @@
   }
 
   &:hover .maputnik-toolbar-link-wrapper {
-    background-color: lighten($color-midgray, 12);
+    background-color: color.adjust($color-midgray, $lightness: 12%);
     color: $color-white;
   }
 }
@@ -93,13 +94,13 @@
 .maputnik-toolbar-action {
   background: inherit;
   border-width: 0;
-  @extend .maputnik-toolbar-link;
+  @extend .maputnik-toolbar-link; /* stylelint-disable-line */
 }
 
 .maputnik-toolbar-select {
   background: inherit;
   border-width: 0;
-  @extend .maputnik-toolbar-link;
+  @extend .maputnik-toolbar-link; /* stylelint-disable-line */
 
   select {
     margin-left: 6px;

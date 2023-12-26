@@ -2,44 +2,24 @@ name: ci
 
 on:
   pull_request:
-    branches: [ master ]
+    branches: [ main ]
   push:
-    branches: [ master ]
+    branches: [ main ]
 
 jobs:
-
-  # post a comment linking to codesandbox with the current branch
-  # meta-demo-comment:
-  #   name: meta/demo-comment
-  #   runs-on: ubuntu-latest
-
-  #   if: ${{ github.event_name == 'pull_request' }}
-
-  #   steps:
-  #   - uses: unsplash/comment-on-pr@v1.2.0
-  #     env:
-  #       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-  #     with:
-  #       msg: "Demo: <https://codesandbox.io/embed/github/${{ github.repository }}/tree/${{ github.head_ref }}?view=preview>"
-
   build-docker:
-    name: build/docker
-    runs-on: ${{ matrix.os }}
+    name: build docker
+    runs-on: ubuntu-latest
 
     if: ${{ github.event_name == 'push' || github.event_name == 'pull_request' }}
 
-    strategy:
-      fail-fast: false
-      matrix:
-        os: [ubuntu-latest]
-
     steps:
-    - uses: actions/checkout@v2
-    - run: docker build -t docker.pkg.github.com/maputnik/editor/editor:master .
+    - uses: actions/checkout@v4
+    - run: docker build -t docker.pkg.github.com/maputnik/editor/editor:main .
 
   # build the editor
   build-node:
-    name: "build/node@${{ matrix.node-version }} (${{ matrix.os }})"
+    name: "build on ${{ matrix.os }}"
     runs-on: ${{ matrix.os }}
 
     if: ${{ github.event_name == 'push' || github.event_name == 'pull_request' }}
@@ -48,13 +28,12 @@ jobs:
       fail-fast: false
       matrix:
         os: [ubuntu-latest, windows-latest, macos-latest]
-        node-version: [12.x, 14.x, 16.x]
 
     steps:
-    - uses: actions/checkout@v2
-    - uses: actions/setup-node@v1
+    - uses: actions/checkout@v4
+    - uses: actions/setup-node@v4
       with:
-        node-version: ${{ matrix.node-version }}
+        node-version-file: '.nvmrc'
     - uses: actions/cache@v1
       with:
         path: ~/.npm
@@ -63,28 +42,21 @@ jobs:
           ${{ runner.os }}-node-
     - run: npm ci
     - run: npm run build
+    - run: npm run lint
+    - run: npm run lint-css
+
 
 
   build-artifacts:
-    name: "build/artifacts (${{ matrix.os }})"
-    runs-on: ${{ matrix.os }}
-    env:
-      GOPATH: ${{ github.workspace }}
-      GO111MODULE: off
-
+    name: "build artifacts"
+    runs-on: ubuntu-latest
     if: ${{ github.event_name == 'push' || github.event_name == 'pull_request' }}
 
-    strategy:
-      fail-fast: false
-      matrix:
-        os: [ubuntu-latest]
-        node-version: [16.x]
-
     steps:
-    - uses: actions/checkout@v2
-    - uses: actions/setup-node@v1
+    - uses: actions/checkout@v4
+    - uses: actions/setup-node@v4
       with:
-        node-version: ${{ matrix.node-version }}
+        node-version-file: '.nvmrc'
     - uses: actions/cache@v1
       with:
         path: ~/.npm
@@ -98,13 +70,7 @@ jobs:
       uses: actions/upload-artifact@v1
       with:
         name: editor
-        path: build/build
-    - run: npm run profiling-build
-    - name: artifacts/editor-profiling
-      uses: actions/upload-artifact@v1
-      with:
-        name: editor-profiling
-        path: build/profiling
+        path: dist
     - name: artifacts/storybook
       uses: actions/upload-artifact@v1
       with:
@@ -113,16 +79,16 @@ jobs:
 
     # Build and upload desktop CLI artifacts
     - name: Set up Go
-      uses: actions/setup-go@v2
+      uses: actions/setup-go@v3
       with:
-        go-version: ^1.14.x
+        go-version: ^1.19.x
       id: go
 
     - name: Check out code into the Go module directory
-      uses: actions/checkout@v2
+      uses: actions/checkout@v4
       with:
         repository: maputnik/desktop
-        ref: v1.0.7
+        ref: master
         path: ./src/github.com/maputnik/desktop/
 
     - name: Make
@@ -145,53 +111,27 @@ jobs:
       with:
         name: maputnik-windows
         path: ./src/github.com/maputnik/desktop/bin/windows/
-
-  # build and test the editor
-  test_selenium_standalone:
-    name: "test/standalone-${{ matrix.browser }} (${{ matrix.os }})"
-    runs-on: ${{ matrix.os }}
-
-    if: ${{ github.event_name == 'push' || github.event_name == 'pull_request' }}
-
+  
+  e2e-tests:
+    name: "E2E tests using ${{ matrix.browser }}"
     strategy:
       fail-fast: false
       matrix:
-        os: [ubuntu-latest]
-        node-version: [16]
         browser: [chrome, firefox]
 
-    container:
-      image: node:${{ matrix.node-version }}
-      options: --network-alias testhost
-
-    services:
-      selenium:
-        # geckodriver-0.31 seems to have problems as of 2022 May 1
-        image: selenium/standalone-${{ matrix.browser == 'firefox' && 'firefox:99.0-geckodriver-0.30-20220427' || matrix.browser }}
-        ports:
-        - 4444:4444
-        options: --shm-size=2gb
-
+    runs-on: ubuntu-22.04
     steps:
-    - uses: actions/checkout@v2
-    - uses: actions/cache@v1
-      with:
-        path: ~/.npm
-        key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
-        restore-keys: |
-          ${{ runner.os }}-node-
-    - run: npm ci
-    - run: BROWSER=${{ matrix.browser }} TEST_NETWORK=testhost DOCKER_HOST=selenium npm run test
-    - if: ${{ matrix.browser == 'chrome' }}
-      run: ./node_modules/.bin/istanbul report --include build/coverage/coverage.json --dir build/coverage html lcov
-    - if: ${{ matrix.browser == 'chrome' }}
-      name: artifacts/coverage
-      uses: actions/upload-artifact@v1
-      with:
-        name: coverage
-        path: build/coverage
-    - name: artifacts/screenshots
-      uses: actions/upload-artifact@v1
-      with:
-        name: screenshots-${{ matrix.browser }}
-        path: build/screenshots
+      - name: Checkout
+        uses: actions/checkout@v4
+      - run: npm ci
+      - name: Cypress run
+        uses: cypress-io/github-action@v6
+        with:
+          build: npm run build
+          start: npm run start
+          browser: ${{ matrix.browser }}
+      - name: Upload coverage reports to Codecov
+        uses: codecov/codecov-action@v3
+        with:
+          files: ${{ github.workspace }}/.nyc_output/out.json
+          verbose: true

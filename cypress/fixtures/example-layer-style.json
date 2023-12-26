@@ -1,0 +1,18 @@
+{
+  "id": "test-style",
+  "version": 8,
+  "name": "Test Style",
+  "metadata": {
+    "maputnik:renderer": "mlgljs"
+  },
+  "sources": {},
+  "glyphs": "https://example.local/fonts/{fontstack}/{range}.pbf",
+  "sprites": "https://example.local/fonts/{fontstack}/{range}.pbf",
+  "layers": [
+    {
+      "id": "background",
+      "type": "background"
+    }
+  ]
+}
+
