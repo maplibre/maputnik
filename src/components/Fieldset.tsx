@@ -1,6 +1,7 @@
 import React, { ReactElement } from 'react'
 import FieldDocLabel from './FieldDocLabel'
 import Doc from './Doc'
+import generateUniqueId from '../libs/document-uid';
 
 type FieldsetProps = {
   label?: string,
@@ -12,14 +13,12 @@ type FieldsetState = {
   showDoc: boolean
 };
 
-let IDX = 0;
-
 export default class Fieldset extends React.Component<FieldsetProps, FieldsetState> {
   _labelId: string;
 
   constructor (props: FieldsetProps) {
     super(props);
-    this._labelId = `fieldset_label_${(IDX++)}`;
+    this._labelId = generateUniqueId(`fieldset_label_`);
     this.state = {
       showDoc: false,
     }

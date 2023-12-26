@@ -1,6 +1,5 @@
 import React, { BaseSyntheticEvent } from 'react'
-
-let IDX = 0;
+import generateUniqueId from '../libs/document-uid';
 
 export type InputNumberProps = {
   value?: number
@@ -32,7 +31,7 @@ export default class InputNumber extends React.Component<InputNumberProps, Input
   constructor(props: InputNumberProps) {
     super(props)
     this.state = {
-      uuid: IDX++,
+      uuid: +generateUniqueId(),
       editing: false,
       value: props.value,
       dirtyValue: props.value,

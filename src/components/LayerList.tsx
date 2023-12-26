@@ -8,26 +8,8 @@ import ModalAdd from './ModalAdd'
 
 import {SortEndHandler, SortableContainer} from 'react-sortable-hoc';
 import type {LayerSpecification} from 'maplibre-gl';
-
-function layerPrefix(name: string) {
-  return name.replace(' ', '-').replace('_', '-').split('-')[0]
-}
-
-function findClosestCommonPrefix(layers: LayerSpecification[], idx: number) {
-  const currentLayerPrefix = layerPrefix(layers[idx].id)
-  let closestIdx = idx
-  for (let i = idx; i > 0; i--) {
-    const previousLayerPrefix = layerPrefix(layers[i-1].id)
-    if(previousLayerPrefix === currentLayerPrefix) {
-      closestIdx = i - 1
-    } else {
-      return closestIdx
-    }
-  }
-  return closestIdx
-}
-
-let UID = 0;
+import generateUniqueId from '../libs/document-uid';
+import { findClosestCommonPrefix, layerPrefix } from '../libs/layer';
 
 type LayerListContainerProps = {
   layers: LayerSpecification[]
@@ -64,7 +46,7 @@ class LayerListContainer extends React.Component<LayerListContainerProps, LayerL
       collapsedGroups: {},
       areAllGroupsExpanded: false,
       keys: {
-        add: UID++,
+        add: +generateUniqueId(),
       },
       isOpen: {
         add: false,
@@ -76,7 +58,7 @@ class LayerListContainer extends React.Component<LayerListContainerProps, LayerL
     this.setState({
       keys: {
         ...this.state.keys,
-        [modalName]: UID++,
+        [modalName]: +generateUniqueId(),
       },
       isOpen: {
         ...this.state.isOpen,
@@ -328,7 +310,6 @@ class LayerListContainer extends React.Component<LayerListContainerProps, LayerL
   }
 }
 
-const LayerListContainerSortable = SortableContainer((props: LayerListContainerProps) => <LayerListContainer {...props} />)
 
 type LayerListProps = LayerListContainerProps & {
   onMoveLayer: SortEndHandler
@@ -336,12 +317,12 @@ type LayerListProps = LayerListContainerProps & {
 
 export default class LayerList extends React.Component<LayerListProps> {
   render() {
-    return <LayerListContainerSortable
-      {...this.props}
-      helperClass='sortableHelper'
-      onSortEnd={this.props.onMoveLayer.bind(this)}
-      useDragHandle={true}
-      shouldCancelStart={() => false}
-    />
+    return React.createElement(SortableContainer((props: LayerListContainerProps) => <LayerListContainer {...props} />), {
+      ...this.props,
+      helperClass: 'sortableHelper',
+      onSortEnd: this.props.onMoveLayer.bind(this),
+      useDragHandle: true,
+      shouldCancelStart: () => false,
+    });
   }
 }
