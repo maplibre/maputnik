@@ -191,6 +191,15 @@ describe("layers", () => {
               },
             ]
           );
+
+          // AND RESET!
+          when.typeKeys("{backspace}", "min-zoom.input-text");
+          when.click("max-zoom.input-text");
+
+          should.equalStyleStore((a: any) => a.layers, [{
+            "id": 'background:'+bgId,
+            "type": 'background'
+          }]);
         });
 
         it("max-zoom", () => {
