@@ -14,6 +14,7 @@ export default defineConfig({
       require("@cypress/code-coverage/task")(on, config);
       return config;
     },
+    baseUrl: "http://127.0.0.1:8888",
     retries: {
       runMode: 2,
       openMode: 0,
