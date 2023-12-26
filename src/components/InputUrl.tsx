@@ -26,8 +26,8 @@ function validate(url: string) {
       <SmallError>
         Must provide protocol {
           isSsl
-          ? <code>https://</code>
-          : <><code>http://</code> or <code>https://</code></>
+            ? <code>https://</code>
+            : <><code>http://</code> or <code>https://</code></>
         }
       </SmallError>
     );

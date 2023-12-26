@@ -29,18 +29,18 @@ export class ApiStyleStore {
     fetch(this.localUrl + '/styles', {
       mode: 'cors',
     })
-    .then((response) =>  {
-      return response.json();
-    })
-    .then((body) => {
-      const styleIds = body;
-      this.latestStyleId = styleIds[0]
-      this.notifyLocalChanges()
-      cb(null)
-    })
-    .catch(() => {
-      cb(new Error('Can not connect to style API'))
-    })
+      .then((response) =>  {
+        return response.json();
+      })
+      .then((body) => {
+        const styleIds = body;
+        this.latestStyleId = styleIds[0]
+        this.notifyLocalChanges()
+        cb(null)
+      })
+      .catch(() => {
+        cb(new Error('Can not connect to style API'))
+      })
   }
 
   notifyLocalChanges() {
@@ -64,12 +64,12 @@ export class ApiStyleStore {
       fetch(this.localUrl + '/styles/' + this.latestStyleId, {
         mode: 'cors',
       })
-      .then(function(response) {
-        return response.json();
-      })
-      .then(function(body) {
-        cb(style.ensureStyleValidity(body))
-      })
+        .then(function(response) {
+          return response.json();
+        })
+        .then(function(body) {
+          cb(style.ensureStyleValidity(body))
+        })
     } else {
       throw new Error('No latest style available. You need to init the api backend first.')
     }
@@ -92,9 +92,9 @@ export class ApiStyleStore {
       },
       body: styleJSON
     })
-    .catch(function(error) {
-      if(error) console.error(error)
-    })
+      .catch(function(error) {
+        if(error) console.error(error)
+      })
     return mapStyle
   }
 }

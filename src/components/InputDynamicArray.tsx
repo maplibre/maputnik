@@ -100,7 +100,7 @@ export default class FieldDynamicArray extends React.Component<FieldDynamicArray
         style={this.props.style}
         key={i}
         className="maputnik-array-block"
-        >
+      >
         <div className="maputnik-array-block-action">
           {deleteValueBtn}
         </div>

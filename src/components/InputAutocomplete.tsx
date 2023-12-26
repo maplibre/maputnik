@@ -91,7 +91,7 @@ export default class InputAutocomplete extends React.Component<InputAutocomplete
               "maputnik-autocomplete-menu-item-selected": isHighlighted,
             })}
           >
-           {item[1]}
+            {item[1]}
           </div>
         )}
       />

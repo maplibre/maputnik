@@ -71,7 +71,7 @@ export default class Doc extends React.Component<DocProps> {
                     <tr key={key}>
                       <td>{key}</td>
                       {Object.keys(headers).map((k) => {
-                        if (supportObj.hasOwnProperty(k)) {
+                        if (Object.prototype.hasOwnProperty.call(supportObj, k)) {
                           return <td key={k}>{supportObj[k as keyof typeof headers]}</td>;
                         }
                         else {

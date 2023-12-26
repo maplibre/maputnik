@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {type JSX} from 'react'
 import classnames from 'classnames'
 import lodash from 'lodash';
 
@@ -88,7 +88,7 @@ class LayerListContainer extends React.Component<LayerListContainerProps, LayerL
   toggleLayers = () => {
     let idx = 0
 
-    let newGroups: {[key:string]: boolean} = {}
+    const newGroups: {[key:string]: boolean} = {}
 
     this.groupedLayers().forEach(layers => {
       const groupPrefix = layerPrefix(layers[0].id)
@@ -284,12 +284,12 @@ class LayerListContainer extends React.Component<LayerListContainerProps, LayerL
       ref={this.scrollContainerRef}
     >
       <ModalAdd
-          key={this.state.keys.add}
-          layers={this.props.layers}
-          sources={this.props.sources}
-          isOpen={this.state.isOpen.add}
-          onOpenToggle={this.toggleModal.bind(this, 'add')}
-          onLayersChange={this.props.onLayersChange}
+        key={this.state.keys.add}
+        layers={this.props.layers}
+        sources={this.props.sources}
+        isOpen={this.state.isOpen.add}
+        onOpenToggle={this.toggleModal.bind(this, 'add')}
+        onLayersChange={this.props.onLayersChange}
       />
       <header className="maputnik-layer-list-header">
         <span className="maputnik-layer-list-header-title">Layers</span>

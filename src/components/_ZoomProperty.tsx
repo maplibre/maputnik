@@ -26,7 +26,7 @@ function setStopRefs(props: ZoomPropertyProps, state: ZoomPropertyState) {
 
   if(props.value && (props.value as ZoomWithStops).stops) {
     (props.value as ZoomWithStops).stops.forEach((_val, idx: number) => {
-      if(!state.refs.hasOwnProperty(idx)) {
+      if(Object.prototype.hasOwnProperty.call(!state.refs, idx)) {
         if(!newRefs) {
           newRefs = {...state};
         }

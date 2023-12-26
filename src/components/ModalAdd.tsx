@@ -68,7 +68,7 @@ export default class ModalAdd extends React.Component<ModalAddProps, ModalAddSta
     const availableSourcesNew = this.getSources(newType);
 
     if(
-      // Type has changed
+    // Type has changed
       oldType !== newType
       && prevState.source !== ""
       // Was a valid source previously
@@ -113,7 +113,7 @@ export default class ModalAdd extends React.Component<ModalAddProps, ModalAddSta
       ]
     }
 
-    for(let [key, val] of Object.entries(this.props.sources) as any) {
+    for(const [key, val] of Object.entries(this.props.sources) as any) {
       const valType = val.type as keyof typeof types;
       if(types[valType] && types[valType].indexOf(type) > -1) {
         sources.push(key);
@@ -136,41 +136,41 @@ export default class ModalAdd extends React.Component<ModalAddProps, ModalAddSta
       className="maputnik-add-modal"
     >
       <div className="maputnik-add-layer">
-      <FieldId
-        value={this.state.id}
-        wdKey="add-layer.layer-id"
-        onChange={(v: string) => {
-          this.setState({ id: v })
-        }}
-      />
-      <FieldType
-        value={this.state.type}
-        wdKey="add-layer.layer-type"
-        onChange={(v: LayerSpecification["type"]) => this.setState({ type: v })}
-      />
-      {this.state.type !== 'background' &&
+        <FieldId
+          value={this.state.id}
+          wdKey="add-layer.layer-id"
+          onChange={(v: string) => {
+            this.setState({ id: v })
+          }}
+        />
+        <FieldType
+          value={this.state.type}
+          wdKey="add-layer.layer-type"
+          onChange={(v: LayerSpecification["type"]) => this.setState({ type: v })}
+        />
+        {this.state.type !== 'background' &&
       <FieldSource
         sourceIds={sources}
         wdKey="add-layer.layer-source-block"
         value={this.state.source}
         onChange={(v: string) => this.setState({ source: v })}
       />
-      }
-      {['background', 'raster', 'hillshade', 'heatmap'].indexOf(this.state.type) < 0 &&
+        }
+        {['background', 'raster', 'hillshade', 'heatmap'].indexOf(this.state.type) < 0 &&
       <FieldSourceLayer
         isFixed={true}
         sourceLayerIds={layers}
         value={this.state['source-layer']}
         onChange={(v: string) => this.setState({ 'source-layer': v })}
       />
-      }
-      <InputButton
-        className="maputnik-add-layer-button"
-        onClick={this.addLayer}
-        data-wd-key="add-layer"
-      >
+        }
+        <InputButton
+          className="maputnik-add-layer-button"
+          onClick={this.addLayer}
+          data-wd-key="add-layer"
+        >
         Add Layer
-      </InputButton>
+        </InputButton>
       </div>
     </Modal>
   }

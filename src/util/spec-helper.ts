@@ -2,7 +2,7 @@
  * If we don't have a default value just make one up
  */
 export function findDefaultFromSpec(spec: { type: 'string' | 'color' | 'boolean' | 'array', default?: any }) {
-  if (spec.hasOwnProperty('default')) {
+  if (Object.prototype.hasOwnProperty.call(spec, 'default')) {
     return spec.default;
   }
 

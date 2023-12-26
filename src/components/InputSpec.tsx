@@ -53,66 +53,67 @@ export default class SpecField extends React.Component<SpecFieldProps> {
       'aria-label': this.props['aria-label'],
     }
     switch(this.props.fieldSpec?.type) {
-      case 'number': return (
-        <InputNumber
-          {...commonProps as InputNumberProps}
-          min={this.props.fieldSpec.minimum}
-          max={this.props.fieldSpec.maximum}
-        />
-      )
-      case 'enum':
-        const options = Object.keys(this.props.fieldSpec.values || []).map(v => [v, capitalize(v)])
+    case 'number': return (
+      <InputNumber
+        {...commonProps as InputNumberProps}
+        min={this.props.fieldSpec.minimum}
+        max={this.props.fieldSpec.maximum}
+      />
+    )
+    case 'enum': {
+      const options = Object.keys(this.props.fieldSpec.values || []).map(v => [v, capitalize(v)])
 
-        return <InputEnum
-          {...commonProps as Omit<InputEnumProps, "options">}
-          options={options}
+      return <InputEnum
+        {...commonProps as Omit<InputEnumProps, "options">}
+        options={options}
+      />
+    }
+    case 'resolvedImage':
+    case 'formatted':
+    case 'string':
+      if (iconProperties.indexOf(this.props.fieldName!) >= 0) {
+        const options = this.props.fieldSpec.values || [];
+        return <InputAutocomplete
+          {...commonProps as Omit<InputAutocompleteProps, "options">}
+          options={options.map(f => [f, f])}
         />
-      case 'resolvedImage':
-      case 'formatted':
-      case 'string':
-        if (iconProperties.indexOf(this.props.fieldName!) >= 0) {
-          const options = this.props.fieldSpec.values || [];
-          return <InputAutocomplete
-            {...commonProps as Omit<InputAutocompleteProps, "options">}
-            options={options.map(f => [f, f])}
+      } else {
+        return <InputString
+          {...commonProps as InputStringProps}
+        />
+      }
+    case 'color': return (
+      <InputColor
+        {...commonProps as InputColorProps}
+      />
+    )
+    case 'boolean': return (
+      <InputCheckbox
+        {...commonProps as InputCheckboxProps}
+      />
+    )
+    case 'array':
+      if(this.props.fieldName === 'text-font') {
+        return <InputFont
+          {...commonProps as FieldFontProps}
+          fonts={this.props.fieldSpec.values}
+        />
+      } else {
+        if (this.props.fieldSpec.length) {
+          return <InputArray
+            {...commonProps as FieldArrayProps}
+            type={this.props.fieldSpec.value}
+            length={this.props.fieldSpec.length}
           />
         } else {
-          return <InputString
-            {...commonProps as InputStringProps}
+          return <InputDynamicArray
+            {...commonProps as FieldDynamicArrayProps}
+            fieldSpec={this.props.fieldSpec}
+            type={this.props.fieldSpec.value as FieldDynamicArrayProps['type']}
           />
         }
-      case 'color': return (
-        <InputColor
-          {...commonProps as InputColorProps}
-        />
-      )
-      case 'boolean': return (
-        <InputCheckbox
-          {...commonProps as InputCheckboxProps}
-        />
-      )
-      case 'array':
-        if(this.props.fieldName === 'text-font') {
-          return <InputFont
-            {...commonProps as FieldFontProps}
-            fonts={this.props.fieldSpec.values}
-          />
-        } else {
-          if (this.props.fieldSpec.length) {
-            return <InputArray
-              {...commonProps as FieldArrayProps}
-              type={this.props.fieldSpec.value}
-              length={this.props.fieldSpec.length}
-            />
-          } else {
-            return <InputDynamicArray
-              {...commonProps as FieldDynamicArrayProps}
-              fieldSpec={this.props.fieldSpec}
-              type={this.props.fieldSpec.value as FieldDynamicArrayProps['type']}
-            />
-          }
-        }
-      default: return null
+      }
+    default: return null
     }
   }
 

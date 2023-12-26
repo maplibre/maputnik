@@ -24,17 +24,17 @@ type PublicSourceProps = {
 class PublicSource extends React.Component<PublicSourceProps> {
   render() {
     return <div className="maputnik-public-source">
-            <InputButton
+      <InputButton
         className="maputnik-public-source-select"
-                onClick={() => this.props.onSelect(this.props.id)}
-            >
-                <div className="maputnik-public-source-info">
-                    <p className="maputnik-public-source-name">{this.props.title}</p>
-                    <p className="maputnik-public-source-id">#{this.props.id}</p>
-                </div>
-                <span className="maputnik-space" />
-                <MdAddCircleOutline />
-            </InputButton>
+        onClick={() => this.props.onSelect(this.props.id)}
+      >
+        <div className="maputnik-public-source-info">
+          <p className="maputnik-public-source-name">{this.props.title}</p>
+          <p className="maputnik-public-source-id">#{this.props.id}</p>
+        </div>
+        <span className="maputnik-space" />
+        <MdAddCircleOutline />
+      </InputButton>
     </div>
   }
 }
@@ -127,68 +127,68 @@ class AddSource extends React.Component<AddSourceProps, AddSourceState> {
     const {protocol} = window.location;
 
     switch(mode) {
-      case 'geojson_url': return {
-        type: 'geojson',
-        data: `${protocol}//localhost:3000/geojson.json`
-      }
-      case 'geojson_json': return {
-        type: 'geojson',
-        cluster: (source as GeoJSONSourceSpecification).cluster || false,
-        data: {}
-      }
-      case 'tilejson_vector': return {
-        type: 'vector',
-        url: (source as VectorSourceSpecification).url || `${protocol}//localhost:3000/tilejson.json`
-      }
-      case 'tilexyz_vector': return {
-        type: 'vector',
-        tiles: (source as VectorSourceSpecification).tiles || [`${protocol}//localhost:3000/{x}/{y}/{z}.pbf`],
-        minzoom: (source as VectorSourceSpecification).minzoom || 0,
-        maxzoom: (source as VectorSourceSpecification).maxzoom || 14
-      }
-      case 'tilejson_raster': return {
-        type: 'raster',
-        url: (source as RasterSourceSpecification).url || `${protocol}//localhost:3000/tilejson.json`
-      }
-      case 'tilexyz_raster': return {
-        type: 'raster',
-        tiles: (source as RasterSourceSpecification).tiles || [`${protocol}//localhost:3000/{x}/{y}/{z}.pbf`],
-        minzoom: (source as RasterSourceSpecification).minzoom || 0,
-        maxzoom: (source as RasterSourceSpecification).maxzoom || 14
-      }
-      case 'tilejson_raster-dem': return {
-        type: 'raster-dem',
-        url: (source as RasterDEMSourceSpecification).url || `${protocol}//localhost:3000/tilejson.json`
-      }
-      case 'tilexyz_raster-dem': return {
-        type: 'raster-dem',
-        tiles: (source as RasterDEMSourceSpecification).tiles || [`${protocol}//localhost:3000/{x}/{y}/{z}.pbf`],
-        minzoom: (source as RasterDEMSourceSpecification).minzoom || 0,
-        maxzoom: (source as RasterDEMSourceSpecification).maxzoom || 14
-      }
-      case 'image': return {
-        type: 'image',
-        url: `${protocol}//localhost:3000/image.png`,
-        coordinates: [
-          [0,0],
-          [0,0],
-          [0,0],
-          [0,0],
-        ],
-      }
-      case 'video': return {
-        type: 'video',
-        urls: [
-          `${protocol}//localhost:3000/movie.mp4`
-        ],
-        coordinates: [
-          [0,0],
-          [0,0],
-          [0,0],
-          [0,0],
-        ],
-      }
-      default: return {} as any
+    case 'geojson_url': return {
+      type: 'geojson',
+      data: `${protocol}//localhost:3000/geojson.json`
+    }
+    case 'geojson_json': return {
+      type: 'geojson',
+      cluster: (source as GeoJSONSourceSpecification).cluster || false,
+      data: {}
+    }
+    case 'tilejson_vector': return {
+      type: 'vector',
+      url: (source as VectorSourceSpecification).url || `${protocol}//localhost:3000/tilejson.json`
+    }
+    case 'tilexyz_vector': return {
+      type: 'vector',
+      tiles: (source as VectorSourceSpecification).tiles || [`${protocol}//localhost:3000/{x}/{y}/{z}.pbf`],
+      minzoom: (source as VectorSourceSpecification).minzoom || 0,
+      maxzoom: (source as VectorSourceSpecification).maxzoom || 14
+    }
+    case 'tilejson_raster': return {
+      type: 'raster',
+      url: (source as RasterSourceSpecification).url || `${protocol}//localhost:3000/tilejson.json`
+    }
+    case 'tilexyz_raster': return {
+      type: 'raster',
+      tiles: (source as RasterSourceSpecification).tiles || [`${protocol}//localhost:3000/{x}/{y}/{z}.pbf`],
+      minzoom: (source as RasterSourceSpecification).minzoom || 0,
+      maxzoom: (source as RasterSourceSpecification).maxzoom || 14
+    }
+    case 'tilejson_raster-dem': return {
+      type: 'raster-dem',
+      url: (source as RasterDEMSourceSpecification).url || `${protocol}//localhost:3000/tilejson.json`
+    }
+    case 'tilexyz_raster-dem': return {
+      type: 'raster-dem',
+      tiles: (source as RasterDEMSourceSpecification).tiles || [`${protocol}//localhost:3000/{x}/{y}/{z}.pbf`],
+      minzoom: (source as RasterDEMSourceSpecification).minzoom || 0,
+      maxzoom: (source as RasterDEMSourceSpecification).maxzoom || 14
+    }
+    case 'image': return {
+      type: 'image',
+      url: `${protocol}//localhost:3000/image.png`,
+      coordinates: [
+        [0,0],
+        [0,0],
+        [0,0],
+        [0,0],
+      ],
+    }
+    case 'video': return {
+      type: 'video',
+      urls: [
+        `${protocol}//localhost:3000/movie.mp4`
+      ],
+      coordinates: [
+        [0,0],
+        [0,0],
+        [0,0],
+        [0,0],
+      ],
+    }
+    default: return {} as any
     }
   }
 
@@ -245,7 +245,7 @@ class AddSource extends React.Component<AddSourceProps, AddSourceState> {
       />
       <InputButton
         className="maputnik-add-source-button"
-                onClick={this.onAdd}
+        onClick={this.onAdd}
       >
         Add Source
       </InputButton>
@@ -308,16 +308,16 @@ export default class ModalSources extends React.Component<ModalSourcesProps> {
           Add one of the publicly available sources to your style.
         </p>
         <div className="maputnik-public-sources" style={{maxWidth: 500}}>
-        {tilesetOptions}
+          {tilesetOptions}
         </div>
       </section>
 
       <section className="maputnik-modal-section">
-                <h1>Add New Source</h1>
-                <p>Add a new source to your style. You can only choose the source type and id at creation time!</p>
-                <AddSource
-                    onAdd={(sourceId: string, source: SourceSpecification) => this.props.onStyleChanged(addSource(mapStyle, sourceId, source))}
-                />
+        <h1>Add New Source</h1>
+        <p>Add a new source to your style. You can only choose the source type and id at creation time!</p>
+        <AddSource
+          onAdd={(sourceId: string, source: SourceSpecification) => this.props.onStyleChanged(addSource(mapStyle, sourceId, source))}
+        />
       </section>
     </Modal>
   }

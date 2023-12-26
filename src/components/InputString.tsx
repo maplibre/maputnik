@@ -46,7 +46,7 @@ export default class InputString extends React.Component<InputStringProps, Input
     let tag;
     let classes;
 
-    if(!!this.props.multi) {
+    if(this.props.multi) {
       tag = "textarea"
       classes = [
         "maputnik-string",
@@ -60,14 +60,14 @@ export default class InputString extends React.Component<InputStringProps, Input
       ]
     }
 
-    if(!!this.props.disabled) {
+    if(this.props.disabled) {
       classes.push("maputnik-string--disabled");
     }
 
     return React.createElement(tag, {
       "aria-label": this.props["aria-label"],
       "data-wd-key": this.props["data-wd-key"],
-      spellCheck: this.props.hasOwnProperty("spellCheck") ? this.props.spellCheck : !(tag === "input"),
+      spellCheck: Object.prototype.hasOwnProperty.call(this.props, "spellCheck") ? this.props.spellCheck : !(tag === "input"),
       disabled: this.props.disabled,
       className: classes.join(" "),
       style: this.props.style,

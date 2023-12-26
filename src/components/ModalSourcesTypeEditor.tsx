@@ -269,28 +269,28 @@ export default class ModalSourcesTypeEditor extends React.Component<ModalSources
       onChange: this.props.onChange,
     }
     switch(this.props.mode) {
-      case 'geojson_url': return <GeoJSONSourceUrlEditor {...commonProps} />
-      case 'geojson_json': return <GeoJSONSourceFieldJsonEditor {...commonProps} />
-      case 'tilejson_vector': return <TileJSONSourceEditor {...commonProps} />
-      case 'tilexyz_vector': return <TileURLSourceEditor {...commonProps} />
-      case 'tilejson_raster': return <TileJSONSourceEditor {...commonProps} />
-      case 'tilexyz_raster': return <TileURLSourceEditor {...commonProps} />
-      case 'tilejson_raster-dem': return <TileJSONSourceEditor {...commonProps} />
-      case 'tilexyz_raster-dem': return <TileURLSourceEditor {...commonProps}>
-        <FieldSelect
-          label={"Encoding"}
-          fieldSpec={latest.source_raster_dem.encoding}
-          options={Object.keys(latest.source_raster_dem.encoding.values)}
-          onChange={encoding => this.props.onChange({
-            ...this.props.source,
-            encoding: encoding
-          })}
-          value={this.props.source.encoding || latest.source_raster_dem.encoding.default}
-        />
-      </TileURLSourceEditor>
-      case 'image': return <ImageSourceEditor {...commonProps} />
-      case 'video': return <VideoSourceEditor {...commonProps} />
-      default: return null
+    case 'geojson_url': return <GeoJSONSourceUrlEditor {...commonProps} />
+    case 'geojson_json': return <GeoJSONSourceFieldJsonEditor {...commonProps} />
+    case 'tilejson_vector': return <TileJSONSourceEditor {...commonProps} />
+    case 'tilexyz_vector': return <TileURLSourceEditor {...commonProps} />
+    case 'tilejson_raster': return <TileJSONSourceEditor {...commonProps} />
+    case 'tilexyz_raster': return <TileURLSourceEditor {...commonProps} />
+    case 'tilejson_raster-dem': return <TileJSONSourceEditor {...commonProps} />
+    case 'tilexyz_raster-dem': return <TileURLSourceEditor {...commonProps}>
+      <FieldSelect
+        label={"Encoding"}
+        fieldSpec={latest.source_raster_dem.encoding}
+        options={Object.keys(latest.source_raster_dem.encoding.values)}
+        onChange={encoding => this.props.onChange({
+          ...this.props.source,
+          encoding: encoding
+        })}
+        value={this.props.source.encoding || latest.source_raster_dem.encoding.default}
+      />
+    </TileURLSourceEditor>
+    case 'image': return <ImageSourceEditor {...commonProps} />
+    case 'video': return <VideoSourceEditor {...commonProps} />
+    default: return null
     }
   }
 }

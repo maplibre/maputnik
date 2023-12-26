@@ -96,12 +96,12 @@ export default class ExpressionProperty extends React.Component<ExpressionProper
     }
     else {
       Object.entries(errors!)
-      .filter(([key, _error]) => {
-        return key.startsWith(errorKeyStart);
-      })
-      .forEach(([_key, error]) => {
-        return foundErrors.push(error);
-      })
+        .filter(([key, _error]) => {
+          return key.startsWith(errorKeyStart);
+        })
+        .forEach(([_key, error]) => {
+          return foundErrors.push(error);
+        })
 
       if (fieldError) {
         foundErrors.push(fieldError);

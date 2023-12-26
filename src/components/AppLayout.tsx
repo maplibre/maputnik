@@ -35,8 +35,8 @@ class AppLayout extends React.Component<AppLayoutProps> {
       </div>
       {this.props.map}
       {this.props.bottom && <div className="maputnik-layout-bottom">
-          {this.props.bottom}
-        </div>
+        {this.props.bottom}
+      </div>
       }
       {this.props.modals}
     </div>

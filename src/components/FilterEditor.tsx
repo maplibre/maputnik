@@ -16,7 +16,7 @@ import ExpressionProperty from './_ExpressionProperty';
 
 
 function combiningFilter(props: FilterEditorProps): LegacyFilterSpecification | ExpressionSpecification {
-  let filter = props.filter || ['all'];
+  const filter = props.filter || ['all'];
 
   if (!Array.isArray(filter)) {
     return filter;
@@ -148,7 +148,7 @@ export default class FilterEditor extends React.Component<FilterEditorProps, Fil
   }
 
   makeExpression = () => {
-    let filter = combiningFilter(this.props);
+    const filter = combiningFilter(this.props);
     this.props.onChange(migrateFilter(filter));
     this.setState({
       displaySimpleFilter: false,
@@ -205,8 +205,8 @@ export default class FilterEditor extends React.Component<FilterEditorProps, Fil
     }
     else if (displaySimpleFilter) {
       const filter = combiningFilter(this.props);
-      let combiningOp = filter[0];
-      let filters = filter.slice(1) as (LegacyFilterSpecification | ExpressionSpecification)[];
+      const combiningOp = filter[0];
+      const filters = filter.slice(1) as (LegacyFilterSpecification | ExpressionSpecification)[];
 
       const actions = (
         <div>
@@ -282,7 +282,7 @@ export default class FilterEditor extends React.Component<FilterEditorProps, Fil
       );
     }
     else {
-      let {filter} = this.props;
+      const {filter} = this.props;
 
       return (
         <>
