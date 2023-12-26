@@ -72,12 +72,12 @@
 }
 
 .maputnik-modal-header-space {
-  @extend .maputnik-space;
+  @extend .maputnik-space; /* stylelint-disable-line */
 }
 
 //OPEN MODAL
 .maputnik-upload-button {
-  @extend .maputnik-big-button;
+  @extend .maputnik-big-button; /* stylelint-disable-line */
 }
 
 .maputnik-style-gallery-container {
@@ -139,12 +139,12 @@
 }
 
 .maputnik-add-layer {
-  @extend .clearfix;
+  @extend .clearfix; /* stylelint-disable-line */
 }
 
 //ADD MODAL
 .maputnik-add-layer-button {
-  @extend .maputnik-big-button;
+  @extend .maputnik-big-button; /* stylelint-disable-line */
 
   margin-right: $margin-3;
   float: right;
@@ -221,7 +221,7 @@
 }
 
 .maputnik-add-source {
-  @extend .clearfix;
+  @extend .clearfix; /* stylelint-disable-line */
 
   .maputnik-input-block-label {
     width: 30%;
@@ -233,7 +233,7 @@
 }
 
 .maputnik-add-source-button {
-  @extend .maputnik-big-button;
+  @extend .maputnik-big-button; /* stylelint-disable-line */
 
   display: inline-block;
   margin-top: 0;
