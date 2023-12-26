@@ -310,6 +310,7 @@ class LayerListContainer extends React.Component<LayerListContainerProps, LayerL
   }
 }
 
+const LayerListContainerSortable = SortableContainer((props: LayerListContainerProps) => <LayerListContainer {...props} />)
 
 type LayerListProps = LayerListContainerProps & {
   onMoveLayer: SortEndHandler
@@ -317,12 +318,12 @@ type LayerListProps = LayerListContainerProps & {
 
 export default class LayerList extends React.Component<LayerListProps> {
   render() {
-    return React.createElement(SortableContainer((props: LayerListContainerProps) => <LayerListContainer {...props} />), {
-      ...this.props,
-      helperClass: 'sortableHelper',
-      onSortEnd: this.props.onMoveLayer.bind(this),
-      useDragHandle: true,
-      shouldCancelStart: () => false,
-    });
+    return <LayerListContainerSortable
+      {...this.props}
+      helperClass='sortableHelper'
+      onSortEnd={this.props.onMoveLayer.bind(this)}
+      useDragHandle={true}
+      shouldCancelStart={() => false}
+    />
   }
 }
