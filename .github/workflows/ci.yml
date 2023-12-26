@@ -8,15 +8,10 @@ on:
 
 jobs:
   build-docker:
-    name: build/docker
-    runs-on: ${{ matrix.os }}
+    name: build docker
+    runs-on: ubuntu-latest
 
     if: ${{ github.event_name == 'push' || github.event_name == 'pull_request' }}
-
-    strategy:
-      fail-fast: false
-      matrix:
-        os: [ubuntu-latest]
 
     steps:
     - uses: actions/checkout@v4
@@ -24,7 +19,7 @@ jobs:
 
   # build the editor
   build-node:
-    name: "build/node@${{ matrix.node-version }} (${{ matrix.os }})"
+    name: "build on ${{ matrix.os }}"
     runs-on: ${{ matrix.os }}
 
     if: ${{ github.event_name == 'push' || github.event_name == 'pull_request' }}
@@ -33,13 +28,12 @@ jobs:
       fail-fast: false
       matrix:
         os: [ubuntu-latest, windows-latest, macos-latest]
-        node-version: [18.x]
 
     steps:
     - uses: actions/checkout@v4
-    - uses: actions/setup-node@v1
+    - uses: actions/setup-node@v4
       with:
-        node-version: ${{ matrix.node-version }}
+        node-version-file: '.nvmrc'
     - uses: actions/cache@v1
       with:
         path: ~/.npm
@@ -51,21 +45,15 @@ jobs:
 
 
   build-artifacts:
-    name: "build/artifacts (${{ matrix.os }})"
-    runs-on: ${{ matrix.os }}
+    name: "build artifacts"
+    runs-on: ubuntu-latest
     if: ${{ github.event_name == 'push' || github.event_name == 'pull_request' }}
-
-    strategy:
-      fail-fast: false
-      matrix:
-        os: [ubuntu-latest]
-        node-version: [18.x]
 
     steps:
     - uses: actions/checkout@v4
-    - uses: actions/setup-node@v1
+    - uses: actions/setup-node@v4
       with:
-        node-version: ${{ matrix.node-version }}
+        node-version-file: '.nvmrc'
     - uses: actions/cache@v1
       with:
         path: ~/.npm
@@ -121,7 +109,8 @@ jobs:
         name: maputnik-windows
         path: ./src/github.com/maputnik/desktop/bin/windows/
   
-  cypress-run:
+  e2e-tests:
+    name: "E2E tests using ${{ matrix.browser }}"
     strategy:
       fail-fast: false
       matrix:
@@ -138,3 +127,8 @@ jobs:
           build: npm run build
           start: npm run start
           browser: ${{ matrix.browser }}
+      - name: Upload coverage reports to Codecov
+        uses: codecov/codecov-action@v3
+        with:
+          files: ${{ github.workspace }}/.nyc_output/out.json
+          verbose: true
