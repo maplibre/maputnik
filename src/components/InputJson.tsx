@@ -8,7 +8,7 @@ import 'codemirror/addon/edit/matchbrackets'
 import 'codemirror/lib/codemirror.css'
 import 'codemirror/addon/lint/lint.css'
 import stringifyPretty from 'json-stringify-pretty-compact'
-import '../util/codemirror-mgl';
+import '../libs/codemirror-mgl';
 
 
 export type InputJsonProps = {

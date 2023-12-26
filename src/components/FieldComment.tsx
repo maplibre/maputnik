@@ -26,6 +26,7 @@ export default class FieldComment extends React.Component<FieldCommentProps> {
         value={this.props.value}
         onChange={this.props.onChange}
         default="Comment..."
+        data-wd-key="layer-comment.input"
       />
     </Block>
   }

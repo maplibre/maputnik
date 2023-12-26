@@ -1,5 +1,5 @@
 import React from 'react'
-import {formatLayerId} from '../util/format';
+import {formatLayerId} from '../libs/format';
 import {LayerSpecification, StyleSpecification} from 'maplibre-gl';
 
 type AppMessagePanelProps = {

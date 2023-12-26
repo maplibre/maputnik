@@ -9,7 +9,7 @@ export type InputNumberProps = {
   onChange?(value: number | undefined): unknown
   allowRange?: boolean
   rangeStep?: number
-  wdKey?: string
+  "data-wd-key"?: string
   required?: boolean
   "aria-label"?: string
 };
@@ -197,6 +197,7 @@ export default class InputNumber extends React.Component<InputNumberProps, Input
               dirtyValue: this.state.value,
             });
           }}
+          data-wd-key={this.props["data-wd-key"] + "-range"}
         />
         <input
           key="text"
@@ -215,6 +216,8 @@ export default class InputNumber extends React.Component<InputNumberProps, Input
             this.setState({editing: false});
             this.resetValue()
           }}
+          data-wd-key={this.props["data-wd-key"] + "-text"}
+
         />
       </div>
     }
@@ -233,6 +236,7 @@ export default class InputNumber extends React.Component<InputNumberProps, Input
         }}
         onBlur={this.resetValue}
         required={this.props.required}
+        data-wd-key={this.props["data-wd-key"]}
       />
     }
   }

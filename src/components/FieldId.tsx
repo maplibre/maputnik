@@ -20,6 +20,7 @@ export default class FieldId extends React.Component<FieldIdProps> {
       <InputString
         value={this.props.value}
         onInput={this.props.onChange}
+        data-wd-key={this.props.wdKey + ".input"}
       />
     </Block>
   }

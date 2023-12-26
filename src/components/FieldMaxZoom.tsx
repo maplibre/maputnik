@@ -23,6 +23,7 @@ export default class FieldMaxZoom extends React.Component<FieldMaxZoomProps> {
         min={latest.layer.maxzoom.minimum}
         max={latest.layer.maxzoom.maximum}
         default={latest.layer.maxzoom.maximum}
+        data-wd-key="max-zoom.input"
       />
     </Block>
   }
