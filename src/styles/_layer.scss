@@ -1,3 +1,4 @@
+@use 'sass:color';
 // LAYER LIST
 .maputnik-layer-list {
   height: 100%;
@@ -48,7 +49,7 @@
     font-weight: 400;
     color: $color-lowgray;
     font-size: $font-size-6;
-    border-bottom-color: color.adjust($color-black, 0.1);
+    border-bottom-color: color.adjust($color-black, $lightness: 0.1%);
     user-select: none;
     list-style: none;
     z-index: 2000;
@@ -87,7 +88,7 @@
     height: 15px;
 
     svg {
-      fill: color.adjust($color-lowgray, -20);
+      fill: color.adjust($color-lowgray, $lightness: -20%);
 
       &:hover {
         fill: $color-white;
@@ -101,13 +102,13 @@
 
   .maputnik-layer-list-item:hover,
   .maputnik-layer-list-item-selected {
-    background-color: color.adjust($color-black, 2);
+    background-color: color.adjust($color-black, $lightness: 2%);
 
     .maputnik-layer-list-icon-action {
       display: block;
 
       svg {
-        fill: color.adjust($color-lowgray, -0.5);
+        fill: color.adjust($color-lowgray, $lightness: -0.5%);
       }
     }
   }
@@ -151,7 +152,7 @@
     border: solid 1px transparent;
     font-size: $font-size-6;
     color: $color-lowgray;
-    background-color: color.adjust($color-black, 2);
+    background-color: color.adjust($color-black, $lightness: 2%);
     user-select: none;
     padding: $margin-2;
 
@@ -185,7 +186,7 @@
 .maputnik-layer-editor-group {
   font-weight: bold;
   font-size: $font-size-5;
-  background-color: color.adjust($color-black, 2);
+  background-color: color.adjust($color-black, $lightness: 2%);
   color: $color-white;
   cursor: pointer;
   user-select: none;
@@ -232,7 +233,7 @@
 // PROPERTY
 .maputnik-default-property {
   .maputnik-input-block-label {
-    color: color.adjust($color-lowgray, -20%);
+    color: color.adjust($color-lowgray, $lightness: -20%);
   }
 
   .maputnik-string,
@@ -240,8 +241,8 @@
   .maputnik-color,
   .maputnik-select,
   .maputnik-checkbox-wrapper {
-    background-color: color.adjust($color-gray, -2%);
-    color: color.adjust($color-lowgray, -20%);
+    background-color: color.adjust($color-gray, $lightness: -2%);
+    color: color.adjust($color-lowgray, $lightness: -20%);
   }
 
   .maputnik-make-zoom-function svg {
@@ -249,17 +250,17 @@
   }
 
   .maputnik-multibutton .maputnik-button {
-    background-color: color.adjust($color-midgray, -10%);
-    color: color.adjust($color-lowgray, -20%);
+    background-color: color.adjust($color-midgray, $lightness: -10%);
+    color: color.adjust($color-lowgray, $lightness: -20%);
 
     &:hover {
-      background-color: color.adjust($color-midgray, 12);
+      background-color: color.adjust($color-midgray, $lightness: 12%);
       color: $color-white;
     }
   }
 
   .maputnik-multibutton .maputnik-button-selected {
-    background-color: color.adjust($color-midgray, -2%);
+    background-color: color.adjust($color-midgray, $lightness: -2%);
     color: $color-lowgray;
   }
 }

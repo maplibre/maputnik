@@ -1,3 +1,4 @@
+@use 'sass:color';
 //INPUT
 .maputnik-input {
   height: 24px;
@@ -10,7 +11,7 @@
   padding-right: $margin-2;
   border: none;
   background-color: $color-gray;
-  color: color.adjust($color-lowgray, 12);
+  color: color.adjust($color-lowgray, $lightness: 12%);
 
   &:invalid {
     border: solid 1px #B71C1C;
@@ -117,7 +118,7 @@
 }
 
 .maputnik-button-selected {
-  background-color: color.adjust($color-midgray, 12);
+  background-color: color.adjust($color-midgray, $lightness: 12%);
   color: white;
 }
 

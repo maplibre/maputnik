@@ -1,3 +1,4 @@
+@use 'sass:color';
 // TOOLBAR
 .maputnik-toolbar {
   position: fixed;
@@ -75,7 +76,7 @@
   }
 
   &:hover .maputnik-toolbar-link-wrapper {
-    background-color: color.adjust($color-midgray, 12);
+    background-color: color.adjust($color-midgray, $lightness: 12%);
     color: $color-white;
   }
 }
