@@ -25,7 +25,7 @@ export default class ModalLoading extends React.Component<ModalLoadingProps> {
       underlayClickExits={false}
       underlayProps={{
         // @ts-ignore
-        onClick: (e: Event) => underlayProps(e)
+        onClick: (e: Event) => underlayProps(e)  
       }}
       title={this.props.title}
       onOpenToggle={() => this.props.onCancel()}

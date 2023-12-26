@@ -1,6 +1,5 @@
 import React, { BaseSyntheticEvent } from 'react'
-
-let IDX = 0;
+import generateUniqueId from '../libs/document-uid';
 
 export type InputNumberProps = {
   value?: number
@@ -32,7 +31,7 @@ export default class InputNumber extends React.Component<InputNumberProps, Input
   constructor(props: InputNumberProps) {
     super(props)
     this.state = {
-      uuid: IDX++,
+      uuid: +generateUniqueId(),
       editing: false,
       value: props.value,
       dirtyValue: props.value,
@@ -140,7 +139,7 @@ export default class InputNumber extends React.Component<InputNumberProps, Input
         }
         else {
           value = value + (step - snap);
-        };
+        }
       }
     }
 
@@ -155,7 +154,8 @@ export default class InputNumber extends React.Component<InputNumberProps, Input
 
   render() {
     if(
-      this.props.hasOwnProperty("min") && this.props.hasOwnProperty("max") &&
+      Object.prototype.hasOwnProperty.call(this.props, "min") && 
+      Object.prototype.hasOwnProperty.call(this.props, "max") &&
       this.props.min !== undefined && this.props.max !== undefined &&
       this.props.allowRange
     ) {

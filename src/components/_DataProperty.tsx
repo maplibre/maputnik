@@ -23,7 +23,7 @@ function setStopRefs(props: DataPropertyProps, state: DataPropertyState) {
 
   if(props.value && props.value.stops) {
     props.value.stops.forEach((_val, idx) => {
-      if(!state.refs.hasOwnProperty(idx)) {
+      if(!Object.prototype.hasOwnProperty.call(state.refs, idx)) {
         if(!newRefs) {
           newRefs = {...state};
         }
@@ -118,7 +118,7 @@ export default class DataProperty extends React.Component<DataPropertyProps, Dat
           data: stop
         }
       })
-      // Sort by zoom
+    // Sort by zoom
       .sort((a, b) => sortNumerically(a.data[0].zoom, b.data[0].zoom));
 
     // Fetch the new position of the stops

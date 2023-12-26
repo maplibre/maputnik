@@ -91,33 +91,33 @@ export default class ModalOpen extends React.Component<ModalOpenProps, ModalOpen
       mode: 'cors',
       credentials: "same-origin"
     })
-    .then(function(response) {
-      return response.json();
-    })
-    .then((body) => {
-      if(canceled) {
-        return;
-      }
+      .then(function(response) {
+        return response.json();
+      })
+      .then((body) => {
+        if(canceled) {
+          return;
+        }
 
-      this.setState({
-        activeRequest: null,
-        activeRequestUrl: null
-      });
+        this.setState({
+          activeRequest: null,
+          activeRequestUrl: null
+        });
 
-      const mapStyle = style.ensureStyleValidity(body)
-      console.log('Loaded style ', mapStyle.id)
-      this.props.onStyleOpen(mapStyle)
-      this.onOpenToggle()
-    })
-    .catch((err) => {
-      this.setState({
-        error: `Failed to load: '${styleUrl}'`,
-        activeRequest: null,
-        activeRequestUrl: null
-      });
-      console.error(err);
-      console.warn('Could not open the style URL', styleUrl)
-    })
+        const mapStyle = style.ensureStyleValidity(body)
+        console.log('Loaded style ', mapStyle.id)
+        this.props.onStyleOpen(mapStyle)
+        this.onOpenToggle()
+      })
+      .catch((err) => {
+        this.setState({
+          error: `Failed to load: '${styleUrl}'`,
+          activeRequest: null,
+          activeRequestUrl: null
+        });
+        console.error(err);
+        console.warn('Could not open the style URL', styleUrl)
+      })
 
     this.setState({
       activeRequest: {
@@ -135,7 +135,7 @@ export default class ModalOpen extends React.Component<ModalOpenProps, ModalOpen
   }
 
   onUpload = (_: any, files: Result[]) => {
-    const [_e, file] = files[0];
+    const [, file] = files[0];
     const reader = new FileReader();
 
     this.clearError();
@@ -244,7 +244,7 @@ export default class ModalOpen extends React.Component<ModalOpenProps, ModalOpen
               Open one of the publicly available styles to start from.
             </p>
             <div className="maputnik-style-gallery-container">
-            {styleOptions}
+              {styleOptions}
             </div>
           </section>
         </Modal>

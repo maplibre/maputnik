@@ -40,7 +40,7 @@ function isIdentityProperty(value: any) {
   return (
     typeof(value) === 'object' &&
     value.type === "identity" &&
-    value.hasOwnProperty("property")
+    Object.prototype.hasOwnProperty.call(value, "property")
   );
 }
 

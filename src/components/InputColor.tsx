@@ -87,8 +87,8 @@ export default class InputColor extends React.Component<InputColorProps> {
     const picker = <div
       className="maputnik-color-picker-offset"
       style={{
-          position: 'fixed',
-          zIndex: 1,
+        position: 'fixed',
+        zIndex: 1,
         left: offset.left,
         top: offset.top,
       }}>
@@ -110,7 +110,7 @@ export default class InputColor extends React.Component<InputColorProps> {
       />
     </div>
 
-    var swatchStyle = {
+    const swatchStyle = {
       backgroundColor: this.props.value
     };
 

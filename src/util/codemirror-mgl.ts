@@ -55,7 +55,9 @@ CodeMirror.registerHelper("lint", "mgl", (text: string, opts: any, doc: any) => 
   try {
     parser.parse(text);
   }
-  catch (e) {}
+  catch (e) {
+    // ignore errors
+  }
 
   if (found.length > 0) {
     // JSON invalid so don't go any further
@@ -154,7 +156,7 @@ CodeMirror.registerHelper("lint", "mgl", (text: string, opts: any, doc: any) => 
         found.push(err);
       }
       else if (key) {
-        const path = key.replace(/^\[|\]$/g, "").split(/\.|[\[\]]+/).filter(Boolean)
+        const path = key.replace(/^\[|\]$/g, "").split(/\.|[[\]]+/).filter(Boolean)
         const parsedError = getArrayPositionalFromAst(ast, path);
         if (!parsedError) {
           console.warn("Something went wrong parsing error:", error);

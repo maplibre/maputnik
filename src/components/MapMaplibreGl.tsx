@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {type JSX} from 'react'
 import ReactDOM from 'react-dom'
 import MapLibreGl, {LayerSpecification, LngLat, Map, MapOptions, SourceSpecification, StyleSpecification} from 'maplibre-gl'
 // @ts-ignore

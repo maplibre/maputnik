@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {type JSX} from 'react'
 import classnames from 'classnames'
 import lodash from 'lodash';
 
@@ -8,26 +8,8 @@ import ModalAdd from './ModalAdd'
 
 import {SortEndHandler, SortableContainer} from 'react-sortable-hoc';
 import type {LayerSpecification} from 'maplibre-gl';
-
-function layerPrefix(name: string) {
-  return name.replace(' ', '-').replace('_', '-').split('-')[0]
-}
-
-function findClosestCommonPrefix(layers: LayerSpecification[], idx: number) {
-  const currentLayerPrefix = layerPrefix(layers[idx].id)
-  let closestIdx = idx
-  for (let i = idx; i > 0; i--) {
-    const previousLayerPrefix = layerPrefix(layers[i-1].id)
-    if(previousLayerPrefix === currentLayerPrefix) {
-      closestIdx = i - 1
-    } else {
-      return closestIdx
-    }
-  }
-  return closestIdx
-}
-
-let UID = 0;
+import generateUniqueId from '../libs/document-uid';
+import { findClosestCommonPrefix, layerPrefix } from '../libs/layer';
 
 type LayerListContainerProps = {
   layers: LayerSpecification[]
@@ -64,7 +46,7 @@ class LayerListContainer extends React.Component<LayerListContainerProps, LayerL
       collapsedGroups: {},
       areAllGroupsExpanded: false,
       keys: {
-        add: UID++,
+        add: +generateUniqueId(),
       },
       isOpen: {
         add: false,
@@ -76,7 +58,7 @@ class LayerListContainer extends React.Component<LayerListContainerProps, LayerL
     this.setState({
       keys: {
         ...this.state.keys,
-        [modalName]: UID++,
+        [modalName]: +generateUniqueId(),
       },
       isOpen: {
         ...this.state.isOpen,
@@ -88,7 +70,7 @@ class LayerListContainer extends React.Component<LayerListContainerProps, LayerL
   toggleLayers = () => {
     let idx = 0
 
-    let newGroups: {[key:string]: boolean} = {}
+    const newGroups: {[key:string]: boolean} = {}
 
     this.groupedLayers().forEach(layers => {
       const groupPrefix = layerPrefix(layers[0].id)
@@ -284,12 +266,12 @@ class LayerListContainer extends React.Component<LayerListContainerProps, LayerL
       ref={this.scrollContainerRef}
     >
       <ModalAdd
-          key={this.state.keys.add}
-          layers={this.props.layers}
-          sources={this.props.sources}
-          isOpen={this.state.isOpen.add}
-          onOpenToggle={this.toggleModal.bind(this, 'add')}
-          onLayersChange={this.props.onLayersChange}
+        key={this.state.keys.add}
+        layers={this.props.layers}
+        sources={this.props.sources}
+        isOpen={this.state.isOpen.add}
+        onOpenToggle={this.toggleModal.bind(this, 'add')}
+        onLayersChange={this.props.onLayersChange}
       />
       <header className="maputnik-layer-list-header">
         <span className="maputnik-layer-list-header-title">Layers</span>
@@ -328,6 +310,7 @@ class LayerListContainer extends React.Component<LayerListContainerProps, LayerL
   }
 }
 
+// eslint-disable-next-line react-refresh/only-export-components
 const LayerListContainerSortable = SortableContainer((props: LayerListContainerProps) => <LayerListContainer {...props} />)
 
 type LayerListProps = LayerListContainerProps & {

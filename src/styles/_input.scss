@@ -1,3 +1,4 @@
+@use 'sass:color';
 //INPUT
 .maputnik-input {
   height: 24px;
@@ -10,7 +11,7 @@
   padding-right: $margin-2;
   border: none;
   background-color: $color-gray;
-  color: lighten($color-lowgray, 12);
+  color: color.adjust($color-lowgray, $lightness: 12%);
 
   &:invalid {
     border: solid 1px #B71C1C;
@@ -19,7 +20,7 @@
 }
 
 .maputnik-string {
-  @extend .maputnik-input;
+  @extend .maputnik-input; /* stylelint-disable-line */
 
   &--multi {
     resize: vertical;
@@ -43,12 +44,12 @@
 }
 
 .maputnik-number {
-  @extend .maputnik-input;
+  @extend .maputnik-input; /* stylelint-disable-line */
 }
 
 //COLOR PICKER
 .maputnik-color {
-  @extend .maputnik-input;
+  @extend .maputnik-input; /* stylelint-disable-line */
 
   height: 26px;
 }
@@ -95,7 +96,7 @@
 
 // SELECT
 .maputnik-select {
-  @extend .maputnik-input;
+  @extend .maputnik-input; /* stylelint-disable-line */
 
   -moz-appearance: none;
   -webkit-appearance: none;
@@ -117,7 +118,7 @@
 }
 
 .maputnik-button-selected {
-  background-color: lighten($color-midgray, 12);
+  background-color: color.adjust($color-midgray, $lightness: 12%);
   color: white;
 }
 
@@ -133,7 +134,7 @@
   outline: none;
 
   &-wrapper {
-    @extend .maputnik-input;
+    @extend .maputnik-input; /* stylelint-disable-line */
 
     padding-left: 0;
     padding-right: 0;

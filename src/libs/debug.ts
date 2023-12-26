@@ -33,7 +33,7 @@ function get(namespace: keyof DebugStore, key: string) {
   if(!enabled()) {
     throw genErr();
   }
-  if(debugStore.hasOwnProperty(namespace)) {
+  if(Object.prototype.hasOwnProperty.call(debugStore, namespace)) {
     return debugStore[namespace][key];
   }
 }

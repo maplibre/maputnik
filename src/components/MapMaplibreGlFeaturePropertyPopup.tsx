@@ -34,7 +34,7 @@ function renderFeatureId(feature: InspectFeature) {
   return <Block key={"feature-id"} label={"feature_id"}>
     <FieldString value={displayValue(feature.id)} style={{backgroundColor: 'transparent'}} />
   </Block>
-  }
+}
 
 function renderFeature(feature: InspectFeature, idx: number) {
   return <div key={`${feature.sourceLayer}-${idx}`}>
@@ -48,7 +48,7 @@ function renderFeature(feature: InspectFeature, idx: number) {
 }
 
 function removeDuplicatedFeatures(features: InspectFeature[]) {
-  let uniqueFeatures: InspectFeature[] = [];
+  const uniqueFeatures: InspectFeature[] = [];
 
   features.forEach(feature => {
     const featureIndex = uniqueFeatures.findIndex(feature2 => {

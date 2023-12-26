@@ -5,10 +5,10 @@ import {
   mdiMenuUp
 } from '@mdi/js';
 import {
-    AccordionItem,
-    AccordionItemHeading,
-    AccordionItemButton,
-    AccordionItemPanel,
+  AccordionItem,
+  AccordionItemHeading,
+  AccordionItemButton,
+  AccordionItemPanel,
 } from 'react-accessible-accordion';
 
 

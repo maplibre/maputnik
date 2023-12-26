@@ -5,12 +5,12 @@
   vertical-align: middle;
   padding: 0 $margin-2 0 0;
 
-  @extend .maputnik-icon-button;
+  @extend .maputnik-icon-button; /* stylelint-disable-line */
 }
 
 // ZOOM PROPERTY
 .maputnik-zoom-spec-property {
-  @extend .clearfix;
+  @extend .clearfix; /* stylelint-disable-line */
 }
 
 .maputnik-zoom-spec-property-label {
@@ -49,7 +49,7 @@
   padding-top: 0;
   vertical-align: middle;
 
-  @extend .maputnik-icon-button;
+  @extend .maputnik-icon-button; /* stylelint-disable-line */
 }
 
 .maputnik-add-stop {
@@ -65,7 +65,7 @@
   vertical-align: middle;
   padding: 0 $margin-2 0 0;
 
-  @extend .maputnik-icon-button;
+  @extend .maputnik-icon-button; /* stylelint-disable-line */
 }
 
 .maputnik-data-spec-property {

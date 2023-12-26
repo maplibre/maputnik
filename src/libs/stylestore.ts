@@ -21,10 +21,10 @@ export function loadDefaultStyle(cb: (...args: any[]) => void) {
 function loadStoredStyles() {
   const styles = []
   for (let i = 0; i < window.localStorage.length; i++) {
-      const key = window.localStorage.key(i)
-      if(isStyleKey(key!)) {
-        styles.push(fromKey(key!))
-      }
+    const key = window.localStorage.key(i)
+    if(isStyleKey(key!)) {
+      styles.push(fromKey(key!))
+    }
   }
   return styles
 }
@@ -70,10 +70,10 @@ export class StyleStore {
   // Delete entire style history
   purge() {
     for (let i = 0; i < window.localStorage.length; i++) {
-        const key = window.localStorage.key(i) as string;
-        if(key.startsWith(storagePrefix)) {
-          window.localStorage.removeItem(key)
-        }
+      const key = window.localStorage.key(i) as string;
+      if(key.startsWith(storagePrefix)) {
+        window.localStorage.removeItem(key)
+      }
     }
   }
 

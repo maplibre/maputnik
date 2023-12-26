@@ -5,10 +5,10 @@ import type {InspectFeature} from './MapMaplibreGlFeaturePropertyPopup';
 function groupFeaturesBySourceLayer(features: InspectFeature[]) {
   const sources: {[key: string]: InspectFeature[]} = {}
 
-  let returnedFeatures: {[key: string]: number} = {}
+  const returnedFeatures: {[key: string]: number} = {}
 
   features.forEach(feature => {
-    if(returnedFeatures.hasOwnProperty(feature.layer.id)) {
+    if(Object.prototype.hasOwnProperty.call(returnedFeatures, feature.layer.id)) {
       returnedFeatures[feature.layer.id]++
 
       const featureObject = sources[feature.layer['source-layer']].find((f: InspectFeature) => f.layer.id === feature.layer.id)
@@ -42,21 +42,21 @@ class FeatureLayerPopup extends React.Component<FeatureLayerPopupProps> {
       const paintProps = feature.layer.paint;
       let propName;
 
-      if(paintProps.hasOwnProperty("text-color") && paintProps["text-color"]) {
+      if(Object.prototype.hasOwnProperty.call(paintProps, "text-color") && paintProps["text-color"]) {
         propName = "text-color";
       }
-      else if (paintProps.hasOwnProperty("fill-color") && paintProps["fill-color"]) {
+      else if (Object.prototype.hasOwnProperty.call(paintProps, "fill-color") && paintProps["fill-color"]) {
         propName = "fill-color";
       }
-      else if (paintProps.hasOwnProperty("line-color") && paintProps["line-color"]) {
+      else if (Object.prototype.hasOwnProperty.call(paintProps, "line-color") && paintProps["line-color"]) {
         propName = "line-color";
       }
-      else if (paintProps.hasOwnProperty("fill-extrusion-color") && paintProps["fill-extrusion-color"]) {
+      else if (Object.prototype.hasOwnProperty.call(paintProps, "fill-extrusion-color") && paintProps["fill-extrusion-color"]) {
         propName = "fill-extrusion-color";
       }
 
       if(propName) {
-        let color = feature.layer.paint[propName];
+        const color = feature.layer.paint[propName];
         return String(color);
       }
       else {
@@ -80,8 +80,8 @@ class FeatureLayerPopup extends React.Component<FeatureLayerPopupProps> {
         const featureColor = this._getFeatureColor(feature, this.props.zoom);
 
         return <div
-            key={idx}
-            className="maputnik-popup-layer"
+          key={idx}
+          className="maputnik-popup-layer"
         >
           <div
             className="maputnik-popup-layer__swatch"

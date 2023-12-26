@@ -334,7 +334,7 @@ export default class App extends React.Component<any, AppState> {
     const metadata: {[key: string]: string} = this.state.mapStyle.metadata || {} as any
     const accessToken = metadata['maputnik:openmaptiles_access_token'] || tokens.openmaptiles
 
-    let glyphUrl = (typeof urlTemplate === 'string')? urlTemplate.replace('{key}', accessToken): urlTemplate;
+    const glyphUrl = (typeof urlTemplate === 'string')? urlTemplate.replace('{key}', accessToken): urlTemplate;
     downloadGlyphsMetadata(glyphUrl, fonts => {
       this.setState({ spec: updateRootSpec(this.state.spec, 'glyphs', fonts)})
     })
@@ -402,7 +402,7 @@ export default class App extends React.Component<any, AppState> {
       // Special case: Duplicate layer id
       const dupMatch = error.message.match(/layers\[(\d+)\]: (duplicate layer id "?(.*)"?, previously used)/);
       if (dupMatch) {
-        const [_matchStr, index, message] = dupMatch;
+        const [, index, message] = dupMatch;
         return {
           message: error.message,
           parsed: {
@@ -419,7 +419,7 @@ export default class App extends React.Component<any, AppState> {
       // Special case: Invalid source
       const invalidSourceMatch = error.message.match(/layers\[(\d+)\]: (source "(?:.*)" not found)/);
       if (invalidSourceMatch) {
-        const [_matchStr, index, message] = invalidSourceMatch;
+        const [, index, message] = invalidSourceMatch;
         return {
           message: error.message,
           parsed: {
@@ -435,7 +435,7 @@ export default class App extends React.Component<any, AppState> {
 
       const layerMatch = error.message.match(/layers\[(\d+)\]\.(?:(\S+)\.)?(\S+): (.*)/);
       if (layerMatch) {
-        const [_matchStr, index, group, property, message] = layerMatch;
+        const [, index, group, property, message] = layerMatch;
         const key = (group && property) ? [group, property].join(".") : property;
         return {
           message: error.message,
@@ -466,7 +466,7 @@ export default class App extends React.Component<any, AppState> {
           try {
             const objPath = message.split(":")[0];
             // Errors can be deply nested for example 'layers[0].filter[1][1][0]' we only care upto the property 'layers[0].filter'
-            const unsetPath = objPath.match(/^\S+?\[\d+\]\.[^\[]+/)![0];
+            const unsetPath = objPath.match(/^\S+?\[\d+\]\.[^[]+/)![0];
             unset(dirtyMapStyle, unsetPath);
           }
           catch (err) {
@@ -547,14 +547,14 @@ export default class App extends React.Component<any, AppState> {
   }
 
   onLayerDestroy = (index: number) => {
-    let layers = this.state.mapStyle.layers;
+    const layers = this.state.mapStyle.layers;
     const remainingLayers = layers.slice(0);
     remainingLayers.splice(index, 1);
     this.onLayersChange(remainingLayers);
   }
 
   onLayerCopy = (index: number) => {
-    let layers = this.state.mapStyle.layers;
+    const layers = this.state.mapStyle.layers;
     const changedLayers = layers.slice(0)
 
     const clonedLayer = cloneDeep(changedLayers[index])
@@ -564,7 +564,7 @@ export default class App extends React.Component<any, AppState> {
   }
 
   onLayerVisibilityToggle = (index: number) => {
-    let layers = this.state.mapStyle.layers;
+    const layers = this.state.mapStyle.layers;
     const changedLayers = layers.slice(0)
 
     const layer = { ...changedLayers[index] }
@@ -624,11 +624,11 @@ export default class App extends React.Component<any, AppState> {
   fetchSources() {
     const sourceList: {[key: string]: any} = {};
 
-    for(let [key, val] of Object.entries(this.state.mapStyle.sources)) {
+    for(const [key, val] of Object.entries(this.state.mapStyle.sources)) {
       if(
-        !this.state.sources.hasOwnProperty(key) &&
+        !Object.prototype.hasOwnProperty.call(this.state.sources, key) &&
         val.type === "vector" &&
-        val.hasOwnProperty("url")
+        Object.prototype.hasOwnProperty.call(val, "url")
       ) {
         sourceList[key] = {
           type: val.type,
@@ -646,30 +646,30 @@ export default class App extends React.Component<any, AppState> {
         fetch(url!, {
           mode: 'cors',
         })
-        .then(response => response.json())
-        .then(json => {
+          .then(response => response.json())
+          .then(json => {
 
-          if(!json.hasOwnProperty("vector_layers")) {
-            return;
-          }
+            if(!Object.prototype.hasOwnProperty.call(json, "vector_layers")) {
+              return;
+            }
 
-          // Create new objects before setState
-          const sources = Object.assign({}, {
-            [key]: this.state.sources[key],
+            // Create new objects before setState
+            const sources = Object.assign({}, {
+              [key]: this.state.sources[key],
+            });
+
+            for(const layer of json.vector_layers) {
+              (sources[key] as any).layers.push(layer.id)
+            }
+
+            console.debug("Updating source: "+key);
+            this.setState({
+              sources: sources
+            });
+          })
+          .catch(err => {
+            console.error("Failed to process sources for '%s'", url, err);
           });
-
-          for(let layer of json.vector_layers) {
-            (sources[key] as any).layers.push(layer.id)
-          }
-
-          console.debug("Updating source: "+key);
-          this.setState({
-            sources: sources
-          });
-        })
-        .catch(err => {
-          console.error("Failed to process sources for '%s'", url, err);
-        });
       }
       else {
         sourceList[key] = this.state.sources[key] || this.state.mapStyle.sources[key];
@@ -760,8 +760,8 @@ export default class App extends React.Component<any, AppState> {
     url.searchParams.set("layer", `${hashVal}~${selectedLayerIndex}`);
 
     const openModals = Object.entries(isOpen)
-    .map(([key, val]) => (val === true ? key : null))
-    .filter(val => val !== null);
+      .map(([key, val]) => (val === true ? key : null))
+      .filter(val => val !== null);
 
     if (openModals.length > 0) {
       url.searchParams.set("modal", openModals.join(","));

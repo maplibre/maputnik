@@ -12,16 +12,16 @@ export function loadStyleUrl(styleUrl: string, cb: (...args: any[]) => void) {
     mode: 'cors',
     credentials: "same-origin"
   })
-  .then(function(response) {
-    return response.json();
-  })
-  .then(function(body) {
-    cb(style.ensureStyleValidity(body))
-  })
-  .catch(function() {
-    console.warn('Could not fetch default style', styleUrl)
-    cb(style.emptyStyle)
-  })
+    .then(function(response) {
+      return response.json();
+    })
+    .then(function(body) {
+      cb(style.ensureStyleValidity(body))
+    })
+    .catch(function() {
+      console.warn('Could not fetch default style', styleUrl)
+      cb(style.emptyStyle)
+    })
 }
 
 export function removeStyleQuerystring() {
