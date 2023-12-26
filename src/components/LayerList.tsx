@@ -309,7 +309,7 @@ class LayerListContainer extends React.Component<LayerListContainerProps, LayerL
     </section>
   }
 }
- 
+
 // eslint-disable-next-line react-refresh/only-export-components
 const LayerListContainerSortable = SortableContainer((props: LayerListContainerProps) => <LayerListContainer {...props} />)
 
