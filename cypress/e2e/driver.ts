@@ -2,7 +2,7 @@ import { CypressHelper } from "@shellygo/cypress-test-utils";
 import ThirdPartyDriver from "./thirs-party-driver";
 import ModalDriver from "./modal-driver";
 
-const SERVER_ADDRESS = "http://localhost:8888";
+const SERVER_ADDRESS = "http://localhost:8888/";
 
 export default class MaputnikDriver {
   private helper = new CypressHelper({ defaultDataAttribute: "data-wd-key" });
@@ -19,6 +19,7 @@ export default class MaputnikDriver {
   public given = {
     setupInterception: () => {
       this.thirdPartyDriver.given.interceptGetToFile(SERVER_ADDRESS + "example-style.json");
+      this.thirdPartyDriver.given.interceptGetToFile(SERVER_ADDRESS + "example-layer-style.json");
       this.thirdPartyDriver.given.interceptGetToFile(SERVER_ADDRESS + "geojson-style.json");
       this.thirdPartyDriver.given.interceptGetToFile(SERVER_ADDRESS + "raster-style.json");
       this.thirdPartyDriver.given.interceptGetToFile(SERVER_ADDRESS + "geojson-raster-style.json");
