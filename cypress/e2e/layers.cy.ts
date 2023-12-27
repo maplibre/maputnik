@@ -1,5 +1,5 @@
 import { v1 as uuid } from "uuid";
-import MaputnikDriver from "./driver";
+import MaputnikDriver from "./maputnik-driver";
 
 describe("layers", () => {
   let { beforeAndAfter, when, should } = new MaputnikDriver();

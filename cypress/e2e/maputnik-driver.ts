@@ -1,12 +1,10 @@
-import { CypressHelper } from "@shellygo/cypress-test-utils";
-import ThirdPartyDriver from "./thirs-party-driver";
+import CypressWrapperDriver from "./cypress-wrapper-driver";
 import ModalDriver from "./modal-driver";
 
 const SERVER_ADDRESS = "http://localhost:8888/";
 
 export default class MaputnikDriver {
-  private helper = new CypressHelper({ defaultDataAttribute: "data-wd-key" });
-  private thirdPartyDriver = new ThirdPartyDriver();
+  private helper = new CypressWrapperDriver();
   private modalDriver = new ModalDriver();
 
   public beforeAndAfter = () => {
@@ -18,14 +16,14 @@ export default class MaputnikDriver {
 
   public given = {
     setupInterception: () => {
-      this.thirdPartyDriver.given.interceptGetToFile(SERVER_ADDRESS + "example-style.json");
-      this.thirdPartyDriver.given.interceptGetToFile(SERVER_ADDRESS + "example-layer-style.json");
-      this.thirdPartyDriver.given.interceptGetToFile(SERVER_ADDRESS + "geojson-style.json");
-      this.thirdPartyDriver.given.interceptGetToFile(SERVER_ADDRESS + "raster-style.json");
-      this.thirdPartyDriver.given.interceptGetToFile(SERVER_ADDRESS + "geojson-raster-style.json");
+      this.helper.given.interceptGetToFile(SERVER_ADDRESS + "example-style.json");
+      this.helper.given.interceptGetToFile(SERVER_ADDRESS + "example-layer-style.json");
+      this.helper.given.interceptGetToFile(SERVER_ADDRESS + "geojson-style.json");
+      this.helper.given.interceptGetToFile(SERVER_ADDRESS + "raster-style.json");
+      this.helper.given.interceptGetToFile(SERVER_ADDRESS + "geojson-raster-style.json");
 
-      this.thirdPartyDriver.given.interceptAndIgnore("*example.local/*");
-      this.thirdPartyDriver.given.interceptAndIgnore("*example.com/*");
+      this.helper.given.interceptAndIgnore("*example.local/*");
+      this.helper.given.interceptAndIgnore("*example.com/*");
     },
   };
 
@@ -34,12 +32,12 @@ export default class MaputnikDriver {
     within: (selector: string, fn: () => void) => {
       this.helper.when.within(fn, selector);
     },
-    tab: () => this.thirdPartyDriver.get.element("body").tab(),
+    tab: () => this.helper.get.elementByClassOrType("body").tab(),
     waitForExampleFileRequset: () => {
       this.helper.when.waitForResponse("example-style.json");
     },
     chooseExampleFile: () => {
-      this.thirdPartyDriver.get.element("input[type='file']").selectFile(
+      this.helper.get.elementByClassOrType("input[type='file']").selectFile(
         "cypress/fixtures/example-style.json",
         { force: true }
       );
@@ -66,9 +64,9 @@ export default class MaputnikDriver {
       if (zoom) {
         url += `#${zoom}/41.3805/2.1635`;
       }
-      cy.visit(SERVER_ADDRESS + url);
+      this.helper.when.visit(SERVER_ADDRESS + url);
       if (styleProperties) {
-        this.thirdPartyDriver.when.confirmAlert();
+        this.helper.when.confirmAlert();
       }
       this.helper.get.element("toolbar:link").should("be.visible");
     },
@@ -77,7 +75,7 @@ export default class MaputnikDriver {
       if (selector) {
         this.helper.get.element(selector).type(keys);
       } else {
-        this.thirdPartyDriver.get.element("body").type(keys);
+        this.helper.get.elementByClassOrType("body").type(keys);
       }
     },
 
@@ -86,12 +84,12 @@ export default class MaputnikDriver {
     },
 
     clickZoomin: () => {
-      this.thirdPartyDriver.get.element(".maplibregl-ctrl-zoom-in").click();
+      this.helper.get.elementByClassOrType(".maplibregl-ctrl-zoom-in").click();
     },
 
     selectWithin: (selector: string, value: string) => {
       this.when.within(selector, () => {
-        this.thirdPartyDriver.get.element("select").select(value);
+        this.helper.get.elementByClassOrType("select").select(value);
       });
     },
 
@@ -126,11 +124,11 @@ export default class MaputnikDriver {
   public should = {
     canvasBeFocused: () => {
       this.when.within("maplibre:map", () => {
-        this.thirdPartyDriver.get.element("canvas").should("be.focused");
+        this.helper.get.elementByClassOrType("canvas").should("be.focused");
       });
     },
     notExist: (selector: string) => {
-      this.thirdPartyDriver.get.element(selector).should("not.exist");
+      this.helper.get.elementByClassOrType(selector).should("not.exist");
     },
     beFocused: (selector: string) => {
       this.helper.get.element(selector).should("have.focus");

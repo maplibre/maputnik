@@ -1,10 +1,8 @@
 import { v1 as uuid } from "uuid";
-import { CypressHelper } from "@shellygo/cypress-test-utils";
-import ThirdPartyDriver from "./thirs-party-driver";
+import CypressWrapperDriver from "./cypress-wrapper-driver";
 
 export default class ModalDriver {
-  private helper = new CypressHelper({ defaultDataAttribute: "data-wd-key" });
-  private thirdPartyDriver = new ThirdPartyDriver();
+  private helper = new CypressWrapperDriver();
 
   public when = {
     fillLayers: (opts: {type: string, layer?: string, id?: string}) => {
@@ -21,7 +19,7 @@ export default class ModalDriver {
       this.helper.get.element("add-layer.layer-id.input").type(id);
       if (layer) {
         this.helper.when.within(() => {
-          this.thirdPartyDriver.get.element("input").type(layer!);
+          this.helper.get.elementByClassOrType("input").type(layer!);
         }, "add-layer.layer-source-block")
       }
       this.helper.when.click("add-layer");

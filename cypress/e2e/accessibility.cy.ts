@@ -1,4 +1,4 @@
-import MaputnikDriver from "./driver";
+import MaputnikDriver from "./maputnik-driver";
 
 describe("accessibility", () => {
   let { beforeAndAfter, when, should } = new MaputnikDriver();

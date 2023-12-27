@@ -1,4 +1,4 @@
-import MaputnikDriver from "./driver";
+import MaputnikDriver from "./maputnik-driver";
 
 describe("history", () => {
   let { beforeAndAfter, when, get, should } = new MaputnikDriver();

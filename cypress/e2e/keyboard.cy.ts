@@ -1,4 +1,4 @@
-import MaputnikDriver from "./driver";
+import MaputnikDriver from "./maputnik-driver";
 
 describe("keyboard", () => {
   let { beforeAndAfter, given, when, should } = new MaputnikDriver();
