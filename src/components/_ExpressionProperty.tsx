@@ -4,7 +4,7 @@ import stringifyPretty from 'json-stringify-pretty-compact'
 
 import Block from './Block'
 import InputButton from './InputButton'
-import labelFromFieldName from './_labelFromFieldName'
+import labelFromFieldName from '../libs/label-from-field-name'
 import FieldJson from './FieldJson'
 
 

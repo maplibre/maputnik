@@ -44,6 +44,7 @@ export default class FieldType extends React.Component<FieldTypeProps> {
           ]}
           onChange={this.props.onChange}
           value={this.props.value}
+          data-wd-key={this.props.wdKey + ".select"}
         />
       }
     </Block>

@@ -10,9 +10,9 @@ import InputSelect from './InputSelect'
 import Block from './Block'
 import docUid from '../libs/document-uid'
 import sortNumerically from '../libs/sort-numerically'
-import {findDefaultFromSpec} from '../util/spec-helper';
+import {findDefaultFromSpec} from '../libs/spec-helper';
 
-import labelFromFieldName from './_labelFromFieldName'
+import labelFromFieldName from '../libs/label-from-field-name'
 import DeleteStopButton from './_DeleteStopButton'
 
 

@@ -26,7 +26,7 @@ describe("modals", () => {
     it("load from url", () => {
       var styleFileUrl = get.exampleFileUrl();
 
-      when.setValue(get.dataAttribute("modal:open.url.input"), styleFileUrl);
+      when.setValue("modal:open.url.input", styleFileUrl);
       when.click("modal:open.url.button");
       when.waitForExampleFileRequset();
 
@@ -83,30 +83,27 @@ describe("modals", () => {
     });
 
     it("show name specifications", () => {
-      when.setValue(get.dataAttribute("modal:settings.name"), "foobar");
+      when.setValue("modal:settings.name", "foobar");
       when.click("modal:settings.owner");
 
       should.equalStyleStore((obj) => obj.name, "foobar");
     });
 
     it("owner", () => {
-      when.setValue(get.dataAttribute("modal:settings.owner"), "foobar");
+      when.setValue("modal:settings.owner", "foobar");
       when.click("modal:settings.name");
 
       should.equalStyleStore((obj) => obj.owner, "foobar");
     });
     it("sprite url", () => {
-      when.setValue(
-        get.dataAttribute("modal:settings.sprite"),
-        "http://example.com"
-      );
+      when.setValue("modal:settings.sprite", "http://example.com");
       when.click("modal:settings.name");
 
       should.equalStyleStore((obj) => obj.sprite, "http://example.com");
     });
     it("glyphs url", () => {
       var glyphsUrl = "http://example.com/{fontstack}/{range}.pbf";
-      when.setValue(get.dataAttribute("modal:settings.glyphs"), glyphsUrl);
+      when.setValue("modal:settings.glyphs", glyphsUrl);
       when.click("modal:settings.name");
 
       should.equalStyleStore((obj) => obj.glyphs, glyphsUrl);
@@ -115,9 +112,7 @@ describe("modals", () => {
     it("maptiler access token", () => {
       var apiKey = "testing123";
       when.setValue(
-        get.dataAttribute(
-          "modal:settings.maputnik:openmaptiles_access_token"
-        ),
+        "modal:settings.maputnik:openmaptiles_access_token",
         apiKey
       );
       when.click("modal:settings.name");
@@ -130,12 +125,7 @@ describe("modals", () => {
 
     it("thunderforest access token", () => {
       var apiKey = "testing123";
-      when.setValue(
-        get.dataAttribute(
-          "modal:settings.maputnik:thunderforest_access_token"
-        ),
-        apiKey
-      );
+      when.setValue("modal:settings.maputnik:thunderforest_access_token", apiKey);
       when.click("modal:settings.name");
 
       should.equalStyleStore(

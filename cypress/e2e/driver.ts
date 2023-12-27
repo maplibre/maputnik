@@ -71,7 +71,7 @@ export default class MaputnikDriver {
       if (styleProperties) {
         cy.on("window:confirm", () => true);
       }
-      cy.get(".maputnik-toolbar-link").should("be.visible");
+      this.helper.get.element("toolbar:link").should("be.visible");
     },
     fillLayersModal: (opts: {type: string, layer?: string, id?: string}) => {
       var type = opts.type;
@@ -83,22 +83,24 @@ export default class MaputnikDriver {
         id = `${type}:${uuid()}`;
       }
 
-      cy.get(
-        this.get.dataAttribute("add-layer.layer-type", "select")
-      ).select(type);
-      cy.get(this.get.dataAttribute("add-layer.layer-id", "input")).type(id);
+      this.helper.get.element("add-layer.layer-type.select").select(type);
+      this.helper.get.element("add-layer.layer-id.input").type(id);
       if (layer) {
-        cy.get(
-          this.get.dataAttribute("add-layer.layer-source-block", "input")
-        ).type(layer);
+        this.when.within("add-layer.layer-source-block", () => {
+          cy.get("input").type(layer!);
+        })
       }
       this.when.click("add-layer");
 
       return id;
     },
 
-    typeKeys: (keys: string) => {
-      cy.get("body").type(keys);
+    typeKeys: (keys: string, selector?: string) => {
+      if (selector) {
+        this.helper.get.element(selector).type(keys);
+      } else {
+        cy.get("body").type(keys);
+      }
     },
 
     click: (selector: string) => {
@@ -124,7 +126,7 @@ export default class MaputnikDriver {
     },
 
     setValue: (selector: string, text: string) => {
-      cy.get(selector).clear().type(text, { parseSpecialCharSequences: false });
+      this.helper.get.element(selector).clear().type(text, { parseSpecialCharSequences: false });
     },
 
     closeModal: (key: string) => {
@@ -135,8 +137,8 @@ export default class MaputnikDriver {
     openLayersModal: () => {
       this.helper.when.click("layer-list:add-layer");
 
-      cy.get(this.get.dataAttribute("modal:add-layer")).should("exist");
-      cy.get(this.get.dataAttribute("modal:add-layer")).should("be.visible");
+      this.helper.get.element("modal:add-layer").should("exist");
+      this.helper.get.element("modal:add-layer").should("be.visible");
     },
   };
 
@@ -152,9 +154,6 @@ export default class MaputnikDriver {
     },
     exampleFileUrl: () => {
       return "http://localhost:8888/example-style.json";
-    },
-    dataAttribute: (key: string, selector?: string): string => {
-      return `*[data-wd-key='${key}'] ${selector || ""}`;
     },
   };
 

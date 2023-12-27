@@ -5,7 +5,7 @@ import DataProperty, { Stop } from './_DataProperty'
 import ZoomProperty from './_ZoomProperty'
 import ExpressionProperty from './_ExpressionProperty'
 import {function as styleFunction} from '@maplibre/maplibre-gl-style-spec';
-import {findDefaultFromSpec} from '../util/spec-helper';
+import {findDefaultFromSpec} from '../libs/spec-helper';
 
 
 function isLiteralExpression(value: any) {

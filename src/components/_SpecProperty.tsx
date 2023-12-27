@@ -3,7 +3,7 @@ import React from 'react'
 import SpecField, {SpecFieldProps} from './SpecField'
 import FunctionButtons from './_FunctionButtons'
 
-import labelFromFieldName from './_labelFromFieldName'
+import labelFromFieldName from '../libs/label-from-field-name'
 
 
 type SpecPropertyProps = SpecFieldProps & {

@@ -134,10 +134,7 @@ describe("layers", () => {
         var id = uuid();
 
         when.selectWithin("add-layer.layer-type", "background");
-        when.setValue(
-          get.dataAttribute("add-layer.layer-id", "input"),
-          "background:" + id
-        );
+        when.setValue("add-layer.layer-id.input", "background:" + id);
 
         when.click("add-layer");
 
@@ -162,10 +159,7 @@ describe("layers", () => {
           when.click("layer-list-item:background:" + bgId);
 
           var id = uuid();
-          when.setValue(
-            get.dataAttribute("layer-editor.layer-id", "input"),
-            "foobar:" + id
-          );
+          when.setValue("layer-editor.layer-id.input", "foobar:" + id);
           when.click("min-zoom");
 
           should.equalStyleStore(
@@ -183,10 +177,7 @@ describe("layers", () => {
           var bgId = createBackground();
 
           when.click("layer-list-item:background:" + bgId);
-          when.setValue(
-            get.dataAttribute("min-zoom", 'input[type="text"]'),
-            "1"
-          );
+          when.setValue("min-zoom.input-text", "1");
 
           when.click("layer-editor.layer-id");
 
@@ -202,25 +193,20 @@ describe("layers", () => {
           );
 
           // AND RESET!
-          // driver.setValue(driver.get.dataAttribute("min-zoom", "input"), "")
-          // driver.click(driver.get.dataAttribute("max-zoom", "input"));
+          when.typeKeys("{backspace}", "min-zoom.input-text");
+          when.click("max-zoom.input-text");
 
-          // driver.isStyleStoreEqual((a: any) => a.layers, [
-          //   {
-          //     "id": 'background:'+bgId,
-          //     "type": 'background'
-          //   }
-          // ]);
+          should.equalStyleStore((a: any) => a.layers, [{
+            "id": 'background:'+bgId,
+            "type": 'background'
+          }]);
         });
 
         it("max-zoom", () => {
           var bgId = createBackground();
 
           when.click("layer-list-item:background:" + bgId);
-          when.setValue(
-            get.dataAttribute("max-zoom", 'input[type="text"]'),
-            "1"
-          );
+          when.setValue("max-zoom.input-text", "1");
 
           when.click("layer-editor.layer-id");
 
@@ -238,10 +224,10 @@ describe("layers", () => {
 
         it("comments", () => {
           var bgId = createBackground();
-          var id = uuid();
+          var comment = "42";
 
           when.click("layer-list-item:background:" + bgId);
-          when.setValue(get.dataAttribute("layer-comment", "textarea"), id);
+          when.setValue("layer-comment.input", comment);
 
           when.click("layer-editor.layer-id");
 
@@ -252,23 +238,20 @@ describe("layers", () => {
                 id: "background:" + bgId,
                 type: "background",
                 metadata: {
-                  "maputnik:comment": id,
+                  "maputnik:comment": comment,
                 },
               },
             ]
           );
 
           // Unset it again.
-          // TODO: This fails
-          // driver.setValue(driver.getDataAttribute("layer-comment", "textarea"), "");
-          // driver.click(driver.getDataAttribute("min-zoom", "input"));
+          when.typeKeys("{backspace}{backspace}", "layer-comment.input");
+          when.click("min-zoom.input-text");
 
-          // driver.isStyleStoreEqual((a: any) => a.layers, [
-          //   {
-          //     "id": 'background:'+bgId,
-          //     "type": 'background'
-          //   }
-          // ]);
+          should.equalStyleStore((a: any) => a.layers, [{
+            "id": 'background:' + bgId,
+            "type": 'background'
+          }]);
         });
 
         it("color", () => {

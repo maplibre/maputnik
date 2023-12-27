@@ -18,7 +18,7 @@ import FieldSource from './FieldSource'
 import FieldSourceLayer from './FieldSourceLayer'
 import { changeType, changeProperty } from '../libs/layer'
 import layout from '../config/layout.json'
-import {formatLayerId} from '../util/format';
+import {formatLayerId} from '../libs/format';
 
 
 function getLayoutForType(type: LayerSpecification["type"]) {

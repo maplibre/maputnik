@@ -36,6 +36,7 @@ class ToolbarLink extends React.Component<ToolbarLinkProps> {
       href={this.props.href}
       rel="noopener noreferrer"
       target="_blank"
+      data-wd-key="toolbar:link"
     >
       {this.props.children}
     </a>
@@ -56,6 +57,7 @@ class ToolbarLinkHighlighted extends React.Component<ToolbarLinkHighlightedProps
       href={this.props.href}
       rel="noopener noreferrer"
       target="_blank"
+      data-wd-key="toolbar:link-highlighted"
     >
       <span className="maputnik-toolbar-link-wrapper">
         {this.props.children}
