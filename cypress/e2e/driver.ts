@@ -119,7 +119,7 @@ export default class MaputnikDriver {
       return obj;
     },
     exampleFileUrl: () => {
-      return "http://localhost:8888/example-style.json";
+      return SERVER_ADDRESS + "example-style.json";
     },
   };
 
@@ -158,7 +158,7 @@ export default class MaputnikDriver {
     styleStoreEqualToExampleFileData: () => {
       cy.window().then((win: any) => {
         const obj = this.get.styleFromWindow(win);
-        this.helper.get.fixture("example-style.json").should("deep.equal", obj);
+        this.helper.given.fixture("example-style.json", "file:example-style.json").should("deep.equal", obj);
       });
     },
 
