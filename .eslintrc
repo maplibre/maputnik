@@ -37,7 +37,8 @@
       "react/prop-types": ["off"],
       // Disable no-undef. It's covered by @typescript-eslint
       "no-undef": "off",
-      "indent": ["error", 2]
+      "indent": ["error", 2],
+      "no-var": ["error"]
     },
     "globals": {
       "global": "readonly"

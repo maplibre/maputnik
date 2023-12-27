@@ -1,7 +1,7 @@
 import MaputnikDriver from "./driver";
 
 describe("keyboard", () => {
-  let { beforeAndAfter, given, when, get, should } = new MaputnikDriver();
+  let { beforeAndAfter, given, when, should } = new MaputnikDriver();
   beforeAndAfter();
   describe("shortcuts", () => {
     beforeEach(() => {

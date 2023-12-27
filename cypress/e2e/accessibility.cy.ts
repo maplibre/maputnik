@@ -1,7 +1,7 @@
 import MaputnikDriver from "./driver";
 
 describe("accessibility", () => {
-  let { beforeAndAfter, given, when, get, should } = new MaputnikDriver();
+  let { beforeAndAfter, when, should } = new MaputnikDriver();
   beforeAndAfter();
 
   describe("skip links", () => {

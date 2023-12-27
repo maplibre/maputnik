@@ -1,7 +1,14 @@
 import { CypressHelper } from "@shellygo/cypress-test-utils";
-import { v1 as uuid } from "uuid";
+import ThirdPartyDriver from "./thirs-party-driver";
+import ModalDriver from "./modal-driver";
+
+const SERVER_ADDRESS = "http://localhost:8888";
+
 export default class MaputnikDriver {
   private helper = new CypressHelper({ defaultDataAttribute: "data-wd-key" });
+  private thirdPartyDriver = new ThirdPartyDriver();
+  private modalDriver = new ModalDriver();
+
   public beforeAndAfter = () => {
     beforeEach(() => {
       this.given.setupInterception();
@@ -11,36 +18,27 @@ export default class MaputnikDriver {
 
   public given = {
     setupInterception: () => {
-      cy.intercept("GET", "http://localhost:8888/example-style.json", {
-        fixture: "example-style.json",
-      }).as("example-style.json");
-      cy.intercept("GET", "http://localhost:8888/example-layer-style.json", {
-        fixture: "example-layer-style.json",
-      });
-      cy.intercept("GET", "http://localhost:8888/geojson-style.json", {
-        fixture: "geojson-style.json",
-      });
-      cy.intercept("GET", "http://localhost:8888/raster-style.json", {
-        fixture: "raster-style.json",
-      });
-      cy.intercept("GET", "http://localhost:8888/geojson-raster-style.json", {
-        fixture: "geojson-raster-style.json",
-      });
-      cy.intercept({ method: "GET", url: "*example.local/*" }, []);
-      cy.intercept({ method: "GET", url: "*example.com/*" }, []);
+      this.thirdPartyDriver.given.interceptGetToFile(SERVER_ADDRESS + "example-style.json");
+      this.thirdPartyDriver.given.interceptGetToFile(SERVER_ADDRESS + "geojson-style.json");
+      this.thirdPartyDriver.given.interceptGetToFile(SERVER_ADDRESS + "raster-style.json");
+      this.thirdPartyDriver.given.interceptGetToFile(SERVER_ADDRESS + "geojson-raster-style.json");
+
+      this.thirdPartyDriver.given.interceptAndIgnore("*example.local/*");
+      this.thirdPartyDriver.given.interceptAndIgnore("*example.com/*");
     },
   };
 
   public when = {
+    modal: this.modalDriver.when,
     within: (selector: string, fn: () => void) => {
       this.helper.when.within(fn, selector);
     },
-    tab: () => cy.get("body").tab(),
+    tab: () => this.thirdPartyDriver.get.element("body").tab(),
     waitForExampleFileRequset: () => {
       this.helper.when.waitForResponse("example-style.json");
     },
     chooseExampleFile: () => {
-      cy.get("input[type='file']").selectFile(
+      this.thirdPartyDriver.get.element("input[type='file']").selectFile(
         "cypress/fixtures/example-style.json",
         { force: true }
       );
@@ -51,55 +49,34 @@ export default class MaputnikDriver {
     ) => {
       let url = "?debug";
       switch (styleProperties) {
-        case "geojson":
-          url += "&style=http://localhost:8888/geojson-style.json";
-          break;
-        case "raster":
-          url += "&style=http://localhost:8888/raster-style.json";
-          break;
-        case "both":
-          url += "&style=http://localhost:8888/geojson-raster-style.json";
-          break;
-        case "layer":
-          url += "&style=http://localhost:8888/example-layer-style.json";
-          break;
+      case "geojson":
+        url += `&style=${SERVER_ADDRESS}geojson-style.json`;
+        break;
+      case "raster":
+        url += `&style=${SERVER_ADDRESS}raster-style.json`;
+        break;
+      case "both":
+        url += `&style=${SERVER_ADDRESS}geojson-raster-style.json`;
+        break;
+      case "layer":
+        url += `&style=${SERVER_ADDRESS}/example-layer-style.json`;
+        break;
       }
       if (zoom) {
-        url += "#" + zoom + "/41.3805/2.1635";
+        url += `#${zoom}/41.3805/2.1635`;
       }
-      cy.visit("http://localhost:8888/" + url);
+      cy.visit(SERVER_ADDRESS + url);
       if (styleProperties) {
-        cy.on("window:confirm", () => true);
+        this.thirdPartyDriver.when.confirmAlert();
       }
       this.helper.get.element("toolbar:link").should("be.visible");
-    },
-    fillLayersModal: (opts: {type: string, layer?: string, id?: string}) => {
-      var type = opts.type;
-      var layer = opts.layer;
-      var id;
-      if (opts.id) {
-        id = opts.id;
-      } else {
-        id = `${type}:${uuid()}`;
-      }
-
-      this.helper.get.element("add-layer.layer-type.select").select(type);
-      this.helper.get.element("add-layer.layer-id.input").type(id);
-      if (layer) {
-        this.when.within("add-layer.layer-source-block", () => {
-          cy.get("input").type(layer!);
-        })
-      }
-      this.when.click("add-layer");
-
-      return id;
     },
 
     typeKeys: (keys: string, selector?: string) => {
       if (selector) {
         this.helper.get.element(selector).type(keys);
       } else {
-        cy.get("body").type(keys);
+        this.thirdPartyDriver.get.element("body").type(keys);
       }
     },
 
@@ -108,12 +85,12 @@ export default class MaputnikDriver {
     },
 
     clickZoomin: () => {
-      cy.get(".maplibregl-ctrl-zoom-in").click();
+      this.thirdPartyDriver.get.element(".maplibregl-ctrl-zoom-in").click();
     },
 
     selectWithin: (selector: string, value: string) => {
       this.when.within(selector, () => {
-        cy.get("select").select(value);
+        this.thirdPartyDriver.get.element("select").select(value);
       });
     },
 
@@ -127,18 +104,6 @@ export default class MaputnikDriver {
 
     setValue: (selector: string, text: string) => {
       this.helper.get.element(selector).clear().type(text, { parseSpecialCharSequences: false });
-    },
-
-    closeModal: (key: string) => {
-      this.helper.when.waitUntil(() => this.helper.get.element(key));
-      this.when.click(key + ".close-modal");
-    },
-
-    openLayersModal: () => {
-      this.helper.when.click("layer-list:add-layer");
-
-      this.helper.get.element("modal:add-layer").should("exist");
-      this.helper.get.element("modal:add-layer").should("be.visible");
     },
   };
 
@@ -160,11 +125,11 @@ export default class MaputnikDriver {
   public should = {
     canvasBeFocused: () => {
       this.when.within("maplibre:map", () => {
-        cy.get("canvas").should("be.focused");
+        this.thirdPartyDriver.get.element("canvas").should("be.focused");
       });
     },
     notExist: (selector: string) => {
-      cy.get(selector).should("not.exist");
+      this.thirdPartyDriver.get.element(selector).should("not.exist");
     },
     beFocused: (selector: string) => {
       this.helper.get.element(selector).should("have.focus");
@@ -192,7 +157,7 @@ export default class MaputnikDriver {
     styleStoreEqualToExampleFileData: () => {
       cy.window().then((win: any) => {
         const obj = this.get.styleFromWindow(win);
-        cy.fixture("example-style.json").should("deep.equal", obj);
+        this.helper.get.fixture("example-style.json").should("deep.equal", obj);
       });
     },
 

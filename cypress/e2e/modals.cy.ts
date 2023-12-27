@@ -1,7 +1,7 @@
 import MaputnikDriver from "./driver";
 
 describe("modals", () => {
-  let { beforeAndAfter, given, when, get, should } = new MaputnikDriver();
+  let { beforeAndAfter, when, get, should } = new MaputnikDriver();
   beforeAndAfter();
   beforeEach(() => {
     when.setStyle("");
@@ -12,7 +12,7 @@ describe("modals", () => {
     });
 
     it("close", () => {
-      when.closeModal("modal:open");
+      when.modal.close("modal:open");
       should.notExist("modal:open");
     });
 
@@ -24,7 +24,7 @@ describe("modals", () => {
     });
 
     it("load from url", () => {
-      var styleFileUrl = get.exampleFileUrl();
+      let styleFileUrl = get.exampleFileUrl();
 
       when.setValue("modal:open.url.input", styleFileUrl);
       when.click("modal:open.url.button");
@@ -38,7 +38,7 @@ describe("modals", () => {
     it("open/close", () => {
       when.setStyle("");
       when.typeKeys("?");
-      when.closeModal("modal:shortcuts");
+      when.modal.close("modal:shortcuts");
       should.notExist("modal:shortcuts");
     });
   });
@@ -49,7 +49,7 @@ describe("modals", () => {
     });
 
     it("close", () => {
-      when.closeModal("modal:export");
+      when.modal.close("modal:export");
       should.notExist("modal:export");
     });
 
@@ -102,7 +102,7 @@ describe("modals", () => {
       should.equalStyleStore((obj) => obj.sprite, "http://example.com");
     });
     it("glyphs url", () => {
-      var glyphsUrl = "http://example.com/{fontstack}/{range}.pbf";
+      let glyphsUrl = "http://example.com/{fontstack}/{range}.pbf";
       when.setValue("modal:settings.glyphs", glyphsUrl);
       when.click("modal:settings.name");
 
@@ -110,7 +110,7 @@ describe("modals", () => {
     });
 
     it("maptiler access token", () => {
-      var apiKey = "testing123";
+      let apiKey = "testing123";
       when.setValue(
         "modal:settings.maputnik:openmaptiles_access_token",
         apiKey
@@ -124,7 +124,7 @@ describe("modals", () => {
     });
 
     it("thunderforest access token", () => {
-      var apiKey = "testing123";
+      let apiKey = "testing123";
       when.setValue("modal:settings.maputnik:thunderforest_access_token", apiKey);
       when.click("modal:settings.name");
 

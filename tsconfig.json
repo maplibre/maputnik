@@ -21,7 +21,7 @@
       "noUnusedParameters": true,
       "noFallthroughCasesInSwitch": true
     },
-    "include": ["src"],
+    "include": ["src", "cypress/e2e"],
     "references": [{ "path": "./tsconfig.node.json" }],
     // TODO: Remove when issue is resolved https://github.com/cypress-io/cypress/issues/27448
     "ts-node": {

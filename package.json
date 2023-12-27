@@ -7,7 +7,7 @@
   "scripts": {
     "start": "vite",
     "build": "tsc && vite build",
-    "lint": "eslint ./src --ext ts,tsx,js,jsx --report-unused-disable-directives --max-warnings 0",
+    "lint": "eslint ./src ./cypress --ext ts,tsx,js,jsx --report-unused-disable-directives --max-warnings 0",
     "test": "cypress run",
     "cy:open": "cypress open",
     "lint-css": "stylelint \"src/styles/*.scss\"",
