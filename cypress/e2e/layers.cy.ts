@@ -1,17 +1,17 @@
 import { v1 as uuid } from "uuid";
-import MaputnikDriver from "./driver";
+import MaputnikDriver from "./maputnik-driver";
 
 describe("layers", () => {
-  let { beforeAndAfter, given, when, get, should } = new MaputnikDriver();
+  let { beforeAndAfter, when, should } = new MaputnikDriver();
   beforeAndAfter();
   beforeEach(() => {
     when.setStyle("both");
-    when.openLayersModal();
+    when.modal.open();
   });
 
   describe("ops", () => {
     it("delete", () => {
-      var id = when.fillLayersModal({
+      let id = when.modal.fillLayers({
         type: "background",
       });
 
@@ -31,8 +31,7 @@ describe("layers", () => {
     });
 
     it("duplicate", () => {
-      var styleObj;
-      var id = when.fillLayersModal({
+      let id = when.modal.fillLayers({
         type: "background",
       });
 
@@ -64,8 +63,7 @@ describe("layers", () => {
     });
 
     it("hide", () => {
-      var styleObj;
-      var id = when.fillLayersModal({
+      let id = when.modal.fillLayers({
         type: "background",
       });
 
@@ -113,7 +111,7 @@ describe("layers", () => {
 
   describe("background", () => {
     it("add", () => {
-      var id = when.fillLayersModal({
+      let id = when.modal.fillLayers({
         type: "background",
       });
 
@@ -131,7 +129,7 @@ describe("layers", () => {
     describe("modify", () => {
       function createBackground() {
         // Setup
-        var id = uuid();
+        let id = uuid();
 
         when.selectWithin("add-layer.layer-type", "background");
         when.setValue("add-layer.layer-id.input", "background:" + id);
@@ -154,11 +152,11 @@ describe("layers", () => {
       describe("layer", () => {
         it("expand/collapse");
         it("id", () => {
-          var bgId = createBackground();
+          let bgId = createBackground();
 
           when.click("layer-list-item:background:" + bgId);
 
-          var id = uuid();
+          let id = uuid();
           when.setValue("layer-editor.layer-id.input", "foobar:" + id);
           when.click("min-zoom");
 
@@ -174,7 +172,7 @@ describe("layers", () => {
         });
 
         it("min-zoom", () => {
-          var bgId = createBackground();
+          let bgId = createBackground();
 
           when.click("layer-list-item:background:" + bgId);
           when.setValue("min-zoom.input-text", "1");
@@ -203,7 +201,7 @@ describe("layers", () => {
         });
 
         it("max-zoom", () => {
-          var bgId = createBackground();
+          let bgId = createBackground();
 
           when.click("layer-list-item:background:" + bgId);
           when.setValue("max-zoom.input-text", "1");
@@ -223,8 +221,8 @@ describe("layers", () => {
         });
 
         it("comments", () => {
-          var bgId = createBackground();
-          var comment = "42";
+          let bgId = createBackground();
+          let comment = "42";
 
           when.click("layer-list-item:background:" + bgId);
           when.setValue("layer-comment.input", comment);
@@ -255,7 +253,7 @@ describe("layers", () => {
         });
 
         it("color", () => {
-          var bgId = createBackground();
+          let bgId = createBackground();
 
           when.click("layer-list-item:background:" + bgId);
 
@@ -292,11 +290,11 @@ describe("layers", () => {
 
         // TODO
         it.skip("parse error", () => {
-          var bgId = createBackground();
+          let bgId = createBackground();
 
           when.click("layer-list-item:background:" + bgId);
 
-          var errorSelector = ".CodeMirror-lint-marker-error";
+          let errorSelector = ".CodeMirror-lint-marker-error";
           should.notExist(errorSelector);
 
           when.click(".CodeMirror");
@@ -311,7 +309,7 @@ describe("layers", () => {
 
   describe("fill", () => {
     it("add", () => {
-      var id = when.fillLayersModal({
+      let id = when.modal.fillLayers({
         type: "fill",
         layer: "example",
       });
@@ -334,7 +332,7 @@ describe("layers", () => {
 
   describe("line", () => {
     it("add", () => {
-      var id = when.fillLayersModal({
+      let id = when.modal.fillLayers({
         type: "line",
         layer: "example",
       });
@@ -359,7 +357,7 @@ describe("layers", () => {
 
   describe("symbol", () => {
     it("add", () => {
-      var id = when.fillLayersModal({
+      let id = when.modal.fillLayers({
         type: "symbol",
         layer: "example",
       });
@@ -379,7 +377,7 @@ describe("layers", () => {
 
   describe("raster", () => {
     it("add", () => {
-      var id = when.fillLayersModal({
+      let id = when.modal.fillLayers({
         type: "raster",
         layer: "raster",
       });
@@ -399,7 +397,7 @@ describe("layers", () => {
 
   describe("circle", () => {
     it("add", () => {
-      var id = when.fillLayersModal({
+      let id = when.modal.fillLayers({
         type: "circle",
         layer: "example",
       });
@@ -419,7 +417,7 @@ describe("layers", () => {
 
   describe("fill extrusion", () => {
     it("add", () => {
-      var id = when.fillLayersModal({
+      let id = when.modal.fillLayers({
         type: "fill-extrusion",
         layer: "example",
       });
@@ -441,20 +439,20 @@ describe("layers", () => {
     it("simple", () => {
       when.setStyle("geojson");
 
-      when.openLayersModal();
-      when.fillLayersModal({
+      when.modal.open();
+      when.modal.fillLayers({
         id: "foo",
         type: "background",
       });
 
-      when.openLayersModal();
-      when.fillLayersModal({
+      when.modal.open();
+      when.modal.fillLayers({
         id: "foo_bar",
         type: "background",
       });
 
-      when.openLayersModal();
-      when.fillLayersModal({
+      when.modal.open();
+      when.modal.fillLayers({
         id: "foo_bar_baz",
         type: "background",
       });
