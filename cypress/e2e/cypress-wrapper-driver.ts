@@ -1,7 +1,7 @@
 import { CypressHelper } from "@shellygo/cypress-test-utils";
 
 export default class CypressWrapperDriver {
-  private helper = new CypressHelper({ defaultDataAttribute: "data-wd-key" });;
+  private helper = new CypressHelper({ defaultDataAttribute: "data-wd-key" });
 
   public given = {
     ...this.helper.given,
