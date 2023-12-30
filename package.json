@@ -91,7 +91,7 @@
     "@cypress/code-coverage": "^3.12.15",
     "@istanbuljs/nyc-config-typescript": "^1.0.2",
     "@rollup/plugin-replace": "^5.0.5",
-    "@shellygo/cypress-test-utils": "^2.0.14",
+    "@shellygo/cypress-test-utils": "^2.0.15",
     "@storybook/addon-a11y": "^7.6.5",
     "@storybook/addon-actions": "^7.6.5",
     "@storybook/addon-links": "^7.6.5",

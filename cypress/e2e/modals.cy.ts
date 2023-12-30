@@ -2,21 +2,20 @@ import { then } from "@shellygo/cypress-test-utils/assertable";
 import MaputnikDriver from "./maputnik-driver";
 
 describe("modals", () => {
-  let { beforeAndAfter, given, when, get, should } = new MaputnikDriver();
+  let { beforeAndAfter, when, get } = new MaputnikDriver();
   beforeAndAfter();
+
   beforeEach(() => {
-    given.fixture("example-style.json", "file:example-style.json");
-    when.setStyle("");
+    when.visit("/");
   });
   describe("open", () => {
     beforeEach(() => {
       when.click("nav:open");
     });
 
-    it.skip("close", () => {
-      // Asserting non existence is an anti-pattern
+    it("close", () => {
       when.modal.close("modal:open");
-      should.notExist("modal:open");
+      then(get.elementByTestId("modal:open")).shouldNotExist();
     });
 
     it.skip("upload", () => {
@@ -33,41 +32,22 @@ describe("modals", () => {
 
         when.setValue("modal:open.url.input", styleFileUrl);
         when.click("modal:open.url.button");
+        when.wait(200);
       });
-      it.only("load from url", () => {
-        // expect(
-        //   Cypress._.isMatch(
-        //     get.maputnikStyleFromLocalStorageObj(),
-        //     get.responseBody("example-style.json")
-        //   )
-        // ).to.be.true;
-
-        // expect(
-        //   Cypress._.isMatch(
-        //     get.maputnikStyleFromLocalStorageObj(),
-        //     { shelly: true }
-        //     //get.responseBody("example-style.json")
-        //   )
-        // );
-        should.styleStoreEqualToExampleFileData();
-        // then(get.fixture("file:example-style.json")).should(
-        //   "deep.equal",
-        //   get.maputnikStyleFromLocalStorageObj()
-        // );
-        // then(get.responseBody("example-style.json")).shouldDeepNestedInclude(
-        //   get.maputnikStyleFromLocalStorageObj()
-        // );
+      it("load from url", () => {
+        then(get.responseBody("example-style.json")).shouldDeepEqual(
+          get.maputnikStyleFromLocalStorageObj()
+        );
       });
     });
   });
 
   describe("shortcuts", () => {
-    it.skip("open/close", () => {
+    it("open/close", () => {
       when.setStyle("");
       when.typeKeys("?");
       when.modal.close("modal:shortcuts");
-      // Anti pattern. we should test that things exist. million things don't exist
-      should.notExist("modal:shortcuts");
+      then(get.elementByTestId("modal:shortcuts")).shouldNotExist();
     });
   });
 
@@ -78,7 +58,7 @@ describe("modals", () => {
 
     it.skip("close", () => {
       when.modal.close("modal:export");
-      should.notExist("modal:export");
+      then(get.elementByTestId("modal:export")).shouldNotExist();
     });
 
     // TODO: Work out how to download a file and check the contents
@@ -104,18 +84,29 @@ describe("modals", () => {
       when.click("nav:settings");
     });
 
-    it("name", () => {
-      when.click("field-doc-button-Name");
-      then(get.elementsText("spec-field-doc")).shouldContainText(
-        "name for the style"
-      );
+    describe("when click name", () => {
+      beforeEach(() => {
+        when.click("field-doc-button-Name");
+      });
+
+      it("name", () => {
+        then(get.elementsText("spec-field-doc")).shouldInclude(
+          "name for the style"
+        );
+      });
     });
 
-    it("show name specifications", () => {
-      when.setValue("modal:settings.name", "foobar");
-      when.click("modal:settings.owner");
-      then(get.maputnikStyleFromLocalStorage()).shouldDeepNestedInclude({
-        name: "foobar",
+    describe("when click owner", () => {
+      beforeEach(() => {
+        when.setValue("modal:settings.name", "foobar");
+        when.click("modal:settings.owner");
+        when.wait(200);
+      });
+
+      it("show name specifications", () => {
+        then(get.maputnikStyleFromLocalStorage()).shouldDeepNestedInclude({
+          name: "foobar",
+        });
       });
     });
 
