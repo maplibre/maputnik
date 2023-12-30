@@ -1,7 +1,8 @@
+import { then } from "@shellygo/cypress-test-utils/assertable";
 import MaputnikDriver from "./maputnik-driver";
 
 describe("accessibility", () => {
-  let { beforeAndAfter, when, should } = new MaputnikDriver();
+  let { beforeAndAfter, get, when, should } = new MaputnikDriver();
   beforeAndAfter();
 
   describe("skip links", () => {
@@ -16,6 +17,8 @@ describe("accessibility", () => {
       should.beFocused(selector);
       when.click(selector);
       should.beFocused("skip-target-layer-list");
+
+      // then(get.skipTargetLayerList()).shouldBeFocused();
     });
 
     // This fails for some reason only in Chrome, but passes in firefox. Adding a skip here to allow merge and later on we'll decide if we want to fix this or not.
@@ -25,7 +28,7 @@ describe("accessibility", () => {
       when.tab().tab();
       should.beFocused(selector);
       when.click(selector);
-      should.beFocused("skip-target-layer-editor");
+      then(get.skipTargetLayerEditor()).shouldBeFocused();
     });
 
     it("skip link to map view", () => {

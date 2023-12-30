@@ -5,7 +5,7 @@ describe("keyboard", () => {
   beforeAndAfter();
   describe("shortcuts", () => {
     beforeEach(() => {
-      given.setupInterception();
+      given.setupMockBackedResponses();
       when.setStyle("");
     });
 

@@ -9,21 +9,59 @@ export default class MaputnikDriver {
 
   public beforeAndAfter = () => {
     beforeEach(() => {
-      this.given.setupInterception();
+      this.given.setupMockBackedResponses();
       this.when.setStyle("both");
     });
   };
 
   public given = {
-    setupInterception: () => {
-      this.helper.given.interceptGetToFile(SERVER_ADDRESS + "example-style.json");
-      this.helper.given.interceptGetToFile(SERVER_ADDRESS + "example-layer-style.json");
-      this.helper.given.interceptGetToFile(SERVER_ADDRESS + "geojson-style.json");
-      this.helper.given.interceptGetToFile(SERVER_ADDRESS + "raster-style.json");
-      this.helper.given.interceptGetToFile(SERVER_ADDRESS + "geojson-raster-style.json");
-
-      this.helper.given.interceptAndIgnore("*example.local/*");
-      this.helper.given.interceptAndIgnore("*example.com/*");
+    setupMockBackedResponses: () => {
+      this.helper.given.interceptAndMockResponse({
+        method: "GET",
+        url: "http://localhost:8888/example-style.json",
+        response: {
+          fixture: "example-style.json",
+        },
+        alias: "example-style.json",
+      });
+      this.helper.given.interceptAndMockResponse({
+        method: "GET",
+        url: "http://localhost:8888/example-layer-style.json",
+        response: {
+          fixture: "example-layer-style.json",
+        },
+      });
+      this.helper.given.interceptAndMockResponse({
+        method: "GET",
+        url: "http://localhost:8888/geojson-style.json",
+        response: {
+          fixture: "geojson-style.json",
+        },
+      });
+      this.helper.given.interceptAndMockResponse({
+        method: "GET",
+        url: "http://localhost:8888/raster-style.json",
+        response: {
+          fixture: "raster-style.json",
+        },
+      });
+      this.helper.given.interceptAndMockResponse({
+        method: "GET",
+        url: "http://localhost:8888/geojson-raster-style.json",
+        response: {
+          fixture: "geojson-raster-style.json",
+        },
+      });
+      this.helper.given.interceptAndMockResponse({
+        method: "GET",
+        url: "*example.local/*",
+        response: [],
+      });
+      this.helper.given.interceptAndMockResponse({
+        method: "GET",
+        url: "*example.com/*",
+        response: [],
+      });
     },
   };
 
@@ -37,10 +75,9 @@ export default class MaputnikDriver {
       this.helper.when.waitForResponse("example-style.json");
     },
     chooseExampleFile: () => {
-      this.helper.get.elementByClassOrType("input[type='file']").selectFile(
-        "cypress/fixtures/example-style.json",
-        { force: true }
-      );
+      this.helper.get
+        .bySelector("type", "file")
+        .selectFile("cypress/fixtures/example-style.json", { force: true });
     },
     setStyle: (
       styleProperties: "geojson" | "raster" | "both" | "layer" | "",
@@ -48,18 +85,18 @@ export default class MaputnikDriver {
     ) => {
       let url = "?debug";
       switch (styleProperties) {
-      case "geojson":
-        url += `&style=${SERVER_ADDRESS}geojson-style.json`;
-        break;
-      case "raster":
-        url += `&style=${SERVER_ADDRESS}raster-style.json`;
-        break;
-      case "both":
-        url += `&style=${SERVER_ADDRESS}geojson-raster-style.json`;
-        break;
-      case "layer":
-        url += `&style=${SERVER_ADDRESS}/example-layer-style.json`;
-        break;
+        case "geojson":
+          url += `&style=${SERVER_ADDRESS}geojson-style.json`;
+          break;
+        case "raster":
+          url += `&style=${SERVER_ADDRESS}raster-style.json`;
+          break;
+        case "both":
+          url += `&style=${SERVER_ADDRESS}geojson-raster-style.json`;
+          break;
+        case "layer":
+          url += `&style=${SERVER_ADDRESS}/example-layer-style.json`;
+          break;
       }
       if (zoom) {
         url += `#${zoom}/41.3805/2.1635`;
@@ -102,7 +139,10 @@ export default class MaputnikDriver {
     },
 
     setValue: (selector: string, text: string) => {
-      this.helper.get.element(selector).clear().type(text, { parseSpecialCharSequences: false });
+      this.helper.get
+        .element(selector)
+        .clear()
+        .type(text, { parseSpecialCharSequences: false });
     },
   };
 
@@ -119,12 +159,16 @@ export default class MaputnikDriver {
     exampleFileUrl: () => {
       return SERVER_ADDRESS + "example-style.json";
     },
+    skipTargetLayerList: () =>
+      this.helper.get.element("skip-target-layer-list"),
+    skipTargetLayerEditor: () =>
+      this.helper.get.element("skip-target-layer-editor"),
   };
 
   public should = {
     canvasBeFocused: () => {
       this.when.within("maplibre:map", () => {
-        this.helper.get.elementByClassOrType("canvas").should("be.focused");
+        this.helper.get.element("canvas").should("be.focused");
       });
     },
     notExist: (selector: string) => {
@@ -156,7 +200,9 @@ export default class MaputnikDriver {
     styleStoreEqualToExampleFileData: () => {
       cy.window().then((win: any) => {
         const obj = this.get.styleFromWindow(win);
-        this.helper.given.fixture("example-style.json", "file:example-style.json").should("deep.equal", obj);
+        this.helper.given
+          .fixture("example-style.json", "file:example-style.json")
+          .should("deep.equal", obj);
       });
     },
 
@@ -164,10 +210,13 @@ export default class MaputnikDriver {
       this.helper.get.element(selector).should("exist");
     },
     beSelected: (selector: string, value: string) => {
-      this.helper.get.element(selector).find(`option[value="${value}"]`).should("be.selected");
+      this.helper.get
+        .element(selector)
+        .find(`option[value="${value}"]`)
+        .should("be.selected");
     },
     containText: (selector: string, text: string) => {
       this.helper.get.element(selector).should("contain.text", text);
-    }
+    },
   };
 }
