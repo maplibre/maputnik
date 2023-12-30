@@ -139,6 +139,7 @@ export default class MaputnikDriver {
   };
 
   public get = {
+    ...this.helper.get,
     isMac: () => {
       return Cypress.platform === "darwin";
     },
