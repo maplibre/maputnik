@@ -112,7 +112,7 @@ export default class MaputnikDriver {
     typeKeys: (keys: string, selector?: string) =>
       this.helper.get.element("body").type(keys),
 
-    clickZoomin: () => {
+    clickZoomIn: () => {
       this.helper.get.element(".maplibregl-ctrl-zoom-in").click();
     },
 
@@ -167,11 +167,6 @@ export default class MaputnikDriver {
   };
 
   public should = {
-    canvasBeFocused: () => {
-      this.when.within("maplibre:map", () => {
-        this.helper.get.element("canvas").should("be.focused");
-      });
-    },
     notExist: (selector: string) => {
       this.helper.get.element(selector).should("not.exist");
     },

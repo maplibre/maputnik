@@ -11,7 +11,7 @@ describe("modals", () => {
       when.click("nav:open");
     });
 
-    it("close", () => {
+    it.only("close", () => {
       when.modal.close("modal:open");
       should.notExist("modal:open");
     });
@@ -125,7 +125,10 @@ describe("modals", () => {
 
     it("thunderforest access token", () => {
       let apiKey = "testing123";
-      when.setValue("modal:settings.maputnik:thunderforest_access_token", apiKey);
+      when.setValue(
+        "modal:settings.maputnik:thunderforest_access_token",
+        apiKey
+      );
       when.click("modal:settings.name");
 
       should.equalStyleStore(

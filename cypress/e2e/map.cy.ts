@@ -1,23 +1,27 @@
+import { then } from "@shellygo/cypress-test-utils/assertable";
 import MaputnikDriver from "./maputnik-driver";
 
 describe("map", () => {
-  let { beforeAndAfter, when, should } = new MaputnikDriver();
+  let { beforeAndAfter, get, when } = new MaputnikDriver();
   beforeAndAfter();
   describe("zoom level", () => {
     it("via url", () => {
       let zoomLevel = 12.37;
       when.setStyle("geojson", zoomLevel);
-      should.beVisible("maplibre:ctrl-zoom");
-      should.containText("maplibre:ctrl-zoom", "Zoom: " + zoomLevel);
+      then(get.elementByTestId("maplibre:ctrl-zoom")).shouldBeVisible();
+      then(get.elementByTestId("maplibre:ctrl-zoom")).shouldContainText(
+        "Zoom: " + zoomLevel
+      );
     });
 
     it("via map controls", () => {
       let zoomLevel = 12.37;
       when.setStyle("geojson", zoomLevel);
-
-      should.beVisible("maplibre:ctrl-zoom");
-      when.clickZoomin();
-      should.containText("maplibre:ctrl-zoom", "Zoom: "+(zoomLevel + 1));
+      then(get.elementByTestId("maplibre:ctrl-zoom")).shouldBeVisible();
+      then(get.elementByTestId("maplibre:ctrl-zoom")).shouldContainText(
+        "Zoom: " + (zoomLevel + 1)
+      );
+      when.clickZoomIn();
     });
   });
 });
