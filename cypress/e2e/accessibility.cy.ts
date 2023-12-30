@@ -12,9 +12,9 @@ describe("accessibility", () => {
 
     it("skip link to layer list", () => {
       const selector = "root:skip:layer-list";
-      should.exist(selector);
+      then(get.elementByTestId(selector)).shouldExist();
       when.tab();
-      should.beFocused(selector);
+      then(get.skipTargetLayerList()).shouldBeFocused();
       when.click(selector);
       then(get.skipTargetLayerList()).shouldBeFocused();
     });
@@ -22,7 +22,7 @@ describe("accessibility", () => {
     // This fails for some reason only in Chrome, but passes in firefox. Adding a skip here to allow merge and later on we'll decide if we want to fix this or not.
     it.skip("skip link to layer editor", () => {
       const selector = "root:skip:layer-editor";
-      should.exist(selector);
+      then(get.elementByTestId(selector)).shouldExist();
       when.tab().tab();
       should.beFocused(selector);
       when.click(selector);
@@ -31,7 +31,7 @@ describe("accessibility", () => {
 
     it("skip link to map view", () => {
       const selector = "root:skip:map-view";
-      should.exist(selector);
+      then(get.elementByTestId(selector)).shouldExist();
       when.tab().tab().tab();
       should.beFocused(selector);
       when.click(selector);

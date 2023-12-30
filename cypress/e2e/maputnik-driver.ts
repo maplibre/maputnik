@@ -15,6 +15,7 @@ export default class MaputnikDriver {
   };
 
   public given = {
+    ...this.helper.given,
     setupMockBackedResponses: () => {
       this.helper.given.interceptAndMockResponse({
         method: "GET",
@@ -26,7 +27,7 @@ export default class MaputnikDriver {
       });
       this.helper.given.interceptAndMockResponse({
         method: "GET",
-        url: baseUrl + "/example-layer-style.json",
+        url: baseUrl + "example-layer-style.json",
         response: {
           fixture: "example-layer-style.json",
         },
@@ -72,7 +73,7 @@ export default class MaputnikDriver {
       this.helper.when.within(fn, selector);
     },
     tab: () => this.helper.get.element("body").tab(),
-    waitForExampleFileRequset: () => {
+    waitForExampleFileResponse: () => {
       this.helper.when.waitForResponse("example-style.json");
     },
     chooseExampleFile: () => {
@@ -106,6 +107,7 @@ export default class MaputnikDriver {
       if (styleProperties) {
         this.helper.when.confirmAlert();
       }
+      // when methods should not include assertions
       this.helper.get.elementByTestId("toolbar:link").should("be.visible");
     },
 
@@ -150,11 +152,15 @@ export default class MaputnikDriver {
       return obj;
     },
 
-    maputnikStyleFromLocalStorage: () => {
+    maputnikStyleFromLocalStorageObj: () => {
       const styleId = localStorage.getItem("maputnik:latest_style");
       const styleItem = localStorage.getItem(`maputnik:style:${styleId}`);
       const obj = JSON.parse(styleItem || "");
-      return cy.wrap(obj);
+      console.log(obj);
+      return obj;
+    },
+    maputnikStyleFromLocalStorage: () => {
+      return cy.wrap(this.get.maputnikStyleFromLocalStorageObj());
     },
     exampleFileUrl: () => {
       return baseUrl + "example-style.json";
@@ -178,14 +184,6 @@ export default class MaputnikDriver {
       this.helper.get.elementByTestId(selector).should("not.have.focus");
     },
 
-    beVisible: (selector: string) => {
-      this.helper.get.elementByTestId(selector).should("be.visible");
-    },
-
-    notBeVisible: (selector: string) => {
-      this.helper.get.elementByTestId(selector).should("not.be.visible");
-    },
-
     equalStyleStore: (getter: (obj: any) => any, styleObj: any) => {
       cy.window().then((win: any) => {
         const obj = this.get.styleFromWindow(win);
@@ -196,23 +194,18 @@ export default class MaputnikDriver {
     styleStoreEqualToExampleFileData: () => {
       cy.window().then((win: any) => {
         const obj = this.get.styleFromWindow(win);
+        const bobj = this.get.maputnikStyleFromLocalStorageObj();
         this.helper.given
           .fixture("example-style.json", "file:example-style.json")
           .should("deep.equal", obj);
       });
     },
 
-    exist: (selector: string) => {
-      this.helper.get.elementByTestId(selector).should("exist");
-    },
     beSelected: (selector: string, value: string) => {
       this.helper.get
         .elementByTestId(selector)
         .find(`option[value="${value}"]`)
         .should("be.selected");
-    },
-    containText: (selector: string, text: string) => {
-      this.helper.get.elementByTestId(selector).should("contain.text", text);
     },
   };
 }

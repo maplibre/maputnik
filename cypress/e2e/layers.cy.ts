@@ -182,7 +182,7 @@ describe("layers", () => {
           );
 
           // AND RESET!
-          when.type("{backspace}", "min-zoom.input-text");
+          when.type("min-zoom.input-text", "{backspace}");
           when.click("max-zoom.input-text");
 
           should.equalStyleStore(
@@ -239,7 +239,7 @@ describe("layers", () => {
           );
 
           // Unset it again.
-          when.type("{backspace}{backspace}", "layer-comment.input");
+          when.type("layer-comment.input", "{backspace}{backspace}");
           when.click("min-zoom.input-text");
 
           should.equalStyleStore(
@@ -459,16 +459,19 @@ describe("layers", () => {
         type: "background",
       });
 
-      should.beVisible("layer-list-item:foo");
-
-      should.notBeVisible("layer-list-item:foo_bar");
-      should.notBeVisible("layer-list-item:foo_bar_baz");
-
+      then(get.elementByTestId("layer-list-group:foo")).shouldBeVisible();
+      then(
+        get.elementByTestId("layer-list-group:foo_bar")
+      ).shouldNotBeVisible();
+      then(
+        get.elementByTestId("layer-list-group:foo_bar_baz")
+      ).shouldNotBeVisible();
       when.click("layer-list-group:foo-0");
-
-      should.beVisible("layer-list-item:foo");
-      should.beVisible("layer-list-item:foo_bar");
-      should.beVisible("layer-list-item:foo_bar_baz");
+      then(get.elementByTestId("layer-list-group:foo")).shouldBeVisible();
+      then(get.elementByTestId("layer-list-group:foo_bar")).shouldBeVisible();
+      then(
+        get.elementByTestId("layer-list-group:foo_bar_baz")
+      ).shouldBeVisible();
     });
   });
 });
