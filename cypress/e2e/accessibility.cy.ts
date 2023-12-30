@@ -16,9 +16,7 @@ describe("accessibility", () => {
       when.tab();
       should.beFocused(selector);
       when.click(selector);
-      should.beFocused("skip-target-layer-list");
-
-      // then(get.skipTargetLayerList()).shouldBeFocused();
+      then(get.skipTargetLayerList()).shouldBeFocused();
     });
 
     // This fails for some reason only in Chrome, but passes in firefox. Adding a skip here to allow merge and later on we'll decide if we want to fix this or not.
@@ -37,7 +35,7 @@ describe("accessibility", () => {
       when.tab().tab().tab();
       should.beFocused(selector);
       when.click(selector);
-      should.canvasBeFocused();
+      then(get.canvas()).shouldBeFocused();
     });
   });
 });

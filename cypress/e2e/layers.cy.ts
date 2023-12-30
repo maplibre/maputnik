@@ -1,8 +1,9 @@
+import { then } from "@shellygo/cypress-test-utils/assertable";
 import { v1 as uuid } from "uuid";
 import MaputnikDriver from "./maputnik-driver";
 
 describe("layers", () => {
-  let { beforeAndAfter, when, should } = new MaputnikDriver();
+  let { beforeAndAfter, get, when, should } = new MaputnikDriver();
   beforeAndAfter();
   beforeEach(() => {
     when.setStyle("both");
@@ -10,105 +11,95 @@ describe("layers", () => {
   });
 
   describe("ops", () => {
-    it("delete", () => {
-      let id = when.modal.fillLayers({
+    let id: string;
+    beforeEach(() => {
+      id = when.modal.fillLayers({
         type: "background",
       });
-
-      should.equalStyleStore(
-        (a: any) => a.layers,
-        [
-          {
-            id: id,
-            type: "background",
-          },
-        ]
-      );
-
-      when.click("layer-list-item:" + id + ":delete");
-
-      should.equalStyleStore((a: any) => a.layers, []);
     });
 
-    it("duplicate", () => {
-      let id = when.modal.fillLayers({
-        type: "background",
+    it("should update layers in local storage", () => {
+      then(get.maputnikStyleFromLocalStorage()).shouldDeepNestedInclude({
+        layers: [
+          {
+            id: id,
+            type: "background",
+          },
+        ],
       });
-
-      should.equalStyleStore(
-        (a: any) => a.layers,
-        [
-          {
-            id: id,
-            type: "background",
-          },
-        ]
-      );
-
-      when.click("layer-list-item:" + id + ":copy");
-
-      should.equalStyleStore(
-        (a: any) => a.layers,
-        [
-          {
-            id: id + "-copy",
-            type: "background",
-          },
-          {
-            id: id,
-            type: "background",
-          },
-        ]
-      );
     });
 
-    it("hide", () => {
-      let id = when.modal.fillLayers({
-        type: "background",
+    describe("when clicking delete", () => {
+      beforeEach(() => {
+        when.click("layer-list-item:" + id + ":delete");
+      });
+      it("should empty layers in local storage", () => {
+        then(get.maputnikStyleFromLocalStorage()).shouldDeepNestedInclude({
+          layers: [],
+        });
+      });
+    });
+
+    describe("when clicking duplicate", () => {
+      beforeEach(() => {
+        when.click("layer-list-item:" + id + ":copy");
+      });
+      it("should add copy layer in local storage", () => {
+        then(get.maputnikStyleFromLocalStorage()).shouldDeepNestedInclude({
+          layers: [
+            {
+              id: id + "-copy",
+              type: "background",
+            },
+            {
+              id: id,
+              type: "background",
+            },
+          ],
+        });
+      });
+    });
+
+    describe("when clicking hide", () => {
+      beforeEach(() => {
+        when.click("layer-list-item:" + id + ":toggle-visibility");
       });
 
-      should.equalStyleStore(
-        (a: any) => a.layers,
-        [
-          {
-            id: id,
-            type: "background",
-          },
-        ]
-      );
-
-      when.click("layer-list-item:" + id + ":toggle-visibility");
-
-      should.equalStyleStore(
-        (a: any) => a.layers,
-        [
-          {
-            id: id,
-            type: "background",
-            layout: {
-              visibility: "none",
+      it("should update visibility to none in local storage", () => {
+        then(get.maputnikStyleFromLocalStorage()).shouldDeepNestedInclude({
+          layers: [
+            {
+              id: id,
+              type: "background",
+              layout: {
+                visibility: "none",
+              },
             },
-          },
-        ]
-      );
+          ],
+        });
+      });
 
-      when.click("layer-list-item:" + id + ":toggle-visibility");
+      describe("when clicking show", () => {
+        beforeEach(() => {
+          when.click("layer-list-item:" + id + ":toggle-visibility");
+        });
 
-      should.equalStyleStore(
-        (a: any) => a.layers,
-        [
-          {
-            id: id,
-            type: "background",
-            layout: {
-              visibility: "visible",
-            },
-          },
-        ]
-      );
+        it("should update visibility to visible in local storage", () => {
+          then(get.maputnikStyleFromLocalStorage()).shouldDeepNestedInclude({
+            layers: [
+              {
+                id: id,
+                type: "background",
+                layout: {
+                  visibility: "visible",
+                },
+              },
+            ],
+          });
+        });
+      });
     });
   });
-
   describe("background", () => {
     it("add", () => {
       let id = when.modal.fillLayers({
@@ -191,13 +182,18 @@ describe("layers", () => {
           );
 
           // AND RESET!
-          when.typeKeys("{backspace}", "min-zoom.input-text");
+          when.type("{backspace}", "min-zoom.input-text");
           when.click("max-zoom.input-text");
 
-          should.equalStyleStore((a: any) => a.layers, [{
-            "id": 'background:'+bgId,
-            "type": 'background'
-          }]);
+          should.equalStyleStore(
+            (a: any) => a.layers,
+            [
+              {
+                id: "background:" + bgId,
+                type: "background",
+              },
+            ]
+          );
         });
 
         it("max-zoom", () => {
@@ -243,13 +239,18 @@ describe("layers", () => {
           );
 
           // Unset it again.
-          when.typeKeys("{backspace}{backspace}", "layer-comment.input");
+          when.type("{backspace}{backspace}", "layer-comment.input");
           when.click("min-zoom.input-text");
 
-          should.equalStyleStore((a: any) => a.layers, [{
-            "id": 'background:' + bgId,
-            "type": 'background'
-          }]);
+          should.equalStyleStore(
+            (a: any) => a.layers,
+            [
+              {
+                id: "background:" + bgId,
+                type: "background",
+              },
+            ]
+          );
         });
 
         it("color", () => {

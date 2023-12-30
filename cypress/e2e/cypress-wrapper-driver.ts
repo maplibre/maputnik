@@ -9,9 +9,6 @@ export default class CypressWrapperDriver {
 
   public get = {
     ...this.helper.get,
-    elementByClassOrType(slector: string) {
-      return cy.get(slector);
-    },
   };
 
   public when = {

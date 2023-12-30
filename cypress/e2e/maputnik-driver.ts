@@ -1,7 +1,7 @@
 import CypressWrapperDriver from "./cypress-wrapper-driver";
 import ModalDriver from "./modal-driver";
 
-const SERVER_ADDRESS = "http://localhost:8888/";
+const baseUrl = "http://localhost:8888/";
 
 export default class MaputnikDriver {
   private helper = new CypressWrapperDriver();
@@ -18,7 +18,7 @@ export default class MaputnikDriver {
     setupMockBackedResponses: () => {
       this.helper.given.interceptAndMockResponse({
         method: "GET",
-        url: "http://localhost:8888/example-style.json",
+        url: baseUrl + "example-style.json",
         response: {
           fixture: "example-style.json",
         },
@@ -26,28 +26,28 @@ export default class MaputnikDriver {
       });
       this.helper.given.interceptAndMockResponse({
         method: "GET",
-        url: "http://localhost:8888/example-layer-style.json",
+        url: baseUrl + "/example-layer-style.json",
         response: {
           fixture: "example-layer-style.json",
         },
       });
       this.helper.given.interceptAndMockResponse({
         method: "GET",
-        url: "http://localhost:8888/geojson-style.json",
+        url: baseUrl + "geojson-style.json",
         response: {
           fixture: "geojson-style.json",
         },
       });
       this.helper.given.interceptAndMockResponse({
         method: "GET",
-        url: "http://localhost:8888/raster-style.json",
+        url: baseUrl + "raster-style.json",
         response: {
           fixture: "raster-style.json",
         },
       });
       this.helper.given.interceptAndMockResponse({
         method: "GET",
-        url: "http://localhost:8888/geojson-raster-style.json",
+        url: baseUrl + "geojson-raster-style.json",
         response: {
           fixture: "geojson-raster-style.json",
         },
@@ -66,11 +66,12 @@ export default class MaputnikDriver {
   };
 
   public when = {
+    ...this.helper.when,
     modal: this.modalDriver.when,
     within: (selector: string, fn: () => void) => {
       this.helper.when.within(fn, selector);
     },
-    tab: () => this.helper.get.elementByClassOrType("body").tab(),
+    tab: () => this.helper.get.element("body").tab(),
     waitForExampleFileRequset: () => {
       this.helper.when.waitForResponse("example-style.json");
     },
@@ -86,52 +87,43 @@ export default class MaputnikDriver {
       let url = "?debug";
       switch (styleProperties) {
         case "geojson":
-          url += `&style=${SERVER_ADDRESS}geojson-style.json`;
+          url += `&style=${baseUrl}geojson-style.json`;
           break;
         case "raster":
-          url += `&style=${SERVER_ADDRESS}raster-style.json`;
+          url += `&style=${baseUrl}raster-style.json`;
           break;
         case "both":
-          url += `&style=${SERVER_ADDRESS}geojson-raster-style.json`;
+          url += `&style=${baseUrl}geojson-raster-style.json`;
           break;
         case "layer":
-          url += `&style=${SERVER_ADDRESS}/example-layer-style.json`;
+          url += `&style=${baseUrl}/example-layer-style.json`;
           break;
       }
       if (zoom) {
         url += `#${zoom}/41.3805/2.1635`;
       }
-      this.helper.when.visit(SERVER_ADDRESS + url);
+      this.helper.when.visit(baseUrl + url);
       if (styleProperties) {
         this.helper.when.confirmAlert();
       }
-      this.helper.get.element("toolbar:link").should("be.visible");
+      this.helper.get.elementByTestId("toolbar:link").should("be.visible");
     },
 
-    typeKeys: (keys: string, selector?: string) => {
-      if (selector) {
-        this.helper.get.element(selector).type(keys);
-      } else {
-        this.helper.get.elementByClassOrType("body").type(keys);
-      }
-    },
-
-    click: (selector: string) => {
-      this.helper.when.click(selector);
-    },
+    typeKeys: (keys: string, selector?: string) =>
+      this.helper.get.element("body").type(keys),
 
     clickZoomin: () => {
-      this.helper.get.elementByClassOrType(".maplibregl-ctrl-zoom-in").click();
+      this.helper.get.element(".maplibregl-ctrl-zoom-in").click();
     },
 
     selectWithin: (selector: string, value: string) => {
       this.when.within(selector, () => {
-        this.helper.get.elementByClassOrType("select").select(value);
+        this.helper.get.element("select").select(value);
       });
     },
 
     select: (selector: string, value: string) => {
-      this.helper.get.element(selector).select(value);
+      this.helper.get.elementByTestId(selector).select(value);
     },
 
     focus: (selector: string) => {
@@ -140,7 +132,7 @@ export default class MaputnikDriver {
 
     setValue: (selector: string, text: string) => {
       this.helper.get
-        .element(selector)
+        .elementByTestId(selector)
         .clear()
         .type(text, { parseSpecialCharSequences: false });
     },
@@ -156,13 +148,21 @@ export default class MaputnikDriver {
       const obj = JSON.parse(styleItem || "");
       return obj;
     },
+
+    maputnikStyleFromLocalStorage: () => {
+      const styleId = localStorage.getItem("maputnik:latest_style");
+      const styleItem = localStorage.getItem(`maputnik:style:${styleId}`);
+      const obj = JSON.parse(styleItem || "");
+      return cy.wrap(obj);
+    },
     exampleFileUrl: () => {
-      return SERVER_ADDRESS + "example-style.json";
+      return baseUrl + "example-style.json";
     },
     skipTargetLayerList: () =>
-      this.helper.get.element("skip-target-layer-list"),
+      this.helper.get.elementByTestId("skip-target-layer-list"),
     skipTargetLayerEditor: () =>
-      this.helper.get.element("skip-target-layer-editor"),
+      this.helper.get.elementByTestId("skip-target-layer-editor"),
+    canvas: () => this.helper.get.element("canvas"),
   };
 
   public should = {
@@ -172,22 +172,22 @@ export default class MaputnikDriver {
       });
     },
     notExist: (selector: string) => {
-      this.helper.get.elementByClassOrType(selector).should("not.exist");
+      this.helper.get.element(selector).should("not.exist");
     },
     beFocused: (selector: string) => {
-      this.helper.get.element(selector).should("have.focus");
+      this.helper.get.elementByTestId(selector).should("have.focus");
     },
 
     notBeFocused: (selector: string) => {
-      this.helper.get.element(selector).should("not.have.focus");
+      this.helper.get.elementByTestId(selector).should("not.have.focus");
     },
 
     beVisible: (selector: string) => {
-      this.helper.get.element(selector).should("be.visible");
+      this.helper.get.elementByTestId(selector).should("be.visible");
     },
 
     notBeVisible: (selector: string) => {
-      this.helper.get.element(selector).should("not.be.visible");
+      this.helper.get.elementByTestId(selector).should("not.be.visible");
     },
 
     equalStyleStore: (getter: (obj: any) => any, styleObj: any) => {
@@ -207,16 +207,16 @@ export default class MaputnikDriver {
     },
 
     exist: (selector: string) => {
-      this.helper.get.element(selector).should("exist");
+      this.helper.get.elementByTestId(selector).should("exist");
     },
     beSelected: (selector: string, value: string) => {
       this.helper.get
-        .element(selector)
+        .elementByTestId(selector)
         .find(`option[value="${value}"]`)
         .should("be.selected");
     },
     containText: (selector: string, text: string) => {
-      this.helper.get.element(selector).should("contain.text", text);
+      this.helper.get.elementByTestId(selector).should("contain.text", text);
     },
   };
 }

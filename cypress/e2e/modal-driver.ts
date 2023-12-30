@@ -14,12 +14,12 @@ export default class ModalDriver {
       } else {
         id = `${type}:${uuid()}`;
       }
+      this.helper.when.selectOption("add-layer.layer-type.select", type);
+      this.helper.when.type("add-layer.layer-id.input", id);
 
-      this.helper.get.element("add-layer.layer-type.select").select(type);
-      this.helper.get.element("add-layer.layer-id.input").type(id);
       if (layer) {
         this.helper.when.within(() => {
-          this.helper.get.elementByClassOrType("input").type(layer!);
+          this.helper.get.element("input").type(layer!);
         }, "add-layer.layer-source-block");
       }
       this.helper.when.click("add-layer");
@@ -29,9 +29,6 @@ export default class ModalDriver {
 
     open: () => {
       this.helper.when.click("layer-list:add-layer");
-
-      this.helper.get.element("modal:add-layer").should("exist");
-      this.helper.get.element("modal:add-layer").should("be.visible");
     },
 
     close: (key: string) => {
