@@ -45,7 +45,7 @@ describe("keyboard", () => {
 
     it("'i' should change map to inspect mode", () => {
       when.typeKeys("i");
-      then(get.inputValue("nav:inspect")).shouldEqual("inspect");
+      then(get.inputValue("maputnik-select")).shouldEqual("inspect");
     });
 
     it("'m' should focus map", () => {
