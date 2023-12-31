@@ -1,6 +1,6 @@
 import { CypressHelper } from "@shellygo/cypress-test-utils";
 import { Assertable, then } from "@shellygo/cypress-test-utils/assertable";
-import CypressWrapperDriver from "./cypress-wrapper-driver";
+import MaputnikCypressHelper from "./cypress-wrapper-driver";
 import ModalDriver from "./modal-driver";
 const baseUrl = "http://localhost:8888/";
 
@@ -22,7 +22,7 @@ export class MaputnikAssertable<T> extends Assertable<T> {
 }
 
 export class MaputnikDriver {
-  private helper = new CypressWrapperDriver();
+  private helper = new MaputnikCypressHelper();
   private modalDriver = new ModalDriver();
 
   public beforeAndAfter = () => {
@@ -126,7 +126,7 @@ export class MaputnikDriver {
       }
       this.helper.when.visit(baseUrl + url);
       if (styleProperties) {
-        this.helper.when.confirmAlert();
+        this.helper.when.acceptConfirm();
       }
       // when methods should not include assertions
       this.helper.get.elementByTestId("toolbar:link").should("be.visible");

@@ -2,7 +2,7 @@ import { v1 as uuid } from "uuid";
 import { MaputnikDriver } from "./maputnik-driver";
 
 describe("layers", () => {
-  let { beforeAndAfter, get, when, should, then } = new MaputnikDriver();
+  let { beforeAndAfter, get, when, then } = new MaputnikDriver();
   beforeAndAfter();
   beforeEach(() => {
     when.setStyle("both");

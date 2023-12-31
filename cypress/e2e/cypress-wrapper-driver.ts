@@ -1,6 +1,6 @@
 import { CypressHelper } from "@shellygo/cypress-test-utils";
 
-export default class CypressWrapperDriver {
+export default class MaputnikCypressHelper {
   private helper = new CypressHelper({ defaultDataAttribute: "data-wd-key" });
 
   public given = {
@@ -13,9 +13,6 @@ export default class CypressWrapperDriver {
 
   public when = {
     ...this.helper.when,
-    confirmAlert() {
-      cy.on("window:confirm", () => true);
-    },
   };
 
   public beforeAndAfter = this.helper.beforeAndAfter;

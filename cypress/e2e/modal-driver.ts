@@ -1,11 +1,13 @@
 import { v1 as uuid } from "uuid";
-import CypressWrapperDriver from "./cypress-wrapper-driver";
+import MaputnikCypressHelper from "./cypress-wrapper-driver";
 
 export default class ModalDriver {
-  private helper = new CypressWrapperDriver();
+  private helper = new MaputnikCypressHelper();
 
   public when = {
     fillLayers: (opts: { type: string; layer?: string; id?: string }) => {
+      // Having logic in test code is an anti pattern.
+      // This should be splitted to multiple single responsibility functions
       let type = opts.type;
       let layer = opts.layer;
       let id;
