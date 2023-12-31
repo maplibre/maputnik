@@ -18,7 +18,7 @@ describe("layers", () => {
     });
 
     it("should update layers in local storage", () => {
-      then(get.maputnikStyleFromLocalStorage()).shouldIncludeLocalStorageStyle({
+      then(get.styleFromLocalStorage()).shouldDeepNestedInclude({
         layers: [
           {
             id: id,
@@ -33,9 +33,7 @@ describe("layers", () => {
         when.click("layer-list-item:" + id + ":delete");
       });
       it("should empty layers in local storage", () => {
-        then(
-          get.maputnikStyleFromLocalStorage()
-        ).shouldIncludeLocalStorageStyle({
+        then(get.styleFromLocalStorage()).shouldDeepNestedInclude({
           layers: [],
         });
       });
@@ -46,9 +44,7 @@ describe("layers", () => {
         when.click("layer-list-item:" + id + ":copy");
       });
       it("should add copy layer in local storage", () => {
-        then(
-          get.maputnikStyleFromLocalStorage()
-        ).shouldIncludeLocalStorageStyle({
+        then(get.styleFromLocalStorage()).shouldDeepNestedInclude({
           layers: [
             {
               id: id + "-copy",
@@ -69,9 +65,7 @@ describe("layers", () => {
       });
 
       it("should update visibility to none in local storage", () => {
-        then(
-          get.maputnikStyleFromLocalStorage()
-        ).shouldIncludeLocalStorageStyle({
+        then(get.styleFromLocalStorage()).shouldDeepNestedInclude({
           layers: [
             {
               id: id,
@@ -90,9 +84,7 @@ describe("layers", () => {
         });
 
         it("should update visibility to visible in local storage", () => {
-          then(
-            get.maputnikStyleFromLocalStorage()
-          ).shouldIncludeLocalStorageStyle({
+          then(get.styleFromLocalStorage()).shouldDeepNestedInclude({
             layers: [
               {
                 id: id,
@@ -112,16 +104,14 @@ describe("layers", () => {
       let id = when.modal.fillLayers({
         type: "background",
       });
-
-      should.equalStyleStore(
-        (a: any) => a.layers,
-        [
+      then(get.styleFromLocalStorage()).shouldDeepNestedInclude({
+        layers: [
           {
             id: id,
             type: "background",
           },
-        ]
-      );
+        ],
+      });
     });
 
     describe("modify", () => {
@@ -134,15 +124,14 @@ describe("layers", () => {
 
         when.click("add-layer");
 
-        should.equalStyleStore(
-          (a: any) => a.layers,
-          [
+        then(get.styleFromLocalStorage()).shouldDeepNestedInclude({
+          layers: [
             {
               id: "background:" + id,
               type: "background",
             },
-          ]
-        );
+          ],
+        });
         return id;
       }
 
@@ -158,15 +147,14 @@ describe("layers", () => {
           when.setValue("layer-editor.layer-id.input", "foobar:" + id);
           when.click("min-zoom");
 
-          should.equalStyleStore(
-            (a: any) => a.layers,
-            [
+          then(get.styleFromLocalStorage()).shouldDeepNestedInclude({
+            layers: [
               {
                 id: "foobar:" + id,
                 type: "background",
               },
-            ]
-          );
+            ],
+          });
         });
 
         describe("min-zoom", () => {
@@ -180,9 +168,7 @@ describe("layers", () => {
           });
 
           it("should update min-zoom in local storage", () => {
-            then(
-              get.maputnikStyleFromLocalStorage()
-            ).shouldIncludeLocalStorageStyle({
+            then(get.styleFromLocalStorage()).shouldDeepNestedInclude({
               layers: [
                 {
                   id: "background:" + bgId,
@@ -196,9 +182,7 @@ describe("layers", () => {
           it("when clicking next layer should update style on local storage", () => {
             when.type("min-zoom.input-text", "{backspace}");
             when.click("max-zoom.input-text");
-            then(
-              get.maputnikStyleFromLocalStorage()
-            ).shouldIncludeLocalStorageStyle({
+            then(get.styleFromLocalStorage()).shouldDeepNestedInclude({
               layers: [
                 {
                   id: "background:" + bgId,
@@ -221,7 +205,7 @@ describe("layers", () => {
           });
 
           it("should update style in local storage", () => {
-            then(cy.window()).shouldIncludeLocalStorageStyle({
+            then(get.styleFromLocalStorage()).shouldDeepNestedInclude({
               layers: [
                 {
                   id: "background:" + bgId,
@@ -245,9 +229,7 @@ describe("layers", () => {
           });
 
           it("should update style in local storage", () => {
-            then(
-              get.maputnikStyleFromLocalStorage()
-            ).shouldIncludeLocalStorageStyle({
+            then(get.styleFromLocalStorage()).shouldDeepNestedInclude({
               layers: [
                 {
                   id: "background:" + bgId,
@@ -267,9 +249,7 @@ describe("layers", () => {
             });
 
             it("should update style in local storage", () => {
-              then(
-                get.maputnikStyleFromLocalStorage()
-              ).shouldIncludeLocalStorageStyle({
+              then(get.styleFromLocalStorage()).shouldDeepNestedInclude({
                 layers: [
                   {
                     id: "background:" + bgId,
@@ -290,9 +270,7 @@ describe("layers", () => {
           });
 
           it("should update style in local storage", () => {
-            then(
-              get.maputnikStyleFromLocalStorage()
-            ).shouldIncludeLocalStorageStyle({
+            then(get.styleFromLocalStorage()).shouldDeepNestedInclude({
               layers: [
                 {
                   id: "background:" + bgId,
@@ -348,16 +326,15 @@ describe("layers", () => {
         layer: "example",
       });
 
-      should.equalStyleStore(
-        (a: any) => a.layers,
-        [
+      then(get.styleFromLocalStorage()).shouldDeepNestedInclude({
+        layers: [
           {
             id: id,
             type: "fill",
             source: "example",
           },
-        ]
-      );
+        ],
+      });
     });
 
     // TODO: Change source
@@ -371,16 +348,15 @@ describe("layers", () => {
         layer: "example",
       });
 
-      should.equalStyleStore(
-        (a: any) => a.layers,
-        [
+      then(get.styleFromLocalStorage()).shouldDeepNestedInclude({
+        layers: [
           {
             id: id,
             type: "line",
             source: "example",
           },
-        ]
-      );
+        ],
+      });
     });
 
     it("groups", () => {
@@ -396,16 +372,15 @@ describe("layers", () => {
         layer: "example",
       });
 
-      should.equalStyleStore(
-        (a: any) => a.layers,
-        [
+      then(get.styleFromLocalStorage()).shouldDeepNestedInclude({
+        layers: [
           {
             id: id,
             type: "symbol",
             source: "example",
           },
-        ]
-      );
+        ],
+      });
     });
   });
 
@@ -416,16 +391,15 @@ describe("layers", () => {
         layer: "raster",
       });
 
-      should.equalStyleStore(
-        (a: any) => a.layers,
-        [
+      then(get.styleFromLocalStorage()).shouldDeepNestedInclude({
+        layers: [
           {
             id: id,
             type: "raster",
             source: "raster",
           },
-        ]
-      );
+        ],
+      });
     });
   });
 
@@ -436,16 +410,15 @@ describe("layers", () => {
         layer: "example",
       });
 
-      should.equalStyleStore(
-        (a: any) => a.layers,
-        [
+      then(get.styleFromLocalStorage()).shouldDeepNestedInclude({
+        layers: [
           {
             id: id,
             type: "circle",
             source: "example",
           },
-        ]
-      );
+        ],
+      });
     });
   });
 
@@ -456,16 +429,15 @@ describe("layers", () => {
         layer: "example",
       });
 
-      should.equalStyleStore(
-        (a: any) => a.layers,
-        [
+      then(get.styleFromLocalStorage()).shouldDeepNestedInclude({
+        layers: [
           {
             id: id,
             type: "fill-extrusion",
             source: "example",
           },
-        ]
-      );
+        ],
+      });
     });
   });
 

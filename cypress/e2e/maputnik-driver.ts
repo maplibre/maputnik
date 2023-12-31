@@ -1,24 +1,24 @@
+import { CypressHelper } from "@shellygo/cypress-test-utils";
 import { Assertable, then } from "@shellygo/cypress-test-utils/assertable";
 import CypressWrapperDriver from "./cypress-wrapper-driver";
 import ModalDriver from "./modal-driver";
 const baseUrl = "http://localhost:8888/";
 
-export class MaputnikAssertable<T> extends Assertable<T> {
-  private getStyleFromWindow = (win: Window) => {
-    const styleId = win.localStorage.getItem("maputnik:latest_style");
-    const styleItem = win.localStorage.getItem(`maputnik:style:${styleId}`);
-    const obj = JSON.parse(styleItem || "");
-    return obj;
-  };
-  shouldIncludeLocalStorageStyle = (styleObj: Object) =>
-    then(
-      cy.window().then((win) => this.getStyleFromWindow(win))
-    ).shouldDeepNestedInclude(styleObj);
+const styleFromWindow = (win: Window) => {
+  const styleId = win.localStorage.getItem("maputnik:latest_style");
+  const styleItem = win.localStorage.getItem(`maputnik:style:${styleId}`);
+  const obj = JSON.parse(styleItem || "");
+  return obj;
+};
 
-  shouldHaveLocalStorageStyle = (styleObj: Object) =>
+export class MaputnikAssertable<T> extends Assertable<T> {
+  shouldEqualToStoredStyle = () =>
     then(
-      cy.window().then((win) => this.getStyleFromWindow(win))
-    ).shouldDeepEqual(styleObj);
+      new CypressHelper().get.window().then((win) => {
+        const style = styleFromWindow(win);
+        then(this.chainable).shouldDeepNestedInclude(style);
+      })
+    );
 }
 
 export class MaputnikDriver {
@@ -165,23 +165,17 @@ export class MaputnikDriver {
     isMac: () => {
       return Cypress.platform === "darwin";
     },
-    styleFromWindow: (win: Window) => {
-      const styleId = win.localStorage.getItem("maputnik:latest_style");
-      const styleItem = win.localStorage.getItem(`maputnik:style:${styleId}`);
-      const obj = JSON.parse(styleItem || "");
-      return obj;
-    },
+
+    styleFromLocalStorage: () =>
+      this.helper.get.window().then((win) => styleFromWindow(win)),
 
     maputnikStyleFromLocalStorageObj: () => {
       const styleId = localStorage.getItem("maputnik:latest_style");
       const styleItem = localStorage.getItem(`maputnik:style:${styleId}`);
       const obj = JSON.parse(styleItem || "");
-      console.log(obj);
       return obj;
     },
-    maputnikStyleFromLocalStorage: () => {
-      return cy.wrap(this.get.maputnikStyleFromLocalStorageObj());
-    },
+
     exampleFileUrl: () => {
       return baseUrl + "example-style.json";
     },
@@ -190,32 +184,5 @@ export class MaputnikDriver {
     skipTargetLayerEditor: () =>
       this.helper.get.elementByTestId("skip-target-layer-editor"),
     canvas: () => this.helper.get.element("canvas"),
-  };
-
-  public should = {
-    notExist: (selector: string) => {
-      this.helper.get.element(selector).should("not.exist");
-    },
-    beFocused: (selector: string) => {
-      this.helper.get.elementByTestId(selector).should("have.focus");
-    },
-
-    notBeFocused: (selector: string) => {
-      this.helper.get.elementByTestId(selector).should("not.have.focus");
-    },
-
-    equalStyleStore: (getter: (obj: any) => any, styleObj: any) => {
-      cy.window().then((win: any) => {
-        const obj = this.get.styleFromWindow(win);
-        assert.deepEqual(getter(obj), styleObj);
-      });
-    },
-
-    beSelected: (selector: string, value: string) => {
-      this.helper.get
-        .elementByTestId(selector)
-        .find(`option[value="${value}"]`)
-        .should("be.selected");
-    },
   };
 }
