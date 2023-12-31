@@ -1,7 +1,4 @@
-import {
-  Assertable,
-  then as baseThen,
-} from "@shellygo/cypress-test-utils/assertable";
+import { Assertable, then } from "@shellygo/cypress-test-utils/assertable";
 import CypressWrapperDriver from "./cypress-wrapper-driver";
 import ModalDriver from "./modal-driver";
 const baseUrl = "http://localhost:8888/";
@@ -13,19 +10,16 @@ export class MaputnikAssertable<T> extends Assertable<T> {
     const obj = JSON.parse(styleItem || "");
     return obj;
   };
-  shouldIncludeLocalStrorageStyle = (styleObj: Object) =>
-    baseThen(
+  shouldIncludeLocalStorageStyle = (styleObj: Object) =>
+    then(
       cy.window().then((win) => this.getStyleFromWindow(win))
     ).shouldDeepNestedInclude(styleObj);
 
   shouldHaveLocalStorageStyle = (styleObj: Object) =>
-    baseThen(
+    then(
       cy.window().then((win) => this.getStyleFromWindow(win))
     ).shouldDeepEqual(styleObj);
 }
-
-export const then = (chainable: Cypress.Chainable<any>) =>
-  new MaputnikAssertable(chainable);
 
 export class MaputnikDriver {
   private helper = new CypressWrapperDriver();
@@ -37,6 +31,9 @@ export class MaputnikDriver {
       this.when.setStyle("both");
     });
   };
+
+  public then = (chainable: Cypress.Chainable<any>) =>
+    new MaputnikAssertable(chainable);
 
   public given = {
     ...this.helper.given,
@@ -111,18 +108,18 @@ export class MaputnikDriver {
     ) => {
       let url = "?debug";
       switch (styleProperties) {
-      case "geojson":
-        url += `&style=${baseUrl}geojson-style.json`;
-        break;
-      case "raster":
-        url += `&style=${baseUrl}raster-style.json`;
-        break;
-      case "both":
-        url += `&style=${baseUrl}geojson-raster-style.json`;
-        break;
-      case "layer":
-        url += `&style=${baseUrl}/example-layer-style.json`;
-        break;
+        case "geojson":
+          url += `&style=${baseUrl}geojson-style.json`;
+          break;
+        case "raster":
+          url += `&style=${baseUrl}raster-style.json`;
+          break;
+        case "both":
+          url += `&style=${baseUrl}geojson-raster-style.json`;
+          break;
+        case "layer":
+          url += `&style=${baseUrl}/example-layer-style.json`;
+          break;
       }
       if (zoom) {
         url += `#${zoom}/41.3805/2.1635`;

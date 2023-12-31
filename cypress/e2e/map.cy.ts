@@ -1,7 +1,7 @@
-import { MaputnikDriver, then } from "./maputnik-driver";
+import { MaputnikDriver } from "./maputnik-driver";
 
 describe("map", () => {
-  let { beforeAndAfter, get, when } = new MaputnikDriver();
+  let { beforeAndAfter, get, when, then } = new MaputnikDriver();
   beforeAndAfter();
   describe("zoom level", () => {
     it("via url", () => {

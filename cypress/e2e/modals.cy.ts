@@ -1,7 +1,7 @@
-import { MaputnikDriver, then } from "./maputnik-driver";
+import { MaputnikDriver } from "./maputnik-driver";
 
 describe("modals", () => {
-  let { beforeAndAfter, when, get } = new MaputnikDriver();
+  let { beforeAndAfter, when, get, then } = new MaputnikDriver();
   beforeAndAfter();
 
   beforeEach(() => {
