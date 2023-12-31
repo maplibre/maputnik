@@ -14,7 +14,7 @@ describe("accessibility", () => {
       const selector = "root:skip:layer-list";
       then(get.elementByTestId(selector)).shouldExist();
       when.tab();
-      then(get.skipTargetLayerList()).shouldBeFocused();
+      then(get.elementByTestId(selector)).shouldBeFocused();
       when.click(selector);
       then(get.skipTargetLayerList()).shouldBeFocused();
     });
