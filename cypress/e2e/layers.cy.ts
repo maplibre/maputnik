@@ -1,6 +1,5 @@
-import { then } from "@shellygo/cypress-test-utils/assertable";
 import { v1 as uuid } from "uuid";
-import MaputnikDriver from "./maputnik-driver";
+import { MaputnikDriver, then } from "./maputnik-driver";
 
 describe("layers", () => {
   let { beforeAndAfter, get, when, should } = new MaputnikDriver();
@@ -19,14 +18,16 @@ describe("layers", () => {
     });
 
     it("should update layers in local storage", () => {
-      then(get.maputnikStyleFromLocalStorage()).shouldDeepNestedInclude({
-        layers: [
-          {
-            id: id,
-            type: "background",
-          },
-        ],
-      });
+      then(get.maputnikStyleFromLocalStorage()).shouldIncludeLocalStrorageStyle(
+        {
+          layers: [
+            {
+              id: id,
+              type: "background",
+            },
+          ],
+        }
+      );
     });
 
     describe("when clicking delete", () => {
@@ -34,7 +35,9 @@ describe("layers", () => {
         when.click("layer-list-item:" + id + ":delete");
       });
       it("should empty layers in local storage", () => {
-        then(get.maputnikStyleFromLocalStorage()).shouldDeepNestedInclude({
+        then(
+          get.maputnikStyleFromLocalStorage()
+        ).shouldIncludeLocalStrorageStyle({
           layers: [],
         });
       });
@@ -45,7 +48,9 @@ describe("layers", () => {
         when.click("layer-list-item:" + id + ":copy");
       });
       it("should add copy layer in local storage", () => {
-        then(get.maputnikStyleFromLocalStorage()).shouldDeepNestedInclude({
+        then(
+          get.maputnikStyleFromLocalStorage()
+        ).shouldIncludeLocalStrorageStyle({
           layers: [
             {
               id: id + "-copy",
@@ -66,7 +71,9 @@ describe("layers", () => {
       });
 
       it("should update visibility to none in local storage", () => {
-        then(get.maputnikStyleFromLocalStorage()).shouldDeepNestedInclude({
+        then(
+          get.maputnikStyleFromLocalStorage()
+        ).shouldIncludeLocalStrorageStyle({
           layers: [
             {
               id: id,
@@ -82,11 +89,12 @@ describe("layers", () => {
       describe("when clicking show", () => {
         beforeEach(() => {
           when.click("layer-list-item:" + id + ":toggle-visibility");
-          when.wait(200);
         });
 
         it("should update visibility to visible in local storage", () => {
-          then(get.maputnikStyleFromLocalStorage()).shouldDeepNestedInclude({
+          then(
+            get.maputnikStyleFromLocalStorage()
+          ).shouldIncludeLocalStrorageStyle({
             layers: [
               {
                 id: id,
@@ -174,7 +182,9 @@ describe("layers", () => {
           });
 
           it("should update min-zoom in local storage", () => {
-            then(get.maputnikStyleFromLocalStorage()).shouldDeepNestedInclude({
+            then(
+              get.maputnikStyleFromLocalStorage()
+            ).shouldIncludeLocalStrorageStyle({
               layers: [
                 {
                   id: "background:" + bgId,
@@ -188,7 +198,9 @@ describe("layers", () => {
           it("when clicking next layer should update style on local storage", () => {
             when.type("min-zoom.input-text", "{backspace}");
             when.click("max-zoom.input-text");
-            then(get.maputnikStyleFromLocalStorage()).shouldDeepNestedInclude({
+            then(
+              get.maputnikStyleFromLocalStorage()
+            ).shouldIncludeLocalStrorageStyle({
               layers: [
                 {
                   id: "background:" + bgId,
@@ -208,11 +220,10 @@ describe("layers", () => {
             when.click("layer-list-item:background:" + bgId);
             when.setValue("max-zoom.input-text", "1");
             when.click("layer-editor.layer-id");
-            when.wait(200);
           });
 
           it("should update style in local storage", () => {
-            then(get.maputnikStyleFromLocalStorage()).shouldDeepNestedInclude({
+            then(cy.window()).shouldIncludeLocalStrorageStyle({
               layers: [
                 {
                   id: "background:" + bgId,
@@ -233,11 +244,12 @@ describe("layers", () => {
             when.click("layer-list-item:background:" + bgId);
             when.setValue("layer-comment.input", comment);
             when.click("layer-editor.layer-id");
-            when.wait(200);
           });
 
           it("should update style in local stroage", () => {
-            then(get.maputnikStyleFromLocalStorage()).shouldDeepNestedInclude({
+            then(
+              get.maputnikStyleFromLocalStorage()
+            ).shouldIncludeLocalStrorageStyle({
               layers: [
                 {
                   id: "background:" + bgId,
@@ -254,20 +266,19 @@ describe("layers", () => {
             beforeEach(() => {
               when.type("layer-comment.input", "{backspace}{backspace}");
               when.click("min-zoom.input-text");
-              when.wait(400);
             });
 
             it("should update style in local storage", () => {
-              then(get.maputnikStyleFromLocalStorage()).shouldDeepNestedInclude(
-                {
-                  layers: [
-                    {
-                      id: "background:" + bgId,
-                      type: "background",
-                    },
-                  ],
-                }
-              );
+              then(
+                get.maputnikStyleFromLocalStorage()
+              ).shouldIncludeLocalStrorageStyle({
+                layers: [
+                  {
+                    id: "background:" + bgId,
+                    type: "background",
+                  },
+                ],
+              });
             });
           });
         });
@@ -278,11 +289,12 @@ describe("layers", () => {
             bgId = createBackground();
             when.click("layer-list-item:background:" + bgId);
             when.click("spec-field:background-color");
-            when.wait(200);
           });
 
           it("should update style in local storage", () => {
-            then(get.maputnikStyleFromLocalStorage()).shouldDeepNestedInclude({
+            then(
+              get.maputnikStyleFromLocalStorage()
+            ).shouldIncludeLocalStrorageStyle({
               layers: [
                 {
                   id: "background:" + bgId,

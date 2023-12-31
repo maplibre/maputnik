@@ -1,9 +1,33 @@
+import {
+  Assertable,
+  then as baseThen,
+} from "@shellygo/cypress-test-utils/assertable";
 import CypressWrapperDriver from "./cypress-wrapper-driver";
 import ModalDriver from "./modal-driver";
-
 const baseUrl = "http://localhost:8888/";
 
-export default class MaputnikDriver {
+export class MaputnikAssertable<T> extends Assertable<T> {
+  private getStyleFromWindow = (win: Window) => {
+    const styleId = win.localStorage.getItem("maputnik:latest_style");
+    const styleItem = win.localStorage.getItem(`maputnik:style:${styleId}`);
+    const obj = JSON.parse(styleItem || "");
+    return obj;
+  };
+  shouldIncludeLocalStrorageStyle = (styleObj: Object) =>
+    baseThen(
+      cy.window().then((win) => this.getStyleFromWindow(win))
+    ).shouldDeepNestedInclude(styleObj);
+
+  shouldHaveLocalStorageStyle = (styleObj: Object) =>
+    baseThen(
+      cy.window().then((win) => this.getStyleFromWindow(win))
+    ).shouldDeepEqual(styleObj);
+}
+
+export const then = (chainable: Cypress.Chainable<any>) =>
+  new MaputnikAssertable(chainable);
+
+export class MaputnikDriver {
   private helper = new CypressWrapperDriver();
   private modalDriver = new ModalDriver();
 
@@ -87,18 +111,18 @@ export default class MaputnikDriver {
     ) => {
       let url = "?debug";
       switch (styleProperties) {
-      case "geojson":
-        url += `&style=${baseUrl}geojson-style.json`;
-        break;
-      case "raster":
-        url += `&style=${baseUrl}raster-style.json`;
-        break;
-      case "both":
-        url += `&style=${baseUrl}geojson-raster-style.json`;
-        break;
-      case "layer":
-        url += `&style=${baseUrl}/example-layer-style.json`;
-        break;
+        case "geojson":
+          url += `&style=${baseUrl}geojson-style.json`;
+          break;
+        case "raster":
+          url += `&style=${baseUrl}raster-style.json`;
+          break;
+        case "both":
+          url += `&style=${baseUrl}geojson-raster-style.json`;
+          break;
+        case "layer":
+          url += `&style=${baseUrl}/example-layer-style.json`;
+          break;
       }
       if (zoom) {
         url += `#${zoom}/41.3805/2.1635`;
@@ -111,8 +135,7 @@ export default class MaputnikDriver {
       this.helper.get.elementByTestId("toolbar:link").should("be.visible");
     },
 
-    typeKeys: (keys: string) =>
-      this.helper.get.element("body").type(keys),
+    typeKeys: (keys: string) => this.helper.get.element("body").type(keys),
 
     clickZoomIn: () => {
       this.helper.get.element(".maplibregl-ctrl-zoom-in").click();
@@ -188,16 +211,6 @@ export default class MaputnikDriver {
       cy.window().then((win: any) => {
         const obj = this.get.styleFromWindow(win);
         assert.deepEqual(getter(obj), styleObj);
-      });
-    },
-
-    styleStoreEqualToExampleFileData: () => {
-      cy.window().then((_win: any) => {
-        //const obj = this.get.styleFromWindow(win);
-        const obj = this.get.maputnikStyleFromLocalStorageObj();
-        this.helper.given
-          .fixture("example-style.json", "file:example-style.json")
-          .should("deep.equal", obj);
       });
     },
 
