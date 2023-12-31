@@ -224,41 +224,46 @@ describe("layers", () => {
           });
         });
 
-        it("comments", () => {
-          let bgId = createBackground();
+        describe("comments", () => {
+          let bgId: string;
           let comment = "42";
 
-          when.click("layer-list-item:background:" + bgId);
-          when.setValue("layer-comment.input", comment);
+          beforeEach(() => {
+            bgId = createBackground();
 
-          when.click("layer-editor.layer-id");
+            when.click("layer-list-item:background:" + bgId);
+            when.setValue("layer-comment.input", comment);
 
-          should.equalStyleStore(
-            (a: any) => a.layers,
-            [
-              {
-                id: "background:" + bgId,
-                type: "background",
-                metadata: {
-                  "maputnik:comment": comment,
+            when.click("layer-editor.layer-id");
+          });
+
+          it("should update style in local stroage", () => {
+            then(get.maputnikStyleFromLocalStorage()).shouldDeepNestedInclude({
+              layers: [
+                {
+                  id: "background:" + bgId,
+                  type: "background",
+                  metadata: {
+                    "maputnik:comment": comment,
+                  },
                 },
-              },
-            ]
-          );
+              ],
+            });
+          });
 
-          // Unset it again.
-          when.type("layer-comment.input", "{backspace}{backspace}");
-          when.click("min-zoom.input-text");
-
-          should.equalStyleStore(
-            (a: any) => a.layers,
-            [
-              {
-                id: "background:" + bgId,
-                type: "background",
-              },
-            ]
-          );
+          it("when unsetting should update style in local storage", () => {
+            // Unset it again.
+            when.type("layer-comment.input", "{backspace}{backspace}");
+            when.click("min-zoom.input-text");
+            then(get.maputnikStyleFromLocalStorage()).shouldDeepNestedInclude({
+              layers: [
+                {
+                  id: "background:" + bgId,
+                  type: "background",
+                },
+              ],
+            });
+          });
         });
 
         it("color", () => {
