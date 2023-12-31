@@ -1,5 +1,4 @@
-import { then } from "@shellygo/cypress-test-utils/assertable";
-import MaputnikDriver from "./maputnik-driver";
+import { MaputnikDriver, then } from "./maputnik-driver";
 
 describe("accessibility", () => {
   let { beforeAndAfter, get, when, should } = new MaputnikDriver();
