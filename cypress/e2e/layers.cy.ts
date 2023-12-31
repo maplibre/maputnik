@@ -254,7 +254,7 @@ describe("layers", () => {
             beforeEach(() => {
               when.type("layer-comment.input", "{backspace}{backspace}");
               when.click("min-zoom.input-text");
-              when.wait(200);
+              when.wait(400);
             });
 
             it("should update style in local storage", () => {
