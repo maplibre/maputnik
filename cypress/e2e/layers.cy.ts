@@ -162,58 +162,66 @@ describe("layers", () => {
           );
         });
 
-        it("min-zoom", () => {
-          let bgId = createBackground();
+        describe("min-zoom", () => {
+          let bgId: string;
 
-          when.click("layer-list-item:background:" + bgId);
-          when.setValue("min-zoom.input-text", "1");
+          beforeEach(() => {
+            bgId = createBackground();
+            when.click("layer-list-item:background:" + bgId);
+            when.setValue("min-zoom.input-text", "1");
+            when.click("layer-editor.layer-id");
+          });
 
-          when.click("layer-editor.layer-id");
+          it("should update min-zoom in local storage", () => {
+            then(get.maputnikStyleFromLocalStorage()).shouldDeepNestedInclude({
+              layers: [
+                {
+                  id: "background:" + bgId,
+                  type: "background",
+                  minzoom: 1,
+                },
+              ],
+            });
+          });
 
-          should.equalStyleStore(
-            (a: any) => a.layers,
-            [
-              {
-                id: "background:" + bgId,
-                type: "background",
-                minzoom: 1,
-              },
-            ]
-          );
-
-          // AND RESET!
-          when.type("min-zoom.input-text", "{backspace}");
-          when.click("max-zoom.input-text");
-
-          should.equalStyleStore(
-            (a: any) => a.layers,
-            [
-              {
-                id: "background:" + bgId,
-                type: "background",
-              },
-            ]
-          );
+          it("when clicking next layer should update style on local storage", () => {
+            when.type("min-zoom.input-text", "{backspace}");
+            when.click("max-zoom.input-text");
+            then(get.maputnikStyleFromLocalStorage()).shouldDeepNestedInclude({
+              layers: [
+                {
+                  id: "background:" + bgId,
+                  type: "background",
+                  minzoom: 1,
+                },
+              ],
+            });
+          });
         });
 
-        it("max-zoom", () => {
-          let bgId = createBackground();
+        describe("max-zoom", () => {
+          let bgId: string;
 
-          when.click("layer-list-item:background:" + bgId);
-          when.setValue("max-zoom.input-text", "1");
+          beforeEach(() => {
+            bgId = createBackground();
 
-          when.click("layer-editor.layer-id");
+            when.click("layer-list-item:background:" + bgId);
+            when.setValue("max-zoom.input-text", "1");
 
-          should.equalStyleStore(
-            (a: any) => a.layers,
-            [
-              {
-                id: "background:" + bgId,
-                type: "background",
-                maxzoom: 1,
-              },
-            ]
-          );
+            when.click("layer-editor.layer-id");
+          });
+
+          it("should update style in local storage", () => {
+            then(get.maputnikStyleFromLocalStorage()).shouldDeepNestedInclude({
+              layers: [
+                {
+                  id: "background:" + bgId,
+                  type: "background",
+                  maxzoom: 1,
+                },
+              ],
+            });
+          });
         });
 
         it("comments", () => {
