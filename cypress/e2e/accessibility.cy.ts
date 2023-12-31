@@ -23,7 +23,7 @@ describe("accessibility", () => {
       const selector = "root:skip:layer-editor";
       then(get.elementByTestId(selector)).shouldExist();
       when.tab().tab();
-      should.beFocused(selector);
+      then(get.elementByTestId(selector)).shouldBeFocused();
       when.click(selector);
       then(get.skipTargetLayerEditor()).shouldBeFocused();
     });
@@ -32,7 +32,7 @@ describe("accessibility", () => {
       const selector = "root:skip:map-view";
       then(get.elementByTestId(selector)).shouldExist();
       when.tab().tab().tab();
-      should.beFocused(selector);
+      then(get.elementByTestId(selector)).shouldBeFocused();
       when.click(selector);
       then(get.canvas()).shouldBeFocused();
     });
