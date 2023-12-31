@@ -111,7 +111,7 @@ export default class MaputnikDriver {
       this.helper.get.elementByTestId("toolbar:link").should("be.visible");
     },
 
-    typeKeys: (keys: string, selector?: string) =>
+    typeKeys: (keys: string) =>
       this.helper.get.element("body").type(keys),
 
     clickZoomIn: () => {
@@ -192,9 +192,9 @@ export default class MaputnikDriver {
     },
 
     styleStoreEqualToExampleFileData: () => {
-      cy.window().then((win: any) => {
-        const obj = this.get.styleFromWindow(win);
-        const bobj = this.get.maputnikStyleFromLocalStorageObj();
+      cy.window().then((_win: any) => {
+        //const obj = this.get.styleFromWindow(win);
+        const obj = this.get.maputnikStyleFromLocalStorageObj();
         this.helper.given
           .fixture("example-style.json", "file:example-style.json")
           .should("deep.equal", obj);
