@@ -491,12 +491,10 @@ describe("layers", () => {
         type: "background",
       });
 
-      then(get.elementByTestId("layer-list-group:foo")).shouldBeVisible();
+      then(get.elementByTestId("layer-list-item:foo")).shouldBeVisible();
+      then(get.elementByTestId("layer-list-item:foo_bar")).shouldNotBeVisible();
       then(
-        get.elementByTestId("layer-list-group:foo_bar")
-      ).shouldNotBeVisible();
-      then(
-        get.elementByTestId("layer-list-group:foo_bar_baz")
+        get.elementByTestId("layer-list-item:foo_bar_baz")
       ).shouldNotBeVisible();
       when.click("layer-list-group:foo-0");
       then(get.elementByTestId("layer-list-item:foo")).shouldBeVisible();

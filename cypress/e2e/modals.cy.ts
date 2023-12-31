@@ -20,7 +20,7 @@ describe("modals", () => {
     it.skip("upload", () => {
       // HM: I was not able to make the following choose file actually to select a file and close the modal...
       when.chooseExampleFile();
-      then(get.responseBody("example-style.json")).shouldDeepEqual(
+      then(get.responseBody("example-style.json")).shouldHaveLocalStorageStyle(
         get.maputnikStyleFromLocalStorageObj()
       );
     });
@@ -34,9 +34,9 @@ describe("modals", () => {
         when.wait(200);
       });
       it("load from url", () => {
-        then(get.responseBody("example-style.json")).shouldDeepEqual(
-          get.maputnikStyleFromLocalStorageObj()
-        );
+        then(
+          get.responseBody("example-style.json")
+        ).shouldHaveLocalStorageStyle(get.maputnikStyleFromLocalStorageObj());
       });
     });
   });
@@ -103,7 +103,9 @@ describe("modals", () => {
       });
 
       it("show name specifications", () => {
-        then(get.maputnikStyleFromLocalStorage()).shouldDeepNestedInclude({
+        then(
+          get.maputnikStyleFromLocalStorage()
+        ).shouldIncludeLocalStorageStyle({
           name: "foobar",
         });
       });
@@ -116,7 +118,9 @@ describe("modals", () => {
         when.wait(200);
       });
       it("should update owner in local storage", () => {
-        then(get.maputnikStyleFromLocalStorage()).shouldDeepNestedInclude({
+        then(
+          get.maputnikStyleFromLocalStorage()
+        ).shouldIncludeLocalStorageStyle({
           owner: "foobar",
         });
       });
@@ -125,7 +129,7 @@ describe("modals", () => {
     it("sprite url", () => {
       when.setValue("modal:settings.sprite", "http://example.com");
       when.click("modal:settings.name");
-      then(get.maputnikStyleFromLocalStorage()).shouldDeepNestedInclude({
+      then(get.maputnikStyleFromLocalStorage()).shouldIncludeLocalStorageStyle({
         sprite: "http://example.com",
       });
     });
@@ -133,7 +137,7 @@ describe("modals", () => {
       let glyphsUrl = "http://example.com/{fontstack}/{range}.pbf";
       when.setValue("modal:settings.glyphs", glyphsUrl);
       when.click("modal:settings.name");
-      then(get.maputnikStyleFromLocalStorage()).shouldDeepNestedInclude({
+      then(get.maputnikStyleFromLocalStorage()).shouldIncludeLocalStorageStyle({
         glyphs: glyphsUrl,
       });
     });
@@ -145,8 +149,8 @@ describe("modals", () => {
         apiKey
       );
       when.click("modal:settings.name");
-      then(get.maputnikStyleFromLocalStorage()).shouldDeepNestedInclude({
-        metadata: { "maputnik:openmaptiles_access_token": apiKey },
+      then(get.maputnikStyleFromLocalStorage()).shouldIncludeLocalStorageStyle({
+        "maputnik:openmaptiles_access_token": apiKey,
       });
     });
 
@@ -157,7 +161,7 @@ describe("modals", () => {
         apiKey
       );
       when.click("modal:settings.name");
-      then(get.maputnikStyleFromLocalStorage()).shouldDeepNestedInclude({
+      then(get.maputnikStyleFromLocalStorage()).shouldIncludeLocalStorageStyle({
         metadata: { "maputnik:thunderforest_access_token": apiKey },
       });
     });
@@ -170,7 +174,7 @@ describe("modals", () => {
       );
 
       when.click("modal:settings.name");
-      then(get.maputnikStyleFromLocalStorage()).shouldDeepNestedInclude({
+      then(get.maputnikStyleFromLocalStorage()).shouldIncludeLocalStorageStyle({
         metadata: { "maputnik:renderer": "ol" },
       });
     });
