@@ -21,7 +21,6 @@ describe("map", () => {
       then(get.elementByTestId("maplibre:ctrl-zoom")).shouldContainText(
         "Zoom: " + (zoomLevel + 1)
       );
-      when.clickZoomIn();
     });
   });
 });
