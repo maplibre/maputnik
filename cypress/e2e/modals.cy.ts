@@ -96,7 +96,7 @@ describe("modals", () => {
       });
     });
 
-    describe("when click owner", () => {
+    describe("when set name and click owner", () => {
       beforeEach(() => {
         when.setValue("modal:settings.name", "foobar");
         when.click("modal:settings.owner");
@@ -110,13 +110,19 @@ describe("modals", () => {
       });
     });
 
-    it("owner", () => {
-      when.setValue("modal:settings.owner", "foobar");
-      when.click("modal:settings.name");
-      then(get.maputnikStyleFromLocalStorage()).shouldDeepNestedInclude({
-        owner: "foobar",
+    describe("when set owner and click name", () => {
+      beforeEach(() => {
+        when.setValue("modal:settings.owner", "foobar");
+        when.click("modal:settings.name");
+        when.wait(200);
+      });
+      it("should update owner in local storage", () => {
+        then(get.maputnikStyleFromLocalStorage()).shouldDeepNestedInclude({
+          owner: "foobar",
+        });
       });
     });
+
     it("sprite url", () => {
       when.setValue("modal:settings.sprite", "http://example.com");
       when.click("modal:settings.name");
