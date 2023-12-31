@@ -82,6 +82,7 @@ describe("layers", () => {
       describe("when clicking show", () => {
         beforeEach(() => {
           when.click("layer-list-item:" + id + ":toggle-visibility");
+          when.wait(200);
         });
 
         it("should update visibility to visible in local storage", () => {
@@ -204,11 +205,10 @@ describe("layers", () => {
 
           beforeEach(() => {
             bgId = createBackground();
-
             when.click("layer-list-item:background:" + bgId);
             when.setValue("max-zoom.input-text", "1");
-
             when.click("layer-editor.layer-id");
+            when.wait(200);
           });
 
           it("should update style in local storage", () => {
@@ -230,11 +230,10 @@ describe("layers", () => {
 
           beforeEach(() => {
             bgId = createBackground();
-
             when.click("layer-list-item:background:" + bgId);
             when.setValue("layer-comment.input", comment);
-
             when.click("layer-editor.layer-id");
+            when.wait(200);
           });
 
           it("should update style in local stroage", () => {
@@ -251,10 +250,38 @@ describe("layers", () => {
             });
           });
 
-          it("when unsetting should update style in local storage", () => {
-            // Unset it again.
-            when.type("layer-comment.input", "{backspace}{backspace}");
-            when.click("min-zoom.input-text");
+          describe("when unsetting", () => {
+            beforeEach(() => {
+              when.type("layer-comment.input", "{backspace}{backspace}");
+              when.click("min-zoom.input-text");
+              when.wait(200);
+            });
+
+            it("should update style in local storage", () => {
+              then(get.maputnikStyleFromLocalStorage()).shouldDeepNestedInclude(
+                {
+                  layers: [
+                    {
+                      id: "background:" + bgId,
+                      type: "background",
+                    },
+                  ],
+                }
+              );
+            });
+          });
+        });
+
+        describe("color", () => {
+          let bgId: string;
+          beforeEach(() => {
+            bgId = createBackground();
+            when.click("layer-list-item:background:" + bgId);
+            when.click("spec-field:background-color");
+            when.wait(200);
+          });
+
+          it("should update style in local storage", () => {
             then(get.maputnikStyleFromLocalStorage()).shouldDeepNestedInclude({
               layers: [
                 {
@@ -264,24 +291,6 @@ describe("layers", () => {
               ],
             });
           });
-        });
-
-        it("color", () => {
-          let bgId = createBackground();
-
-          when.click("layer-list-item:background:" + bgId);
-
-          when.click("spec-field:background-color");
-
-          should.equalStyleStore(
-            (a: any) => a.layers,
-            [
-              {
-                id: "background:" + bgId,
-                type: "background",
-              },
-            ]
-          );
         });
       });
 
