@@ -286,7 +286,7 @@ describe("layers", () => {
           beforeEach(() => {
             bgId = createBackground();
             when.click("layer-list-item:background:" + bgId);
-            when.click("spec-field:background-color");
+            when.click("spec-field:background-color", 0);
           });
 
           it("should update style in local storage", () => {
