@@ -108,18 +108,18 @@ export class MaputnikDriver {
     ) => {
       let url = "?debug";
       switch (styleProperties) {
-        case "geojson":
-          url += `&style=${baseUrl}geojson-style.json`;
-          break;
-        case "raster":
-          url += `&style=${baseUrl}raster-style.json`;
-          break;
-        case "both":
-          url += `&style=${baseUrl}geojson-raster-style.json`;
-          break;
-        case "layer":
-          url += `&style=${baseUrl}/example-layer-style.json`;
-          break;
+      case "geojson":
+        url += `&style=${baseUrl}geojson-style.json`;
+        break;
+      case "raster":
+        url += `&style=${baseUrl}raster-style.json`;
+        break;
+      case "both":
+        url += `&style=${baseUrl}geojson-raster-style.json`;
+        break;
+      case "layer":
+        url += `&style=${baseUrl}/example-layer-style.json`;
+        break;
       }
       if (zoom) {
         url += `#${zoom}/41.3805/2.1635`;
