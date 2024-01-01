@@ -306,7 +306,6 @@ describe("layers", () => {
           when.click("layer-list-item:background:" + bgId);
 
           let errorSelector = ".CodeMirror-lint-marker-error";
-          // Not a good idea to check that something doesn't exist. infinite things don't exist.
           then(get.elementByTestId(errorSelector)).shouldNotExist();
 
           when.click(".CodeMirror");
