@@ -1,5 +1,5 @@
 import { v1 as uuid } from "uuid";
-import MaputnikCypressHelper from "./cypress-wrapper-driver";
+import MaputnikCypressHelper from "./maputnik-cypress-helper";
 
 export default class ModalDriver {
   private helper = new MaputnikCypressHelper();

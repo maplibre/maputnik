@@ -1,6 +1,6 @@
 import { CypressHelper } from "@shellygo/cypress-test-utils";
 import { Assertable, then } from "@shellygo/cypress-test-utils/assertable";
-import MaputnikCypressHelper from "./cypress-wrapper-driver";
+import MaputnikCypressHelper from "./maputnik-cypress-helper";
 import ModalDriver from "./modal-driver";
 const baseUrl = "http://localhost:8888/";
 
@@ -108,18 +108,18 @@ export class MaputnikDriver {
     ) => {
       let url = "?debug";
       switch (styleProperties) {
-      case "geojson":
-        url += `&style=${baseUrl}geojson-style.json`;
-        break;
-      case "raster":
-        url += `&style=${baseUrl}raster-style.json`;
-        break;
-      case "both":
-        url += `&style=${baseUrl}geojson-raster-style.json`;
-        break;
-      case "layer":
-        url += `&style=${baseUrl}/example-layer-style.json`;
-        break;
+        case "geojson":
+          url += `&style=${baseUrl}geojson-style.json`;
+          break;
+        case "raster":
+          url += `&style=${baseUrl}raster-style.json`;
+          break;
+        case "both":
+          url += `&style=${baseUrl}geojson-raster-style.json`;
+          break;
+        case "layer":
+          url += `&style=${baseUrl}/example-layer-style.json`;
+          break;
       }
       if (zoom) {
         url += `#${zoom}/41.3805/2.1635`;
@@ -168,13 +168,6 @@ export class MaputnikDriver {
 
     styleFromLocalStorage: () =>
       this.helper.get.window().then((win) => styleFromWindow(win)),
-
-    maputnikStyleFromLocalStorageObj: () => {
-      const styleId = localStorage.getItem("maputnik:latest_style");
-      const styleItem = localStorage.getItem(`maputnik:style:${styleId}`);
-      const obj = JSON.parse(styleItem || "");
-      return obj;
-    },
 
     exampleFileUrl: () => {
       return baseUrl + "example-style.json";

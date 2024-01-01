@@ -5,7 +5,7 @@ describe("modals", () => {
   beforeAndAfter();
 
   beforeEach(() => {
-    when.visit("/");
+    when.setStyle("");
   });
   describe("open", () => {
     beforeEach(() => {
@@ -51,7 +51,7 @@ describe("modals", () => {
       when.click("nav:export");
     });
 
-    it.skip("close", () => {
+    it("close", () => {
       when.modal.close("modal:export");
       then(get.elementByTestId("modal:export")).shouldNotExist();
     });
