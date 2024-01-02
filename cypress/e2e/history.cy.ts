@@ -1,7 +1,7 @@
-import MaputnikDriver from "./maputnik-driver";
+import { MaputnikDriver } from "./maputnik-driver";
 
 describe("history", () => {
-  let { beforeAndAfter, when, get, should } = new MaputnikDriver();
+  let { beforeAndAfter, when, get, then } = new MaputnikDriver();
   beforeAndAfter();
 
   let undoKeyCombo: string;
@@ -16,23 +16,20 @@ describe("history", () => {
   it("undo/redo", () => {
     when.setStyle("geojson");
     when.modal.open();
-
-    should.equalStyleStore((a: any) => a.layers, []);
+    then(get.styleFromLocalStorage()).shouldDeepNestedInclude({ layers: [] });
 
     when.modal.fillLayers({
       id: "step 1",
       type: "background",
     });
-
-    should.equalStyleStore(
-      (a: any) => a.layers,
-      [
+    then(get.styleFromLocalStorage()).shouldDeepNestedInclude({
+      layers: [
         {
           id: "step 1",
           type: "background",
         },
-      ]
-    );
+      ],
+    });
 
     when.modal.open();
     when.modal.fillLayers({
@@ -40,9 +37,8 @@ describe("history", () => {
       type: "background",
     });
 
-    should.equalStyleStore(
-      (a: any) => a.layers,
-      [
+    then(get.styleFromLocalStorage()).shouldDeepNestedInclude({
+      layers: [
         {
           id: "step 1",
           type: "background",
@@ -51,38 +47,35 @@ describe("history", () => {
           id: "step 2",
           type: "background",
         },
-      ]
-    );
+      ],
+    });
 
     when.typeKeys(undoKeyCombo);
-    should.equalStyleStore(
-      (a: any) => a.layers,
-      [
+    then(get.styleFromLocalStorage()).shouldDeepNestedInclude({
+      layers: [
         {
           id: "step 1",
           type: "background",
         },
-      ]
-    );
+      ],
+    });
 
     when.typeKeys(undoKeyCombo);
-    should.equalStyleStore((a: any) => a.layers, []);
+    then(get.styleFromLocalStorage()).shouldDeepNestedInclude({ layers: [] });
 
     when.typeKeys(redoKeyCombo);
-    should.equalStyleStore(
-      (a: any) => a.layers,
-      [
+    then(get.styleFromLocalStorage()).shouldDeepNestedInclude({
+      layers: [
         {
           id: "step 1",
           type: "background",
         },
-      ]
-    );
+      ],
+    });
 
     when.typeKeys(redoKeyCombo);
-    should.equalStyleStore(
-      (a: any) => a.layers,
-      [
+    then(get.styleFromLocalStorage()).shouldDeepNestedInclude({
+      layers: [
         {
           id: "step 1",
           type: "background",
@@ -91,7 +84,7 @@ describe("history", () => {
           id: "step 2",
           type: "background",
         },
-      ]
-    );
+      ],
+    });
   });
 });

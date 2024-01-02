@@ -1,8 +1,9 @@
-import MaputnikDriver from "./maputnik-driver";
+import { MaputnikDriver } from "./maputnik-driver";
 
 describe("modals", () => {
-  let { beforeAndAfter, when, get, should } = new MaputnikDriver();
+  let { beforeAndAfter, when, get, then } = new MaputnikDriver();
   beforeAndAfter();
+
   beforeEach(() => {
     when.setStyle("");
   });
@@ -13,24 +14,26 @@ describe("modals", () => {
 
     it("close", () => {
       when.modal.close("modal:open");
-      should.notExist("modal:open");
+      then(get.elementByTestId("modal:open")).shouldNotExist();
     });
 
     it.skip("upload", () => {
       // HM: I was not able to make the following choose file actually to select a file and close the modal...
       when.chooseExampleFile();
-
-      should.styleStoreEqualToExampleFileData();
+      then(get.responseBody("example-style.json")).shouldEqualToStoredStyle();
     });
 
-    it("load from url", () => {
-      let styleFileUrl = get.exampleFileUrl();
+    describe("when click open url", () => {
+      beforeEach(() => {
+        let styleFileUrl = get.exampleFileUrl();
 
-      when.setValue("modal:open.url.input", styleFileUrl);
-      when.click("modal:open.url.button");
-      when.waitForExampleFileRequset();
-
-      should.styleStoreEqualToExampleFileData();
+        when.setValue("modal:open.url.input", styleFileUrl);
+        when.click("modal:open.url.button");
+        when.wait(200);
+      });
+      it("load from url", () => {
+        then(get.responseBody("example-style.json")).shouldEqualToStoredStyle();
+      });
     });
   });
 
@@ -39,7 +42,7 @@ describe("modals", () => {
       when.setStyle("");
       when.typeKeys("?");
       when.modal.close("modal:shortcuts");
-      should.notExist("modal:shortcuts");
+      then(get.elementByTestId("modal:shortcuts")).shouldNotExist();
     });
   });
 
@@ -50,7 +53,7 @@ describe("modals", () => {
 
     it("close", () => {
       when.modal.close("modal:export");
-      should.notExist("modal:export");
+      then(get.elementByTestId("modal:export")).shouldNotExist();
     });
 
     // TODO: Work out how to download a file and check the contents
@@ -65,9 +68,9 @@ describe("modals", () => {
 
   describe("inspect", () => {
     it("toggle", () => {
+      // There is no assertion in this test
       when.setStyle("geojson");
-
-      when.selectWithin("nav:inspect", "inspect");
+      when.select("maputnik-select", "inspect");
     });
   });
 
@@ -76,37 +79,59 @@ describe("modals", () => {
       when.click("nav:settings");
     });
 
-    it("name", () => {
-      when.click("field-doc-button-Name");
+    describe("when click name", () => {
+      beforeEach(() => {
+        when.click("field-doc-button-Name");
+      });
 
-      should.containText("spec-field-doc", "name for the style");
+      it("name", () => {
+        then(get.elementsText("spec-field-doc")).shouldInclude(
+          "name for the style"
+        );
+      });
     });
 
-    it("show name specifications", () => {
-      when.setValue("modal:settings.name", "foobar");
-      when.click("modal:settings.owner");
+    describe("when set name and click owner", () => {
+      beforeEach(() => {
+        when.setValue("modal:settings.name", "foobar");
+        when.click("modal:settings.owner");
+        when.wait(200);
+      });
 
-      should.equalStyleStore((obj) => obj.name, "foobar");
+      it("show name specifications", () => {
+        then(get.styleFromLocalStorage()).shouldDeepNestedInclude({
+          name: "foobar",
+        });
+      });
     });
 
-    it("owner", () => {
-      when.setValue("modal:settings.owner", "foobar");
-      when.click("modal:settings.name");
-
-      should.equalStyleStore((obj) => obj.owner, "foobar");
+    describe("when set owner and click name", () => {
+      beforeEach(() => {
+        when.setValue("modal:settings.owner", "foobar");
+        when.click("modal:settings.name");
+        when.wait(200);
+      });
+      it("should update owner in local storage", () => {
+        then(get.styleFromLocalStorage()).shouldDeepNestedInclude({
+          owner: "foobar",
+        });
+      });
     });
+
     it("sprite url", () => {
       when.setValue("modal:settings.sprite", "http://example.com");
       when.click("modal:settings.name");
-
-      should.equalStyleStore((obj) => obj.sprite, "http://example.com");
+      then(get.styleFromLocalStorage()).shouldDeepNestedInclude({
+        sprite: "http://example.com",
+      });
     });
     it("glyphs url", () => {
       let glyphsUrl = "http://example.com/{fontstack}/{range}.pbf";
       when.setValue("modal:settings.glyphs", glyphsUrl);
       when.click("modal:settings.name");
-
-      should.equalStyleStore((obj) => obj.glyphs, glyphsUrl);
+      then(get.styleFromLocalStorage()).shouldDeepNestedInclude({
+        glyphs: glyphsUrl,
+      });
     });
 
     it("maptiler access token", () => {
@@ -116,32 +141,36 @@ describe("modals", () => {
         apiKey
       );
       when.click("modal:settings.name");
-
-      should.equalStyleStore(
-        (obj) => obj.metadata["maputnik:openmaptiles_access_token"],
-        apiKey
-      );
+      then(
+        get.styleFromLocalStorage().pipe((style) => style.metadata)
+      ).shouldInclude({
+        "maputnik:openmaptiles_access_token": apiKey,
+      });
     });
 
     it("thunderforest access token", () => {
       let apiKey = "testing123";
-      when.setValue("modal:settings.maputnik:thunderforest_access_token", apiKey);
-      when.click("modal:settings.name");
-
-      should.equalStyleStore(
-        (obj) => obj.metadata["maputnik:thunderforest_access_token"],
+      when.setValue(
+        "modal:settings.maputnik:thunderforest_access_token",
         apiKey
       );
+      when.click("modal:settings.name");
+      then(
+        get.styleFromLocalStorage().pipe((style) => style.metadata)
+      ).shouldInclude({ "maputnik:thunderforest_access_token": apiKey });
     });
 
     it("style renderer", () => {
       cy.on("uncaught:exception", () => false); // this is due to the fact that this is an invalid style for openlayers
       when.select("modal:settings.maputnik:renderer", "ol");
-      should.beSelected("modal:settings.maputnik:renderer", "ol");
+      then(get.inputValue("modal:settings.maputnik:renderer")).shouldEqual(
+        "ol"
+      );
 
       when.click("modal:settings.name");
-
-      should.equalStyleStore((obj) => obj.metadata["maputnik:renderer"], "ol");
+      then(get.styleFromLocalStorage()).shouldDeepNestedInclude({
+        metadata: { "maputnik:renderer": "ol" },
+      });
     });
   });
 

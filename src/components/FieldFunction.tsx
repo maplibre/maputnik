@@ -399,7 +399,7 @@ export default class FieldFunction extends React.Component<FieldFunctionProps, F
         />
       )
     }
-    return <div className={propClass} data-wd-key={"spec-field:"+this.props.fieldName}>
+    return <div className={propClass} data-wd-key={"spec-field-container:"+this.props.fieldName}>
       {specField}
     </div>
   }
