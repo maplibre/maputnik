@@ -1,6 +1,6 @@
 import React from 'react'
-import {latest} from '@maplibre/maplibre-gl-style-spec'
-import type {LightSpecification, StyleSpecification, TransitionSpecification} from 'maplibre-gl'
+import latest from '@maplibre/maplibre-gl-style-spec/dist/latest.json'
+import type {LightSpecification, StyleSpecification, TerrainSpecification, TransitionSpecification} from 'maplibre-gl'
 
 import FieldArray from './FieldArray'
 import FieldNumber from './FieldNumber'
@@ -58,6 +58,25 @@ export default class ModalSettings extends React.Component<ModalSettingsProps> {
     });
   }
 
+  changeTerrainProperty(property: keyof TerrainSpecification, value: any) {
+    const terrain = {
+      ...this.props.mapStyle.terrain,
+    }
+
+    if (value === undefined) {
+      delete terrain[property];
+    }
+    else {
+      // @ts-ignore
+      terrain[property] = value;
+    }
+
+    this.props.onStyleChanged({
+      ...this.props.mapStyle,
+      terrain,
+    });
+  }
+
   changeStyleProperty(property: keyof StyleSpecification | "owner", value: any) {
     const changedStyle = {
       ...this.props.mapStyle,
@@ -77,10 +96,12 @@ export default class ModalSettings extends React.Component<ModalSettingsProps> {
   render() {
     const metadata = this.props.mapStyle.metadata || {} as any;
     const {onChangeMetadataProperty, mapStyle} = this.props;
-    const inputProps = { }
 
     const light = this.props.mapStyle.light || {};
     const transition = this.props.mapStyle.transition || {};
+    const terrain = this.props.mapStyle.terrain || {} as TerrainSpecification;
+
+    console.log(latest);
 
     return <Modal
       data-wd-key="modal:settings"
@@ -89,21 +110,21 @@ export default class ModalSettings extends React.Component<ModalSettingsProps> {
       title={'Style Settings'}
     >
       <div className="modal:settings">
-        <FieldString {...inputProps}
+        <FieldString
           label={"Name"}
           fieldSpec={latest.$root.name}
           data-wd-key="modal:settings.name"
           value={this.props.mapStyle.name}
           onChange={this.changeStyleProperty.bind(this, "name")}
         />
-        <FieldString {...inputProps}
+        <FieldString
           label={"Owner"}
           fieldSpec={{doc: "Owner ID of the style. Used by Mapbox or future style APIs."}}
           data-wd-key="modal:settings.owner"
           value={(this.props.mapStyle as any).owner}
           onChange={this.changeStyleProperty.bind(this, "owner")}
         />
-        <FieldUrl {...inputProps}
+        <FieldUrl
           fieldSpec={latest.$root.sprite}
           label="Sprite URL"
           data-wd-key="modal:settings.sprite"
@@ -111,7 +132,7 @@ export default class ModalSettings extends React.Component<ModalSettingsProps> {
           onChange={this.changeStyleProperty.bind(this, "sprite")}
         />
 
-        <FieldUrl {...inputProps}
+        <FieldUrl
           label="Glyphs URL"
           fieldSpec={latest.$root.glyphs}
           data-wd-key="modal:settings.glyphs"
@@ -119,7 +140,7 @@ export default class ModalSettings extends React.Component<ModalSettingsProps> {
           onChange={this.changeStyleProperty.bind(this, "glyphs")}
         />
 
-        <FieldString {...inputProps}
+        <FieldString
           label={fieldSpecAdditional.maputnik.maptiler_access_token.label}
           fieldSpec={fieldSpecAdditional.maputnik.maptiler_access_token}
           data-wd-key="modal:settings.maputnik:openmaptiles_access_token"
@@ -127,7 +148,7 @@ export default class ModalSettings extends React.Component<ModalSettingsProps> {
           onChange={onChangeMetadataProperty.bind(this, "maputnik:openmaptiles_access_token")}
         />
 
-        <FieldString {...inputProps}
+        <FieldString
           label={fieldSpecAdditional.maputnik.thunderforest_access_token.label}
           fieldSpec={fieldSpecAdditional.maputnik.thunderforest_access_token}
           data-wd-key="modal:settings.maputnik:thunderforest_access_token"
@@ -141,21 +162,19 @@ export default class ModalSettings extends React.Component<ModalSettingsProps> {
           length={2}
           type="number"
           value={mapStyle.center || []}
-          default={latest.$root.center.default || [0, 0]}
+          default={[0, 0]}
           onChange={this.changeStyleProperty.bind(this, "center")}
         />
 
         <FieldNumber
-          {...inputProps}
           label={"Zoom"}
           fieldSpec={latest.$root.zoom}
           value={mapStyle.zoom}
-          default={latest.$root.zoom.default || 0}
+          default={0}
           onChange={this.changeStyleProperty.bind(this, "zoom")}
         />
 
         <FieldNumber
-          {...inputProps}
           label={"Bearing"}
           fieldSpec={latest.$root.bearing}
           value={mapStyle.bearing}
@@ -164,7 +183,6 @@ export default class ModalSettings extends React.Component<ModalSettingsProps> {
         />
 
         <FieldNumber
-          {...inputProps}
           label={"Pitch"}
           fieldSpec={latest.$root.pitch}
           value={mapStyle.pitch}
@@ -173,7 +191,6 @@ export default class ModalSettings extends React.Component<ModalSettingsProps> {
         />
 
         <FieldEnum
-          {...inputProps}
           label={"Light anchor"}
           fieldSpec={latest.light.anchor}
           name="light-anchor"
@@ -184,7 +201,6 @@ export default class ModalSettings extends React.Component<ModalSettingsProps> {
         />
 
         <FieldColor
-          {...inputProps}
           label={"Light color"}
           fieldSpec={latest.light.color}
           value={light.color as string}
@@ -193,7 +209,6 @@ export default class ModalSettings extends React.Component<ModalSettingsProps> {
         />
 
         <FieldNumber
-          {...inputProps}
           label={"Light intensity"}
           fieldSpec={latest.light.intensity}
           value={light.intensity as number}
@@ -202,7 +217,6 @@ export default class ModalSettings extends React.Component<ModalSettingsProps> {
         />
 
         <FieldArray
-          {...inputProps}
           label={"Light position"}
           fieldSpec={latest.light.position}
           type="number"
@@ -212,8 +226,23 @@ export default class ModalSettings extends React.Component<ModalSettingsProps> {
           onChange={this.changeLightProperty.bind(this, "position")}
         />
 
+        <FieldString
+          label={"Terrain source"}
+          fieldSpec={latest.terrain.source}
+          data-wd-key="modal:settings.maputnik:terrain_source"
+          value={terrain.source}
+          onChange={this.changeTerrainProperty.bind(this, "source")}
+        />
+
         <FieldNumber
-          {...inputProps}
+          label={"Terrain exaggeration"}
+          fieldSpec={latest.terrain.exaggeration}
+          value={terrain.exaggeration}
+          default={latest.terrain.exaggeration.default}
+          onChange={this.changeTerrainProperty.bind(this, "exaggeration")}
+        />
+
+        <FieldNumber
           label={"Transition delay"}
           fieldSpec={latest.transition.delay}
           value={transition.delay}
@@ -222,7 +251,6 @@ export default class ModalSettings extends React.Component<ModalSettingsProps> {
         />
 
         <FieldNumber
-          {...inputProps}
           label={"Transition duration"}
           fieldSpec={latest.transition.duration}
           value={transition.duration}
@@ -230,7 +258,7 @@ export default class ModalSettings extends React.Component<ModalSettingsProps> {
           onChange={this.changeTransitionProperty.bind(this, "duration")}
         />
 
-        <FieldSelect {...inputProps}
+        <FieldSelect
           label={fieldSpecAdditional.maputnik.style_renderer.label}
           fieldSpec={fieldSpecAdditional.maputnik.style_renderer}
           data-wd-key="modal:settings.maputnik:renderer"

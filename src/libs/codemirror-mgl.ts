@@ -2,7 +2,7 @@
 import jsonlint from 'jsonlint';
 import CodeMirror, { MarkerRange } from 'codemirror';
 import jsonToAst from 'json-to-ast';
-import {expression, validate} from '@maplibre/maplibre-gl-style-spec';
+import {expression, validateStyleMin} from '@maplibre/maplibre-gl-style-spec';
 
 type MarkerRangeWithMessage = MarkerRange & {message: string};
 
@@ -102,7 +102,7 @@ CodeMirror.registerHelper("lint", "mgl", (text: string, opts: any, doc: any) => 
   let out: ReturnType<typeof expression.createExpression> | null = null;
   if (context === "layer") {
     // Just an empty style so we can validate a layer.
-    const errors = validate({
+    const errors = validateStyleMin({
       "version": 8,
       "name": "Empty Style",
       "metadata": {},

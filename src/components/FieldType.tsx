@@ -1,6 +1,6 @@
 import React from 'react'
 
-import {latest} from '@maplibre/maplibre-gl-style-spec'
+import latest from '@maplibre/maplibre-gl-style-spec/dist/latest.json'
 import Block from './Block'
 import InputSelect from './InputSelect'
 import InputString from './InputString'

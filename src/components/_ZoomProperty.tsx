@@ -1,6 +1,6 @@
 import React from 'react'
 import {mdiFunctionVariant, mdiTableRowPlusAfter} from '@mdi/js';
-import {latest} from '@maplibre/maplibre-gl-style-spec'
+import latest from '@maplibre/maplibre-gl-style-spec/dist/latest.json'
 
 import InputButton from './InputButton'
 import InputSpec from './InputSpec'
@@ -207,7 +207,7 @@ export default class ZoomProperty extends React.Component<ZoomPropertyProps, Zoo
             <div className="maputnik-data-spec-property-input">
               <InputSpec
                 fieldName={"base"}
-                fieldSpec={latest.function.base}
+                fieldSpec={latest.function.base as typeof latest.function.base & { type: "number" }}
                 value={this.props.value?.base}
                 onChange={(_, newValue) => this.changeBase(newValue as number | undefined)}
               />

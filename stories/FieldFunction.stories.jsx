@@ -1,7 +1,6 @@
 import React from 'react';
 import FieldFunction from '../src/components/FieldFunction';
-import {latest} from '@maplibre/maplibre-gl-style-spec'
-
+import latest from '@maplibre/maplibre-gl-style-spec/dist/latest.json'
 
 export default {
   title: 'FieldFunction',

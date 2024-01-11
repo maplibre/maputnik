@@ -79,12 +79,12 @@ describe("modals", () => {
       when.click("nav:settings");
     });
 
-    describe("when click name", () => {
+    describe("when click name filed spec information", () => {
       beforeEach(() => {
         when.click("field-doc-button-Name");
       });
 
-      it("name", () => {
+      it("should show the spec information", () => {
         then(get.elementsText("spec-field-doc")).shouldInclude(
           "name for the style"
         );
