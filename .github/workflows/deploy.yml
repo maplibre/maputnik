@@ -3,21 +3,41 @@ name: deploy
 on:
   push:
     branches: [ main ]
-    tags:
-    - 'v*'
 
 jobs:
+  deploy-pages:
+    name: deploy/pages
+    runs-on: ubuntu-latest
+    if: ${{ github.event_name == 'push' }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Use Node.js from nvmrc
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: '.nvmrc'
+
+      - name: Install
+        run: npm ci
+
+      - name: Build 
+        run: npm run build
+
+      - name: Upload to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: dist
+  
   # publish docker to GitHub registry
   deploy-docker:
     name: deploy/docker
-    runs-on: ${{ matrix.os }}
+    runs-on: ubuntu-latest
 
     if: ${{ github.event_name == 'push' }}
 
     strategy:
       fail-fast: false
-      matrix:
-        os: [ubuntu-latest]
 
     steps:
     - name: Login to GitHub Container Registry
