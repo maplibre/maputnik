@@ -47,7 +47,7 @@ function createStyleFromFilter(filter: LegacyFilterSpecification | ExpressionSpe
     "sources": {
       "tmp": {
         "type": "geojson",
-        "data": {}
+        "data": ''
       }
     },
     "sprite": "",

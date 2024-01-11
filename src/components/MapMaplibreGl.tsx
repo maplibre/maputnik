@@ -14,9 +14,6 @@ import 'maplibre-gl/dist/maplibre-gl.css'
 import '../maplibregl.css'
 import '../libs/maplibre-rtl'
 
-
-const IS_SUPPORTED = MapLibreGl.supported();
-
 function renderPopup(popup: JSX.Element, mountNode: ReactDOM.Container) {
   ReactDOM.render(popup, mountNode);
   return mountNode;
@@ -92,8 +89,6 @@ export default class MapMaplibreGl extends React.Component<MapMaplibreGlProps, M
   }
 
   updateMapFromProps(props: MapMaplibreGlProps) {
-    if(!IS_SUPPORTED) return;
-
     if(!this.state.map) return
 
     //Maplibre GL now does diffing natively so we don't need to calculate
@@ -115,8 +110,6 @@ export default class MapMaplibreGl extends React.Component<MapMaplibreGlProps, M
   }
 
   componentDidUpdate() {
-    if(!IS_SUPPORTED) return;
-
     const map = this.state.map;
 
     this.updateMapFromProps(this.props);
@@ -146,8 +139,6 @@ export default class MapMaplibreGl extends React.Component<MapMaplibreGlProps, M
   }
 
   componentDidMount() {
-    if(!IS_SUPPORTED) return;
-
     const mapOpts = {
       ...this.props.options,
       container: this.container!,
@@ -235,24 +226,13 @@ export default class MapMaplibreGl extends React.Component<MapMaplibreGlProps, M
   }
 
   render() {
-    if(IS_SUPPORTED) {
-      return <div
-        className="maputnik-map__map"
-        role="region"
-        aria-label="Map view"
-        ref={x => this.container = x}
-        data-wd-key="maplibre:map"
-      ></div>
-    }
-    else {
-      return <div
-        className="maputnik-map maputnik-map--error"
-      >
-        <div className="maputnik-map__error-message">
-          Error: Cannot load MaplibreGL, WebGL is either unsupported or disabled
-        </div>
-      </div>
-    }
+    return <div
+      className="maputnik-map__map"
+      role="region"
+      aria-label="Map view"
+      ref={x => this.container = x}
+      data-wd-key="maplibre:map"
+    ></div>
   }
 }
 

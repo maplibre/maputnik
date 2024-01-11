@@ -134,7 +134,7 @@ class AddSource extends React.Component<AddSourceProps, AddSourceState> {
     case 'geojson_json': return {
       type: 'geojson',
       cluster: (source as GeoJSONSourceSpecification).cluster || false,
-      data: {}
+      data: ''
     }
     case 'tilejson_vector': return {
       type: 'vector',

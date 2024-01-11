@@ -9,7 +9,7 @@ import {unset} from 'lodash'
 import {arrayMoveMutable} from 'array-move'
 import hash from "string-hash";
 import {Map, LayerSpecification, StyleSpecification, ValidationError, SourceSpecification} from 'maplibre-gl'
-import {latest, validate} from '@maplibre/maplibre-gl-style-spec'
+import {latest, validateStyleMin} from '@maplibre/maplibre-gl-style-spec'
 
 import MapMaplibreGl from './MapMaplibreGl'
 import MapOpenLayers from './MapOpenLayers'
@@ -379,8 +379,7 @@ export default class App extends React.Component<any, AppState> {
       this.getInitialStateFromUrl(newStyle);
     }
 
-    // This "any" can be removed in latest version of maplibre where maplibre re-exported types from style-spec
-    const errors = validate(newStyle as any, latest) || [];
+    const errors: ValidationError[] = validateStyleMin(newStyle) || [];
 
     // The validate function doesn't give us errors for duplicate error with
     // empty string for layer.id, manually deal with that here.
