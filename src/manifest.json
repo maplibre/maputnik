@@ -1,9 +1,0 @@
-{
-  "name": "Maputnik",
-  "short_name": "Maputnik",
-  "description": "Visual Map Designer",
-  "start_url": ".",
-  "display": "browser",
-  "background_color": "#1c1f24",
-  "theme_color": "#1c1f24"
-}
