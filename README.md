@@ -13,17 +13,13 @@ targeted at developers and map designers.
 
 ## Usage
 
-- :link: Design your maps online at **<https://maputnik.github.io/editor/>** (all in local storage)
+- :link: Design your maps online at **<https://www.maplibre.org/maputnik/>** (all in local storage)
 - :link: Use the [Maputnik CLI](https://github.com/maputnik/editor/wiki/Maputnik-CLI) for local style development
 - In a Docker, run this command and browse to http://localhost:8888, Ctrl+C to stop the server.
 
 ```bash
 docker run -it --rm -p 8888:8888 maputnik/editor
 ```
-
-## Donations
-Mapbox has built one of the best and most amazing OSS ecosystems. A key component to ensure its longevity and independence is an OSS map designer.
-If you or your organisation has seen value from Maputnik, please consider donating at <https://maputnik.github.io/donate>
 
 ## Documentation
 
@@ -36,9 +32,12 @@ The documentation can be found in the [Wiki](https://github.com/maputnik/editor/
 
 ## Develop
 
-Maputnik is written in ES6 and is using [React](https://github.com/facebook/react) and [MapLibre GL JS](https://maplibre.org/projects/maplibre-gl-js/).
+Maputnik is written in typescript and is using [React](https://github.com/facebook/react) and [MapLibre GL JS](https://maplibre.org/projects/maplibre-gl-js/).
 
 We ensure building and developing Maputnik works with the [current active LTS Node.js version and above](https://github.com/nodejs/Release#release-schedule).
+
+### Getting Involved
+Join the #maplibre or #maputnik slack channel at OSMUS: get an invite at https://slack.openstreetmap.us/ Read the the below guide in order to get familiar with how we do things around here.
 
 Install the deps, start the dev server and open the web browser on `http://localhost:8888/`.
 
@@ -102,60 +101,10 @@ npm run cy:open
 ## Sponsors
 
 Thanks to the supporters of the **[Kickstarter campaign](https://www.kickstarter.com/projects/174808720/maputnik-visual-map-editor-for-mapbox-gl)**. This project would not be possible without these commercial and individual sponsors.
-
-### Gold
-
-- [Wemap](https://getwemap.com/)
-- [Orbicon Informatik](https://www.orbiconinformatik.dk/)
-- [Terranodo](http://terranodo.io/)
-
-<a href="https://getwemap.com/">
-  <img width="33%" alt="Wemap" style="display:inline" src="https://cdn.jsdelivr.net/gh/maputnik/editor@1.5.0/media/sponsors/wemap.jpg" />
-</a>
-<a href="http://terranodo.io/">
-  <img width="33%" alt="Terranodo" style="display:inline" src="https://cdn.jsdelivr.net/gh/maputnik/editor@1.5.0/media/sponsors/terranodo.png" />
-</a>
-<a href="https://www.orbiconinformatik.dk/">
-  <img width="32%" alt="Terranodo" style="display:inline" src="https://cdn.jsdelivr.net/gh/maputnik/editor@1.5.0/media/sponsors/orbicon_informatik.png" />
-</a>
-
-<br/>
-
-### Silver
-
-- [Klokan Technologies](https://www.klokantech.com/)
-- [Geofabrik](http://www.geofabrik.de/)
-- [Dreipol](https://www.dreipol.ch/)
-
-<a href="https://www.klokantech.com/">
-  <img width="18%" alt="Klokan Technologies" style="display:inline-block" src="https://cdn.jsdelivr.net/gh/maputnik/editor@1.5.0/media/sponsors/klokantech.png" />
-</a>
-<a href="http://www.geofabrik.de/">
-  <img width="18%" alt="Geofabrik" style="display:inline-block" src="https://cdn.jsdelivr.net/gh/maputnik/editor@1.5.0/media/sponsors/geofabrik.png" />
-</a>
-<a href="https://www.dreipol.ch/">
-  <img width="18%" alt="Dreipol" style="display:inline-block" src="https://cdn.jsdelivr.net/gh/maputnik/editor@1.5.0/media/sponsors/dreipol.png" />
-</a>
-
-<br/>
-
-### Individuals
-
-**Influential Stakeholder**
-
-Alan McConchie, Odi, Mats Norén, Uli [geOps](http://geops.ch/), Helge Fahrnberger ([Toursprung](http://www.toursprung.com/)), Kirusanth Poopalasingam
-
-**Stakeholder**
-
-Brian Flood, Vasile Coțovanu, Andreas Kalkbrenner, Christian Mäder, Gregor Wassmann, Lee Armstrong, Rafel, Jon Burgess, Lukas Lehmann, Joachim Ungar, Alois Ackermann, Zsolt Ero, Jordan Meek
-
-**Supporter**
-
-Sina Martinelli, Nicholas Doiron, Neil Cawse, Urs42, Benedikt Groß, Manuel Roth, Janko Mihelić, Moritz Stefaner, Sebastian Ahoi, Juerg Uhlmann, Tom Wider, Nadia Panchaud, Oliver Snowden, Stephan Heuel, Tobin Bradley, Adrian Herzog, Antti Lehto, Pascal Mages, Marc Gehling, Imre Samu, Lauri K., Visahavel Parthasarathy, Christophe Waterlot-Buisine, Max Galka, ubahnverleih, Wouter van Dam, Jakob Lobensteiner, Samuel Kurath, Brian Bancroft
+You can see this file's history for previous sponsors of the original Maputnik repo.
+Read more about the MapLibre Sponsorship Program at https://maplibre.org/sponsors/.
 
 ## License
 
-Maputnik is [licensed under MIT](LICENSE) and is Copyright (c) Lukas Martinelli and contributors.
-
-**Disclaimer** This is an independent style editor.
-As contributor please take extra care of not violating any Mapbox trademarks. Do not get inspired by Mapbox Studio and make your own decisions for a good style editor.
+Maputnik is [licensed under MIT](LICENSE) and is Copyright (c) Lukas Martinelli and Maplibre contributors.
+As contributor please take extra care of not violating any Mapbox trademarks. Do not get inspired by other map studios and make your own decisions for a good style editor.
