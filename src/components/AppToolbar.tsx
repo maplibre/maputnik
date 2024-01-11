@@ -216,7 +216,7 @@ export default class AppToolbar extends React.Component<AppToolbarProps> {
             className="maputnik-toolbar-logo"
             target="blank"
             rel="noreferrer noopener"
-            href="https://github.com/maputnik/editor"
+            href="https://github.com/maplibre/maputnik"
           >
             <img src="node_modules/maputnik-design/logos/logo-color.svg" />
             <h1>
@@ -272,7 +272,7 @@ export default class AppToolbar extends React.Component<AppToolbarProps> {
             </label>
           </ToolbarSelect>
 
-          <ToolbarLink href={"https://github.com/maputnik/editor/wiki"}>
+          <ToolbarLink href={"https://github.com/maplibre/maputnik/wiki"}>
             <MdHelpOutline />
             <IconText>Help</IconText>
           </ToolbarLink>

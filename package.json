@@ -16,11 +16,11 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/maputnik/editor"
+    "url": "https://github.com/maplibre/maputnik"
   },
   "author": "Lukas Martinelli",
   "license": "MIT",
-  "homepage": "https://github.com/maputnik/editor#readme",
+  "homepage": "https://github.com/maplibre/maputnik#readme",
   "dependencies": {
     "@mapbox/mapbox-gl-rtl-text": "^0.2.3",
     "@maplibre/maplibre-gl-style-spec": "^20.1.0",

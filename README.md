@@ -1,10 +1,10 @@
 <img width="200" alt="Maputnik logo" src="https://cdn.jsdelivr.net/gh/maputnik/design/logos/logo-color.png" />
 
 # Maputnik
-[![GitHub CI status](https://github.com/maputnik/editor/workflows/ci/badge.svg)][github-action-ci]
+[![GitHub CI status](https://github.com/maplibre/maputnik/workflows/ci/badge.svg)][github-action-ci]
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)][license]
 
-[github-action-ci]: https://github.com/maputnik/editor/actions?query=workflow%3Aci
+[github-action-ci]: https://github.com/maplibre/maputnik/actions?query=workflow%3Aci
 [license]:          https://tldrlegal.com/license/mit-license
 
 A free and open visual editor for the [MapLibre GL styles](https://maplibre.org/maplibre-style-spec/)
@@ -14,18 +14,18 @@ targeted at developers and map designers.
 ## Usage
 
 - :link: Design your maps online at **<https://www.maplibre.org/maputnik/>** (all in local storage)
-- :link: Use the [Maputnik CLI](https://github.com/maputnik/editor/wiki/Maputnik-CLI) for local style development
+- :link: Use the [Maputnik CLI](https://github.com/maplibre/maputnik/wiki/Maputnik-CLI) for local style development
 - In a Docker, run this command and browse to http://localhost:8888, Ctrl+C to stop the server.
 
 ```bash
-docker run -it --rm -p 8888:8888 maputnik/editor
+docker run -it --rm -p 8888:8888 ghcr.io/maplibre/maputnik:main
 ```
 
 ## Documentation
 
-The documentation can be found in the [Wiki](https://github.com/maputnik/editor/wiki). You are welcome to collaborate!
+The documentation can be found in the [Wiki](https://github.com/maplibre/maputnik/wiki). You are welcome to collaborate!
 
-- :link: **Study the [Maputnik Wiki](https://github.com/maputnik/editor/wiki)**
+- :link: **Study the [Maputnik Wiki](https://github.com/maplibre/maputnik/wiki)**
 - :video_camera: Design a map from Scratch https://youtu.be/XoDh0gEnBQo
 
 [![Design Map from Scratch](https://j.gifs.com/g5XMgl.gif)](https://youtu.be/XoDh0gEnBQo)

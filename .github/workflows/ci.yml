@@ -15,7 +15,7 @@ jobs:
 
     steps:
     - uses: actions/checkout@v4
-    - run: docker build -t docker.pkg.github.com/maputnik/editor/editor:main .
+    - run: docker build -t test-docker-image-build .
 
   # build the editor
   build-node:
