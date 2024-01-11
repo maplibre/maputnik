@@ -53,17 +53,11 @@ jobs:
         node-version-file: '.nvmrc'
     - run: npm ci
     - run: npm run build
-    - run: npm run build-storybook
-    - name: artifacts/editor
+    - name: artifacts/maputnik
       uses: actions/upload-artifact@v1
       with:
-        name: editor
+        name: maputnik
         path: dist
-    - name: artifacts/storybook
-      uses: actions/upload-artifact@v1
-      with:
-        name: storybook
-        path: build/storybook
 
     # Build and upload desktop CLI artifacts
     - name: Set up Go
