@@ -1,6 +1,6 @@
 import React from 'react'
 import {MdAddCircleOutline, MdDelete} from 'react-icons/md'
-import {latest} from '@maplibre/maplibre-gl-style-spec'
+import latest from '@maplibre/maplibre-gl-style-spec/dist/latest.json'
 import type {GeoJSONSourceSpecification, RasterDEMSourceSpecification, RasterSourceSpecification, SourceSpecification, StyleSpecification, VectorSourceSpecification} from 'maplibre-gl'
 
 import Modal from './Modal'

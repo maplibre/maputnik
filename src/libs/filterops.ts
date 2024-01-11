@@ -1,4 +1,4 @@
-import {latest} from '@maplibre/maplibre-gl-style-spec'
+import latest from '@maplibre/maplibre-gl-style-spec/dist/latest.json'
 
 export const combiningFilterOps = ['all', 'any', 'none'];
 export const setFilterOps = ['in', '!in'];
