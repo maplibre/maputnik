@@ -4,7 +4,8 @@ import {detect} from 'detect-browser';
 
 import {MdFileDownload, MdOpenInBrowser, MdSettings, MdLayers, MdHelpOutline, MdFindInPage} from 'react-icons/md'
 import pkgJson from '../../package.json'
-
+//@ts-ignore
+import maputnikLogo from 'maputnik-design/logos/logo-color.svg?inline'
 
 // This is required because of <https://stackoverflow.com/a/49846426>, there isn't another way to detect support that I'm aware of.
 const browser = detect();
@@ -195,7 +196,7 @@ export default class AppToolbar extends React.Component<AppToolbarProps> {
             rel="noreferrer noopener"
             href="https://github.com/maplibre/maputnik"
           >
-            <img src="node_modules/maputnik-design/logos/logo-color.svg" />
+            <img src={maputnikLogo} alt="Maputnik on GitHub" />
             <h1>
               <span className="maputnik-toolbar-name">{pkgJson.name}</span>
               <span className="maputnik-toolbar-version">v{pkgJson.version}</span>
