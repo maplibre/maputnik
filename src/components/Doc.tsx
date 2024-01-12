@@ -31,7 +31,7 @@ export default class Doc extends React.Component<DocProps> {
     const renderValues = (
       !!values &&
       // HACK: Currently we merge additional values into the style spec, so this is required
-      // See <https://github.com/maputnik/editor/blob/main/src/components/PropertyGroup.jsx#L16>
+      // See <https://github.com/maplibre/maputnik/blob/main/src/components/PropertyGroup.jsx#L16>
       !Array.isArray(values)
     );
 

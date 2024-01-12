@@ -20,7 +20,7 @@ export default class Modal extends React.Component<ModalProps> {
     underlayClickExits: true
   }
 
-  // See <https://github.com/maputnik/editor/issues/416>
+  // See <https://github.com/maplibre/maputnik/issues/416>
   onClose = () => {
     if (document.activeElement) {
       (document.activeElement as HTMLElement).blur();

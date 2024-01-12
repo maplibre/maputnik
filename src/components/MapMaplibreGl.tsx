@@ -115,7 +115,7 @@ export default class MapMaplibreGl extends React.Component<MapMaplibreGlProps, M
     this.updateMapFromProps(this.props);
 
     if(this.state.inspect && this.props.inspectModeEnabled !== this.state.inspect._showInspectMap) {
-      // HACK: Fix for <https://github.com/maputnik/editor/issues/576>, while we wait for a proper fix.
+      // HACK: Fix for <https://github.com/maplibre/maputnik/issues/576>, while we wait for a proper fix.
       // eslint-disable-next-line
       this.state.inspect._popupBlocked = false;
       this.state.inspect.toggleInspector()

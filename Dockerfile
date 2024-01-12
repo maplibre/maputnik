@@ -7,7 +7,7 @@ RUN npm install
 
 # Build maputnik
 COPY . .
-RUN npm run build
+RUN npx vite build
 
 #---------------------------------------------------------------------------
 # Create a clean nginx-alpine slim image with just the build results

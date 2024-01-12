@@ -2,7 +2,7 @@ import React from 'react'
 import classnames from 'classnames'
 import {detect} from 'detect-browser';
 
-import {MdFileDownload, MdOpenInBrowser, MdSettings, MdLayers, MdHelpOutline, MdFindInPage, MdAssignmentTurnedIn} from 'react-icons/md'
+import {MdFileDownload, MdOpenInBrowser, MdSettings, MdLayers, MdHelpOutline, MdFindInPage} from 'react-icons/md'
 import pkgJson from '../../package.json'
 
 
@@ -39,29 +39,6 @@ class ToolbarLink extends React.Component<ToolbarLinkProps> {
       data-wd-key="toolbar:link"
     >
       {this.props.children}
-    </a>
-  }
-}
-
-type ToolbarLinkHighlightedProps = {
-  className?: string
-  children?: React.ReactNode
-  href?: string
-  onToggleModal?(...args: unknown[]): unknown
-};
-
-class ToolbarLinkHighlighted extends React.Component<ToolbarLinkHighlightedProps> {
-  render() {
-    return <a
-      className={classnames('maputnik-toolbar-link', "maputnik-toolbar-link--highlighted", this.props.className)}
-      href={this.props.href}
-      rel="noopener noreferrer"
-      target="_blank"
-      data-wd-key="toolbar:link-highlighted"
-    >
-      <span className="maputnik-toolbar-link-wrapper">
-        {this.props.children}
-      </span>
     </a>
   }
 }
@@ -216,7 +193,7 @@ export default class AppToolbar extends React.Component<AppToolbarProps> {
             className="maputnik-toolbar-logo"
             target="blank"
             rel="noreferrer noopener"
-            href="https://github.com/maputnik/editor"
+            href="https://github.com/maplibre/maputnik"
           >
             <img src="node_modules/maputnik-design/logos/logo-color.svg" />
             <h1>
@@ -272,14 +249,10 @@ export default class AppToolbar extends React.Component<AppToolbarProps> {
             </label>
           </ToolbarSelect>
 
-          <ToolbarLink href={"https://github.com/maputnik/editor/wiki"}>
+          <ToolbarLink href={"https://github.com/maplibre/maputnik/wiki"}>
             <MdHelpOutline />
             <IconText>Help</IconText>
           </ToolbarLink>
-          <ToolbarLinkHighlighted href={"https://gregorywolanski.typeform.com/to/cPgaSY"}>
-            <MdAssignmentTurnedIn />
-            <IconText>Take the Maputnik Survey</IconText>
-          </ToolbarLinkHighlighted>
         </div>
       </div>
     </nav>
