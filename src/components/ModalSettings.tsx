@@ -101,8 +101,6 @@ export default class ModalSettings extends React.Component<ModalSettingsProps> {
     const transition = this.props.mapStyle.transition || {};
     const terrain = this.props.mapStyle.terrain || {} as TerrainSpecification;
 
-    console.log(latest);
-
     return <Modal
       data-wd-key="modal:settings"
       isOpen={this.props.isOpen}
