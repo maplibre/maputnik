@@ -1,25 +1,7 @@
-import { CypressHelper } from "@shellygo/cypress-test-utils";
-import { Assertable, then } from "@shellygo/cypress-test-utils/assertable";
+import { MaputnikAssertable } from "./maputnik-assertable";
 import MaputnikCypressHelper from "./maputnik-cypress-helper";
 import ModalDriver from "./modal-driver";
 const baseUrl = "http://localhost:8888/";
-
-const styleFromWindow = (win: Window) => {
-  const styleId = win.localStorage.getItem("maputnik:latest_style");
-  const styleItem = win.localStorage.getItem(`maputnik:style:${styleId}`);
-  const obj = JSON.parse(styleItem || "");
-  return obj;
-};
-
-export class MaputnikAssertable<T> extends Assertable<T> {
-  shouldEqualToStoredStyle = () =>
-    then(
-      new CypressHelper().get.window().then((win) => {
-        const style = styleFromWindow(win);
-        then(this.chainable).shouldDeepNestedInclude(style);
-      })
-    );
-}
 
 export class MaputnikDriver {
   private helper = new MaputnikCypressHelper();
@@ -108,18 +90,18 @@ export class MaputnikDriver {
     ) => {
       let url = "?debug";
       switch (styleProperties) {
-      case "geojson":
-        url += `&style=${baseUrl}geojson-style.json`;
-        break;
-      case "raster":
-        url += `&style=${baseUrl}raster-style.json`;
-        break;
-      case "both":
-        url += `&style=${baseUrl}geojson-raster-style.json`;
-        break;
-      case "layer":
-        url += `&style=${baseUrl}/example-layer-style.json`;
-        break;
+        case "geojson":
+          url += `&style=${baseUrl}geojson-style.json`;
+          break;
+        case "raster":
+          url += `&style=${baseUrl}raster-style.json`;
+          break;
+        case "both":
+          url += `&style=${baseUrl}geojson-raster-style.json`;
+          break;
+        case "layer":
+          url += `&style=${baseUrl}/example-layer-style.json`;
+          break;
       }
       if (zoom) {
         url += `#${zoom}/41.3805/2.1635`;
