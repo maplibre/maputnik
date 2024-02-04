@@ -13,6 +13,9 @@ import { HighlightedLayer, colorHighlightedLayer } from '../libs/highlight'
 import 'maplibre-gl/dist/maplibre-gl.css'
 import '../maplibregl.css'
 import '../libs/maplibre-rtl'
+//@ts-ignore
+import MaplibreGeocoder from '@maplibre/maplibre-gl-geocoder';
+import '@maplibre/maplibre-gl-geocoder/dist/maplibre-gl-geocoder.css';
 
 function renderPopup(popup: JSX.Element, mountNode: ReactDOM.Container) {
   ReactDOM.render(popup, mountNode);
@@ -160,6 +163,8 @@ export default class MapMaplibreGl extends React.Component<MapMaplibreGlProps, M
     map.showCollisionBoxes = mapOpts.showCollisionBoxes!;
     map.showOverdrawInspector = mapOpts.showOverdrawInspector!;
 
+    this.initGeocoder(map);
+
     const zoomControl = new ZoomControl;
     map.addControl(zoomControl, 'top-right');
 
@@ -223,6 +228,47 @@ export default class MapMaplibreGl extends React.Component<MapMaplibreGlProps, M
   onLayerSelectById = (id: string) => {
     const index = this.props.mapStyle.layers.findIndex(layer => layer.id === id);
     this.props.onLayerSelect(index);
+  }
+
+  initGeocoder(map: Map) {
+    const geocoderConfig = {
+      forwardGeocode: async (config:{query: string, limit: number, language: string[]}) => {
+        const features = [];
+        try {
+          const request = `https://nominatim.openstreetmap.org/search?q=${config.query}&format=geojson&polygon_geojson=1&addressdetails=1`;
+          const response = await fetch(request);
+          const geojson = await response.json();
+          for (const feature of geojson.features) {
+            const center = [
+              feature.bbox[0] +
+                  (feature.bbox[2] - feature.bbox[0]) / 2,
+              feature.bbox[1] +
+                  (feature.bbox[3] - feature.bbox[1]) / 2
+            ];
+            const point = {
+              type: 'Feature',
+              geometry: {
+                type: 'Point',
+                coordinates: center
+              },
+              place_name: feature.properties.display_name,
+              properties: feature.properties,
+              text: feature.properties.display_name,
+              place_type: ['place'],
+              center
+            };
+            features.push(point);
+          }
+        } catch (e) {
+          console.error(`Failed to forwardGeocode with error: ${e}`);
+        }
+        return {
+          features
+        };
+      }
+    };
+    const geocoder = new MaplibreGeocoder(geocoderConfig, {maplibregl: MapLibreGl});
+    map.addControl(geocoder, 'top-left');
   }
 
   render() {
