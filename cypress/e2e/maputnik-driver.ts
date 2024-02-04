@@ -177,5 +177,6 @@ export class MaputnikDriver {
     skipTargetLayerEditor: () =>
       this.helper.get.elementByTestId("skip-target-layer-editor"),
     canvas: () => this.helper.get.element("canvas"),
+    searchControl: () => this.helper.get.element('.maplibregl-ctrl-geocoder')
   };
 }
