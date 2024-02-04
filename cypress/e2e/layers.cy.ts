@@ -280,6 +280,25 @@ describe("layers", () => {
             });
           });
         });
+
+        describe("opacity", () => {
+          let bgId: string;
+          beforeEach(() => {
+            bgId = createBackground();
+            when.click("layer-list-item:background:" + bgId);
+            when.type("spec-field-input:background-opacity", "0.");
+          });
+
+          it("should keep '.' in the input field", () => {
+            then(get.elementByTestId("spec-field-input:background-opacity")).shouldHaveValue("0.");
+          });
+
+          it("should keep revert to a valid value when focus out", () => {
+            when.click("layer-list-item:background:" + bgId);
+            then(get.elementByTestId("spec-field-input:background-opacity")).shouldHaveValue('0');
+          });
+        });
+
       });
 
       describe("filter", () => {
