@@ -87,4 +87,39 @@ describe("history", () => {
       ],
     });
   });
+
+  it("should not redo after undo and value change", () => {
+    when.setStyle("geojson");
+    when.modal.open();
+    when.modal.fillLayers({
+      id: "step 1",
+      type: "background",
+    });
+
+    when.modal.open();
+    when.modal.fillLayers({
+      id: "step 2",
+      type: "background",
+    });
+
+    when.typeKeys(undoKeyCombo);
+    when.typeKeys(undoKeyCombo);
+    then(get.styleFromLocalStorage()).shouldDeepNestedInclude({ layers: [] });
+
+    when.modal.open();
+    when.modal.fillLayers({
+      id: "step 3",
+      type: "background",
+    });
+
+    when.typeKeys(redoKeyCombo);
+    then(get.styleFromLocalStorage()).shouldDeepNestedInclude({
+      layers: [
+        {
+          id: "step 3",
+          type: "background",
+        },
+      ],
+    });
+  });
 });
