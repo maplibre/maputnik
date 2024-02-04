@@ -32,10 +32,10 @@ function renderFeature(feature: InspectFeature, idx: number) {
     </div>
     {Object.keys(feature.properties).map(propertyName => {
       const property = feature.properties[propertyName];
-        return <div className="maputnik-popup-layer">
-          <div className="maputnik-popup-feature-left">{propertyName}</div>
-          <div className="maputnik-popup-feature-right">{displayValue(property)}</div>
-        </div>
+      return <div key={propertyName} className="maputnik-popup-layer">
+        <div className="maputnik-popup-feature-left">{propertyName}</div>
+        <div className="maputnik-popup-feature-right">{displayValue(property)}</div>
+      </div>
     })}
   </div>
 }
