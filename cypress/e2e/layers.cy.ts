@@ -293,7 +293,7 @@ describe("layers", () => {
             then(get.elementByTestId("spec-field-input:background-opacity")).shouldHaveValue("0.");
           });
 
-          it("should keep revert to a valid value when focus out", () => {
+          it("should revert to a valid value when focus out", () => {
             when.click("layer-list-item:background:" + bgId);
             then(get.elementByTestId("spec-field-input:background-opacity")).shouldHaveValue('0');
           });
