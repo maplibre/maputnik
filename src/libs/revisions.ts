@@ -19,10 +19,13 @@ export class RevisionStore {
   }
 
   addRevision(revision: StyleSpecification & {id: string}) {
-    //TODO: compare new revision style id with old ones
-    //and ensure that it is always the same id
+    // clear any "redo" revisions once a change is made
+    // and ensure current index is at end of list
+    this.revisions = this.revisions.slice(0, this.currentIdx + 1);
+
     this.revisions.push(revision)
     this.currentIdx++
+    //}
   }
 
   undo() {
