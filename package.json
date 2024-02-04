@@ -21,6 +21,7 @@
   "homepage": "https://github.com/maplibre/maputnik#readme",
   "dependencies": {
     "@mapbox/mapbox-gl-rtl-text": "^0.2.3",
+    "@maplibre/maplibre-gl-geocoder": "^1.5.0",
     "@maplibre/maplibre-gl-style-spec": "^20.1.0",
     "@mdi/js": "^6.6.96",
     "@mdi/react": "^1.5.0",
