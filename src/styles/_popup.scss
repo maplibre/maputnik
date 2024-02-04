@@ -36,3 +36,13 @@
     margin-top: $margin-2;
   }
 }
+
+.maputnik-popup-feature-left {
+  margin-left: $margin-2;
+  color: $color-lowgray;
+  flex: 1;
+}
+.maputnik-popup-feature-right {
+  flex: 1;
+  color: $color-lowgray;
+}

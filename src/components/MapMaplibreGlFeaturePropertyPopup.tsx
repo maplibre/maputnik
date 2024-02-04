@@ -1,6 +1,4 @@
 import React from 'react'
-import Block from './Block'
-import FieldString from './FieldString'
 
 export type InspectFeature = {
   id: string
@@ -21,29 +19,24 @@ function displayValue(value: string | number | Date | object) {
   return value;
 }
 
-function renderProperties(feature: InspectFeature) {
-  return Object.keys(feature.properties).map(propertyName => {
-    const property = feature.properties[propertyName]
-    return <Block key={propertyName} label={propertyName}>
-      <FieldString value={displayValue(property)} style={{backgroundColor: 'transparent'}}/>
-    </Block>
-  })
-}
-
-function renderFeatureId(feature: InspectFeature) {
-  return <Block key={"feature-id"} label={"feature_id"}>
-    <FieldString value={displayValue(feature.id)} style={{backgroundColor: 'transparent'}} />
-  </Block>
-}
-
 function renderFeature(feature: InspectFeature, idx: number) {
   return <div key={`${feature.sourceLayer}-${idx}`}>
     <div className="maputnik-popup-layer-id">{feature.layer['source']}: {feature.layer['source-layer']}{feature.inspectModeCounter && <span> × {feature.inspectModeCounter}</span>}</div>
-    <Block key={"property-type"} label={"$type"}>
-      <FieldString value={feature.geometry.type} style={{backgroundColor: 'transparent'}} />
-    </Block>
-    {renderFeatureId(feature)}
-    {renderProperties(feature)}
+    <div className="maputnik-popup-layer">
+      <div className="maputnik-popup-feature-left">$type</div>
+      <div className="maputnik-popup-feature-right">{feature.geometry.type}</div>
+    </div>
+    <div className="maputnik-popup-layer">
+      <div className="maputnik-popup-feature-left">feature_id</div>
+      <div className="maputnik-popup-feature-right">{displayValue(feature.id)}</div>
+    </div>
+    {Object.keys(feature.properties).map(propertyName => {
+      const property = feature.properties[propertyName];
+        return <div className="maputnik-popup-layer">
+          <div className="maputnik-popup-feature-left">{propertyName}</div>
+          <div className="maputnik-popup-feature-right">{displayValue(property)}</div>
+        </div>
+    })}
   </div>
 }
 
