@@ -19,25 +19,25 @@ function displayValue(value: string | number | Date | object) {
   return value;
 }
 
+function renderKeyValueTableRow(key: string, value: string) {
+  return <tr key={key}>
+    <td className="maputnik-popup-table-cell">{key}</td>
+    <td className="maputnik-popup-table-cell">{value}</td>
+  </tr>
+}
+
 function renderFeature(feature: InspectFeature, idx: number) {
-  return <div key={`${feature.sourceLayer}-${idx}`}>
-    <div className="maputnik-popup-layer-id">{feature.layer['source']}: {feature.layer['source-layer']}{feature.inspectModeCounter && <span> × {feature.inspectModeCounter}</span>}</div>
-    <div className="maputnik-popup-layer">
-      <div className="maputnik-popup-feature-left">$type</div>
-      <div className="maputnik-popup-feature-right">{feature.geometry.type}</div>
-    </div>
-    <div className="maputnik-popup-layer">
-      <div className="maputnik-popup-feature-left">feature_id</div>
-      <div className="maputnik-popup-feature-right">{displayValue(feature.id)}</div>
-    </div>
+  return <>
+    <tr key={`${feature.sourceLayer}-${idx}`}>
+      <td colSpan={2} className="maputnik-popup-layer-id">{feature.layer['source']}: {feature.layer['source-layer']}{feature.inspectModeCounter && <span> × {feature.inspectModeCounter}</span>}</td>
+    </tr>
+    {renderKeyValueTableRow("$type", feature.geometry.type)}
+    {renderKeyValueTableRow("Feature ID", displayValue(feature.id))}
     {Object.keys(feature.properties).map(propertyName => {
       const property = feature.properties[propertyName];
-      return <div key={propertyName} className="maputnik-popup-layer">
-        <div className="maputnik-popup-feature-left">{propertyName}</div>
-        <div className="maputnik-popup-feature-right">{displayValue(property)}</div>
-      </div>
+      return renderKeyValueTableRow(propertyName, displayValue(property))
     })}
-  </div>
+    </>
 }
 
 function removeDuplicatedFeatures(features: InspectFeature[]) {
@@ -71,7 +71,9 @@ class FeaturePropertyPopup extends React.Component<FeaturePropertyPopupProps> {
   render() {
     const features = removeDuplicatedFeatures(this.props.features)
     return <div className="maputnik-feature-property-popup">
-      {features.map(renderFeature)}
+      <table className="maputnik-popup-table">
+        {features.map(renderFeature)}
+      </table>
     </div>
   }
 }

@@ -37,12 +37,11 @@
   }
 }
 
-.maputnik-popup-feature-left {
-  margin-left: $margin-2;
-  color: $color-lowgray;
-  flex: 1;
+.maputnik-popup-table {
+  width: 100%;
 }
-.maputnik-popup-feature-right {
-  flex: 1;
+
+.maputnik-popup-table-cell {
   color: $color-lowgray;
+  padding-left: $margin-2;
 }
