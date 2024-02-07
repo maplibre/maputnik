@@ -19,7 +19,10 @@ type InputNumberState = {
   editing: boolean
   editingRange?: boolean
   value?: number
-  dirtyValue?: number
+  /**
+   * This is the value that is currently being edited. It can be an invalid value.
+   */
+  dirtyValue?: number | string | undefined
 }
 
 export default class InputNumber extends React.Component<InputNumberProps, InputNumberState> {
@@ -66,7 +69,7 @@ export default class InputNumber extends React.Component<InputNumberProps, Input
     }
 
     this.setState({
-      dirtyValue: newValue === "" ? undefined : value,
+      dirtyValue: newValue === "" ? undefined : newValue,
     })
   }
 
@@ -125,7 +128,7 @@ export default class InputNumber extends React.Component<InputNumberProps, Input
         // for example we might go from 13 to 13.23, however because we know
         // that came from a keyboard event we always want to increase by a
         // single step value.
-        if (value < this.state.dirtyValue!) {
+        if (value < +this.state.dirtyValue!) {
           value = this.state.value! - step;
         }
         else {

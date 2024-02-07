@@ -49,6 +49,7 @@ export default class SpecField extends React.Component<SpecFieldProps> {
       value: this.props.value,
       default: this.props.fieldSpec?.default,
       name: this.props.fieldName,
+      "data-wd-key": "spec-field-input:" + this.props.fieldName,
       onChange: (newValue: number | undefined | (string | number | undefined)[]) => this.props.onChange!(this.props.fieldName, newValue),
       'aria-label': this.props['aria-label'],
     }
