@@ -37,7 +37,7 @@ function renderFeature(feature: InspectFeature, idx: number) {
       const property = feature.properties[propertyName];
       return renderKeyValueTableRow(propertyName, displayValue(property))
     })}
-    </>
+  </>
 }
 
 function removeDuplicatedFeatures(features: InspectFeature[]) {
