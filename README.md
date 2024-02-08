@@ -18,7 +18,7 @@ targeted at developers and map designers.
 - In a Docker, run this command and browse to http://localhost:8888, Ctrl+C to stop the server.
 
 ```bash
-docker run -it --rm -p 8888:8888 ghcr.io/maplibre/maputnik:main
+docker run -it --rm -p 8888:80 ghcr.io/maplibre/maputnik:main
 ```
 
 ## Documentation
