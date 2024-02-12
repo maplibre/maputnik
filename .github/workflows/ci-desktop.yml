@@ -1,0 +1,52 @@
+name: ci-desktop
+
+on: [ push ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./desktop
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Set up Go
+        uses: actions/setup-go@v3
+        with:
+          go-version: 1.18
+
+      - name: Make
+        run: make
+
+      - name: Test --help
+        run: ./bin/linux/maputnik --help
+
+      - name: Test --version
+        run: ./bin/linux/maputnik --version
+
+      - name: Get style
+        run: wget https://maputnik.github.io/osm-liberty/style.json
+
+      - name: Test --watch
+        run: ./bin/linux/maputnik --watch --file style.json & sleep 5; kill $!
+
+      - name: Artifacts/linux
+        uses: actions/upload-artifact@v3
+        with:
+          name: maputnik-linux
+          path: bin/linux/
+
+      - name: Artifacts/darwin
+        uses: actions/upload-artifact@v3
+        with:
+          name: maputnik-darwin
+          path: bin/darwin/
+
+      - name: Artifacts/windows
+        uses: actions/upload-artifact@v3
+        with:
+          name: maputnik-windows
+          path: bin/windows/
