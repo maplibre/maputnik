@@ -1,6 +1,6 @@
-name: ci
+name: ci-desktop
 
-on: [push]
+on: [ push ]
 
 jobs:
   build:
@@ -28,7 +28,7 @@ jobs:
         run: ./bin/linux/maputnik --version
 
       - name: Get style
-        run:  wget https://maputnik.github.io/osm-liberty/style.json
+        run: wget https://maputnik.github.io/osm-liberty/style.json
 
       - name: Test --watch
         run: ./bin/linux/maputnik --watch --file style.json & sleep 5; kill $!
