@@ -1,6 +1,4 @@
 import React from 'react'
-import Block from './Block'
-import FieldString from './FieldString'
 
 export type InspectFeature = {
   id: string
@@ -21,30 +19,25 @@ function displayValue(value: string | number | Date | object) {
   return value;
 }
 
-function renderProperties(feature: InspectFeature) {
-  return Object.keys(feature.properties).map(propertyName => {
-    const property = feature.properties[propertyName]
-    return <Block key={propertyName} label={propertyName}>
-      <FieldString value={displayValue(property)} style={{backgroundColor: 'transparent'}}/>
-    </Block>
-  })
-}
-
-function renderFeatureId(feature: InspectFeature) {
-  return <Block key={"feature-id"} label={"feature_id"}>
-    <FieldString value={displayValue(feature.id)} style={{backgroundColor: 'transparent'}} />
-  </Block>
+function renderKeyValueTableRow(key: string, value: string) {
+  return <tr key={key}>
+    <td className="maputnik-popup-table-cell">{key}</td>
+    <td className="maputnik-popup-table-cell">{value}</td>
+  </tr>
 }
 
 function renderFeature(feature: InspectFeature, idx: number) {
-  return <div key={`${feature.sourceLayer}-${idx}`}>
-    <div className="maputnik-popup-layer-id">{feature.layer['source']}: {feature.layer['source-layer']}{feature.inspectModeCounter && <span> × {feature.inspectModeCounter}</span>}</div>
-    <Block key={"property-type"} label={"$type"}>
-      <FieldString value={feature.geometry.type} style={{backgroundColor: 'transparent'}} />
-    </Block>
-    {renderFeatureId(feature)}
-    {renderProperties(feature)}
-  </div>
+  return <>
+    <tr key={`${feature.sourceLayer}-${idx}`}>
+      <td colSpan={2} className="maputnik-popup-layer-id">{feature.layer['source']}: {feature.layer['source-layer']}{feature.inspectModeCounter && <span> × {feature.inspectModeCounter}</span>}</td>
+    </tr>
+    {renderKeyValueTableRow("$type", feature.geometry.type)}
+    {renderKeyValueTableRow("Feature ID", displayValue(feature.id))}
+    {Object.keys(feature.properties).map(propertyName => {
+      const property = feature.properties[propertyName];
+      return renderKeyValueTableRow(propertyName, displayValue(property))
+    })}
+  </>
 }
 
 function removeDuplicatedFeatures(features: InspectFeature[]) {
@@ -78,7 +71,9 @@ class FeaturePropertyPopup extends React.Component<FeaturePropertyPopupProps> {
   render() {
     const features = removeDuplicatedFeatures(this.props.features)
     return <div className="maputnik-feature-property-popup">
-      {features.map(renderFeature)}
+      <table className="maputnik-popup-table">
+        {features.map(renderFeature)}
+      </table>
     </div>
   }
 }
