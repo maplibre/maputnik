@@ -8,7 +8,8 @@
 [license]:          https://tldrlegal.com/license/mit-license
 
 A free and open visual editor for the [MapLibre GL styles](https://maplibre.org/maplibre-style-spec/)
-targeted at developers and map designers.
+targeted at developers and map designers.</br>
+See the [中文文档](./README-ZH.md) for Chinese readme.
 
 
 ## Usage
