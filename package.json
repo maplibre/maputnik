@@ -10,7 +10,8 @@
     "lint": "eslint ./src ./cypress --ext ts,tsx,js,jsx --report-unused-disable-directives --max-warnings 0",
     "test": "cypress run",
     "cy:open": "cypress open",
-    "lint-css": "stylelint \"src/styles/*.scss\""
+    "lint-css": "stylelint \"src/styles/*.scss\"",
+    "install": "patch-package"
   },
   "repository": {
     "type": "git",
@@ -49,6 +50,7 @@
     "maputnik-design": "github:maputnik/design#172b06c",
     "ol": "^6.14.1",
     "ol-mapbox-style": "^7.1.1",
+    "patch-package": "^8.0.0",
     "prop-types": "^15.8.1",
     "react": "^16.0.0",
     "react-accessible-accordion": "^4.0.0",
