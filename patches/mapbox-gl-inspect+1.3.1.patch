@@ -9,7 +9,7 @@ index ea9bf07..3e7ab38 100644
 -    this.render();
 +    setTimeout(() => {
 +      // The calling method is being called when the sources are being updated.
-+      // render will might call setStyle, which is not a good idea while updating the source.
++      // render might call setStyle, which is not a good idea while updating the source.
 +      // So, we are delaying the render to the next event loop.
 +      this.render();
 +    }, 100);
