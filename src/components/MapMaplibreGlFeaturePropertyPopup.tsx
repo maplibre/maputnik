@@ -15,8 +15,8 @@ function displayValue(value: string | number | Date | object | undefined) {
   return value;
 }
 
-function renderKeyValueTableRow(key: string, value: string | undefined, idx: number) {
-  return <tr key={`${key}-${value}-${idx}`}>
+function renderKeyValueTableRow(key: string, value: string | undefined) {
+  return <tr key={key}>
     <td className="maputnik-popup-table-cell">{key}</td>
     <td className="maputnik-popup-table-cell">{value}</td>
   </tr>
@@ -24,14 +24,14 @@ function renderKeyValueTableRow(key: string, value: string | undefined, idx: num
 
 function renderFeature(feature: InspectFeature, idx: number) {
   return <React.Fragment key={idx}>
-    <tr key={`counter-${idx}`}>
+    <tr>
       <td colSpan={2} className="maputnik-popup-layer-id">{feature.layer['source']}: {feature.layer['source-layer']}{feature.inspectModeCounter && <span> × {feature.inspectModeCounter}</span>}</td>
     </tr>
-    {renderKeyValueTableRow("$type", feature.geometry.type, idx)}
-    {renderKeyValueTableRow("Feature ID", displayValue(feature.id), idx)}
+    {renderKeyValueTableRow("$type", feature.geometry.type)}
+    {renderKeyValueTableRow("Feature ID", displayValue(feature.id))}
     {Object.keys(feature.properties).map(propertyName => {
       const property = feature.properties[propertyName];
-      return renderKeyValueTableRow(propertyName, displayValue(property), idx)
+      return renderKeyValueTableRow(propertyName, displayValue(property))
     })}
   </React.Fragment>
 }
