@@ -99,9 +99,7 @@ export default class MapMaplibreGl extends React.Component<MapMaplibreGlProps, M
       if (!props.mapStyle.metadata) {
         props.mapStyle.metadata = {};
       }
-      (props.mapStyle.metadata as any)['maplibregl-inspect:inspect'] = false;
     }
-    console.log('setting style', props.mapStyle.metadata);
     this.state.map.setStyle(
       this.props.replaceAccessTokens(props.mapStyle),
       {diff: true}
@@ -124,23 +122,13 @@ export default class MapMaplibreGl extends React.Component<MapMaplibreGlProps, M
     this.updateMapFromProps(this.props);
 
     if(this.state.inspect && this.props.inspectModeEnabled !== this.state.inspect._showInspectMap) {
-      // HACK: Fix for <https://github.com/maplibre/maputnik/issues/576>, while we wait for a proper fix.
-      // eslint-disable-next-line
-      this.state.inspect._popupBlocked = false;
       this.state.inspect.toggleInspector()
     }
+    if (this.state.inspect && this.props.inspectModeEnabled) {
+      this.state.inspect!.setOriginalStyle(this.props.replaceAccessTokens(this.props.mapStyle));
+      this.state.inspect!.render();
+    }
     if (map) {
-      if (this.props.inspectModeEnabled) {
-        // HACK: We need to work out why we need to do this and what's causing
-        // this error. I'm assuming an issue with maplibre-gl update and
-        // mapbox-gl-inspect.
-        try {
-          //this.state.inspect.render();
-        } catch(err) {
-          console.error("FIXME: Caught error", err);
-        }
-      }
-
       map.showTileBoundaries = this.props.options?.showTileBoundaries!;
       map.showCollisionBoxes = this.props.options?.showCollisionBoxes!;
       map.showOverdrawInspector = this.props.options?.showOverdrawInspector!;
