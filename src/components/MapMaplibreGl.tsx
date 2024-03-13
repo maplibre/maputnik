@@ -126,7 +126,6 @@ export default class MapMaplibreGl extends React.Component<MapMaplibreGlProps, M
     }
     if (this.state.inspect && this.props.inspectModeEnabled) {
       this.state.inspect!.setOriginalStyle(this.props.replaceAccessTokens(this.props.mapStyle));
-      this.state.inspect!.render();
     }
     if (map) {
       map.showTileBoundaries = this.props.options?.showTileBoundaries!;
