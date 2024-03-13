@@ -1,10 +1,8 @@
 import React, {type JSX} from 'react'
 import ReactDOM from 'react-dom'
 import MapLibreGl, {LayerSpecification, LngLat, Map, MapOptions, SourceSpecification, StyleSpecification} from 'maplibre-gl'
-// @ts-ignore
-import MapboxInspect from 'mapbox-gl-inspect'
-// @ts-ignore
-import colors from 'mapbox-gl-inspect/lib/colors'
+import MaplibreInspect from '@maplibre/maplibre-gl-inspect'
+import colors from '@maplibre/maplibre-gl-inspect/lib/colors'
 import MapMaplibreGlLayerPopup from './MapMaplibreGlLayerPopup'
 import MapMaplibreGlFeaturePropertyPopup, { InspectFeature } from './MapMaplibreGlFeaturePropertyPopup'
 import Color from 'color'
@@ -17,9 +15,9 @@ import '../libs/maplibre-rtl'
 import MaplibreGeocoder from '@maplibre/maplibre-gl-geocoder';
 import '@maplibre/maplibre-gl-geocoder/dist/maplibre-gl-geocoder.css';
 
-function renderPopup(popup: JSX.Element, mountNode: ReactDOM.Container) {
+function renderPopup(popup: JSX.Element, mountNode: ReactDOM.Container): HTMLElement {
   ReactDOM.render(popup, mountNode);
-  return mountNode;
+  return mountNode as HTMLElement;
 }
 
 function buildInspectStyle(originalMapStyle: StyleSpecification, coloredLayers: HighlightedLayer[], highlightedLayer?: HighlightedLayer) {
@@ -37,6 +35,7 @@ function buildInspectStyle(originalMapStyle: StyleSpecification, coloredLayers: 
   }
 
   const sources: {[key:string]: SourceSpecification} = {}
+
   Object.keys(originalMapStyle.sources).forEach(sourceId => {
     const source = originalMapStyle.sources[sourceId]
     if(source.type !== 'raster' && source.type !== 'raster-dem') {
@@ -69,7 +68,7 @@ type MapMaplibreGlProps = {
 
 type MapMaplibreGlState = {
   map: Map | null
-  inspect: MapboxInspect | null
+  inspect: MaplibreInspect | null
   zoom?: number
 };
 
@@ -96,6 +95,13 @@ export default class MapMaplibreGl extends React.Component<MapMaplibreGlProps, M
 
     //Maplibre GL now does diffing natively so we don't need to calculate
     //the necessary operations ourselves!
+    if (props?.mapStyle) {
+      if (!props.mapStyle.metadata) {
+        props.mapStyle.metadata = {};
+      }
+      (props.mapStyle.metadata as any)['maplibregl-inspect:inspect'] = false;
+    }
+    console.log('setting style', props.mapStyle.metadata);
     this.state.map.setStyle(
       this.props.replaceAccessTokens(props.mapStyle),
       {diff: true}
@@ -129,7 +135,7 @@ export default class MapMaplibreGl extends React.Component<MapMaplibreGlProps, M
         // this error. I'm assuming an issue with maplibre-gl update and
         // mapbox-gl-inspect.
         try {
-          this.state.inspect.render();
+          //this.state.inspect.render();
         } catch(err) {
           console.error("FIXME: Caught error", err);
         }
@@ -173,7 +179,7 @@ export default class MapMaplibreGl extends React.Component<MapMaplibreGlProps, M
 
     const tmpNode = document.createElement('div');
 
-    const inspect = new MapboxInspect({
+    const inspect = new MaplibreInspect({
       popup: new MapLibreGl.Popup({
         closeOnClick: false
       }),
@@ -183,7 +189,7 @@ export default class MapMaplibreGl extends React.Component<MapMaplibreGlProps, M
       showInspectButton: false,
       blockHoverPopupOnClick: true,
       assignLayerColor: (layerId: string, alpha: number) => {
-        return Color(colors.brightColor(layerId, alpha)).desaturate(0.5).string()
+        return Color(colors.brightColor(layerId, alpha as any)).desaturate(0.5).string()
       },
       buildInspectStyle: (originalMapStyle: StyleSpecification, coloredLayers: HighlightedLayer[]) => buildInspectStyle(originalMapStyle, coloredLayers, this.props.highlightedLayer),
       renderPopup: (features: InspectFeature[]) => {

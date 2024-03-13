@@ -8,15 +8,16 @@ function groupFeaturesBySourceLayer(features: InspectFeature[]) {
   const returnedFeatures: {[key: string]: number} = {}
 
   features.forEach(feature => {
+    const sourceKey = feature.layer['source-layer'] as string;
     if(Object.prototype.hasOwnProperty.call(returnedFeatures, feature.layer.id)) {
       returnedFeatures[feature.layer.id]++
 
-      const featureObject = sources[feature.layer['source-layer']].find((f: InspectFeature) => f.layer.id === feature.layer.id)
+      const featureObject = sources[sourceKey].find((f: InspectFeature) => f.layer.id === feature.layer.id)
 
       featureObject!.counter = returnedFeatures[feature.layer.id]
     } else {
-      sources[feature.layer['source-layer']] = sources[feature.layer['source-layer']] || []
-      sources[feature.layer['source-layer']].push(feature)
+      sources[sourceKey] = sources[sourceKey] || []
+      sources[sourceKey].push(feature)
 
       returnedFeatures[feature.layer.id] = 1
     }
@@ -40,29 +41,21 @@ class FeatureLayerPopup extends React.Component<FeatureLayerPopupProps> {
 
     try {
       const paintProps = feature.layer.paint;
-      let propName;
 
-      if(Object.prototype.hasOwnProperty.call(paintProps, "text-color") && paintProps["text-color"]) {
-        propName = "text-color";
+      if("text-color" in paintProps && paintProps["text-color"]) {
+        return String(paintProps["text-color"]);
       }
-      else if (Object.prototype.hasOwnProperty.call(paintProps, "fill-color") && paintProps["fill-color"]) {
-        propName = "fill-color";
+      if ("fill-color" in paintProps && paintProps["fill-color"]) {
+        return String(paintProps["fill-color"]);
       }
-      else if (Object.prototype.hasOwnProperty.call(paintProps, "line-color") && paintProps["line-color"]) {
-        propName = "line-color";
+      if ("line-color" in paintProps && paintProps["line-color"]) {
+        return String(paintProps["line-color"]);
       }
-      else if (Object.prototype.hasOwnProperty.call(paintProps, "fill-extrusion-color") && paintProps["fill-extrusion-color"]) {
-        propName = "fill-extrusion-color";
+      if ("fill-extrusion-color" in paintProps && paintProps["fill-extrusion-color"]) {
+        return String(paintProps["fill-extrusion-color"]);
       }
-
-      if(propName) {
-        const color = feature.layer.paint[propName];
-        return String(color);
-      }
-      else {
-        // Default color
-        return "black";
-      }
+      // Default color
+      return "black";
     }
     // This is quite complex, just incase there's an edgecase we're missing
     // always return black if we get an unexpected error.

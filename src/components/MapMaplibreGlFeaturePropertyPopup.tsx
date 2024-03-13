@@ -1,16 +1,12 @@
 import React from 'react'
+import type { GeoJSONFeatureWithSourceLayer } from '@maplibre/maplibre-gl-inspect'
 
-export type InspectFeature = {
-  id: string
-  properties: {[key:string]: any}
-  layer: {[key:string]: any}
-  geometry: GeoJSON.Geometry
-  sourceLayer: string
+export type InspectFeature = GeoJSONFeatureWithSourceLayer & {
   inspectModeCounter?: number
   counter?: number
 }
 
-function displayValue(value: string | number | Date | object) {
+function displayValue(value: string | number | Date | object | undefined) {
   if (typeof value === 'undefined' || value === null) return value;
   if (value instanceof Date) return value.toLocaleString();
   if (typeof value === 'object' ||
@@ -19,7 +15,7 @@ function displayValue(value: string | number | Date | object) {
   return value;
 }
 
-function renderKeyValueTableRow(key: string, value: string) {
+function renderKeyValueTableRow(key: string, value: string | undefined) {
   return <tr key={key}>
     <td className="maputnik-popup-table-cell">{key}</td>
     <td className="maputnik-popup-table-cell">{value}</td>

@@ -1,7 +1,5 @@
-// @ts-ignore
-import stylegen from 'mapbox-gl-inspect/lib/stylegen'
-// @ts-ignore
-import colors from 'mapbox-gl-inspect/lib/colors'
+import stylegen from '@maplibre/maplibre-gl-inspect/lib/stylegen'
+import colors from '@maplibre/maplibre-gl-inspect/lib/colors'
 import type {FilterSpecification,LayerSpecification } from 'maplibre-gl'
 
 export type HighlightedLayer = LayerSpecification & {filter?: FilterSpecification};
@@ -26,7 +24,7 @@ export function colorHighlightedLayer(layer?: LayerSpecification): HighlightedLa
   if(!layer || layer.type === 'background' || layer.type === 'raster') return null
 
   const sourceLayerId = layer['source-layer'] || ''
-  const color = colors.brightColor(sourceLayerId, 1);
+  const color = colors.brightColor(sourceLayerId, 1 as any);
 
   if(layer.type === "fill" || layer.type === 'fill-extrusion') {
     return changeLayer(stylegen.polygonLayer(color, color, layer.source, layer['source-layer']), layer)
