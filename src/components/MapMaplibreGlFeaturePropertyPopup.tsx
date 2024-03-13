@@ -15,25 +15,25 @@ function displayValue(value: string | number | Date | object | undefined) {
   return value;
 }
 
-function renderKeyValueTableRow(key: string, value: string | undefined) {
-  return <tr key={key}>
+function renderKeyValueTableRow(key: string, value: string | undefined, idx: number) {
+  return <tr key={`${key}-${value}-${idx}`}>
     <td className="maputnik-popup-table-cell">{key}</td>
     <td className="maputnik-popup-table-cell">{value}</td>
   </tr>
 }
 
 function renderFeature(feature: InspectFeature, idx: number) {
-  return <>
-    <tr key={`${feature.sourceLayer}-${idx}`}>
+  return <React.Fragment key={idx}>
+    <tr key={`counter-${idx}`}>
       <td colSpan={2} className="maputnik-popup-layer-id">{feature.layer['source']}: {feature.layer['source-layer']}{feature.inspectModeCounter && <span> × {feature.inspectModeCounter}</span>}</td>
     </tr>
-    {renderKeyValueTableRow("$type", feature.geometry.type)}
-    {renderKeyValueTableRow("Feature ID", displayValue(feature.id))}
+    {renderKeyValueTableRow("$type", feature.geometry.type, idx)}
+    {renderKeyValueTableRow("Feature ID", displayValue(feature.id), idx)}
     {Object.keys(feature.properties).map(propertyName => {
       const property = feature.properties[propertyName];
-      return renderKeyValueTableRow(propertyName, displayValue(property))
+      return renderKeyValueTableRow(propertyName, displayValue(property), idx)
     })}
-  </>
+  </React.Fragment>
 }
 
 function removeDuplicatedFeatures(features: InspectFeature[]) {
@@ -68,7 +68,9 @@ class FeaturePropertyPopup extends React.Component<FeaturePropertyPopupProps> {
     const features = removeDuplicatedFeatures(this.props.features)
     return <div className="maputnik-feature-property-popup">
       <table className="maputnik-popup-table">
-        {features.map(renderFeature)}
+        <tbody>
+          {features.map(renderFeature)}
+        </tbody>
       </table>
     </div>
   }
