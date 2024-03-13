@@ -1,16 +1,12 @@
 import React from 'react'
+import type { GeoJSONFeatureWithSourceLayer } from '@maplibre/maplibre-gl-inspect'
 
-export type InspectFeature = {
-  id: string
-  properties: {[key:string]: any}
-  layer: {[key:string]: any}
-  geometry: GeoJSON.Geometry
-  sourceLayer: string
+export type InspectFeature = GeoJSONFeatureWithSourceLayer & {
   inspectModeCounter?: number
   counter?: number
 }
 
-function displayValue(value: string | number | Date | object) {
+function displayValue(value: string | number | Date | object | undefined) {
   if (typeof value === 'undefined' || value === null) return value;
   if (value instanceof Date) return value.toLocaleString();
   if (typeof value === 'object' ||
@@ -19,7 +15,7 @@ function displayValue(value: string | number | Date | object) {
   return value;
 }
 
-function renderKeyValueTableRow(key: string, value: string) {
+function renderKeyValueTableRow(key: string, value: string | undefined) {
   return <tr key={key}>
     <td className="maputnik-popup-table-cell">{key}</td>
     <td className="maputnik-popup-table-cell">{value}</td>
@@ -27,8 +23,8 @@ function renderKeyValueTableRow(key: string, value: string) {
 }
 
 function renderFeature(feature: InspectFeature, idx: number) {
-  return <>
-    <tr key={`${feature.sourceLayer}-${idx}`}>
+  return <React.Fragment key={idx}>
+    <tr>
       <td colSpan={2} className="maputnik-popup-layer-id">{feature.layer['source']}: {feature.layer['source-layer']}{feature.inspectModeCounter && <span> × {feature.inspectModeCounter}</span>}</td>
     </tr>
     {renderKeyValueTableRow("$type", feature.geometry.type)}
@@ -37,7 +33,7 @@ function renderFeature(feature: InspectFeature, idx: number) {
       const property = feature.properties[propertyName];
       return renderKeyValueTableRow(propertyName, displayValue(property))
     })}
-  </>
+  </React.Fragment>
 }
 
 function removeDuplicatedFeatures(features: InspectFeature[]) {
@@ -72,7 +68,9 @@ class FeaturePropertyPopup extends React.Component<FeaturePropertyPopupProps> {
     const features = removeDuplicatedFeatures(this.props.features)
     return <div className="maputnik-feature-property-popup">
       <table className="maputnik-popup-table">
-        {features.map(renderFeature)}
+        <tbody>
+          {features.map(renderFeature)}
+        </tbody>
       </table>
     </div>
   }
