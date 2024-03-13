@@ -24,7 +24,7 @@ export function colorHighlightedLayer(layer?: LayerSpecification): HighlightedLa
   if(!layer || layer.type === 'background' || layer.type === 'raster') return null
 
   const sourceLayerId = layer['source-layer'] || ''
-  const color = colors.brightColor(sourceLayerId, 1 as any);
+  const color = colors.brightColor(sourceLayerId, 1);
 
   if(layer.type === "fill" || layer.type === 'fill-extrusion') {
     return changeLayer(stylegen.polygonLayer(color, color, layer.source, layer['source-layer']), layer)

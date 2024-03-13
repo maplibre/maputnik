@@ -176,7 +176,7 @@ export default class MapMaplibreGl extends React.Component<MapMaplibreGlProps, M
       showInspectButton: false,
       blockHoverPopupOnClick: true,
       assignLayerColor: (layerId: string, alpha: number) => {
-        return Color(colors.brightColor(layerId, alpha as any)).desaturate(0.5).string()
+        return Color(colors.brightColor(layerId, alpha)).desaturate(0.5).string()
       },
       buildInspectStyle: (originalMapStyle: StyleSpecification, coloredLayers: HighlightedLayer[]) => buildInspectStyle(originalMapStyle, coloredLayers, this.props.highlightedLayer),
       renderPopup: (features: InspectFeature[]) => {
