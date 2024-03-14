@@ -110,6 +110,9 @@ export default class MapMaplibreGl extends React.Component<MapMaplibreGlProps, M
       // the necessary operations ourselves!
       // We also need to update the style for inspect to work properly
       map.setStyle(styleWithTokens, {diff: true});
+      map.showTileBoundaries = this.props.options?.showTileBoundaries!;
+      map.showCollisionBoxes = this.props.options?.showCollisionBoxes!;
+      map.showOverdrawInspector = this.props.options?.showOverdrawInspector!;
     }
 
     if(this.state.inspect && this.props.inspectModeEnabled !== this.state.inspect._showInspectMap) {
@@ -121,11 +124,6 @@ export default class MapMaplibreGl extends React.Component<MapMaplibreGlProps, M
       setTimeout(() => {
         this.state.inspect!.render();
       }, 500);
-    }
-    if (map) {
-      map.showTileBoundaries = this.props.options?.showTileBoundaries!;
-      map.showCollisionBoxes = this.props.options?.showCollisionBoxes!;
-      map.showOverdrawInspector = this.props.options?.showOverdrawInspector!;
     }
   }
 
