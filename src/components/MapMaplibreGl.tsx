@@ -90,21 +90,6 @@ export default class MapMaplibreGl extends React.Component<MapMaplibreGlProps, M
     }
   }
 
-  updateMapFromProps(props: MapMaplibreGlProps) {
-    if(!this.state.map) return
-
-    //Maplibre GL now does diffing natively so we don't need to calculate
-    //the necessary operations ourselves!
-    if (props?.mapStyle) {
-      if (!props.mapStyle.metadata) {
-        props.mapStyle.metadata = {};
-      }
-    }
-    this.state.map.setStyle(
-      this.props.replaceAccessTokens(props.mapStyle),
-      {diff: true}
-    )
-  }
 
   shouldComponentUpdate(nextProps: MapMaplibreGlProps, nextState: MapMaplibreGlState) {
     let should = false;
@@ -119,18 +104,26 @@ export default class MapMaplibreGl extends React.Component<MapMaplibreGlProps, M
   componentDidUpdate() {
     const map = this.state.map;
 
-    this.updateMapFromProps(this.props);
+    const styleWithTokens = this.props.replaceAccessTokens(this.props.mapStyle);
+    if (map) {
+      // Maplibre GL now does diffing natively so we don't need to calculate
+      // the necessary operations ourselves!
+      // We also need to update the style for inspect to work properly
+      map.setStyle(styleWithTokens, {diff: true});
+      map.showTileBoundaries = this.props.options?.showTileBoundaries!;
+      map.showCollisionBoxes = this.props.options?.showCollisionBoxes!;
+      map.showOverdrawInspector = this.props.options?.showOverdrawInspector!;
+    }
 
     if(this.state.inspect && this.props.inspectModeEnabled !== this.state.inspect._showInspectMap) {
       this.state.inspect.toggleInspector()
     }
     if (this.state.inspect && this.props.inspectModeEnabled) {
-      this.state.inspect!.setOriginalStyle(this.props.replaceAccessTokens(this.props.mapStyle));
-    }
-    if (map) {
-      map.showTileBoundaries = this.props.options?.showTileBoundaries!;
-      map.showCollisionBoxes = this.props.options?.showCollisionBoxes!;
-      map.showOverdrawInspector = this.props.options?.showOverdrawInspector!;
+      this.state.inspect.setOriginalStyle(styleWithTokens);
+      // In case the sources are the same, there's a need to refresh the style
+      setTimeout(() => {
+        this.state.inspect!.render();
+      }, 500);
     }
   }
 
