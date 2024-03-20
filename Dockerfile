@@ -2,8 +2,8 @@ FROM node:18 as builder
 WORKDIR /maputnik
 
 # Only copy package.json to prevent npm install from running on every build
-COPY package.json package-lock.json ./
-RUN npm install
+COPY package.json package-lock.json .npmrc ./
+RUN npm ci
 
 # Build maputnik
 COPY . .
