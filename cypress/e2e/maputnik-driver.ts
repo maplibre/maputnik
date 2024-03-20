@@ -1,3 +1,5 @@
+/// <reference types="cypress-plugin-tab" />
+
 import { CypressHelper } from "@shellygo/cypress-test-utils";
 import { Assertable, then } from "@shellygo/cypress-test-utils/assertable";
 import MaputnikCypressHelper from "./maputnik-cypress-helper";
@@ -14,7 +16,7 @@ const styleFromWindow = (win: Window) => {
 export class MaputnikAssertable<T> extends Assertable<T> {
   shouldEqualToStoredStyle = () =>
     then(
-      new CypressHelper().get.window().then((win) => {
+      new CypressHelper().get.window().then((win: Window) => {
         const style = styleFromWindow(win);
         then(this.chainable).shouldDeepNestedInclude(style);
       })

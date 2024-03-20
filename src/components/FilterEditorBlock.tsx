@@ -1,8 +1,8 @@
-import React from 'react'
+import React, { PropsWithChildren } from 'react'
 import InputButton from './InputButton'
 import {MdDelete} from 'react-icons/md'
 
-type FilterEditorBlockProps = {
+type FilterEditorBlockProps = PropsWithChildren & {
   onDelete(...args: unknown[]): unknown
 };
 

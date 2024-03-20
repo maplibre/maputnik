@@ -1,9 +1,9 @@
-import React, { ReactElement } from 'react'
+import React, { PropsWithChildren, ReactElement } from 'react'
 import FieldDocLabel from './FieldDocLabel'
 import Doc from './Doc'
 import generateUniqueId from '../libs/document-uid';
 
-type FieldsetProps = {
+type FieldsetProps = PropsWithChildren & {
   label?: string,
   fieldSpec?: { doc?: string },
   action?: ReactElement,

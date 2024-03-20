@@ -142,7 +142,7 @@ describe("modals", () => {
       );
       when.click("modal:settings.name");
       then(
-        get.styleFromLocalStorage().pipe((style) => style.metadata)
+        get.styleFromLocalStorage().then((style) => style.metadata)
       ).shouldInclude({
         "maputnik:openmaptiles_access_token": apiKey,
       });
@@ -156,7 +156,7 @@ describe("modals", () => {
       );
       when.click("modal:settings.name");
       then(
-        get.styleFromLocalStorage().pipe((style) => style.metadata)
+        get.styleFromLocalStorage().then((style) => style.metadata)
       ).shouldInclude({ "maputnik:thunderforest_access_token": apiKey });
     });
 
