@@ -34,7 +34,7 @@ jobs:
     - uses: actions/setup-node@v4
       with:
         node-version-file: '.nvmrc'
-    - run: npm ci --legacy-peer-deps
+    - run: npm ci
     - run: npm run build
     - run: npm run lint
     - run: npm run lint-css
@@ -51,7 +51,7 @@ jobs:
     - uses: actions/setup-node@v4
       with:
         node-version-file: '.nvmrc'
-    - run: npm ci --legacy-peer-deps
+    - run: npm ci
     - run: npm run build
     - name: artifacts/maputnik
       uses: actions/upload-artifact@v1
@@ -105,7 +105,7 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-      - run: npm ci --legacy-peer-deps
+      - run: npm ci
       - name: Cypress run
         uses: cypress-io/github-action@v6
         with:
