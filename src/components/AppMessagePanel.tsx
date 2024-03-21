@@ -4,7 +4,7 @@ import {LayerSpecification, StyleSpecification} from 'maplibre-gl';
 
 type AppMessagePanelProps = {
   errors?: unknown[]
-  infos?: unknown[]
+  infos?: string[]
   mapStyle?: StyleSpecification
   onLayerSelect?(...args: unknown[]): unknown
   currentLayer?: LayerSpecification

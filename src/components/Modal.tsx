@@ -1,10 +1,10 @@
-import React from 'react'
+import React, { PropsWithChildren } from 'react'
 import {MdClose} from 'react-icons/md'
 import AriaModal from 'react-aria-modal'
 import classnames from 'classnames';
 
 
-type ModalProps = {
+type ModalProps = PropsWithChildren & {
   "data-wd-key"?: string
   isOpen: boolean
   title: string

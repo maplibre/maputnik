@@ -139,6 +139,6 @@ class LayerListItem extends React.Component<LayerListItemProps> {
   }
 }
 
-const LayerListItemSortable = SortableElement((props: LayerListItemProps) => <LayerListItem {...props} />);
+const LayerListItemSortable = SortableElement<LayerListItemProps>((props: LayerListItemProps) => <LayerListItem {...props} />);
 
 export default LayerListItemSortable;
