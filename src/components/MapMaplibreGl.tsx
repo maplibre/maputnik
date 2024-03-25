@@ -137,7 +137,7 @@ export default class MapMaplibreGl extends React.Component<MapMaplibreGlProps, M
       // setting to always load glyphs of CJK fonts from server
       // https://maplibre.org/maplibre-gl-js/docs/examples/local-ideographs/
       // typedef of MapLibreGl.MapOptions doesn't accept boolean but this follow the doc.
-      localIdeographFontFamily: false as any,
+      localIdeographFontFamily: false as any
     }
 
     const map = new MapLibreGl.Map(mapOpts);
