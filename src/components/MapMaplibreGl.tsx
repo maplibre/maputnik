@@ -133,8 +133,11 @@ export default class MapMaplibreGl extends React.Component<MapMaplibreGlProps, M
       container: this.container!,
       style: this.props.mapStyle,
       hash: true,
-      maxZoom: 24
-    }
+      maxZoom: 24,
+      // setting to always load glyphs of CJK fonts from server
+      // https://maplibre.org/maplibre-gl-js/docs/examples/local-ideographs/
+      localIdeographFontFamily: false
+    } satisfies MapOptions;
 
     const map = new MapLibreGl.Map(mapOpts);
 
