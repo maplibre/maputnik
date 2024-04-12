@@ -37,16 +37,16 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: maputnik-linux
-          path: bin/linux/
+          path: ./desktop/bin/linux/
 
       - name: Artifacts/darwin
         uses: actions/upload-artifact@v3
         with:
           name: maputnik-darwin
-          path: bin/darwin/
+          path: ./desktop/bin/darwin/
 
       - name: Artifacts/windows
         uses: actions/upload-artifact@v3
         with:
           name: maputnik-windows
-          path: bin/windows/
+          path: ./desktop/bin/windows/
