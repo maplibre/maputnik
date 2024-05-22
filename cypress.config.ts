@@ -12,6 +12,7 @@ export default defineConfig({
     setupNodeEvents(on, config) {
       // implement node event listeners here
       require("@cypress/code-coverage/task")(on, config);
+      require('cypress-terminal-report/src/installLogsPrinter')(on);
       return config;
     },
     baseUrl: "http://localhost:8888",
