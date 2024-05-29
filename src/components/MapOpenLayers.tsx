@@ -4,6 +4,7 @@ import {throttle} from 'lodash';
 import MapMaplibreGlLayerPopup from './MapMaplibreGlLayerPopup';
 
 import 'ol/ol.css'
+//@ts-ignore
 import {apply} from 'ol-mapbox-style';
 import {Map, View, Overlay} from 'ol';
 
