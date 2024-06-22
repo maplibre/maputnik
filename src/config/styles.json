@@ -1,5 +1,11 @@
 [
   {
+    "id": "Americana",
+    "title": "Americana",
+    "url": "https://zelonewolf.github.io/openstreetmap-americana/style.json",
+    "thumbnail": "https://github.com/maplibre/maputnik/assets/649392/23fa75ad-63e6-43f5-8837-03cdb0428bac"
+  },
+  {
     "id": "osm-liberty",
     "title": "OSM Liberty",
     "url": "https://maputnik.github.io/osm-liberty/style.json",
@@ -28,6 +34,12 @@
     "title": "OSM Bright",
     "url": "https://cdn.jsdelivr.net/gh/openmaptiles/osm-bright-gl-style@v1.11/style.json",
     "thumbnail": "https://maputnik.github.io/thumbnails/osm-bright.png"
+  },
+  {
+    "id": "versatiles-colorful",
+    "title": "Versatiles Colorful",
+    "url": "https://tiles.versatiles.org/assets/styles/colorful.json",
+    "thumbnail": "https://github.com/maplibre/maputnik/assets/649392/6cd69818-c541-46e4-a920-65fb4f654931"
   },
   {
     "id": "maptiler-toner-gl-style",
