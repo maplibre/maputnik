@@ -1,11 +1,5 @@
 [
   {
-    "id": "Americana",
-    "title": "Americana",
-    "url": "https://zelonewolf.github.io/openstreetmap-americana/style.json",
-    "thumbnail": "https://github.com/maplibre/maputnik/assets/649392/23fa75ad-63e6-43f5-8837-03cdb0428bac"
-  },
-  {
     "id": "dark-matter",
     "title": "Dark Matter",
     "url": "https://cdn.jsdelivr.net/gh/openmaptiles/dark-matter-gl-style@v1.9/style.json",
