@@ -10,7 +10,8 @@
     "lint": "eslint ./src ./cypress --ext ts,tsx,js,jsx --report-unused-disable-directives --max-warnings 0",
     "test": "cypress run",
     "cy:open": "cypress open",
-    "lint-css": "stylelint \"src/styles/*.scss\""
+    "lint-css": "stylelint \"src/styles/*.scss\"",
+    "sort-styles": "jq 'sort_by(.id)' src/config/styles.json > tmp.json && mv tmp.json src/config/styles.json"
   },
   "repository": {
     "type": "git",
