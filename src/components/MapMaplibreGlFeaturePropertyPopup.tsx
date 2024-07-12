@@ -28,7 +28,7 @@ function renderFeature(feature: InspectFeature, idx: number) {
       <td colSpan={2} className="maputnik-popup-layer-id">{feature.layer['source']}: {feature.layer['source-layer']}{feature.inspectModeCounter && <span> × {feature.inspectModeCounter}</span>}</td>
     </tr>
     {renderKeyValueTableRow("$type", feature.geometry.type)}
-    {renderKeyValueTableRow("Feature ID", displayValue(feature.id))}
+    {renderKeyValueTableRow("$id", displayValue(feature.id))}
     {Object.keys(feature.properties).map(propertyName => {
       const property = feature.properties[propertyName];
       return renderKeyValueTableRow(propertyName, displayValue(property))
