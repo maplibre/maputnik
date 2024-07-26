@@ -1,6 +1,6 @@
 import React from 'react'
 import latest from '@maplibre/maplibre-gl-style-spec/dist/latest.json'
-import type {LightSpecification, StyleSpecification, TerrainSpecification, TransitionSpecification} from 'maplibre-gl'
+import type { LightSpecification, StyleSpecification, TerrainSpecification, TransitionSpecification } from 'maplibre-gl'
 
 import FieldArray from './FieldArray'
 import FieldNumber from './FieldNumber'
@@ -95,7 +95,7 @@ export default class ModalSettings extends React.Component<ModalSettingsProps> {
 
   render() {
     const metadata = this.props.mapStyle.metadata || {} as any;
-    const {onChangeMetadataProperty, mapStyle} = this.props;
+    const { onChangeMetadataProperty, mapStyle } = this.props;
 
     const light = this.props.mapStyle.light || {};
     const transition = this.props.mapStyle.transition || {};
@@ -117,7 +117,7 @@ export default class ModalSettings extends React.Component<ModalSettingsProps> {
         />
         <FieldString
           label={"Owner"}
-          fieldSpec={{doc: "Owner ID of the style. Used by Mapbox or future style APIs."}}
+          fieldSpec={{ doc: "Owner ID of the style. Used by Mapbox or future style APIs." }}
           data-wd-key="modal:settings.owner"
           value={(this.props.mapStyle as any).owner}
           onChange={this.changeStyleProperty.bind(this, "owner")}
@@ -136,6 +136,14 @@ export default class ModalSettings extends React.Component<ModalSettingsProps> {
           data-wd-key="modal:settings.glyphs"
           value={this.props.mapStyle.glyphs as string}
           onChange={this.changeStyleProperty.bind(this, "glyphs")}
+        />
+
+        <FieldString
+          label={fieldSpecAdditional.maputnik.auth_access_token.label}
+          fieldSpec={fieldSpecAdditional.maputnik.auth_access_token}
+          data-wd-key="modal:settings.maputnik:auth_access_token"
+          value={metadata['maputnik:auth_access_token']}
+          onChange={onChangeMetadataProperty.bind(this, "maputnik:auth_access_token")}
         />
 
         <FieldString

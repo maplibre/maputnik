@@ -1,5 +1,9 @@
 const spec = {
   maputnik: {
+    auth_access_token: {
+      label: "Auth Access Token",
+      doc: "User specific access token for custom vector tiles sources, added as access_token param."
+    },
     maptiler_access_token: {
       label: "MapTiler Access Token",
       doc: "Public access token for MapTiler Cloud."

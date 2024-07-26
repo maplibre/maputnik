@@ -49,13 +49,13 @@ function setFetchAccessToken(url: string, mapStyle: StyleSpecification) {
   const matchesMaptiler = url.match(/\.maptiler\.com/);
   const matchesThunderforest = url.match(/\.thunderforest\.com/);
   if (matchesTilehosting || matchesMaptiler) {
-    const accessToken = style.getAccessToken("openmaptiles", mapStyle, {allowFallback: true})
+    const accessToken = style.getAccessToken("openmaptiles", "", mapStyle, {allowFallback: true})
     if (accessToken) {
       return url.replace('{key}', accessToken)
     }
   }
   else if (matchesThunderforest) {
-    const accessToken = style.getAccessToken("thunderforest", mapStyle, {allowFallback: true})
+    const accessToken = style.getAccessToken("thunderforest", "", mapStyle, {allowFallback: true})
     if (accessToken) {
       return url.replace('{key}', accessToken)
     }

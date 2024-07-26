@@ -54,9 +54,13 @@ function indexOfLayer(layers: LayerSpecification[], layerId: string) {
   return null
 }
 
-function getAccessToken(sourceName: string, mapStyle: StyleSpecification, opts: {allowFallback?: boolean}) {
+function getAccessToken(sourceName: string, sourceUrl: string, mapStyle: StyleSpecification, opts: {allowFallback?: boolean}) {
   if(sourceName === "thunderforest_transport" || sourceName === "thunderforest_outdoors") {
-    sourceName = "thunderforest"
+    sourceName = "thunderforest";
+  }
+
+  if (sourceUrl.includes("api.syte.ms")) {
+    sourceName = "auth";
   }
 
   const metadata = mapStyle.metadata || {} as any;
@@ -74,7 +78,7 @@ function replaceSourceAccessToken(mapStyle: StyleSpecification, sourceName: stri
   if(!source) return mapStyle
   if(!("url" in source) || !source.url) return mapStyle
 
-  const accessToken = getAccessToken(sourceName, mapStyle, opts)
+  const accessToken = getAccessToken(sourceName, source.url, mapStyle, opts)
 
   if(!accessToken) {
     // Early exit.
