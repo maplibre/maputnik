@@ -154,6 +154,14 @@ export default class ModalSettings extends React.Component<ModalSettingsProps> {
           onChange={onChangeMetadataProperty.bind(this, "maputnik:thunderforest_access_token")}
         />
 
+        <FieldString
+          label={fieldSpecAdditional.maputnik.syte_access_token.label}
+          fieldSpec={fieldSpecAdditional.maputnik.syte_access_token}
+          data-wd-key="modal:settings.maputnik:syte_access_token"
+          value={metadata['maputnik:syte_access_token']}
+          onChange={onChangeMetadataProperty.bind(this, "maputnik:syte_access_token")}
+        />
+
         <FieldArray
           label={"Center"}
           fieldSpec={latest.$root.center}

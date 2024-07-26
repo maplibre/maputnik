@@ -58,9 +58,12 @@ type MapMaplibreGlProps = {
   inspectModeEnabled: boolean
   highlightedLayer?: HighlightedLayer
   options?: Partial<MapOptions> & {
-    showTileBoundaries?: boolean
-    showCollisionBoxes?: boolean
-    showOverdrawInspector?: boolean
+    showTileBoundaries?: boolean,
+    showCollisionBoxes?: boolean,
+    showOverdrawInspector?: boolean,
+    syteOptions?: {
+      accessToken: string | null
+    }
   }
   replaceAccessTokens(mapStyle: StyleSpecification): StyleSpecification
   onChange(value: {center: LngLat, zoom: number}): unknown
@@ -136,7 +139,17 @@ export default class MapMaplibreGl extends React.Component<MapMaplibreGlProps, M
       maxZoom: 24,
       // setting to always load glyphs of CJK fonts from server
       // https://maplibre.org/maplibre-gl-js/docs/examples/local-ideographs/
-      localIdeographFontFamily: false
+      localIdeographFontFamily: false,
+      transformRequest: (url: string) => {
+        if (this.props.options?.syteOptions?.accessToken && url.includes("api.syte.ms/api/vector-tiles")) {
+          return {
+            url,
+            headers: {
+              Authorization: `Bearer ${this.props.options.syteOptions.accessToken}`
+            }
+          }
+        }
+      }
     } satisfies MapOptions;
 
     const map = new MapLibreGl.Map(mapOpts);

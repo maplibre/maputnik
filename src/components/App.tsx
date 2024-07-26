@@ -121,7 +121,10 @@ type AppState = {
   openlayersDebugOptions: {
     debugToolbox: boolean,
   },
-  mapState: MapState
+  mapState: MapState,
+  syteOptions: {
+    accessToken: string | null
+  },
   isOpen: {
     settings: boolean
     sources: boolean
@@ -288,6 +291,9 @@ export default class App extends React.Component<any, AppState> {
       openlayersDebugOptions: {
         debugToolbox: false,
       },
+      syteOptions: {
+        accessToken: null
+      },
     }
 
     this.layerWatcher = new LayerWatcher({
@@ -354,6 +360,16 @@ export default class App extends React.Component<any, AppState> {
     ) {
       this.setState({
         mapState: 'map'
+      });
+    }
+
+    if (
+      property === 'maputnik:syte_access_token'
+    ) {
+      this.setState({
+        syteOptions: {
+          accessToken: value
+        }
       });
     }
 
@@ -731,7 +747,7 @@ export default class App extends React.Component<any, AppState> {
     } else {
       mapElement = <MapMaplibreGl {...mapProps}
         onChange={this.onMapChange}
-        options={this.state.maplibreGlDebugOptions}
+        options={{...this.state.maplibreGlDebugOptions, syteOptions: this.state.syteOptions}}
         inspectModeEnabled={this.state.mapState === "inspect"}
         highlightedLayer={this.state.mapStyle.layers[this.state.selectedLayerIndex]}
         onLayerSelect={this.onLayerSelect} />
