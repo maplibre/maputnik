@@ -1,15 +1,15 @@
 [
   {
+    "id": "0-empty-style",
+    "title": "Empty Style",
+    "url": "https://cdn.jsdelivr.net/gh/maputnik/editor@9cf74ca405d2be0608b57db8109cf3a6af5b9f49/src/config/empty-style.json",
+    "thumbnail": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAYAAAAECAQAAAAHDYbIAAAAEUlEQVR42mP8/58BDhiJ4wAA974H/U5Xe1oAAAAASUVORK5CYII="
+  },
+  {
     "id": "dark-matter",
     "title": "Dark Matter",
     "url": "https://cdn.jsdelivr.net/gh/openmaptiles/dark-matter-gl-style@v1.9/style.json",
     "thumbnail": "https://maputnik.github.io/thumbnails/dark-matter.png"
-  },
-  {
-    "id": "empty-style",
-    "title": "Empty Style",
-    "url": "https://cdn.jsdelivr.net/gh/maputnik/editor@9cf74ca405d2be0608b57db8109cf3a6af5b9f49/src/config/empty-style.json",
-    "thumbnail": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAYAAAAECAQAAAAHDYbIAAAAEUlEQVR42mP8/58BDhiJ4wAA974H/U5Xe1oAAAAASUVORK5CYII="
   },
   {
     "id": "maptiler-basic-gl-style",
@@ -64,6 +64,12 @@
     "title": "Positron",
     "url": "https://cdn.jsdelivr.net/gh/openmaptiles/positron-gl-style@v1.9/style.json",
     "thumbnail": "https://maputnik.github.io/thumbnails/positron.png"
+  },
+  {
+    "id": "stadia-outdoors",
+    "title": "Stadia Outdoors",
+    "url": "https://tiles.stadiamaps.com/styles/outdoors.json",
+    "thumbnail": "https://tiles.stadiamaps.com/static/outdoors.png?size=480x320&center=47.350259,8.49035&zoom=16"
   },
   {
     "id": "versatiles-colorful",
