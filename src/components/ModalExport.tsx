@@ -113,6 +113,13 @@ export default class ModalExport extends React.Component<ModalExportProps> {
         <p>
           Download a JSON style to your computer.
         </p>
+        <p>
+          <a href="https://docs.maptiler.com/cloud/api/authentication-key/" target="_blank" rel="noreferrer">MapTiler</a>,&nbsp;
+          <a href="https://www.thunderforest.com/docs/apikeys/" target="_blank" rel="noreferrer">ThunderForest</a>,
+          and <a href="https://docs.stadiamaps.com/authentication/" target="_blank" rel="noreferrer">Stadia Maps</a>&nbsp;
+          may require access keys or other authentication to access map tiles.
+          Refer to their documentation for details.
+        </p>
 
         <div>
           <FieldString
