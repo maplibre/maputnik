@@ -7,6 +7,7 @@
   "scripts": {
     "start": "vite",
     "build": "tsc && vite build --base=/maputnik/",
+    "i18n:refresh": "i18next 'src/**/*.{ts,tsx,js,jsx}'",
     "lint": "eslint ./src ./cypress --ext ts,tsx,js,jsx --report-unused-disable-directives --max-warnings 0",
     "test": "cypress run",
     "cy:open": "cypress open",
@@ -40,6 +41,7 @@
     "file-saver": "^2.0.5",
     "i18next": "^23.12.2",
     "i18next-browser-languagedetector": "^8.0.0",
+    "i18next-resources-to-backend": "^1.2.1",
     "json-stringify-pretty-compact": "^4.0.0",
     "json-to-ast": "^2.1.0",
     "jsonlint": "github:josdejong/jsonlint#85a19d7",
@@ -129,6 +131,7 @@
     "eslint-plugin-react": "^7.34.1",
     "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-plugin-react-refresh": "^0.4.6",
+    "i18next-parser": "^9.0.1",
     "istanbul": "^0.4.5",
     "istanbul-lib-coverage": "^3.2.2",
     "mocha": "^10.3.0",

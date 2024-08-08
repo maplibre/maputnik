@@ -2,11 +2,12 @@ import React from 'react'
 import classnames from 'classnames'
 import {detect} from 'detect-browser';
 
-import {MdFileDownload, MdOpenInBrowser, MdSettings, MdLayers, MdHelpOutline, MdFindInPage} from 'react-icons/md'
+import {MdFileDownload, MdOpenInBrowser, MdSettings, MdLayers, MdHelpOutline, MdFindInPage, MdLanguage} from 'react-icons/md'
 import pkgJson from '../../package.json'
 //@ts-ignore
 import maputnikLogo from 'maputnik-design/logos/logo-color.svg?inline'
 import { withTranslation, WithTranslation } from 'react-i18next';
+import { supportedLanguages } from '../i18n';
 
 // This is required because of <https://stackoverflow.com/a/49846426>, there isn't another way to detect support that I'm aware of.
 const browser = detect();
@@ -109,6 +110,10 @@ class IAppToolbar extends React.Component<AppToolbarProps & WithTranslation> {
 
   handleSelection(val: MapState) {
     this.props.onSetMapState(val);
+  }
+
+  handleLanguageChange(val: string) {
+    this.props.i18n.changeLanguage(val);
   }
 
   onSkip = (target: string) => {
@@ -248,6 +253,26 @@ class IAppToolbar extends React.Component<AppToolbarProps & WithTranslation> {
                     );
                   })}
                 </optgroup>
+              </select>
+            </label>
+          </ToolbarSelect>
+
+          <ToolbarSelect wdKey="nav:inspect">
+            <MdLanguage />
+            <label>{t("Language")}
+              <select
+                className="maputnik-select"
+                data-wd-key="maputnik-select"
+                onChange={(e) => this.handleLanguageChange(e.target.value)}
+                value={this.props.i18n.language}
+              >
+                {Object.entries(supportedLanguages).map(([code, name]) => {
+                  return (
+                    <option key={code} value={code}>
+                      {name}
+                    </option>
+                  );
+                })}
               </select>
             </label>
           </ToolbarSelect>

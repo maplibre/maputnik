@@ -1,0 +1,17 @@
+{
+  "Map": "地図",
+  "Inspect": "検証",
+  "Deuteranopia filter": "緑色弱者フィルタ",
+  "Protanopia filter": "赤色弱者フィルタ",
+  "Tritanopia filter": "青色弱者フィルタ",
+  "Achromatopsia filter": "色盲フィルタ",
+  "Maputnik on GitHub": "GitHubでMaputnik",
+  "Open": "開く",
+  "Export": "エクスポート",
+  "Data Sources": "データソース",
+  "Style Settings": "スタイル設定",
+  "View": "表示",
+  "Color accessibility": "色のアクセシビリティ",
+  "Language": "言語",
+  "Help": "ヘルプ"
+}
