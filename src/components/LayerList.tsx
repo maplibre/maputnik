@@ -12,7 +12,7 @@ import generateUniqueId from '../libs/document-uid';
 import { findClosestCommonPrefix, layerPrefix } from '../libs/layer';
 import { WithTranslation, withTranslation } from 'react-i18next';
 
-type ILayerListContainerProps = {
+type LayerListContainerProps = {
   layers: LayerSpecification[]
   selectedLayerIndex: number
   onLayersChange(layers: LayerSpecification[]): unknown
@@ -22,7 +22,8 @@ type ILayerListContainerProps = {
   onLayerVisibilityToggle(...args: unknown[]): unknown
   sources: object
   errors: any[]
-} & WithTranslation;
+};
+type ILayerListContainerProps = LayerListContainerProps & WithTranslation;
 
 type LayerListContainerState = {
   collapsedGroups: {[ket: string]: boolean}
@@ -135,7 +136,7 @@ class ILayerListContainer extends React.Component<ILayerListContainerProps, Laye
     return collapsed === undefined ? true : collapsed
   }
 
-  shouldComponentUpdate (nextProps: ILayerListContainerProps, nextState: LayerListContainerState) {
+  shouldComponentUpdate (nextProps: LayerListContainerProps, nextState: LayerListContainerState) {
     // Always update on state change
     if (this.state !== nextState) {
       return true;
@@ -160,10 +161,10 @@ class ILayerListContainer extends React.Component<ILayerListContainerProps, Laye
       this.props.layers.map(getRequiredProps),
     );
 
-    function withoutLayers(props: ILayerListContainerProps) {
+    function withoutLayers(props: LayerListContainerProps) {
       const out = {
         ...props
-      } as ILayerListContainerProps & { layers?: any };
+      } as LayerListContainerProps & { layers?: any };
       delete out['layers'];
       return out;
     }
@@ -179,7 +180,7 @@ class ILayerListContainer extends React.Component<ILayerListContainerProps, Laye
     return propsChanged;
   }
 
-  componentDidUpdate (prevProps: ILayerListContainerProps) {
+  componentDidUpdate (prevProps: LayerListContainerProps) {
     if (prevProps.selectedLayerIndex !== this.props.selectedLayerIndex) {
       const selectedItemNode = this.selectedItemRef.current;
       if (selectedItemNode && selectedItemNode.node) {
@@ -321,9 +322,9 @@ class ILayerListContainer extends React.Component<ILayerListContainerProps, Laye
 const LayerListContainer = withTranslation()(ILayerListContainer);
 
 // eslint-disable-next-line react-refresh/only-export-components
-const LayerListContainerSortable = SortableContainer((props: ILayerListContainerProps) => <LayerListContainer {...props} />)
+const LayerListContainerSortable = SortableContainer((props: LayerListContainerProps) => <LayerListContainer {...props} />)
 
-type LayerListProps = ILayerListContainerProps & {
+type LayerListProps = LayerListContainerProps & {
   onMoveLayer: SortEndHandler
 };
 
