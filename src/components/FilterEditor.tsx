@@ -76,7 +76,6 @@ function checkIfSimpleFilter (filter: LegacyFilterSpecification | ExpressionSpec
     return true;
   }
   const expression = convertFilter(filter);
-  console.log(filter, expression);
   return !isEqual(expression, filter);
 }
 

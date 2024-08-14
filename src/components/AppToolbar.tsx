@@ -181,21 +181,21 @@ class IAppToolbar extends React.Component<AppToolbarProps & WithTranslation> {
             className="maputnik-toolbar-skip"
             onClick={_e => this.onSkip("layer-list")}
           >
-            Layers list
+            {t("Layers list")}
           </button>
           <button
             data-wd-key="root:skip:layer-editor"
             className="maputnik-toolbar-skip"
             onClick={_e => this.onSkip("layer-editor")}
           >
-            Layer editor
+            {t("Layer editor")}
           </button>
           <button
             data-wd-key="root:skip:map-view"
             className="maputnik-toolbar-skip"
             onClick={_e => this.onSkip("map")}
           >
-            Map view
+            {t("Map view")}
           </button>
           <a
             className="maputnik-toolbar-logo"
@@ -262,7 +262,7 @@ class IAppToolbar extends React.Component<AppToolbarProps & WithTranslation> {
             <label>{t("Language")}
               <select
                 className="maputnik-select"
-                data-wd-key="maputnik-select"
+                data-wd-key="maputnik-lang-select"
                 onChange={(e) => this.handleLanguageChange(e.target.value)}
                 value={this.props.i18n.language}
               >
