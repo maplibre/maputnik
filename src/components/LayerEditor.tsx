@@ -1,4 +1,4 @@
-import React, {type JSX} from 'react'
+import React, {GetDerivedStateFromProps, type JSX} from 'react'
 import PropTypes from 'prop-types'
 import { Wrapper, Button, Menu, MenuItem } from 'react-aria-menubutton'
 import {Accordion} from 'react-accessible-accordion';
@@ -19,27 +19,37 @@ import FieldSourceLayer from './FieldSourceLayer'
 import { changeType, changeProperty } from '../libs/layer'
 import layout from '../config/layout.json'
 import {formatLayerId} from '../libs/format';
+import { WithTranslation, withTranslation } from 'react-i18next';
+import { TFunction } from 'i18next';
 
 
-function getLayoutForType(type: LayerSpecification["type"]) {
-  return layout[type] ? layout[type] : layout.invalid;
+function getLayoutForType(type: LayerSpecification["type"], t: TFunction) {
+  return layout[type] ? {
+    ...layout[type],
+    groups: layout[type].groups.map(group => {
+      return {
+        ...group,
+        title: t(group.title)
+      };
+    }),
+  } : layout.invalid;
 }
 
-function layoutGroups(layerType: LayerSpecification["type"]): {title: string, type: string, fields?: string[]}[] {
+function layoutGroups(layerType: LayerSpecification["type"], t: TFunction): {title: string, type: string, fields?: string[]}[] {
   const layerGroup = {
-    title: 'Layer',
+    title: t('Layer'),
     type: 'layer'
   }
   const filterGroup = {
-    title: 'Filter',
+    title: t('Filter'),
     type: 'filter'
   }
   const editorGroup = {
-    title: 'JSON Editor',
+    title: t('JSON Editor'),
     type: 'jsoneditor'
   }
   return [layerGroup, filterGroup]
-    .concat(getLayoutForType(layerType).groups)
+    .concat(getLayoutForType(layerType, t).groups)
     .concat([editorGroup])
 }
 
@@ -65,7 +75,7 @@ type LayerEditorState = {
 };
 
 /** Layer editor supporting multiple types of layers. */
-export default class LayerEditor extends React.Component<LayerEditorProps, LayerEditorState> {
+class ILayerEditor extends React.Component<LayerEditorProps & WithTranslation, LayerEditorState> {
   static defaultProps = {
     onLayerChanged: () => {},
     onLayerIdChange: () => {},
@@ -76,22 +86,22 @@ export default class LayerEditor extends React.Component<LayerEditorProps, Layer
     reactIconBase: PropTypes.object
   }
 
-  constructor(props: LayerEditorProps) {
+  constructor(props: LayerEditorProps & WithTranslation) {
     super(props)
 
     //TODO: Clean this up and refactor into function
     const editorGroups: {[keys:string]: boolean} = {}
-    layoutGroups(this.props.layer.type).forEach(group => {
+    layoutGroups(this.props.layer.type, props.t).forEach(group => {
       editorGroups[group.title] = true
     })
 
     this.state = { editorGroups }
   }
 
-  static getDerivedStateFromProps(props: LayerEditorProps, state: LayerEditorState) {
+  public static getDerivedStateFromProps: GetDerivedStateFromProps<LayerEditorProps & WithTranslation, LayerEditorState> = (props, state) => {
     const additionalGroups = { ...state.editorGroups }
 
-    getLayoutForType(props.layer.type).groups.forEach(group => {
+    getLayoutForType(props.layer.type, props.t).groups.forEach(group => {
       if(!(group.title in additionalGroups)) {
         additionalGroups[group.title] = true
       }
@@ -242,9 +252,11 @@ export default class LayerEditor extends React.Component<LayerEditorProps, Layer
   }
 
   render() {
+    const t = this.props.t;
+
     const groupIds: string[] = [];
     const layerType = this.props.layer.type
-    const groups = layoutGroups(layerType).filter(group => {
+    const groups = layoutGroups(layerType, t).filter(group => {
       return !(layerType === 'background' && group.type === 'source')
     }).map(group => {
       const groupId = group.title.replace(/ /g, "_");
@@ -265,25 +277,25 @@ export default class LayerEditor extends React.Component<LayerEditorProps, Layer
 
     const items: {[key: string]: {text: string, handler: () => void, disabled?: boolean}} = {
       delete: {
-        text: "Delete",
+        text: t("Delete"),
         handler: () => this.props.onLayerDestroy(this.props.layerIndex)
       },
       duplicate: {
-        text: "Duplicate",
+        text: t("Duplicate"),
         handler: () => this.props.onLayerCopy(this.props.layerIndex)
       },
       hide: {
-        text: (layout.visibility === "none") ? "Show" : "Hide",
+        text: (layout.visibility === "none") ? t("Show") : t("Hide"),
         handler: () => this.props.onLayerVisibilityToggle(this.props.layerIndex)
       },
       moveLayerUp: {
-        text: "Move layer up",
+        text: t("Move layer up"),
         // Not actually used...
         disabled: this.props.isFirstLayer,
         handler: () => this.moveLayer(-1)
       },
       moveLayerDown: {
-        text: "Move layer down",
+        text: t("Move layer down"),
         // Not actually used...
         disabled: this.props.isLastLayer,
         handler: () => this.moveLayer(+1)
@@ -297,12 +309,12 @@ export default class LayerEditor extends React.Component<LayerEditorProps, Layer
 
     return <section className="maputnik-layer-editor"
       role="main"
-      aria-label="Layer editor"
+      aria-label={t("Layer editor")}
     >
       <header>
         <div className="layer-header">
           <h2 className="layer-header__title">
-            Layer: {formatLayerId(this.props.layer.id)}
+            {t("Layer: {{layerId}}", { layerId: formatLayerId(this.props.layer.id) })}
           </h2>
           <div className="layer-header__info">
             <Wrapper
@@ -310,7 +322,11 @@ export default class LayerEditor extends React.Component<LayerEditorProps, Layer
               onSelection={handleSelection}
               closeOnSelection={false}
             >
-              <Button id="skip-target-layer-editor" data-wd-key="skip-target-layer-editor" className='more-menu__button' title="Layer options">
+              <Button 
+                id="skip-target-layer-editor" 
+                data-wd-key="skip-target-layer-editor" 
+                className='more-menu__button' 
+                title={"Layer options"}>
                 <MdMoreVert className="more-menu__button__svg" />
               </Button>
               <Menu>
@@ -340,3 +356,6 @@ export default class LayerEditor extends React.Component<LayerEditorProps, Layer
     </section>
   }
 }
+
+const LayerEditor = withTranslation()(ILayerEditor);
+export default LayerEditor;

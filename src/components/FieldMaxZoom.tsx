@@ -3,6 +3,7 @@ import React from 'react'
 import latest from '@maplibre/maplibre-gl-style-spec/dist/latest.json'
 import Block from './Block'
 import InputNumber from './InputNumber'
+import { WithTranslation, withTranslation } from 'react-i18next';
 
 type FieldMaxZoomProps = {
   value?: number
@@ -10,9 +11,10 @@ type FieldMaxZoomProps = {
   error?: {message: string}
 };
 
-export default class FieldMaxZoom extends React.Component<FieldMaxZoomProps> {
+class IFieldMaxZoom extends React.Component<FieldMaxZoomProps & WithTranslation> {
   render() {
-    return <Block label={"Max Zoom"} fieldSpec={latest.layer.maxzoom}
+    const t = this.props.t;
+    return <Block label={t("Max Zoom")} fieldSpec={latest.layer.maxzoom}
       error={this.props.error}
       data-wd-key="max-zoom"
     >
@@ -28,3 +30,6 @@ export default class FieldMaxZoom extends React.Component<FieldMaxZoomProps> {
     </Block>
   }
 }
+
+const FieldMaxZoom = withTranslation()(IFieldMaxZoom);
+export default FieldMaxZoom;

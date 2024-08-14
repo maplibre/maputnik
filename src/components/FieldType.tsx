@@ -4,6 +4,7 @@ import latest from '@maplibre/maplibre-gl-style-spec/dist/latest.json'
 import Block from './Block'
 import InputSelect from './InputSelect'
 import InputString from './InputString'
+import { WithTranslation, withTranslation } from 'react-i18next';
 
 type FieldTypeProps = {
   value: string
@@ -13,13 +14,14 @@ type FieldTypeProps = {
   disabled?: boolean
 };
 
-export default class FieldType extends React.Component<FieldTypeProps> {
+class IFieldType extends React.Component<FieldTypeProps & WithTranslation> {
   static defaultProps = {
     disabled: false,
   }
 
   render() {
-    return <Block label={"Type"} fieldSpec={latest.layer.type}
+    const t = this.props.t;
+    return <Block label={t("Type")} fieldSpec={latest.layer.type}
       data-wd-key={this.props.wdKey}
       error={this.props.error}
     >
@@ -50,3 +52,6 @@ export default class FieldType extends React.Component<FieldTypeProps> {
     </Block>
   }
 }
+
+const FieldType = withTranslation()(IFieldType);
+export default FieldType;

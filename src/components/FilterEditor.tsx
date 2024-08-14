@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { GetDerivedStateFromProps } from 'react'
 import {mdiTableRowPlusAfter} from '@mdi/js';
 import {isEqual} from 'lodash';
 import {ExpressionSpecification, LegacyFilterSpecification, StyleSpecification} from 'maplibre-gl'
@@ -13,6 +13,7 @@ import FilterEditorBlock from './FilterEditorBlock'
 import InputButton from './InputButton'
 import Doc from './Doc'
 import ExpressionProperty from './_ExpressionProperty';
+import { Trans, WithTranslation, withTranslation } from 'react-i18next';
 
 
 function combiningFilter(props: FilterEditorProps): LegacyFilterSpecification | ExpressionSpecification {
@@ -75,6 +76,7 @@ function checkIfSimpleFilter (filter: LegacyFilterSpecification | ExpressionSpec
     return true;
   }
   const expression = convertFilter(filter);
+  console.log(filter, expression);
   return !isEqual(expression, filter);
 }
 
@@ -103,12 +105,12 @@ type FilterEditorState = {
   valueIsSimpleFilter?: boolean
 };
 
-export default class FilterEditor extends React.Component<FilterEditorProps, FilterEditorState> {
+class IFilterEditor extends React.Component<FilterEditorProps & WithTranslation, FilterEditorState> {
   static defaultProps = {
     filter: ["all"],
   }
 
-  constructor (props: FilterEditorProps) {
+  constructor (props: FilterEditorProps & WithTranslation) {
     super(props);
     this.state = {
       showDoc: false,
@@ -155,17 +157,17 @@ export default class FilterEditor extends React.Component<FilterEditorProps, Fil
     })
   }
 
-  static getDerivedStateFromProps(props: FilterEditorProps, currentState: FilterEditorState) {
+  public static getDerivedStateFromProps: GetDerivedStateFromProps<FilterEditorProps & WithTranslation, FilterEditorState> = (props, state) => {
     const displaySimpleFilter = checkIfSimpleFilter(combiningFilter(props));
 
     // Upgrade but never downgrade
-    if (!displaySimpleFilter && currentState.displaySimpleFilter === true) {
+    if (!displaySimpleFilter && state.displaySimpleFilter === true) {
       return {
         displaySimpleFilter: false,
         valueIsSimpleFilter: false,
       };
     }
-    else if (displaySimpleFilter && currentState.displaySimpleFilter === false) {
+    else if (displaySimpleFilter && state.displaySimpleFilter === false) {
       return {
         valueIsSimpleFilter: true,
       }
@@ -178,7 +180,7 @@ export default class FilterEditor extends React.Component<FilterEditorProps, Fil
   }
 
   render() {
-    const {errors} = this.props;
+    const {errors, t} = this.props;
     const {displaySimpleFilter} = this.state;
     const fieldSpec={
       doc: latest.layer.filter.doc + " Combine multiple filters together by using a compound filter."
@@ -190,11 +192,11 @@ export default class FilterEditor extends React.Component<FilterEditorProps, Fil
     if (isNestedCombiningFilter) {
       return <div className="maputnik-filter-editor-unsupported">
         <p>
-          Nested filters are not supported.
+          {t("Nested filters are not supported.")}
         </p>
         <InputButton
           onClick={this.makeExpression}
-          title="Convert to expression"
+          title={t("Convert to expression")}
         >
           <svg style={{marginRight: "0.2em", width:"14px", height:"14px", verticalAlign: "middle"}} viewBox="0 0 24 24">
             <path fill="currentColor" d={mdiFunctionVariant} />
@@ -212,7 +214,7 @@ export default class FilterEditor extends React.Component<FilterEditorProps, Fil
         <div>
           <InputButton
             onClick={this.makeExpression}
-            title="Convert to expression"
+            title={t("Convert to expression")}
             className="maputnik-make-zoom-function"
           >
             <svg style={{width:"14px", height:"14px", verticalAlign: "middle"}} viewBox="0 0 24 24">
@@ -253,7 +255,11 @@ export default class FilterEditor extends React.Component<FilterEditorProps, Fil
             <InputSelect
               value={combiningOp}
               onChange={(v: [string, any]) => this.onFilterPartChanged(0, v)}
-              options={[["all", "every filter matches"], ["none", "no filter matches"], ["any", "any filter matches"]]}
+              options={[
+                ["all", t("every filter matches")], 
+                ["none", t("no filter matches")], 
+                ["any", t("any filter matches")]
+              ]}
             />
           </Block>
           {editorBlocks}
@@ -268,7 +274,7 @@ export default class FilterEditor extends React.Component<FilterEditorProps, Fil
             >
               <svg style={{width:"14px", height:"14px", verticalAlign: "text-bottom"}} viewBox="0 0 24 24">
                 <path fill="currentColor" d={mdiTableRowPlusAfter} />
-              </svg> Add filter
+              </svg> {t("Add filter")}
             </InputButton>
           </div>
           <div
@@ -299,13 +305,15 @@ export default class FilterEditor extends React.Component<FilterEditorProps, Fil
           />
           {this.state.valueIsSimpleFilter &&
             <div className="maputnik-expr-infobox">
-              You&apos;ve entered a old style filter,{' '}
-              <button
-                onClick={this.makeFilter}
-                className="maputnik-expr-infobox__button"
-              >
-                switch to filter editor
-              </button>
+              <Trans t={t}>
+                You&apos;ve entered a old style filter,{' '}
+                <button
+                  onClick={this.makeFilter}
+                  className="maputnik-expr-infobox__button"
+                >
+                  switch to filter editor
+                </button>
+              </Trans>
             </div>
           }
         </>
@@ -313,3 +321,6 @@ export default class FilterEditor extends React.Component<FilterEditorProps, Fil
     }
   }
 }
+
+const FilterEditor = withTranslation()(IFilterEditor);
+export default FilterEditor;

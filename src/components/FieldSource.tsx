@@ -3,6 +3,7 @@ import React from 'react'
 import latest from '@maplibre/maplibre-gl-style-spec/dist/latest.json'
 import Block from './Block'
 import InputAutocomplete from './InputAutocomplete'
+import { WithTranslation, withTranslation } from 'react-i18next';
 
 type FieldSourceProps = {
   value?: string
@@ -12,15 +13,16 @@ type FieldSourceProps = {
   error?: {message: string}
 };
 
-export default class FieldSource extends React.Component<FieldSourceProps> {
+class IFieldSource extends React.Component<FieldSourceProps & WithTranslation> {
   static defaultProps = {
     onChange: () => {},
     sourceIds: [],
   }
 
   render() {
+    const t = this.props.t;
     return <Block
-      label={"Source"}
+      label={t("Source")}
       fieldSpec={latest.layer.source}
       error={this.props.error}
       data-wd-key={this.props.wdKey}
@@ -33,3 +35,6 @@ export default class FieldSource extends React.Component<FieldSourceProps> {
     </Block>
   }
 }
+
+const FieldSource = withTranslation()(IFieldSource);
+export default FieldSource;

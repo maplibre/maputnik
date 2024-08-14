@@ -3,6 +3,7 @@ import React from 'react'
 import latest from '@maplibre/maplibre-gl-style-spec/dist/latest.json'
 import Block from './Block'
 import InputString from './InputString'
+import { WithTranslation, withTranslation } from 'react-i18next';
 
 type FieldIdProps = {
   value: string
@@ -11,9 +12,11 @@ type FieldIdProps = {
   error?: {message: string}
 };
 
-export default class FieldId extends React.Component<FieldIdProps> {
+class IFieldId extends React.Component<FieldIdProps & WithTranslation> {
   render() {
-    return <Block label={"ID"} fieldSpec={latest.layer.id}
+    const t = this.props.t;
+    return <Block label={t("ID")} fieldSpec={latest.layer.id}
+
       data-wd-key={this.props.wdKey}
       error={this.props.error}
     >
@@ -25,3 +28,6 @@ export default class FieldId extends React.Component<FieldIdProps> {
     </Block>
   }
 }
+
+const FieldId = withTranslation()(IFieldId);
+export default FieldId;
