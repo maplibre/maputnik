@@ -1,4 +1,4 @@
-import React, { GetDerivedStateFromProps } from 'react'
+import React from 'react'
 import {mdiTableRowPlusAfter} from '@mdi/js';
 import {isEqual} from 'lodash';
 import {ExpressionSpecification, LegacyFilterSpecification, StyleSpecification} from 'maplibre-gl'
@@ -16,7 +16,7 @@ import ExpressionProperty from './_ExpressionProperty';
 import { Trans, WithTranslation, withTranslation } from 'react-i18next';
 
 
-function combiningFilter(props: FilterEditorProps): LegacyFilterSpecification | ExpressionSpecification {
+function combiningFilter(props: IFilterEditorProps): LegacyFilterSpecification | ExpressionSpecification {
   const filter = props.filter || ['all'];
 
   if (!Array.isArray(filter)) {
@@ -90,13 +90,13 @@ function hasNestedCombiningFilter(filter: LegacyFilterSpecification | Expression
   return false
 }
 
-type FilterEditorProps = {
+type IFilterEditorProps = {
   /** Properties of the vector layer and the available fields */
   properties?: {[key:string]: any}
   filter?: any[]
   errors?: {[key:string]: any}
   onChange(value: LegacyFilterSpecification | ExpressionSpecification): unknown
-};
+} & WithTranslation;
 
 type FilterEditorState = {
   showDoc: boolean
@@ -104,12 +104,12 @@ type FilterEditorState = {
   valueIsSimpleFilter?: boolean
 };
 
-class IFilterEditor extends React.Component<FilterEditorProps & WithTranslation, FilterEditorState> {
+class IFilterEditor extends React.Component<IFilterEditorProps, FilterEditorState> {
   static defaultProps = {
     filter: ["all"],
   }
 
-  constructor (props: FilterEditorProps & WithTranslation) {
+  constructor (props: IFilterEditorProps) {
     super(props);
     this.state = {
       showDoc: false,
@@ -156,7 +156,7 @@ class IFilterEditor extends React.Component<FilterEditorProps & WithTranslation,
     })
   }
 
-  public static getDerivedStateFromProps: GetDerivedStateFromProps<FilterEditorProps & WithTranslation, FilterEditorState> = (props, state) => {
+  static getDerivedStateFromProps(props: Readonly<IFilterEditorProps>, state: FilterEditorState) {
     const displaySimpleFilter = checkIfSimpleFilter(combiningFilter(props));
 
     // Upgrade but never downgrade
@@ -200,7 +200,7 @@ class IFilterEditor extends React.Component<FilterEditorProps & WithTranslation,
           <svg style={{marginRight: "0.2em", width:"14px", height:"14px", verticalAlign: "middle"}} viewBox="0 0 24 24">
             <path fill="currentColor" d={mdiFunctionVariant} />
           </svg>
-          Upgrade to expression
+          {t("Upgrade to expression")}
         </InputButton>
       </div>
     }
@@ -248,7 +248,7 @@ class IFilterEditor extends React.Component<FilterEditorProps & WithTranslation,
           <Block
             key="top"
             fieldSpec={fieldSpec}
-            label={"Filter"}
+            label={t("Filter")}
             action={actions}
           >
             <InputSelect

@@ -4,13 +4,13 @@ import Block from './Block'
 import InputString from './InputString'
 import { WithTranslation, withTranslation } from 'react-i18next';
 
-type FieldCommentProps = {
+type IFieldCommentProps = {
   value?: string
   onChange(value: string | undefined): unknown
   error: {message: string}
-};
+} & WithTranslation;
 
-class IFieldComment extends React.Component<FieldCommentProps & WithTranslation> {
+class IFieldComment extends React.Component<IFieldCommentProps> {
   render() {
     const t = this.props.t;
     const fieldSpec = {

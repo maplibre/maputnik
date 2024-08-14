@@ -12,7 +12,7 @@ import generateUniqueId from '../libs/document-uid';
 import { findClosestCommonPrefix, layerPrefix } from '../libs/layer';
 import { WithTranslation, withTranslation } from 'react-i18next';
 
-type LayerListContainerProps = {
+type ILayerListContainerProps = {
   layers: LayerSpecification[]
   selectedLayerIndex: number
   onLayersChange(layers: LayerSpecification[]): unknown
@@ -22,7 +22,7 @@ type LayerListContainerProps = {
   onLayerVisibilityToggle(...args: unknown[]): unknown
   sources: object
   errors: any[]
-};
+} & WithTranslation;
 
 type LayerListContainerState = {
   collapsedGroups: {[ket: string]: boolean}
@@ -32,14 +32,14 @@ type LayerListContainerState = {
 };
 
 // List of collapsible layer editors
-class ILayerListContainer extends React.Component<LayerListContainerProps & WithTranslation, LayerListContainerState> {
+class ILayerListContainer extends React.Component<ILayerListContainerProps, LayerListContainerState> {
   static defaultProps = {
     onLayerSelect: () => {},
   }
   selectedItemRef: React.RefObject<any>;
   scrollContainerRef: React.RefObject<HTMLElement>;
 
-  constructor(props: LayerListContainerProps & WithTranslation) {
+  constructor(props: ILayerListContainerProps) {
     super(props);
     this.selectedItemRef = React.createRef();
     this.scrollContainerRef = React.createRef();
@@ -135,7 +135,7 @@ class ILayerListContainer extends React.Component<LayerListContainerProps & With
     return collapsed === undefined ? true : collapsed
   }
 
-  shouldComponentUpdate (nextProps: LayerListContainerProps, nextState: LayerListContainerState) {
+  shouldComponentUpdate (nextProps: ILayerListContainerProps, nextState: LayerListContainerState) {
     // Always update on state change
     if (this.state !== nextState) {
       return true;
@@ -160,10 +160,10 @@ class ILayerListContainer extends React.Component<LayerListContainerProps & With
       this.props.layers.map(getRequiredProps),
     );
 
-    function withoutLayers(props: LayerListContainerProps) {
+    function withoutLayers(props: ILayerListContainerProps) {
       const out = {
         ...props
-      } as LayerListContainerProps & { layers?: any };
+      } as ILayerListContainerProps & { layers?: any };
       delete out['layers'];
       return out;
     }
@@ -179,7 +179,7 @@ class ILayerListContainer extends React.Component<LayerListContainerProps & With
     return propsChanged;
   }
 
-  componentDidUpdate (prevProps: LayerListContainerProps) {
+  componentDidUpdate (prevProps: ILayerListContainerProps) {
     if (prevProps.selectedLayerIndex !== this.props.selectedLayerIndex) {
       const selectedItemNode = this.selectedItemRef.current;
       if (selectedItemNode && selectedItemNode.node) {
@@ -321,9 +321,9 @@ class ILayerListContainer extends React.Component<LayerListContainerProps & With
 const LayerListContainer = withTranslation()(ILayerListContainer);
 
 // eslint-disable-next-line react-refresh/only-export-components
-const LayerListContainerSortable = SortableContainer((props: LayerListContainerProps) => <LayerListContainer {...props} />)
+const LayerListContainerSortable = SortableContainer((props: ILayerListContainerProps) => <LayerListContainer {...props} />)
 
-type LayerListProps = LayerListContainerProps & {
+type LayerListProps = ILayerListContainerProps & {
   onMoveLayer: SortEndHandler
 };
 

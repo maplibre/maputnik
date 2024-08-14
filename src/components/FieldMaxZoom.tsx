@@ -5,13 +5,13 @@ import Block from './Block'
 import InputNumber from './InputNumber'
 import { WithTranslation, withTranslation } from 'react-i18next';
 
-type FieldMaxZoomProps = {
+type IFieldMaxZoomProps = {
   value?: number
   onChange(value: number | undefined): unknown
   error?: {message: string}
-};
+} & WithTranslation;
 
-class IFieldMaxZoom extends React.Component<FieldMaxZoomProps & WithTranslation> {
+class IFieldMaxZoom extends React.Component<IFieldMaxZoomProps> {
   render() {
     const t = this.props.t;
     return <Block label={t("Max Zoom")} fieldSpec={latest.layer.maxzoom}

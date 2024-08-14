@@ -5,13 +5,13 @@ import Block from './Block'
 import InputNumber from './InputNumber'
 import { WithTranslation, withTranslation } from 'react-i18next';
 
-type FieldMinZoomProps = {
+type IFieldMinZoomProps = {
   value?: number
   onChange(...args: unknown[]): unknown
   error?: {message: string}
-};
+} & WithTranslation;
 
-class IFieldMinZoom extends React.Component<FieldMinZoomProps & WithTranslation> {
+class IFieldMinZoom extends React.Component<IFieldMinZoomProps> {
   render() {
     const t = this.props.t;
     return <Block label={t("Min Zoom")} fieldSpec={latest.layer.minzoom}

@@ -1,6 +1,7 @@
 import React from 'react'
 import classnames from 'classnames';
 import CodeMirror, { ModeSpec } from 'codemirror';
+import { Trans, WithTranslation, withTranslation } from 'react-i18next';
 
 import 'codemirror/mode/javascript/javascript'
 import 'codemirror/addon/lint/lint'
@@ -27,6 +28,7 @@ export type InputJsonProps = {
   mode?: ModeSpec<any>
   lint?: boolean | object
 };
+type IInputJsonProps = InputJsonProps & WithTranslation;
 
 type InputJsonState = {
   isEditing: boolean
@@ -34,7 +36,7 @@ type InputJsonState = {
   prevValue: string
 };
 
-export default class InputJson extends React.Component<InputJsonProps, InputJsonState> {
+class IInputJson extends React.Component<IInputJsonProps, InputJsonState> {
   static defaultProps = {
     lineNumbers: true,
     lineWrapping: false,
@@ -52,7 +54,7 @@ export default class InputJson extends React.Component<InputJsonProps, InputJson
   _el: HTMLDivElement | null = null;
   _cancelNextChange: boolean = false;
 
-  constructor(props: InputJsonProps) {
+  constructor(props: IInputJsonProps) {
     super(props);
     this._keyEvent = "keyboard";
     this.state = {
@@ -156,6 +158,7 @@ export default class InputJson extends React.Component<InputJsonProps, InputJson
   }
 
   render() {
+    const t = this.props.t;
     const {showMessage} = this.state;
     const style = {} as {maxHeight?: number};
     if (this.props.maxHeight) {
@@ -164,7 +167,9 @@ export default class InputJson extends React.Component<InputJsonProps, InputJson
 
     return <div className="JSONEditor" onPointerDown={this.onPointerDown} aria-hidden="true">
       <div className={classnames("JSONEditor__message", {"JSONEditor__message--on": showMessage})}>
-        Press <kbd>ESC</kbd> to lose focus
+        <Trans t={t}>
+          Press <kbd>ESC</kbd> to lose focus
+        </Trans>
       </div>
       <div
         className={classnames("codemirror-container", this.props.className)}
@@ -174,3 +179,6 @@ export default class InputJson extends React.Component<InputJsonProps, InputJson
     </div>
   }
 }
+
+const InputJson = withTranslation()(IInputJson);
+export default InputJson;

@@ -1,6 +1,7 @@
 import React from 'react'
 import {MdDelete, MdUndo} from 'react-icons/md'
 import stringifyPretty from 'json-stringify-pretty-compact'
+import { WithTranslation, withTranslation } from 'react-i18next';
 
 import Block from './Block'
 import InputButton from './InputButton'
@@ -8,7 +9,7 @@ import labelFromFieldName from '../libs/label-from-field-name'
 import FieldJson from './FieldJson'
 
 
-type ExpressionPropertyProps = {
+type IExpressionPropertyProps = {
   onDelete?(...args: unknown[]): unknown
   fieldName: string
   fieldType?: string
@@ -20,20 +21,20 @@ type ExpressionPropertyProps = {
   canUndo?(...args: unknown[]): unknown
   onFocus?(...args: unknown[]): unknown
   onBlur?(...args: unknown[]): unknown
-};
+} & WithTranslation;
 
 type ExpressionPropertyState = {
   jsonError: boolean
 };
 
-export default class ExpressionProperty extends React.Component<ExpressionPropertyProps, ExpressionPropertyState> {
+class IExpressionProperty extends React.Component<IExpressionPropertyProps, ExpressionPropertyState> {
   static defaultProps = {
     errors: {},
     onFocus: () => {},
     onBlur: () => {},
   }
 
-  constructor (props:ExpressionPropertyProps) {
+  constructor(props: IExpressionPropertyProps) {
     super(props);
     this.state = {
       jsonError: false,
@@ -53,7 +54,7 @@ export default class ExpressionProperty extends React.Component<ExpressionProper
   }
 
   render() {
-    const {errors, fieldName, fieldType, value, canUndo} = this.props;
+    const {t, errors, fieldName, fieldType, value, canUndo} = this.props;
     const {jsonError} = this.state;
     const undoDisabled = canUndo ? !canUndo() : true;
 
@@ -65,7 +66,7 @@ export default class ExpressionProperty extends React.Component<ExpressionProper
             onClick={this.props.onUndo}
             disabled={undoDisabled}
             className="maputnik-delete-stop"
-            title="Revert from expression"
+            title={t("Revert from expression")}
           >
             <MdUndo />
           </InputButton>
@@ -74,7 +75,7 @@ export default class ExpressionProperty extends React.Component<ExpressionProper
           key="delete_action"
           onClick={this.props.onDelete}
           className="maputnik-delete-stop"
-          title="Delete expression"
+          title={t("Delete expression")}
         >
           <MdDelete />
         </InputButton>
@@ -112,7 +113,7 @@ export default class ExpressionProperty extends React.Component<ExpressionProper
       // this feels like an incorrect type...? `foundErrors` is an array of objects, not a single object
       error={foundErrors as any}
       fieldSpec={this.props.fieldSpec}
-      label={labelFromFieldName(this.props.fieldName)}
+      label={t(labelFromFieldName(this.props.fieldName))}
       action={deleteStopBtn}
       wideMode={true}
     >
@@ -137,3 +138,6 @@ export default class ExpressionProperty extends React.Component<ExpressionProper
     </Block>
   }
 }
+
+const ExpressionProperty = withTranslation()(IExpressionProperty);
+export default ExpressionProperty;

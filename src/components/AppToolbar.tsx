@@ -82,7 +82,7 @@ class ToolbarAction extends React.Component<ToolbarActionProps> {
 
 export type MapState = "map" | "inspect" | "filter-achromatopsia" | "filter-deuteranopia" | "filter-protanopia" | "filter-tritanopia";
 
-type AppToolbarProps = {
+type IAppToolbarProps = {
   mapStyle: object
   inspectModeEnabled: boolean
   onStyleChanged(...args: unknown[]): unknown
@@ -95,9 +95,9 @@ type AppToolbarProps = {
   onSetMapState(mapState: MapState): unknown
   mapState?: MapState
   renderer?: string
-};
+} & WithTranslation;
 
-class IAppToolbar extends React.Component<AppToolbarProps & WithTranslation> {
+class IAppToolbar extends React.Component<IAppToolbarProps> {
   state = {
     isOpen: {
       settings: false,
@@ -257,7 +257,7 @@ class IAppToolbar extends React.Component<AppToolbarProps & WithTranslation> {
             </label>
           </ToolbarSelect>
 
-          <ToolbarSelect wdKey="nav:inspect">
+          <ToolbarSelect wdKey="nav:language">
             <MdLanguage />
             <label>{t("Language")}
               <select

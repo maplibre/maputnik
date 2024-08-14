@@ -5,15 +5,15 @@ import Block from './Block'
 import InputAutocomplete from './InputAutocomplete'
 import { WithTranslation, withTranslation } from 'react-i18next';
 
-type FieldSourceLayerProps = {
+type IFieldSourceLayerProps = {
   value?: string
   onChange?(...args: unknown[]): unknown
   sourceLayerIds?: unknown[]
   isFixed?: boolean
   error?: {message: string}
-};
+} & WithTranslation;
 
-class IFieldSourceLayer extends React.Component<FieldSourceLayerProps & WithTranslation> {
+class IFieldSourceLayer extends React.Component<IFieldSourceLayerProps> {
   static defaultProps = {
     onChange: () => {},
     sourceLayerIds: [],

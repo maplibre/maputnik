@@ -1,4 +1,4 @@
-import React, {GetDerivedStateFromProps, type JSX} from 'react'
+import React, {type JSX} from 'react'
 import PropTypes from 'prop-types'
 import { Wrapper, Button, Menu, MenuItem } from 'react-aria-menubutton'
 import {Accordion} from 'react-accessible-accordion';
@@ -53,7 +53,7 @@ function layoutGroups(layerType: LayerSpecification["type"], t: TFunction): {tit
     .concat([editorGroup])
 }
 
-type LayerEditorProps = {
+type ILayerEditorProps = {
   layer: LayerSpecification
   sources: {[key: string]: SourceSpecification}
   vectorLayers: {[key: string]: any}
@@ -68,14 +68,14 @@ type LayerEditorProps = {
   isLastLayer?: boolean
   layerIndex: number
   errors?: any[]
-};
+} & WithTranslation;
 
 type LayerEditorState = {
   editorGroups: {[keys:string]: boolean}
 };
 
 /** Layer editor supporting multiple types of layers. */
-class ILayerEditor extends React.Component<LayerEditorProps & WithTranslation, LayerEditorState> {
+class ILayerEditor extends React.Component<ILayerEditorProps, LayerEditorState> {
   static defaultProps = {
     onLayerChanged: () => {},
     onLayerIdChange: () => {},
@@ -86,7 +86,7 @@ class ILayerEditor extends React.Component<LayerEditorProps & WithTranslation, L
     reactIconBase: PropTypes.object
   }
 
-  constructor(props: LayerEditorProps & WithTranslation) {
+  constructor(props: ILayerEditorProps) {
     super(props)
 
     //TODO: Clean this up and refactor into function
@@ -98,7 +98,7 @@ class ILayerEditor extends React.Component<LayerEditorProps & WithTranslation, L
     this.state = { editorGroups }
   }
 
-  public static getDerivedStateFromProps: GetDerivedStateFromProps<LayerEditorProps & WithTranslation, LayerEditorState> = (props, state) => {
+  static getDerivedStateFromProps(props: Readonly<ILayerEditorProps>, state: LayerEditorState) {
     const additionalGroups = { ...state.editorGroups }
 
     getLayoutForType(props.layer.type, props.t).groups.forEach(group => {

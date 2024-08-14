@@ -5,15 +5,15 @@ import Block from './Block'
 import InputAutocomplete from './InputAutocomplete'
 import { WithTranslation, withTranslation } from 'react-i18next';
 
-type FieldSourceProps = {
+type IFieldSourceProps = {
   value?: string
   wdKey?: string
   onChange?(value: string| undefined): unknown
   sourceIds?: unknown[]
   error?: {message: string}
-};
+} & WithTranslation;
 
-class IFieldSource extends React.Component<FieldSourceProps & WithTranslation> {
+class IFieldSource extends React.Component<IFieldSourceProps> {
   static defaultProps = {
     onChange: () => {},
     sourceIds: [],
