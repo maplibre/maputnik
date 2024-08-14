@@ -16,7 +16,7 @@ import ExpressionProperty from './_ExpressionProperty';
 import { Trans, WithTranslation, withTranslation } from 'react-i18next';
 
 
-function combiningFilter(props: IFilterEditorProps): LegacyFilterSpecification | ExpressionSpecification {
+function combiningFilter(props: FilterEditorInternalProps): LegacyFilterSpecification | ExpressionSpecification {
   const filter = props.filter || ['all'];
 
   if (!Array.isArray(filter)) {
@@ -90,7 +90,7 @@ function hasNestedCombiningFilter(filter: LegacyFilterSpecification | Expression
   return false
 }
 
-type IFilterEditorProps = {
+type FilterEditorInternalProps = {
   /** Properties of the vector layer and the available fields */
   properties?: {[key:string]: any}
   filter?: any[]
@@ -104,12 +104,12 @@ type FilterEditorState = {
   valueIsSimpleFilter?: boolean
 };
 
-class IFilterEditor extends React.Component<IFilterEditorProps, FilterEditorState> {
+class FilterEditorInternal extends React.Component<FilterEditorInternalProps, FilterEditorState> {
   static defaultProps = {
     filter: ["all"],
   }
 
-  constructor (props: IFilterEditorProps) {
+  constructor (props: FilterEditorInternalProps) {
     super(props);
     this.state = {
       showDoc: false,
@@ -156,7 +156,7 @@ class IFilterEditor extends React.Component<IFilterEditorProps, FilterEditorStat
     })
   }
 
-  static getDerivedStateFromProps(props: Readonly<IFilterEditorProps>, state: FilterEditorState) {
+  static getDerivedStateFromProps(props: Readonly<FilterEditorInternalProps>, state: FilterEditorState) {
     const displaySimpleFilter = checkIfSimpleFilter(combiningFilter(props));
 
     // Upgrade but never downgrade
@@ -321,5 +321,5 @@ class IFilterEditor extends React.Component<IFilterEditorProps, FilterEditorStat
   }
 }
 
-const FilterEditor = withTranslation()(IFilterEditor);
+const FilterEditor = withTranslation()(FilterEditorInternal);
 export default FilterEditor;

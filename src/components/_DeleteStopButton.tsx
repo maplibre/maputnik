@@ -5,12 +5,12 @@ import {MdDelete} from 'react-icons/md'
 import { WithTranslation, withTranslation } from 'react-i18next';
 
 
-type IDeleteStopButtonProps = {
+type DeleteStopButtonInternalProps = {
   onClick?(...args: unknown[]): unknown
 } & WithTranslation;
 
 
-class IDeleteStopButton extends React.Component<IDeleteStopButtonProps> {
+class DeleteStopButtonInternal extends React.Component<DeleteStopButtonInternalProps> {
   render() {
     const t = this.props.t;
     return <InputButton
@@ -23,5 +23,5 @@ class IDeleteStopButton extends React.Component<IDeleteStopButtonProps> {
   }
 }
 
-const DeleteStopButton = withTranslation()(IDeleteStopButton);
+const DeleteStopButton = withTranslation()(DeleteStopButtonInternal);
 export default DeleteStopButton;

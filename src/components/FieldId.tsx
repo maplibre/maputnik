@@ -5,14 +5,14 @@ import Block from './Block'
 import InputString from './InputString'
 import { WithTranslation, withTranslation } from 'react-i18next';
 
-type IFieldIdProps = {
+type FieldIdInternalProps = {
   value: string
   wdKey: string
   onChange(value: string | undefined): unknown
   error?: {message: string}
 } & WithTranslation;
 
-class IFieldId extends React.Component<IFieldIdProps> {
+class FieldIdInternal extends React.Component<FieldIdInternalProps> {
   render() {
     const t = this.props.t;
     return <Block label={t("ID")} fieldSpec={latest.layer.id}
@@ -29,5 +29,5 @@ class IFieldId extends React.Component<IFieldIdProps> {
   }
 }
 
-const FieldId = withTranslation()(IFieldId);
+const FieldId = withTranslation()(FieldIdInternal);
 export default FieldId;

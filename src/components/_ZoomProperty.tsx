@@ -21,7 +21,7 @@ import sortNumerically from '../libs/sort-numerically'
  *
  * When the stops are reordered the references are also updated (see this.orderStops) this allows React to use the same key for the element and keep keyboard focus.
  */
-function setStopRefs(props: IZoomPropertyProps, state: ZoomPropertyState) {
+function setStopRefs(props: ZoomPropertyInternalProps, state: ZoomPropertyState) {
   // This is initialsed below only if required to improved performance.
   let newRefs: {[key: number]: string} = {};
 
@@ -46,7 +46,7 @@ type ZoomWithStops = {
 }
 
 
-type IZoomPropertyProps = {
+type ZoomPropertyInternalProps = {
   onChange?(...args: unknown[]): unknown
   onChangeToDataFunction?(...args: unknown[]): unknown
   onDeleteStop?(...args: unknown[]): unknown
@@ -66,7 +66,7 @@ type ZoomPropertyState = {
   refs: {[key: number]: string}
 }
 
-class IZoomProperty extends React.Component<IZoomPropertyProps, ZoomPropertyState> {
+class ZoomPropertyInternal extends React.Component<ZoomPropertyInternalProps, ZoomPropertyState> {
   static defaultProps = {
     errors: {},
   }
@@ -85,7 +85,7 @@ class IZoomProperty extends React.Component<IZoomPropertyProps, ZoomPropertyStat
     }
   }
 
-  static getDerivedStateFromProps(props: Readonly<IZoomPropertyProps>, state: ZoomPropertyState) {
+  static getDerivedStateFromProps(props: Readonly<ZoomPropertyInternalProps>, state: ZoomPropertyState) {
     const newRefs = setStopRefs(props, state);
     if(newRefs) {
       return {
@@ -265,5 +265,5 @@ class IZoomProperty extends React.Component<IZoomPropertyProps, ZoomPropertyStat
   }
 }
 
-const ZoomProperty = withTranslation()(IZoomProperty);
+const ZoomProperty = withTranslation()(ZoomPropertyInternal);
 export default ZoomProperty;

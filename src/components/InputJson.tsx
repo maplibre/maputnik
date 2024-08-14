@@ -28,7 +28,7 @@ export type InputJsonProps = {
   mode?: ModeSpec<any>
   lint?: boolean | object
 };
-type IInputJsonProps = InputJsonProps & WithTranslation;
+type InputJsonInternalProps = InputJsonProps & WithTranslation;
 
 type InputJsonState = {
   isEditing: boolean
@@ -36,7 +36,7 @@ type InputJsonState = {
   prevValue: string
 };
 
-class IInputJson extends React.Component<IInputJsonProps, InputJsonState> {
+class InputJsonInternal extends React.Component<InputJsonInternalProps, InputJsonState> {
   static defaultProps = {
     lineNumbers: true,
     lineWrapping: false,
@@ -54,7 +54,7 @@ class IInputJson extends React.Component<IInputJsonProps, InputJsonState> {
   _el: HTMLDivElement | null = null;
   _cancelNextChange: boolean = false;
 
-  constructor(props: IInputJsonProps) {
+  constructor(props: InputJsonInternalProps) {
     super(props);
     this._keyEvent = "keyboard";
     this.state = {
@@ -180,5 +180,5 @@ class IInputJson extends React.Component<IInputJsonProps, InputJsonState> {
   }
 }
 
-const InputJson = withTranslation()(IInputJson);
+const InputJson = withTranslation()(InputJsonInternal);
 export default InputJson;

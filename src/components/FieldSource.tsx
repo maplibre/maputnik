@@ -5,7 +5,7 @@ import Block from './Block'
 import InputAutocomplete from './InputAutocomplete'
 import { WithTranslation, withTranslation } from 'react-i18next';
 
-type IFieldSourceProps = {
+type FieldSourceInternalProps = {
   value?: string
   wdKey?: string
   onChange?(value: string| undefined): unknown
@@ -13,7 +13,7 @@ type IFieldSourceProps = {
   error?: {message: string}
 } & WithTranslation;
 
-class IFieldSource extends React.Component<IFieldSourceProps> {
+class FieldSourceInternal extends React.Component<FieldSourceInternalProps> {
   static defaultProps = {
     onChange: () => {},
     sourceIds: [],
@@ -36,5 +36,5 @@ class IFieldSource extends React.Component<IFieldSourceProps> {
   }
 }
 
-const FieldSource = withTranslation()(IFieldSource);
+const FieldSource = withTranslation()(FieldSourceInternal);
 export default FieldSource;

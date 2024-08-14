@@ -23,7 +23,7 @@ type LayerListContainerProps = {
   sources: object
   errors: any[]
 };
-type ILayerListContainerProps = LayerListContainerProps & WithTranslation;
+type LayerListContainerInternalProps = LayerListContainerProps & WithTranslation;
 
 type LayerListContainerState = {
   collapsedGroups: {[ket: string]: boolean}
@@ -33,14 +33,14 @@ type LayerListContainerState = {
 };
 
 // List of collapsible layer editors
-class ILayerListContainer extends React.Component<ILayerListContainerProps, LayerListContainerState> {
+class LayerListContainerInternal extends React.Component<LayerListContainerInternalProps, LayerListContainerState> {
   static defaultProps = {
     onLayerSelect: () => {},
   }
   selectedItemRef: React.RefObject<any>;
   scrollContainerRef: React.RefObject<HTMLElement>;
 
-  constructor(props: ILayerListContainerProps) {
+  constructor(props: LayerListContainerInternalProps) {
     super(props);
     this.selectedItemRef = React.createRef();
     this.scrollContainerRef = React.createRef();
@@ -319,7 +319,7 @@ class ILayerListContainer extends React.Component<ILayerListContainerProps, Laye
 }
 
 // eslint-disable-next-line react-refresh/only-export-components
-const LayerListContainer = withTranslation()(ILayerListContainer);
+const LayerListContainer = withTranslation()(LayerListContainerInternal);
 
 // eslint-disable-next-line react-refresh/only-export-components
 const LayerListContainerSortable = SortableContainer((props: LayerListContainerProps) => <LayerListContainer {...props} />)

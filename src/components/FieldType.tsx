@@ -6,7 +6,7 @@ import InputSelect from './InputSelect'
 import InputString from './InputString'
 import { WithTranslation, withTranslation } from 'react-i18next';
 
-type IFieldTypeProps = {
+type FieldTypeInternalProps = {
   value: string
   wdKey?: string
   onChange(value: string): unknown
@@ -14,7 +14,7 @@ type IFieldTypeProps = {
   disabled?: boolean
 } & WithTranslation;
 
-class IFieldType extends React.Component<IFieldTypeProps> {
+class FieldTypeInternal extends React.Component<FieldTypeInternalProps> {
   static defaultProps = {
     disabled: false,
   }
@@ -53,5 +53,5 @@ class IFieldType extends React.Component<IFieldTypeProps> {
   }
 }
 
-const FieldType = withTranslation()(IFieldType);
+const FieldType = withTranslation()(FieldTypeInternal);
 export default FieldType;

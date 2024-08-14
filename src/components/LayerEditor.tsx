@@ -53,7 +53,7 @@ function layoutGroups(layerType: LayerSpecification["type"], t: TFunction): {tit
     .concat([editorGroup])
 }
 
-type ILayerEditorProps = {
+type LayerEditorInternalProps = {
   layer: LayerSpecification
   sources: {[key: string]: SourceSpecification}
   vectorLayers: {[key: string]: any}
@@ -75,7 +75,7 @@ type LayerEditorState = {
 };
 
 /** Layer editor supporting multiple types of layers. */
-class ILayerEditor extends React.Component<ILayerEditorProps, LayerEditorState> {
+class LayerEditorInternal extends React.Component<LayerEditorInternalProps, LayerEditorState> {
   static defaultProps = {
     onLayerChanged: () => {},
     onLayerIdChange: () => {},
@@ -86,7 +86,7 @@ class ILayerEditor extends React.Component<ILayerEditorProps, LayerEditorState> 
     reactIconBase: PropTypes.object
   }
 
-  constructor(props: ILayerEditorProps) {
+  constructor(props: LayerEditorInternalProps) {
     super(props)
 
     //TODO: Clean this up and refactor into function
@@ -98,7 +98,7 @@ class ILayerEditor extends React.Component<ILayerEditorProps, LayerEditorState> 
     this.state = { editorGroups }
   }
 
-  static getDerivedStateFromProps(props: Readonly<ILayerEditorProps>, state: LayerEditorState) {
+  static getDerivedStateFromProps(props: Readonly<LayerEditorInternalProps>, state: LayerEditorState) {
     const additionalGroups = { ...state.editorGroups }
 
     getLayoutForType(props.layer.type, props.t).groups.forEach(group => {
@@ -357,5 +357,5 @@ class ILayerEditor extends React.Component<ILayerEditorProps, LayerEditorState> 
   }
 }
 
-const LayerEditor = withTranslation()(ILayerEditor);
+const LayerEditor = withTranslation()(LayerEditorInternal);
 export default LayerEditor;

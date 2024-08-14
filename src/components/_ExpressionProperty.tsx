@@ -9,7 +9,7 @@ import labelFromFieldName from '../libs/label-from-field-name'
 import FieldJson from './FieldJson'
 
 
-type IExpressionPropertyProps = {
+type ExpressionPropertyInternalProps = {
   onDelete?(...args: unknown[]): unknown
   fieldName: string
   fieldType?: string
@@ -27,14 +27,14 @@ type ExpressionPropertyState = {
   jsonError: boolean
 };
 
-class IExpressionProperty extends React.Component<IExpressionPropertyProps, ExpressionPropertyState> {
+class ExpressionPropertyInternal extends React.Component<ExpressionPropertyInternalProps, ExpressionPropertyState> {
   static defaultProps = {
     errors: {},
     onFocus: () => {},
     onBlur: () => {},
   }
 
-  constructor(props: IExpressionPropertyProps) {
+  constructor(props: ExpressionPropertyInternalProps) {
     super(props);
     this.state = {
       jsonError: false,
@@ -139,5 +139,5 @@ class IExpressionProperty extends React.Component<IExpressionPropertyProps, Expr
   }
 }
 
-const ExpressionProperty = withTranslation()(IExpressionProperty);
+const ExpressionProperty = withTranslation()(ExpressionPropertyInternal);
 export default ExpressionProperty;
