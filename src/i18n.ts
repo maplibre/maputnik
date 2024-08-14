@@ -3,6 +3,11 @@ import detector from "i18next-browser-languagedetector";
 import resourcesToBackend from "i18next-resources-to-backend";
 import { initReactI18next } from "react-i18next";
 
+export const supportedLanguages = {
+  "en": "English",
+  "ja": "日本語",
+} as const;
+
 i18n
   .use(detector) // detect user language from browser settings
   .use(
@@ -10,14 +15,10 @@ i18n
   )
   .use(initReactI18next) // required to initialize react-i18next
   .init({
+    supportedLngs: Object.keys(supportedLanguages),
     interpolation: {
       escapeValue: false // React already escapes for us
     }
   });
-
-export const supportedLanguages = {
-  "en": "English",
-  "ja": "日本語",
-} as const;
 
 export default i18n;
