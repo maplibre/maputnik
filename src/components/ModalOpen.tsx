@@ -2,6 +2,7 @@ import React, { FormEvent } from 'react'
 import {MdFileUpload} from 'react-icons/md'
 import {MdAddCircleOutline} from 'react-icons/md'
 import FileReaderInput, { Result } from 'react-file-reader-input'
+import { Trans, WithTranslation, withTranslation } from 'react-i18next';
 
 import ModalLoading from './ModalLoading'
 import Modal from './Modal'
@@ -42,11 +43,11 @@ class PublicStyle extends React.Component<PublicStyleProps> {
   }
 }
 
-type ModalOpenProps = {
+type ModalOpenInternalProps = {
   isOpen: boolean
   onOpenToggle(...args: unknown[]): unknown
   onStyleOpen(...args: unknown[]): unknown
-};
+} & WithTranslation;
 
 type ModalOpenState = {
   styleUrl: string
@@ -55,8 +56,8 @@ type ModalOpenState = {
   activeRequestUrl?: string | null
 };
 
-export default class ModalOpen extends React.Component<ModalOpenProps, ModalOpenState> {
-  constructor(props: ModalOpenProps) {
+class ModalOpenInternal extends React.Component<ModalOpenInternalProps, ModalOpenState> {
+  constructor(props: ModalOpenInternalProps) {
     super(props);
     this.state = {
       styleUrl: ""
@@ -174,6 +175,7 @@ export default class ModalOpen extends React.Component<ModalOpenProps, ModalOpen
   }
 
   render() {
+    const t = this.props.t;
     const styleOptions = publicStyles.map(style => {
       return <PublicStyle
         key={style.id}
@@ -200,29 +202,31 @@ export default class ModalOpen extends React.Component<ModalOpenProps, ModalOpen
           data-wd-key="modal:open"
           isOpen={this.props.isOpen}
           onOpenToggle={() => this.onOpenToggle()}
-          title={'Open Style'}
+          title={t('Open Style')}
         >
           {errorElement}
           <section className="maputnik-modal-section">
-            <h1>Upload Style</h1>
-            <p>Upload a JSON style from your computer.</p>
-            <FileReaderInput onChange={this.onUpload} tabIndex={-1} aria-label="Style file">
-              <InputButton className="maputnik-upload-button"><MdFileUpload /> Upload</InputButton>
+            <h1>{t("Upload Style")}</h1>
+            <p>{t("Upload a JSON style from your computer.")}</p>
+            <FileReaderInput onChange={this.onUpload} tabIndex={-1} aria-label={t("Style file")}>
+              <InputButton className="maputnik-upload-button"><MdFileUpload /> {t("Upload")}</InputButton>
             </FileReaderInput>
           </section>
 
           <section className="maputnik-modal-section">
             <form onSubmit={this.onSubmitUrl}>
-              <h1>Load from URL</h1>
+              <h1>{t("Load from URL")}</h1>
               <p>
-                Load from a URL. Note that the URL must have <a href="https://enable-cors.org" target="_blank" rel="noopener noreferrer">CORS enabled</a>.
+                <Trans t={t}>
+                  Load from a URL. Note that the URL must have <a href="https://enable-cors.org" target="_blank" rel="noopener noreferrer">CORS enabled</a>.
+                </Trans>
               </p>
               <InputUrl
-                aria-label="Style URL"
+                aria-label={t("Style URL")}
                 data-wd-key="modal:open.url.input"
                 type="text"
                 className="maputnik-input"
-                default="Enter URL..."
+                default={t("Enter URL...")}
                 value={this.state.styleUrl}
                 onInput={this.onChangeUrl}
                 onChange={this.onChangeUrl}
@@ -239,9 +243,9 @@ export default class ModalOpen extends React.Component<ModalOpenProps, ModalOpen
           </section>
 
           <section className="maputnik-modal-section maputnik-modal-section--shrink">
-            <h1>Gallery Styles</h1>
+            <h1>{t("Gallery Styles")}</h1>
             <p>
-              Open one of the publicly available styles to start from.
+              {t("Open one of the publicly available styles to start from.")}
             </p>
             <div className="maputnik-style-gallery-container">
               {styleOptions}
@@ -251,12 +255,14 @@ export default class ModalOpen extends React.Component<ModalOpenProps, ModalOpen
 
         <ModalLoading
           isOpen={!!this.state.activeRequest}
-          title={'Loading style'}
+          title={t('Loading style')}
           onCancel={(e: Event) => this.onCancelActiveRequest(e)}
-          message={"Loading: "+this.state.activeRequestUrl}
+          message={t("Loading: {{requestUrl}}", { requestUrl: this.state.activeRequestUrl })}
         />
       </div>
     )
   }
 }
 
+const ModalOpen = withTranslation()(ModalOpenInternal);
+export default ModalOpen;

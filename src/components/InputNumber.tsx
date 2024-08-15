@@ -41,7 +41,7 @@ export default class InputNumber extends React.Component<InputNumberProps, Input
     }
   }
 
-  static getDerivedStateFromProps(props: InputNumberProps, state: InputNumberState) {
+  static getDerivedStateFromProps(props: Readonly<InputNumberProps>, state: InputNumberState) {
     if (!state.editing && props.value !== state.value) {
       return {
         value: props.value,

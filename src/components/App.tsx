@@ -137,7 +137,6 @@ export default class App extends React.Component<any, AppState> {
   revisionStore: RevisionStore;
   styleStore: StyleStore | ApiStyleStore;
   layerWatcher: LayerWatcher;
-  shortcutEl: ModalShortcuts | null = null;
 
   constructor(props: any) {
     super(props)
@@ -942,7 +941,6 @@ export default class App extends React.Component<any, AppState> {
         mapView={this.state.mapView}
       />
       <ModalShortcuts
-        ref={(el) => this.shortcutEl = el}
         isOpen={this.state.isOpen.shortcuts}
         onOpenToggle={this.toggleModal.bind(this, 'shortcuts')}
       />

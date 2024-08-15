@@ -1,9 +1,10 @@
 import React from 'react'
 
+import { Trans, WithTranslation, withTranslation } from 'react-i18next';
 import Modal from './Modal'
 
 
-type ModalDebugProps = {
+type ModalDebugInternalProps = {
   isOpen: boolean
   renderer: string
   onChangeMaplibreGlDebug(key: string, checked: boolean): unknown
@@ -18,12 +19,12 @@ type ModalDebugProps = {
       lat: number
     }
   }
-};
+} & WithTranslation;
 
 
-export default class ModalDebug extends React.Component<ModalDebugProps> {
+class ModalDebugInternal extends React.Component<ModalDebugInternalProps> {
   render() {
-    const {mapView} = this.props;
+    const {t, mapView} = this.props;
 
     const osmZoom = Math.round(mapView.zoom)+1;
     const osmLon = +(mapView.center.lng).toFixed(5);
@@ -33,10 +34,10 @@ export default class ModalDebug extends React.Component<ModalDebugProps> {
       data-wd-key="modal:debug"
       isOpen={this.props.isOpen}
       onOpenToggle={this.props.onOpenToggle}
-      title={'Debug'}
+      title={t('Debug')}
     >
       <section className="maputnik-modal-section maputnik-modal-shortcuts">
-        <h1>Options</h1>
+        <h1>{t("Options")}</h1>
         {this.props.renderer === 'mlgljs' &&
           <ul>
             {Object.entries(this.props.maplibreGlDebugOptions!).map(([key, val]) => {
@@ -63,16 +64,20 @@ export default class ModalDebug extends React.Component<ModalDebugProps> {
       <section className="maputnik-modal-section">
         <h1>Links</h1>
         <p>
-          <a
-            target="_blank"
-            rel="noopener noreferrer"
-            href={`https://www.openstreetmap.org/#map=${osmZoom}/${osmLat}/${osmLon}`}
-          >
-            Open in OSM
-          </a> &mdash; Opens the current view on openstreetmap.org
+          <Trans t={t}>
+            <a
+              target="_blank"
+              rel="noopener noreferrer"
+              href={`https://www.openstreetmap.org/#map=${osmZoom}/${osmLat}/${osmLon}`}
+            >
+              Open in OSM
+            </a> &mdash; Opens the current view on openstreetmap.org
+          </Trans>
         </p>
       </section>
     </Modal>
   }
 }
 
+const ModalDebug = withTranslation()(ModalDebugInternal);
+export default ModalDebug;

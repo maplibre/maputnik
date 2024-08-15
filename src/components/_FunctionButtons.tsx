@@ -3,16 +3,18 @@ import React from 'react'
 import InputButton from './InputButton'
 import {MdFunctions, MdInsertChart} from 'react-icons/md'
 import {mdiFunctionVariant} from '@mdi/js';
+import { WithTranslation, withTranslation } from 'react-i18next';
 
-type FunctionInputButtonsProps = {
+type FunctionInputButtonsInternalProps = {
   fieldSpec?: any
   onZoomClick?(...args: unknown[]): unknown
   onDataClick?(...args: unknown[]): unknown
   onExpressionClick?(...args: unknown[]): unknown
-};
+} & WithTranslation;
 
-export default class FunctionInputButtons extends React.Component<FunctionInputButtonsProps> {
+class FunctionInputButtonsInternal extends React.Component<FunctionInputButtonsInternalProps> {
   render() {
+    const t = this.props.t;
     let makeZoomInputButton, makeDataInputButton, expressionInputButton;
 
     if (this.props.fieldSpec.expression.parameters.includes('zoom')) {
@@ -20,7 +22,7 @@ export default class FunctionInputButtons extends React.Component<FunctionInputB
         <InputButton
           className="maputnik-make-zoom-function"
           onClick={this.props.onExpressionClick}
-          title="Convert to expression"
+          title={t("Convert to expression")}
         >
           <svg style={{width:"14px", height:"14px", verticalAlign: "middle"}} viewBox="0 0 24 24">
             <path fill="currentColor" d={mdiFunctionVariant} />
@@ -31,7 +33,7 @@ export default class FunctionInputButtons extends React.Component<FunctionInputB
       makeZoomInputButton = <InputButton
         className="maputnik-make-zoom-function"
         onClick={this.props.onZoomClick}
-        title="Convert property into a zoom function"
+        title={t("Convert property into a zoom function")}
       >
         <MdFunctions />
       </InputButton>
@@ -40,7 +42,7 @@ export default class FunctionInputButtons extends React.Component<FunctionInputB
         makeDataInputButton = <InputButton
           className="maputnik-make-data-function"
           onClick={this.props.onDataClick}
-          title="Convert property to data function"
+          title={t("Convert property to data function")}
         >
           <MdInsertChart />
         </InputButton>
@@ -56,3 +58,6 @@ export default class FunctionInputButtons extends React.Component<FunctionInputB
     }
   }
 }
+
+const FunctionInputButtons = withTranslation()(FunctionInputButtonsInternal);
+export default FunctionInputButtons;

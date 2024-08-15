@@ -5,6 +5,7 @@ import {version} from 'maplibre-gl/package.json'
 import {format} from '@maplibre/maplibre-gl-style-spec'
 import type {StyleSpecification} from 'maplibre-gl'
 import {MdFileDownload} from 'react-icons/md'
+import { WithTranslation, withTranslation } from 'react-i18next';
 
 import FieldString from './FieldString'
 import InputButton from './InputButton'
@@ -16,15 +17,15 @@ import fieldSpecAdditional from '../libs/field-spec-additional'
 const MAPLIBRE_GL_VERSION = version;
 
 
-type ModalExportProps = {
+type ModalExportInternalProps = {
   mapStyle: StyleSpecification & { id: string }
   onStyleChanged(...args: unknown[]): unknown
   isOpen: boolean
   onOpenToggle(...args: unknown[]): unknown
-};
+} & WithTranslation;
 
 
-export default class ModalExport extends React.Component<ModalExportProps> {
+class ModalExportInternal extends React.Component<ModalExportInternalProps> {
 
   tokenizedStyle () {
     return format(
@@ -48,7 +49,7 @@ export default class ModalExport extends React.Component<ModalExportProps> {
 
   downloadHtml() {
     const tokenStyle = this.tokenizedStyle();
-    const htmlTitle = this.props.mapStyle.name || "Map";
+    const htmlTitle = this.props.mapStyle.name || this.props.t("Map");
     const html = `<!DOCTYPE html>
 <html>
 <head>
@@ -100,18 +101,19 @@ export default class ModalExport extends React.Component<ModalExportProps> {
 
 
   render() {
+    const t = this.props.t;
     return <Modal
       data-wd-key="modal:export"
       isOpen={this.props.isOpen}
       onOpenToggle={this.props.onOpenToggle}
-      title={'Export Style'}
+      title={t('Export Style')}
       className="maputnik-export-modal"
     >
 
       <section className="maputnik-modal-section">
-        <h1>Download Style</h1>
+        <h1>{t("Download Style")}</h1>
         <p>
-          Download a JSON style to your computer.
+          {t("Download a JSON style to your computer.")}
         </p>
 
         <div>
@@ -134,14 +136,14 @@ export default class ModalExport extends React.Component<ModalExportProps> {
             onClick={this.downloadStyle.bind(this)}
           >
             <MdFileDownload />
-            Download Style
+            {t("Download Style")}
           </InputButton>
 
           <InputButton
             onClick={this.downloadHtml.bind(this)}
           >
             <MdFileDownload />
-            Download HTML
+            {t("Download HTML")}
           </InputButton>
         </div>
       </section>
@@ -150,3 +152,5 @@ export default class ModalExport extends React.Component<ModalExportProps> {
   }
 }
 
+const ModalExport = withTranslation()(ModalExportInternal);
+export default ModalExport;

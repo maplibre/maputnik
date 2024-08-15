@@ -33,7 +33,7 @@ export default class InputString extends React.Component<InputStringProps, Input
     }
   }
 
-  static getDerivedStateFromProps(props: InputStringProps, state: InputStringState) {
+  static getDerivedStateFromProps(props: Readonly<InputStringProps>, state: InputStringState) {
     if (!state.editing) {
       return {
         value: props.value

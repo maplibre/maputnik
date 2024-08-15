@@ -11,13 +11,14 @@ import Block from './Block'
 import docUid from '../libs/document-uid'
 import sortNumerically from '../libs/sort-numerically'
 import {findDefaultFromSpec} from '../libs/spec-helper';
+import { WithTranslation, withTranslation } from 'react-i18next';
 
 import labelFromFieldName from '../libs/label-from-field-name'
 import DeleteStopButton from './_DeleteStopButton'
 
 
 
-function setStopRefs(props: DataPropertyProps, state: DataPropertyState) {
+function setStopRefs(props: DataPropertyInternalProps, state: DataPropertyState) {
   // This is initialsed below only if required to improved performance.
   let newRefs: {[key: number]: string} | undefined;
 
@@ -35,7 +36,7 @@ function setStopRefs(props: DataPropertyProps, state: DataPropertyState) {
   return newRefs;
 }
 
-type DataPropertyProps = {
+type DataPropertyInternalProps = {
   onChange?(fieldName: string, value: any): unknown
   onDeleteStop?(...args: unknown[]): unknown
   onAddStop?(...args: unknown[]): unknown
@@ -46,7 +47,7 @@ type DataPropertyProps = {
   fieldSpec?: object
   value?: DataPropertyValue
   errors?: object
-};
+} & WithTranslation;
 
 type DataPropertyState = {
   refs: {[key: number]: string}
@@ -65,7 +66,7 @@ export type Stop = [{
   value: number
 }, number]
 
-export default class DataProperty extends React.Component<DataPropertyProps, DataPropertyState> {
+class DataPropertyInternal extends React.Component<DataPropertyInternalProps, DataPropertyState> {
   state = {
     refs: {} as {[key: number]: string}
   }
@@ -80,7 +81,7 @@ export default class DataProperty extends React.Component<DataPropertyProps, Dat
     }
   }
 
-  static getDerivedStateFromProps(props: DataPropertyProps, state: DataPropertyState) {
+  static getDerivedStateFromProps(props: Readonly<DataPropertyInternalProps>, state: DataPropertyState) {
     const newRefs = setStopRefs(props, state);
     if(newRefs) {
       return {
@@ -213,6 +214,8 @@ export default class DataProperty extends React.Component<DataPropertyProps, Dat
   }
 
   render() {
+    const t = this.props.t;
+
     if (typeof this.props.value?.type === "undefined") {
       this.props.value!.type = this.getFieldFunctionType(this.props.fieldSpec)
     }
@@ -227,8 +230,8 @@ export default class DataProperty extends React.Component<DataPropertyProps, Dat
         const deleteStopBtn = <DeleteStopButton onClick={this.props.onDeleteStop?.bind(this, idx)} />
 
         const dataProps = {
-          'aria-label': "Input value",
-          label: "Data value",
+          'aria-label': t("Input value"),
+          label: t("Data value"),
           value: dataLevel as any,
           onChange: (newData: string | number | undefined) => this.changeStop(idx, { zoom: zoomLevel, value: newData as number }, value)
         }
@@ -263,7 +266,7 @@ export default class DataProperty extends React.Component<DataPropertyProps, Dat
           </td>
           <td>
             <InputSpec
-              aria-label="Output value"
+              aria-label={t("Output value")}
               fieldName={this.props.fieldName}
               fieldSpec={this.props.fieldSpec}
               value={value}
@@ -282,21 +285,21 @@ export default class DataProperty extends React.Component<DataPropertyProps, Dat
         <legend>{labelFromFieldName(this.props.fieldName)}</legend>
         <div className="maputnik-data-fieldset-inner">
           <Block
-            label={"Function"}
+            label={t("Function")}
             key="function"
           >
             <div className="maputnik-data-spec-property-input">
               <InputSelect
                 value={this.props.value!.type}
                 onChange={(propVal: string) => this.changeDataType(propVal)}
-                title={"Select a type of data scale (default is 'categorical')."}
+                title={t("Select a type of data scale (default is 'categorical').")}
                 options={this.getDataFunctionTypes(this.props.fieldSpec)}
               />
             </div>
           </Block>
           {this.props.value?.type !== "identity" &&
             <Block
-              label={"Base"}
+              label={t("Base")}
               key="base"
             >
               <div className="maputnik-data-spec-property-input">
@@ -316,14 +319,14 @@ export default class DataProperty extends React.Component<DataPropertyProps, Dat
             <div className="maputnik-data-spec-property-input">
               <InputString
                 value={this.props.value?.property}
-                title={"Input a data property to base styles off of."}
+                title={t("Input a data property to base styles off of.")}
                 onChange={propVal => this.changeDataProperty("property", propVal)}
               />
             </div>
           </Block>
           {dataFields &&
             <Block
-              label={"Default"}
+              label={t("Default")}
               key="default"
             >
               <InputSpec
@@ -337,12 +340,12 @@ export default class DataProperty extends React.Component<DataPropertyProps, Dat
           {dataFields &&
             <div className="maputnik-function-stop">
               <table className="maputnik-function-stop-table">
-                <caption>Stops</caption>
+                <caption>{t("Stops")}</caption>
                 <thead>
                   <tr>
-                    <th>Zoom</th>
-                    <th>Input value</th>
-                    <th rowSpan={2}>Output value</th>
+                    <th>{t("Zoom")}</th>
+                    <th>{t("Input value")}</th>
+                    <th rowSpan={2}>{t("Output value")}</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -359,7 +362,7 @@ export default class DataProperty extends React.Component<DataPropertyProps, Dat
               >
                 <svg style={{width:"14px", height:"14px", verticalAlign: "text-bottom"}} viewBox="0 0 24 24">
                   <path fill="currentColor" d={mdiTableRowPlusAfter} />
-                </svg> Add stop
+                </svg> {t("Add stop")}
               </InputButton>
             }
             <InputButton
@@ -368,7 +371,7 @@ export default class DataProperty extends React.Component<DataPropertyProps, Dat
             >
               <svg style={{width:"14px", height:"14px", verticalAlign: "text-bottom"}} viewBox="0 0 24 24">
                 <path fill="currentColor" d={mdiFunctionVariant} />
-              </svg> Convert to expression
+              </svg> {t("Convert to expression")}
             </InputButton>
           </div>
         </div>
@@ -376,3 +379,6 @@ export default class DataProperty extends React.Component<DataPropertyProps, Dat
     </div>
   }
 }
+
+const DataProperty = withTranslation()(DataPropertyInternal);
+export default DataProperty;

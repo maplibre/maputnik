@@ -1,6 +1,7 @@
 import React from 'react'
 import capitalize from 'lodash.capitalize'
 import {MdDelete} from 'react-icons/md'
+import { WithTranslation, withTranslation } from 'react-i18next';
 
 import InputString from './InputString'
 import InputNumber from './InputNumber'
@@ -21,10 +22,11 @@ export type FieldDynamicArrayProps = {
   }
   'aria-label'?: string
   label: string
-};
+} 
 
+type FieldDynamicArrayInternalProps = FieldDynamicArrayProps & WithTranslation;
 
-export default class FieldDynamicArray extends React.Component<FieldDynamicArrayProps> {
+class FieldDynamicArrayInternal extends React.Component<FieldDynamicArrayInternalProps> {
   changeValue(idx: number, newValue: string | number | undefined) {
     const values = this.values.slice(0)
     values[idx] = newValue
@@ -62,8 +64,12 @@ export default class FieldDynamicArray extends React.Component<FieldDynamicArray
   }
 
   render() {
+    const t = this.props.t;
     const inputs = this.values.map((v, i) => {
-      const deleteValueBtn= <DeleteValueInputButton onClick={this.deleteValue.bind(this, i)} />
+      const deleteValueBtn= <DeleteValueInputButton 
+        onClick={this.deleteValue.bind(this, i)}
+        {...{t, i18n: this.props.i18n, tReady: this.props.tReady}}
+      />;
       let input;
       if(this.props.type === 'url') {
         input = <InputUrl
@@ -117,23 +123,27 @@ export default class FieldDynamicArray extends React.Component<FieldDynamicArray
           className="maputnik-array-add-value"
           onClick={this.addValue}
         >
-          Add value
+          {t("Add value")}
         </InputButton>
       </div>
     );
   }
 }
 
+const FieldDynamicArray = withTranslation()(FieldDynamicArrayInternal);
+export default FieldDynamicArray;
+
 type DeleteValueInputButtonProps = {
   onClick?(...args: unknown[]): unknown
-};
+} & WithTranslation;
 
 class DeleteValueInputButton extends React.Component<DeleteValueInputButtonProps> {
   render() {
+    const t = this.props.t;
     return <InputButton
       className="maputnik-delete-stop"
       onClick={this.props.onClick}
-      title="Remove array item"
+      title={t("Remove array item")}
     >
       <FieldDocLabel
         label={<MdDelete />}

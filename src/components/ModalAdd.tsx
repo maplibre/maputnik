@@ -7,15 +7,16 @@ import FieldId from './FieldId'
 import FieldSource from './FieldSource'
 import FieldSourceLayer from './FieldSourceLayer'
 import type {LayerSpecification} from 'maplibre-gl'
+import { WithTranslation, withTranslation } from 'react-i18next';
 
-type ModalAddProps = {
+type ModalAddInternalProps = {
   layers: LayerSpecification[]
   onLayersChange(layers: LayerSpecification[]): unknown
   isOpen: boolean
   onOpenToggle(open: boolean): unknown
   // A dict of source id's and the available source layers
   sources: any
-};
+} & WithTranslation;
 
 type ModalAddState = {
   type: LayerSpecification["type"]
@@ -24,7 +25,7 @@ type ModalAddState = {
   'source-layer'?: string
 };
 
-export default class ModalAdd extends React.Component<ModalAddProps, ModalAddState> {
+class ModalAddInternal extends React.Component<ModalAddInternalProps, ModalAddState> {
   addLayer = () => {
     const changedLayers = this.props.layers.slice(0)
     const layer: ModalAddState = {
@@ -45,7 +46,7 @@ export default class ModalAdd extends React.Component<ModalAddProps, ModalAddSta
     this.props.onOpenToggle(false)
   }
 
-  constructor(props: ModalAddProps) {
+  constructor(props: ModalAddInternalProps) {
     super(props)
     const state: ModalAddState = {
       type: 'fill',
@@ -54,12 +55,12 @@ export default class ModalAdd extends React.Component<ModalAddProps, ModalAddSta
 
     if(props.sources.length > 0) {
       state.source = Object.keys(this.props.sources)[0];
-      state['source-layer'] = this.props.sources[state.source as keyof ModalAddProps["sources"]][0]
+      state['source-layer'] = this.props.sources[state.source as keyof ModalAddInternalProps["sources"]][0]
     }
     this.state = state;
   }
 
-  componentDidUpdate(_prevProps: ModalAddProps, prevState: ModalAddState) {
+  componentDidUpdate(_prevProps: ModalAddInternalProps, prevState: ModalAddState) {
     // Check if source is valid for new type
     const oldType = prevState.type;
     const newType = this.state.type;
@@ -125,13 +126,14 @@ export default class ModalAdd extends React.Component<ModalAddProps, ModalAddSta
 
 
   render() {
+    const t = this.props.t;
     const sources = this.getSources(this.state.type);
     const layers = this.getLayersForSource(this.state.source!);
 
     return <Modal
       isOpen={this.props.isOpen}
       onOpenToggle={this.props.onOpenToggle}
-      title={'Add Layer'}
+      title={t('Add Layer')}
       data-wd-key="modal:add-layer"
       className="maputnik-add-modal"
     >
@@ -169,10 +171,12 @@ export default class ModalAdd extends React.Component<ModalAddProps, ModalAddSta
           onClick={this.addLayer}
           data-wd-key="add-layer"
         >
-        Add Layer
+          {t("Add Layer")}
         </InputButton>
       </div>
     </Modal>
   }
 }
 
+const ModalAdd = withTranslation()(ModalAddInternal);
+export default ModalAdd;
