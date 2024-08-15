@@ -1,18 +1,22 @@
 import React from 'react'
+import { WithTranslation, withTranslation } from 'react-i18next';
 import './SmallError.scss';
 
 
-type SmallErrorProps = {
+type SmallErrorInternalProps = {
   children?: React.ReactNode
-};
+} & WithTranslation;
 
-
-export default class SmallError extends React.Component<SmallErrorProps> {
+class SmallErrorInternal extends React.Component<SmallErrorInternalProps> {
   render () {
+    const t = this.props.t;
     return (
       <div className="SmallError">
-        Error: {this.props.children}
+        {t("Error:")} {this.props.children}
       </div>
     );
   }
 }
+
+const SmallError = withTranslation()(SmallErrorInternal);
+export default SmallError;
