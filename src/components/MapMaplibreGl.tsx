@@ -155,7 +155,7 @@ class MapMaplibreGlInternal extends React.Component<MapMaplibreGlInternalProps, 
 
     this.initGeocoder(map);
 
-    const zoomControl = new ZoomControl();
+    const zoomControl = new ZoomControl(this.props.t("Zoom:"));
     map.addControl(zoomControl, 'top-right');
 
     const nav = new MapLibreGl.NavigationControl({visualizePitch:true});

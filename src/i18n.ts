@@ -16,6 +16,8 @@ i18n
   .use(initReactI18next) // required to initialize react-i18next
   .init({
     supportedLngs: Object.keys(supportedLanguages),
+    keySeparator: false, // we do not use keys in form messages.welcome
+    nsSeparator: false,
     interpolation: {
       escapeValue: false // React already escapes for us
     }

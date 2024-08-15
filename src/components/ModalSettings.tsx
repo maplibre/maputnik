@@ -97,6 +97,7 @@ class ModalSettingsInternal extends React.Component<ModalSettingsInternalProps> 
   render() {
     const metadata = this.props.mapStyle.metadata || {} as any;
     const {t, onChangeMetadataProperty, mapStyle} = this.props;
+    const fsa = fieldSpecAdditional(t);
 
     const light = this.props.mapStyle.light || {};
     const transition = this.props.mapStyle.transition || {};
@@ -140,16 +141,16 @@ class ModalSettingsInternal extends React.Component<ModalSettingsInternalProps> 
         />
 
         <FieldString
-          label={fieldSpecAdditional.maputnik.maptiler_access_token.label}
-          fieldSpec={fieldSpecAdditional.maputnik.maptiler_access_token}
+          label={fsa.maputnik.maptiler_access_token.label}
+          fieldSpec={fsa.maputnik.maptiler_access_token}
           data-wd-key="modal:settings.maputnik:openmaptiles_access_token"
           value={metadata['maputnik:openmaptiles_access_token']}
           onChange={onChangeMetadataProperty.bind(this, "maputnik:openmaptiles_access_token")}
         />
 
         <FieldString
-          label={fieldSpecAdditional.maputnik.thunderforest_access_token.label}
-          fieldSpec={fieldSpecAdditional.maputnik.thunderforest_access_token}
+          label={fsa.maputnik.thunderforest_access_token.label}
+          fieldSpec={fsa.maputnik.thunderforest_access_token}
           data-wd-key="modal:settings.maputnik:thunderforest_access_token"
           value={metadata['maputnik:thunderforest_access_token']}
           onChange={onChangeMetadataProperty.bind(this, "maputnik:thunderforest_access_token")}
@@ -258,8 +259,8 @@ class ModalSettingsInternal extends React.Component<ModalSettingsInternalProps> 
         />
 
         <FieldSelect
-          label={fieldSpecAdditional.maputnik.style_renderer.label}
-          fieldSpec={fieldSpecAdditional.maputnik.style_renderer}
+          label={fsa.maputnik.style_renderer.label}
+          fieldSpec={fsa.maputnik.style_renderer}
           data-wd-key="modal:settings.maputnik:renderer"
           options={[
             ['mlgljs', t('MapLibreGL JS')],

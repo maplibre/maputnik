@@ -102,6 +102,7 @@ class ModalExportInternal extends React.Component<ModalExportInternalProps> {
 
   render() {
     const t = this.props.t;
+    const fsa = fieldSpecAdditional(t);
     return <Modal
       data-wd-key="modal:export"
       isOpen={this.props.isOpen}
@@ -118,14 +119,14 @@ class ModalExportInternal extends React.Component<ModalExportInternalProps> {
 
         <div>
           <FieldString
-            label={fieldSpecAdditional.maputnik.maptiler_access_token.label}
-            fieldSpec={fieldSpecAdditional.maputnik.maptiler_access_token}
+            label={fsa.maputnik.maptiler_access_token.label}
+            fieldSpec={fsa.maputnik.maptiler_access_token}
             value={(this.props.mapStyle.metadata || {} as any)['maputnik:openmaptiles_access_token']}
             onChange={this.changeMetadataProperty.bind(this, "maputnik:openmaptiles_access_token")}
           />
           <FieldString
-            label={fieldSpecAdditional.maputnik.thunderforest_access_token.label}
-            fieldSpec={fieldSpecAdditional.maputnik.thunderforest_access_token}
+            label={fsa.maputnik.thunderforest_access_token.label}
+            fieldSpec={fsa.maputnik.thunderforest_access_token}
             value={(this.props.mapStyle.metadata || {} as any)['maputnik:thunderforest_access_token']}
             onChange={this.changeMetadataProperty.bind(this, "maputnik:thunderforest_access_token")}
           />
