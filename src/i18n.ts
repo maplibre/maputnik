@@ -6,6 +6,7 @@ import { initReactI18next } from "react-i18next";
 export const supportedLanguages = {
   "en": "English",
   "ja": "日本語",
+  "he": "עברית",
 } as const;
 
 i18n
