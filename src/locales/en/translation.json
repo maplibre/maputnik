@@ -60,7 +60,8 @@
   "no filter matches": "no filter matches",
   "any filter matches": "any filter matches",
   "Add filter": "Add filter",
-  "You've entered a old style filter, <2>switch to filter editor</2>": "You've entered a old style filter, <2>switch to filter editor</2>",
+  "You've entered an old style filter.": "You've entered an old style filter.",
+  "Switch to filter editor.": "Switch to filter editor.",
   "Delete filter block": "Delete filter block",
   "Add value": "Add value",
   "Remove array item": "Remove array item",
@@ -195,6 +196,5 @@
   "Public access token for Thunderforest services.": "Public access token for Thunderforest services.",
   "Style Renderer": "Style Renderer",
   "Choose the default Maputnik renderer for this style.": "Choose the default Maputnik renderer for this style.",
-  "ID": "ID",
   "Nested filters are not supported": "Nested filters are not supported."
 }

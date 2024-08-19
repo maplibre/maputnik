@@ -13,7 +13,7 @@ import FilterEditorBlock from './FilterEditorBlock'
 import InputButton from './InputButton'
 import Doc from './Doc'
 import ExpressionProperty from './_ExpressionProperty';
-import { Trans, WithTranslation, withTranslation } from 'react-i18next';
+import { WithTranslation, withTranslation } from 'react-i18next';
 
 
 function combiningFilter(props: FilterEditorInternalProps): LegacyFilterSpecification | ExpressionSpecification {
@@ -304,15 +304,14 @@ class FilterEditorInternal extends React.Component<FilterEditorInternalProps, Fi
           />
           {this.state.valueIsSimpleFilter &&
             <div className="maputnik-expr-infobox">
-              <Trans t={t}>
-                You&apos;ve entered a old style filter,{' '}
-                <button
-                  onClick={this.makeFilter}
-                  className="maputnik-expr-infobox__button"
-                >
-                  switch to filter editor
-                </button>
-              </Trans>
+              {t("You've entered an old style filter.")}
+              {' '}
+              <button
+                onClick={this.makeFilter}
+                className="maputnik-expr-infobox__button"
+              >
+                {t("Switch to filter editor.")}
+              </button>
             </div>
           }
         </>
