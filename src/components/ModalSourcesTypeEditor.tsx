@@ -9,6 +9,7 @@ import FieldArray from './FieldArray'
 import FieldJson from './FieldJson'
 import FieldCheckbox from './FieldCheckbox'
 import { WithTranslation, withTranslation } from 'react-i18next';
+import { TFunction } from 'i18next'
 
 export type EditorMode = "video" | "image" | "tilejson_vector" | "tilexyz_raster" | "tilejson_raster" | "tilexyz_raster-dem" | "tilejson_raster-dem" | "tilexyz_vector" | "geojson_url" | "geojson_json" | null;
 
@@ -96,6 +97,13 @@ class TileURLSourceEditor extends React.Component<TileURLSourceEditorProps> {
   }
 }
 
+const createCornerLabels: (t: TFunction) => { label: string, key: string }[] = (t) => ([
+  { label: t("Coord top left"), key: "top left" },
+  { label: t("Coord top right"), key: "top right" },
+  { label: t("Coord bottom right"), key: "bottom right" },
+  { label: t("Coord bottom left"), key: "bottom left" },
+]);
+
 type ImageSourceEditorProps = {
   source: {
     coordinates: [number, number][]
@@ -117,13 +125,6 @@ class ImageSourceEditor extends React.Component<ImageSourceEditorProps> {
       });
     }
 
-    const cornerLabels: { label: string, key: string }[] = [
-      { label: t("Coord top left"), key: "top left" },
-      { label: t("Coord top right"), key: "top right" },
-      { label: t("Coord bottom right"), key: "bottom right" },
-      { label: t("Coord bottom left"), key: "bottom left" },
-    ];
-
     return <div>
       <FieldUrl
         label={t("Image URL")}
@@ -134,7 +135,7 @@ class ImageSourceEditor extends React.Component<ImageSourceEditorProps> {
           url,
         })}
       />
-      {cornerLabels.map(({label, key}, idx) => {
+      {createCornerLabels(t).map(({label, key}, idx) => {
         return (
           <FieldArray
             label={label}
@@ -179,13 +180,6 @@ class VideoSourceEditor extends React.Component<VideoSourceEditorProps> {
       });
     }
 
-    const cornerLabels: { label: string, key: string }[] = [
-      { label: t("Coord top left"), key: "top left" },
-      { label: t("Coord top right"), key: "top right" },
-      { label: t("Coord bottom right"), key: "bottom right" },
-      { label: t("Coord bottom left"), key: "bottom left" },
-    ];
-
     return <div>
       <FieldDynamicArray
         label={t("Video URL")}
@@ -195,7 +189,7 @@ class VideoSourceEditor extends React.Component<VideoSourceEditorProps> {
         default={[]}
         onChange={changeUrls}
       />
-      {cornerLabels.map(({label, key}, idx) => {
+      {createCornerLabels(t).map(({label, key}, idx) => {
         return (
           <FieldArray
             label={label}
