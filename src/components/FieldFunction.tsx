@@ -1,7 +1,7 @@
 import React from 'react'
 
 import SpecProperty from './_SpecProperty'
-import DataPropertyInternal, { Stop } from './_DataProperty'
+import DataProperty, { Stop } from './_DataProperty'
 import ZoomProperty from './_ZoomProperty'
 import ExpressionProperty from './_ExpressionProperty'
 import {function as styleFunction} from '@maplibre/maplibre-gl-style-spec';
@@ -370,7 +370,7 @@ export default class FieldFunction extends React.Component<FieldFunctionProps, F
     else if (dataType === "data_function") {
       // TODO: Rename to FieldFunction **this file** shouldn't be called that
       specField = (
-        <DataPropertyInternal
+        <DataProperty
           errors={this.props.errors}
           onChange={this.props.onChange.bind(this)}
           fieldType={this.props.fieldType}
