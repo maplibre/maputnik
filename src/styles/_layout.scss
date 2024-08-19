@@ -14,26 +14,28 @@
   font-family: $font-family;
   color: $color-white;
 
-  &-list {
+  &-main {
     position: fixed;
     bottom: 0;
     height: calc(100% - #{$toolbar-height + $toolbar-offset});
     top: $toolbar-height + $toolbar-offset;
     left: 0;
+    right: 0;
     z-index: 3;
+
+    display: flex;
+  }
+
+  &-list {
     width: 200px;
     background-color: $color-black;
   }
 
   &-drawer {
-    position: fixed;
-    bottom: 0;
-    height: calc(100% - #{$toolbar-height + $toolbar-offset});
-    top: $toolbar-height + $toolbar-offset;
-    left: 200px;
-    z-index: 1;
     width: 370px;
     background-color: $color-black;
+    // scroll-container is position: absolute
+    position: relative;
   }
 
   &-bottom {

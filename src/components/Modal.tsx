@@ -2,9 +2,9 @@ import React, { PropsWithChildren } from 'react'
 import {MdClose} from 'react-icons/md'
 import AriaModal from 'react-aria-modal'
 import classnames from 'classnames';
+import { WithTranslation, withTranslation } from 'react-i18next';
 
-
-type ModalProps = PropsWithChildren & {
+type ModalInternalProps = PropsWithChildren & {
   "data-wd-key"?: string
   isOpen: boolean
   title: string
@@ -12,10 +12,10 @@ type ModalProps = PropsWithChildren & {
   underlayClickExits?: boolean
   underlayProps?: any
   className?: string
-};
+} & WithTranslation;
 
 
-export default class Modal extends React.Component<ModalProps> {
+class ModalInternal extends React.Component<ModalInternalProps> {
   static defaultProps = {
     underlayClickExits: true
   }
@@ -32,6 +32,7 @@ export default class Modal extends React.Component<ModalProps> {
   }
 
   render() {
+    const t = this.props.t;
     if(this.props.isOpen) {
       return <AriaModal
         titleText={this.props.title}
@@ -49,7 +50,7 @@ export default class Modal extends React.Component<ModalProps> {
             <h1 className="maputnik-modal-header-title">{this.props.title}</h1>
             <span className="maputnik-modal-header-space"></span>
             <button className="maputnik-modal-header-toggle"
-              title="Close modal"
+              title={t("Close modal")}
               onClick={this.onClose}
               data-wd-key={this.props["data-wd-key"]+".close-modal"}
             >
@@ -68,3 +69,5 @@ export default class Modal extends React.Component<ModalProps> {
   }
 }
 
+const Modal = withTranslation()(ModalInternal);
+export default Modal;

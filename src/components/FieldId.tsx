@@ -13,7 +13,8 @@ type FieldIdProps = {
 
 export default class FieldId extends React.Component<FieldIdProps> {
   render() {
-    return <Block label={"ID"} fieldSpec={latest.layer.id}
+    return <Block label="ID" fieldSpec={latest.layer.id}
+
       data-wd-key={this.props.wdKey}
       error={this.props.error}
     >

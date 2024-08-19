@@ -5,13 +5,15 @@ export default class ZoomControl {
   _container: HTMLDivElement | undefined = undefined;
   _textEl: HTMLSpanElement | null = null;
 
+  constructor(public label: string) {}
+
   onAdd(map: Map) {
     this._map = map;
     this._container = document.createElement('div');
     this._container.className = 'maplibregl-ctrl maplibregl-ctrl-group maplibregl-ctrl-zoom';
     this._container.setAttribute("data-wd-key", "maplibre:ctrl-zoom");
     this._container.innerHTML = `
-      Zoom: <span></span>
+      ${this.label} <span></span>
     `;
     this._textEl = this._container.querySelector("span");
     

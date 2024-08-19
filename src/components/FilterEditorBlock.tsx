@@ -1,19 +1,21 @@
 import React, { PropsWithChildren } from 'react'
 import InputButton from './InputButton'
 import {MdDelete} from 'react-icons/md'
+import { WithTranslation, withTranslation } from 'react-i18next';
 
-type FilterEditorBlockProps = PropsWithChildren & {
+type FilterEditorBlockInternalProps = PropsWithChildren & {
   onDelete(...args: unknown[]): unknown
-};
+} & WithTranslation;
 
-export default class FilterEditorBlock extends React.Component<FilterEditorBlockProps> {
+class FilterEditorBlockInternal extends React.Component<FilterEditorBlockInternalProps> {
   render() {
+    const t = this.props.t;
     return <div className="maputnik-filter-editor-block">
       <div className="maputnik-filter-editor-block-action">
         <InputButton
           className="maputnik-delete-filter"
           onClick={this.props.onDelete}
-          title="Delete filter block"
+          title={t("Delete filter block")}
         >
           <MdDelete />
         </InputButton>
@@ -25,3 +27,5 @@ export default class FilterEditorBlock extends React.Component<FilterEditorBlock
   }
 }
 
+const FilterEditorBlock = withTranslation()(FilterEditorBlockInternal);
+export default FilterEditorBlock;

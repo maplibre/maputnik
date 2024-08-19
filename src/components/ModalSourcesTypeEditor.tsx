@@ -8,6 +8,8 @@ import FieldDynamicArray from './FieldDynamicArray'
 import FieldArray from './FieldArray'
 import FieldJson from './FieldJson'
 import FieldCheckbox from './FieldCheckbox'
+import { WithTranslation, withTranslation } from 'react-i18next';
+import { TFunction } from 'i18next'
 
 export type EditorMode = "video" | "image" | "tilejson_vector" | "tilexyz_raster" | "tilejson_raster" | "tilexyz_raster-dem" | "tilejson_raster-dem" | "tilexyz_vector" | "geojson_url" | "geojson_json" | null;
 
@@ -17,14 +19,15 @@ type TileJSONSourceEditorProps = {
   }
   onChange(...args: unknown[]): unknown
   children?: React.ReactNode
-};
+} & WithTranslation;
 
 
 class TileJSONSourceEditor extends React.Component<TileJSONSourceEditorProps> {
   render() {
+    const t = this.props.t;
     return <div>
       <FieldUrl
-        label={"TileJSON URL"}
+        label={t("TileJSON URL")}
         fieldSpec={latest.source_vector.url}
         value={this.props.source.url}
         onChange={url => this.props.onChange({
@@ -45,7 +48,7 @@ type TileURLSourceEditorProps = {
   }
   onChange(...args: unknown[]): unknown
   children?: React.ReactNode
-};
+} & WithTranslation;
 
 class TileURLSourceEditor extends React.Component<TileURLSourceEditorProps> {
   changeTileUrls(tiles: string[]) {
@@ -58,7 +61,7 @@ class TileURLSourceEditor extends React.Component<TileURLSourceEditorProps> {
   renderTileUrls() {
     const tiles = this.props.source.tiles || [];
     return <FieldDynamicArray
-      label={"Tile URL"}
+      label={this.props.t("Tile URL")}
       fieldSpec={latest.source_vector.tiles}
       type="url"
       value={tiles}
@@ -67,10 +70,11 @@ class TileURLSourceEditor extends React.Component<TileURLSourceEditorProps> {
   }
 
   render() {
+    const t = this.props.t;
     return <div>
       {this.renderTileUrls()}
       <FieldNumber
-        label={"Min Zoom"}
+        label={t("Min Zoom")}
         fieldSpec={latest.source_vector.minzoom}
         value={this.props.source.minzoom || 0}
         onChange={minzoom => this.props.onChange({
@@ -79,7 +83,7 @@ class TileURLSourceEditor extends React.Component<TileURLSourceEditorProps> {
         })}
       />
       <FieldNumber
-        label={"Max Zoom"}
+        label={t("Max Zoom")}
         fieldSpec={latest.source_vector.maxzoom}
         value={this.props.source.maxzoom || 22}
         onChange={maxzoom => this.props.onChange({
@@ -93,16 +97,24 @@ class TileURLSourceEditor extends React.Component<TileURLSourceEditorProps> {
   }
 }
 
+const createCornerLabels: (t: TFunction) => { label: string, key: string }[] = (t) => ([
+  { label: t("Coord top left"), key: "top left" },
+  { label: t("Coord top right"), key: "top right" },
+  { label: t("Coord bottom right"), key: "bottom right" },
+  { label: t("Coord bottom left"), key: "bottom left" },
+]);
+
 type ImageSourceEditorProps = {
   source: {
     coordinates: [number, number][]
     url: string
   }
   onChange(...args: unknown[]): unknown
-};
+} & WithTranslation;
 
 class ImageSourceEditor extends React.Component<ImageSourceEditorProps> {
   render() {
+    const t = this.props.t;
     const changeCoord = (idx: number, val: [number, number]) => {
       const coordinates = this.props.source.coordinates.slice(0);
       coordinates[idx] = val;
@@ -115,7 +127,7 @@ class ImageSourceEditor extends React.Component<ImageSourceEditorProps> {
 
     return <div>
       <FieldUrl
-        label={"Image URL"}
+        label={t("Image URL")}
         fieldSpec={latest.source_image.url}
         value={this.props.source.url}
         onChange={url => this.props.onChange({
@@ -123,11 +135,11 @@ class ImageSourceEditor extends React.Component<ImageSourceEditorProps> {
           url,
         })}
       />
-      {["top left", "top right", "bottom right", "bottom left"].map((label, idx) => {
+      {createCornerLabels(t).map(({label, key}, idx) => {
         return (
           <FieldArray
-            label={`Coord ${label}`}
-            key={label}
+            label={label}
+            key={key}
             length={2}
             type="number"
             value={this.props.source.coordinates[idx]}
@@ -146,10 +158,11 @@ type VideoSourceEditorProps = {
     urls: string[]
   }
   onChange(...args: unknown[]): unknown
-};
+} & WithTranslation;
 
 class VideoSourceEditor extends React.Component<VideoSourceEditorProps> {
   render() {
+    const t = this.props.t;
     const changeCoord = (idx: number, val: [number, number]) => {
       const coordinates = this.props.source.coordinates.slice(0);
       coordinates[idx] = val;
@@ -169,18 +182,18 @@ class VideoSourceEditor extends React.Component<VideoSourceEditorProps> {
 
     return <div>
       <FieldDynamicArray
-        label={"Video URL"}
+        label={t("Video URL")}
         fieldSpec={latest.source_video.urls}
         type="string"
         value={this.props.source.urls}
         default={[]}
         onChange={changeUrls}
       />
-      {["top left", "top right", "bottom right", "bottom left"].map((label, idx) => {
+      {createCornerLabels(t).map(({label, key}, idx) => {
         return (
           <FieldArray
-            label={`Coord ${label}`}
-            key={label}
+            label={label}
+            key={key}
             length={2}
             type="number"
             value={this.props.source.coordinates[idx]}
@@ -198,12 +211,13 @@ type GeoJSONSourceUrlEditorProps = {
     data: string
   }
   onChange(...args: unknown[]): unknown
-};
+} & WithTranslation;
 
 class GeoJSONSourceUrlEditor extends React.Component<GeoJSONSourceUrlEditorProps> {
   render() {
+    const t = this.props.t;
     return <FieldUrl
-      label={"GeoJSON URL"}
+      label={t("GeoJSON URL")}
       fieldSpec={latest.source_geojson.data}
       value={this.props.source.data}
       onChange={data => this.props.onChange({
@@ -220,12 +234,13 @@ type GeoJSONSourceFieldJsonEditorProps = {
     cluster: boolean
   }
   onChange(...args: unknown[]): unknown
-};
+} & WithTranslation;
 
 class GeoJSONSourceFieldJsonEditor extends React.Component<GeoJSONSourceFieldJsonEditorProps> {
   render() {
+    const t = this.props.t;
     return <div>
-      <Block label={"GeoJSON"} fieldSpec={latest.source_geojson.data}>
+      <Block label={t("GeoJSON")} fieldSpec={latest.source_geojson.data}>
         <FieldJson
           layer={this.props.source.data}
           maxHeight={200}
@@ -243,7 +258,7 @@ class GeoJSONSourceFieldJsonEditor extends React.Component<GeoJSONSourceFieldJso
         />
       </Block>
       <FieldCheckbox
-        label={'Cluster'}
+        label={t('Cluster')}
         value={this.props.source.cluster}
         onChange={cluster => {
           this.props.onChange({
@@ -256,18 +271,22 @@ class GeoJSONSourceFieldJsonEditor extends React.Component<GeoJSONSourceFieldJso
   }
 }
 
-type ModalSourcesTypeEditorProps = {
+type ModalSourcesTypeEditorInternalProps = {
   mode: EditorMode
   source: any
   onChange(...args: unknown[]): unknown
-};
+} & WithTranslation;
 
-export default class ModalSourcesTypeEditor extends React.Component<ModalSourcesTypeEditorProps> {
+class ModalSourcesTypeEditorInternal extends React.Component<ModalSourcesTypeEditorInternalProps> {
   render() {
+    const t = this.props.t;
     const commonProps = {
       source: this.props.source,
       onChange: this.props.onChange,
-    }
+      t: this.props.t,
+      i18n: this.props.i18n,
+      tReady: this.props.tReady,
+    };
     switch(this.props.mode) {
     case 'geojson_url': return <GeoJSONSourceUrlEditor {...commonProps} />
     case 'geojson_json': return <GeoJSONSourceFieldJsonEditor {...commonProps} />
@@ -278,7 +297,7 @@ export default class ModalSourcesTypeEditor extends React.Component<ModalSources
     case 'tilejson_raster-dem': return <TileJSONSourceEditor {...commonProps} />
     case 'tilexyz_raster-dem': return <TileURLSourceEditor {...commonProps}>
       <FieldSelect
-        label={"Encoding"}
+        label={t("Encoding")}
         fieldSpec={latest.source_raster_dem.encoding}
         options={Object.keys(latest.source_raster_dem.encoding.values)}
         onChange={encoding => this.props.onChange({
@@ -295,3 +314,5 @@ export default class ModalSourcesTypeEditor extends React.Component<ModalSources
   }
 }
 
+const ModalSourcesTypeEditor = withTranslation()(ModalSourcesTypeEditorInternal);
+export default ModalSourcesTypeEditor;

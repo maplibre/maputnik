@@ -1,5 +1,6 @@
 import React from 'react'
 import {throttle} from 'lodash';
+import { WithTranslation, withTranslation } from 'react-i18next';
 
 import MapMaplibreGlLayerPopup from './MapMaplibreGlLayerPopup';
 
@@ -23,7 +24,7 @@ function renderCoords (coords: string[]) {
   }
 }
 
-type MapOpenLayersProps = {
+type MapOpenLayersInternalProps = {
   onDataChange?(...args: unknown[]): unknown
   mapStyle: object
   accessToken?: string
@@ -32,7 +33,7 @@ type MapOpenLayersProps = {
   debugToolbox: boolean
   replaceAccessTokens(...args: unknown[]): unknown
   onChange(...args: unknown[]): unknown
-};
+} & WithTranslation;
 
 type MapOpenLayersState = {
   zoom: string
@@ -42,7 +43,7 @@ type MapOpenLayersState = {
   selectedFeatures?: any[]
 };
 
-export default class MapOpenLayers extends React.Component<MapOpenLayersProps, MapOpenLayersState> {
+class MapOpenLayersInternal extends React.Component<MapOpenLayersInternalProps, MapOpenLayersState> {
   static defaultProps = {
     onMapLoaded: () => {},
     onDataChange: () => {},
@@ -54,7 +55,7 @@ export default class MapOpenLayers extends React.Component<MapOpenLayersProps, M
   overlay: Overlay | undefined;
   popupContainer: HTMLElement | null = null;
 
-  constructor(props: MapOpenLayersProps) {
+  constructor(props: MapOpenLayersInternalProps) {
     super(props);
     this.state = {
       zoom: "0",
@@ -73,7 +74,7 @@ export default class MapOpenLayers extends React.Component<MapOpenLayersProps, M
     apply(this.map, newMapStyle);
   }
 
-  componentDidUpdate(prevProps: MapOpenLayersProps) {
+  componentDidUpdate(prevProps: MapOpenLayersInternalProps) {
     if (this.props.mapStyle !== prevProps.mapStyle) {
       this.updateStyle(
         this.props.replaceAccessTokens(this.props.mapStyle)
@@ -151,6 +152,7 @@ export default class MapOpenLayers extends React.Component<MapOpenLayersProps, M
   }
 
   render() {
+    const t = this.props.t;
     return <div className="maputnik-ol-container">
       <div
         ref={x => this.popupContainer = x}
@@ -160,7 +162,7 @@ export default class MapOpenLayers extends React.Component<MapOpenLayersProps, M
         <button
           className="maplibregl-popup-close-button"
           onClick={this.closeOverlay}
-          aria-label="Close popup"
+          aria-label={t("Close popup")}
         >
           ×
         </button>
@@ -170,20 +172,20 @@ export default class MapOpenLayers extends React.Component<MapOpenLayersProps, M
         />
       </div>
       <div className="maputnik-ol-zoom">
-        Zoom: {this.state.zoom}
+        {t("Zoom:")} {this.state.zoom}
       </div>
       {this.props.debugToolbox &&
         <div className="maputnik-ol-debug">
           <div>
-            <label>cursor: </label>
+            <label>{t("cursor:")} </label>
             <span>{renderCoords(this.state.cursor)}</span>
           </div>
           <div>
-            <label>center: </label>
+            <label>{t("center:")} </label>
             <span>{renderCoords(this.state.center)}</span>
           </div>
           <div>
-            <label>rotation: </label>
+            <label>{t("rotation:")} </label>
             <span>{this.state.rotation}</span>
           </div>
         </div>
@@ -192,7 +194,7 @@ export default class MapOpenLayers extends React.Component<MapOpenLayersProps, M
         className="maputnik-ol"
         ref={x => this.container = x}
         role="region"
-        aria-label="Map view"
+        aria-label={t("Map view")}
         style={{
           ...this.props.style,
         }}>
@@ -201,3 +203,5 @@ export default class MapOpenLayers extends React.Component<MapOpenLayersProps, M
   }
 }
 
+const MapOpenLayers = withTranslation()(MapOpenLayersInternal);
+export default MapOpenLayers;

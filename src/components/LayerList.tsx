@@ -10,6 +10,7 @@ import {SortEndHandler, SortableContainer} from 'react-sortable-hoc';
 import type {LayerSpecification} from 'maplibre-gl';
 import generateUniqueId from '../libs/document-uid';
 import { findClosestCommonPrefix, layerPrefix } from '../libs/layer';
+import { WithTranslation, withTranslation } from 'react-i18next';
 
 type LayerListContainerProps = {
   layers: LayerSpecification[]
@@ -22,6 +23,7 @@ type LayerListContainerProps = {
   sources: object
   errors: any[]
 };
+type LayerListContainerInternalProps = LayerListContainerProps & WithTranslation;
 
 type LayerListContainerState = {
   collapsedGroups: {[ket: string]: boolean}
@@ -31,14 +33,14 @@ type LayerListContainerState = {
 };
 
 // List of collapsible layer editors
-class LayerListContainer extends React.Component<LayerListContainerProps, LayerListContainerState> {
+class LayerListContainerInternal extends React.Component<LayerListContainerInternalProps, LayerListContainerState> {
   static defaultProps = {
     onLayerSelect: () => {},
   }
   selectedItemRef: React.RefObject<any>;
   scrollContainerRef: React.RefObject<HTMLElement>;
 
-  constructor(props: LayerListContainerProps) {
+  constructor(props: LayerListContainerInternalProps) {
     super(props);
     this.selectedItemRef = React.createRef();
     this.scrollContainerRef = React.createRef();
@@ -259,10 +261,12 @@ class LayerListContainer extends React.Component<LayerListContainerProps, LayerL
       })
     })
 
+    const t = this.props.t;
+
     return <section
       className="maputnik-layer-list"
       role="complementary"
-      aria-label="Layers list"
+      aria-label={t("Layers list")}
       ref={this.scrollContainerRef}
     >
       <ModalAdd
@@ -274,7 +278,7 @@ class LayerListContainer extends React.Component<LayerListContainerProps, LayerL
         onLayersChange={this.props.onLayersChange}
       />
       <header className="maputnik-layer-list-header">
-        <span className="maputnik-layer-list-header-title">Layers</span>
+        <span className="maputnik-layer-list-header-title">{t("Layers")}</span>
         <span className="maputnik-space" />
         <div className="maputnik-default-property">
           <div className="maputnik-multibutton">
@@ -283,7 +287,11 @@ class LayerListContainer extends React.Component<LayerListContainerProps, LayerL
               data-wd-key="skip-target-layer-list"
               onClick={this.toggleLayers}
               className="maputnik-button">
-              {this.state.areAllGroupsExpanded === true ? "Collapse" : "Expand"}
+              {this.state.areAllGroupsExpanded === true ? 
+                t("Collapse") 
+                : 
+                t("Expand")
+              }
             </button>
           </div>
         </div>
@@ -293,14 +301,14 @@ class LayerListContainer extends React.Component<LayerListContainerProps, LayerL
               onClick={this.toggleModal.bind(this, 'add')}
               data-wd-key="layer-list:add-layer"
               className="maputnik-button maputnik-button-selected">
-             Add Layer
+              {t("Add Layer")}
             </button>
           </div>
         </div>
       </header>
       <div
         role="navigation"
-        aria-label="Layers list"
+        aria-label={t("Layers list")}
       >
         <ul className="maputnik-layer-list-container">
           {listItems}
@@ -310,6 +318,13 @@ class LayerListContainer extends React.Component<LayerListContainerProps, LayerL
   }
 }
 
+// The next two lines have react-refresh/only-export-components disabled because they are
+// internal components that are not intended to be used outside of this file.
+// For some reason, the linter is not recognizing these components correctly.
+// When these components are migrated to functional components, the HOCs will no longer be needed
+// and the comments can be removed.
+// eslint-disable-next-line react-refresh/only-export-components
+const LayerListContainer = withTranslation()(LayerListContainerInternal);
 // eslint-disable-next-line react-refresh/only-export-components
 const LayerListContainerSortable = SortableContainer((props: LayerListContainerProps) => <LayerListContainer {...props} />)
 

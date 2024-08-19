@@ -4,22 +4,24 @@ import latest from '@maplibre/maplibre-gl-style-spec/dist/latest.json'
 import Block from './Block'
 import InputSelect from './InputSelect'
 import InputString from './InputString'
+import { WithTranslation, withTranslation } from 'react-i18next';
 
-type FieldTypeProps = {
+type FieldTypeInternalProps = {
   value: string
   wdKey?: string
   onChange(value: string): unknown
   error?: {message: string}
   disabled?: boolean
-};
+} & WithTranslation;
 
-export default class FieldType extends React.Component<FieldTypeProps> {
+class FieldTypeInternal extends React.Component<FieldTypeInternalProps> {
   static defaultProps = {
     disabled: false,
   }
 
   render() {
-    return <Block label={"Type"} fieldSpec={latest.layer.type}
+    const t = this.props.t;
+    return <Block label={t("Type")} fieldSpec={latest.layer.type}
       data-wd-key={this.props.wdKey}
       error={this.props.error}
     >
@@ -50,3 +52,6 @@ export default class FieldType extends React.Component<FieldTypeProps> {
     </Block>
   }
 }
+
+const FieldType = withTranslation()(FieldTypeInternal);
+export default FieldType;

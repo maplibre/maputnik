@@ -1,9 +1,10 @@
 import React from 'react'
 import InputString from './InputString'
 import SmallError from './SmallError'
+import { Trans, WithTranslation, withTranslation } from 'react-i18next';
+import { TFunction } from 'i18next';
 
-
-function validate(url: string) {
+function validate(url: string, t: TFunction): JSX.Element | undefined {
   if (url === "") {
     return;
   }
@@ -22,15 +23,19 @@ function validate(url: string) {
   const isSsl = window.location.protocol === "https:";
 
   if (!protocol) {
-    error = (
-      <SmallError>
-        Must provide protocol {
-          isSsl
-            ? <code>https://</code>
-            : <><code>http://</code> or <code>https://</code></>
-        }
-      </SmallError>
-    );
+    if (isSsl) {
+      error = (
+        <SmallError>
+          <Trans t={t}>Must provide protocol: <code>https://</code></Trans>
+        </SmallError>
+      );
+    } else {
+      error = (
+        <SmallError>
+          <Trans t={t}>Must provide protocol: <code>http://</code> or <code>https://</code></Trans>
+        </SmallError>
+      );
+    }
   }
   else if (
     protocol &&
@@ -39,7 +44,9 @@ function validate(url: string) {
   ) {
     error = (
       <SmallError>
-        CORS policy won&apos;t allow fetching resources served over http from https, use a <code>https://</code> domain
+        <Trans t={t}>
+          CORS policy won&apos;t allow fetching resources served over http from https, use a <code>https://</code> domain
+        </Trans>
       </SmallError>
     );
   }
@@ -61,32 +68,34 @@ export type FieldUrlProps = {
   className?: string
 };
 
+type FieldUrlInternalProps = FieldUrlProps & WithTranslation;
+
 type FieldUrlState = {
   error?: React.ReactNode
 }
 
-export default class FieldUrl extends React.Component<FieldUrlProps, FieldUrlState> {
+class FieldUrlInternal extends React.Component<FieldUrlInternalProps, FieldUrlState> {
   static defaultProps = {
     onInput: () => {},
   }
 
-  constructor (props: FieldUrlProps) {
+  constructor (props: FieldUrlInternalProps) {
     super(props);
     this.state = {
-      error: validate(props.value)
+      error: validate(props.value, props.t),
     };
   }
 
   onInput = (url: string) => {
     this.setState({
-      error: validate(url)
+      error: validate(url, this.props.t),
     });
     if (this.props.onInput) this.props.onInput(url);
   }
 
   onChange = (url: string) => {
     this.setState({
-      error: validate(url)
+      error: validate(url, this.props.t),
     });
     this.props.onChange(url);
   }
@@ -106,3 +115,5 @@ export default class FieldUrl extends React.Component<FieldUrlProps, FieldUrlSta
   }
 }
 
+const FieldUrl = withTranslation()(FieldUrlInternal);
+export default FieldUrl;

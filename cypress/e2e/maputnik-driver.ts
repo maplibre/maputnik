@@ -131,7 +131,9 @@ export class MaputnikDriver {
         this.helper.when.acceptConfirm();
       }
       // when methods should not include assertions
-      this.helper.get.elementByTestId("toolbar:link").should("be.visible");
+      const toolbarLink = this.helper.get.elementByTestId("toolbar:link")
+      toolbarLink.scrollIntoView();
+      toolbarLink.should("be.visible");
     },
 
     typeKeys: (keys: string) => this.helper.get.element("body").type(keys),
