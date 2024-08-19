@@ -34,15 +34,15 @@ class FieldTypeInternal extends React.Component<FieldTypeInternalProps> {
       {!this.props.disabled &&
         <InputSelect
           options={[
-            ['background', t('Background')],
-            ['fill', t('Fill')],
-            ['line', t('Line')],
-            ['symbol', t('Symbol')],
-            ['raster', t('Raster')],
-            ['circle', t('Circle')],
-            ['fill-extrusion', t('Fill Extrusion')],
-            ['hillshade', t('Hillshade')],
-            ['heatmap', t('Heatmap')],
+            ['background', 'Background'],
+            ['fill', 'Fill'],
+            ['line', 'Line'],
+            ['symbol', 'Symbol'],
+            ['raster', 'Raster'],
+            ['circle', 'Circle'],
+            ['fill-extrusion', 'Fill Extrusion'],
+            ['hillshade', 'Hillshade'],
+            ['heatmap', 'Heatmap'],
           ]}
           onChange={this.props.onChange}
           value={this.props.value}
