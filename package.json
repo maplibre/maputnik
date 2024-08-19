@@ -126,7 +126,7 @@
     "@types/uuid": "^9.0.8",
     "@vitejs/plugin-react": "^4.2.1",
     "cors": "^2.8.5",
-    "cypress": "^13.10.0",
+    "cypress": "^13.13.0",
     "eslint": "^8.57.0",
     "eslint-plugin-react": "^7.34.1",
     "eslint-plugin-react-hooks": "^4.6.0",
