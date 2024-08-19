@@ -318,9 +318,13 @@ class LayerListContainerInternal extends React.Component<LayerListContainerInter
   }
 }
 
+// The next two lines have react-refresh/only-export-components disabled because they are
+// internal components that are not intended to be used outside of this file.
+// For some reason, the linter is not recognizing these components correctly.
+// When these components are migrated to functional components, the HOCs will no longer be needed
+// and the comments can be removed.
 // eslint-disable-next-line react-refresh/only-export-components
 const LayerListContainer = withTranslation()(LayerListContainerInternal);
-
 // eslint-disable-next-line react-refresh/only-export-components
 const LayerListContainerSortable = SortableContainer((props: LayerListContainerProps) => <LayerListContainer {...props} />)
 
