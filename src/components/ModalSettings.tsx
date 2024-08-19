@@ -263,7 +263,7 @@ class ModalSettingsInternal extends React.Component<ModalSettingsInternalProps> 
           fieldSpec={fsa.maputnik.style_renderer}
           data-wd-key="modal:settings.maputnik:renderer"
           options={[
-            ['mlgljs', t('MapLibreGL JS')],
+            ['mlgljs', 'MapLibreGL JS'],
             ['ol', t('Open Layers (experimental)')],
           ]}
           value={metadata['maputnik:renderer'] || 'mlgljs'}
