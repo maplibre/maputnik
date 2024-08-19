@@ -12,7 +12,13 @@ export const supportedLanguages = {
 i18n
   .use(detector) // detect user language from browser settings
   .use(
-    resourcesToBackend((lang: string, ns: string) => import(`./locales/${lang}/${ns}.json`))
+    resourcesToBackend((lang: string, ns: string) => {
+      if (lang === "en") {
+        // English is the default language, so we don't need to load any resources for it.
+        return {};
+      }
+      return import(`./locales/${lang}/${ns}.json`);
+    })
   )
   .use(initReactI18next) // required to initialize react-i18next
   .init({
