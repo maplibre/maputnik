@@ -29,22 +29,26 @@ function getLayoutForType(type: LayerSpecification["type"], t: TFunction) {
     groups: layout[type].groups.map(group => {
       return {
         ...group,
+        id: group.title.replace(/ /g, "_"),
         title: t(group.title)
       };
     }),
   } : layout.invalid;
 }
 
-function layoutGroups(layerType: LayerSpecification["type"], t: TFunction): {title: string, type: string, fields?: string[]}[] {
+function layoutGroups(layerType: LayerSpecification["type"], t: TFunction): {id: string, title: string, type: string, fields?: string[]}[] {
   const layerGroup = {
+    id: 'layer',
     title: t('Layer'),
     type: 'layer'
   }
   const filterGroup = {
+    id: 'filter',
     title: t('Filter'),
     type: 'filter'
   }
   const editorGroup = {
+    id: 'jsoneditor',
     title: t('JSON Editor'),
     type: 'jsoneditor'
   }
@@ -259,12 +263,12 @@ class LayerEditorInternal extends React.Component<LayerEditorInternalProps, Laye
     const groups = layoutGroups(layerType, t).filter(group => {
       return !(layerType === 'background' && group.type === 'source')
     }).map(group => {
-      const groupId = group.title.replace(/ /g, "_");
+      const groupId = group.id;
       groupIds.push(groupId);
       return <LayerEditorGroup
         data-wd-key={group.title}
         id={groupId}
-        key={group.title}
+        key={groupId}
         title={group.title}
         isActive={this.state.editorGroups[group.title]}
         onActiveToggle={this.onGroupToggle.bind(this, group.title)}
