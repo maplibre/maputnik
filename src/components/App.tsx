@@ -24,7 +24,6 @@ import ModalExport from './ModalExport'
 import ModalSources from './ModalSources'
 import ModalOpen from './ModalOpen'
 import ModalShortcuts from './ModalShortcuts'
-import ModalSurvey from './ModalSurvey'
 import ModalDebug from './ModalDebug'
 
 import {downloadGlyphsMetadata, downloadSpriteMetadata} from '../libs/metadata'
@@ -128,7 +127,6 @@ type AppState = {
     open: boolean
     shortcuts: boolean
     export: boolean
-    survey: boolean
     debug: boolean
   }
 }
@@ -276,7 +274,6 @@ export default class App extends React.Component<any, AppState> {
         shortcuts: false,
         export: false,
         // TODO: Disabled for now, this should be opened on the Nth visit to the editor
-        survey: false,
         debug: false,
       },
       maplibreGlDebugOptions: {
@@ -838,10 +835,6 @@ export default class App extends React.Component<any, AppState> {
   }
 
   setModal(modalName: keyof AppState["isOpen"], value: boolean) {
-    if(modalName === 'survey' && value === false) {
-      localStorage.setItem('survey', '');
-    }
-
     this.setState({
       isOpen: {
         ...this.state.isOpen,
@@ -967,10 +960,6 @@ export default class App extends React.Component<any, AppState> {
         onStyleChanged={this.onStyleChanged}
         isOpen={this.state.isOpen.sources}
         onOpenToggle={this.toggleModal.bind(this, 'sources')}
-      />
-      <ModalSurvey
-        isOpen={this.state.isOpen.survey}
-        onOpenToggle={this.toggleModal.bind(this, 'survey')}
       />
     </div>
 
