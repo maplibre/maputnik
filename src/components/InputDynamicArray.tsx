@@ -65,10 +65,11 @@ class FieldDynamicArrayInternal extends React.Component<FieldDynamicArrayInterna
 
   render() {
     const t = this.props.t;
+    const i18nProps = { t, i18n: this.props.i18n, tReady: this.props.tReady };
     const inputs = this.values.map((v, i) => {
       const deleteValueBtn= <DeleteValueInputButton 
         onClick={this.deleteValue.bind(this, i)}
-        {...{t, i18n: this.props.i18n, tReady: this.props.tReady}}
+        {...i18nProps}
       />;
       let input;
       if(this.props.type === 'url') {

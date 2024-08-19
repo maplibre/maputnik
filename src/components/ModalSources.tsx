@@ -272,6 +272,7 @@ class ModalSourcesInternal extends React.Component<ModalSourcesInternalProps> {
 
   render() {
     const {t, mapStyle} = this.props;
+    const i18nProps = {t, i18n: this.props.i18n, tReady: this.props.tReady};
     const activeSources = Object.keys(mapStyle.sources).map(sourceId => {
       const source = mapStyle.sources[sourceId]
       return <ActiveModalSourcesTypeEditor
@@ -280,7 +281,7 @@ class ModalSourcesInternal extends React.Component<ModalSourcesInternalProps> {
         source={source}
         onChange={(src: SourceSpecification) => this.props.onStyleChanged(changeSource(mapStyle, sourceId, src))}
         onDelete={() => this.props.onStyleChanged(deleteSource(mapStyle, sourceId))}
-        {...{t, i18n: this.props.i18n, tReady: this.props.tReady}}
+        {...i18nProps}
       />
     })
 
@@ -321,7 +322,7 @@ class ModalSourcesInternal extends React.Component<ModalSourcesInternalProps> {
         <p>{t("Add a new source to your style. You can only choose the source type and id at creation time!")}</p>
         <AddSource
           onAdd={(sourceId: string, source: SourceSpecification) => this.props.onStyleChanged(addSource(mapStyle, sourceId, source))}
-          {...{t, i18n: this.props.i18n, tReady: this.props.tReady}}
+          {...i18nProps}
         />
       </section>
     </Modal>
