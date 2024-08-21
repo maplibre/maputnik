@@ -14,6 +14,7 @@ import '../libs/maplibre-rtl'
 //@ts-ignore
 import MaplibreGeocoder from '@maplibre/maplibre-gl-geocoder';
 import '@maplibre/maplibre-gl-geocoder/dist/maplibre-gl-geocoder.css';
+import { withTranslation, WithTranslation } from 'react-i18next'
 
 function renderPopup(popup: JSX.Element, mountNode: ReactDOM.Container): HTMLElement {
   ReactDOM.render(popup, mountNode);
@@ -51,7 +52,7 @@ function buildInspectStyle(originalMapStyle: StyleSpecification, coloredLayers: 
   return inspectStyle
 }
 
-type MapMaplibreGlProps = {
+type MapMaplibreGlInternalProps = {
   onDataChange?(event: {map: Map | null}): unknown
   onLayerSelect(...args: unknown[]): unknown
   mapStyle: StyleSpecification
@@ -64,7 +65,7 @@ type MapMaplibreGlProps = {
   }
   replaceAccessTokens(mapStyle: StyleSpecification): StyleSpecification
   onChange(value: {center: LngLat, zoom: number}): unknown
-};
+} & WithTranslation;
 
 type MapMaplibreGlState = {
   map: Map | null
@@ -72,7 +73,7 @@ type MapMaplibreGlState = {
   zoom?: number
 };
 
-export default class MapMaplibreGl extends React.Component<MapMaplibreGlProps, MapMaplibreGlState> {
+class MapMaplibreGlInternal extends React.Component<MapMaplibreGlInternalProps, MapMaplibreGlState> {
   static defaultProps = {
     onMapLoaded: () => {},
     onDataChange: () => {},
@@ -82,7 +83,7 @@ export default class MapMaplibreGl extends React.Component<MapMaplibreGlProps, M
   }
   container: HTMLDivElement | null = null
 
-  constructor(props: MapMaplibreGlProps) {
+  constructor(props: MapMaplibreGlInternalProps) {
     super(props)
     this.state = {
       map: null,
@@ -91,7 +92,7 @@ export default class MapMaplibreGl extends React.Component<MapMaplibreGlProps, M
   }
 
 
-  shouldComponentUpdate(nextProps: MapMaplibreGlProps, nextState: MapMaplibreGlState) {
+  shouldComponentUpdate(nextProps: MapMaplibreGlInternalProps, nextState: MapMaplibreGlState) {
     let should = false;
     try {
       should = JSON.stringify(this.props) !== JSON.stringify(nextProps) || JSON.stringify(this.state) !== JSON.stringify(nextState);
@@ -154,7 +155,7 @@ export default class MapMaplibreGl extends React.Component<MapMaplibreGlProps, M
 
     this.initGeocoder(map);
 
-    const zoomControl = new ZoomControl;
+    const zoomControl = new ZoomControl(this.props.t("Zoom:"));
     map.addControl(zoomControl, 'top-right');
 
     const nav = new MapLibreGl.NavigationControl({visualizePitch:true});
@@ -256,18 +257,24 @@ export default class MapMaplibreGl extends React.Component<MapMaplibreGlProps, M
         };
       }
     };
-    const geocoder = new MaplibreGeocoder(geocoderConfig, {maplibregl: MapLibreGl});
+    const geocoder = new MaplibreGeocoder(geocoderConfig, {
+      placeholder: this.props.t("Search"),
+      maplibregl: MapLibreGl,
+    });
     map.addControl(geocoder, 'top-left');
   }
 
   render() {
+    const t = this.props.t;
     return <div
       className="maputnik-map__map"
       role="region"
-      aria-label="Map view"
+      aria-label={t("Map view")}
       ref={x => this.container = x}
       data-wd-key="maplibre:map"
     ></div>
   }
 }
 
+const MapMaplibreGl = withTranslation()(MapMaplibreGlInternal);
+export default MapMaplibreGl;

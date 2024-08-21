@@ -128,7 +128,7 @@ export default class FieldFunction extends React.Component<FieldFunctionProps, F
     }
   }
 
-  static getDerivedStateFromProps(props: FieldFunctionProps, state: FieldFunctionState) {
+  static getDerivedStateFromProps(props: Readonly<FieldFunctionProps>, state: FieldFunctionState) {
     // Because otherwise when editing values we end up accidentally changing field type.
     if (state.isEditing) {
       return {};

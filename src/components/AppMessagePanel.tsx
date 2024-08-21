@@ -1,23 +1,24 @@
 import React from 'react'
 import {formatLayerId} from '../libs/format';
 import {LayerSpecification, StyleSpecification} from 'maplibre-gl';
+import { Trans, WithTranslation, withTranslation } from 'react-i18next';
 
-type AppMessagePanelProps = {
+type AppMessagePanelInternalProps = {
   errors?: unknown[]
   infos?: string[]
   mapStyle?: StyleSpecification
   onLayerSelect?(...args: unknown[]): unknown
   currentLayer?: LayerSpecification
   selectedLayerIndex?: number
-};
+} & WithTranslation;
 
-export default class AppMessagePanel extends React.Component<AppMessagePanelProps> {
+class AppMessagePanelInternal extends React.Component<AppMessagePanelInternalProps> {
   static defaultProps = {
     onLayerSelect: () => {},
   }
 
   render() {
-    const {selectedLayerIndex} = this.props;
+    const {t, selectedLayerIndex} = this.props;
     const errors = this.props.errors?.map((error: any, idx) => {
       let content;
       if (error.parsed && error.parsed.type === "layer") {
@@ -25,7 +26,9 @@ export default class AppMessagePanel extends React.Component<AppMessagePanelProp
         const layerId = this.props.mapStyle?.layers[parsed.data.index].id;
         content = (
           <>
-            Layer <span>{formatLayerId(layerId)}</span>: {parsed.data.message}
+            <Trans t={t}>
+              Layer <span>{formatLayerId(layerId)}</span>: {parsed.data.message}
+            </Trans>
             {selectedLayerIndex !== parsed.data.index &&
               <>
                 &nbsp;&mdash;&nbsp;
@@ -33,7 +36,7 @@ export default class AppMessagePanel extends React.Component<AppMessagePanelProp
                   className="maputnik-message-panel__switch-button"
                   onClick={() => this.props.onLayerSelect!(parsed.data.index)}
                 >
-                  switch to layer
+                  {t("switch to layer")}
                 </button>
               </>
             }
@@ -59,3 +62,5 @@ export default class AppMessagePanel extends React.Component<AppMessagePanelProp
   }
 }
 
+const AppMessagePanel = withTranslation()(AppMessagePanelInternal);
+export default AppMessagePanel;

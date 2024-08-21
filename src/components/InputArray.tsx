@@ -32,7 +32,7 @@ export default class FieldArray extends React.Component<FieldArrayProps, FieldAr
     };
   }
 
-  static getDerivedStateFromProps(props: FieldArrayProps, state: FieldArrayState) {
+  static getDerivedStateFromProps(props: Readonly<FieldArrayProps>, state: FieldArrayState) {
     const value: any[] = [];
     const initialPropsValue = state.initialPropsValue.slice(0);
 

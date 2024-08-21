@@ -3,16 +3,18 @@ import React from 'react'
 import latest from '@maplibre/maplibre-gl-style-spec/dist/latest.json'
 import Block from './Block'
 import InputNumber from './InputNumber'
+import { WithTranslation, withTranslation } from 'react-i18next';
 
-type FieldMinZoomProps = {
+type FieldMinZoomInternalProps = {
   value?: number
   onChange(...args: unknown[]): unknown
   error?: {message: string}
-};
+} & WithTranslation;
 
-export default class FieldMinZoom extends React.Component<FieldMinZoomProps> {
+class FieldMinZoomInternal extends React.Component<FieldMinZoomInternalProps> {
   render() {
-    return <Block label={"Min Zoom"} fieldSpec={latest.layer.minzoom}
+    const t = this.props.t;
+    return <Block label={t("Min Zoom")} fieldSpec={latest.layer.minzoom}
       error={this.props.error}
       data-wd-key="min-zoom"
     >
@@ -28,3 +30,6 @@ export default class FieldMinZoom extends React.Component<FieldMinZoomProps> {
     </Block>
   }
 }
+
+const FieldMinZoom = withTranslation()(FieldMinZoomInternal);
+export default FieldMinZoom;
