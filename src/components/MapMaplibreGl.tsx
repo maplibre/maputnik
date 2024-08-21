@@ -11,8 +11,7 @@ import { HighlightedLayer, colorHighlightedLayer } from '../libs/highlight'
 import 'maplibre-gl/dist/maplibre-gl.css'
 import '../maplibregl.css'
 import '../libs/maplibre-rtl'
-//@ts-ignore
-import MaplibreGeocoder from '@maplibre/maplibre-gl-geocoder';
+import MaplibreGeocoder, { MaplibreGeocoderApi, MaplibreGeocoderApiConfig } from '@maplibre/maplibre-gl-geocoder';
 import '@maplibre/maplibre-gl-geocoder/dist/maplibre-gl-geocoder.css';
 import { withTranslation, WithTranslation } from 'react-i18next'
 
@@ -222,7 +221,7 @@ class MapMaplibreGlInternal extends React.Component<MapMaplibreGlInternalProps, 
 
   initGeocoder(map: Map) {
     const geocoderConfig = {
-      forwardGeocode: async (config:{query: string, limit: number, language: string[]}) => {
+      forwardGeocode: async (config: MaplibreGeocoderApiConfig) => {
         const features = [];
         try {
           const request = `https://nominatim.openstreetmap.org/search?q=${config.query}&format=geojson&polygon_geojson=1&addressdetails=1`;
@@ -255,8 +254,8 @@ class MapMaplibreGlInternal extends React.Component<MapMaplibreGlInternalProps, 
         return {
           features
         };
-      }
-    };
+      },
+    } as unknown as MaplibreGeocoderApi;
     const geocoder = new MaplibreGeocoder(geocoderConfig, {
       placeholder: this.props.t("Search"),
       maplibregl: MapLibreGl,
