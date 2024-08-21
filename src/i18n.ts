@@ -7,6 +7,7 @@ export const supportedLanguages = {
   "en": "English",
   "ja": "日本語",
   "he": "עברית",
+  "zh": "简体中文"
 } as const;
 
 i18n
