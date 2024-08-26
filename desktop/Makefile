@@ -14,8 +14,8 @@ $(BINARY): $(GOBIN)/gox $(SOURCES) version.go rice-box.go
 # Copy the current release into ./editor/maputnik so it can be
 # embedded in the binary
 editor/pull_release:
-	mkdir -p editor/maputnik
-	cp -r ../dist editor/maputnik
+	mkdir -p editor
+	cp -r ../dist/* editor
 
 $(GOBIN)/gox:
 	go install github.com/mitchellh/gox@v1.0.1
