@@ -61,28 +61,28 @@ jobs:
 
     # Build and upload desktop CLI artifacts
     - name: Set up Go
-      uses: actions/setup-go@v3
+      uses: actions/setup-go@v5
       with:
-        go-version: ^1.19.x
+        go-version: ^1.23.x
       id: go
 
     - name: Build desktop artifacts
       run: npm run build-desktop
 
     - name: Artifacts/linux
-      uses: actions/upload-artifact@v1
+      uses: actions/upload-artifact@v4
       with:
         name: maputnik-linux
         path: ./desktop/bin/linux/
 
     - name: Artifacts/darwin
-      uses: actions/upload-artifact@v1
+      uses: actions/upload-artifact@v4
       with:
         name: maputnik-darwin
         path: ./desktop/bin/darwin/
 
     - name: Artifacts/windows
-      uses: actions/upload-artifact@v1
+      uses: actions/upload-artifact@v4
       with:
         name: maputnik-windows
         path: ./desktop/bin/windows/
