@@ -66,33 +66,26 @@ jobs:
         go-version: ^1.19.x
       id: go
 
-    - name: Check out code into the Go module directory
-      uses: actions/checkout@v4
-      with:
-        repository: maputnik/desktop
-        ref: master
-        path: ./src/github.com/maputnik/desktop/
-
-    - name: Make
-      run: cd src/github.com/maputnik/desktop/ && make
+    - name: Build desktop artifacts
+      run: npm run build-desktop
 
     - name: Artifacts/linux
       uses: actions/upload-artifact@v1
       with:
         name: maputnik-linux
-        path: ./src/github.com/maputnik/desktop/bin/linux/
+        path: ./desktop/bin/linux/
 
     - name: Artifacts/darwin
       uses: actions/upload-artifact@v1
       with:
         name: maputnik-darwin
-        path: ./src/github.com/maputnik/desktop/bin/darwin/
+        path: ./desktop/bin/darwin/
 
     - name: Artifacts/windows
       uses: actions/upload-artifact@v1
       with:
         name: maputnik-windows
-        path: ./src/github.com/maputnik/desktop/bin/windows/
+        path: ./desktop/bin/windows/
   
   e2e-tests:
     name: "E2E tests using ${{ matrix.browser }}"

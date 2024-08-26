@@ -36,3 +36,4 @@ public
 /build
 /cypress/screenshots
 /dist/
+/desktop/version.go

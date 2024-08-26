@@ -7,6 +7,7 @@
   "scripts": {
     "start": "vite",
     "build": "tsc && vite build --base=/maputnik/",
+    "build-desktop": "tsc && vite build --base=/ && cd desktop && make",
     "i18n:refresh": "i18next 'src/**/*.{ts,tsx,js,jsx}'",
     "lint": "eslint ./src ./cypress --ext ts,tsx,js,jsx --report-unused-disable-directives --max-warnings 0",
     "test": "cypress run",
