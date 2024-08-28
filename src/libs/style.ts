@@ -71,20 +71,13 @@ function replaceSourceAccessToken(mapStyle: StyleSpecification, sourceName: stri
   if(!("url" in source) || !source.url) return mapStyle
 
   let authSourceName = sourceName
-  let setAccessToken = (url: string) => url.replace('{key}', accessToken)
   if(sourceName === "thunderforest_transport" || sourceName === "thunderforest_outdoors") {
     authSourceName = "thunderforest"
   }
   else if (("url" in source) && source.url?.match(/\.stadiamaps\.com/)) {
-    // A few weird things here worth commenting on...
-    //
-    // 1. The code currently assumes openmaptiles == MapTiler,
-    //    so we need to check the source URL.
-    // 2. Stadia Maps does not always require an API key,
-    //    so there is no placeholder in our styles.
-    //    We append it at the end during exporting if necessary.
+    // The code currently usually assumes openmaptiles == MapTiler,
+    // so we need to check the source URL.
     authSourceName = "stadia"
-    setAccessToken = (url: string) => `${url}?api_key=${accessToken}`
   }
 
   const accessToken = getAccessToken(authSourceName, mapStyle, opts)
@@ -94,11 +87,21 @@ function replaceSourceAccessToken(mapStyle: StyleSpecification, sourceName: stri
     return mapStyle;
   }
 
+  let sourceUrl: string
+  if (authSourceName == "stadia") {
+    // Stadia Maps does not always require an API key,
+    // so there is no placeholder in our styles.
+    // We append it at the end of the URL when exporting if necessary.
+    sourceUrl = `${source.url}?api_key=${accessToken}`
+  } else {
+    sourceUrl = source.url.replace('{key}', accessToken)
+  }
+
   const changedSources = {
     ...mapStyle.sources,
     [sourceName]: {
       ...source,
-      url: setAccessToken(source.url)
+      url: sourceUrl
     }
   }
   const changedStyle = {
