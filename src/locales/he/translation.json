@@ -179,6 +179,8 @@
   "Public access token for MapTiler Cloud.": "Public access token for MapTiler Cloud.",
   "Thunderforest Access Token": "Thunderforest Access Token",
   "Public access token for Thunderforest services.": "Public access token for Thunderforest services.",
+  "Stadia Maps API Key": "Stadia Maps API Key",
+  "API key for Stadia Maps.": "API key for Stadia Maps",
   "Style Renderer": "צייר הסטייל",
   "Choose the default Maputnik renderer for this style.": "בחירת צייר ברירת המחדל של מפוטניק עבור הסטייל הזה"
 }

@@ -70,6 +70,12 @@ npm run lint-css
 npm run sort-styles
 ```
 
+Update the translation files (run this whenever touching user-facing strings).
+After running, check your working copy for files and add/correct as needed.
+
+```
+npm run i18n:refresh
+```
 
 ## Tests
 For E2E testing we use [Cypress](https://www.cypress.io/)
