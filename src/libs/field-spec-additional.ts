@@ -10,6 +10,10 @@ const spec = (t: TFunction) => ({
       label: t("Thunderforest Access Token"),
       doc: t("Public access token for Thunderforest services.")
     },
+    stadia_access_token: {
+      label: t("Stadia Maps API Key"),
+      doc: t("API key for Stadia Maps.")
+    },
     style_renderer: {
       label: t("Style Renderer"),
       doc: t("Choose the default Maputnik renderer for this style."),
