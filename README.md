@@ -94,6 +94,16 @@ You can also see the tests as they run or select which suites to run by executin
 npm run cy:open
 ```
 
+## Release process
+
+1. Review [`CHANGELOG.md`](/CHANGELOG.md)
+   - Double-check that all changes included in the release are appropriately documented.
+   - To-be-released changes should be under the "main" header.
+   - Commit any final changes to the changelog.
+2. Run [Create bump version PR](https://github.com/maplibre/maputnik/actions/workflows/create-bump-version-pr.yml) by manual workflow dispatch and set the version number in the input. This will create a PR that changes the changelog and `package.json` file to review and merge.
+3. Once merged, an automatic process will kick in and creates a GitHub release and uploads release assets.
+
+
 ## Sponsors
 
 Thanks to the supporters of the **[Kickstarter campaign](https://www.kickstarter.com/projects/174808720/maputnik-visual-map-editor-for-mapbox-gl)**. This project would not be possible without these commercial and individual sponsors.

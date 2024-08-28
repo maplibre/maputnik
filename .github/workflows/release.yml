@@ -1,0 +1,145 @@
+name: Release
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  release-check:
+    name: Check if version changed
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          ref: main
+
+      - name: Use Node.js from nvmrc
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: ".nvmrc"
+
+      - name: Check if version has been updated
+        id: check
+        uses: EndBug/version-check@v2
+
+    outputs:
+      publish: ${{ steps.check.outputs.changed }}
+
+  release:
+    name: Release
+    needs: release-check
+    if: ${{ needs.release-check.outputs.publish == 'true' }}
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          ref: main
+
+      - name: Use Node.js from nvmrc
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: ".nvmrc"
+          registry-url: "https://registry.npmjs.org"
+
+      - name: Set up Go for desktop build
+        uses: actions/setup-go@v5
+        with:
+          go-version: ^1.23.x
+          cache-dependency-path: desktop/go.sum
+        id: go
+
+      - name: Get version
+        id: package-version
+        uses: martinbeentjes/npm-get-version-action@v1.3.1
+
+      - name: Install
+        run: npm ci
+
+      - name: Prepare release
+        id: prepare_release
+        run: |
+          RELEASE_TYPE=$(node -e "console.log(require('semver').prerelease('${{ steps.package-version.outputs.current-version }}') ? 'prerelease' : 'regular')")
+          echo "release_type=$RELEASE_TYPE" >> $GITHUB_OUTPUT
+
+      - name: Build
+        run: |
+          npm run build
+          npm run build-desktop
+
+      - name: Tag commit and push
+        id: tag_version
+        uses: mathieudutour/github-tag-action@v6.2
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          custom_tag: ${{ steps.package-version.outputs.current-version }}
+
+      - name: Create Archives
+        run: |
+          zip -r dist dist
+          zip -r desktop desktop/bin/
+
+      - name: Build Release Notes
+        id: release_notes
+        if: ${{ steps.prepare_release.outputs.release_type == 'regular' }}
+        run: |
+          RELEASE_NOTES_PATH="${PWD}/release_notes.txt"
+          ./build/release-notes.js > ${RELEASE_NOTES_PATH}
+          echo "release_notes=${RELEASE_NOTES_PATH}" >> $GITHUB_OUTPUT
+
+      - name: Create GitHub Release (regular)
+        id: create_regular_release
+        if: ${{ steps.prepare_release.outputs.release_type == 'regular' }}
+        uses: ncipollo/release-action@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag: ${{ steps.tag_version.outputs.new_tag }}
+          name: ${{ steps.tag_version.outputs.new_tag }}
+          bodyFile: ${{ steps.release_notes.outputs.release_notes }}
+          artifacts: "dist.zip,desktop.zip"
+          allowUpdates: true
+          draft: false
+          prerelease: false
+
+      - name: Create GitHub Release (prerelease)
+        id: create_prerelease
+        if: ${{ steps.prepare_release.outputs.release_type == 'prerelease' }}
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ steps.tag_version.outputs.new_tag }}
+          release_name: ${{ steps.tag_version.outputs.new_tag }}
+          draft: false
+          prerelease: true
+
+      - name: Upload GitHub Release Assets (prerelease) - dist.zip
+        uses: actions/upload-release-asset@v1
+        if: ${{ steps.prepare_release.outputs.release_type == 'prerelease' }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_prerelease.outputs.upload_url }}
+          asset_path: ./dist.zip
+          asset_name: dist.zip
+          asset_content_type: application/zip
+
+      - name: Upload GitHub Release Assets (prerelease) - desktop.zip
+        uses: actions/upload-release-asset@v1
+        if: ${{ steps.prepare_release.outputs.release_type == 'prerelease' }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_prerelease.outputs.upload_url }}
+          asset_path: ./desktop.zip
+          asset_name: desktop.zip
+          asset_content_type: application/zip

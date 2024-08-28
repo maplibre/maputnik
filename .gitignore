@@ -33,7 +33,6 @@ node_modules
 public
 /errorShots
 /old
-/build
 /cypress/screenshots
 /dist/
 /desktop/version.go
