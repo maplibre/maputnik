@@ -82,7 +82,7 @@
   "Close modal": "モーダルを閉じる",
   "Debug": "デバッグ",
   "Options": "設定",
-  "<0>Open in OSM</0> &mdash; Opens the current view on openstreetmap.org": "現在のビューを <0>openstreetmap.org で開く</0>",
+  "<0>Open in OSM</0> — Opens the current view on openstreetmap.org": "現在のビューを <0>openstreetmap.org で開く</0>",
   "Export Style": "スタイルをエクスポート",
   "Download Style": "スタイルをダウンロード",
   "Download a JSON style to your computer.": "パソコンにJSONスタイルをダウンロードします。",

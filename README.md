@@ -77,6 +77,10 @@ After running, check your working copy for files and add/correct as needed.
 npm run i18n:refresh
 ```
 
+You can test the UI in different languages using the dropdown in the top menu
+(Maputnik does not automatically localize based on browser language settings
+at the moment).
+
 ## Tests
 For E2E testing we use [Cypress](https://www.cypress.io/)
 
