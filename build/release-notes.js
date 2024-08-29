@@ -42,7 +42,7 @@ if (previous) {
 }
 const templatedReleaseNotes = `${header}
 
-${latest.changelog}
+${latest.changelog}`;
 
 // eslint-disable-next-line eol-last
 process.stdout.write(templatedReleaseNotes.trimEnd());
