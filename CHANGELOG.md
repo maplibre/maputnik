@@ -9,6 +9,7 @@
 ## 2.1.0
 
 ### ✨ Features and improvements
+
 - Add GitHub workflows for releasing new versions
 - Update desktop build to pull from this repo (#922)
 
