@@ -66,7 +66,6 @@ jobs:
 
       - name: Build
         run: |
-          npm run build
           npm run build-desktop
 
       - name: Tag commit and push
@@ -78,7 +77,6 @@ jobs:
 
       - name: Create Archives
         run: |
-          zip -r dist dist
           zip -r desktop desktop/bin/
 
       - name: Build Release Notes
@@ -97,7 +95,7 @@ jobs:
           tag: ${{ steps.tag_version.outputs.new_tag }}
           name: ${{ steps.tag_version.outputs.new_tag }}
           bodyFile: ${{ steps.release_notes.outputs.release_notes }}
-          artifacts: "dist.zip,desktop.zip"
+          artifacts: "desktop.zip"
           allowUpdates: true
           draft: false
           prerelease: false
