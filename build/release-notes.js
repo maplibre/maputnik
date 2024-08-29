@@ -4,7 +4,6 @@
 // https://github.com/maplibre/maplibre-gl-js/blob/bc70bc559cea5c987fa1b79fd44766cef68bbe28/build/release-notes.js
 
 import * as fs from 'fs';
-import semver from 'semver';
 
 const changelogPath = 'CHANGELOG.md';
 const changelog = fs.readFileSync(changelogPath, 'utf8');
@@ -44,8 +43,6 @@ if (previous) {
 const templatedReleaseNotes = `${header}
 
 ${latest.changelog}
-
-${semver.prerelease(latest.version) ? 'Pre-release version' : ''}`;
 
 // eslint-disable-next-line eol-last
 process.stdout.write(templatedReleaseNotes.trimEnd());
