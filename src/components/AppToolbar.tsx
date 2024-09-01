@@ -259,7 +259,7 @@ class AppToolbarInternal extends React.Component<AppToolbarInternalProps> {
 
           <ToolbarSelect wdKey="nav:language">
             <MdLanguage />
-            <label>{t("Language")}
+            <label>Language
               <select
                 className="maputnik-select"
                 data-wd-key="maputnik-lang-select"
