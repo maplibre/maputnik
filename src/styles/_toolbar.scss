@@ -87,7 +87,7 @@
 
 .maputnik-toolbar-version {
   font-size: 10px;
-  margin-left: 4px;
+  margin: 0 4px;
   white-space: nowrap;
 }
 
@@ -103,7 +103,7 @@
   @extend .maputnik-toolbar-link; /* stylelint-disable-line */
 
   select {
-    margin-left: 6px;
+    margin: 0 6px;
     border-width: 0;
     display: inline;
     width: auto;
@@ -114,12 +114,12 @@
 }
 
 .maputnik-icon-text {
-  padding-left: $margin-1;
+  padding: 0 $margin-1;
 }
 
 .maputnik-icon-action {
   display: inline;
-  margin-left: $margin-1;
+  margin: 0 $margin-1;
 }
 
 .maputnik-toolbar__inner {

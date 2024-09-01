@@ -107,6 +107,9 @@
 
   height: 24px;
 }
+[dir="rtl"] .maputnik-select {
+  background: $color-gray url("#{$icon-down-arrow}") left center no-repeat;
+}
 
 // MULTIBUTTON
 .maputnik-multibutton {
