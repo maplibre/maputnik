@@ -16,6 +16,7 @@ In order to add a new translation you'll need to add it to the configuration fil
 Refresh the localization to generate a new directory under `/src/locales/` for your new language.
 
 ```bash
+npm install
 npm run i18n:refresh
 ```
 
@@ -27,7 +28,7 @@ Make sure all the keys are translated.
 Finally, test your language locally by starting a local instance of Maputnik.
 
 ```bash
-npm start
+npm run start
 ```
 
 Consider adding your name as a helping person for the translation of new features.

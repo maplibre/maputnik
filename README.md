@@ -72,6 +72,10 @@ npm run lint-css
 npm run sort-styles
 ```
 
+### Translations & Localization
+
+See [/src/locales/README.md](/src/locales/README.md)
+
 
 ## Tests
 For E2E testing we use [Cypress](https://www.cypress.io/)
