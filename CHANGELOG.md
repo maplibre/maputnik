@@ -1,6 +1,7 @@
 ## main
 
 ### ✨ Features and improvements
+- Use same version number for web and desktop versions
 - _...Add new stuff here..._
 
 ### 🐞 Bug fixes

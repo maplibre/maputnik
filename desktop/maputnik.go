@@ -17,7 +17,7 @@ func main() {
 	app := cli.NewApp()
 	app.Name = "maputnik"
 	app.Usage = "Server for integrating Maputnik locally"
-	app.Version = "Editor: " + EditorVersion + "; Desktop: " + DesktopVersion
+	app.Version = Version
 
 	app.Flags = []cli.Flag{
 		&cli.StringFlag{
