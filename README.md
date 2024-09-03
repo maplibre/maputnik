@@ -36,6 +36,8 @@ Maputnik is written in typescript and is using [React](https://github.com/facebo
 
 We ensure building and developing Maputnik works with the [current active LTS Node.js version and above](https://github.com/nodejs/Release#release-schedule).
 
+Check out our [Internationalization guide](./src/locales/README.md) for UI text related changes. 
+
 ### Getting Involved
 Join the #maplibre or #maputnik slack channel at OSMUS: get an invite at https://slack.openstreetmap.us/ Read the the below guide in order to get familiar with how we do things around here.
 
@@ -69,7 +71,6 @@ npm run lint
 npm run lint-css
 npm run sort-styles
 ```
-
 
 ## Tests
 For E2E testing we use [Cypress](https://www.cypress.io/)

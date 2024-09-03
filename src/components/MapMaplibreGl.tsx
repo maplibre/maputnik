@@ -14,6 +14,7 @@ import '../libs/maplibre-rtl'
 import MaplibreGeocoder, { MaplibreGeocoderApi, MaplibreGeocoderApiConfig } from '@maplibre/maplibre-gl-geocoder';
 import '@maplibre/maplibre-gl-geocoder/dist/maplibre-gl-geocoder.css';
 import { withTranslation, WithTranslation } from 'react-i18next'
+import i18next from 'i18next'
 
 function renderPopup(popup: JSX.Element, mountNode: ReactDOM.Container): HTMLElement {
   ReactDOM.render(popup, mountNode);
@@ -67,9 +68,11 @@ type MapMaplibreGlInternalProps = {
 } & WithTranslation;
 
 type MapMaplibreGlState = {
-  map: Map | null
-  inspect: MaplibreInspect | null
-  zoom?: number
+  map: Map | null;
+  inspect: MaplibreInspect | null;
+  geocoder: MaplibreGeocoder | null;
+  zoomControl: ZoomControl | null;
+  zoom?: number;
 };
 
 class MapMaplibreGlInternal extends React.Component<MapMaplibreGlInternalProps, MapMaplibreGlState> {
@@ -87,7 +90,12 @@ class MapMaplibreGlInternal extends React.Component<MapMaplibreGlInternalProps, 
     this.state = {
       map: null,
       inspect: null,
+      geocoder: null,
+      zoomControl: null,
     }
+    i18next.on('languageChanged', () => {
+      this.forceUpdate();
+    })
   }
 
 
@@ -125,6 +133,7 @@ class MapMaplibreGlInternal extends React.Component<MapMaplibreGlInternalProps, 
         this.state.inspect!.render();
       }, 500);
     }
+    
   }
 
   componentDidMount() {
@@ -152,9 +161,9 @@ class MapMaplibreGlInternal extends React.Component<MapMaplibreGlInternalProps, 
     map.showCollisionBoxes = mapOpts.showCollisionBoxes!;
     map.showOverdrawInspector = mapOpts.showOverdrawInspector!;
 
-    this.initGeocoder(map);
+    let geocoder = this.initGeocoder(map);
 
-    const zoomControl = new ZoomControl(this.props.t("Zoom:"));
+    const zoomControl = new ZoomControl();
     map.addControl(zoomControl, 'top-right');
 
     const nav = new MapLibreGl.NavigationControl({visualizePitch:true});
@@ -189,6 +198,8 @@ class MapMaplibreGlInternal extends React.Component<MapMaplibreGlInternalProps, 
       this.setState({
         map,
         inspect,
+        geocoder,
+        zoomControl,
         zoom: map.getZoom()
       });
     })
@@ -261,10 +272,13 @@ class MapMaplibreGlInternal extends React.Component<MapMaplibreGlInternalProps, 
       maplibregl: MapLibreGl,
     });
     map.addControl(geocoder, 'top-left');
+    return geocoder;
   }
 
   render() {
     const t = this.props.t;
+    this.state.geocoder?.setPlaceholder(t("Search"));
+    this.state.zoomControl?.setLabel(t("Zoom:"));
     return <div
       className="maputnik-map__map"
       role="region"

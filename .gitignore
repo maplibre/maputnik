@@ -36,3 +36,7 @@ public
 /cypress/screenshots
 /dist/
 /desktop/version.go
+
+# IDE
+.vscode/
+.idea/
