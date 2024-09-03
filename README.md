@@ -72,7 +72,6 @@ npm run lint-css
 npm run sort-styles
 ```
 
-
 ## Tests
 For E2E testing we use [Cypress](https://www.cypress.io/)
 

@@ -4,10 +4,11 @@ import resourcesToBackend from "i18next-resources-to-backend";
 import { initReactI18next } from "react-i18next";
 
 export const supportedLanguages = {
-  "fr": "Français",
+  "de": "Deutsch",
   "en": "English",
-  "ja": "日本語",
+  "fr": "Français",
   "he": "עברית",
+  "ja": "日本語",
   "zh": "简体中文"
 } as const;
 
