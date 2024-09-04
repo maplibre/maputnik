@@ -7,8 +7,15 @@ GOBIN := $(if $(GOBIN),$(GOBIN),$(HOME)/go/bin)
 
 all: $(BINARY)
 
-$(BINARY): $(GOBIN)/gox $(SOURCES) version.go rice-box.go
+$(BINARY): $(GOBIN)/gox $(GOBIN)/go-winres $(SOURCES) version.go rice-box.go winres/winres.json
+	$(GOBIN)/go-winres make --product-version=$(VERSION)
 	$(GOBIN)/gox -osarch "windows/amd64 linux/amd64 darwin/amd64" -output "bin/{{.OS}}/${BINARY}"
+
+winres/winres.json: winres/winres_template.json
+	sed 's/{{.Version}}/$(VERSION)/g' winres/winres_template.json > $@
+
+$(GOBIN)/go-winres:
+	go install github.com/tc-hib/go-winres@latest
 
 # Copy the current release into ./editor/maputnik so it can be
 # embedded in the binary

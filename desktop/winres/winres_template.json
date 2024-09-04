@@ -1,0 +1,53 @@
+{
+  "RT_MANIFEST": {
+    "#1": {
+      "0409": {
+        "identity": {
+          "name": "Maputnik",
+          "version": "{{.Version}}"
+        },
+        "description": "A MapLibre GL visual style editor",
+        "minimum-os": "win7",
+        "execution-level": "as invoker",
+        "ui-access": false,
+        "auto-elevate": false,
+        "dpi-awareness": "system",
+        "disable-theming": false,
+        "disable-window-filtering": false,
+        "high-resolution-scrolling-aware": false,
+        "ultra-high-resolution-scrolling-aware": false,
+        "long-path-aware": false,
+        "printer-driver-isolation": false,
+        "gdi-scaling": false,
+        "segment-heap": false,
+        "use-common-controls-v6": false
+      }
+    }
+  },
+  "RT_VERSION": {
+    "#1": {
+      "0000": {
+        "fixed": {
+          "file_version": "{{.Version}}",
+          "product_version": "{{.Version}}"
+        },
+        "info": {
+          "0409": {
+            "Comments": "https://github.com/maplibre/maputnik",
+            "CompanyName": "Maputnik",
+            "FileDescription": "A MapLibre GL visual style editor",
+            "FileVersion": "{{.Version}}",
+            "InternalName": "Maputnik",
+            "LegalCopyright": "MIT License",
+            "LegalTrademarks": "",
+            "OriginalFilename": "Maputnik.exe",
+            "PrivateBuild": "",
+            "ProductName": "Maputnik",
+            "ProductVersion": "{{.Version}}",
+            "SpecialBuild": ""
+          }
+        }
+      }
+    }
+  }
+}
