@@ -1,4 +1,5 @@
 # Maputnik Desktop [![GitHub CI status](https://github.com/maplibre/maputnik/workflows/ci/badge.svg)][github-action-ci]
+
 ---
 
 A Golang based cross platform executable for integrating Maputnik locally.
@@ -11,7 +12,7 @@ Report issues on [maplibre/maputnik](https://github.com/maplibre/maputnik).
 
 ## Install
 
-You can download a single binary for Linux, OSX or Windows from [the latest releases of **maplibre/maputnik**](https://github.com/maplibre/maputnik/editor/releases/latest).
+You can download a zip file containing desktop binaries for Linux, OSX and Windows from [the latest releases of **maplibre/maputnik**](https://github.com/maplibre/maputnik/releases/latest).
 
 ### Usage
 
@@ -53,12 +54,12 @@ maputnik --static ./localFolder
 
 `maputnik` exposes the configured styles via a HTTP API.
 
-| Method                          | Description
-|---------------------------------|---------------------------------------
-| `GET /styles`                   | List the ID of all configured style files
-| `GET /styles/{filename}`        | Get contents of a single style file
-| `PUT /styles/{filename}`        | Update contents of a style file
-| `WEBSOCKET /ws`                 | Listen to change events for the configured style files
+| Method                   | Description                                            |
+| ------------------------ | ------------------------------------------------------ |
+| `GET /styles`            | List the ID of all configured style files              |
+| `GET /styles/{filename}` | Get contents of a single style file                    |
+| `PUT /styles/{filename}` | Update contents of a style file                        |
+| `WEBSOCKET /ws`          | Listen to change events for the configured style files |
 
 ### Build
 
@@ -69,4 +70,4 @@ npm install
 npm run build-desktop
 ```
 
-You should now find the `maputnik` binary in your `bin` directory.
+You should now find the `maputnik` binary in your `desktop/bin` directory.
