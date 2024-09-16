@@ -19,7 +19,7 @@
   },
   {
     "id": "maptiler-basic-gl-style",
-    "title": "Maptiler Basic",
+    "title": "MapTiler Basic",
     "url": "https://cdn.jsdelivr.net/gh/openmaptiles/klokantech-basic-gl-style@v1.10/style.json",
     "thumbnail": "https://maputnik.github.io/thumbnails/klokantech-basic.png"
   },
