@@ -6,6 +6,12 @@
     "thumbnail": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAYAAAAECAQAAAAHDYbIAAAAEUlEQVR42mP8/58BDhiJ4wAA974H/U5Xe1oAAAAASUVORK5CYII="
   },
   {
+    "id": "americana",
+    "title": "Americana",
+    "url": "https://americanamap.org/style.json",
+    "thumbnail": "https://github.com/maplibre/maputnik/assets/649392/23fa75ad-63e6-43f5-8837-03cdb0428bac"
+  },
+  {
     "id": "dark-matter",
     "title": "Dark Matter",
     "url": "https://cdn.jsdelivr.net/gh/openmaptiles/dark-matter-gl-style@v1.9/style.json",
@@ -13,7 +19,7 @@
   },
   {
     "id": "maptiler-basic-gl-style",
-    "title": "Maptiler Basic",
+    "title": "MapTiler Basic",
     "url": "https://cdn.jsdelivr.net/gh/openmaptiles/klokantech-basic-gl-style@v1.10/style.json",
     "thumbnail": "https://maputnik.github.io/thumbnails/klokantech-basic.png"
   },
@@ -64,6 +70,12 @@
     "title": "Positron",
     "url": "https://cdn.jsdelivr.net/gh/openmaptiles/positron-gl-style@v1.9/style.json",
     "thumbnail": "https://maputnik.github.io/thumbnails/positron.png"
+  },
+  {
+    "id": "protomaps-light",
+    "title": "Protomaps Light",
+    "url": "https://api.protomaps.com/styles/v2/light.json?key=d828297496b11844",
+    "thumbnail": "https://github.com/user-attachments/assets/911f9765-4a7d-4736-9ec0-f2d4c90ae587"
   },
   {
     "id": "stadia-outdoors",
