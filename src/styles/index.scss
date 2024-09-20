@@ -102,8 +102,7 @@
 
     &:not(:first-child)
     {
-      padding-top: $margin-1;
-      padding-left: $margin-2;
+      padding: $margin-1;
     }
 
     &:nth-child(1) {

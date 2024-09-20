@@ -1,18 +1,18 @@
-# Maputnik Desktop [![GitHub CI status](https://github.com/maputnik/desktop/workflows/ci/badge.svg)](https://github.com/maputnik/desktop/actions?query=workflow%3Aci)
+# Maputnik Desktop [![GitHub CI status](https://github.com/maplibre/maputnik/workflows/ci/badge.svg)][github-action-ci]
 
 ---
 
 A Golang based cross platform executable for integrating Maputnik locally.
-This binary packages up the JavaScript and CSS bundle produced by [maputnik/editor](https://github.com/maputnik/desktop)
+This binary packages up the JavaScript and CSS bundle produced by maputnik
 and embeds it in the program for easy distribution. It also allows
 exposing a local style file and work on it both in Maputnik and with your favorite
 editor.
 
-Report issues on [maputnik/editor](https://github.com/maputnik/editor).
+Report issues on [maplibre/maputnik](https://github.com/maplibre/maputnik).
 
 ## Install
 
-You can download a single binary for Linux, OSX or Windows from [the latest releases of **maputnik/editor**](https://github.com/maputnik/editor/releases/latest).
+You can download a zip file containing desktop binaries for Linux, OSX and Windows from [the latest releases of **maplibre/maputnik**](https://github.com/maplibre/maputnik/releases/latest).
 
 ### Usage
 
@@ -54,25 +54,20 @@ maputnik --static ./localFolder
 
 `maputnik` exposes the configured styles via a HTTP API.
 
-| Method                          | Description
-|---------------------------------|---------------------------------------
-| `GET /styles`                   | List the ID of all configured style files
-| `GET /styles/{filename}`        | Get contents of a single style file
-| `PUT /styles/{filename}`        | Update contents of a style file
-| `WEBSOCKET /ws`                 | Listen to change events for the configured style files
+| Method                   | Description                                            |
+| ------------------------ | ------------------------------------------------------ |
+| `GET /styles`            | List the ID of all configured style files              |
+| `GET /styles/{filename}` | Get contents of a single style file                    |
+| `PUT /styles/{filename}` | Update contents of a style file                        |
+| `WEBSOCKET /ws`          | Listen to change events for the configured style files |
 
 ### Build
 
-Clone the repository. Make sure you clone it into the correct directory `$GOPATH/src/github.com/maputnik`.
+From the root of the [maplibre/maputnik](https://github.com/maplibre/maputnik) project, install the deps and run the desktop-build command.
 
 ```
-git clone git@github.com:maputnik/desktop.git
+npm install
+npm run build-desktop
 ```
 
-Run `make` to install the 3rd party dependencies and build the `maputnik` binary embedding the editor.
-
-```
-make
-```
-
-You should now find the `maputnik` binary in your `bin` directory.
+You should now find the `maputnik` binary in your `desktop/bin` directory.

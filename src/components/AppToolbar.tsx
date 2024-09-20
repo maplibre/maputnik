@@ -230,7 +230,7 @@ class AppToolbarInternal extends React.Component<AppToolbarInternalProps> {
 
           <ToolbarSelect wdKey="nav:inspect">
             <MdFindInPage />
-            <label>{t("View")}
+            <IconText>{t("View")}
               <select
                 className="maputnik-select"
                 data-wd-key="maputnik-select"
@@ -254,12 +254,12 @@ class AppToolbarInternal extends React.Component<AppToolbarInternalProps> {
                   })}
                 </optgroup>
               </select>
-            </label>
+            </IconText>
           </ToolbarSelect>
 
           <ToolbarSelect wdKey="nav:language">
             <MdLanguage />
-            <label>{t("Language")}
+            <IconText>Language
               <select
                 className="maputnik-select"
                 data-wd-key="maputnik-lang-select"
@@ -274,7 +274,7 @@ class AppToolbarInternal extends React.Component<AppToolbarInternalProps> {
                   );
                 })}
               </select>
-            </label>
+            </IconText>
           </ToolbarSelect>
 
           <ToolbarLink href={"https://github.com/maplibre/maputnik/wiki"}>

@@ -1,12 +1,13 @@
 {
   "name": "maputnik",
-  "version": "2.0.0",
+  "version": "2.1.1",
   "description": "A MapLibre GL visual style editor",
   "type": "module",
   "main": "''",
   "scripts": {
     "start": "vite",
     "build": "tsc && vite build --base=/maputnik/",
+    "build-desktop": "tsc && vite build --base=/ && cd desktop && make",
     "i18n:refresh": "i18next 'src/**/*.{ts,tsx,js,jsx}'",
     "lint": "eslint ./src ./cypress --ext ts,tsx,js,jsx --report-unused-disable-directives --max-warnings 0",
     "test": "cypress run",
@@ -23,7 +24,7 @@
   "homepage": "https://github.com/maplibre/maputnik#readme",
   "dependencies": {
     "@mapbox/mapbox-gl-rtl-text": "^0.2.3",
-    "@maplibre/maplibre-gl-geocoder": "^1.5.0",
+    "@maplibre/maplibre-gl-geocoder": "^1.6.0",
     "@maplibre/maplibre-gl-inspect": "^1.6.3",
     "@maplibre/maplibre-gl-style-spec": "^20.1.1",
     "@mdi/js": "^7.4.47",
@@ -142,7 +143,7 @@
     "stylelint-scss": "^6.2.1",
     "typescript": "^5.4.3",
     "uuid": "^9.0.1",
-    "vite": "^5.2.6",
+    "vite": "^5.4.6",
     "vite-plugin-istanbul": "^6.0.0"
   }
 }

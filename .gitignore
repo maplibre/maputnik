@@ -33,6 +33,14 @@ node_modules
 public
 /errorShots
 /old
-/build
 /cypress/screenshots
 /dist/
+/desktop/version.go
+
+# IDE
+.vscode/
+.idea/
+
+# Window metadata files
+/desktop/winres/winres.json
+/desktop/*.syso

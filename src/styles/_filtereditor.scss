@@ -18,7 +18,7 @@
 }
 
 .maputnik-filter-editor-operator {
-  margin-left: 2%;
+  margin: 0 2%;
   display: inline-block;
   width: 17%;
 
@@ -30,7 +30,7 @@
 .maputnik-filter-editor-args {
   display: inline-block;
   width: 54%;
-  margin-left: 2%;
+  margin: 0 2%;
 
   .maputnik-string,
   .maputnik-number {
