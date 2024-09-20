@@ -89,7 +89,7 @@ export default class Doc extends React.Component<DocProps> {
         }
         {docUrl && docUrlDescription &&
           <div className="SpecDoc__learn-more">
-            <a href={docUrl}  target="_blank" rel="noreferrer" onClick={() => console.log('Link clicked')}>{docUrlDescription}</a>
+            <a href={docUrl}  target="_blank" rel="noreferrer">{docUrlDescription}</a>
           </div>
         }
       </>
