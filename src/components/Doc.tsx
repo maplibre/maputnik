@@ -18,7 +18,8 @@ type DocProps = {
     'sdk-support'?: {
       [key: string]: typeof headers
     }
-    docUrl?: string
+    docUrl?: string,
+    docUrlDescription?: string
   }
 };  // & WithTranslation?
 
@@ -26,7 +27,7 @@ export default class Doc extends React.Component<DocProps> {
   render () {
     const {fieldSpec} = this.props;
 
-    const {doc, values, docUrl} = fieldSpec;
+    const {doc, values, docUrl, docUrlDescription} = fieldSpec;
     const sdkSupport = fieldSpec['sdk-support'];
 
     const renderValues = (
@@ -86,9 +87,9 @@ export default class Doc extends React.Component<DocProps> {
             </table>
           </div>
         }
-        {docUrl &&
+        {docUrl && docUrlDescription &&
           <div className="SpecDoc__learn-more">
-            <a href={docUrl}  target="_blank" rel="noreferrer" onClick={() => console.log('Link clicked')}>Learn More (TODO i18n)</a>
+            <a href={docUrl}  target="_blank" rel="noreferrer" onClick={() => console.log('Link clicked')}>{docUrlDescription}</a>
           </div>
         }
       </>
