@@ -21,7 +21,7 @@ type DocProps = {
     docUrl?: string,
     docUrlDescription?: string
   }
-};  // & WithTranslation?
+};
 
 export default class Doc extends React.Component<DocProps> {
   render () {
