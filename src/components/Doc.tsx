@@ -19,7 +19,7 @@ type DocProps = {
       [key: string]: typeof headers
     }
     docUrl?: string,
-    docUrlDescription?: string
+    docUrlLinkText?: string
   }
 };
 
@@ -27,7 +27,7 @@ export default class Doc extends React.Component<DocProps> {
   render () {
     const {fieldSpec} = this.props;
 
-    const {doc, values, docUrl, docUrlDescription} = fieldSpec;
+    const {doc, values, docUrl, docUrlLinkText} = fieldSpec;
     const sdkSupport = fieldSpec['sdk-support'];
 
     const renderValues = (
@@ -87,9 +87,9 @@ export default class Doc extends React.Component<DocProps> {
             </table>
           </div>
         }
-        {docUrl && docUrlDescription &&
+        {docUrl && docUrlLinkText &&
           <div className="SpecDoc__learn-more">
-            <a href={docUrl}  target="_blank" rel="noreferrer">{docUrlDescription}</a>
+            <a href={docUrl}  target="_blank" rel="noreferrer">{docUrlLinkText}</a>
           </div>
         }
       </>

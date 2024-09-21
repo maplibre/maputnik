@@ -6,19 +6,19 @@ const spec = (t: TFunction) => ({
       label: t("MapTiler Access Token"),
       doc: t("Public access token for MapTiler Cloud."),
       docUrl: "https://docs.maptiler.com/cloud/api/authentication-key/",
-      docUrlDescription: t("Learn More")
+      docUrlLinkText: t("Learn More")
     },
     thunderforest_access_token: {
       label: t("Thunderforest Access Token"),
       doc: t("Public access token for Thunderforest services."),
       docUrl: "https://www.thunderforest.com/docs/apikeys/",
-      docUrlDescription: t("Learn More")
+      docUrlLinkText: t("Learn More")
     },
     stadia_access_token: {
       label: t("Stadia Maps API Key"),
       doc: t("API key for Stadia Maps."),
       docUrl: "https://docs.stadiamaps.com/authentication/",
-      docUrlDescription: t("Learn More")
+      docUrlLinkText: t("Learn More")
     },
     style_renderer: {
       label: t("Style Renderer"),
