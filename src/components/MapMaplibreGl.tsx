@@ -15,6 +15,7 @@ import MaplibreGeocoder, { MaplibreGeocoderApi, MaplibreGeocoderApiConfig } from
 import '@maplibre/maplibre-gl-geocoder/dist/maplibre-gl-geocoder.css';
 import { withTranslation, WithTranslation } from 'react-i18next'
 import i18next from 'i18next'
+import { Protocol } from "pmtiles";
 
 function renderPopup(popup: JSX.Element, mountNode: ReactDOM.Container): HTMLElement {
   ReactDOM.render(popup, mountNode);
@@ -148,6 +149,8 @@ class MapMaplibreGlInternal extends React.Component<MapMaplibreGlInternalProps, 
       localIdeographFontFamily: false
     } satisfies MapOptions;
 
+    let protocol = new Protocol();
+    MapLibreGl.addProtocol("pmtiles",protocol.tile);
     const map = new MapLibreGl.Map(mapOpts);
 
     const mapViewChange = () => {

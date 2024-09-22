@@ -51,6 +51,7 @@ function editorMode(source: SourceSpecification) {
   }
   if(source.type === 'vector') {
     if(source.tiles) return 'tile_vector'
+    if(source.url!.startsWith("pmtiles://")) return 'pmtiles_vector'
     return 'tilejson_vector'
   }
   if(source.type === 'geojson') {
@@ -129,6 +130,10 @@ class AddSource extends React.Component<AddSourceProps, AddSourceState> {
     const {protocol} = window.location;
 
     switch(mode) {
+    case 'pmtiles_vector': return {
+      type: 'vector',
+      url: `${protocol}//localhost:3000/file.pmtiles`
+    }
     case 'geojson_url': return {
       type: 'geojson',
       data: `${protocol}//localhost:3000/geojson.json`
@@ -240,6 +245,7 @@ class AddSource extends React.Component<AddSourceProps, AddSourceState> {
           ['tile_raster', t('Raster (Tile URLs)')],
           ['tilejson_raster-dem', t('Raster DEM (TileJSON URL)')],
           ['tilexyz_raster-dem', t('Raster DEM (XYZ URLs)')],
+          ['pmtiles_vector', 'Vector (PMTiles)'],
           ['image', t('Image')],
           ['video', t('Video')],
         ]}
