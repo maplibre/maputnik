@@ -11,21 +11,18 @@ function validate(url: string, t: TFunction): JSX.Element | undefined {
 
   let error;
   const getUrlParams = (url: string) => {
-    let protocol: string | undefined;
-    let isLocal = false;
-
     try {
       const urlObj = new URL(url);
-
-      protocol = urlObj.protocol;
+      const { protocol, hostname } = urlObj;
       // Basic check against localhost; 127.0.0.1/8 and IPv6 localhost [::1]
-      isLocal = /^(localhost|\[::1\]|127(.[0-9]{1,3}){3})/i.test(urlObj.hostname);
-    } catch (err) {
-    }
+      const isLocal = /^(localhost|\[::1\]|127(.[0-9]{1,3}){3})/i.test(hostname);
 
-    return { protocol, isLocal };
+      return { protocol, isLocal };
+    } catch (err) {
+      return {};
+    }
   };
-  const {protocol, isLocal} = getUrlParams(url);
+  const { protocol, isLocal } = getUrlParams(url);
   const isSsl = window.location.protocol === "https:";
 
   if (!protocol) {
