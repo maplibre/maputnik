@@ -55,10 +55,6 @@ function indexOfLayer(layers: LayerSpecification[], layerId: string) {
 }
 
 function getAccessToken(sourceName: string, mapStyle: StyleSpecification, opts: {allowFallback?: boolean}) {
-  if(sourceName === "thunderforest_transport" || sourceName === "thunderforest_outdoors") {
-    sourceName = "thunderforest"
-  }
-
   const metadata = mapStyle.metadata || {} as any;
   let accessToken = metadata[`maputnik:${sourceName}_access_token`]
 
@@ -74,18 +70,38 @@ function replaceSourceAccessToken(mapStyle: StyleSpecification, sourceName: stri
   if(!source) return mapStyle
   if(!("url" in source) || !source.url) return mapStyle
 
-  const accessToken = getAccessToken(sourceName, mapStyle, opts)
+  let authSourceName = sourceName
+  if(sourceName === "thunderforest_transport" || sourceName === "thunderforest_outdoors") {
+    authSourceName = "thunderforest"
+  }
+  else if (("url" in source) && source.url?.match(/\.stadiamaps\.com/)) {
+    // The code currently usually assumes openmaptiles == MapTiler,
+    // so we need to check the source URL.
+    authSourceName = "stadia"
+  }
+
+  const accessToken = getAccessToken(authSourceName, mapStyle, opts)
 
   if(!accessToken) {
     // Early exit.
     return mapStyle;
   }
 
+  let sourceUrl: string
+  if (authSourceName == "stadia") {
+    // Stadia Maps does not always require an API key,
+    // so there is no placeholder in our styles.
+    // We append it at the end of the URL when exporting if necessary.
+    sourceUrl = `${source.url}?api_key=${accessToken}`
+  } else {
+    sourceUrl = source.url.replace('{key}', accessToken)
+  }
+
   const changedSources = {
     ...mapStyle.sources,
     [sourceName]: {
       ...source,
-      url: source.url.replace('{key}', accessToken)
+      url: sourceUrl
     }
   }
   const changedStyle = {
@@ -120,6 +136,8 @@ function stripAccessTokens(mapStyle: StyleSpecification) {
     ...mapStyle.metadata as any
   };
   delete changedMetadata['maputnik:openmaptiles_access_token'];
+  delete changedMetadata['maputnik:thunderforest_access_token'];
+  delete changedMetadata['maputnik:stadia_access_token'];
   return {
     ...mapStyle,
     metadata: changedMetadata

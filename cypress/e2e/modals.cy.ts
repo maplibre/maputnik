@@ -160,6 +160,18 @@ describe("modals", () => {
       ).shouldInclude({ "maputnik:thunderforest_access_token": apiKey });
     });
 
+    it("stadia access token", () => {
+      let apiKey = "testing123";
+      when.setValue(
+        "modal:settings.maputnik:stadia_access_token",
+        apiKey
+      );
+      when.click("modal:settings.name");
+      then(
+        get.styleFromLocalStorage().then((style) => style.metadata)
+      ).shouldInclude({ "maputnik:stadia_access_token": apiKey });
+    });
+
     it("style renderer", () => {
       cy.on("uncaught:exception", () => false); // this is due to the fact that this is an invalid style for openlayers
       when.select("modal:settings.maputnik:renderer", "ol");

@@ -130,6 +130,12 @@ class ModalExportInternal extends React.Component<ModalExportInternalProps> {
             value={(this.props.mapStyle.metadata || {} as any)['maputnik:thunderforest_access_token']}
             onChange={this.changeMetadataProperty.bind(this, "maputnik:thunderforest_access_token")}
           />
+          <FieldString
+            label={fsa.maputnik.stadia_access_token.label}
+            fieldSpec={fsa.maputnik.stadia_access_token}
+            value={(this.props.mapStyle.metadata || {} as any)['maputnik:stadia_access_token']}
+            onChange={this.changeMetadataProperty.bind(this, "maputnik:stadia_access_token")}
+          />
         </div>
 
         <div className="maputnik-modal-export-buttons">

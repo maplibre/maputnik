@@ -56,7 +56,9 @@ export default class Block extends React.Component<BlockProps, BlockState> {
     if (event.nativeEvent.target.nodeName !== "INPUT" && !contains) {
       event.stopPropagation();
     }
-    event.preventDefault();
+    if (event.nativeEvent.target.nodeName !== "A") {
+      event.preventDefault();
+    }
   }
 
   render() {

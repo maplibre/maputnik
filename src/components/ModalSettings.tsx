@@ -156,6 +156,14 @@ class ModalSettingsInternal extends React.Component<ModalSettingsInternalProps> 
           onChange={onChangeMetadataProperty.bind(this, "maputnik:thunderforest_access_token")}
         />
 
+        <FieldString
+          label={fsa.maputnik.stadia_access_token.label}
+          fieldSpec={fsa.maputnik.stadia_access_token}
+          data-wd-key="modal:settings.maputnik:stadia_access_token"
+          value={metadata['maputnik:stadia_access_token']}
+          onChange={onChangeMetadataProperty.bind(this, "maputnik:stadia_access_token")}
+        />
+
         <FieldArray
           label={t("Center")}
           fieldSpec={latest.$root.center}
