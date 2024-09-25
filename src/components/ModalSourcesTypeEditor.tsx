@@ -11,7 +11,7 @@ import FieldCheckbox from './FieldCheckbox'
 import { WithTranslation, withTranslation } from 'react-i18next';
 import { TFunction } from 'i18next'
 
-export type EditorMode = "video" | "image" | "tilejson_vector" | "tilexyz_raster" | "tilejson_raster" | "tilexyz_raster-dem" | "tilejson_raster-dem" | "tilexyz_vector" | "geojson_url" | "geojson_json" | null;
+export type EditorMode = "video" | "image" | "tilejson_vector" | "tile_raster" | "tilejson_raster" | "tilexyz_raster-dem" | "tilejson_raster-dem" | "tile_vector" | "geojson_url" | "geojson_json" | null;
 
 type TileJSONSourceEditorProps = {
   source: {
@@ -45,6 +45,7 @@ type TileURLSourceEditorProps = {
     tiles: string[]
     minzoom: number
     maxzoom: number
+    scheme: 'xyz' | 'tms'
   }
   onChange(...args: unknown[]): unknown
   children?: React.ReactNode
@@ -73,6 +74,19 @@ class TileURLSourceEditor extends React.Component<TileURLSourceEditorProps> {
     const t = this.props.t;
     return <div>
       {this.renderTileUrls()}
+      <FieldSelect
+        label={t("Scheme Type")}
+        fieldSpec={latest.source_vector.scheme}
+        options={[
+          ['xyz', 'xyz (Slippy map tilenames scheme)'],
+          ['tms', 'tms (OSGeo spec scheme)'],
+        ]}
+        onChange={scheme => this.props.onChange({
+          ...this.props.source,
+          scheme
+        })}
+        value={this.props.source.scheme}
+      />
       <FieldNumber
         label={t("Min Zoom")}
         fieldSpec={latest.source_vector.minzoom}
@@ -291,9 +305,9 @@ class ModalSourcesTypeEditorInternal extends React.Component<ModalSourcesTypeEdi
     case 'geojson_url': return <GeoJSONSourceUrlEditor {...commonProps} />
     case 'geojson_json': return <GeoJSONSourceFieldJsonEditor {...commonProps} />
     case 'tilejson_vector': return <TileJSONSourceEditor {...commonProps} />
-    case 'tilexyz_vector': return <TileURLSourceEditor {...commonProps} />
+    case 'tile_vector': return <TileURLSourceEditor {...commonProps} />
     case 'tilejson_raster': return <TileJSONSourceEditor {...commonProps} />
-    case 'tilexyz_raster': return <TileURLSourceEditor {...commonProps} />
+    case 'tile_raster': return <TileURLSourceEditor {...commonProps} />
     case 'tilejson_raster-dem': return <TileJSONSourceEditor {...commonProps} />
     case 'tilexyz_raster-dem': return <TileURLSourceEditor {...commonProps}>
       <FieldSelect

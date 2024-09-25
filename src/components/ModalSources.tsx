@@ -42,7 +42,7 @@ class PublicSource extends React.Component<PublicSourceProps> {
 
 function editorMode(source: SourceSpecification) {
   if(source.type === 'raster') {
-    if(source.tiles) return 'tilexyz_raster'
+    if(source.tiles) return 'tile_raster'
     return 'tilejson_raster'
   }
   if(source.type === 'raster-dem') {
@@ -50,7 +50,7 @@ function editorMode(source: SourceSpecification) {
     return 'tilejson_raster-dem'
   }
   if(source.type === 'vector') {
-    if(source.tiles) return 'tilexyz_vector'
+    if(source.tiles) return 'tile_vector'
     return 'tilejson_vector'
   }
   if(source.type === 'geojson') {
@@ -142,21 +142,23 @@ class AddSource extends React.Component<AddSourceProps, AddSourceState> {
       type: 'vector',
       url: (source as VectorSourceSpecification).url || `${protocol}//localhost:3000/tilejson.json`
     }
-    case 'tilexyz_vector': return {
+    case 'tile_vector': return {
       type: 'vector',
       tiles: (source as VectorSourceSpecification).tiles || [`${protocol}//localhost:3000/{x}/{y}/{z}.pbf`],
       minzoom: (source as VectorSourceSpecification).minzoom || 0,
-      maxzoom: (source as VectorSourceSpecification).maxzoom || 14
+      maxzoom: (source as VectorSourceSpecification).maxzoom || 14,
+      scheme: (source as VectorSourceSpecification).scheme || 'xyz'
     }
     case 'tilejson_raster': return {
       type: 'raster',
       url: (source as RasterSourceSpecification).url || `${protocol}//localhost:3000/tilejson.json`
     }
-    case 'tilexyz_raster': return {
+    case 'tile_raster': return {
       type: 'raster',
       tiles: (source as RasterSourceSpecification).tiles || [`${protocol}//localhost:3000/{x}/{y}/{z}.pbf`],
       minzoom: (source as RasterSourceSpecification).minzoom || 0,
-      maxzoom: (source as RasterSourceSpecification).maxzoom || 14
+      maxzoom: (source as RasterSourceSpecification).maxzoom || 14,
+      scheme: (source as VectorSourceSpecification).scheme || 'xyz'
     }
     case 'tilejson_raster-dem': return {
       type: 'raster-dem',
@@ -230,9 +232,9 @@ class AddSource extends React.Component<AddSourceProps, AddSourceState> {
           ['geojson_json', t('GeoJSON (JSON)')],
           ['geojson_url', t('GeoJSON (URL)')],
           ['tilejson_vector', t('Vector (TileJSON URL)')],
-          ['tilexyz_vector', t('Vector (XYZ URLs)')],
+          ['tile_vector', t('Vector (Tile URLs)')],
           ['tilejson_raster', t('Raster (TileJSON URL)')],
-          ['tilexyz_raster', t('Raster (XYZ URL)')],
+          ['tile_raster', t('Raster (Tile URLs)')],
           ['tilejson_raster-dem', t('Raster DEM (TileJSON URL)')],
           ['tilexyz_raster-dem', t('Raster DEM (XYZ URLs)')],
           ['image', t('Image')],
