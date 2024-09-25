@@ -51,7 +51,7 @@ function editorMode(source: SourceSpecification) {
   }
   if(source.type === 'vector') {
     if(source.tiles) return 'tile_vector'
-    if(source.url!.startsWith("pmtiles://")) return 'pmtiles_vector'
+    if(source.url && source.url.startsWith("pmtiles://")) return 'pmtiles_vector'
     return 'tilejson_vector'
   }
   if(source.type === 'geojson') {
