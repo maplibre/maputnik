@@ -3,6 +3,7 @@
 ### ✨ Features and improvements
 - Add german translation
 - Use same version number for web and desktop versions
+- Add scheme type options for vector/raster tile
 - _...Add new stuff here..._
 
 ### 🐞 Bug fixes
