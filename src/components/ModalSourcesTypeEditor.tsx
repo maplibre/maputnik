@@ -86,6 +86,7 @@ class TileURLSourceEditor extends React.Component<TileURLSourceEditorProps> {
           scheme
         })}
         value={this.props.source.scheme}
+        data-wd-key="modal:sources.add.scheme_type"
       />
       <FieldNumber
         label={t("Min Zoom")}

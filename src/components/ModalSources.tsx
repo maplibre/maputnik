@@ -224,6 +224,7 @@ class AddSource extends React.Component<AddSourceProps, AddSourceState> {
         fieldSpec={{doc: t("Unique ID that identifies the source and is used in the layer to reference the source.")}}
         value={this.state.sourceId}
         onChange={(v: string) => this.setState({ sourceId: v})}
+        data-wd-key="modal:sources.add.source_id"
       />
       <FieldSelect
         label={t("Source Type")}
@@ -242,6 +243,7 @@ class AddSource extends React.Component<AddSourceProps, AddSourceState> {
         ]}
         onChange={mode => this.setState({mode: mode as EditorMode, source: this.defaultSource(mode as EditorMode)})}
         value={this.state.mode as string}
+        data-wd-key="modal:sources.add.source_type"
       />
       <ModalSourcesTypeEditor
         onChange={this.onChangeSource}
@@ -251,6 +253,7 @@ class AddSource extends React.Component<AddSourceProps, AddSourceState> {
       <InputButton
         className="maputnik-add-source-button"
         onClick={this.onAdd}
+        data-wd-key="modal:sources.add.add_source"
       >
         {t("Add Source")}
       </InputButton>
