@@ -158,7 +158,7 @@ class AddSource extends React.Component<AddSourceProps, AddSourceState> {
       tiles: (source as RasterSourceSpecification).tiles || [`${protocol}//localhost:3000/{x}/{y}/{z}.pbf`],
       minzoom: (source as RasterSourceSpecification).minzoom || 0,
       maxzoom: (source as RasterSourceSpecification).maxzoom || 14,
-      scheme: (source as VectorSourceSpecification).scheme || 'xyz'
+      scheme: (source as RasterSourceSpecification).scheme || 'xyz'
     }
     case 'tilejson_raster-dem': return {
       type: 'raster-dem',
