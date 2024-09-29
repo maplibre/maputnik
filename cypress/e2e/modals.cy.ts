@@ -61,9 +61,27 @@ describe("modals", () => {
   });
 
   describe("sources", () => {
+    beforeEach(() => {
+      when.setStyle("layer");
+      when.click("nav:sources");
+    });
+
     it("active sources");
     it("public source");
-    it("add new source");
+
+    it("add new source", () => {
+      let sourceId = "n1z2v3r";
+      when.setValue("modal:sources.add.source_id", sourceId);
+      when.select("modal:sources.add.source_type", "tile_vector");
+      when.select("modal:sources.add.scheme_type", "tms");
+      when.click("modal:sources.add.add_source");
+      when.wait(200);
+      then(
+        get.styleFromLocalStorage().then((style) => style.sources[sourceId])
+      ).shouldInclude({
+        scheme: "tms",
+      });
+    });
   });
 
   describe("inspect", () => {
