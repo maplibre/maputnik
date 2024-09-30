@@ -11,10 +11,10 @@ function loadJSON(url: string, defaultValue: any, cb: (...args: any[]) => void) 
       }
       return response.json();
     })
-    .then((body) =>{
+    .then((body) => {
       cb(body)
     })
-    .catch(() =>{
+    .catch(() => {
       console.warn('Can not load metadata for ' + url + ', using default value ' + defaultValue);
       cb(defaultValue)
     })
