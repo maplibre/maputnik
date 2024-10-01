@@ -2,7 +2,7 @@ name: deploy
 
 on:
   push:
-    branches: [ main ]
+    branches: [ globe ]
 
 jobs:
   deploy-pages:
@@ -29,23 +29,23 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: dist
   
-  # publish docker to GitHub registry
-  deploy-docker:
-    name: deploy/docker
-    runs-on: ubuntu-latest
+  # # publish docker to GitHub registry
+  # deploy-docker:
+  #   name: deploy/docker
+  #   runs-on: ubuntu-latest
 
-    if: ${{ github.event_name == 'push' }}
+  #   if: ${{ github.event_name == 'push' }}
 
-    strategy:
-      fail-fast: false
+  #   strategy:
+  #     fail-fast: false
 
-    steps:
-    - name: Login to GitHub Container Registry
-      uses: docker/login-action@v3
-      with:
-        registry: ghcr.io
-        username: ${{ github.actor }}
-        password: ${{ secrets.GITHUB_TOKEN }}
-    - uses: actions/checkout@v4
-    - run: docker build -t ghcr.io/maplibre/maputnik:main .
-    - run: docker push ghcr.io/maplibre/maputnik:main
+  #   steps:
+  #   - name: Login to GitHub Container Registry
+  #     uses: docker/login-action@v3
+  #     with:
+  #       registry: ghcr.io
+  #       username: ${{ github.actor }}
+  #       password: ${{ secrets.GITHUB_TOKEN }}
+  #   - uses: actions/checkout@v4
+  #   - run: docker build -t ghcr.io/maplibre/maputnik:main .
+  #   - run: docker push ghcr.io/maplibre/maputnik:main
