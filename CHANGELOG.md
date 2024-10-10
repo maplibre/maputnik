@@ -4,6 +4,7 @@
 - Add german translation
 - Use same version number for web and desktop versions
 - Add scheme type options for vector/raster tile
+- Add `tileSize` field for raster and raster-dem tile sources
 - _...Add new stuff here..._
 
 ### 🐞 Bug fixes

@@ -308,9 +308,30 @@ class ModalSourcesTypeEditorInternal extends React.Component<ModalSourcesTypeEdi
     case 'tilejson_vector': return <TileJSONSourceEditor {...commonProps} />
     case 'tile_vector': return <TileURLSourceEditor {...commonProps} />
     case 'tilejson_raster': return <TileJSONSourceEditor {...commonProps} />
-    case 'tile_raster': return <TileURLSourceEditor {...commonProps} />
+    case 'tile_raster': return <TileURLSourceEditor {...commonProps}>
+      <FieldNumber
+        label={t("Tile Size")}
+        fieldSpec={latest.source_raster.tileSize}
+        onChange={tileSize => this.props.onChange({
+          ...this.props.source,
+          tileSize: tileSize
+        })}
+        value={this.props.source.tileSize || latest.source_raster.tileSize.default}
+        data-wd-key="modal:sources.add.tile_size"
+      />
+    </TileURLSourceEditor>
     case 'tilejson_raster-dem': return <TileJSONSourceEditor {...commonProps} />
     case 'tilexyz_raster-dem': return <TileURLSourceEditor {...commonProps}>
+      <FieldNumber
+        label={t("Tile Size")}
+        fieldSpec={latest.source_raster_dem.tileSize}
+        onChange={tileSize => this.props.onChange({
+          ...this.props.source,
+          tileSize: tileSize
+        })}
+        value={this.props.source.tileSize || latest.source_raster_dem.tileSize.default}
+        data-wd-key="modal:sources.add.tile_size"
+      />
       <FieldSelect
         label={t("Encoding")}
         fieldSpec={latest.source_raster_dem.encoding}
