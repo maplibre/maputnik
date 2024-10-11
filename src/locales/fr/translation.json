@@ -163,7 +163,7 @@
   "Add a new source to your style. You can only choose the source type and id at creation time!": "Ajoutez une nouvelle source à votre style. Vous ne pouvez choisir le type et l'ID de la source qu'au moment de la création !",
   "TileJSON URL": "URL TileJSON",
   "Tile URL": "URL de la tuile",
-  "Scheme Type": "__STRING_NOT_TRANSLATED__",
+  "Scheme Type": "Type de schéma",
   "Coord top left": "Coordonnée en haut à gauche",
   "Coord top right": "Coordonnée en haut à droite",
   "Coord bottom right": "Coordonnée en bas à droite",
