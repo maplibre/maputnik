@@ -173,7 +173,7 @@
   "GeoJSON URL": "GeoJSON URL",
   "GeoJSON": "GeoJSON",
   "Cluster": "Cluster",
-  "Tile Size": "__STRING_NOT_TRANSLATED__",
+  "Tile Size": "Kachelgröße",
   "Encoding": "Kodierung",
   "Error:": "Fehler:",
   "MapTiler Access Token": "MapTiler Zugriffstoken",
