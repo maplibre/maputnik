@@ -163,7 +163,7 @@
   "Add a new source to your style. You can only choose the source type and id at creation time!": "Füge eine neue Quelle zu deinem Stil hinzu. Du kannst den Quellentyp und die ID nur bei der Erstellung auswählen!",
   "TileJSON URL": "TileJSON URL",
   "Tile URL": "Kachel-URL",
-  "Scheme Type": "__STRING_NOT_TRANSLATED__",
+  "Scheme Type": "Schema-Typ",
   "Coord top left": "Koordinate oben links",
   "Coord top right": "Koordinate oben rechts",
   "Coord bottom right": "Koordinate unten rechts",
