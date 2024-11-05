@@ -38,6 +38,27 @@ We ensure building and developing Maputnik works with the [current active LTS No
 
 Check out our [Internationalization guide](./src/locales/README.md) for UI text related changes. 
 
+### Local Style Development
+
+As a Maputnik developer, you can serve styles on the same server that used to develop the Maputnik app.  This is useful if you want to test a style that is not public, or is in development.
+
+For example,
+
+1. Copy `unpublishedstyle.json` to the folder `/styles`
+2. `npm run start` to start the `vite` local server
+3. Verify by going to http://localhost:8888/styles/unpublishedstyle.json
+4. Edit `src/config/styles.json`, then your new local style should be available:  *Open > Gallery Styles*
+
+```json
+  {
+    "id": "localstyle",
+    "title": "unpublishedstyle.json",
+    "url": "http://localhost:8888/styles/unpublishedstyle.json"
+  },
+```
+
+---
+
 ### Getting Involved
 Join the #maplibre or #maputnik slack channel at OSMUS: get an invite at https://slack.openstreetmap.us/ Read the the below guide in order to get familiar with how we do things around here.
 

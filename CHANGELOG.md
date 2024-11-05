@@ -5,6 +5,7 @@
 - Use same version number for web and desktop versions
 - Add scheme type options for vector/raster tile
 - Add `tileSize` field for raster and raster-dem tile sources
+- For local style development, configure CORS & expose a public directory
 - _...Add new stuff here..._
 
 ### 🐞 Bug fixes
