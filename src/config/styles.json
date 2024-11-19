@@ -66,6 +66,12 @@
     "thumbnail": "https://maputnik.github.io/thumbnails/osm-liberty.png"
   },
   {
+    "id": "osm-openmaptiles",
+    "title": "OSM OpenMapTiles",
+    "url": "https://api.maptiler.com/maps/openstreetmap/style.json?key=get_your_own_OpIi9ZULNHzrESv6T2vL",
+    "thumbnail": "https://openmaptiles.org/img/styles/openmaptiles.png"
+  },
+  {
     "id": "positron",
     "title": "Positron",
     "url": "https://cdn.jsdelivr.net/gh/openmaptiles/positron-gl-style@v1.9/style.json",
