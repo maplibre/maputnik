@@ -5,8 +5,10 @@ import istanbul from "vite-plugin-istanbul";
 
 export default defineConfig({
   server: {
+    cors: true,
     port: 8888,
   },
+  publicDir: 'styles',
   build: {
     sourcemap: true
   },
