@@ -56,6 +56,10 @@ type ModalOpenState = {
   activeRequestUrl?: string | null
 };
 
+function transformStyleUrl(styleUrl: string, {language}: { language: string }) {
+  return styleUrl.replace("$lang", language);
+}
+
 class ModalOpenInternal extends React.Component<ModalOpenInternalProps, ModalOpenState> {
   constructor(props: ModalOpenInternalProps) {
     super(props);
@@ -84,6 +88,7 @@ class ModalOpenInternal extends React.Component<ModalOpenInternalProps, ModalOpe
   }
 
   onStyleSelect = (styleUrl: string) => {
+    styleUrl = transformStyleUrl(styleUrl, {language: this.props.i18n.language });
     this.clearError();
 
     let canceled: boolean = false;
