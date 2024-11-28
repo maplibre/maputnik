@@ -9,6 +9,8 @@
 - _...Add new stuff here..._
 
 ### 🐞 Bug fixes
+
+- Fix incorrect handing of network error response (#944)
 - _...Add new stuff here..._
 
 ## 2.1.1
