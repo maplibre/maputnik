@@ -302,9 +302,9 @@ class PMTilesSourceEditor extends React.Component<PMTilesSourceEditorProps> {
         label={t("PMTiles URL")}
         fieldSpec={latest.source_vector.url}
         value={this.props.source.url}
-        onChange={url => this.props.onChange({
+        onChange={(url: string) => this.props.onChange({
           ...this.props.source,
-          url: `pmtiles://${url}`
+          url: url.startsWith("pmtiles://") ? url : `pmtiles://${url}`
         })}
       />
       {this.props.children}
