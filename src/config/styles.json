@@ -66,6 +66,12 @@
     "thumbnail": "https://maputnik.github.io/thumbnails/osm-liberty.png"
   },
   {
+    "id": "osm-openmaptiles",
+    "title": "OSM OpenMapTiles",
+    "url": "https://api.maptiler.com/maps/openstreetmap/style.json?key=get_your_own_OpIi9ZULNHzrESv6T2vL",
+    "thumbnail": "https://openmaptiles.org/img/styles/openmaptiles.png"
+  },
+  {
     "id": "positron",
     "title": "Positron",
     "url": "https://cdn.jsdelivr.net/gh/openmaptiles/positron-gl-style@v1.9/style.json",
@@ -74,7 +80,7 @@
   {
     "id": "protomaps-light",
     "title": "Protomaps Light",
-    "url": "https://api.protomaps.com/styles/v2/light.json?key=d828297496b11844",
+    "url": "https://api.protomaps.com/styles/v4/light/en.json?key=d828297496b11844",
     "thumbnail": "https://github.com/user-attachments/assets/911f9765-4a7d-4736-9ec0-f2d4c90ae587"
   },
   {

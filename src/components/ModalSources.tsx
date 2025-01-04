@@ -155,10 +155,11 @@ class AddSource extends React.Component<AddSourceProps, AddSourceState> {
     }
     case 'tile_raster': return {
       type: 'raster',
-      tiles: (source as RasterSourceSpecification).tiles || [`${protocol}//localhost:3000/{x}/{y}/{z}.pbf`],
+      tiles: (source as RasterSourceSpecification).tiles || [`${protocol}//localhost:3000/{x}/{y}/{z}.png`],
       minzoom: (source as RasterSourceSpecification).minzoom || 0,
       maxzoom: (source as RasterSourceSpecification).maxzoom || 14,
-      scheme: (source as RasterSourceSpecification).scheme || 'xyz'
+      scheme: (source as RasterSourceSpecification).scheme || 'xyz',
+      tileSize: (source as RasterSourceSpecification).tileSize || 512,
     }
     case 'tilejson_raster-dem': return {
       type: 'raster-dem',
@@ -166,9 +167,10 @@ class AddSource extends React.Component<AddSourceProps, AddSourceState> {
     }
     case 'tilexyz_raster-dem': return {
       type: 'raster-dem',
-      tiles: (source as RasterDEMSourceSpecification).tiles || [`${protocol}//localhost:3000/{x}/{y}/{z}.pbf`],
+      tiles: (source as RasterDEMSourceSpecification).tiles || [`${protocol}//localhost:3000/{x}/{y}/{z}.png`],
       minzoom: (source as RasterDEMSourceSpecification).minzoom || 0,
-      maxzoom: (source as RasterDEMSourceSpecification).maxzoom || 14
+      maxzoom: (source as RasterDEMSourceSpecification).maxzoom || 14,
+      tileSize: (source as RasterDEMSourceSpecification).tileSize || 512
     }
     case 'image': return {
       type: 'image',

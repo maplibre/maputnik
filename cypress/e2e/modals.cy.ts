@@ -82,6 +82,21 @@ describe("modals", () => {
         scheme: "tms",
       });
     });
+
+    it("add new raster source", () => {
+      let sourceId = "rastertest";
+      when.setValue("modal:sources.add.source_id", sourceId);
+      when.select("modal:sources.add.source_type", "tile_raster");
+      when.select("modal:sources.add.scheme_type", "xyz");
+      when.setValue("modal:sources.add.tile_size", "128");
+      when.click("modal:sources.add.add_source");
+      when.wait(200);
+      then(
+        get.styleFromLocalStorage().then((style) => style.sources[sourceId])
+      ).shouldInclude({
+        tileSize: 128,
+      });
+    });
   });
 
   describe("inspect", () => {
