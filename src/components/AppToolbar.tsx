@@ -3,7 +3,6 @@ import classnames from 'classnames'
 import {detect} from 'detect-browser';
 
 import {
-  MdFileDownload,
   MdOpenInBrowser,
   MdSettings,
   MdLayers,

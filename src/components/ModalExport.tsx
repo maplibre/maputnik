@@ -82,29 +82,29 @@ class ModalExportInternal extends React.Component<ModalExportInternalProps> {
   }
 
   async saveStyle() {
-    const fileHandle = null;
+    let fileHandle: FileSystemFileHandle;
     const tokenStyle = this.tokenizedStyle();
 
     if (fileHandle != null) {
       const writable = await fileHandle.createWritable();
       await writable.write(tokenStyle);
-      writable.flush();
       await writable.close();
     } else {
-      // TODO
+      await this.saveStyleAs();
     }
   }
 
   async saveStyleAs() {
-    const fileHandle = null;
     const tokenStyle = this.tokenizedStyle();
 
     const root = await navigator.storage.getDirectory();
     const draftHandle = await root.getFileHandle(this.exportName(), { create: true });
-    const accessHandle = await draftHandle.createSyncAccessHandle();
+    const writeable = await draftHandle.createWritable();
 
-    accessHandle.write(tokenStyle);
-    accessHandle.flush();
+    await writeable.write(tokenStyle);
+    await writeable.close();
+    // TODO close existing fileHandle
+    // TODO this.props.fileHandle = accessHandle;
   }
 
   changeMetadataProperty(property: string, value: any) {

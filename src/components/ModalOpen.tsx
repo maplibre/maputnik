@@ -137,6 +137,7 @@ class ModalOpenInternal extends React.Component<ModalOpenInternalProps, ModalOpe
 
   onOpenFile = async () => {
     this.clearError();
+    // TODO close existing file handles
 
     const pickerOpts = {
       types: [
@@ -149,7 +150,7 @@ class ModalOpenInternal extends React.Component<ModalOpenInternalProps, ModalOpe
       multiple: false,
     };
 
-    const [fileHandle] = await window.showOpenFilePicker(pickerOpts);
+    const [fileHandle] = await window.showOpenFilePicker(pickerOpts) as Array<FileSystemFileHandle>;
     const file = await fileHandle.getFile();
     const content = await file.text();
 
