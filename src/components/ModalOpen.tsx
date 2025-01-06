@@ -1,7 +1,6 @@
 import React, { FormEvent } from 'react'
 import {MdFileUpload} from 'react-icons/md'
 import {MdAddCircleOutline} from 'react-icons/md'
-import FileReaderInput, { Result } from 'react-file-reader-input'
 import { Trans, WithTranslation, withTranslation } from 'react-i18next';
 
 import ModalLoading from './ModalLoading'
@@ -47,6 +46,7 @@ type ModalOpenInternalProps = {
   isOpen: boolean
   onOpenToggle(...args: unknown[]): unknown
   onStyleOpen(...args: unknown[]): unknown
+  fileHandle: FileSystemFileHandle | null
 } & WithTranslation;
 
 type ModalOpenState = {
@@ -137,7 +137,6 @@ class ModalOpenInternal extends React.Component<ModalOpenInternalProps, ModalOpe
 
   onOpenFile = async () => {
     this.clearError();
-    // TODO close existing file handles
 
     const pickerOpts = {
       types: [
@@ -164,7 +163,8 @@ class ModalOpenInternal extends React.Component<ModalOpenInternalProps, ModalOpe
       return;
     }
     mapStyle = style.ensureStyleValidity(mapStyle)
-    this.props.onStyleOpen(mapStyle);
+
+    this.props.onStyleOpen(mapStyle, fileHandle);
     this.onOpenToggle();
     return file;
   }

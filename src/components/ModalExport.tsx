@@ -22,6 +22,8 @@ type ModalExportInternalProps = {
   onStyleChanged(...args: unknown[]): unknown
   isOpen: boolean
   onOpenToggle(...args: unknown[]): unknown
+  onSetFileHandle(fileHandle: FileSystemFileHandle | null): unknown
+  fileHandle: FileSystemFileHandle | null
 } & WithTranslation;
 
 
@@ -82,29 +84,50 @@ class ModalExportInternal extends React.Component<ModalExportInternalProps> {
   }
 
   async saveStyle() {
-    let fileHandle: FileSystemFileHandle;
     const tokenStyle = this.tokenizedStyle();
 
-    if (fileHandle != null) {
-      const writable = await fileHandle.createWritable();
-      await writable.write(tokenStyle);
-      await writable.close();
-    } else {
-      await this.saveStyleAs();
+    let fileHandle = this.props.fileHandle;
+    if (fileHandle == null) {
+      fileHandle = await this.createFileHandle();
+      this.props.onSetFileHandle(fileHandle)
+      if (fileHandle == null) return;
     }
+
+    const writable = await fileHandle.createWritable();
+    await writable.write(tokenStyle);
+    await writable.close();
+    this.props.onOpenToggle();
   }
 
   async saveStyleAs() {
     const tokenStyle = this.tokenizedStyle();
 
-    const root = await navigator.storage.getDirectory();
-    const draftHandle = await root.getFileHandle(this.exportName(), { create: true });
-    const writeable = await draftHandle.createWritable();
+    const fileHandle = await this.createFileHandle();
+    this.props.onSetFileHandle(fileHandle)
+    if (fileHandle == null) return;
 
-    await writeable.write(tokenStyle);
-    await writeable.close();
-    // TODO close existing fileHandle
-    // TODO this.props.fileHandle = accessHandle;
+    const writable = await fileHandle.createWritable();
+    await writable.write(tokenStyle);
+    await writable.close();
+    this.props.onOpenToggle();
+  }
+
+  async createFileHandle() : Promise<FileSystemFileHandle | null> {
+    const pickerOpts = {
+      types: [
+        {
+          description: "Style JSON",
+          accept: {"application/json": [".json"]},
+          suggestedName: this.exportName(),
+        },
+      ],
+      excludeAcceptAllOption: true,
+      multiple: false,
+    };
+
+    const fileHandle = await window.showSaveFilePicker(pickerOpts) as FileSystemFileHandle;
+    this.props.onSetFileHandle(fileHandle)
+    return fileHandle;
   }
 
   changeMetadataProperty(property: string, value: any) {
