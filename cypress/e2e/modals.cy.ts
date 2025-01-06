@@ -88,13 +88,15 @@ describe("modals", () => {
       when.setValue("modal:sources.add.source_id", sourceId);
       when.select("modal:sources.add.source_type", "pmtiles_vector");
       when.setValue("modal:sources.add.source_url", "https://data.source.coop/protomaps/openstreetmap/v4.pmtiles");
-      when.click("modal:sources.add.add_source");
+      when.realClick("modal:sources.add.add_source");
       when.wait(200);
-      then(
-        get.styleFromLocalStorage().then((style) => style.sources[sourceId])
-      ).shouldInclude({
-        type: "vector",
-        // url: "pmtiles://https://data.source.coop/protomaps/openstreetmap/v4.pmtiles",
+      then(get.styleFromLocalStorage()).shouldDeepNestedInclude({
+        sources: {
+          pmtilestest: {
+            type: "vector",
+            url: "pmtiles://https://data.source.coop/protomaps/openstreetmap/v4.pmtiles",
+          },
+        },
       });
     });
 
