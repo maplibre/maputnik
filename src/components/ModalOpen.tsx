@@ -135,29 +135,37 @@ class ModalOpenInternal extends React.Component<ModalOpenInternalProps, ModalOpe
     this.onStyleSelect(this.state.styleUrl);
   }
 
-  onUpload = (_: any, files: Result[]) => {
-    const [, file] = files[0];
-    const reader = new FileReader();
-
+  onOpenFile = async () => {
     this.clearError();
 
-    reader.readAsText(file, "UTF-8");
-    reader.onload = e => {
-      let mapStyle;
-      try {
-        mapStyle = JSON.parse(e.target?.result as string)
-      }
-      catch(err) {
-        this.setState({
-          error: (err as Error).toString()
-        });
-        return;
-      }
-      mapStyle = style.ensureStyleValidity(mapStyle)
-      this.props.onStyleOpen(mapStyle);
-      this.onOpenToggle();
+    const pickerOpts = {
+      types: [
+        {
+          description: "Style JSON",
+          accept: {"application/json": [".json"]},
+        },
+      ],
+      excludeAcceptAllOption: true,
+      multiple: false,
+    };
+
+    const [fileHandle] = await window.showOpenFilePicker(pickerOpts);
+    const file = await fileHandle.getFile();
+    const content = await file.text();
+
+    let mapStyle;
+    try {
+      mapStyle = JSON.parse(content)
+    } catch (err) {
+      this.setState({
+        error: (err as Error).toString()
+      });
+      return;
     }
-    reader.onerror = e => console.log(e.target);
+    mapStyle = style.ensureStyleValidity(mapStyle)
+    this.props.onStyleOpen(mapStyle);
+    this.onOpenToggle();
+    return file;
   }
 
   onOpenToggle() {
@@ -196,7 +204,7 @@ class ModalOpenInternal extends React.Component<ModalOpenInternalProps, ModalOpe
       );
     }
 
-    return  (
+    return (
       <div>
         <Modal
           data-wd-key="modal:open"
@@ -206,11 +214,14 @@ class ModalOpenInternal extends React.Component<ModalOpenInternalProps, ModalOpe
         >
           {errorElement}
           <section className="maputnik-modal-section">
-            <h1>{t("Upload Style")}</h1>
-            <p>{t("Upload a JSON style from your computer.")}</p>
-            <FileReaderInput onChange={this.onUpload} tabIndex={-1} aria-label={t("Style file")}>
-              <InputButton className="maputnik-upload-button"><MdFileUpload /> {t("Upload")}</InputButton>
-            </FileReaderInput>
+            <h1>{t("Open local Style")}</h1>
+            <p>{t("Open a local JSON style from your computer.")}</p>
+            <div>
+              <InputButton
+                className="maputnik-big-button"
+                onClick={this.onOpenFile}><MdFileUpload/> {t("Open Style")}
+              </InputButton>
+            </div>
           </section>
 
           <section className="maputnik-modal-section">
