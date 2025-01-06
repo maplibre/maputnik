@@ -4,7 +4,7 @@ import {saveAs} from 'file-saver'
 import {version} from 'maplibre-gl/package.json'
 import {format} from '@maplibre/maplibre-gl-style-spec'
 import type {StyleSpecification} from 'maplibre-gl'
-import {MdFileDownload} from 'react-icons/md'
+import {MdSave} from 'react-icons/md'
 import { WithTranslation, withTranslation } from 'react-i18next';
 
 import FieldString from './FieldString'
@@ -81,11 +81,30 @@ class ModalExportInternal extends React.Component<ModalExportInternalProps> {
     saveAs(blob, exportName + ".html");
   }
 
-  downloadStyle() {
+  async saveStyle() {
+    const fileHandle = null;
     const tokenStyle = this.tokenizedStyle();
-    const blob = new Blob([tokenStyle], {type: "application/json;charset=utf-8"});
-    const exportName = this.exportName();
-    saveAs(blob, exportName + ".json");
+
+    if (fileHandle != null) {
+      const writable = await fileHandle.createWritable();
+      await writable.write(tokenStyle);
+      writable.flush();
+      await writable.close();
+    } else {
+      // TODO
+    }
+  }
+
+  async saveStyleAs() {
+    const fileHandle = null;
+    const tokenStyle = this.tokenizedStyle();
+
+    const root = await navigator.storage.getDirectory();
+    const draftHandle = await root.getFileHandle(this.exportName(), { create: true });
+    const accessHandle = await draftHandle.createSyncAccessHandle();
+
+    accessHandle.write(tokenStyle);
+    accessHandle.flush();
   }
 
   changeMetadataProperty(property: string, value: any) {
@@ -107,14 +126,14 @@ class ModalExportInternal extends React.Component<ModalExportInternalProps> {
       data-wd-key="modal:export"
       isOpen={this.props.isOpen}
       onOpenToggle={this.props.onOpenToggle}
-      title={t('Export Style')}
+      title={t('Save Style')}
       className="maputnik-export-modal"
     >
 
       <section className="maputnik-modal-section">
-        <h1>{t("Download Style")}</h1>
+        <h1>{t("Save Style")}</h1>
         <p>
-          {t("Download a JSON style to your computer.")}
+          {t("Save the JSON style to your computer.")}
         </p>
 
         <div>
@@ -140,16 +159,22 @@ class ModalExportInternal extends React.Component<ModalExportInternalProps> {
 
         <div className="maputnik-modal-export-buttons">
           <InputButton
-            onClick={this.downloadStyle.bind(this)}
+            onClick={this.saveStyle.bind(this)}
           >
-            <MdFileDownload />
-            {t("Download Style")}
+            <MdSave />
+            {t("Save Style")}
+          </InputButton>
+          <InputButton
+            onClick={this.saveStyleAs.bind(this)}
+          >
+            <MdSave />
+            {t("Save Style as")}
           </InputButton>
 
           <InputButton
             onClick={this.downloadHtml.bind(this)}
           >
-            <MdFileDownload />
+            <MdSave />
             {t("Download HTML")}
           </InputButton>
         </div>

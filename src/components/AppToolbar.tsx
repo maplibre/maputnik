@@ -2,7 +2,16 @@ import React from 'react'
 import classnames from 'classnames'
 import {detect} from 'detect-browser';
 
-import {MdFileDownload, MdOpenInBrowser, MdSettings, MdLayers, MdHelpOutline, MdFindInPage, MdLanguage} from 'react-icons/md'
+import {
+  MdFileDownload,
+  MdOpenInBrowser,
+  MdSettings,
+  MdLayers,
+  MdHelpOutline,
+  MdFindInPage,
+  MdLanguage,
+  MdSave
+} from 'react-icons/md'
 import pkgJson from '../../package.json'
 //@ts-ignore
 import maputnikLogo from 'maputnik-design/logos/logo-color.svg?inline'
@@ -216,8 +225,8 @@ class AppToolbarInternal extends React.Component<AppToolbarInternalProps> {
             <IconText>{t("Open")}</IconText>
           </ToolbarAction>
           <ToolbarAction wdKey="nav:export" onClick={this.props.onToggleModal.bind(this, 'export')}>
-            <MdFileDownload />
-            <IconText>{t("Export")}</IconText>
+            <MdSave />
+            <IconText>{t("Save")}</IconText>
           </ToolbarAction>
           <ToolbarAction wdKey="nav:sources" onClick={this.props.onToggleModal.bind(this, 'sources')}>
             <MdLayers />
