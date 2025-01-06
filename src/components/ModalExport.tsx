@@ -4,7 +4,7 @@ import {saveAs} from 'file-saver'
 import {version} from 'maplibre-gl/package.json'
 import {format} from '@maplibre/maplibre-gl-style-spec'
 import type {StyleSpecification} from 'maplibre-gl'
-import {MdSave} from 'react-icons/md'
+import {MdMap, MdSave} from 'react-icons/md'
 import { WithTranslation, withTranslation } from 'react-i18next';
 
 import FieldString from './FieldString'
@@ -185,19 +185,19 @@ class ModalExportInternal extends React.Component<ModalExportInternalProps> {
             onClick={this.saveStyle.bind(this)}
           >
             <MdSave />
-            {t("Save Style")}
+            {t("Save")}
           </InputButton>
           <InputButton
             onClick={this.saveStyleAs.bind(this)}
           >
             <MdSave />
-            {t("Save Style as")}
+            {t("Save as")}
           </InputButton>
 
           <InputButton
             onClick={this.downloadHtml.bind(this)}
           >
-            <MdSave />
+            <MdMap />
             {t("Download HTML")}
           </InputButton>
         </div>
