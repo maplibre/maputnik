@@ -113,16 +113,14 @@ class ModalExportInternal extends React.Component<ModalExportInternalProps> {
   }
 
   async createFileHandle() : Promise<FileSystemFileHandle | null> {
-    const pickerOpts = {
+    const pickerOpts: SaveFilePickerOptions = {
       types: [
         {
-          description: "Style JSON",
-          accept: {"application/json": [".json"]},
-          suggestedName: this.exportName(),
+          description: "json",
+          accept: { "application/json": [".json"] },
         },
       ],
-      excludeAcceptAllOption: true,
-      multiple: false,
+      suggestedName: this.exportName(),
     };
 
     const fileHandle = await window.showSaveFilePicker(pickerOpts) as FileSystemFileHandle;

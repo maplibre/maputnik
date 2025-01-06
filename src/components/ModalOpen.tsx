@@ -138,14 +138,13 @@ class ModalOpenInternal extends React.Component<ModalOpenInternalProps, ModalOpe
   onOpenFile = async () => {
     this.clearError();
 
-    const pickerOpts = {
+    const pickerOpts: OpenFilePickerOptions = {
       types: [
         {
-          description: "Style JSON",
-          accept: {"application/json": [".json"]},
+          description: "json",
+          accept: { "application/json": [".json"] },
         },
       ],
-      excludeAcceptAllOption: true,
       multiple: false,
     };
 
