@@ -4,7 +4,7 @@ import {saveAs} from 'file-saver'
 import {version} from 'maplibre-gl/package.json'
 import {format} from '@maplibre/maplibre-gl-style-spec'
 import type {StyleSpecification} from 'maplibre-gl'
-import {MdFileDownload} from 'react-icons/md'
+import {MdMap, MdSave} from 'react-icons/md'
 import { WithTranslation, withTranslation } from 'react-i18next';
 
 import FieldString from './FieldString'
@@ -22,6 +22,8 @@ type ModalExportInternalProps = {
   onStyleChanged(...args: unknown[]): unknown
   isOpen: boolean
   onOpenToggle(...args: unknown[]): unknown
+  onSetFileHandle(fileHandle: FileSystemFileHandle | null): unknown
+  fileHandle: FileSystemFileHandle | null
 } & WithTranslation;
 
 
@@ -47,7 +49,7 @@ class ModalExportInternal extends React.Component<ModalExportInternalProps> {
     }
   }
 
-  downloadHtml() {
+  createHtml() {
     const tokenStyle = this.tokenizedStyle();
     const htmlTitle = this.props.mapStyle.name || this.props.t("Map");
     const html = `<!DOCTYPE html>
@@ -81,11 +83,49 @@ class ModalExportInternal extends React.Component<ModalExportInternalProps> {
     saveAs(blob, exportName + ".html");
   }
 
-  downloadStyle() {
+  async saveStyle() {
     const tokenStyle = this.tokenizedStyle();
-    const blob = new Blob([tokenStyle], {type: "application/json;charset=utf-8"});
-    const exportName = this.exportName();
-    saveAs(blob, exportName + ".json");
+
+    let fileHandle = this.props.fileHandle;
+    if (fileHandle == null) {
+      fileHandle = await this.createFileHandle();
+      this.props.onSetFileHandle(fileHandle)
+      if (fileHandle == null) return;
+    }
+
+    const writable = await fileHandle.createWritable();
+    await writable.write(tokenStyle);
+    await writable.close();
+    this.props.onOpenToggle();
+  }
+
+  async saveStyleAs() {
+    const tokenStyle = this.tokenizedStyle();
+
+    const fileHandle = await this.createFileHandle();
+    this.props.onSetFileHandle(fileHandle)
+    if (fileHandle == null) return;
+
+    const writable = await fileHandle.createWritable();
+    await writable.write(tokenStyle);
+    await writable.close();
+    this.props.onOpenToggle();
+  }
+
+  async createFileHandle() : Promise<FileSystemFileHandle | null> {
+    const pickerOpts: SaveFilePickerOptions = {
+      types: [
+        {
+          description: "json",
+          accept: { "application/json": [".json"] },
+        },
+      ],
+      suggestedName: this.exportName(),
+    };
+
+    const fileHandle = await window.showSaveFilePicker(pickerOpts) as FileSystemFileHandle;
+    this.props.onSetFileHandle(fileHandle)
+    return fileHandle;
   }
 
   changeMetadataProperty(property: string, value: any) {
@@ -107,14 +147,14 @@ class ModalExportInternal extends React.Component<ModalExportInternalProps> {
       data-wd-key="modal:export"
       isOpen={this.props.isOpen}
       onOpenToggle={this.props.onOpenToggle}
-      title={t('Export Style')}
+      title={t('Save Style')}
       className="maputnik-export-modal"
     >
 
       <section className="maputnik-modal-section">
-        <h1>{t("Download Style")}</h1>
+        <h1>{t("Save Style")}</h1>
         <p>
-          {t("Download a JSON style to your computer.")}
+          {t("Save the JSON style to your computer.")}
         </p>
 
         <div>
@@ -140,17 +180,23 @@ class ModalExportInternal extends React.Component<ModalExportInternalProps> {
 
         <div className="maputnik-modal-export-buttons">
           <InputButton
-            onClick={this.downloadStyle.bind(this)}
+            onClick={this.saveStyle.bind(this)}
           >
-            <MdFileDownload />
-            {t("Download Style")}
+            <MdSave />
+            {t("Save")}
+          </InputButton>
+          <InputButton
+            onClick={this.saveStyleAs.bind(this)}
+          >
+            <MdSave />
+            {t("Save as")}
           </InputButton>
 
           <InputButton
-            onClick={this.downloadHtml.bind(this)}
+            onClick={this.createHtml.bind(this)}
           >
-            <MdFileDownload />
-            {t("Download HTML")}
+            <MdMap />
+            {t("Create HTML")}
           </InputButton>
         </div>
       </section>
