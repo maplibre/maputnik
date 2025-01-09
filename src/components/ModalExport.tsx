@@ -49,7 +49,7 @@ class ModalExportInternal extends React.Component<ModalExportInternalProps> {
     }
   }
 
-  downloadHtml() {
+  createHtml() {
     const tokenStyle = this.tokenizedStyle();
     const htmlTitle = this.props.mapStyle.name || this.props.t("Map");
     const html = `<!DOCTYPE html>
@@ -193,10 +193,10 @@ class ModalExportInternal extends React.Component<ModalExportInternalProps> {
           </InputButton>
 
           <InputButton
-            onClick={this.downloadHtml.bind(this)}
+            onClick={this.createHtml.bind(this)}
           >
             <MdMap />
-            {t("Download HTML")}
+            {t("Create HTML")}
           </InputButton>
         </div>
       </section>
