@@ -245,7 +245,7 @@ class AddSource extends React.Component<AddSourceProps, AddSourceState> {
           ['tile_raster', t('Raster (Tile URLs)')],
           ['tilejson_raster-dem', t('Raster DEM (TileJSON URL)')],
           ['tilexyz_raster-dem', t('Raster DEM (XYZ URLs)')],
-          ['pmtiles_vector', 'Vector (PMTiles)'],
+          ['pmtiles_vector', t('Vector (PMTiles)')],
           ['image', t('Image')],
           ['video', t('Video')],
         ]}

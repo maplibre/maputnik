@@ -656,7 +656,6 @@ export default class App extends React.Component<any, AppState> {
             (sources[key] as any).layers.push(layer.id)
           }
 
-          console.debug("Updating source: "+key);
           this.setState({
             sources: sources
           });
