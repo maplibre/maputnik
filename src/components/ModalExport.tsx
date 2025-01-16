@@ -123,10 +123,6 @@ class ModalExportInternal extends React.Component<ModalExportInternalProps> {
   }
 
   async createFileHandle(): Promise<FileSystemFileHandle | null> {
-    assert(
-      showSaveFilePickerAvailable,
-      'A file handle can only be created if window.showSaveFilePicker() is available as a function.'
-    )
     const pickerOpts: SaveFilePickerOptions = {
       types: [
         {

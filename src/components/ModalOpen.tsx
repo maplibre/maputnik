@@ -171,7 +171,7 @@ class ModalOpenInternal extends React.Component<ModalOpenInternalProps, ModalOpe
 
   // it is not guaranteed that the File System Access API is available on all
   // browsers. If the function is not available, a fallback behavior is used.
-  onUpload = async (_: any, files: Result[]) => {
+  onFileChanged = async (_: any, files: Result[]) => {
     const [, file] = files[0];
     const reader = new FileReader();
     this.clearError();
@@ -250,7 +250,7 @@ class ModalOpenInternal extends React.Component<ModalOpenInternalProps, ModalOpe
                   onClick={this.onOpenFile}><MdFileUpload/> {t("Open Style")}
                 </InputButton>
               ) : (
-                <FileReaderInput onChange={this.onUpload} tabIndex={-1} aria-label={t("Open Style")}>
+                <FileReaderInput onChange={this.onFileChanged} tabIndex={-1} aria-label={t("Open Style")}>
                   <InputButton className="maputnik-upload-button"><MdFileUpload /> {t("Open Style")}</InputButton>
                 </FileReaderInput>
               )}
