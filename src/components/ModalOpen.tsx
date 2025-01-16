@@ -1,6 +1,7 @@
 import React, { FormEvent } from 'react'
 import {MdFileUpload} from 'react-icons/md'
 import {MdAddCircleOutline} from 'react-icons/md'
+import FileReaderInput, { Result } from 'react-file-reader-input'
 import { Trans, WithTranslation, withTranslation } from 'react-i18next';
 
 import ModalLoading from './ModalLoading'
@@ -168,6 +169,32 @@ class ModalOpenInternal extends React.Component<ModalOpenInternalProps, ModalOpe
     return file;
   }
 
+  // it is not guaranteed that the File System Access API is available on all
+  // browsers. If the function is not available, a fallback behavior is used.
+  onUpload = async (_: any, files: Result[]) => {
+    const [, file] = files[0];
+    const reader = new FileReader();
+    this.clearError();
+
+    reader.readAsText(file, "UTF-8");
+    reader.onload = e => {
+      let mapStyle;
+      try {
+        mapStyle = JSON.parse(e.target?.result as string)
+      }
+      catch(err) {
+        this.setState({
+          error: (err as Error).toString()
+        });
+        return;
+      }
+      mapStyle = style.ensureStyleValidity(mapStyle)
+      this.props.onStyleOpen(mapStyle);
+      this.onOpenToggle();
+    }
+    reader.onerror = e => console.log(e.target);
+  }
+
   onOpenToggle() {
     this.setState({
       styleUrl: ""
@@ -217,10 +244,16 @@ class ModalOpenInternal extends React.Component<ModalOpenInternalProps, ModalOpe
             <h1>{t("Open local Style")}</h1>
             <p>{t("Open a local JSON style from your computer.")}</p>
             <div>
-              <InputButton
-                className="maputnik-big-button"
-                onClick={this.onOpenFile}><MdFileUpload/> {t("Open Style")}
-              </InputButton>
+              {typeof window.showOpenFilePicker === "function" ? (
+                <InputButton
+                  className="maputnik-big-button"
+                  onClick={this.onOpenFile}><MdFileUpload/> {t("Open Style")}
+                </InputButton>
+              ) : (
+                <FileReaderInput onChange={this.onUpload} tabIndex={-1} aria-label={t("Open Style")}>
+                  <InputButton className="maputnik-upload-button"><MdFileUpload /> {t("Open Style")}</InputButton>
+                </FileReaderInput>
+              )}
             </div>
           </section>
 

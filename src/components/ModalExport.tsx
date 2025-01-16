@@ -86,6 +86,15 @@ class ModalExportInternal extends React.Component<ModalExportInternalProps> {
   async saveStyle() {
     const tokenStyle = this.tokenizedStyle();
 
+    // it is not guaranteed that the File System Access API is available on all
+    // browsers. If the function is not available, a fallback behavior is used.
+    if (typeof window.showSaveFilePicker !== "function") {
+      const blob = new Blob([tokenStyle], {type: "application/json;charset=utf-8"});
+      const exportName = this.exportName();
+      saveAs(blob, exportName + ".json");
+      return;
+    }
+
     let fileHandle = this.props.fileHandle;
     if (fileHandle == null) {
       fileHandle = await this.createFileHandle();
@@ -179,22 +188,18 @@ class ModalExportInternal extends React.Component<ModalExportInternalProps> {
         </div>
 
         <div className="maputnik-modal-export-buttons">
-          <InputButton
-            onClick={this.saveStyle.bind(this)}
-          >
+          <InputButton onClick={this.saveStyle.bind(this)}>
             <MdSave />
             {t("Save")}
           </InputButton>
-          <InputButton
-            onClick={this.saveStyleAs.bind(this)}
-          >
-            <MdSave />
-            {t("Save as")}
-          </InputButton>
+          {typeof window.showSaveFilePicker === "function" && (
+            <InputButton onClick={this.saveStyleAs.bind(this)}>
+              <MdSave />
+              {t("Save as")}
+            </InputButton>
+          )}
 
-          <InputButton
-            onClick={this.createHtml.bind(this)}
-          >
+          <InputButton onClick={this.createHtml.bind(this)}>
             <MdMap />
             {t("Create HTML")}
           </InputButton>
