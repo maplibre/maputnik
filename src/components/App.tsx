@@ -8,6 +8,7 @@ import get from 'lodash.get'
 import {unset} from 'lodash'
 import {arrayMoveMutable} from 'array-move'
 import hash from "string-hash";
+import { PMTiles } from "pmtiles";
 import {Map, LayerSpecification, StyleSpecification, ValidationError, SourceSpecification} from 'maplibre-gl'
 import {latest, validateStyleMin} from '@maplibre/maplibre-gl-style-spec'
 
@@ -641,33 +642,41 @@ export default class App extends React.Component<any, AppState> {
           console.warn("Failed to setFetchAccessToken: ", err);
         }
 
-        fetch(url!, {
-          mode: 'cors',
-        })
-          .then(response => response.json())
-          .then(json => {
+        const setVectorLayers = (json:any) => {
+          if(!Object.prototype.hasOwnProperty.call(json, "vector_layers")) {
+            return;
+          }
 
-            if(!Object.prototype.hasOwnProperty.call(json, "vector_layers")) {
-              return;
-            }
-
-            // Create new objects before setState
-            const sources = Object.assign({}, {
-              [key]: this.state.sources[key],
-            });
-
-            for(const layer of json.vector_layers) {
-              (sources[key] as any).layers.push(layer.id)
-            }
-
-            console.debug("Updating source: "+key);
-            this.setState({
-              sources: sources
-            });
-          })
-          .catch(err => {
-            console.error("Failed to process sources for '%s'", url, err);
+          // Create new objects before setState
+          const sources = Object.assign({}, {
+            [key]: this.state.sources[key],
           });
+
+          for(const layer of json.vector_layers) {
+            (sources[key] as any).layers.push(layer.id)
+          }
+
+          this.setState({
+            sources: sources
+          });
+        };
+
+        if (url!.startsWith("pmtiles://")) {
+          (new PMTiles(url!.substr(10))).getTileJson("")
+            .then(json => setVectorLayers(json))
+            .catch(err => {
+              console.error("Failed to process sources for '%s'", url, err);
+            });
+        } else {
+          fetch(url!, {
+            mode: 'cors',
+          })
+            .then(response => response.json())
+            .then(json => setVectorLayers(json))
+            .catch(err => {
+              console.error("Failed to process sources for '%s'", url, err);
+            });
+        }
       }
       else {
         sourceList[key] = this.state.sources[key] || this.state.mapStyle.sources[key];
