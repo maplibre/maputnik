@@ -137,8 +137,19 @@ class MapMaplibreGlInternal extends React.Component<MapMaplibreGlInternalProps, 
     }
 
     if (this.props.file) {
-      this.state.protocol.add(this.props.file); // this is necessary for non-HTTP sources
+      let file = this.props.file;
+      this.state.protocol.add(file); // this is necessary for non-HTTP sources
+
+      if (map) {
+        file.getMetadata().then((metadata) => {
+          let layerNames = metadata.vector_layers.map((e) => e.id);
+
+          map.style.sourceCaches["source"]._source.vectorLayerIds = layerNames;
+          console.log("layerNames for inspect:", layerNames);
+        });
+      }
     }
+
   }
 
   componentDidMount() {
