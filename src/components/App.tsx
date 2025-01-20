@@ -8,7 +8,7 @@ import get from 'lodash.get'
 import {unset} from 'lodash'
 import {arrayMoveMutable} from 'array-move'
 import hash from "string-hash";
-import { PMTiles } from "pmtiles";
+import { FileSource, PMTiles } from 'pmtiles';
 import {Map, LayerSpecification, StyleSpecification, ValidationError, SourceSpecification} from 'maplibre-gl'
 import {latest, validateStyleMin} from '@maplibre/maplibre-gl-style-spec'
 
@@ -741,6 +741,7 @@ export default class App extends React.Component<any, AppState> {
         onChange={this.onMapChange}
         options={this.state.maplibreGlDebugOptions}
         inspectModeEnabled={this.state.mapState === "inspect"}
+        file={this.state.file}
         highlightedLayer={this.state.mapStyle.layers[this.state.selectedLayerIndex]}
         onLayerSelect={this.onLayerSelect} />
     }
@@ -881,6 +882,15 @@ export default class App extends React.Component<any, AppState> {
     });
   }
 
+  onFileSelected = (e) => {
+    var file = e[0];
+    var pmt = new PMTiles(new FileSource(file));
+    console.log("App.onFileSelected", pmt);
+    this.setState({
+      file: pmt
+    })
+  }
+
   render() {
     const layers = this.state.mapStyle.layers || []
     const selectedLayer = layers.length > 0 ? layers[this.state.selectedLayerIndex] : undefined
@@ -895,6 +905,8 @@ export default class App extends React.Component<any, AppState> {
       onStyleOpen={this.onStyleChanged}
       onSetMapState={this.setMapState}
       onToggleModal={this.toggleModal.bind(this)}
+      files={this.state.files}
+      onFileSelected={this.onFileSelected}
     />
 
     const layerList = <LayerList

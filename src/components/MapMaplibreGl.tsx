@@ -93,6 +93,7 @@ class MapMaplibreGlInternal extends React.Component<MapMaplibreGlInternalProps, 
       inspect: null,
       geocoder: null,
       zoomControl: null,
+      protocol: new Protocol({metadata: true})
     }
     i18next.on('languageChanged', () => {
       this.forceUpdate();
@@ -134,7 +135,10 @@ class MapMaplibreGlInternal extends React.Component<MapMaplibreGlInternalProps, 
         this.state.inspect!.render();
       }, 500);
     }
-    
+
+    if (this.props.file) {
+      this.state.protocol.add(this.props.file); // this is necessary for non-HTTP sources
+    }
   }
 
   componentDidMount() {
@@ -149,8 +153,9 @@ class MapMaplibreGlInternal extends React.Component<MapMaplibreGlInternalProps, 
       localIdeographFontFamily: false
     } satisfies MapOptions;
 
-    const protocol = new Protocol({metadata: true});
+    let protocol = this.state.protocol;
     MapLibreGl.addProtocol("pmtiles",protocol.tile);
+
     const map = new MapLibreGl.Map(mapOpts);
 
     const mapViewChange = () => {
