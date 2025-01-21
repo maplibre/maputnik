@@ -9,6 +9,7 @@ export default tseslint.config(
   tseslint.configs.recommended,
   {
     files: ['**/*.{js,jsx,ts,tsx}'],
+    ignores: ['./dist/**'],
     languageOptions: {
       ecmaVersion: 2024,
       sourceType: 'module',
@@ -33,12 +34,10 @@ export default tseslint.config(
       "@typescript-eslint/no-explicit-any": "off",
       '@typescript-eslint/no-unused-vars': [
         'warn',
-        {
-          varsIgnorePattern: '^_',
+        { varsIgnorePattern: '^_',
           caughtErrors: 'all',
           caughtErrorsIgnorePattern: '^_',
-          argsIgnorePattern: '^_'
-        }
+          argsIgnorePattern: '^_' }
       ],
       'no-unused-vars': 'off',
       'react/prop-types': 'off',
