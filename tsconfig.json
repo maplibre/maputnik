@@ -3,7 +3,7 @@
       "target": "ES2020",
       "useDefineForClassFields": true,
       "lib": ["ES2020", "DOM", "DOM.Iterable"],
-      "types": ["geojson"],
+      "types": ["geojson", "@types/wicg-file-system-access"],
       "module": "ESNext",
       "skipLibCheck": true,
   
@@ -27,7 +27,7 @@
     "ts-node": {
       "compilerOptions": {
         "module": "ESNext",
-        "moduleResolution": "Node"
+        "moduleResolution": "Node",
       }
     }
 }
