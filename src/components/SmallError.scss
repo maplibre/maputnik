@@ -1,7 +1,7 @@
-@import '../styles/vars';
+@use '../styles/vars';
 
 .SmallError {
   color: #E57373;
-  font-size: $font-size-6;
-  margin-top: $margin-2
+  font-size: vars.$font-size-6;
+  margin-top: vars.$margin-2
 }
