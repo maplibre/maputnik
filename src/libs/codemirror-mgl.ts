@@ -1,4 +1,4 @@
-import jsonlint from '@prantlf/jsonlint';
+import {parse} from '@prantlf/jsonlint';
 import CodeMirror, { MarkerRange } from 'codemirror';
 import jsonToAst from 'json-to-ast';
 import {expression, validateStyleMin} from '@maplibre/maplibre-gl-style-spec';
@@ -17,20 +17,8 @@ CodeMirror.defineMode("mgl", (config, parserConfig) => {
 CodeMirror.registerHelper("lint", "json", (text: string) => {
   const found: MarkerRangeWithMessage[] = [];
 
-  // NOTE: This was modified from the original to remove the global, also the
-  // old jsonlint API was 'jsonlint.parseError' its now
-  // 'jsonlint.parser.parseError'
-  (jsonlint as any).parser.parseError = (str: string, hash: any) => {
-    const loc = hash.loc;
-    found.push({
-      from:    CodeMirror.Pos(loc.first_line - 1, loc.first_column),
-      to:      CodeMirror.Pos(loc.last_line  - 1, loc.last_column),
-      message: str
-    });
-  };
-
   try {
-    jsonlint.parse(text);
+    parse(text);
   }
   catch(_e) {
     // Do nothing we catch the error above
@@ -40,19 +28,10 @@ CodeMirror.registerHelper("lint", "json", (text: string) => {
 
 CodeMirror.registerHelper("lint", "mgl", (text: string, opts: any, doc: any) => {
   const found: MarkerRangeWithMessage[] = [];
-  const {parser} = jsonlint as any;
   const {context} = opts;
 
-  parser.parseError = (str: string, hash: any) => {
-    const loc = hash.loc;
-    found.push({
-      from: CodeMirror.Pos(loc.first_line - 1, loc.first_column),
-      to: CodeMirror.Pos(loc.last_line - 1, loc.last_column),
-      message: str
-    });
-  };
   try {
-    parser.parse(text);
+    parse(text);
   }
   catch (_e) {
     // ignore errors
