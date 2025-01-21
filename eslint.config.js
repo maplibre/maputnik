@@ -19,7 +19,7 @@ export default [
       }
     },
     settings: {
-      react: { version: '16.4' }
+      react: { version: '18.2' }
     },
     plugins: {
       '@typescript-eslint': tseslint,
