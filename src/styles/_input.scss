@@ -1,3 +1,6 @@
+@use "mixins";
+@use "vars";
+
 @use 'sass:color';
 //INPUT
 .maputnik-input {
@@ -5,13 +8,13 @@
   width: 100%;
   display: block;
   box-sizing: border-box;
-  font-size: $font-size-6;
+  font-size: vars.$font-size-6;
   line-height: 2;
-  padding-left: $margin-2;
-  padding-right: $margin-2;
+  padding-left: vars.$margin-2;
+  padding-right: vars.$margin-2;
   border: none;
-  background-color: $color-gray;
-  color: color.adjust($color-lowgray, $lightness: 12%);
+  background-color: vars.$color-gray;
+  color: color.adjust(vars.$color-lowgray, $lightness: 12%);
 
   &:invalid {
     border: solid 1px #B71C1C;
@@ -20,7 +23,7 @@
 }
 
 .maputnik-string {
-  @extend .maputnik-input; /* stylelint-disable-line */
+  @extend .maputnik-input !optional; /* stylelint-disable-line */
 
   &--multi {
     resize: vertical;
@@ -44,12 +47,12 @@
 }
 
 .maputnik-number {
-  @extend .maputnik-input; /* stylelint-disable-line */
+  @extend .maputnik-input !optional; /* stylelint-disable-line */
 }
 
 //COLOR PICKER
 .maputnik-color {
-  @extend .maputnik-input; /* stylelint-disable-line */
+  @extend .maputnik-input !optional; /* stylelint-disable-line */
 
   height: 26px;
 }
@@ -57,7 +60,7 @@
 .maputnik-color-wrapper {
   position: relative;
 
-  @include flex-row;
+  @include mixins.flex-row;
 }
 
 .maputnik-color-swatch {
@@ -71,7 +74,7 @@
 
 .maputnik-array {
   > * {
-    margin-bottom: $margin-3;
+    margin-bottom: vars.$margin-3;
   }
 
   .maputnik-array-block {
@@ -96,19 +99,19 @@
 
 // SELECT
 .maputnik-select {
-  @extend .maputnik-input; /* stylelint-disable-line */
+  @extend .maputnik-input !optional; /* stylelint-disable-line */
 
   -moz-appearance: none;
   -webkit-appearance: none;
-  background: $color-gray url("#{$icon-down-arrow}") right center no-repeat;
-  color: $color-white;
+  background: vars.$color-gray url("#{vars.$icon-down-arrow}") right center no-repeat;
+  color: vars.$color-white;
   background-position: calc(100% - 2px) center;
   padding-right: 20px;
 
   height: 24px;
 }
 [dir="rtl"] .maputnik-select {
-  background: $color-gray url("#{$icon-down-arrow}") left center no-repeat;
+  background: vars.$color-gray url("#{vars.$icon-down-arrow}") left center no-repeat;
 }
 
 // MULTIBUTTON
@@ -116,12 +119,12 @@
   padding: 0;
 
   .maputnik-button {
-    margin-right: $margin-1;
+    margin-right: vars.$margin-1;
   }
 }
 
 .maputnik-button-selected {
-  background-color: color.adjust($color-midgray, $lightness: 12%);
+  background-color: color.adjust(vars.$color-midgray, $lightness: 12%);
   color: white;
 }
 
@@ -137,7 +140,7 @@
   outline: none;
 
   &-wrapper {
-    @extend .maputnik-input; /* stylelint-disable-line */
+    @extend .maputnik-input !optional; /* stylelint-disable-line */
 
     padding-left: 0;
     padding-right: 0;
@@ -154,12 +157,12 @@
     text-align: center;
     height: 24px;
     width: 24px;
-    margin-right: $margin-2;
-    background-color: $color-gray;
+    margin-right: vars.$margin-2;
+    background-color: vars.$color-gray;
     border-radius: 2px;
     border-style: solid;
     border-width: 2px;
-    border-color: $color-gray;
+    border-color: vars.$color-gray;
     transition: background-color 0.1s ease-out;
     position: absolute;
     top: 0;
@@ -185,7 +188,7 @@
     width: 50%;
     height: 50%;
     margin-top: 1px;
-    fill: $color-lowgray;
+    fill: vars.$color-lowgray;
   }
 }
 
@@ -198,29 +201,29 @@
     position: absolute;
     overflow: auto;
     max-height: 50%;
-    background: $color-gray;
+    background: vars.$color-gray;
     z-index: 3;
   }
 
   &-menu-item {
     user-select: none;
-    color: $color-lowgray;
+    color: vars.$color-lowgray;
     cursor: default;
-    padding: $margin-1;
-    font-size: $font-size-6;
+    padding: vars.$margin-1;
+    font-size: vars.$font-size-6;
     z-index: 3;
-    background: $color-gray;
+    background: vars.$color-gray;
   }
 
   &-menu-item-selected {
-    background: $color-midgray;
+    background: vars.$color-midgray;
   }
 }
 
 // FONT
 .maputnik-font {
   .maputnik-autocomplete:not(:last-child) {
-    margin-bottom: $margin-3;
+    margin-bottom: vars.$margin-3;
   }
 }
 
@@ -236,21 +239,21 @@
 
 .SpecDoc__sdk-support__table {
   width: 100%;
-  margin-top: $margin-3;
+  margin-top: vars.$margin-3;
 
   td, th {
-    border: solid 1px $color-midgray;
+    border: solid 1px vars.$color-midgray;
     padding: 4px 6px;
     white-space: nowrap;
   }
 }
 
 .SpecDoc__values li {
-  margin-top: $margin-3;
+  margin-top: vars.$margin-3;
 }
 
 .SpecDoc__values code {
-  background: $color-midgray;
+  background: vars.$color-midgray;
   padding: 0.1em 0.3em;
   border-radius: 2px;
 }
