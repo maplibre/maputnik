@@ -108,7 +108,7 @@
     "@types/lodash.get": "^4.4.9",
     "@types/lodash.isequal": "^4.5.8",
     "@types/lodash.throttle": "^4.1.9",
-    "@types/mocha": "^10.0.6",
+    "@types/mocha": "^10.0.10",
     "@types/randomcolor": "^0.5.9",
     "@types/react": "^18.2.67",
     "@types/react-aria-menubutton": "^6.2.14",
