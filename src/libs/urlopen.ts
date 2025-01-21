@@ -1,4 +1,3 @@
-// @ts-ignore
 import style from './style'
 
 export function initialStyleUrl() {

@@ -1,6 +1,6 @@
 ## Internationalization
 
-The process of internationlization is pretty straight forward for Maputnik.
+The process of internationalization is pretty straight forward for Maputnik.
 
 ## Add a new language
 
