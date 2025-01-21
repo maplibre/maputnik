@@ -107,7 +107,7 @@ jobs:
           start: npm run start
           browser: ${{ matrix.browser }}
       - name: Upload coverage reports to Codecov
-        uses: codecov/codecov-action@v3
+        uses: codecov/codecov-action@v5
         with:
           files: ${{ github.workspace }}/.nyc_output/out.json
           verbose: true
