@@ -14,7 +14,9 @@ CodeMirror.defineMode("mgl", (config, parserConfig) => {
   );
 });
 
-CodeMirror.registerHelper("lint", "json", (text: string) => {
+
+function tryToParse(text: string) {
+
   const found: MarkerRangeWithMessage[] = [];
   try {
     parse(text);
@@ -38,36 +40,19 @@ CodeMirror.registerHelper("lint", "json", (text: string) => {
       });
     }
   }
+
   return found;
+}
+
+CodeMirror.registerHelper("lint", "json", (text: string) => {
+  return tryToParse(text);
 });
 
 CodeMirror.registerHelper("lint", "mgl", (text: string, opts: any, doc: any) => {
-  const found: MarkerRangeWithMessage[] = [];
+  
+  const found: MarkerRangeWithMessage[] = tryToParse(text);
+
   const {context} = opts;
-
-  try {
-    parse(text);
-  }
-  catch (err: any) {
-    
-    const errorMatch = err.toString().match(/line (\d+), column (\d+)/);
-    if (errorMatch) {
-      const loc = {
-        first_line: parseInt(errorMatch[1], 10),
-        first_column: parseInt(errorMatch[2], 10),
-        last_line: parseInt(errorMatch[1], 10),
-        last_column: parseInt(errorMatch[2], 10)
-      };
-    
-      // const loc = hash.loc;
-      found.push({
-        from: CodeMirror.Pos(loc.first_line - 1, loc.first_column),
-        to: CodeMirror.Pos(loc.last_line - 1, loc.last_column),
-        message: err
-      });
-    }
-
-  }
 
   if (found.length > 0) {
     // JSON invalid so don't go any further
