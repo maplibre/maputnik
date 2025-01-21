@@ -24,7 +24,6 @@ export default tseslint.config({
     react: { version: '18.2' }
   },
   plugins: {
-    'typescript-eslint': tseslint,
     'react': reactPlugin,
     'react-hooks': reactHooksPlugin,
     'react-refresh': reactRefreshPlugin
