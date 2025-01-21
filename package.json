@@ -96,10 +96,10 @@
     }
   },
   "devDependencies": {
-    "@cypress/code-coverage": "^3.12.30",
+    "@cypress/code-coverage": "^3.13.10",
     "@istanbuljs/nyc-config-typescript": "^1.0.2",
     "@rollup/plugin-replace": "^5.0.5",
-    "@shellygo/cypress-test-utils": "^2.1.9",
+    "@shellygo/cypress-test-utils": "^4.1.11",
     "@types/codemirror": "^5.60.15",
     "@types/color": "^3.0.6",
     "@types/cors": "^2.8.17",
@@ -128,7 +128,7 @@
     "@types/wicg-file-system-access": "^2023.10.5",
     "@vitejs/plugin-react": "^4.2.1",
     "cors": "^2.8.5",
-    "cypress": "^13.13.0",
+    "cypress": "^14.0.0",
     "eslint": "^8.57.0",
     "eslint-plugin-react": "^7.34.1",
     "eslint-plugin-react-hooks": "^4.6.0",
@@ -144,7 +144,7 @@
     "stylelint-scss": "^6.2.1",
     "typescript": "^5.4.3",
     "uuid": "^9.0.1",
-    "vite": "^5.4.6",
+    "vite": "^6.0.10",
     "vite-plugin-istanbul": "^6.0.0"
   }
 }
