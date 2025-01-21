@@ -1,7 +1,7 @@
 import { MaputnikDriver } from "./maputnik-driver";
 
 describe("history", () => {
-  let { beforeAndAfter, when, get, then } = new MaputnikDriver();
+  const { beforeAndAfter, when, get, then } = new MaputnikDriver();
   beforeAndAfter();
 
   let undoKeyCombo: string;

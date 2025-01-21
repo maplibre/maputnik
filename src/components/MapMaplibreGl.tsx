@@ -161,7 +161,7 @@ class MapMaplibreGlInternal extends React.Component<MapMaplibreGlInternalProps, 
     map.showCollisionBoxes = mapOpts.showCollisionBoxes!;
     map.showOverdrawInspector = mapOpts.showOverdrawInspector!;
 
-    let geocoder = this.initGeocoder(map);
+    const geocoder = this.initGeocoder(map);
 
     const zoomControl = new ZoomControl();
     map.addControl(zoomControl, 'top-right');
