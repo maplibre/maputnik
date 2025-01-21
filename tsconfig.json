@@ -22,6 +22,7 @@
       "noFallthroughCasesInSwitch": true
     },
     "include": ["src", "cypress/e2e"],
+    "exclude": ["dist"],
     "references": [{ "path": "./tsconfig.node.json" }],
     // TODO: Remove when issue is resolved https://github.com/cypress-io/cypress/issues/27448
     "ts-node": {

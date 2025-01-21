@@ -20,7 +20,7 @@ const changelog = fs.readFileSync(changelogPath, 'utf8');
 */
 const regex = /^## (\d+\.\d+\.\d+.*?)\n(.+?)(?=\n^## \d+\.\d+\.\d+.*?\n)/gms;
 
-let releaseNotes = [];
+const releaseNotes = [];
 let match;
 // eslint-disable-next-line no-cond-assign
 while (match = regex.exec(changelog)) {
