@@ -1,4 +1,4 @@
-// @ts-ignore - this is a fork of jsonlint
+// @ts-expect-error - this is a fork of jsonlint
 import jsonlint from 'jsonlint';
 import CodeMirror, { MarkerRange } from 'codemirror';
 import jsonToAst from 'json-to-ast';

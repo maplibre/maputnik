@@ -24,10 +24,10 @@ let releaseNotes = [];
 let match;
 // eslint-disable-next-line no-cond-assign
 while (match = regex.exec(changelog)) {
-    releaseNotes.push({
-        'version': match[1],
-        'changelog': match[2].trim(),
-    });
+  releaseNotes.push({
+    'version': match[1],
+    'changelog': match[2].trim(),
+  });
 }
 
 const latest = releaseNotes[0];
@@ -44,5 +44,4 @@ const templatedReleaseNotes = `${header}
 
 ${latest.changelog}`;
 
-// eslint-disable-next-line eol-last
 process.stdout.write(templatedReleaseNotes.trimEnd());
