@@ -123,7 +123,7 @@
     "@types/uuid": "^10.0.0",
     "@types/wicg-file-system-access": "^2023.10.5",
     "@typescript-eslint/eslint-plugin": "^7.3.1",
-    "@typescript-eslint/parser": "^7.3.1",
+    "@typescript-eslint/parser": "^8.21.0",
     "@vitejs/plugin-react": "^4.3.4",
     "cors": "^2.8.5",
     "cypress": "^14.0.0",
