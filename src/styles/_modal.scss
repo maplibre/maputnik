@@ -1,40 +1,43 @@
+@use "mixins";
+@use "vars";
+
 //MODAL
 .maputnik-modal {
   min-width: 350px;
   max-width: 600px;
   overflow: hidden;
-  background-color: $color-black;
+  background-color: vars.$color-black;
   box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.3);
   z-index: 3;
   position: relative;
-  font-family: $font-family;
+  font-family: vars.$font-family;
   display: flex;
   flex-direction: column;
   max-height: 100vh;
 }
 
 .maputnik-modal-section {
-  padding-top: $margin-3;
-  padding-bottom: $margin-3;
+  padding-top: vars.$margin-3;
+  padding-bottom: vars.$margin-3;
 
   h1 {
-    font-size: $font-size-4;
+    font-size: vars.$font-size-4;
   }
 
   h2 {
-    font-size: $font-size-5;
+    font-size: vars.$font-size-5;
   }
 
   /* Bug fix: <http://stackoverflow.com/questions/28636832/firefox-overflow-y-not-working-with-nested-flexbox> */
   min-height: 0;
 
-  @include flex-column;
+  @include mixins.flex-column;
 
   flex-shrink: 0;
 }
 
 .maputnik-modal-sub-section {
-  margin-top: $margin-1;
+  margin-top: vars.$margin-1;
 }
 
 .maputnik-modal-section--shrink {
@@ -42,14 +45,14 @@
 }
 
 .maputnik-modal-header {
-  background-color: $color-gray;
-  padding: $margin-3;
+  background-color: vars.$color-gray;
+  padding: vars.$margin-3;
 
-  @include flex-row;
+  @include mixins.flex-row;
 }
 
 .maputnik-modal-header-title {
-  font-size: $font-size-5;
+  font-size: vars.$font-size-5;
   margin: 0;
 }
 
@@ -66,18 +69,18 @@
 }
 
 .maputnik-modal-content {
-  padding: $margin-3;
+  padding: vars.$margin-3;
 
-  @include flex-column;
+  @include mixins.flex-column;
 }
 
 .maputnik-modal-header-space {
-  @extend .maputnik-space; /* stylelint-disable-line */
+  @extend .maputnik-space !optional; /* stylelint-disable-line */
 }
 
 //OPEN MODAL
 .maputnik-upload-button {
-  @extend .maputnik-big-button; /* stylelint-disable-line */
+  @extend .maputnik-big-button !optional; /* stylelint-disable-line */
 }
 
 .maputnik-style-gallery-container {
@@ -88,35 +91,35 @@
   vertical-align: top;
   margin-top: 10px;
   margin-right: 10px;
-  background-color: $color-gray;
+  background-color: vars.$color-gray;
   display: inline-block;
   width: 180px;
-  font-size: $font-size-2;
-  color: $color-lowgray;
+  font-size: vars.$font-size-2;
+  color: vars.$color-lowgray;
 }
 
 .maputnik-public-style-button {
-  background-color: $color-gray;
-  padding: $margin-3;
+  background-color: vars.$color-gray;
+  padding: vars.$margin-3;
   display: block;
   width: 100%;
 
   &:hover {
-    background-color: $color-midgray;
+    background-color: vars.$color-midgray;
   }
 }
 
 .maputnik-public-style-header {
-  @include flex-row;
+  @include mixins.flex-row;
 }
 
 .maputnik-public-style-thumbnail {
   display: block;
-  margin-top: $margin-2;
+  margin-top: vars.$margin-2;
   width: 100%;
   padding-top: calc(400 / 600 * 100%);
   background-size: cover;
-  background-color: $color-midgray;
+  background-color: vars.$color-midgray;
 }
 
 .maputnik-add-modal {
@@ -139,18 +142,18 @@
 }
 
 .maputnik-add-layer {
-  @extend .clearfix; /* stylelint-disable-line */
+  @extend .clearfix !optional; /* stylelint-disable-line */
 }
 
 //ADD MODAL
 .maputnik-add-layer-button {
-  @extend .maputnik-big-button; /* stylelint-disable-line */
+  @extend .maputnik-big-button !optional; /* stylelint-disable-line */
 
-  margin-right: $margin-3;
+  margin-right: vars.$margin-3;
   float: right;
   display: inline-block;
   margin-top: 3;
-  margin-bottom: $margin-3;
+  margin-bottom: vars.$margin-3;
   text-align: right;
 }
 
@@ -163,19 +166,19 @@
   vertical-align: top;
   margin-top: 1.5%;
   margin-right: 1.5%;
-  background-color: $color-gray;
+  background-color: vars.$color-gray;
   width: 48.5%;
   display: inline-block;
 }
 
 .maputnik-public-source-select {
-  padding: $margin-3;
-  font-size: $font-size-5;
-  color: $color-lowgray;
+  padding: vars.$margin-3;
+  font-size: vars.$font-size-5;
+  color: vars.$color-lowgray;
   background-color: transparent;
   width: 100%;
 
-  @include flex-row;
+  @include mixins.flex-row;
 }
 
 .maputnik-public-source-name {
@@ -192,24 +195,24 @@
 }
 
 .maputnik-active-source-type-editor-header {
-  background-color: $color-gray;
-  color: $color-lowgray;
-  padding: $margin-2;
+  background-color: vars.$color-gray;
+  color: vars.$color-lowgray;
+  padding: vars.$margin-2;
 
-  @include flex-row;
+  @include mixins.flex-row;
 }
 
 .maputnik-active-source-type-editor-header-id {
   font-weight: 700;
   line-height: 2;
-  font-size: $font-size-5;
+  font-size: vars.$font-size-5;
 }
 
 .maputnik-active-source-type-editor-content {
-  border-color: $color-gray;
+  border-color: vars.$color-gray;
   border-width: 2px;
   border-style: solid;
-  padding: $margin-2;
+  padding: vars.$margin-2;
 
   .maputnik-input-block-label {
     width: 30%;
@@ -221,7 +224,7 @@
 }
 
 .maputnik-add-source {
-  @extend .clearfix; /* stylelint-disable-line */
+  @extend .clearfix !optional; /* stylelint-disable-line */
 
   .maputnik-input-block-label {
     width: 30%;
@@ -233,17 +236,17 @@
 }
 
 .maputnik-add-source-button {
-  @extend .maputnik-big-button; /* stylelint-disable-line */
+  @extend .maputnik-big-button !optional; /* stylelint-disable-line */
 
   display: inline-block;
   margin-top: 0;
-  margin-right: $margin-3;
+  margin-right: vars.$margin-3;
   float: right;
 }
 
 //EXPORT MODAL
 .maputnik-export-gist {
-  font-size: $font-size-6;
+  font-size: vars.$font-size-6;
 
   .maputnik-input-block {
     margin-left: 0;
@@ -255,7 +258,7 @@
   }
 
   span {
-    color: $color-lowgray;
+    color: vars.$color-lowgray;
   }
 }
 
@@ -291,12 +294,12 @@
   }
 
   &__shortcut {
-    margin-bottom: $margin-2;
+    margin-bottom: vars.$margin-2;
   }
 
   dt {
     display: inline;
-    margin-right: $margin-2;
+    margin-right: vars.$margin-2;
   }
 
   dd {

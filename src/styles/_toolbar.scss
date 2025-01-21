@@ -1,13 +1,15 @@
+@use "vars";
+
 @use 'sass:color';
 // TOOLBAR
 .maputnik-toolbar {
   position: fixed;
-  height: $toolbar-height;
+  height: vars.$toolbar-height;
   width: 100%;
   z-index: 100;
   left: 0;
-  top: $toolbar-offset;
-  background-color: $color-black;
+  top: vars.$toolbar-offset;
+  background-color: vars.$color-black;
 }
 
 .maputnik-toolbar-logo-container {
@@ -20,9 +22,9 @@
   flex: 0 0 190px;
   width: 200px;
   text-align: left;
-  background-color: $color-black;
-  padding: $margin-2;
-  height: $toolbar-height;
+  background-color: vars.$color-black;
+  padding: vars.$margin-2;
+  height: vars.$toolbar-height;
   position: relative;
   overflow: hidden;
 
@@ -33,19 +35,19 @@
 
   img {
     width: 30px;
-    padding-right: $margin-2;
+    padding-right: vars.$margin-2;
     vertical-align: top;
   }
 }
 
 .maputnik-toolbar-link {
   vertical-align: top;
-  height: $toolbar-height;
+  height: vars.$toolbar-height;
   display: inline-block;
-  padding: $margin-3;
-  font-size: $font-size-5;
+  padding: vars.$margin-3;
+  font-size: vars.$font-size-5;
   cursor: pointer;
-  color: $color-white;
+  color: vars.$color-white;
   text-decoration: none;
   line-height: 20px;
 
@@ -54,30 +56,30 @@
   }
 
   &:hover {
-    background-color: $color-midgray;
+    background-color: vars.$color-midgray;
   }
 }
 
 .maputnik-toolbar-link--highlighted {
   line-height: 1;
-  padding: $margin-2 $margin-3;
+  padding: vars.$margin-2 vars.$margin-3;
 
   .maputnik-toolbar-link-wrapper {
-    background-color: $color-white;
+    background-color: vars.$color-white;
     border-radius: 2px;
-    padding: $margin-2;
-    margin-top: $margin-1;
-    color: $color-black;
+    padding: vars.$margin-2;
+    margin-top: vars.$margin-1;
+    color: vars.$color-black;
     display: block;
   }
 
   &:hover {
-    background-color: $color-black;
+    background-color: vars.$color-black;
   }
 
   &:hover .maputnik-toolbar-link-wrapper {
-    background-color: color.adjust($color-midgray, $lightness: 12%);
-    color: $color-white;
+    background-color: color.adjust(vars.$color-midgray, $lightness: 12%);
+    color: vars.$color-white;
   }
 }
 
@@ -94,31 +96,31 @@
 .maputnik-toolbar-action {
   background: inherit;
   border-width: 0;
-  @extend .maputnik-toolbar-link; /* stylelint-disable-line */
+  @extend .maputnik-toolbar-link !optional; /* stylelint-disable-line */
 }
 
 .maputnik-toolbar-select {
   background: inherit;
   border-width: 0;
-  @extend .maputnik-toolbar-link; /* stylelint-disable-line */
+  @extend .maputnik-toolbar-link !optional; /* stylelint-disable-line */
 
   select {
     margin: 0 6px;
     display: inline;
     width: auto;
-    border: solid 1px $color-midgray;
+    border: solid 1px vars.$color-midgray;
     vertical-align: inherit;
     margin-top: -2px;
   }
 }
 
 .maputnik-icon-text {
-  padding: 0 $margin-1;
+  padding: 0 vars.$margin-1;
 }
 
 .maputnik-icon-action {
   display: inline;
-  margin: 0 $margin-1;
+  margin: 0 vars.$margin-1;
 }
 
 .maputnik-toolbar__inner {
@@ -140,7 +142,7 @@
   height: 100%;
   text-align: center;
   display: block;
-  background-color: $color-black;
+  background-color: vars.$color-black;
   z-index: 999;
   line-height: 40px;
   left: 0;
@@ -149,7 +151,7 @@
   &:active,
   &:focus {
     width: 100%;
-    border-color: $color-lowgray;
+    border-color: vars.$color-lowgray;
   }
 }
 
