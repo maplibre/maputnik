@@ -103,7 +103,7 @@ class MapMaplibreGlInternal extends React.Component<MapMaplibreGlInternalProps, 
     let should = false;
     try {
       should = JSON.stringify(this.props) !== JSON.stringify(nextProps) || JSON.stringify(this.state) !== JSON.stringify(nextState);
-    } catch(e) {
+    } catch(_e) {
       // no biggie, carry on
     }
     return should;
@@ -161,7 +161,7 @@ class MapMaplibreGlInternal extends React.Component<MapMaplibreGlInternalProps, 
     map.showCollisionBoxes = mapOpts.showCollisionBoxes!;
     map.showOverdrawInspector = mapOpts.showOverdrawInspector!;
 
-    let geocoder = this.initGeocoder(map);
+    const geocoder = this.initGeocoder(map);
 
     const zoomControl = new ZoomControl();
     map.addControl(zoomControl, 'top-right');

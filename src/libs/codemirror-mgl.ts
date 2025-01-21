@@ -1,4 +1,4 @@
-// @ts-ignore - this is a fork of jsonlint
+// @ts-expect-error - this is a fork of jsonlint
 import jsonlint from 'jsonlint';
 import CodeMirror, { MarkerRange } from 'codemirror';
 import jsonToAst from 'json-to-ast';
@@ -33,7 +33,7 @@ CodeMirror.registerHelper("lint", "json", (text: string) => {
   try {
     jsonlint.parse(text);
   }
-  catch(e) {
+  catch(_e) {
     // Do nothing we catch the error above
   }
   return found;
@@ -55,7 +55,7 @@ CodeMirror.registerHelper("lint", "mgl", (text: string, opts: any, doc: any) => 
   try {
     parser.parse(text);
   }
-  catch (e) {
+  catch (_e) {
     // ignore errors
   }
 

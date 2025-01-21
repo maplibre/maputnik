@@ -2,7 +2,7 @@ import { v1 as uuid } from "uuid";
 import { MaputnikDriver } from "./maputnik-driver";
 
 describe("layers", () => {
-  let { beforeAndAfter, get, when, then } = new MaputnikDriver();
+  const { beforeAndAfter, get, when, then } = new MaputnikDriver();
   beforeAndAfter();
   beforeEach(() => {
     when.setStyle("both");
@@ -101,7 +101,7 @@ describe("layers", () => {
   });
   describe("background", () => {
     it("add", () => {
-      let id = when.modal.fillLayers({
+      const id = when.modal.fillLayers({
         type: "background",
       });
       then(get.styleFromLocalStorage()).shouldDeepNestedInclude({
@@ -117,7 +117,7 @@ describe("layers", () => {
     describe("modify", () => {
       function createBackground() {
         // Setup
-        let id = uuid();
+        const id = uuid();
 
         when.selectWithin("add-layer.layer-type", "background");
         when.setValue("add-layer.layer-id.input", "background:" + id);
@@ -139,11 +139,11 @@ describe("layers", () => {
       describe("layer", () => {
         it("expand/collapse");
         it("id", () => {
-          let bgId = createBackground();
+          const bgId = createBackground();
 
           when.click("layer-list-item:background:" + bgId);
 
-          let id = uuid();
+          const id = uuid();
           when.setValue("layer-editor.layer-id.input", "foobar:" + id);
           when.click("min-zoom");
 
@@ -219,7 +219,7 @@ describe("layers", () => {
 
         describe("comments", () => {
           let bgId: string;
-          let comment = "42";
+          const comment = "42";
 
           beforeEach(() => {
             bgId = createBackground();
@@ -320,11 +320,11 @@ describe("layers", () => {
 
         // TODO
         it.skip("parse error", () => {
-          let bgId = createBackground();
+          const bgId = createBackground();
 
           when.click("layer-list-item:background:" + bgId);
 
-          let errorSelector = ".CodeMirror-lint-marker-error";
+          const errorSelector = ".CodeMirror-lint-marker-error";
           then(get.elementByTestId(errorSelector)).shouldNotExist();
 
           when.click(".CodeMirror");
@@ -339,7 +339,7 @@ describe("layers", () => {
 
   describe("fill", () => {
     it("add", () => {
-      let id = when.modal.fillLayers({
+      const id = when.modal.fillLayers({
         type: "fill",
         layer: "example",
       });
@@ -361,7 +361,7 @@ describe("layers", () => {
 
   describe("line", () => {
     it("add", () => {
-      let id = when.modal.fillLayers({
+      const id = when.modal.fillLayers({
         type: "line",
         layer: "example",
       });
@@ -385,7 +385,7 @@ describe("layers", () => {
 
   describe("symbol", () => {
     it("add", () => {
-      let id = when.modal.fillLayers({
+      const id = when.modal.fillLayers({
         type: "symbol",
         layer: "example",
       });
@@ -404,7 +404,7 @@ describe("layers", () => {
 
   describe("raster", () => {
     it("add", () => {
-      let id = when.modal.fillLayers({
+      const id = when.modal.fillLayers({
         type: "raster",
         layer: "raster",
       });
@@ -423,7 +423,7 @@ describe("layers", () => {
 
   describe("circle", () => {
     it("add", () => {
-      let id = when.modal.fillLayers({
+      const id = when.modal.fillLayers({
         type: "circle",
         layer: "example",
       });
@@ -442,7 +442,7 @@ describe("layers", () => {
 
   describe("fill extrusion", () => {
     it("add", () => {
-      let id = when.modal.fillLayers({
+      const id = when.modal.fillLayers({
         type: "fill-extrusion",
         layer: "example",
       });
