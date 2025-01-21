@@ -135,7 +135,7 @@
     "i18next-parser": "^9.0.1",
     "istanbul": "^0.4.5",
     "istanbul-lib-coverage": "^3.2.2",
-    "mocha": "^10.3.0",
+    "mocha": "^11.0.1",
     "postcss": "^8.4.38",
     "react-hot-loader": "^4.13.1",
     "sass": "^1.72.0",
