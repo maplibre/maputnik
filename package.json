@@ -115,7 +115,7 @@
     "@types/react-aria-modal": "^4.0.10",
     "@types/react-autocomplete": "^1.8.11",
     "@types/react-collapse": "^5.0.4",
-    "@types/react-color": "^3.0.12",
+    "@types/react-color": "^3.0.13",
     "@types/react-dom": "^18.2.22",
     "@types/react-file-reader-input": "^2.0.4",
     "@types/react-icon-base": "^2.1.6",
