@@ -7,6 +7,7 @@
 - Add `tileSize` field for raster and raster-dem tile sources
 - Update Protomaps Light gallery style to v4
 - Add support to edit local files on the file system if supported by the browser
+- Upgrade to MapLibre LG JS v5
 - _...Add new stuff here..._
 
 ### 🐞 Bug fixes
