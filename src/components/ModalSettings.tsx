@@ -233,7 +233,7 @@ class ModalSettingsInternal extends React.Component<ModalSettingsInternalProps> 
           fieldSpec={latest.projection.type}
           name="projection type"
           value={projection.type as string}
-          options={Object.keys(latest.projection.type.values)}
+          options={['mercator', 'globe']}
           default={latest.projection.type.default}
           onChange={this.changeProjectionProperty.bind(this, "type")}
         />
