@@ -112,7 +112,7 @@
     "@types/randomcolor": "^0.5.9",
     "@types/react": "^18.2.67",
     "@types/react-aria-menubutton": "^6.2.14",
-    "@types/react-aria-modal": "^4.0.10",
+    "@types/react-aria-modal": "^5.0.0",
     "@types/react-autocomplete": "^1.8.11",
     "@types/react-collapse": "^5.0.4",
     "@types/react-color": "^3.0.13",
