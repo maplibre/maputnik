@@ -363,6 +363,25 @@ export default class App extends React.Component<any, AppState> {
         [property]: value
       }
     }
+
+
+    // For the style object, find the urls that has "{key}" and insert the correct API keys
+    // Without this, going from e.g. MapTiler to OpenLayers and back will lose the maptlier key.
+
+    if (changedStyle.glyphs && typeof changedStyle.glyphs === 'string') {
+      changedStyle.glyphs = setFetchAccessToken(changedStyle.glyphs, changedStyle);
+    }
+
+    if (changedStyle.sprite && typeof changedStyle.sprite === 'string') {
+      changedStyle.sprite = setFetchAccessToken(changedStyle.sprite, changedStyle);
+    }
+
+    for (const [sourceId, source] of Object.entries(changedStyle.sources)) {
+      if (source && 'url' in source && typeof source.url === 'string') {
+        source.url = setFetchAccessToken(source.url, changedStyle);
+      }
+    }
+
     this.onStyleChanged(changedStyle)
   }
 
@@ -377,6 +396,8 @@ export default class App extends React.Component<any, AppState> {
     if (opts.initialLoad) {
       this.getInitialStateFromUrl(newStyle);
     }
+
+
 
     const errors: ValidationError[] = validateStyleMin(newStyle) || [];
 
@@ -737,6 +758,7 @@ export default class App extends React.Component<any, AppState> {
         onLayerSelect={this.onLayerSelect}
       />
     } else {
+
       mapElement = <MapMaplibreGl {...mapProps}
         onChange={this.onMapChange}
         options={this.state.maplibreGlDebugOptions}
@@ -790,6 +812,12 @@ export default class App extends React.Component<any, AppState> {
   getInitialStateFromUrl = (mapStyle: StyleSpecification) => {
     const url = new URL(location.href);
     const modalParam = url.searchParams.get("modal");
+
+
+    console.log("HERE12", url)
+
+
+
     if (modalParam && modalParam !== "") {
       const modals = modalParam.split(",");
       const modalObj: {[key: string]: boolean} = {};
