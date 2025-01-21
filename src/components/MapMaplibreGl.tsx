@@ -103,7 +103,7 @@ class MapMaplibreGlInternal extends React.Component<MapMaplibreGlInternalProps, 
     let should = false;
     try {
       should = JSON.stringify(this.props) !== JSON.stringify(nextProps) || JSON.stringify(this.state) !== JSON.stringify(nextState);
-    } catch(e) {
+    } catch(_e) {
       // no biggie, carry on
     }
     return should;
