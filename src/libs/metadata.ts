@@ -5,14 +5,17 @@ function loadJSON(url: string, defaultValue: any, cb: (...args: any[]) => void) 
     mode: 'cors',
     credentials: "same-origin"
   })
-    .then(function(response) {
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error('Failed to load metadata for ' + url);
+      }
       return response.json();
     })
-    .then(function(body) {
+    .then((body) => {
       cb(body)
     })
-    .catch(function() {
-      console.warn('Can not metadata for ' + url)
+    .catch(() => {
+      console.warn('Can not load metadata for ' + url + ', using default value ' + defaultValue);
       cb(defaultValue)
     })
 }
