@@ -494,4 +494,33 @@ describe("layers", () => {
       ).shouldBeVisible();
     });
   });
+
+
+  describe.only("layereditor jsonlint should error", ()=>{
+    
+    it("add", () => {
+      const id = when.modal.fillLayers({
+        type: "circle",
+        layer: "example",
+      });
+
+      then(get.styleFromLocalStorage()).shouldDeepNestedInclude({
+        layers: [
+          {
+            id: id,
+            type: "circle",
+            source: "example",
+          },
+        ],
+      });
+
+      const sourceText = get.elementByText('"source"');
+      
+      sourceText.click();
+      sourceText.type("\"");
+      
+      const error = cy.get('.CodeMirror-lint-marker-error');
+      error.should('exist');
+    });
+  });
 });
