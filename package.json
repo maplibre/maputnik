@@ -113,7 +113,7 @@
     "@types/react": "^18.2.67",
     "@types/react-aria-menubutton": "^6.2.14",
     "@types/react-aria-modal": "^4.0.10",
-    "@types/react-autocomplete": "^1.8.10",
+    "@types/react-autocomplete": "^1.8.11",
     "@types/react-collapse": "^5.0.4",
     "@types/react-color": "^3.0.12",
     "@types/react-dom": "^18.2.22",
