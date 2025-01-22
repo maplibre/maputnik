@@ -1,3 +1,5 @@
+@use "vars";
+
 //SCROLLING
 .maputnik-scroll-container {
   overflow-x: hidden;
@@ -11,14 +13,14 @@
 
 //APP LAYOUT
 .maputnik-layout {
-  font-family: $font-family;
-  color: $color-white;
+  font-family: vars.$font-family;
+  color: vars.$color-white;
 
   &-main {
     position: fixed;
     bottom: 0;
-    height: calc(100% - #{$toolbar-height + $toolbar-offset});
-    top: $toolbar-height + $toolbar-offset;
+    height: calc(100% - #{vars.$toolbar-height + vars.$toolbar-offset});
+    top: vars.$toolbar-height + vars.$toolbar-offset;
     left: 0;
     right: 0;
     z-index: 3;
@@ -28,12 +30,12 @@
 
   &-list {
     width: 200px;
-    background-color: $color-black;
+    background-color: vars.$color-black;
   }
 
   &-drawer {
     width: 370px;
-    background-color: $color-black;
+    background-color: vars.$color-black;
     // scroll-container is position: absolute
     position: relative;
   }
@@ -43,7 +45,7 @@
     bottom: 0;
     right: 0;
     z-index: 1;
-    width: $layout-map-width;
-    background-color: $color-black;
+    width: vars.$layout-map-width;
+    background-color: vars.$color-black;
   }
 }

@@ -1,3 +1,5 @@
+@use "vars";
+
 .CodeMirror-lint-tooltip {
   z-index: 2000 !important;
 }
@@ -55,7 +57,7 @@
 
 .cm-s-maputnik .CodeMirror-matchingbracket {
   background: hsla(223, 12%, 35%, 1);
-  color: $color-white !important;
+  color: vars.$color-white !important;
 }
 
 .cm-s-maputnik .CodeMirror-nonmatchingbracket {
@@ -79,7 +81,7 @@
   z-index: 99999;
   padding: 0.3em 0.5em;
   background: hsla(0, 0%, 0%, 0.3);
-  color: $color-lowgray;
+  color: vars.$color-lowgray;
   border-bottom-left-radius: 2px;
   transition: opacity 320ms ease;
   opacity: 0;

@@ -5,7 +5,7 @@ import {version} from 'maplibre-gl/package.json'
 import {format} from '@maplibre/maplibre-gl-style-spec'
 import type {StyleSpecification} from 'maplibre-gl'
 import {MdMap, MdSave} from 'react-icons/md'
-import { WithTranslation, withTranslation } from 'react-i18next';
+import {WithTranslation, withTranslation} from 'react-i18next';
 
 import FieldString from './FieldString'
 import InputButton from './InputButton'
@@ -15,6 +15,7 @@ import fieldSpecAdditional from '../libs/field-spec-additional'
 
 
 const MAPLIBRE_GL_VERSION = version;
+const showSaveFilePickerAvailable = typeof window.showSaveFilePicker === "function";
 
 
 type ModalExportInternalProps = {
@@ -29,7 +30,7 @@ type ModalExportInternalProps = {
 
 class ModalExportInternal extends React.Component<ModalExportInternalProps> {
 
-  tokenizedStyle () {
+  tokenizedStyle() {
     return format(
       style.stripAccessTokens(
         style.replaceAccessTokens(this.props.mapStyle)
@@ -37,8 +38,8 @@ class ModalExportInternal extends React.Component<ModalExportInternalProps> {
     );
   }
 
-  exportName () {
-    if(this.props.mapStyle.name) {
+  exportName() {
+    if (this.props.mapStyle.name) {
       return Slugify(this.props.mapStyle.name, {
         replacement: '_',
         remove: /[*\-+~.()'"!:]/g,
@@ -86,6 +87,15 @@ class ModalExportInternal extends React.Component<ModalExportInternalProps> {
   async saveStyle() {
     const tokenStyle = this.tokenizedStyle();
 
+    // it is not guaranteed that the File System Access API is available on all
+    // browsers. If the function is not available, a fallback behavior is used.
+    if (!showSaveFilePickerAvailable) {
+      const blob = new Blob([tokenStyle], {type: "application/json;charset=utf-8"});
+      const exportName = this.exportName();
+      saveAs(blob, exportName + ".json");
+      return;
+    }
+
     let fileHandle = this.props.fileHandle;
     if (fileHandle == null) {
       fileHandle = await this.createFileHandle();
@@ -112,12 +122,12 @@ class ModalExportInternal extends React.Component<ModalExportInternalProps> {
     this.props.onOpenToggle();
   }
 
-  async createFileHandle() : Promise<FileSystemFileHandle | null> {
+  async createFileHandle(): Promise<FileSystemFileHandle | null> {
     const pickerOpts: SaveFilePickerOptions = {
       types: [
         {
           description: "json",
-          accept: { "application/json": [".json"] },
+          accept: {"application/json": [".json"]},
         },
       ],
       suggestedName: this.exportName(),
@@ -179,23 +189,19 @@ class ModalExportInternal extends React.Component<ModalExportInternalProps> {
         </div>
 
         <div className="maputnik-modal-export-buttons">
-          <InputButton
-            onClick={this.saveStyle.bind(this)}
-          >
-            <MdSave />
+          <InputButton onClick={this.saveStyle.bind(this)}>
+            <MdSave/>
             {t("Save")}
           </InputButton>
-          <InputButton
-            onClick={this.saveStyleAs.bind(this)}
-          >
-            <MdSave />
-            {t("Save as")}
-          </InputButton>
+          {showSaveFilePickerAvailable && (
+            <InputButton onClick={this.saveStyleAs.bind(this)}>
+              <MdSave/>
+              {t("Save as")}
+            </InputButton>
+          )}
 
-          <InputButton
-            onClick={this.createHtml.bind(this)}
-          >
-            <MdMap />
+          <InputButton onClick={this.createHtml.bind(this)}>
+            <MdMap/>
             {t("Create HTML")}
           </InputButton>
         </div>

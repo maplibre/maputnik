@@ -1,7 +1,7 @@
 import { MaputnikDriver } from "./maputnik-driver";
 
 describe("modals", () => {
-  let { beforeAndAfter, when, get, then } = new MaputnikDriver();
+  const { beforeAndAfter, when, get, then } = new MaputnikDriver();
   beforeAndAfter();
 
   beforeEach(() => {
@@ -25,7 +25,7 @@ describe("modals", () => {
 
     describe("when click open url", () => {
       beforeEach(() => {
-        let styleFileUrl = get.exampleFileUrl();
+        const styleFileUrl = get.exampleFileUrl();
 
         when.setValue("modal:open.url.input", styleFileUrl);
         when.click("modal:open.url.button");
@@ -70,7 +70,7 @@ describe("modals", () => {
     it("public source");
 
     it("add new source", () => {
-      let sourceId = "n1z2v3r";
+      const sourceId = "n1z2v3r";
       when.setValue("modal:sources.add.source_id", sourceId);
       when.select("modal:sources.add.source_type", "tile_vector");
       when.select("modal:sources.add.scheme_type", "tms");
@@ -102,7 +102,7 @@ describe("modals", () => {
     });
 
     it("add new raster source", () => {
-      let sourceId = "rastertest";
+      const sourceId = "rastertest";
       when.setValue("modal:sources.add.source_id", sourceId);
       when.select("modal:sources.add.source_type", "tile_raster");
       when.select("modal:sources.add.scheme_type", "xyz");
@@ -177,7 +177,7 @@ describe("modals", () => {
       });
     });
     it("glyphs url", () => {
-      let glyphsUrl = "http://example.com/{fontstack}/{range}.pbf";
+      const glyphsUrl = "http://example.com/{fontstack}/{range}.pbf";
       when.setValue("modal:settings.glyphs", glyphsUrl);
       when.click("modal:settings.name");
       then(get.styleFromLocalStorage()).shouldDeepNestedInclude({
@@ -186,7 +186,7 @@ describe("modals", () => {
     });
 
     it("maptiler access token", () => {
-      let apiKey = "testing123";
+      const apiKey = "testing123";
       when.setValue(
         "modal:settings.maputnik:openmaptiles_access_token",
         apiKey
@@ -200,7 +200,7 @@ describe("modals", () => {
     });
 
     it("thunderforest access token", () => {
-      let apiKey = "testing123";
+      const apiKey = "testing123";
       when.setValue(
         "modal:settings.maputnik:thunderforest_access_token",
         apiKey
@@ -212,7 +212,7 @@ describe("modals", () => {
     });
 
     it("stadia access token", () => {
-      let apiKey = "testing123";
+      const apiKey = "testing123";
       when.setValue(
         "modal:settings.maputnik:stadia_access_token",
         apiKey

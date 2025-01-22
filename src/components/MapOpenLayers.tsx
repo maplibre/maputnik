@@ -85,10 +85,11 @@ class MapOpenLayersInternal extends React.Component<MapOpenLayersInternalProps, 
   componentDidMount() {
     this.overlay = new Overlay({
       element: this.popupContainer!,
-      autoPan: true,
-      autoPanAnimation: {
-        duration: 250
-      }
+      autoPan: {
+        animation: {
+          duration: 250
+        }
+      },
     });
 
     const map = new Map({

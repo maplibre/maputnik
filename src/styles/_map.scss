@@ -1,3 +1,5 @@
+@use "vars";
+
 //OPENLAYERS
 .maputnik-layout {
   .ol-zoom {
@@ -39,7 +41,7 @@
 }
 
 .maputnik-ol-popup {
-  background: $color-black;
+  background: vars.$color-black;
 
 }
 
@@ -74,7 +76,7 @@
   background: #1c1f24;
   border-radius: 2px;
   padding: 6px 8px;
-  color: $color-lowgray;
+  color: vars.$color-lowgray;
   z-index: 9999;
   font-size: 12px;
   font-weight: bold;

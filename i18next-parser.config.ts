@@ -10,7 +10,7 @@ export default {
   keySeparator: false,
   namespaceSeparator: false,
 
-  defaultValue: (locale, ns, key) => {
+  defaultValue: (_locale, _ns, _key) => {
     // The default value is a string that indicates that the string is not translated.
     return '__STRING_NOT_TRANSLATED__';
   }

@@ -1,5 +1,7 @@
+@use "vars";
+
 .maputnik-filter-editor-wrapper {
-  padding: $margin-3;
+  padding: vars.$margin-3;
   overflow: hidden;
 
   .maputnik-input-block {
@@ -8,8 +10,8 @@
 }
 
 .maputnik-filter-editor {
-  @extend .clearfix; /* stylelint-disable-line */
-  color: $color-lowgray;
+  @extend .clearfix !optional; /* stylelint-disable-line */
+  color: vars.$color-lowgray;
 }
 
 .maputnik-filter-editor-property {
@@ -39,7 +41,7 @@
 }
 
 .maputnik-filter-editor-compound-select {
-  margin-bottom: $margin-2;
+  margin-bottom: vars.$margin-2;
 
   .maputnik-doc-wrapper {
     width: 50%;
@@ -52,22 +54,22 @@
 }
 
 .maputnik-filter-editor-unsupported {
-  color: $color-midgray;
+  color: vars.$color-midgray;
 }
 
 .maputnik-add-filter {
   display: inline-block;
   float: right;
-  margin-top: $margin-3;
+  margin-top: vars.$margin-3;
 }
 
 .maputnik-delete-filter {
-  @extend .maputnik-icon-button; /* stylelint-disable-line */
+  @extend .maputnik-icon-button !optional; /* stylelint-disable-line */
 }
 
 .maputnik-filter-editor-block-action {
-  margin-top: $margin-2;
-  margin-bottom: $margin-2;
+  margin-top: vars.$margin-2;
+  margin-bottom: vars.$margin-2;
   display: inline-block;
   width: 6%;
   margin-right: 1.5%;
@@ -79,12 +81,12 @@
 }
 
 .maputnik-radio-as-button {
-  @extend .maputnik-button; /* stylelint-disable-line */
+  @extend .maputnik-button !optional; /* stylelint-disable-line */
 
   border: solid 1px transparent;
 
   &:focus-within {
-    border: solid 1px $color-white;
+    border: solid 1px vars.$color-white;
   }
 
   input {

@@ -1,5 +1,4 @@
-// @ts-ignore - this is a fork of jsonlint
-import jsonlint from 'jsonlint';
+import {parse} from '@prantlf/jsonlint';
 import CodeMirror, { MarkerRange } from 'codemirror';
 import jsonToAst from 'json-to-ast';
 import {expression, validateStyleMin} from '@maplibre/maplibre-gl-style-spec';
@@ -15,49 +14,45 @@ CodeMirror.defineMode("mgl", (config, parserConfig) => {
   );
 });
 
-CodeMirror.registerHelper("lint", "json", (text: string) => {
+
+function tryToParse(text: string) {
+
   const found: MarkerRangeWithMessage[] = [];
-
-  // NOTE: This was modified from the original to remove the global, also the
-  // old jsonlint API was 'jsonlint.parseError' its now
-  // 'jsonlint.parser.parseError'
-  (jsonlint as any).parser.parseError = (str: string, hash: any) => {
-    const loc = hash.loc;
-    found.push({
-      from:    CodeMirror.Pos(loc.first_line - 1, loc.first_column),
-      to:      CodeMirror.Pos(loc.last_line  - 1, loc.last_column),
-      message: str
-    });
-  };
-
   try {
-    jsonlint.parse(text);
+    parse(text);
   }
-  catch(e) {
-    // Do nothing we catch the error above
+  catch(err: any) {
+
+    const errorMatch = err.toString().match(/line (\d+), column (\d+)/);
+    if (errorMatch) {
+      const loc = {
+        first_line: parseInt(errorMatch[1], 10),
+        first_column: parseInt(errorMatch[2], 10),
+        last_line: parseInt(errorMatch[1], 10),
+        last_column: parseInt(errorMatch[2], 10)
+      };
+    
+      // const loc = hash.loc;
+      found.push({
+        from: CodeMirror.Pos(loc.first_line - 1, loc.first_column),
+        to: CodeMirror.Pos(loc.last_line - 1, loc.last_column),
+        message: err
+      });
+    }
   }
+
   return found;
+}
+
+CodeMirror.registerHelper("lint", "json", (text: string) => {
+  return tryToParse(text);
 });
 
 CodeMirror.registerHelper("lint", "mgl", (text: string, opts: any, doc: any) => {
-  const found: MarkerRangeWithMessage[] = [];
-  const {parser} = jsonlint as any;
-  const {context} = opts;
+  
+  const found: MarkerRangeWithMessage[] = tryToParse(text);
 
-  parser.parseError = (str: string, hash: any) => {
-    const loc = hash.loc;
-    found.push({
-      from: CodeMirror.Pos(loc.first_line - 1, loc.first_column),
-      to: CodeMirror.Pos(loc.last_line - 1, loc.last_column),
-      message: str
-    });
-  };
-  try {
-    parser.parse(text);
-  }
-  catch (e) {
-    // ignore errors
-  }
+  const {context} = opts;
 
   if (found.length > 0) {
     // JSON invalid so don't go any further
