@@ -496,7 +496,7 @@ describe("layers", () => {
   });
 
 
-  describe("layereditor jsonlint should error", ()=>{
+  describe.only("layereditor jsonlint should error", ()=>{
     
     it("add", () => {
       const id = when.modal.fillLayers({
@@ -519,7 +519,7 @@ describe("layers", () => {
       sourceText.click();
       sourceText.type("\"");
       
-      const error = cy.get('.CodeMirror-lint-marker-error');
+      const error = get.element('.CodeMirror-lint-marker-error');
       error.should('exist');
     });
   });
