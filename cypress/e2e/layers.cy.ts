@@ -496,7 +496,7 @@ describe("layers", () => {
   });
 
 
-  describe.only("layereditor jsonlint should error", ()=>{
+  describe("layereditor jsonlint should error", ()=>{
     
     it("add", () => {
       const id = when.modal.fillLayers({
