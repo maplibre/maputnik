@@ -84,7 +84,7 @@ describe("modals", () => {
     });
 
     it("add new pmtiles source", () => {
-      let sourceId = "pmtilestest";
+      const sourceId = "pmtilestest";
       when.setValue("modal:sources.add.source_id", sourceId);
       when.select("modal:sources.add.source_type", "pmtiles_vector");
       when.setValue("modal:sources.add.source_url", "https://data.source.coop/protomaps/openstreetmap/v4.pmtiles");
