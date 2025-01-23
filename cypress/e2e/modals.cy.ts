@@ -83,6 +83,24 @@ describe("modals", () => {
       });
     });
 
+    it("add new pmtiles source", () => {
+      const sourceId = "pmtilestest";
+      when.setValue("modal:sources.add.source_id", sourceId);
+      when.select("modal:sources.add.source_type", "pmtiles_vector");
+      when.setValue("modal:sources.add.source_url", "https://data.source.coop/protomaps/openstreetmap/v4.pmtiles");
+      when.click("modal:sources.add.add_source");
+      when.click("modal:sources.add.add_source");
+      when.wait(200);
+      then(get.styleFromLocalStorage()).shouldDeepNestedInclude({
+        sources: {
+          pmtilestest: {
+            type: "vector",
+            url: "pmtiles://https://data.source.coop/protomaps/openstreetmap/v4.pmtiles",
+          },
+        },
+      });
+    });
+
     it("add new raster source", () => {
       const sourceId = "rastertest";
       when.setValue("modal:sources.add.source_id", sourceId);
