@@ -139,12 +139,12 @@ class MapMaplibreGlInternal extends React.Component<MapMaplibreGlInternalProps, 
     }
 
     if (this.props.file) {
-      let file = this.props.file;
+      const file = this.props.file;
       this.state.protocol!.add(file); // this is necessary for non-HTTP sources
 
       if (map) {
         file.getMetadata().then((metadata: any) => {
-          let layerNames = metadata.vector_layers.map((e: LayerSpecification) => e.id);
+          const layerNames = metadata.vector_layers.map((e: LayerSpecification) => e.id);
 
           map.style.sourceCaches["source"]._source.vectorLayerIds = layerNames;
           console.log("layerNames for inspect:", layerNames);
@@ -166,7 +166,7 @@ class MapMaplibreGlInternal extends React.Component<MapMaplibreGlInternalProps, 
       localIdeographFontFamily: false
     } satisfies MapOptions;
 
-    let protocol = this.state.protocol;
+    const protocol = this.state.protocol;
     MapLibreGl.addProtocol("pmtiles", protocol!.tile);
 
     const map = new MapLibreGl.Map(mapOpts);

@@ -885,9 +885,8 @@ export default class App extends React.Component<any, AppState> {
   }
 
   onFileSelected = (e: File[]) => {
-    var file = e[0];
-    var pmt = new PMTiles(new FileSource(file));
-    console.log("App.onFileSelected", pmt);
+    const file = e[0];
+    const pmt = new PMTiles(new FileSource(file));
     this.setState({
       file: pmt
     })
