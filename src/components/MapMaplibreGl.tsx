@@ -66,7 +66,7 @@ type MapMaplibreGlInternalProps = {
   }
   replaceAccessTokens(mapStyle: StyleSpecification): StyleSpecification
   onChange(value: {center: LngLat, zoom: number}): unknown
-  file: PMTiles | null;
+  localPMTiles: PMTiles | null;
 } & WithTranslation;
 
 type MapMaplibreGlState = {
@@ -138,16 +138,16 @@ class MapMaplibreGlInternal extends React.Component<MapMaplibreGlInternalProps, 
       }, 500);
     }
 
-    if (this.props.file) {
-      const file = this.props.file;
+    if (this.props.localPMTiles) {
+      const file = this.props.localPMTiles;
       this.state.protocol!.add(file); // this is necessary for non-HTTP sources
 
       if (map) {
         file.getMetadata().then((metadata: any) => {
           const layerNames = metadata.vector_layers.map((e: LayerSpecification) => e.id);
 
+          // used by maplibre-gl-inspect to pick up inspectable layers
           map.style.sourceCaches["source"]._source.vectorLayerIds = layerNames;
-          console.log("layerNames for inspect:", layerNames);
         });
       }
     }

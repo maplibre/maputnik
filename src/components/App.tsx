@@ -131,7 +131,7 @@ type AppState = {
     debug: boolean
   }
   fileHandle: FileSystemFileHandle | null
-  file: PMTiles | null
+  localPMTiles: PMTiles | null
 }
 
 export default class App extends React.Component<any, AppState> {
@@ -288,7 +288,7 @@ export default class App extends React.Component<any, AppState> {
         debugToolbox: false,
       },
       fileHandle: null,
-      file: null
+      localPMTiles: null
     }
 
     this.layerWatcher = new LayerWatcher({
@@ -743,7 +743,7 @@ export default class App extends React.Component<any, AppState> {
         onChange={this.onMapChange}
         options={this.state.maplibreGlDebugOptions}
         inspectModeEnabled={this.state.mapState === "inspect"}
-        file={this.state.file}
+        localPMTiles={this.state.localPMTiles}
         highlightedLayer={this.state.mapStyle.layers[this.state.selectedLayerIndex]}
         onLayerSelect={this.onLayerSelect} />
     }
@@ -888,7 +888,7 @@ export default class App extends React.Component<any, AppState> {
     const file = e[0];
     const pmt = new PMTiles(new FileSource(file));
     this.setState({
-      file: pmt
+      localPMTiles: pmt
     })
   }
 
