@@ -17,7 +17,7 @@ import maputnikLogo from 'maputnik-design/logos/logo-color.svg?inline'
 import { withTranslation, WithTranslation } from 'react-i18next';
 import { supportedLanguages } from '../i18n';
 
-import Dropzone from 'react-dropzone'; // for class components
+import Dropzone from 'react-dropzone';
 
 // This is required because of <https://stackoverflow.com/a/49846426>, there isn't another way to detect support that I'm aware of.
 const browser = detect();
