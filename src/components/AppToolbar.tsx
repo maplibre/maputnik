@@ -297,7 +297,7 @@ class AppToolbarInternal extends React.Component<AppToolbarInternalProps> {
             {({getRootProps, getInputProps}) => (
               <div {...getRootProps({className: 'dropzone maputnik-toolbar-link'})}>
                 <input {...getInputProps()} />
-                Drop file here
+                {t("Drop PMTiles file here")}
               </div>
             )}
           </Dropzone>
