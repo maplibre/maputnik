@@ -131,6 +131,7 @@ type AppState = {
     debug: boolean
   }
   fileHandle: FileSystemFileHandle | null
+  file: PMTiles | null
 }
 
 export default class App extends React.Component<any, AppState> {
@@ -287,6 +288,7 @@ export default class App extends React.Component<any, AppState> {
         debugToolbox: false,
       },
       fileHandle: null,
+      file: null
     }
 
     this.layerWatcher = new LayerWatcher({
@@ -882,7 +884,7 @@ export default class App extends React.Component<any, AppState> {
     });
   }
 
-  onFileSelected = (e) => {
+  onFileSelected = (e: File[]) => {
     var file = e[0];
     var pmt = new PMTiles(new FileSource(file));
     console.log("App.onFileSelected", pmt);
@@ -905,7 +907,6 @@ export default class App extends React.Component<any, AppState> {
       onStyleOpen={this.onStyleChanged}
       onSetMapState={this.setMapState}
       onToggleModal={this.toggleModal.bind(this)}
-      files={this.state.files}
       onFileSelected={this.onFileSelected}
     />
 

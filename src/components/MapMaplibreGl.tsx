@@ -15,7 +15,7 @@ import MaplibreGeocoder, { MaplibreGeocoderApi, MaplibreGeocoderApiConfig } from
 import '@maplibre/maplibre-gl-geocoder/dist/maplibre-gl-geocoder.css';
 import { withTranslation, WithTranslation } from 'react-i18next'
 import i18next from 'i18next'
-import { Protocol } from "pmtiles";
+import { PMTiles, Protocol } from "pmtiles";
 
 function renderPopup(popup: JSX.Element, mountNode: ReactDOM.Container): HTMLElement {
   ReactDOM.render(popup, mountNode);
@@ -66,6 +66,7 @@ type MapMaplibreGlInternalProps = {
   }
   replaceAccessTokens(mapStyle: StyleSpecification): StyleSpecification
   onChange(value: {center: LngLat, zoom: number}): unknown
+  file: PMTiles | null;
 } & WithTranslation;
 
 type MapMaplibreGlState = {
@@ -74,6 +75,7 @@ type MapMaplibreGlState = {
   geocoder: MaplibreGeocoder | null;
   zoomControl: ZoomControl | null;
   zoom?: number;
+  protocol: Protocol | null;
 };
 
 class MapMaplibreGlInternal extends React.Component<MapMaplibreGlInternalProps, MapMaplibreGlState> {
@@ -138,11 +140,11 @@ class MapMaplibreGlInternal extends React.Component<MapMaplibreGlInternalProps, 
 
     if (this.props.file) {
       let file = this.props.file;
-      this.state.protocol.add(file); // this is necessary for non-HTTP sources
+      this.state.protocol!.add(file); // this is necessary for non-HTTP sources
 
       if (map) {
-        file.getMetadata().then((metadata) => {
-          let layerNames = metadata.vector_layers.map((e) => e.id);
+        file.getMetadata().then((metadata: any) => {
+          let layerNames = metadata.vector_layers.map((e: LayerSpecification) => e.id);
 
           map.style.sourceCaches["source"]._source.vectorLayerIds = layerNames;
           console.log("layerNames for inspect:", layerNames);
@@ -165,7 +167,7 @@ class MapMaplibreGlInternal extends React.Component<MapMaplibreGlInternalProps, 
     } satisfies MapOptions;
 
     let protocol = this.state.protocol;
-    MapLibreGl.addProtocol("pmtiles",protocol.tile);
+    MapLibreGl.addProtocol("pmtiles", protocol!.tile);
 
     const map = new MapLibreGl.Map(mapOpts);
 
