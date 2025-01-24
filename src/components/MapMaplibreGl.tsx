@@ -75,7 +75,7 @@ type MapMaplibreGlState = {
   geocoder: MaplibreGeocoder | null;
   zoomControl: ZoomControl | null;
   zoom?: number;
-  protocol: Protocol | null;
+  pmtilesProtocol: Protocol | null;
 };
 
 class MapMaplibreGlInternal extends React.Component<MapMaplibreGlInternalProps, MapMaplibreGlState> {
@@ -95,7 +95,7 @@ class MapMaplibreGlInternal extends React.Component<MapMaplibreGlInternalProps, 
       inspect: null,
       geocoder: null,
       zoomControl: null,
-      protocol: new Protocol({metadata: true})
+      pmtilesProtocol: new Protocol({metadata: true})
     }
     i18next.on('languageChanged', () => {
       this.forceUpdate();
@@ -140,7 +140,7 @@ class MapMaplibreGlInternal extends React.Component<MapMaplibreGlInternalProps, 
 
     if (this.props.localPMTiles) {
       const file = this.props.localPMTiles;
-      this.state.protocol!.add(file); // this is necessary for non-HTTP sources
+      this.state.pmtilesProtocol!.add(file); // this is necessary for non-HTTP sources
 
       if (map) {
         file.getMetadata().then((metadata: any) => {
@@ -166,8 +166,7 @@ class MapMaplibreGlInternal extends React.Component<MapMaplibreGlInternalProps, 
       localIdeographFontFamily: false
     } satisfies MapOptions;
 
-    const protocol = this.state.protocol;
-    MapLibreGl.addProtocol("pmtiles", protocol!.tile);
+    MapLibreGl.addProtocol("pmtiles", this.state.pmtilesProtocol!.tile);
 
     const map = new MapLibreGl.Map(mapOpts);
 
