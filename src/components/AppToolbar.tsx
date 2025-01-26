@@ -105,7 +105,7 @@ type AppToolbarInternalProps = {
   onSetMapState(mapState: MapState): unknown
   mapState?: MapState
   renderer?: string
-  onFileSelected(...args: unknown[]): unknown
+  onLocalPMTilesSelected(file: File): unknown
 } & WithTranslation;
 
 class AppToolbarInternal extends React.Component<AppToolbarInternalProps> {
@@ -135,6 +135,11 @@ class AppToolbarInternal extends React.Component<AppToolbarInternalProps> {
       const el = document.querySelector("#skip-target-"+target) as HTMLButtonElement;
       el.focus();
     }
+  }
+
+  onFileSelected = (e: File[]) => {
+    const file = e[0];
+    this.props.onLocalPMTilesSelected(file);
   }
 
   render() {
@@ -293,7 +298,7 @@ class AppToolbarInternal extends React.Component<AppToolbarInternalProps> {
             <IconText>{t("Help")}</IconText>
           </ToolbarLink>
 
-          <Dropzone onDrop={this.props.onFileSelected}>
+          <Dropzone onDrop={this.onFileSelected}>
             {({getRootProps, getInputProps}) => (
               <div {...getRootProps({className: 'dropzone maputnik-toolbar-link'})}>
                 <input {...getInputProps()} />

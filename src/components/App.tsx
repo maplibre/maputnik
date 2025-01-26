@@ -884,11 +884,9 @@ export default class App extends React.Component<any, AppState> {
     });
   }
 
-  onFileSelected = (e: File[]) => {
-    const file = e[0];
-    const pmt = new PMTiles(new FileSource(file));
+  onLocalPMTilesSelected = (file: File) => {
     this.setState({
-      localPMTiles: pmt
+      localPMTiles: new PMTiles(new FileSource(file))
     })
   }
 
@@ -906,7 +904,7 @@ export default class App extends React.Component<any, AppState> {
       onStyleOpen={this.onStyleChanged}
       onSetMapState={this.setMapState}
       onToggleModal={this.toggleModal.bind(this)}
-      onFileSelected={this.onFileSelected}
+      onLocalPMTilesSelected={this.onLocalPMTilesSelected}
     />
 
     const layerList = <LayerList
