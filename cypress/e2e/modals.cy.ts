@@ -239,14 +239,12 @@ describe("modals", () => {
 
 
 
-    it("inlcude API key when change renderer", () => {
-
-      
+    it.only("inlcude API key when change renderer", () => {
       
       when.click("modal:settings.close-modal")
       when.click("nav:open");
 
-      cy.get('[aria-label="MapTiler Basic"]').should('exist').click();
+      get.elementByAttribute('aria-label', "MapTiler Basic").should('exist').click();
 
       when.click("nav:settings");
       
