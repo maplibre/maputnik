@@ -2,7 +2,7 @@ import { MaputnikDriver } from "./maputnik-driver";
 import tokens from "../../src/config/tokens.json" with {type: "json"};
 
 describe("modals", () => {
-  const { beforeAndAfter, when, get, then } = new MaputnikDriver();
+  const { beforeAndAfter, when, get, given, then } = new MaputnikDriver();
   beforeAndAfter();
 
   beforeEach(() => {
@@ -239,7 +239,7 @@ describe("modals", () => {
 
 
 
-    it.only("inlcude API key when change renderer", () => {
+    it("inlcude API key when change renderer", () => {
       
       when.click("modal:settings.close-modal")
       when.click("nav:open");
@@ -258,8 +258,8 @@ describe("modals", () => {
         "ol"
       );
 
-      cy.intercept("GET", "https://api.maptiler.com/tiles/v3-openmaptiles/tiles.json?key=*").as("tileRequest");
-
+      given.intercept("https://api.maptiler.com/tiles/v3-openmaptiles/tiles.json?key=*", "tileRequest", "GET");
+      
       when.select("modal:settings.maputnik:renderer", "mlgljs");
       then(get.inputValue("modal:settings.maputnik:renderer")).shouldEqual(
         "mlgljs"
