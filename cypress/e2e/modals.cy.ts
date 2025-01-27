@@ -265,9 +265,9 @@ describe("modals", () => {
         "mlgljs"
       );
 
-      cy.wait("@tileRequest").its("request").its("url").should("include", `https://api.maptiler.com/tiles/v3-openmaptiles/tiles.json?key=${tokens.openmaptiles}`);
-      cy.wait("@tileRequest").its("request").its("url").should("include", `https://api.maptiler.com/tiles/v3-openmaptiles/tiles.json?key=${tokens.openmaptiles}`);
-      cy.wait("@tileRequest").its("request").its("url").should("include", `https://api.maptiler.com/tiles/v3-openmaptiles/tiles.json?key=${tokens.openmaptiles}`);
+      when.waitForResponse("tileRequest").its("request").its("url").should("include", `https://api.maptiler.com/tiles/v3-openmaptiles/tiles.json?key=${tokens.openmaptiles}`);
+      when.waitForResponse("tileRequest").its("request").its("url").should("include", `https://api.maptiler.com/tiles/v3-openmaptiles/tiles.json?key=${tokens.openmaptiles}`);
+      when.waitForResponse("tileRequest").its("request").its("url").should("include", `https://api.maptiler.com/tiles/v3-openmaptiles/tiles.json?key=${tokens.openmaptiles}`);
     });
     
   });
