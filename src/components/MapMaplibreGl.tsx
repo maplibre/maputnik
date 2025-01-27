@@ -148,6 +148,8 @@ class MapMaplibreGlInternal extends React.Component<MapMaplibreGlInternalProps, 
 
           // used by maplibre-gl-inspect to pick up inspectable layers
           map.style.sourceCaches["source"]._source.vectorLayerIds = layerNames;
+        }).catch( e => {
+          console.error(`Error in reading local PMTiles file: ${e}`);
         });
       }
     }

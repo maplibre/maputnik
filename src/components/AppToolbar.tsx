@@ -17,7 +17,7 @@ import maputnikLogo from 'maputnik-design/logos/logo-color.svg?inline'
 import { withTranslation, WithTranslation } from 'react-i18next';
 import { supportedLanguages } from '../i18n';
 
-import Dropzone from 'react-dropzone';
+import { default as Dropzone, FileRejection } from 'react-dropzone';
 
 // This is required because of <https://stackoverflow.com/a/49846426>, there isn't another way to detect support that I'm aware of.
 const browser = detect();
@@ -142,6 +142,14 @@ class AppToolbarInternal extends React.Component<AppToolbarInternalProps> {
     this.props.onLocalPMTilesSelected(file);
   }
 
+  onFileRejected = (r: FileRejection[]) => {
+    const errorMessageLine = r.map(e => {
+      return e.errors.map(f => f.message).join("\n")
+    }).join("\n");
+    console.error("Dropzone file rejected:", errorMessageLine);
+    alert(errorMessageLine);
+  }
+
   render() {
     const t = this.props.t;
     const views = [
@@ -181,6 +189,10 @@ class AppToolbarInternal extends React.Component<AppToolbarInternalProps> {
         disabled: !colorAccessibilityFiltersEnabled,
       },
     ];
+
+    const acceptedFileTypes = {
+      'application/octet-stream': [".pmtiles"]
+    }
 
     const currentView = views.find((view) => {
       return view.id === this.props.mapState;
@@ -298,7 +310,7 @@ class AppToolbarInternal extends React.Component<AppToolbarInternalProps> {
             <IconText>{t("Help")}</IconText>
           </ToolbarLink>
 
-          <Dropzone onDrop={this.onFileSelected}>
+          <Dropzone onDropAccepted={this.onFileSelected} onDropRejected={this.onFileRejected} accept={acceptedFileTypes}>
             {({getRootProps, getInputProps}) => (
               <div {...getRootProps({className: 'dropzone maputnik-toolbar-link'})}>
                 <input {...getInputProps()} />
