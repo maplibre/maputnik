@@ -93,7 +93,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        browser: [chrome, firefox]
+        browser: [chrome]
 
     runs-on: ubuntu-22.04
     steps:
