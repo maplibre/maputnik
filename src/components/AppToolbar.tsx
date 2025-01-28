@@ -147,7 +147,9 @@ class AppToolbarInternal extends React.Component<AppToolbarInternalProps> {
       return e.errors.map(f => f.message).join("\n")
     }).join("\n");
     console.error("Dropzone file rejected:", errorMessageLine);
-    alert(errorMessageLine);
+
+    const alertMessage = this.props.t("File type is not supported");
+    alert(alertMessage);
   }
 
   render() {

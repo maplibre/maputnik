@@ -78,6 +78,13 @@ type MapMaplibreGlState = {
   pmtilesProtocol: Protocol | null;
 };
 
+interface Metadata {
+  name?: string;
+  type?: string;
+  tilestats?: unknown;
+  vector_layers: LayerSpecification[];
+}
+
 class MapMaplibreGlInternal extends React.Component<MapMaplibreGlInternalProps, MapMaplibreGlState> {
   static defaultProps = {
     onMapLoaded: () => {},
@@ -143,13 +150,13 @@ class MapMaplibreGlInternal extends React.Component<MapMaplibreGlInternalProps, 
       this.state.pmtilesProtocol!.add(file); // this is necessary for non-HTTP sources
 
       if (map) {
-        file.getMetadata().then((metadata: any) => {
+        (file.getMetadata() as Promise<Metadata>).then(metadata => {
           const layerNames = metadata.vector_layers.map((e: LayerSpecification) => e.id);
 
           // used by maplibre-gl-inspect to pick up inspectable layers
           map.style.sourceCaches["source"]._source.vectorLayerIds = layerNames;
         }).catch( e => {
-          console.error(`Error in reading local PMTiles file: ${e}`);
+          console.error(`${this.props.t('Error in reading local PMTiles file')}: ${e}`);
         });
       }
     }
