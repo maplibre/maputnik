@@ -81,6 +81,7 @@
   "Close modal": "关闭模态框",
   "Debug": "调试",
   "Options": "选项",
+  "<0>Open in OSM</0> &mdash; Opens the current view on openstreetmap.org": "__STRING_NOT_TRANSLATED__",
   "Save Style": "保存样式",
   "Save the JSON style to your computer.": "将JSON样式保存到您的计算机。",
   "Save as": "另存为",

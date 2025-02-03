@@ -81,6 +81,7 @@
   "Close modal": "モーダルを閉じる",
   "Debug": "デバッグ",
   "Options": "設定",
+  "<0>Open in OSM</0> &mdash; Opens the current view on openstreetmap.org": "__STRING_NOT_TRANSLATED__",
   "Save Style": "スタイルを保存",
   "Save the JSON style to your computer.": "JSONスタイルをコンピュータに保存します。",
   "Save as": "名前を付けて保存",
