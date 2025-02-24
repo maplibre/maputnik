@@ -1,6 +1,6 @@
 # Build Scripts
 
-This folder holds common build scripts used by some of the Github workflows. 
+This folder holds common build scripts used by some of the Github workflows.
 
 The scripts are borrowed from [maplibre/maplibre-gl-js](https://github.com/maplibre/maplibre-gl-js/tree/bc70bc559cea5c987fa1b79fd44766cef68bbe28/build).
 

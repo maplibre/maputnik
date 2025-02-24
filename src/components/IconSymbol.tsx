@@ -13,6 +13,3 @@ export default class IconSymbol extends React.Component {
     )
   }
 }
-
-
-

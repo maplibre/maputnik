@@ -97,5 +97,3 @@ export default class InputString extends React.Component<InputStringProps, Input
     });
   }
 }
-
-

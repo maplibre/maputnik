@@ -31,7 +31,7 @@ function tryToParse(text: string) {
         last_line: parseInt(errorMatch[1], 10),
         last_column: parseInt(errorMatch[2], 10)
       };
-    
+
       // const loc = hash.loc;
       found.push({
         from: CodeMirror.Pos(loc.first_line - 1, loc.first_column),
@@ -49,7 +49,7 @@ CodeMirror.registerHelper("lint", "json", (text: string) => {
 });
 
 CodeMirror.registerHelper("lint", "mgl", (text: string, opts: any, doc: any) => {
-  
+
   const found: MarkerRangeWithMessage[] = tryToParse(text);
 
   const {context} = opts;

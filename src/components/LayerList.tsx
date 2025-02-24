@@ -287,9 +287,9 @@ class LayerListContainerInternal extends React.Component<LayerListContainerInter
               data-wd-key="skip-target-layer-list"
               onClick={this.toggleLayers}
               className="maputnik-button">
-              {this.state.areAllGroupsExpanded === true ? 
-                t("Collapse") 
-                : 
+              {this.state.areAllGroupsExpanded === true ?
+                t("Collapse")
+                :
                 t("Expand")
               }
             </button>
