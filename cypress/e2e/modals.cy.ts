@@ -240,14 +240,14 @@ describe("modals", () => {
 
 
     it("inlcude API key when change renderer", () => {
-      
+
       when.click("modal:settings.close-modal")
       when.click("nav:open");
 
       get.elementByAttribute('aria-label', "MapTiler Basic").should('exist').click();
 
       when.click("nav:settings");
-      
+
       when.select("modal:settings.maputnik:renderer", "mlgljs");
       then(get.inputValue("modal:settings.maputnik:renderer")).shouldEqual(
         "mlgljs"
@@ -259,7 +259,7 @@ describe("modals", () => {
       );
 
       given.intercept("https://api.maptiler.com/tiles/v3-openmaptiles/tiles.json?key=*", "tileRequest", "GET");
-      
+
       when.select("modal:settings.maputnik:renderer", "mlgljs");
       then(get.inputValue("modal:settings.maputnik:renderer")).shouldEqual(
         "mlgljs"
@@ -269,7 +269,7 @@ describe("modals", () => {
       when.waitForResponse("tileRequest").its("request").its("url").should("include", `https://api.maptiler.com/tiles/v3-openmaptiles/tiles.json?key=${tokens.openmaptiles}`);
       when.waitForResponse("tileRequest").its("request").its("url").should("include", `https://api.maptiler.com/tiles/v3-openmaptiles/tiles.json?key=${tokens.openmaptiles}`);
     });
-    
+
   });
 
   describe("sources", () => {

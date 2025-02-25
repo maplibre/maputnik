@@ -13,4 +13,3 @@ export default class FieldDynamicArray extends React.Component<FieldDynamicArray
     </Fieldset>
   }
 }
-

@@ -56,8 +56,8 @@ export default class PropertyGroup extends React.Component<PropertyGroupProps> {
 
       const paint = this.props.layer.paint || {}
       const layout = this.props.layer.layout || {}
-      const fieldValue = fieldName in paint 
-        ? paint[fieldName as keyof typeof paint] 
+      const fieldValue = fieldName in paint
+        ? paint[fieldName as keyof typeof paint]
         : layout[fieldName as keyof typeof layout]
       const fieldType = fieldName in paint ? 'paint' : 'layout';
 

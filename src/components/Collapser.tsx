@@ -16,4 +16,3 @@ export default class Collapser extends React.Component<CollapserProps> {
     return this.props.isCollapsed ? <MdArrowDropUp style={iconStyle}/> : <MdArrowDropDown style={iconStyle} />
   }
 }
-
