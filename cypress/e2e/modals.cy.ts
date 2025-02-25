@@ -245,7 +245,7 @@ describe("modals", () => {
       when.click("nav:open");
 
       get.elementByAttribute('aria-label', "MapTiler Basic").should('exist').click();
-      when.wait(1000);  
+      when.wait(1000);
       when.click("nav:settings");
       
       when.select("modal:settings.maputnik:renderer", "mlgljs");
