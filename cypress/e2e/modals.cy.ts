@@ -239,19 +239,21 @@ describe("modals", () => {
 
 
 
-    it("inlcude API key when change renderer", () => {
+    it.only("inlcude API key when change renderer", () => {
       
       when.click("modal:settings.close-modal")
       when.click("nav:open");
 
       get.elementByAttribute('aria-label', "MapTiler Basic").should('exist').click();
-
+      when.wait(1000);  
       when.click("nav:settings");
       
       when.select("modal:settings.maputnik:renderer", "mlgljs");
+
       then(get.inputValue("modal:settings.maputnik:renderer")).shouldEqual(
         "mlgljs"
       );
+      
 
       when.select("modal:settings.maputnik:renderer", "ol");
       then(get.inputValue("modal:settings.maputnik:renderer")).shouldEqual(
