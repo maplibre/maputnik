@@ -239,7 +239,7 @@ describe("modals", () => {
 
 
 
-    it.only("inlcude API key when change renderer", () => {
+    it("inlcude API key when change renderer", () => {
       
       when.click("modal:settings.close-modal")
       when.click("nav:open");
