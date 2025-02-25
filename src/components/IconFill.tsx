@@ -11,5 +11,3 @@ export default class IconFill extends React.Component {
     )
   }
 }
-
-

@@ -102,4 +102,3 @@ export default class Block extends React.Component<BlockProps, BlockState> {
     </label>
   }
 }
-

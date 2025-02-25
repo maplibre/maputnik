@@ -23,7 +23,7 @@ describe("map", () => {
       );
     });
   });
-  
+
   describe("search", () => {
     it('should exist', () => {
       then(get.searchControl()).shouldBeVisible();

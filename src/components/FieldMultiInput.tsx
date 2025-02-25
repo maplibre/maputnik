@@ -15,4 +15,3 @@ export default class FieldMultiInput extends React.Component<FieldMultiInputProp
     </Fieldset>
   }
 }
-

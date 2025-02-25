@@ -18,4 +18,3 @@ export default class FieldColor extends React.Component<FieldColorProps> {
     </Block>
   }
 }
-

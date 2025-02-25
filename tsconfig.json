@@ -6,7 +6,7 @@
       "types": ["geojson", "@types/wicg-file-system-access"],
       "module": "ESNext",
       "skipLibCheck": true,
-  
+
       /* Bundler mode */
       "moduleResolution": "bundler",
       "allowImportingTsExtensions": true,
@@ -14,7 +14,7 @@
       "isolatedModules": true,
       "noEmit": true,
       "jsx": "react-jsx",
-  
+
       /* Linting */
       "strict": true,
       "noUnusedLocals": true,
