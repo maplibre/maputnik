@@ -249,11 +249,9 @@ describe("modals", () => {
       when.click("nav:settings");
       
       when.select("modal:settings.maputnik:renderer", "mlgljs");
-
       then(get.inputValue("modal:settings.maputnik:renderer")).shouldEqual(
         "mlgljs"
       );
-      
 
       when.select("modal:settings.maputnik:renderer", "ol");
       then(get.inputValue("modal:settings.maputnik:renderer")).shouldEqual(
