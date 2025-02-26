@@ -93,7 +93,7 @@
     }
   },
   "devDependencies": {
-    "@cypress/code-coverage": "^3.13.11",
+    "@cypress/code-coverage": "^3.13.12",
     "@eslint/js": "^9.19.0",
     "@istanbuljs/nyc-config-typescript": "^1.0.2",
     "@rollup/plugin-replace": "^6.0.2",
