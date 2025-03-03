@@ -3,7 +3,7 @@ import InputEnum, {InputEnumProps} from './InputEnum'
 import Fieldset from './Fieldset';
 
 
-type FieldEnumProps = InputEnumProps & { 
+type FieldEnumProps = InputEnumProps & {
   label?: string;
   fieldSpec?: {
     doc: string

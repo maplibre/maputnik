@@ -14,10 +14,10 @@ export default class ZoomControl {
     this._container.setAttribute("data-wd-key", "maplibre:ctrl-zoom");
     this.setLabel("Zoom:");
     this.addEventListeners();
-    
+
     return this._container;
   }
-  
+
   updateZoomLevel() {
     this._textEl!.innerHTML = this._map!.getZoom().toFixed(2);
   }
@@ -29,7 +29,7 @@ export default class ZoomControl {
     this._textEl = this._container!.querySelector("span");
     this.updateZoomLevel();
   }
-  
+
   addEventListeners (){
     this._map!.on('render', () => this.updateZoomLevel());
     this._map!.on('zoomIn', () => this.updateZoomLevel());

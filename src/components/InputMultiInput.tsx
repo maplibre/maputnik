@@ -37,5 +37,3 @@ export default class InputMultiInput extends React.Component<InputMultiInputProp
     </fieldset>
   }
 }
-
-

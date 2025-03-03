@@ -157,7 +157,7 @@ export default class InputNumber extends React.Component<InputNumberProps, Input
 
   render() {
     if(
-      Object.prototype.hasOwnProperty.call(this.props, "min") && 
+      Object.prototype.hasOwnProperty.call(this.props, "min") &&
       Object.prototype.hasOwnProperty.call(this.props, "max") &&
       this.props.min !== undefined && this.props.max !== undefined &&
       this.props.allowRange
@@ -244,5 +244,3 @@ export default class InputNumber extends React.Component<InputNumberProps, Input
     }
   }
 }
-
-

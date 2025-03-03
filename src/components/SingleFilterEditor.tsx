@@ -90,4 +90,3 @@ export default class SingleFilterEditor extends React.Component<SingleFilterEdit
     </div>
   }
 }
-

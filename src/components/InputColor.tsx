@@ -133,4 +133,3 @@ export default class InputColor extends React.Component<InputColorProps> {
     </div>
   }
 }
-
