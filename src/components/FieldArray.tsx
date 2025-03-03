@@ -16,4 +16,3 @@ export default class FieldArray extends React.Component<FieldArrayProps> {
     </Fieldset>
   }
 }
-

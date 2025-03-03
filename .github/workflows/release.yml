@@ -2,7 +2,7 @@ name: Release
 
 on:
   push:
-    branches: [main]
+    branches: [ main ]
   workflow_dispatch:
 
 jobs:
@@ -99,4 +99,3 @@ jobs:
           allowUpdates: true
           draft: false
           prerelease: false
-

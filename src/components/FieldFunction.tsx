@@ -404,4 +404,3 @@ export default class FieldFunction extends React.Component<FieldFunctionProps, F
     </div>
   }
 }
-

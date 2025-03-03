@@ -497,7 +497,7 @@ describe("layers", () => {
 
 
   describe("layereditor jsonlint should error", ()=>{
-    
+
     it("add", () => {
       const id = when.modal.fillLayers({
         type: "circle",
@@ -515,10 +515,10 @@ describe("layers", () => {
       });
 
       const sourceText = get.elementByText('"source"');
-      
+
       sourceText.click();
       sourceText.type("\"");
-      
+
       const error = get.element('.CodeMirror-lint-marker-error');
       error.should('exist');
     });

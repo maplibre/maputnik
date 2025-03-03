@@ -11,5 +11,3 @@ export default class IconBackground extends React.Component {
     )
   }
 }
-
-

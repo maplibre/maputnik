@@ -20,4 +20,3 @@ export default class FieldUrl extends React.Component<FieldUrlProps> {
     );
   }
 }
-

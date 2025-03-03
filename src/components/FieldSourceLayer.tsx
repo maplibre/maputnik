@@ -22,8 +22,8 @@ class FieldSourceLayerInternal extends React.Component<FieldSourceLayerInternalP
 
   render() {
     const t = this.props.t;
-    return <Block 
-      label={t("Source Layer")} 
+    return <Block
+      label={t("Source Layer")}
       fieldSpec={latest.layer['source-layer']}
       data-wd-key="layer-source-layer"
       error={this.props.error}
