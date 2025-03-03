@@ -255,8 +255,8 @@ class FilterEditorInternal extends React.Component<FilterEditorInternalProps, Fi
               value={combiningOp}
               onChange={(v: [string, any]) => this.onFilterPartChanged(0, v)}
               options={[
-                ["all", t("every filter matches")], 
-                ["none", t("no filter matches")], 
+                ["all", t("every filter matches")],
+                ["none", t("no filter matches")],
                 ["any", t("any filter matches")]
               ]}
             />

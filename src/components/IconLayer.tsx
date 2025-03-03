@@ -30,4 +30,3 @@ export default class IconLayer extends React.Component<IconLayerProps> {
     }
   }
 }
-

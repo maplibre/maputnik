@@ -47,4 +47,3 @@ export default class InputEnum extends React.Component<InputEnumProps> {
     }
   }
 }
-

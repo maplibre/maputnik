@@ -31,4 +31,3 @@ export default class Collapse extends React.Component<CollapseProps> {
     }
   }
 }
-

@@ -22,7 +22,7 @@ export type FieldDynamicArrayProps = {
   }
   'aria-label'?: string
   label: string
-} 
+}
 
 type FieldDynamicArrayInternalProps = FieldDynamicArrayProps & WithTranslation;
 
@@ -67,7 +67,7 @@ class FieldDynamicArrayInternal extends React.Component<FieldDynamicArrayInterna
     const t = this.props.t;
     const i18nProps = { t, i18n: this.props.i18n, tReady: this.props.tReady };
     const inputs = this.values.map((v, i) => {
-      const deleteValueBtn= <DeleteValueInputButton 
+      const deleteValueBtn= <DeleteValueInputButton
         onClick={this.deleteValue.bind(this, i)}
         {...i18nProps}
       />;
@@ -152,4 +152,3 @@ class DeleteValueInputButton extends React.Component<DeleteValueInputButtonProps
     </InputButton>
   }
 }
-
