@@ -140,7 +140,7 @@
     "stylelint": "^16.14.1",
     "stylelint-config-recommended-scss": "^14.1.0",
     "stylelint-scss": "^6.11.1",
-    "typescript": "^5.7.3",
+    "typescript": "^5.8.2",
     "typescript-eslint": "^8.25.0",
     "uuid": "^11.1.0",
     "vite": "^6.2.0",
