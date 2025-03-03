@@ -1,7 +1,8 @@
 import { MaputnikDriver } from "./maputnik-driver";
+import tokens from "../../src/config/tokens.json" with {type: "json"};
 
 describe("modals", () => {
-  let { beforeAndAfter, when, get, then } = new MaputnikDriver();
+  const { beforeAndAfter, when, get, given, then } = new MaputnikDriver();
   beforeAndAfter();
 
   beforeEach(() => {
@@ -25,7 +26,7 @@ describe("modals", () => {
 
     describe("when click open url", () => {
       beforeEach(() => {
-        let styleFileUrl = get.exampleFileUrl();
+        const styleFileUrl = get.exampleFileUrl();
 
         when.setValue("modal:open.url.input", styleFileUrl);
         when.click("modal:open.url.button");
@@ -70,7 +71,7 @@ describe("modals", () => {
     it("public source");
 
     it("add new source", () => {
-      let sourceId = "n1z2v3r";
+      const sourceId = "n1z2v3r";
       when.setValue("modal:sources.add.source_id", sourceId);
       when.select("modal:sources.add.source_type", "tile_vector");
       when.select("modal:sources.add.scheme_type", "tms");
@@ -83,8 +84,26 @@ describe("modals", () => {
       });
     });
 
+    it("add new pmtiles source", () => {
+      const sourceId = "pmtilestest";
+      when.setValue("modal:sources.add.source_id", sourceId);
+      when.select("modal:sources.add.source_type", "pmtiles_vector");
+      when.setValue("modal:sources.add.source_url", "https://data.source.coop/protomaps/openstreetmap/v4.pmtiles");
+      when.click("modal:sources.add.add_source");
+      when.click("modal:sources.add.add_source");
+      when.wait(200);
+      then(get.styleFromLocalStorage()).shouldDeepNestedInclude({
+        sources: {
+          pmtilestest: {
+            type: "vector",
+            url: "pmtiles://https://data.source.coop/protomaps/openstreetmap/v4.pmtiles",
+          },
+        },
+      });
+    });
+
     it("add new raster source", () => {
-      let sourceId = "rastertest";
+      const sourceId = "rastertest";
       when.setValue("modal:sources.add.source_id", sourceId);
       when.select("modal:sources.add.source_type", "tile_raster");
       when.select("modal:sources.add.scheme_type", "xyz");
@@ -159,7 +178,7 @@ describe("modals", () => {
       });
     });
     it("glyphs url", () => {
-      let glyphsUrl = "http://example.com/{fontstack}/{range}.pbf";
+      const glyphsUrl = "http://example.com/{fontstack}/{range}.pbf";
       when.setValue("modal:settings.glyphs", glyphsUrl);
       when.click("modal:settings.name");
       then(get.styleFromLocalStorage()).shouldDeepNestedInclude({
@@ -168,7 +187,7 @@ describe("modals", () => {
     });
 
     it("maptiler access token", () => {
-      let apiKey = "testing123";
+      const apiKey = "testing123";
       when.setValue(
         "modal:settings.maputnik:openmaptiles_access_token",
         apiKey
@@ -182,7 +201,7 @@ describe("modals", () => {
     });
 
     it("thunderforest access token", () => {
-      let apiKey = "testing123";
+      const apiKey = "testing123";
       when.setValue(
         "modal:settings.maputnik:thunderforest_access_token",
         apiKey
@@ -194,7 +213,7 @@ describe("modals", () => {
     });
 
     it("stadia access token", () => {
-      let apiKey = "testing123";
+      const apiKey = "testing123";
       when.setValue(
         "modal:settings.maputnik:stadia_access_token",
         apiKey
@@ -217,6 +236,40 @@ describe("modals", () => {
         metadata: { "maputnik:renderer": "ol" },
       });
     });
+
+
+
+    it("inlcude API key when change renderer", () => {
+
+      when.click("modal:settings.close-modal")
+      when.click("nav:open");
+
+      get.elementByAttribute('aria-label', "MapTiler Basic").should('exist').click();
+      when.wait(1000);
+      when.click("nav:settings");
+
+      when.select("modal:settings.maputnik:renderer", "mlgljs");
+      then(get.inputValue("modal:settings.maputnik:renderer")).shouldEqual(
+        "mlgljs"
+      );
+
+      when.select("modal:settings.maputnik:renderer", "ol");
+      then(get.inputValue("modal:settings.maputnik:renderer")).shouldEqual(
+        "ol"
+      );
+
+      given.intercept("https://api.maptiler.com/tiles/v3-openmaptiles/tiles.json?key=*", "tileRequest", "GET");
+
+      when.select("modal:settings.maputnik:renderer", "mlgljs");
+      then(get.inputValue("modal:settings.maputnik:renderer")).shouldEqual(
+        "mlgljs"
+      );
+
+      when.waitForResponse("tileRequest").its("request").its("url").should("include", `https://api.maptiler.com/tiles/v3-openmaptiles/tiles.json?key=${tokens.openmaptiles}`);
+      when.waitForResponse("tileRequest").its("request").its("url").should("include", `https://api.maptiler.com/tiles/v3-openmaptiles/tiles.json?key=${tokens.openmaptiles}`);
+      when.waitForResponse("tileRequest").its("request").its("url").should("include", `https://api.maptiler.com/tiles/v3-openmaptiles/tiles.json?key=${tokens.openmaptiles}`);
+    });
+
   });
 
   describe("sources", () => {

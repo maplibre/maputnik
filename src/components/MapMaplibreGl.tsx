@@ -15,6 +15,7 @@ import MaplibreGeocoder, { MaplibreGeocoderApi, MaplibreGeocoderApiConfig } from
 import '@maplibre/maplibre-gl-geocoder/dist/maplibre-gl-geocoder.css';
 import { withTranslation, WithTranslation } from 'react-i18next'
 import i18next from 'i18next'
+import { Protocol } from "pmtiles";
 
 function renderPopup(popup: JSX.Element, mountNode: ReactDOM.Container): HTMLElement {
   ReactDOM.render(popup, mountNode);
@@ -103,7 +104,7 @@ class MapMaplibreGlInternal extends React.Component<MapMaplibreGlInternalProps, 
     let should = false;
     try {
       should = JSON.stringify(this.props) !== JSON.stringify(nextProps) || JSON.stringify(this.state) !== JSON.stringify(nextState);
-    } catch(e) {
+    } catch(_e) {
       // no biggie, carry on
     }
     return should;
@@ -133,7 +134,7 @@ class MapMaplibreGlInternal extends React.Component<MapMaplibreGlInternalProps, 
         this.state.inspect!.render();
       }, 500);
     }
-    
+
   }
 
   componentDidMount() {
@@ -148,6 +149,8 @@ class MapMaplibreGlInternal extends React.Component<MapMaplibreGlInternalProps, 
       localIdeographFontFamily: false
     } satisfies MapOptions;
 
+    const protocol = new Protocol({metadata: true});
+    MapLibreGl.addProtocol("pmtiles",protocol.tile);
     const map = new MapLibreGl.Map(mapOpts);
 
     const mapViewChange = () => {
@@ -161,7 +164,7 @@ class MapMaplibreGlInternal extends React.Component<MapMaplibreGlInternalProps, 
     map.showCollisionBoxes = mapOpts.showCollisionBoxes!;
     map.showOverdrawInspector = mapOpts.showOverdrawInspector!;
 
-    let geocoder = this.initGeocoder(map);
+    const geocoder = this.initGeocoder(map);
 
     const zoomControl = new ZoomControl();
     map.addControl(zoomControl, 'top-right');

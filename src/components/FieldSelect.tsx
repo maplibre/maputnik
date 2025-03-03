@@ -18,5 +18,3 @@ export default class FieldSelect extends React.Component<FieldSelectProps> {
     </Block>
   }
 }
-
-

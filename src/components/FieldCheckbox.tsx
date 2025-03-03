@@ -15,4 +15,3 @@ export default class FieldCheckbox extends React.Component<FieldCheckboxProps> {
     </Block>
   }
 }
-

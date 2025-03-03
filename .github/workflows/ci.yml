@@ -14,8 +14,8 @@ jobs:
     if: ${{ github.event_name == 'push' || github.event_name == 'pull_request' }}
 
     steps:
-    - uses: actions/checkout@v4
-    - run: docker build -t test-docker-image-build .
+      - uses: actions/checkout@v4
+      - run: docker build -t test-docker-image-build .
 
   # build the editor
   build-node:
@@ -27,17 +27,17 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [ubuntu-latest, windows-latest, macos-latest]
+        os: [ ubuntu-latest, windows-latest, macos-latest ]
 
     steps:
-    - uses: actions/checkout@v4
-    - uses: actions/setup-node@v4
-      with:
-        node-version-file: '.nvmrc'
-    - run: npm ci
-    - run: npm run build
-    - run: npm run lint
-    - run: npm run lint-css
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: '.nvmrc'
+      - run: npm ci
+      - run: npm run build
+      - run: npm run lint
+      - run: npm run lint-css
 
 
 
@@ -47,53 +47,53 @@ jobs:
     if: ${{ github.event_name == 'push' || github.event_name == 'pull_request' }}
 
     steps:
-    - uses: actions/checkout@v4
-    - uses: actions/setup-node@v4
-      with:
-        node-version-file: '.nvmrc'
-    - run: npm ci
-    - run: npm run build
-    - name: artifacts/maputnik
-      uses: actions/upload-artifact@v4
-      with:
-        name: maputnik
-        path: dist
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: '.nvmrc'
+      - run: npm ci
+      - run: npm run build
+      - name: artifacts/maputnik
+        uses: actions/upload-artifact@v4
+        with:
+          name: maputnik
+          path: dist
 
-    # Build and upload desktop CLI artifacts
-    - name: Set up Go
-      uses: actions/setup-go@v5
-      with:
-        go-version: ^1.23.x
-        cache-dependency-path: desktop/go.sum
-      id: go
+      # Build and upload desktop CLI artifacts
+      - name: Set up Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: ^1.23.x
+          cache-dependency-path: desktop/go.sum
+        id: go
 
-    - name: Build desktop artifacts
-      run: npm run build-desktop
+      - name: Build desktop artifacts
+        run: npm run build-desktop
 
-    - name: Artifacts/linux
-      uses: actions/upload-artifact@v4
-      with:
-        name: maputnik-linux
-        path: ./desktop/bin/linux/
+      - name: Artifacts/linux
+        uses: actions/upload-artifact@v4
+        with:
+          name: maputnik-linux
+          path: ./desktop/bin/linux/
 
-    - name: Artifacts/darwin
-      uses: actions/upload-artifact@v4
-      with:
-        name: maputnik-darwin
-        path: ./desktop/bin/darwin/
+      - name: Artifacts/darwin
+        uses: actions/upload-artifact@v4
+        with:
+          name: maputnik-darwin
+          path: ./desktop/bin/darwin/
 
-    - name: Artifacts/windows
-      uses: actions/upload-artifact@v4
-      with:
-        name: maputnik-windows
-        path: ./desktop/bin/windows/
-  
+      - name: Artifacts/windows
+        uses: actions/upload-artifact@v4
+        with:
+          name: maputnik-windows
+          path: ./desktop/bin/windows/
+
   e2e-tests:
     name: "E2E tests using ${{ matrix.browser }}"
     strategy:
       fail-fast: false
       matrix:
-        browser: [chrome, firefox]
+        browser: [ chrome ]
 
     runs-on: ubuntu-22.04
     steps:

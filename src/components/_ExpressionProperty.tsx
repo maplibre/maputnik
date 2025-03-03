@@ -91,7 +91,7 @@ class ExpressionPropertyInternal extends React.Component<ExpressionPropertyInter
     function getValue(data: any) {
       return stringifyPretty(data, {indent: 2, maxLength: 38})
     }
-    
+
     if (jsonError) {
       foundErrors.push({message: "Invalid JSON"});
     }

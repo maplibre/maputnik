@@ -6,7 +6,7 @@
       "types": ["geojson", "@types/wicg-file-system-access"],
       "module": "ESNext",
       "skipLibCheck": true,
-  
+
       /* Bundler mode */
       "moduleResolution": "bundler",
       "allowImportingTsExtensions": true,
@@ -14,7 +14,7 @@
       "isolatedModules": true,
       "noEmit": true,
       "jsx": "react-jsx",
-  
+
       /* Linting */
       "strict": true,
       "noUnusedLocals": true,
@@ -22,6 +22,7 @@
       "noFallthroughCasesInSwitch": true
     },
     "include": ["src", "cypress/e2e"],
+    "exclude": ["dist"],
     "references": [{ "path": "./tsconfig.node.json" }],
     // TODO: Remove when issue is resolved https://github.com/cypress-io/cypress/issues/27448
     "ts-node": {

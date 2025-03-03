@@ -13,6 +13,8 @@
 - _...Add new stuff here..._
 
 ### 🐞 Bug fixes
+
+- Fix incorrect handing of network error response (#944)
 - _...Add new stuff here..._
 
 ## 2.1.1
@@ -30,4 +32,3 @@
 ## 1.7.0
 
 - See release notes at https://maputnik.github.io/blog/2020/04/23/release-v1.7.0
-

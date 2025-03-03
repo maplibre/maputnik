@@ -115,4 +115,3 @@ export default class FieldArray extends React.Component<FieldArrayProps, FieldAr
     )
   }
 }
-

@@ -30,5 +30,3 @@ export default class InputSelect extends React.Component<InputSelectProps> {
     </select>
   }
 }
-
-

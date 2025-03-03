@@ -1,7 +1,7 @@
 import { MaputnikDriver } from "./maputnik-driver";
 
 describe("i18n", () => {
-  let { beforeAndAfter, get, when, then } = new MaputnikDriver();
+  const { beforeAndAfter, get, when, then } = new MaputnikDriver();
   beforeAndAfter();
 
   describe("language detector", () => {
