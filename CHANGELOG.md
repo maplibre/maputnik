@@ -32,4 +32,3 @@
 ## 1.7.0
 
 - See release notes at https://maputnik.github.io/blog/2020/04/23/release-v1.7.0
-

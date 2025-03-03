@@ -8,4 +8,3 @@
  - [ ] Include before/after visuals or gifs if this PR includes visual changes.
  - [ ] Write tests for all new functionality.
  - [ ] Add an entry to `CHANGELOG.md` under the `## main` section.
-

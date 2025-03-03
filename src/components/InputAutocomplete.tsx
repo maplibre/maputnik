@@ -98,5 +98,3 @@ export default class InputAutocomplete extends React.Component<InputAutocomplete
     </div>
   }
 }
-
-

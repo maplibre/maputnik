@@ -24,4 +24,3 @@ export function changeSource(mapStyle: StyleSpecification, sourceId: string, sou
     sources: changedSources
   }
 }
-

@@ -10,4 +10,3 @@ export default class FieldJson extends React.Component<FieldJsonProps> {
     return <InputJson {...this.props} />
   }
 }
-

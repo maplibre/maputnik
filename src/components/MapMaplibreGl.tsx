@@ -134,7 +134,7 @@ class MapMaplibreGlInternal extends React.Component<MapMaplibreGlInternalProps, 
         this.state.inspect!.render();
       }, 500);
     }
-    
+
   }
 
   componentDidMount() {

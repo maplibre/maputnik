@@ -29,8 +29,8 @@ export default class SpecProperty extends React.Component<SpecPropertyProps> {
     const functionBtn = <FunctionButtons
       fieldSpec={this.props.fieldSpec}
       onZoomClick={this.props.onZoomClick}
-      onDataClick={this.props.onDataClick} 
-      onExpressionClick={this.props.onExpressionClick} 
+      onDataClick={this.props.onDataClick}
+      onExpressionClick={this.props.onExpressionClick}
     />
 
     const error = errors![fieldType+"."+fieldName as any] as any;

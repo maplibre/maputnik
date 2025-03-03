@@ -44,4 +44,3 @@ export default class SpecField extends React.Component<SpecFieldProps> {
     </TypeBlock>
   }
 }
-
