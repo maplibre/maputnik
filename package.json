@@ -33,7 +33,7 @@
     "array-move": "^4.0.0",
     "buffer": "^6.0.3",
     "classnames": "^2.5.1",
-    "codemirror": "^5.65.18",
+    "codemirror": "^5.65.19",
     "color": "^5.0.0",
     "detect-browser": "^5.3.0",
     "events": "^3.3.0",
