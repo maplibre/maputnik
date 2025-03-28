@@ -11,6 +11,9 @@ class FilterEditorBlockInternal extends React.Component<FilterEditorBlockInterna
   render() {
     const t = this.props.t;
     return <div className="maputnik-filter-editor-block">
+      <div className="maputnik-filter-editor-block-content">
+        {this.props.children}
+      </div>
       <div className="maputnik-filter-editor-block-action">
         <InputButton
           className="maputnik-delete-filter"
@@ -19,9 +22,6 @@ class FilterEditorBlockInternal extends React.Component<FilterEditorBlockInterna
         >
           <MdDelete />
         </InputButton>
-      </div>
-      <div className="maputnik-filter-editor-block-content">
-        {this.props.children}
       </div>
     </div>
   }
