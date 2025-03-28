@@ -16,11 +16,10 @@
 
 .maputnik-filter-editor-single {
   display: flex;
+  column-gap: 6px;
 }
 
 .maputnik-filter-editor-operator {
-  margin: 0 6px;
-
   .maputnik-select {
     width: 100%;
   }
@@ -62,11 +61,8 @@
 
 .maputnik-filter-editor-block {
   display: flex;
+  column-gap: 6px;
   margin-bottom: 2px;
-
-  &-action {
-    margin-left: 6px;
-  }
 }
 
 .maputnik-radio-as-button {
