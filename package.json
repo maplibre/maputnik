@@ -57,7 +57,7 @@
     "pmtiles": "^4.3.0",
     "prop-types": "^15.8.1",
     "react": "^18.2.0",
-    "react-accessible-accordion": "^5.0.0",
+    "react-accessible-accordion": "^5.0.1",
     "react-aria-menubutton": "^7.0.3",
     "react-aria-modal": "^5.0.2",
     "react-autobind": "^1.0.6",
