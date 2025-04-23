@@ -26,7 +26,7 @@
     "@mapbox/mapbox-gl-rtl-text": "^0.3.0",
     "@maplibre/maplibre-gl-geocoder": "^1.8.0",
     "@maplibre/maplibre-gl-inspect": "^1.7.1",
-    "@maplibre/maplibre-gl-style-spec": "^23.1.0",
+    "@maplibre/maplibre-gl-style-spec": "^23.2.0",
     "@mdi/js": "^7.4.47",
     "@mdi/react": "^1.6.1",
     "@prantlf/jsonlint": "^16.0.0",
