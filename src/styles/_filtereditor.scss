@@ -66,8 +66,6 @@
 }
 
 .maputnik-radio-as-button {
-  @extend .maputnik-button !optional; /* stylelint-disable-line */
-
   border: solid 1px transparent;
 
   &:focus-within {
