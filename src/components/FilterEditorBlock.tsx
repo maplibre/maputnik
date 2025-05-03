@@ -16,7 +16,7 @@ class FilterEditorBlockInternal extends React.Component<FilterEditorBlockInterna
       </div>
       <div className="maputnik-filter-editor-block-action">
         <InputButton
-          className="maputnik-delete-filter"
+          className="maputnik-icon-button"
           onClick={this.props.onDelete}
           title={t("Delete filter block")}
         >
