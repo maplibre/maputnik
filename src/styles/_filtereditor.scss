@@ -55,10 +55,6 @@
   margin-top: vars.$margin-3;
 }
 
-.maputnik-delete-filter {
-  @extend .maputnik-icon-button !optional; /* stylelint-disable-line */
-}
-
 .maputnik-filter-editor-block {
   display: flex;
   column-gap: 6px;
@@ -66,8 +62,6 @@
 }
 
 .maputnik-radio-as-button {
-  @extend .maputnik-button !optional; /* stylelint-disable-line */
-
   border: solid 1px transparent;
 
   &:focus-within {
