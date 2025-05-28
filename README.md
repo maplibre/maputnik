@@ -75,7 +75,7 @@ npm run sort-styles
 ## Tests
 For E2E testing we use [Cypress](https://www.cypress.io/)
 
- [Cypress](https://www.cypress.io/) doesn't starts a server so you'll need to start one manually by running `npm run start`.
+ [Cypress](https://www.cypress.io/) doesn't start a server so you'll need to start one manually by running `npm run start`.
 
 Now open a terminal and run the following using *chrome*:
 
