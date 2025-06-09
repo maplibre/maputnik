@@ -14,26 +14,18 @@
   color: vars.$color-lowgray;
 }
 
-.maputnik-filter-editor-property {
-  display: inline-block;
-  width: 25%;
+.maputnik-filter-editor-single {
+  display: flex;
+  column-gap: 6px;
 }
 
 .maputnik-filter-editor-operator {
-  margin: 0 2%;
-  display: inline-block;
-  width: 17%;
-
   .maputnik-select {
     width: 100%;
   }
 }
 
 .maputnik-filter-editor-args {
-  display: inline-block;
-  width: 54%;
-  margin: 0 2%;
-
   .maputnik-string,
   .maputnik-number {
     width: 100%;
@@ -63,26 +55,13 @@
   margin-top: vars.$margin-3;
 }
 
-.maputnik-delete-filter {
-  @extend .maputnik-icon-button !optional; /* stylelint-disable-line */
-}
-
-.maputnik-filter-editor-block-action {
-  margin-top: vars.$margin-2;
-  margin-bottom: vars.$margin-2;
-  display: inline-block;
-  width: 6%;
-  margin-right: 1.5%;
-}
-
-.maputnik-filter-editor-block-content {
-  display: inline-block;
-  width: 92.5%;
+.maputnik-filter-editor-block {
+  display: flex;
+  column-gap: 6px;
+  margin-bottom: 2px;
 }
 
 .maputnik-radio-as-button {
-  @extend .maputnik-button !optional; /* stylelint-disable-line */
-
   border: solid 1px transparent;
 
   &:focus-within {

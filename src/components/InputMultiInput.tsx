@@ -20,7 +20,7 @@ export default class InputMultiInput extends React.Component<InputMultiInputProp
     const radios = options.map(([val, label])=> {
       return <label
         key={val}
-        className={classnames("maputnik-radio-as-button", {"maputnik-button-selected": val === selectedValue})}
+        className={classnames("maputnik-button", "maputnik-radio-as-button", {"maputnik-button-selected": val === selectedValue})}
       >
         <input type="radio"
           name={this.props.name}
@@ -37,5 +37,3 @@ export default class InputMultiInput extends React.Component<InputMultiInputProp
     </fieldset>
   }
 }
-
-

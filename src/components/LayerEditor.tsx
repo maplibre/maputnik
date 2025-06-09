@@ -326,10 +326,10 @@ class LayerEditorInternal extends React.Component<LayerEditorInternalProps, Laye
               onSelection={handleSelection}
               closeOnSelection={false}
             >
-              <Button 
-                id="skip-target-layer-editor" 
-                data-wd-key="skip-target-layer-editor" 
-                className='more-menu__button' 
+              <Button
+                id="skip-target-layer-editor"
+                data-wd-key="skip-target-layer-editor"
+                className='more-menu__button'
                 title={"Layer options"}>
                 <MdMoreVert className="more-menu__button__svg" />
               </Button>

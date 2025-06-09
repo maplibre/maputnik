@@ -1,6 +1,7 @@
 ## main
 
 ### ✨ Features and improvements
+- Fix radio/delete filter buttons styling regression
 - Add german translation
 - Use same version number for web and desktop versions
 - Add scheme type options for vector/raster tile
@@ -32,4 +33,3 @@
 ## 1.7.0
 
 - See release notes at https://maputnik.github.io/blog/2020/04/23/release-v1.7.0
-

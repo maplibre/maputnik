@@ -92,7 +92,7 @@
   {
     "id": "versatiles-colorful",
     "title": "Versatiles Colorful",
-    "url": "https://tiles.versatiles.org/assets/styles/colorful.json",
+    "url": "https://tiles.versatiles.org/assets/styles/colorful/style.json",
     "thumbnail": "https://github.com/maplibre/maputnik/assets/649392/6cd69818-c541-46e4-a920-65fb4f654931"
   }
 ]

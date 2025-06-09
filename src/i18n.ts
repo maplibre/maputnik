@@ -8,6 +8,7 @@ export const supportedLanguages = {
   "en": "English",
   "fr": "Français",
   "he": "עברית",
+  "it": "Italiano",
   "ja": "日本語",
   "zh": "简体中文"
 } as const;

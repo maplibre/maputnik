@@ -15,4 +15,3 @@ export default class FieldAutocomplete extends React.Component<FieldAutocomplete
     </Block>
   }
 }
-

@@ -1,6 +1,6 @@
 export default {
   output: 'src/locales/$LOCALE/$NAMESPACE.json',
-  locales: [ 'de', 'fr', 'he', 'ja', 'zh' ],
+  locales: [ 'de', 'fr', 'he', 'it','ja', 'zh' ],
 
   // Because some keys are dynamically generated, i18next-parser can't detect them.
   // We add these keys manually, so we don't want to remove them.
