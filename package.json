@@ -134,7 +134,7 @@
     "i18next-parser": "^9.3.0",
     "istanbul": "^0.4.5",
     "istanbul-lib-coverage": "^3.2.2",
-    "postcss": "^8.5.4",
+    "postcss": "^8.5.5",
     "react-hot-loader": "^4.13.1",
     "sass": "^1.89.2",
     "stylelint": "^16.20.0",
