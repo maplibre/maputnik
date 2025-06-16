@@ -127,7 +127,7 @@
     "cors": "^2.8.5",
     "cypress": "^14.4.1",
     "cypress-plugin-tab": "^1.0.5",
-    "eslint": "^9.28.0",
+    "eslint": "^9.29.0",
     "eslint-plugin-react": "^7.37.5",
     "eslint-plugin-react-hooks": "^5.2.0",
     "eslint-plugin-react-refresh": "^0.4.20",
