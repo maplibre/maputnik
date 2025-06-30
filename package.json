@@ -94,7 +94,7 @@
   },
   "devDependencies": {
     "@cypress/code-coverage": "^3.14.5",
-    "@eslint/js": "^9.29.0",
+    "@eslint/js": "^9.30.0",
     "@istanbuljs/nyc-config-typescript": "^1.0.2",
     "@rollup/plugin-replace": "^6.0.2",
     "@shellygo/cypress-test-utils": "^5.0.2",
