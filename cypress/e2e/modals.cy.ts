@@ -283,28 +283,28 @@ describe("modals", () => {
 
       // fill localStorage until we get a QuotaExceededError
       cy.window().then(win => {
-          let chunkSize = 1000;
-          const chunk = new Array(chunkSize).join("x");
-          let index = 0;
+        let chunkSize = 1000;
+        const chunk = new Array(chunkSize).join("x");
+        let index = 0;
 
-          // Keep adding until we hit the quota
-          while (true) {
-            try {
-              const key = `maputnik:fill-${index++}`;
-              win.localStorage.setItem(key, chunk);
-            } catch (e: any) {
-              // Verify it's a quota error
-              if (e.name === 'QuotaExceededError') {
-                if (chunkSize <= 1) return;
-                else {
-                  chunkSize /= 2;
-                  continue;
-                }
+        // Keep adding until we hit the quota
+        while (true) {
+          try {
+            const key = `maputnik:fill-${index++}`;
+            win.localStorage.setItem(key, chunk);
+          } catch (e: any) {
+            // Verify it's a quota error
+            if (e.name === 'QuotaExceededError') {
+              if (chunkSize <= 1) return;
+              else {
+                chunkSize /= 2;
+                continue;
               }
-              throw e; // Unexpected error
             }
+            throw e; // Unexpected error
           }
-        });
+        }
+      });
 
       // Open the style via URL input
       when.click("nav:open");
