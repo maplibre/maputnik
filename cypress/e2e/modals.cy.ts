@@ -286,7 +286,7 @@ describe("modals", () => {
           let chunkSize = 1000;
           const chunk = new Array(chunkSize).join("x");
           let index = 0;
-          
+
           // Keep adding until we hit the quota
           while (true) {
             try {
