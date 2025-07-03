@@ -11,6 +11,7 @@
 - Upgrade to MapLibre LG JS v5
 - Upgrade Vite 6 and Cypress 14 ([#970](https://github.com/maplibre/maputnik/pull/970))
 - Upgrade OpenLayers from v6 to v10
+- When loading a style into localStorage that causes a QuotaExceededError, purge localStorage and retry
 - _...Add new stuff here..._
 
 ### 🐞 Bug fixes
