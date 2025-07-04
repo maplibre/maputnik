@@ -45,11 +45,13 @@ export default function InputAutocomplete({
       setInput(v)
       onChange(selectedItem ? selectedItem[0] : undefined)
     },
-    onInputValueChange: ({inputValue: v}) => {
+    onInputValueChange: ({inputValue: v, type}) => {
       if (typeof v === 'string') {
         setInput(v)
         onChange(v === '' ? undefined : v)
-        openMenu()
+        if (type === useCombobox.stateChangeTypes.InputChange) {
+          openMenu()
+        }
       }
     },
   })
