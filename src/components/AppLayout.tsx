@@ -1,7 +1,7 @@
 import React from 'react'
-import PropTypes from 'prop-types'
 import ScrollContainer from './ScrollContainer'
 import { WithTranslation, withTranslation } from 'react-i18next';
+import { IconContext } from 'react-icons';
 
 type AppLayoutInternalProps = {
   toolbar: React.ReactElement
@@ -13,38 +13,31 @@ type AppLayoutInternalProps = {
 } & WithTranslation;
 
 class AppLayoutInternal extends React.Component<AppLayoutInternalProps> {
-  static childContextTypes = {
-    reactIconBase: PropTypes.object
-  }
-
-  getChildContext() {
-    return {
-      reactIconBase: { size: 14 }
-    }
-  }
 
   render() {
     document.body.dir = this.props.i18n.dir();
 
-    return <div className="maputnik-layout">
-      {this.props.toolbar}
-      <div className="maputnik-layout-main">
-        <div className="maputnik-layout-list">
-          {this.props.layerList}
+    return <IconContext.Provider value={{size: '14px'}}>
+      <div className="maputnik-layout">
+        {this.props.toolbar}
+        <div className="maputnik-layout-main">
+          <div className="maputnik-layout-list">
+            {this.props.layerList}
+          </div>
+          <div className="maputnik-layout-drawer">
+            <ScrollContainer>
+              {this.props.layerEditor}
+            </ScrollContainer>
+          </div>
+          {this.props.map}
         </div>
-        <div className="maputnik-layout-drawer">
-          <ScrollContainer>
-            {this.props.layerEditor}
-          </ScrollContainer>
+        {this.props.bottom && <div className="maputnik-layout-bottom">
+          {this.props.bottom}
         </div>
-        {this.props.map}
+        }
+        {this.props.modals}
       </div>
-      {this.props.bottom && <div className="maputnik-layout-bottom">
-        {this.props.bottom}
-      </div>
-      }
-      {this.props.modals}
-    </div>
+    </IconContext.Provider>
   }
 }
 

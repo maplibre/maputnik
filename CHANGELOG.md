@@ -13,6 +13,7 @@
 - Upgrade OpenLayers from v6 to v10
 - When loading a style into localStorage that causes a QuotaExceededError, purge localStorage and retry
 - Remove react-autobind dependency
+- Remove usage of legacy `childContextTypes` API
 - _...Add new stuff here..._
 
 ### 🐞 Bug fixes

@@ -1,8 +1,8 @@
 import React, {type JSX} from 'react'
-import PropTypes from 'prop-types'
 import { Wrapper, Button, Menu, MenuItem } from 'react-aria-menubutton'
 import {Accordion} from 'react-accessible-accordion';
 import {MdMoreVert} from 'react-icons/md'
+import { IconContext } from 'react-icons'
 import {BackgroundLayerSpecification, LayerSpecification, SourceSpecification} from 'maplibre-gl';
 
 import FieldJson from './FieldJson'
@@ -86,10 +86,6 @@ class LayerEditorInternal extends React.Component<LayerEditorInternalProps, Laye
     onLayerDestroyed: () => {},
   }
 
-  static childContextTypes = {
-    reactIconBase: PropTypes.object
-  }
-
   constructor(props: LayerEditorInternalProps) {
     super(props)
 
@@ -116,14 +112,6 @@ class LayerEditorInternal extends React.Component<LayerEditorInternalProps, Laye
     };
   }
 
-  getChildContext () {
-    return {
-      reactIconBase: {
-        size: 14,
-        color: '#8e8e8e',
-      }
-    }
-  }
 
   changeProperty(group: keyof LayerSpecification | null, property: string, newValue: any) {
     this.props.onLayerChanged(
@@ -311,53 +299,55 @@ class LayerEditorInternal extends React.Component<LayerEditorInternalProps, Laye
       items[id].handler();
     }
 
-    return <section className="maputnik-layer-editor"
-      role="main"
-      aria-label={t("Layer editor")}
-    >
-      <header>
-        <div className="layer-header">
-          <h2 className="layer-header__title">
-            {t("Layer: {{layerId}}", { layerId: formatLayerId(this.props.layer.id) })}
-          </h2>
-          <div className="layer-header__info">
-            <Wrapper
-              className='more-menu'
-              onSelection={handleSelection}
-              closeOnSelection={false}
-            >
-              <Button
-                id="skip-target-layer-editor"
-                data-wd-key="skip-target-layer-editor"
-                className='more-menu__button'
-                title={"Layer options"}>
-                <MdMoreVert className="more-menu__button__svg" />
-              </Button>
-              <Menu>
-                <ul className="more-menu__menu">
-                  {Object.keys(items).map((id) => {
-                    const item = items[id];
-                    return <li key={id}>
-                      <MenuItem value={id} className='more-menu__menu__item'>
-                        {item.text}
-                      </MenuItem>
-                    </li>
-                  })}
-                </ul>
-              </Menu>
-            </Wrapper>
-          </div>
-        </div>
-
-      </header>
-      <Accordion
-        allowMultipleExpanded={true}
-        allowZeroExpanded={true}
-        preExpanded={groupIds}
+    return <IconContext.Provider value={{size: '14px', color: '#8e8e8e'}}>
+      <section className="maputnik-layer-editor"
+        role="main"
+        aria-label={t("Layer editor")}
       >
-        {groups}
-      </Accordion>
-    </section>
+        <header>
+          <div className="layer-header">
+            <h2 className="layer-header__title">
+              {t("Layer: {{layerId}}", { layerId: formatLayerId(this.props.layer.id) })}
+            </h2>
+            <div className="layer-header__info">
+              <Wrapper
+                className='more-menu'
+                onSelection={handleSelection}
+                closeOnSelection={false}
+              >
+                <Button
+                  id="skip-target-layer-editor"
+                  data-wd-key="skip-target-layer-editor"
+                  className='more-menu__button'
+                  title={"Layer options"}>
+                  <MdMoreVert className="more-menu__button__svg" />
+                </Button>
+                <Menu>
+                  <ul className="more-menu__menu">
+                    {Object.keys(items).map((id) => {
+                      const item = items[id];
+                      return <li key={id}>
+                        <MenuItem value={id} className='more-menu__menu__item'>
+                          {item.text}
+                        </MenuItem>
+                      </li>
+                    })}
+                  </ul>
+                </Menu>
+              </Wrapper>
+            </div>
+          </div>
+
+        </header>
+        <Accordion
+          allowMultipleExpanded={true}
+          allowZeroExpanded={true}
+          preExpanded={groupIds}
+        >
+          {groups}
+        </Accordion>
+      </section>
+    </IconContext.Provider>
   }
 }
 
