@@ -5,16 +5,20 @@ import classnames from 'classnames'
 import {MdContentCopy, MdVisibility, MdVisibilityOff, MdDelete} from 'react-icons/md'
 
 import IconLayer from './IconLayer'
-import {SortableElement, SortableHandle} from 'react-sortable-hoc'
+import {useSortable} from '@dnd-kit/sortable'
+import {CSS} from '@dnd-kit/utilities'
 
 
 type DraggableLabelProps = {
   layerId: string
   layerType: string
+  dragAttributes?: React.HTMLAttributes<HTMLElement>
+  dragListeners?: React.HTMLAttributes<HTMLElement>
 };
 
-const DraggableLabel = SortableHandle((props: DraggableLabelProps) => {
-  return <div className="maputnik-layer-list-item-handle">
+const DraggableLabel = (props: DraggableLabelProps) => {
+  const {dragAttributes, dragListeners} = props;
+  return <div className="maputnik-layer-list-item-handle" {...dragAttributes} {...dragListeners}>
     <IconLayer
       className="layer-handle__icon"
       type={props.layerType}
@@ -23,7 +27,7 @@ const DraggableLabel = SortableHandle((props: DraggableLabelProps) => {
       {props.layerId}
     </button>
   </div>
-});
+};
 
 type IconActionProps = {
   action: string
@@ -80,6 +84,10 @@ type LayerListItemProps = {
   onLayerCopy?(...args: unknown[]): unknown
   onLayerDestroy?(...args: unknown[]): unknown
   onLayerVisibilityToggle?(...args: unknown[]): unknown
+  dragAttributes?: React.HTMLAttributes<HTMLElement>
+  dragListeners?: React.HTMLAttributes<HTMLElement>
+  dragRef?: (node: HTMLElement | null) => void
+  dragStyle?: React.CSSProperties
 };
 
 class LayerListItem extends React.Component<LayerListItemProps> {
@@ -105,8 +113,9 @@ class LayerListItem extends React.Component<LayerListItemProps> {
     const visibilityAction = this.props.visibility === 'visible' ? 'show' : 'hide';
 
     return <li
+      ref={this.props.dragRef}
+      style={this.props.dragStyle}
       id={this.props.id}
-      key={this.props.layerId}
       onClick={_e => this.props.onLayerSelect(this.props.layerIndex)}
       data-wd-key={"layer-list-item:"+this.props.layerId}
       className={classnames({
@@ -114,7 +123,12 @@ class LayerListItem extends React.Component<LayerListItemProps> {
         "maputnik-layer-list-item-selected": this.props.isSelected,
         [this.props.className!]: true,
       })}>
-      <DraggableLabel {...this.props} />
+      <DraggableLabel
+        layerId={this.props.layerId}
+        layerType={this.props.layerType}
+        dragAttributes={this.props.dragAttributes}
+        dragListeners={this.props.dragListeners}
+      />
       <span style={{flexGrow: 1}} />
       <IconAction
         wdKey={"layer-list-item:"+this.props.layerId+":delete"}
@@ -139,6 +153,25 @@ class LayerListItem extends React.Component<LayerListItemProps> {
   }
 }
 
-const LayerListItemSortable = SortableElement<LayerListItemProps>((props: LayerListItemProps) => <LayerListItem {...props} />);
+export default function LayerListItemSortable(props: LayerListItemProps) {
+  const {
+    attributes,
+    listeners,
+    setNodeRef,
+    transform,
+    transition,
+  } = useSortable({id: props.id!});
 
-export default LayerListItemSortable;
+  const style = {
+    transform: CSS.Transform.toString(transform),
+    transition,
+  } as React.CSSProperties;
+
+  return <LayerListItem
+    {...props}
+    dragAttributes={attributes}
+    dragListeners={listeners}
+    dragRef={setNodeRef}
+    dragStyle={style}
+  />;
+}
