@@ -1,8 +1,8 @@
 import React from 'react'
-import PropTypes from 'prop-types'
 import classnames from 'classnames'
 
 import {MdContentCopy, MdVisibility, MdVisibilityOff, MdDelete} from 'react-icons/md'
+import { IconContext } from 'react-icons'
 
 import IconLayer from './IconLayer'
 import {useSortable} from '@dnd-kit/sortable'
@@ -99,57 +99,49 @@ class LayerListItem extends React.Component<LayerListItemProps> {
     onLayerVisibilityToggle: () => {},
   }
 
-  static childContextTypes = {
-    reactIconBase: PropTypes.object
-  }
-
-  getChildContext() {
-    return {
-      reactIconBase: { size: 14 }
-    }
-  }
-
   render() {
     const visibilityAction = this.props.visibility === 'visible' ? 'show' : 'hide';
 
-    return <li
-      ref={this.props.dragRef}
-      style={this.props.dragStyle}
-      id={this.props.id}
-      onClick={_e => this.props.onLayerSelect(this.props.layerIndex)}
-      data-wd-key={"layer-list-item:"+this.props.layerId}
-      className={classnames({
-        "maputnik-layer-list-item": true,
-        "maputnik-layer-list-item-selected": this.props.isSelected,
-        [this.props.className!]: true,
-      })}>
-      <DraggableLabel
-        layerId={this.props.layerId}
-        layerType={this.props.layerType}
-        dragAttributes={this.props.dragAttributes}
-        dragListeners={this.props.dragListeners}
-      />
-      <span style={{flexGrow: 1}} />
-      <IconAction
-        wdKey={"layer-list-item:"+this.props.layerId+":delete"}
-        action={'delete'}
-        classBlockName="delete"
-        onClick={_e => this.props.onLayerDestroy!(this.props.layerIndex)}
-      />
-      <IconAction
-        wdKey={"layer-list-item:"+this.props.layerId+":copy"}
-        action={'duplicate'}
-        classBlockName="duplicate"
-        onClick={_e => this.props.onLayerCopy!(this.props.layerIndex)}
-      />
-      <IconAction
-        wdKey={"layer-list-item:"+this.props.layerId+":toggle-visibility"}
-        action={visibilityAction}
-        classBlockName="visibility"
-        classBlockModifier={visibilityAction}
-        onClick={_e => this.props.onLayerVisibilityToggle!(this.props.layerIndex)}
-      />
-    </li>
+    return <IconContext.Provider value={{size: '14px'}}>
+      <li
+        ref={this.props.dragRef}
+        style={this.props.dragStyle}
+        id={this.props.id}
+        onClick={_e => this.props.onLayerSelect(this.props.layerIndex)}
+        data-wd-key={"layer-list-item:"+this.props.layerId}
+        className={classnames({
+          "maputnik-layer-list-item": true,
+          "maputnik-layer-list-item-selected": this.props.isSelected,
+          [this.props.className!]: true,
+        })}>
+        <DraggableLabel
+          layerId={this.props.layerId}
+          layerType={this.props.layerType}
+          dragAttributes={this.props.dragAttributes}
+          dragListeners={this.props.dragListeners}
+        />
+        <span style={{flexGrow: 1}} />
+        <IconAction
+          wdKey={"layer-list-item:"+this.props.layerId+":delete"}
+          action={'delete'}
+          classBlockName="delete"
+          onClick={_e => this.props.onLayerDestroy!(this.props.layerIndex)}
+        />
+        <IconAction
+          wdKey={"layer-list-item:"+this.props.layerId+":copy"}
+          action={'duplicate'}
+          classBlockName="duplicate"
+          onClick={_e => this.props.onLayerCopy!(this.props.layerIndex)}
+        />
+        <IconAction
+          wdKey={"layer-list-item:"+this.props.layerId+":toggle-visibility"}
+          action={visibilityAction}
+          classBlockName="visibility"
+          classBlockModifier={visibilityAction}
+          onClick={_e => this.props.onLayerVisibilityToggle!(this.props.layerIndex)}
+        />
+      </li>
+    </IconContext.Provider>
   }
 }
 
