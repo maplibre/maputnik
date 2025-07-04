@@ -1,100 +1,102 @@
 import React from 'react'
 import classnames from 'classnames'
-import Autocomplete from 'react-autocomplete'
+import {useCombobox} from 'downshift'
 
 
 const MAX_HEIGHT = 140;
 
 export type InputAutocompleteProps = {
   value?: string
-  options: any[]
-  onChange(value: string | undefined): unknown
+  options?: any[]
+  onChange?(value: string | undefined): unknown
   keepMenuWithinWindowBounds?: boolean
   'aria-label'?: string
 };
 
-export default class InputAutocomplete extends React.Component<InputAutocompleteProps> {
-  state = {
-    maxHeight: MAX_HEIGHT
-  }
+export default function InputAutocomplete({
+  value,
+  options = [],
+  onChange = () => {},
+  keepMenuWithinWindowBounds,
+  'aria-label': ariaLabel,
+}: InputAutocompleteProps) {
+  const [maxHeight, setMaxHeight] = React.useState(MAX_HEIGHT)
+  const autocompleteMenuEl = React.useRef<HTMLDivElement | null>(null)
 
-  autocompleteMenuEl: HTMLDivElement | null = null;
+  const items = options
 
-  static defaultProps = {
-    onChange: () => {},
-    options: [],
-  }
+  const {
+    isOpen,
+    getMenuProps,
+    getInputProps,
+    getItemProps,
+    highlightedIndex,
+    inputValue,
+  } = useCombobox({
+    items,
+    inputValue: value,
+    itemToString: (item) => (item ? item[0] : ''),
+    onSelectedItemChange: ({selectedItem}) => {
+      onChange(selectedItem ? selectedItem[0] : undefined)
+    },
+    onInputValueChange: ({inputValue: v}) => {
+      if (v !== undefined && v !== inputValue) {
+        onChange(v === '' ? undefined : v)
+      }
+    },
+  })
 
-  calcMaxHeight() {
-    if(this.props.keepMenuWithinWindowBounds) {
-      const maxHeight = window.innerHeight - this.autocompleteMenuEl!.getBoundingClientRect().top;
-      const limitedMaxHeight = Math.min(maxHeight, MAX_HEIGHT);
-
-      if(limitedMaxHeight != this.state.maxHeight) {
-        this.setState({
-          maxHeight: limitedMaxHeight
-        })
+  const calcMaxHeight = React.useCallback(() => {
+    if (keepMenuWithinWindowBounds && autocompleteMenuEl.current) {
+      const maxHeightLocal = window.innerHeight -
+        autocompleteMenuEl.current.getBoundingClientRect().top
+      const limitedMaxHeight = Math.min(maxHeightLocal, MAX_HEIGHT)
+      if (limitedMaxHeight !== maxHeight) {
+        setMaxHeight(limitedMaxHeight)
       }
     }
-  }
+  }, [keepMenuWithinWindowBounds, maxHeight])
 
-  componentDidMount() {
-    this.calcMaxHeight();
-  }
+  React.useEffect(() => {
+    calcMaxHeight()
+  })
 
-  componentDidUpdate() {
-    this.calcMaxHeight();
-  }
-
-  onChange(v: string) {
-    this.props.onChange(v === "" ? undefined : v);
-  }
-
-  render() {
-    return <div
-      ref={(el) => {
-        this.autocompleteMenuEl = el;
-      }}
-    >
-      <Autocomplete
-        menuStyle={{
-          position: "fixed",
-          overflow: "auto",
-          maxHeight: this.state.maxHeight,
-          zIndex: '998'
-        }}
-        wrapperProps={{
-          className: "maputnik-autocomplete",
-          style: {}
-        }}
-        inputProps={{
-          'aria-label': this.props['aria-label'],
-          className: "maputnik-string",
-          spellCheck: false
-        }}
-        value={this.props.value}
-        items={this.props.options}
-        getItemValue={(item) => item[0]}
-        onSelect={v => this.onChange(v)}
-        onChange={(_e, v) => this.onChange(v)}
-        shouldItemRender={(item, value="") => {
-          if (typeof(value) === "string") {
-            return item[0].toLowerCase().indexOf(value.toLowerCase()) > -1
-          }
-          return false
-        }}
-        renderItem={(item, isHighlighted) => (
-          <div
-            key={item[0]}
-            className={classnames({
-              "maputnik-autocomplete-menu-item": true,
-              "maputnik-autocomplete-menu-item-selected": isHighlighted,
-            })}
-          >
-            {item[1]}
-          </div>
-        )}
+  return (
+    <div ref={autocompleteMenuEl} className="maputnik-autocomplete">
+      <input
+        {...getInputProps({
+          'aria-label': ariaLabel,
+          className: 'maputnik-string',
+          spellCheck: false,
+        })}
       />
+      <div
+        {...getMenuProps({
+          style: {
+            position: 'fixed',
+            overflow: 'auto',
+            maxHeight: maxHeight,
+            zIndex: '998',
+          },
+          className: 'maputnik-autocomplete-menu',
+        })}
+      >
+        {isOpen &&
+          items.map((item, index) => (
+            <div
+              key={item[0]}
+              {...getItemProps({
+                item,
+                index,
+                className: classnames('maputnik-autocomplete-menu-item', {
+                  'maputnik-autocomplete-menu-item-selected': highlightedIndex === index,
+                }),
+              })}
+            >
+              {item[1]}
+            </div>
+          ))}
+      </div>
     </div>
-  }
+  )
 }
