@@ -29,7 +29,7 @@ type ModalAddState = {
 class ModalAddInternal extends React.Component<ModalAddInternalProps, ModalAddState> {
   addLayer = () => {
     if (this.props.layers.some(l => l.id === this.state.id)) {
-      this.setState({ error: 'Layer ID already exists' })
+      this.setState({ error: this.props.t('Layer ID already exists') })
       return
     }
 

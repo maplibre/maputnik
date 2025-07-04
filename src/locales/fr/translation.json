@@ -72,6 +72,7 @@
   "Collapse": "Réduire",
   "Expand": "Développer",
   "Add Layer": "Ajouter un calque",
+  "Layer ID already exists": "L'identifiant du calque existe déjà",
   "Search": "Recherche",
   "Zoom:": "Zoom :",
   "Close popup": "Fermer la fenêtre",

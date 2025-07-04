@@ -272,6 +272,22 @@ describe("modals", () => {
 
   });
 
+  describe("add layer", () => {
+    beforeEach(() => {
+      when.setStyle("layer");
+      when.modal.open();
+    });
+
+    it("shows duplicate id error", () => {
+      when.setValue("add-layer.layer-id.input", "background");
+      when.click("add-layer");
+      then(get.elementByTestId("modal:add-layer")).shouldExist();
+      then(get.element(".maputnik-modal-error")).shouldContainText(
+        "Layer ID already exists"
+      );
+    });
+  });
+
   describe("sources", () => {
     it("toggle");
   });

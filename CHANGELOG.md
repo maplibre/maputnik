@@ -18,6 +18,7 @@
 ### 🐞 Bug fixes
 
 - Fix incorrect handing of network error response (#944)
+- Show an error when adding a layer with a duplicate ID
 - _...Add new stuff here..._
 
 ## 2.1.1
