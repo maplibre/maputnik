@@ -23,10 +23,16 @@ type ModalAddState = {
   id: string
   source?: string
   'source-layer'?: string
+  error?: string | null
 };
 
 class ModalAddInternal extends React.Component<ModalAddInternalProps, ModalAddState> {
   addLayer = () => {
+    if (this.props.layers.some(l => l.id === this.state.id)) {
+      this.setState({ error: 'Layer ID already exists' })
+      return
+    }
+
     const changedLayers = this.props.layers.slice(0)
     const layer: ModalAddState = {
       id: this.state.id,
@@ -41,9 +47,10 @@ class ModalAddInternal extends React.Component<ModalAddInternalProps, ModalAddSt
     }
 
     changedLayers.push(layer as LayerSpecification)
-
-    this.props.onLayersChange(changedLayers)
-    this.props.onOpenToggle(false)
+    this.setState({ error: null }, () => {
+      this.props.onLayersChange(changedLayers)
+      this.props.onOpenToggle(false)
+    })
   }
 
   constructor(props: ModalAddInternalProps) {
@@ -51,6 +58,7 @@ class ModalAddInternal extends React.Component<ModalAddInternalProps, ModalAddSt
     const state: ModalAddState = {
       type: 'fill',
       id: '',
+      error: null,
     }
 
     if(props.sources.length > 0) {
@@ -129,6 +137,21 @@ class ModalAddInternal extends React.Component<ModalAddInternalProps, ModalAddSt
     const t = this.props.t;
     const sources = this.getSources(this.state.type);
     const layers = this.getLayersForSource(this.state.source!);
+    let errorElement;
+    if (this.state.error) {
+      errorElement = (
+        <div className="maputnik-modal-error">
+          {this.state.error}
+          <a
+            href="#"
+            onClick={() => this.setState({ error: null })}
+            className="maputnik-modal-error-close"
+          >
+            ×
+          </a>
+        </div>
+      );
+    }
 
     return <Modal
       isOpen={this.props.isOpen}
@@ -137,12 +160,13 @@ class ModalAddInternal extends React.Component<ModalAddInternalProps, ModalAddSt
       data-wd-key="modal:add-layer"
       className="maputnik-add-modal"
     >
+      {errorElement}
       <div className="maputnik-add-layer">
         <FieldId
           value={this.state.id}
           wdKey="add-layer.layer-id"
           onChange={(v: string) => {
-            this.setState({ id: v })
+            this.setState({ id: v, error: null })
           }}
         />
         <FieldType
