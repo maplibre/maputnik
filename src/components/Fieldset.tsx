@@ -9,57 +9,40 @@ type FieldsetProps = PropsWithChildren & {
   action?: ReactElement,
 };
 
-type FieldsetState = {
-  showDoc: boolean
-};
 
-export default class Fieldset extends React.Component<FieldsetProps, FieldsetState> {
-  _labelId: string;
+const Fieldset: React.FC<FieldsetProps> = (props) => {
+  const [showDoc, setShowDoc] = React.useState(false);
+  const labelId = React.useRef(generateUniqueId('fieldset_label_'));
 
-  constructor (props: FieldsetProps) {
-    super(props);
-    this._labelId = generateUniqueId(`fieldset_label_`);
-    this.state = {
-      showDoc: false,
-    }
-  }
+  const onToggleDoc = (val: boolean) => {
+    setShowDoc(val);
+  };
 
-  onToggleDoc = (val: boolean) => {
-    this.setState({
-      showDoc: val
-    });
-  }
-
-  render () {
-    return <div className="maputnik-input-block" role="group" aria-labelledby={this._labelId}>
-      {this.props.fieldSpec &&
+  return (
+    <div className="maputnik-input-block" role="group" aria-labelledby={labelId.current}>
+      {props.fieldSpec && (
         <div className="maputnik-input-block-label">
           <FieldDocLabel
-            label={this.props.label}
-            onToggleDoc={this.onToggleDoc}
-            fieldSpec={this.props.fieldSpec}
+            label={props.label}
+            onToggleDoc={onToggleDoc}
+            fieldSpec={props.fieldSpec}
           />
         </div>
-      }
-      {!this.props.fieldSpec &&
+      )}
+      {!props.fieldSpec && (
         <div className="maputnik-input-block-label">
-          {this.props.label}
+          {props.label}
         </div>
-      }
-      <div className="maputnik-input-block-action">
-        {this.props.action}
-      </div>
-      <div className="maputnik-input-block-content">
-        {this.props.children}
-      </div>
-      {this.props.fieldSpec &&
-        <div
-          className="maputnik-doc-inline"
-          style={{display: this.state.showDoc ? '' : 'none'}}
-        >
-          <Doc fieldSpec={this.props.fieldSpec} />
+      )}
+      <div className="maputnik-input-block-action">{props.action}</div>
+      <div className="maputnik-input-block-content">{props.children}</div>
+      {props.fieldSpec && (
+        <div className="maputnik-doc-inline" style={{ display: showDoc ? '' : 'none' }}>
+          <Doc fieldSpec={props.fieldSpec} />
         </div>
-      }
+      )}
     </div>
-  }
-}
+  );
+};
+
+export default Fieldset;
