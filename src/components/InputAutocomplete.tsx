@@ -49,6 +49,7 @@ export default function InputAutocomplete({
       if (typeof v === 'string') {
         setInput(v)
         onChange(v === '' ? undefined : v)
+        openMenu()
       }
     },
   })
