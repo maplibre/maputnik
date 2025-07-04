@@ -21,9 +21,13 @@ export default function InputAutocomplete({
   'aria-label': ariaLabel,
 }: InputAutocompleteProps) {
   const [maxHeight, setMaxHeight] = React.useState(MAX_HEIGHT)
+  const [input, setInput] = React.useState(value || '')
   const autocompleteMenuEl = React.useRef<HTMLDivElement | null>(null)
 
-  const items = options
+  const filteredItems = React.useMemo(() => {
+    const lv = input.toLowerCase()
+    return options.filter((item) => item[0].toLowerCase().includes(lv))
+  }, [options, input])
 
   const {
     isOpen,
@@ -31,20 +35,27 @@ export default function InputAutocomplete({
     getInputProps,
     getItemProps,
     highlightedIndex,
-    inputValue,
+    openMenu,
   } = useCombobox({
-    items,
-    inputValue: value,
+    items: filteredItems,
+    inputValue: input,
     itemToString: (item) => (item ? item[0] : ''),
     onSelectedItemChange: ({selectedItem}) => {
+      const v = selectedItem ? selectedItem[0] : ''
+      setInput(v)
       onChange(selectedItem ? selectedItem[0] : undefined)
     },
     onInputValueChange: ({inputValue: v}) => {
-      if (v !== undefined && v !== inputValue) {
+      if (typeof v === 'string') {
+        setInput(v)
         onChange(v === '' ? undefined : v)
       }
     },
   })
+
+  React.useEffect(() => {
+    setInput(value || '')
+  }, [value])
 
   const calcMaxHeight = React.useCallback(() => {
     if (keepMenuWithinWindowBounds && autocompleteMenuEl.current) {
@@ -68,6 +79,7 @@ export default function InputAutocomplete({
           'aria-label': ariaLabel,
           className: 'maputnik-string',
           spellCheck: false,
+          onFocus: () => openMenu(),
         })}
       />
       <div
@@ -82,7 +94,7 @@ export default function InputAutocomplete({
         })}
       >
         {isOpen &&
-          items.map((item, index) => (
+          filteredItems.map((item, index) => (
             <div
               key={item[0]}
               {...getItemProps({
