@@ -15,6 +15,7 @@
 - Remove react-autobind dependency
 - Remove usage of legacy `childContextTypes` API
 - _...Add new stuff here..._
+- Replace `react-sortable-hoc` with `dnd-kit` for improved drag-and-drop performance
 
 ### 🐞 Bug fixes
 

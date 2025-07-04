@@ -36,8 +36,9 @@ import LayerWatcher from '../libs/layerwatcher'
 import tokens from '../config/tokens.json'
 import isEqual from 'lodash.isequal'
 import Debug from '../libs/debug'
-import { SortEnd } from 'react-sortable-hoc';
 import { MapOptions } from 'maplibre-gl';
+
+type SortEnd = { oldIndex: number; newIndex: number };
 
 // Buffer must be defined globally for @maplibre/maplibre-gl-style-spec validate() function to succeed.
 window.Buffer = buffer.Buffer;
