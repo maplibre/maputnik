@@ -29,7 +29,6 @@ class FieldSourceLayerInternal extends React.Component<FieldSourceLayerInternalP
       error={this.props.error}
     >
       <InputAutocomplete
-        keepMenuWithinWindowBounds={!!this.props.isFixed}
         value={this.props.value}
         onChange={this.props.onChange}
         options={this.props.sourceLayerIds?.map(l => [l, l])}

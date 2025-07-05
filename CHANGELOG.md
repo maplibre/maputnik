@@ -15,6 +15,7 @@
 - Remove react-autobind dependency
 - Remove usage of legacy `childContextTypes` API
 - Replace react-autocomplete with Downshift in the autocomplete component
+- Simplify autocomplete component and fix dropdown flicker when clicking
 - _...Add new stuff here..._
 
 ### 🐞 Bug fixes

@@ -2,14 +2,10 @@ import React from 'react'
 import classnames from 'classnames'
 import {useCombobox} from 'downshift'
 
-
-const MAX_HEIGHT = 140;
-
 export type InputAutocompleteProps = {
   value?: string
   options?: any[]
   onChange?(value: string | undefined): unknown
-  keepMenuWithinWindowBounds?: boolean
   'aria-label'?: string
 };
 
@@ -17,12 +13,9 @@ export default function InputAutocomplete({
   value,
   options = [],
   onChange = () => {},
-  keepMenuWithinWindowBounds,
   'aria-label': ariaLabel,
 }: InputAutocompleteProps) {
-  const [maxHeight, setMaxHeight] = React.useState(MAX_HEIGHT)
   const [input, setInput] = React.useState(value || '')
-  const autocompleteMenuEl = React.useRef<HTMLDivElement | null>(null)
 
   const filteredItems = React.useMemo(() => {
     const lv = input.toLowerCase()
@@ -40,18 +33,21 @@ export default function InputAutocomplete({
     items: filteredItems,
     inputValue: input,
     itemToString: (item) => (item ? item[0] : ''),
+    stateReducer: (_state, action) => {
+      if (action.type === useCombobox.stateChangeTypes.InputClick) {
+        return {...action.changes, isOpen: true}
+      }
+      return action.changes
+    },
     onSelectedItemChange: ({selectedItem}) => {
       const v = selectedItem ? selectedItem[0] : ''
       setInput(v)
       onChange(selectedItem ? selectedItem[0] : undefined)
     },
-    onInputValueChange: ({inputValue: v, type}) => {
+    onInputValueChange: ({inputValue: v}) => {
       if (typeof v === 'string') {
         setInput(v)
         onChange(v === '' ? undefined : v)
-        if (type === useCombobox.stateChangeTypes.InputChange) {
-          openMenu()
-        }
       }
     },
   })
@@ -60,23 +56,8 @@ export default function InputAutocomplete({
     setInput(value || '')
   }, [value])
 
-  const calcMaxHeight = React.useCallback(() => {
-    if (keepMenuWithinWindowBounds && autocompleteMenuEl.current) {
-      const maxHeightLocal = window.innerHeight -
-        autocompleteMenuEl.current.getBoundingClientRect().top
-      const limitedMaxHeight = Math.min(maxHeightLocal, MAX_HEIGHT)
-      if (limitedMaxHeight !== maxHeight) {
-        setMaxHeight(limitedMaxHeight)
-      }
-    }
-  }, [keepMenuWithinWindowBounds, maxHeight])
-
-  React.useEffect(() => {
-    calcMaxHeight()
-  })
-
   return (
-    <div ref={autocompleteMenuEl} className="maputnik-autocomplete">
+    <div className="maputnik-autocomplete">
       <input
         {...getInputProps({
           'aria-label': ariaLabel,
@@ -87,12 +68,6 @@ export default function InputAutocomplete({
       />
       <div
         {...getMenuProps({
-          style: {
-            position: 'fixed',
-            overflow: 'auto',
-            maxHeight: maxHeight,
-            zIndex: '998',
-          },
           className: 'maputnik-autocomplete-menu',
         })}
       >
