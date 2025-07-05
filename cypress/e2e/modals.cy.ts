@@ -57,8 +57,44 @@ describe("modals", () => {
       then(get.elementByTestId("modal:export")).shouldNotExist();
     });
 
-    // TODO: Work out how to download a file and check the contents
-    it("download");
+    it("download", () => {
+      cy.window().then((win) => {
+        const capture: { text?: string } = {};
+        if (typeof (win as any).showSaveFilePicker === "function") {
+          cy
+            .stub(win as any, "showSaveFilePicker")
+            .as("picker")
+            .resolves({
+              createWritable: () =>
+                Promise.resolve({
+                  write: (b: Blob) => b.text().then((t) => (capture.text = t)),
+                  close: () => Promise.resolve(),
+                }),
+            });
+        } else {
+          cy.stub(win as any, "saveAs").as("saveAs");
+        }
+        (win as any).__capture = capture;
+      });
+
+      cy.get(".maputnik-modal-export-buttons button").first().click();
+
+      cy.window().then((win) => {
+        const capture = (win as any).__capture as { text?: string };
+        if (capture.text) {
+          expect(capture.text.trim().length).to.be.greaterThan(0);
+          expect(() => JSON.parse(capture.text!)).not.to.throw();
+        } else {
+          cy.get("@saveAs")
+            .its("firstCall.args.0")
+            .then((blob: Blob) => blob.text())
+            .then((text: string) => {
+              expect(text.trim().length).to.be.greaterThan(0);
+              expect(() => JSON.parse(text)).not.to.throw();
+            });
+        }
+      });
+    });
   });
 
   describe("sources", () => {

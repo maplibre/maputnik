@@ -877,8 +877,8 @@ export default class App extends React.Component<any, AppState> {
     this.setModal(modalName, !this.state.isOpen[modalName]);
   }
 
-  onSetFileHandle(fileHandle: FileSystemFileHandle | null) {
-    this.setState({fileHandle: fileHandle});
+  onSetFileHandle = (fileHandle: FileSystemFileHandle | null) => {
+    this.setState({ fileHandle });
   }
 
   onChangeOpenlayersDebug = (key: keyof AppState["openlayersDebugOptions"], value: boolean) => {
