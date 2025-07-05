@@ -1,4 +1,3 @@
-import React from 'react'
 import InputAutocomplete from './InputAutocomplete'
 import { mount } from 'cypress/react'
 
