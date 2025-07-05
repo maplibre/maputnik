@@ -1,4 +1,3 @@
-import React from 'react'
 
 import latest from '@maplibre/maplibre-gl-style-spec/dist/latest.json'
 import Block from './Block'
@@ -11,18 +10,19 @@ type FieldIdProps = {
   error?: {message: string}
 };
 
-export default class FieldId extends React.Component<FieldIdProps> {
-  render() {
-    return <Block label="ID" fieldSpec={latest.layer.id}
-
-      data-wd-key={this.props.wdKey}
-      error={this.props.error}
+const FieldId: React.FC<FieldIdProps> = (props) => {
+  return (
+    <Block label="ID" fieldSpec={latest.layer.id}
+      data-wd-key={props.wdKey}
+      error={props.error}
     >
       <InputString
-        value={this.props.value}
-        onInput={this.props.onChange}
-        data-wd-key={this.props.wdKey + ".input"}
+        value={props.value}
+        onInput={props.onChange}
+        data-wd-key={props.wdKey + ".input"}
       />
     </Block>
-  }
-}
+  );
+};
+
+export default FieldId;

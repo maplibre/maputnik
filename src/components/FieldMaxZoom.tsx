@@ -11,25 +11,25 @@ type FieldMaxZoomInternalProps = {
   error?: {message: string}
 } & WithTranslation;
 
-class FieldMaxZoomInternal extends React.Component<FieldMaxZoomInternalProps> {
-  render() {
-    const t = this.props.t;
-    return <Block label={t("Max Zoom")} fieldSpec={latest.layer.maxzoom}
-      error={this.props.error}
+const FieldMaxZoomInternal: React.FC<FieldMaxZoomInternalProps> = (props) => {
+  const t = props.t;
+  return (
+    <Block label={t('Max Zoom')} fieldSpec={latest.layer.maxzoom}
+      error={props.error}
       data-wd-key="max-zoom"
     >
       <InputNumber
         allowRange={true}
-        value={this.props.value}
-        onChange={this.props.onChange}
+        value={props.value}
+        onChange={props.onChange}
         min={latest.layer.maxzoom.minimum}
         max={latest.layer.maxzoom.maximum}
         default={latest.layer.maxzoom.maximum}
         data-wd-key="max-zoom.input"
       />
     </Block>
-  }
-}
+  );
+};
 
 const FieldMaxZoom = withTranslation()(FieldMaxZoomInternal);
 export default FieldMaxZoom;
