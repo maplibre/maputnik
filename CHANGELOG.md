@@ -15,11 +15,13 @@
 - Remove react-autobind dependency
 - Remove usage of legacy `childContextTypes` API
 - Refactor Field components to use arrow function syntax
+- Replace react-autocomplete with Downshift in the autocomplete component
 - _...Add new stuff here..._
 
 ### 🐞 Bug fixes
 
 - Fix incorrect handing of network error response (#944)
+- Show an error when adding a layer with a duplicate ID
 - _...Add new stuff here..._
 
 ## 2.1.1
