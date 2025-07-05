@@ -10,6 +10,7 @@
 - Add support to edit local files on the file system if supported by the browser
 - Upgrade to MapLibre LG JS v5
 - Upgrade Vite 6 and Cypress 14 ([#970](https://github.com/maplibre/maputnik/pull/970))
+- Show error when renaming a layer to an existing ID
 - Upgrade OpenLayers from v6 to v10
 - When loading a style into localStorage that causes a QuotaExceededError, purge localStorage and retry
 - Remove react-autobind dependency

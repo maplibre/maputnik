@@ -135,6 +135,7 @@ class LayerEditorInternal extends React.Component<LayerEditorInternalProps, Laye
     if(this.props.layer.metadata) {
       comment = (this.props.layer.metadata as any)['maputnik:comment']
     }
+    const t = this.props.t;
     const {errors, layerIndex} = this.props;
 
     const errorData: {[key in LayerSpecification as string]: {message: string}} = {};
@@ -157,53 +158,57 @@ class LayerEditorInternal extends React.Component<LayerEditorInternalProps, Laye
     }
 
     switch(type) {
-    case 'layer': return <div>
-      <FieldId
-        value={this.props.layer.id}
-        wdKey="layer-editor.layer-id"
-        error={errorData.id}
-        onChange={newId => this.props.onLayerIdChange(this.props.layerIndex, this.props.layer.id, newId)}
-      />
-      <FieldType
-        disabled={true}
-        error={errorData.type}
-        value={this.props.layer.type}
-        onChange={newType => this.props.onLayerChanged(
-          this.props.layerIndex,
-          changeType(this.props.layer, newType)
-        )}
-      />
-      {this.props.layer.type !== 'background' && <FieldSource
-        error={errorData.source}
-        sourceIds={Object.keys(this.props.sources!)}
-        value={this.props.layer.source}
-        onChange={v => this.changeProperty(null, 'source', v)}
-      />
-      }
-      {['background', 'raster', 'hillshade', 'heatmap'].indexOf(this.props.layer.type) < 0 &&
+    case 'layer': {
+      const duplicateId = errorData.id && /duplicate layer id/.test(errorData.id.message);
+      return <div>
+        <FieldId
+          value={this.props.layer.id}
+          wdKey="layer-editor.layer-id"
+          error={errorData.id}
+          onChange={newId => this.props.onLayerIdChange(this.props.layerIndex, this.props.layer.id, newId)}
+        />
+        {duplicateId && <div className="maputnik-inline-error">{t('Layer ID already exists')}</div>}
+        <FieldType
+          disabled={true}
+          error={errorData.type}
+          value={this.props.layer.type}
+          onChange={newType => this.props.onLayerChanged(
+            this.props.layerIndex,
+            changeType(this.props.layer, newType)
+          )}
+        />
+        {this.props.layer.type !== 'background' && <FieldSource
+          error={errorData.source}
+          sourceIds={Object.keys(this.props.sources!)}
+          value={this.props.layer.source}
+          onChange={v => this.changeProperty(null, 'source', v)}
+        />
+        }
+        {['background', 'raster', 'hillshade', 'heatmap'].indexOf(this.props.layer.type) < 0 &&
         <FieldSourceLayer
           error={errorData['source-layer']}
           sourceLayerIds={sourceLayerIds}
           value={(this.props.layer as any)['source-layer']}
           onChange={v => this.changeProperty(null, 'source-layer', v)}
         />
-      }
-      <FieldMinZoom
-        error={errorData.minzoom}
-        value={this.props.layer.minzoom}
-        onChange={v => this.changeProperty(null, 'minzoom', v)}
-      />
-      <FieldMaxZoom
-        error={errorData.maxzoom}
-        value={this.props.layer.maxzoom}
-        onChange={v => this.changeProperty(null, 'maxzoom', v)}
-      />
-      <FieldComment
-        error={errorData.comment}
-        value={comment}
-        onChange={v => this.changeProperty('metadata', 'maputnik:comment', v == ""  ? undefined : v)}
-      />
-    </div>
+        }
+        <FieldMinZoom
+          error={errorData.minzoom}
+          value={this.props.layer.minzoom}
+          onChange={v => this.changeProperty(null, 'minzoom', v)}
+        />
+        <FieldMaxZoom
+          error={errorData.maxzoom}
+          value={this.props.layer.maxzoom}
+          onChange={v => this.changeProperty(null, 'maxzoom', v)}
+        />
+        <FieldComment
+          error={errorData.comment}
+          value={comment}
+          onChange={v => this.changeProperty('metadata', 'maputnik:comment', v == ""  ? undefined : v)}
+        />
+      </div>
+    }
     case 'filter': return <div>
       <div className="maputnik-filter-editor-wrapper">
         <FilterEditor
