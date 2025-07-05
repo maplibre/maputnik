@@ -23,7 +23,6 @@ const FieldSourceLayerInternal: React.FC<FieldSourceLayerInternalProps> = (props
       error={props.error}
     >
       <InputAutocomplete
-        keepMenuWithinWindowBounds={!!props.isFixed}
         value={props.value}
         onChange={props.onChange}
         options={props.sourceLayerIds?.map((l) => [l, l])}
