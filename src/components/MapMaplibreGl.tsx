@@ -1,5 +1,5 @@
 import React, {type JSX} from 'react'
-import ReactDOM from 'react-dom'
+import {createRoot} from 'react-dom/client'
 import MapLibreGl, {LayerSpecification, LngLat, Map, MapOptions, SourceSpecification, StyleSpecification} from 'maplibre-gl'
 import MaplibreInspect from '@maplibre/maplibre-gl-inspect'
 import colors from '@maplibre/maplibre-gl-inspect/lib/colors'
@@ -17,8 +17,9 @@ import { withTranslation, WithTranslation } from 'react-i18next'
 import i18next from 'i18next'
 import { Protocol } from "pmtiles";
 
-function renderPopup(popup: JSX.Element, mountNode: ReactDOM.Container): HTMLElement {
-  ReactDOM.render(popup, mountNode);
+function renderPopup(popup: JSX.Element, mountNode: HTMLElement): HTMLElement {
+  const root = createRoot(mountNode);
+  root.render(popup);
   return mountNode as HTMLElement;
 }
 
