@@ -20,6 +20,7 @@ import { Protocol } from "pmtiles";
 function renderPopup(popup: JSX.Element, mountNode: HTMLElement): HTMLElement {
   const root = createRoot(mountNode);
   root.render(popup);
+  mountNode.addEventListener('DOMNodeRemoved', () => root.unmount(), {once: true});
   return mountNode as HTMLElement;
 }
 
