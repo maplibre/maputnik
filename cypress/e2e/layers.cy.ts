@@ -157,6 +157,18 @@ describe("layers", () => {
           });
         });
 
+        it("shows duplicate id error", () => {
+          const firstId = createBackground();
+          when.modal.open();
+          const secondId = when.modal.fillLayers({ type: "background" });
+          when.click("layer-list-item:" + secondId);
+          when.setValue("layer-editor.layer-id.input", "background:" + firstId);
+          when.click("min-zoom");
+          then(get.element(".maputnik-inline-error")).shouldContainText(
+            "Layer ID already exists"
+          );
+        });
+
         describe("min-zoom", () => {
           let bgId: string;
 
