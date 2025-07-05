@@ -17,10 +17,14 @@ import { withTranslation, WithTranslation } from 'react-i18next'
 import i18next from 'i18next'
 import { Protocol } from "pmtiles";
 
-function renderPopup(popup: JSX.Element, mountNode: HTMLElement): HTMLElement {
+function renderPopup(
+  popupElement: JSX.Element,
+  mountNode: HTMLElement,
+  popup: MapLibreGl.Popup
+): HTMLElement {
   const root = createRoot(mountNode);
-  root.render(popup);
-  mountNode.addEventListener('DOMNodeRemoved', () => root.unmount(), {once: true});
+  popup.once('close', () => root.unmount());
+  root.render(popupElement);
   return mountNode as HTMLElement;
 }
 
@@ -176,10 +180,12 @@ class MapMaplibreGlInternal extends React.Component<MapMaplibreGlInternalProps, 
 
     const tmpNode = document.createElement('div');
 
+    const inspectPopup = new MapLibreGl.Popup({
+      closeOnClick: false
+    });
+
     const inspect = new MaplibreInspect({
-      popup: new MapLibreGl.Popup({
-        closeOnClick: false
-      }),
+      popup: inspectPopup,
       showMapPopup: true,
       showMapPopupOnHover: false,
       showInspectMapPopupOnHover: true,
@@ -191,9 +197,21 @@ class MapMaplibreGlInternal extends React.Component<MapMaplibreGlInternalProps, 
       buildInspectStyle: (originalMapStyle: StyleSpecification, coloredLayers: HighlightedLayer[]) => buildInspectStyle(originalMapStyle, coloredLayers, this.props.highlightedLayer),
       renderPopup: (features: InspectFeature[]) => {
         if(this.props.inspectModeEnabled) {
-          return renderPopup(<MapMaplibreGlFeaturePropertyPopup features={features} />, tmpNode);
+          return renderPopup(
+            <MapMaplibreGlFeaturePropertyPopup features={features} />,
+            tmpNode,
+            inspectPopup
+          );
         } else {
-          return renderPopup(<MapMaplibreGlLayerPopup features={features} onLayerSelect={this.onLayerSelectById} zoom={this.state.zoom} />, tmpNode);
+          return renderPopup(
+            <MapMaplibreGlLayerPopup
+              features={features}
+              onLayerSelect={this.onLayerSelectById}
+              zoom={this.state.zoom}
+            />,
+            tmpNode,
+            inspectPopup
+          );
         }
       }
     })
