@@ -14,27 +14,27 @@ type FieldSourceLayerInternalProps = {
 } & WithTranslation;
 
 const FieldSourceLayerInternal: React.FC<FieldSourceLayerInternalProps> = (props) => {
-  const t = props.t;
+  const {
+    t,
+    onChange = () => {},
+    sourceLayerIds = [],
+    value,
+    error,
+  } = props;
   return (
     <Block
       label={t('Source Layer')}
       fieldSpec={latest.layer['source-layer']}
       data-wd-key="layer-source-layer"
-      error={props.error}
+      error={error}
     >
       <InputAutocomplete
-        value={props.value}
-        onChange={props.onChange}
-        options={props.sourceLayerIds?.map((l) => [l, l])}
+        value={value}
+        onChange={onChange}
+        options={sourceLayerIds?.map((l) => [l, l])}
       />
     </Block>
   );
-};
-
-FieldSourceLayerInternal.defaultProps = {
-  onChange: () => {},
-  sourceLayerIds: [],
-  isFixed: false,
 };
 
 const FieldSourceLayer = withTranslation()(FieldSourceLayerInternal);
