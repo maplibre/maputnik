@@ -1,4 +1,3 @@
-import React from 'react'
 import Block from './Block'
 import InputSpec, { SpecFieldProps as InputFieldSpecProps } from './InputSpec'
 import Fieldset from './Fieldset'
@@ -20,27 +19,25 @@ export type SpecFieldProps = InputFieldSpecProps & {
   name?: string
 };
 
-export default class SpecField extends React.Component<SpecFieldProps> {
-  render() {
-    const fieldType = this.props.fieldSpec?.type;
+const SpecField: React.FC<SpecFieldProps> = (props) => {
+  const fieldType = props.fieldSpec?.type;
 
-    const typeBlockFn = typeMap[fieldType!];
+  const typeBlockFn = typeMap[fieldType!];
 
-    let TypeBlock;
-    if (typeBlockFn) {
-      TypeBlock = typeBlockFn(this.props);
-    }
-    else {
-      console.warn("No such type for '%s'", fieldType);
-      TypeBlock = Block;
-    }
-
-    return <TypeBlock
-      label={this.props.label}
-      action={this.props.action}
-      fieldSpec={this.props.fieldSpec}
-    >
-      <InputSpec {...this.props} />
-    </TypeBlock>
+  let TypeBlock;
+  if (typeBlockFn) {
+    TypeBlock = typeBlockFn(props);
   }
-}
+  else {
+    console.warn("No such type for '%s'", fieldType);
+    TypeBlock = Block;
+  }
+
+  return (
+    <TypeBlock label={props.label} action={props.action} fieldSpec={props.fieldSpec}>
+      <InputSpec {...props} />
+    </TypeBlock>
+  );
+};
+
+export default SpecField;

@@ -9,57 +9,45 @@ type FieldDocLabelProps = {
   onToggleDoc?(...args: unknown[]): unknown
 };
 
-type FieldDocLabelState = {
-  open: boolean
-};
 
-export default class FieldDocLabel extends React.Component<FieldDocLabelProps, FieldDocLabelState> {
-  constructor (props: FieldDocLabelProps) {
-    super(props);
-    this.state = {
-      open: false,
+const FieldDocLabel: React.FC<FieldDocLabelProps> = (props) => {
+  const [open, setOpen] = React.useState(false);
+
+  const onToggleDoc = (state: boolean) => {
+    setOpen(state);
+    if (props.onToggleDoc) {
+      props.onToggleDoc(state);
     }
-  }
+  };
 
-  onToggleDoc = (open: boolean) => {
-    this.setState({
-      open,
-    }, () => {
-      if (this.props.onToggleDoc) {
-        this.props.onToggleDoc(this.state.open);
-      }
-    });
-  }
+  const { label, fieldSpec } = props;
+  const { doc } = fieldSpec || {};
 
-  render() {
-    const {label, fieldSpec} = this.props;
-    const {doc} = fieldSpec || {};
-
-    if (doc) {
-      return <label className="maputnik-doc-wrapper">
+  if (doc) {
+    return (
+      <label className="maputnik-doc-wrapper">
         <div className="maputnik-doc-target">
           {label}
           {'\xa0'}
           <button
-            aria-label={this.state.open ? "close property documentation" : "open property documentation"}
-            className={`maputnik-doc-button maputnik-doc-button--${this.state.open ? 'open' : 'closed'}`}
-            onClick={() => this.onToggleDoc(!this.state.open)}
-            data-wd-key={'field-doc-button-'+label}
+            aria-label={open ? 'close property documentation' : 'open property documentation'}
+            className={`maputnik-doc-button maputnik-doc-button--${open ? 'open' : 'closed'}`}
+            onClick={() => onToggleDoc(!open)}
+            data-wd-key={'field-doc-button-' + label}
           >
-            {this.state.open ? <MdHighlightOff /> : <MdInfoOutline />}
+            {open ? <MdHighlightOff /> : <MdInfoOutline />}
           </button>
         </div>
       </label>
-    }
-    else if (label) {
-      return <label className="maputnik-doc-wrapper">
-        <div className="maputnik-doc-target">
-          {label}
-        </div>
+    );
+  } else if (label) {
+    return (
+      <label className="maputnik-doc-wrapper">
+        <div className="maputnik-doc-target">{label}</div>
       </label>
-    }
-    else {
-      <div />
-    }
+    );
   }
-}
+  return <div />;
+};
+
+export default FieldDocLabel;

@@ -14,6 +14,7 @@
 - When loading a style into localStorage that causes a QuotaExceededError, purge localStorage and retry
 - Remove react-autobind dependency
 - Remove usage of legacy `childContextTypes` API
+- Refactor Field components to use arrow function syntax
 - Replace react-autocomplete with Downshift in the autocomplete component
 - _...Add new stuff here..._
 

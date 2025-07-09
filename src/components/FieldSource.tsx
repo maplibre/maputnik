@@ -13,28 +13,28 @@ type FieldSourceInternalProps = {
   error?: {message: string}
 } & WithTranslation;
 
-class FieldSourceInternal extends React.Component<FieldSourceInternalProps> {
-  static defaultProps = {
-    onChange: () => {},
-    sourceIds: [],
-  }
-
-  render() {
-    const t = this.props.t;
-    return <Block
-      label={t("Source")}
+const FieldSourceInternal: React.FC<FieldSourceInternalProps> = (props) => {
+  const t = props.t;
+  return (
+    <Block
+      label={t('Source')}
       fieldSpec={latest.layer.source}
-      error={this.props.error}
-      data-wd-key={this.props.wdKey}
+      error={props.error}
+      data-wd-key={props.wdKey}
     >
       <InputAutocomplete
-        value={this.props.value}
-        onChange={this.props.onChange}
-        options={this.props.sourceIds?.map(src => [src, src])}
+        value={props.value}
+        onChange={props.onChange}
+        options={props.sourceIds?.map((src) => [src, src])}
       />
     </Block>
-  }
-}
+  );
+};
+
+FieldSourceInternal.defaultProps = {
+  onChange: () => {},
+  sourceIds: [],
+};
 
 const FieldSource = withTranslation()(FieldSourceInternal);
 export default FieldSource;

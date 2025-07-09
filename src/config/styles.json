@@ -12,6 +12,18 @@
     "thumbnail": "https://github.com/maplibre/maputnik/assets/649392/23fa75ad-63e6-43f5-8837-03cdb0428bac"
   },
   {
+    "id": "aws-hybrid",
+    "title": "AWS Hybrid",
+    "url": "https://maps.geo.eu-west-1.amazonaws.com/v2/styles/Hybrid/descriptor?key=v1.public.eyJqdGkiOiJiOTNkYjBlZi04OWUzLTQxMGUtODFhMC0zYjZjZjVmZWZmMDgifYtukap0NBaJpcrS6Vit9j03GJgK9Bn-RSu5UCe3jkdSql2kKp3IEgLPtyLssbmKUdVO11sXddjK3ZOZy8V6QG0olv0K_1tOxyMIe4DAO3IV6H4VzHWiaXlbSakGiEgFLuHBdcfLDeMotye7N6rSRxuZb0CN9ytH9VjLly6-NEBRZezO_qPQyvdTFdeZsARIpL0f9YVpxPxPVvUcAWYCk5LpaPseRCDPrY5SlCdA1ZKqUA4F9RzxSTxB73Fel_SoNDkCNaux1VposBu791-uUpDzUpr7leKckrPXrpZ2hwnFbafVxFV9vq4fLTpB5KoBksuLfGNIwAx1RLLxWuMhE4c.ZGQzZDY2OGQtMWQxMy00ZTEwLWIyZGUtOGVjYzUzMjU3OGE4&color-scheme=Light",
+    "thumbnail": "https://maputnik.s3.eu-west-1.amazonaws.com/thumbnails/aws-hybrid.jpg"
+  },
+  {
+    "id": "aws-standard",
+    "title": "AWS Standard",
+    "url": "https://maps.geo.eu-west-1.amazonaws.com/v2/styles/Standard/descriptor?key=v1.public.eyJqdGkiOiJiOTNkYjBlZi04OWUzLTQxMGUtODFhMC0zYjZjZjVmZWZmMDgifYtukap0NBaJpcrS6Vit9j03GJgK9Bn-RSu5UCe3jkdSql2kKp3IEgLPtyLssbmKUdVO11sXddjK3ZOZy8V6QG0olv0K_1tOxyMIe4DAO3IV6H4VzHWiaXlbSakGiEgFLuHBdcfLDeMotye7N6rSRxuZb0CN9ytH9VjLly6-NEBRZezO_qPQyvdTFdeZsARIpL0f9YVpxPxPVvUcAWYCk5LpaPseRCDPrY5SlCdA1ZKqUA4F9RzxSTxB73Fel_SoNDkCNaux1VposBu791-uUpDzUpr7leKckrPXrpZ2hwnFbafVxFV9vq4fLTpB5KoBksuLfGNIwAx1RLLxWuMhE4c.ZGQzZDY2OGQtMWQxMy00ZTEwLWIyZGUtOGVjYzUzMjU3OGE4&color-scheme=Light",
+    "thumbnail": "https://maputnik.s3.eu-west-1.amazonaws.com/thumbnails/aws-standard.jpg"
+  },
+  {
     "id": "dark-matter",
     "title": "Dark Matter",
     "url": "https://cdn.jsdelivr.net/gh/openmaptiles/dark-matter-gl-style@v1.9/style.json",
@@ -28,30 +40,6 @@
     "title": "Toner",
     "url": "https://cdn.jsdelivr.net/gh/openmaptiles/toner-gl-style@v1.0/style.json",
     "thumbnail": "https://maputnik.github.io/thumbnails/toner.png"
-  },
-  {
-    "id": "os-zoomstack-light",
-    "title": "Zoomstack Light",
-    "url": "https://s3-eu-west-1.amazonaws.com/tiles.os.uk/v2/styles/open-zoomstack-light/style.json",
-    "thumbnail": "https://maputnik.github.io/thumbnails/os-zoomstack-light.png"
-  },
-  {
-    "id": "os-zoomstack-night",
-    "title": "Zoomstack Night",
-    "url": "https://s3-eu-west-1.amazonaws.com/tiles.os.uk/v2/styles/open-zoomstack-night/style.json",
-    "thumbnail": "https://maputnik.github.io/thumbnails/os-zoomstack-night.png"
-  },
-  {
-    "id": "os-zoomstack-outdoor",
-    "title": "Zoomstack Outdoor",
-    "url": "https://s3-eu-west-1.amazonaws.com/tiles.os.uk/v2/styles/open-zoomstack-outdoor/style.json",
-    "thumbnail": "https://maputnik.github.io/thumbnails/os-zoomstack-outdoor.png"
-  },
-  {
-    "id": "os-zoomstack-road",
-    "title": "Zoomstack Road",
-    "url": "https://s3-eu-west-1.amazonaws.com/tiles.os.uk/v2/styles/open-zoomstack-road/style.json",
-    "thumbnail": "https://maputnik.github.io/thumbnails/os-zoomstack-road.png"
   },
   {
     "id": "osm-bright",

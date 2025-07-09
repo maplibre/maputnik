@@ -1,4 +1,3 @@
-import React from 'react'
 import Block from './Block'
 import InputCheckbox, {InputCheckboxProps} from './InputCheckbox'
 
@@ -8,10 +7,12 @@ type FieldCheckboxProps = InputCheckboxProps & {
 };
 
 
-export default class FieldCheckbox extends React.Component<FieldCheckboxProps> {
-  render() {
-    return <Block label={this.props.label}>
-      <InputCheckbox {...this.props} />
+const FieldCheckbox: React.FC<FieldCheckboxProps> = (props) => {
+  return (
+    <Block label={props.label}>
+      <InputCheckbox {...props} />
     </Block>
-  }
-}
+  );
+};
+
+export default FieldCheckbox;
