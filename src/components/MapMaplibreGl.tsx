@@ -1,5 +1,5 @@
 import React, {type JSX} from 'react'
-import ReactDOM from 'react-dom'
+import { createRoot, type Root } from 'react-dom/client'
 import MapLibreGl, {LayerSpecification, LngLat, Map, MapOptions, SourceSpecification, StyleSpecification} from 'maplibre-gl'
 import MaplibreInspect from '@maplibre/maplibre-gl-inspect'
 import colors from '@maplibre/maplibre-gl-inspect/lib/colors'
@@ -17,9 +17,13 @@ import { withTranslation, WithTranslation } from 'react-i18next'
 import i18next from 'i18next'
 import { Protocol } from "pmtiles";
 
-function renderPopup(popup: JSX.Element, mountNode: ReactDOM.Container): HTMLElement {
-  ReactDOM.render(popup, mountNode);
-  return mountNode as HTMLElement;
+let popupRoot: Root | null = null;
+function renderPopup(popup: JSX.Element, mountNode: HTMLElement): HTMLElement {
+  if (!popupRoot) {
+    popupRoot = createRoot(mountNode);
+  }
+  popupRoot.render(popup);
+  return mountNode;
 }
 
 function buildInspectStyle(originalMapStyle: StyleSpecification, coloredLayers: HighlightedLayer[], highlightedLayer?: HighlightedLayer) {
@@ -286,7 +290,7 @@ class MapMaplibreGlInternal extends React.Component<MapMaplibreGlInternalProps, 
       className="maputnik-map__map"
       role="region"
       aria-label={t("Map view")}
-      ref={x => this.container = x}
+      ref={x => { this.container = x; }}
       data-wd-key="maplibre:map"
     ></div>
   }
