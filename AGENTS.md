@@ -27,7 +27,7 @@ npm run build
 To run the tests make sure that xvfb is installed:
 
 ```
-apt run xvfb
+apt install xvfb
 ```
 
 Run the development server in the background with Vite:
@@ -41,3 +41,7 @@ Then start the Cypress tests with:
 ```
 xvfb-run -a npm run test
 ```
+
+## Pull Requests
+
+- Pull requests should update `CHANGELOG.md` with a short description of the change.
