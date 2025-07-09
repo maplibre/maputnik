@@ -14,26 +14,28 @@ type FieldSourceInternalProps = {
 } & WithTranslation;
 
 const FieldSourceInternal: React.FC<FieldSourceInternalProps> = (props) => {
-  const t = props.t;
+  const {
+    t,
+    onChange = () => {},
+    sourceIds = [],
+    value,
+    wdKey,
+    error,
+  } = props;
   return (
     <Block
       label={t('Source')}
       fieldSpec={latest.layer.source}
-      error={props.error}
-      data-wd-key={props.wdKey}
+      error={error}
+      data-wd-key={wdKey}
     >
       <InputAutocomplete
-        value={props.value}
-        onChange={props.onChange}
-        options={props.sourceIds?.map((src) => [src, src])}
+        value={value}
+        onChange={onChange}
+        options={sourceIds?.map((src) => [src, src])}
       />
     </Block>
   );
-};
-
-FieldSourceInternal.defaultProps = {
-  onChange: () => {},
-  sourceIds: [],
 };
 
 const FieldSource = withTranslation()(FieldSourceInternal);
