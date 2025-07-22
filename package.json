@@ -60,7 +60,7 @@
     "react-accessible-accordion": "^5.0.1",
     "react-aria-menubutton": "^7.0.3",
     "react-aria-modal": "^5.0.2",
-    "downshift": "^9.0.9",
+    "downshift": "^9.0.10",
     "react-collapse": "^5.1.1",
     "react-color": "^2.19.3",
     "react-dom": "^18.2.0",
