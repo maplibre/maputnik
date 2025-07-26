@@ -79,6 +79,9 @@ function replaceSourceAccessToken(mapStyle: StyleSpecification, sourceName: stri
     // so we need to check the source URL.
     authSourceName = "stadia"
   }
+  else if (("url" in source) && source.url?.match(/\.locationiq\.com/)) {
+    authSourceName = "locationiq"
+  }
 
   const accessToken = getAccessToken(authSourceName, mapStyle, opts)
 
@@ -138,6 +141,7 @@ function stripAccessTokens(mapStyle: StyleSpecification) {
   delete changedMetadata['maputnik:openmaptiles_access_token'];
   delete changedMetadata['maputnik:thunderforest_access_token'];
   delete changedMetadata['maputnik:stadia_access_token'];
+  delete changedMetadata['maputnik:locationiq_access_token'];
   return {
     ...mapStyle,
     metadata: changedMetadata
