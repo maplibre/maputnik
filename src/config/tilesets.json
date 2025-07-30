@@ -18,5 +18,10 @@
     "type": "vector",
     "url": "https://s3-eu-west-1.amazonaws.com/tiles.os.uk/v2/data/vector/open-zoomstack/config.json",
     "title": "OS Open Zoomstack v2"
+  },
+  "locationiq": {
+    "type": "vector",
+    "url": "https://tiles.locationiq.com/v3/pbf/tiles.json?key={key}",
+    "title": "LocationIQ"
   }
 }
