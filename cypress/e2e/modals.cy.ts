@@ -224,6 +224,18 @@ describe("modals", () => {
       ).shouldInclude({ "maputnik:stadia_access_token": apiKey });
     });
 
+    it("locationiq access token", () => {
+      const apiKey = "testing123";
+      when.setValue(
+        "modal:settings.maputnik:locationiq_access_token",
+        apiKey
+      );
+      when.click("modal:settings.name");
+      then(
+        get.styleFromLocalStorage().then((style) => style.metadata)
+      ).shouldInclude({ "maputnik:locationiq_access_token": apiKey });
+    });
+
     it("style renderer", () => {
       cy.on("uncaught:exception", () => false); // this is due to the fact that this is an invalid style for openlayers
       when.select("modal:settings.maputnik:renderer", "ol");
