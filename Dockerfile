@@ -1,4 +1,4 @@
-FROM node:18 as builder
+FROM node:22 as builder
 WORKDIR /maputnik
 
 # Only copy package.json to prevent npm install from running on every build
