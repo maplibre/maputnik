@@ -272,7 +272,63 @@ describe("modals", () => {
 
   });
 
+  describe("add layer", () => {
+    beforeEach(() => {
+      when.setStyle("layer");
+      when.modal.open();
+    });
+
+    it("shows duplicate id error", () => {
+      when.setValue("add-layer.layer-id.input", "background");
+      when.click("add-layer");
+      then(get.elementByTestId("modal:add-layer")).shouldExist();
+      then(get.element(".maputnik-modal-error")).shouldContainText(
+        "Layer ID already exists"
+      );
+    });
+  });
+
   describe("sources", () => {
     it("toggle");
+  });
+
+  describe("Handle localStorage QuotaExceededError", () => {
+    it("handles quota exceeded error when opening style from URL", () => {
+      // Clear localStorage to start fresh
+      cy.clearLocalStorage();
+
+      // fill localStorage until we get a QuotaExceededError
+      cy.window().then(win => {
+        let chunkSize = 1000;
+        const chunk = new Array(chunkSize).join("x");
+        let index = 0;
+
+        // Keep adding until we hit the quota
+        while (true) {
+          try {
+            const key = `maputnik:fill-${index++}`;
+            win.localStorage.setItem(key, chunk);
+          } catch (e: any) {
+            // Verify it's a quota error
+            if (e.name === 'QuotaExceededError') {
+              if (chunkSize <= 1) return;
+              else {
+                chunkSize /= 2;
+                continue;
+              }
+            }
+            throw e; // Unexpected error
+          }
+        }
+      });
+
+      // Open the style via URL input
+      when.click("nav:open");
+      when.setValue("modal:open.url.input", get.exampleFileUrl());
+      when.click("modal:open.url.button");
+
+      then(get.responseBody("example-style.json")).shouldEqualToStoredStyle();
+      then(get.styleFromLocalStorage()).shouldExist();
+    });
   });
 });

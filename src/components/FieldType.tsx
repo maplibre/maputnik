@@ -14,24 +14,17 @@ type FieldTypeInternalProps = {
   disabled?: boolean
 } & WithTranslation;
 
-class FieldTypeInternal extends React.Component<FieldTypeInternalProps> {
-  static defaultProps = {
-    disabled: false,
-  }
-
-  render() {
-    const t = this.props.t;
-    return <Block label={t("Type")} fieldSpec={latest.layer.type}
-      data-wd-key={this.props.wdKey}
-      error={this.props.error}
+const FieldTypeInternal: React.FC<FieldTypeInternalProps> = (props) => {
+  const t = props.t;
+  return (
+    <Block label={t('Type')} fieldSpec={latest.layer.type}
+      data-wd-key={props.wdKey}
+      error={props.error}
     >
-      {this.props.disabled &&
-        <InputString
-          value={this.props.value}
-          disabled={true}
-        />
-      }
-      {!this.props.disabled &&
+      {props.disabled && (
+        <InputString value={props.value} disabled={true} />
+      )}
+      {!props.disabled && (
         <InputSelect
           options={[
             ['background', 'Background'],
@@ -44,14 +37,18 @@ class FieldTypeInternal extends React.Component<FieldTypeInternalProps> {
             ['hillshade', 'Hillshade'],
             ['heatmap', 'Heatmap'],
           ]}
-          onChange={this.props.onChange}
-          value={this.props.value}
-          data-wd-key={this.props.wdKey + ".select"}
+          onChange={props.onChange}
+          value={props.value}
+          data-wd-key={props.wdKey + '.select'}
         />
-      }
+      )}
     </Block>
-  }
-}
+  );
+};
+
+FieldTypeInternal.defaultProps = {
+  disabled: false,
+};
 
 const FieldType = withTranslation()(FieldTypeInternal);
 export default FieldType;

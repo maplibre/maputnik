@@ -1,5 +1,3 @@
-// @ts-ignore - this can be easily replaced with arrow functions
-import autoBind from 'react-autobind';
 import React from 'react'
 import cloneDeep from 'lodash.clonedeep'
 import clamp from 'lodash.clamp'
@@ -140,7 +138,6 @@ export default class App extends React.Component<any, AppState> {
 
   constructor(props: any) {
     super(props)
-    autoBind(this);
 
     this.revisionStore = new RevisionStore()
     const params = new URLSearchParams(window.location.search.substring(1))
@@ -880,8 +877,8 @@ export default class App extends React.Component<any, AppState> {
     this.setModal(modalName, !this.state.isOpen[modalName]);
   }
 
-  onSetFileHandle(fileHandle: FileSystemFileHandle | null) {
-    this.setState({fileHandle: fileHandle});
+  onSetFileHandle = (fileHandle: FileSystemFileHandle | null) => {
+    this.setState({ fileHandle });
   }
 
   onChangeOpenlayersDebug = (key: keyof AppState["openlayersDebugOptions"], value: boolean) => {

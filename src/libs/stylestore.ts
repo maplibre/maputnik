@@ -91,8 +91,28 @@ export class StyleStore {
   save(mapStyle: StyleSpecification & { id: string }) {
     mapStyle = style.ensureStyleValidity(mapStyle)
     const key = styleKey(mapStyle.id)
-    window.localStorage.setItem(key, JSON.stringify(mapStyle))
-    window.localStorage.setItem(storageKeys.latest, mapStyle.id)
+
+    const saveFn = () => {
+      window.localStorage.setItem(key, JSON.stringify(mapStyle))
+      window.localStorage.setItem(storageKeys.latest, mapStyle.id)
+    }
+
+    try {
+      saveFn()
+    } catch (e) {
+      // Handle quota exceeded error
+      if (e instanceof DOMException && (
+        e.code === 22 || // Firefox
+        e.code === 1014 || // Firefox
+        e.name === 'QuotaExceededError' ||
+        e.name === 'NS_ERROR_DOM_QUOTA_REACHED'
+      )) {
+        this.purge()
+        saveFn() // Retry after clearing
+      } else {
+        throw e
+      }
+    }
     return mapStyle
   }
 }

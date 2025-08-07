@@ -13,30 +13,29 @@ type FieldSourceLayerInternalProps = {
   error?: {message: string}
 } & WithTranslation;
 
-class FieldSourceLayerInternal extends React.Component<FieldSourceLayerInternalProps> {
-  static defaultProps = {
-    onChange: () => {},
-    sourceLayerIds: [],
-    isFixed: false
-  }
-
-  render() {
-    const t = this.props.t;
-    return <Block
-      label={t("Source Layer")}
+const FieldSourceLayerInternal: React.FC<FieldSourceLayerInternalProps> = (props) => {
+  const t = props.t;
+  return (
+    <Block
+      label={t('Source Layer')}
       fieldSpec={latest.layer['source-layer']}
       data-wd-key="layer-source-layer"
-      error={this.props.error}
+      error={props.error}
     >
       <InputAutocomplete
-        keepMenuWithinWindowBounds={!!this.props.isFixed}
-        value={this.props.value}
-        onChange={this.props.onChange}
-        options={this.props.sourceLayerIds?.map(l => [l, l])}
+        value={props.value}
+        onChange={props.onChange}
+        options={props.sourceLayerIds?.map((l) => [l, l])}
       />
     </Block>
-  }
-}
+  );
+};
+
+FieldSourceLayerInternal.defaultProps = {
+  onChange: () => {},
+  sourceLayerIds: [],
+  isFixed: false,
+};
 
 const FieldSourceLayer = withTranslation()(FieldSourceLayerInternal);
 export default FieldSourceLayer;

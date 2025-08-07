@@ -8,8 +8,10 @@ const baseUrl = "http://localhost:8888/";
 
 const styleFromWindow = (win: Window) => {
   const styleId = win.localStorage.getItem("maputnik:latest_style");
-  const styleItem = win.localStorage.getItem(`maputnik:style:${styleId}`);
-  const obj = JSON.parse(styleItem || "");
+  const styleItemKey = `maputnik:style:${styleId}`;
+  const styleItem = win.localStorage.getItem(styleItemKey);
+  if (!styleItem) throw new Error("Could not get styleItem from localStorage");
+  const obj = JSON.parse(styleItem);
   return obj;
 };
 
