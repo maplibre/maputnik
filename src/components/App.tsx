@@ -36,7 +36,6 @@ import LayerWatcher from '../libs/layerwatcher'
 import tokens from '../config/tokens.json'
 import isEqual from 'lodash.isequal'
 import Debug from '../libs/debug'
-import { SortEnd } from 'react-sortable-hoc';
 import { MapOptions } from 'maplibre-gl';
 
 // Buffer must be defined globally for @maplibre/maplibre-gl-style-spec validate() function to succeed.
@@ -534,7 +533,7 @@ export default class App extends React.Component<any, AppState> {
     })
   }
 
-  onMoveLayer = (move: SortEnd) => {
+  onMoveLayer = (move: {oldIndex: number; newIndex: number}) => {
     let { oldIndex, newIndex } = move;
     let layers = this.state.mapStyle.layers;
     oldIndex = clamp(oldIndex, 0, layers.length-1);
