@@ -20,6 +20,12 @@ const spec = (t: TFunction) => ({
       docUrl: "https://docs.stadiamaps.com/authentication/",
       docUrlLinkText: t("Learn More")
     },
+    locationiq_access_token: {
+      label: t("LocationIQ Access Token"),
+      doc: t("Public access token for LocationIQ services."),
+      docUrl: "https://docs.locationiq.com/docs/maps",
+      docUrlLinkText: t("Learn More")
+    },
     style_renderer: {
       label: t("Style Renderer"),
       doc: t("Choose the default Maputnik renderer for this style.")
