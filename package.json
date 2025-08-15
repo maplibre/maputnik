@@ -53,7 +53,7 @@
     "maplibre-gl": "^5.5.0",
     "maputnik-design": "github:maputnik/design#172b06c",
     "ol": "^10.6.1",
-    "ol-mapbox-style": "^13.0.1",
+    "ol-mapbox-style": "^13.1.0",
     "pmtiles": "^4.3.0",
     "prop-types": "^15.8.1",
     "react": "^18.2.0",
