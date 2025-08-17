@@ -183,6 +183,8 @@
   "Public access token for Thunderforest services.": "Thunderforest 服务的公共访问令牌。",
   "Stadia Maps API Key": "Stadia Maps API 密钥",
   "API key for Stadia Maps.": "Stadia Maps 的 API 密钥",
+  "LocationIQ Access Token": "LocationIQ 访问令牌",
+  "Public access token for LocationIQ services.": "LocationIQ 服务的公共访问令牌。",
   "Style Renderer": "样式渲染器",
   "Choose the default Maputnik renderer for this style.": "为这种样式选择默认的Maputnik渲染器。",
   "Language": "语言",

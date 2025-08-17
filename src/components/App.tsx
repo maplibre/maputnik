@@ -46,6 +46,7 @@ function setFetchAccessToken(url: string, mapStyle: StyleSpecification) {
   const matchesTilehosting = url.match(/\.tilehosting\.com/);
   const matchesMaptiler = url.match(/\.maptiler\.com/);
   const matchesThunderforest = url.match(/\.thunderforest\.com/);
+  const matchesLocationIQ = url.match(/\.locationiq\.com/);
   if (matchesTilehosting || matchesMaptiler) {
     const accessToken = style.getAccessToken("openmaptiles", mapStyle, {allowFallback: true})
     if (accessToken) {
@@ -54,6 +55,12 @@ function setFetchAccessToken(url: string, mapStyle: StyleSpecification) {
   }
   else if (matchesThunderforest) {
     const accessToken = style.getAccessToken("thunderforest", mapStyle, {allowFallback: true})
+    if (accessToken) {
+      return url.replace('{key}', accessToken)
+    }
+  }
+  else if (matchesLocationIQ) {
+    const accessToken = style.getAccessToken("locationiq", mapStyle, {allowFallback: true})
     if (accessToken) {
       return url.replace('{key}', accessToken)
     }
