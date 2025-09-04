@@ -61,7 +61,7 @@ jobs:
 
       # Build and upload desktop CLI artifacts
       - name: Set up Go
-        uses: actions/setup-go@v5
+        uses: actions/setup-go@v6
         with:
           go-version: ^1.23.x
           cache-dependency-path: desktop/go.sum
