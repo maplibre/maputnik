@@ -108,7 +108,7 @@ type AppState = {
   dirtyMapStyle?: StyleSpecification,
   selectedLayerIndex: number,
   selectedLayerOriginalId?: string,
-  sources: {[key: string]: SourceSpecification},
+  sources: {[key: string]: SourceSpecification & {layers: string[]} },
   vectorLayers: {},
   spec: any,
   mapView: {
@@ -402,7 +402,6 @@ export default class App extends React.Component<any, AppState> {
     }
 
     const errors: ValidationError[] = validateStyleMin(newStyle) || [];
-
     // The validate function doesn't give us errors for duplicate error with
     // empty string for layer.id, manually deal with that here.
     const layerErrors: (Error | ValidationError)[] = [];
@@ -643,21 +642,22 @@ export default class App extends React.Component<any, AppState> {
     this.onStyleChanged(styleObj)
   }
 
-  fetchSources() {
-    const sourceList: {[key: string]: any} = {};
-
-    for(const [key, val] of Object.entries(this.state.mapStyle.sources)) {
-      if(
-        !Object.prototype.hasOwnProperty.call(this.state.sources, key) &&
-        val.type === "vector" &&
-        Object.prototype.hasOwnProperty.call(val, "url")
-      ) {
+  async fetchSources() {
+    const sourceList: {[key: string]: SourceSpecification & {layers: string[]}} = {};
+    for(const key of Object.keys(this.state.mapStyle.sources)) {
+      const source = this.state.mapStyle.sources[key];
+      if(source.type !== "vector" || !('url' in source)) {
+        sourceList[key] = this.state.sources[key] || {...this.state.mapStyle.sources[key]};
+        if (sourceList[key].layers === undefined) {
+          sourceList[key].layers = [];
+        }
+      } else {
         sourceList[key] = {
-          type: val.type,
+          type: source.type,
           layers: []
         };
 
-        let url = val.url;
+        let url = source.url;
 
         try {
           url = setFetchAccessToken(url!, this.state.mapStyle)
@@ -670,44 +670,28 @@ export default class App extends React.Component<any, AppState> {
             return;
           }
 
-          // Create new objects before setState
-          const sources = Object.assign({}, {
-            [key]: this.state.sources[key],
-          });
-
           for(const layer of json.vector_layers) {
-            (sources[key] as any).layers.push(layer.id)
+            sourceList[key].layers.push(layer.id)
           }
-
-          this.setState({
-            sources: sources
-          });
         };
 
-        if (url!.startsWith("pmtiles://")) {
-          (new PMTiles(url!.substr(10))).getTileJson("")
-            .then(json => setVectorLayers(json))
-            .catch(err => {
-              console.error("Failed to process sources for '%s'", url, err);
-            });
+        try {
+          if (url!.startsWith("pmtiles://")) {
+          const json = await (new PMTiles(url!.substring(10))).getTileJson("");
+          setVectorLayers(json);
         } else {
-          fetch(url!, {
-            mode: 'cors',
-          })
-            .then(response => response.json())
-            .then(json => setVectorLayers(json))
-            .catch(err => {
-              console.error("Failed to process sources for '%s'", url, err);
-            });
+          const response = await fetch(url!, { mode: 'cors' });
+          const json = await response.json();
+          setVectorLayers(json);
         }
-      }
-      else {
-        sourceList[key] = this.state.sources[key] || this.state.mapStyle.sources[key];
+        } catch(err) {
+          console.error(`Failed to process source for url: '${url}', ${err}`);
+        }
       }
     }
 
     if(!isEqual(this.state.sources, sourceList)) {
-      console.debug("Setting sources");
+      console.debug("Setting sources", sourceList);
       this.setState({
         sources: sourceList
       })
