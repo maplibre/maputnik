@@ -183,6 +183,8 @@
   "Public access token for Thunderforest services.": "Öffentlicher Zugriffstoken für Thunderforest-Dienste.",
   "Stadia Maps API Key": "Stadia Maps API-Schlüssel",
   "API key for Stadia Maps.": "API-Schlüssel für Stadia Maps.",
+  "LocationIQ Access Token": "LocationIQ Zugriffstoken",
+  "Public access token for LocationIQ services.": "Öffentlicher Zugriffstoken für LocationIQ-Dienste.",
   "Style Renderer": "Stil-Renderer",
   "Choose the default Maputnik renderer for this style.": "Wähle den Standard-Renderer für diesen Stil aus.",
   "Paint properties": "Darstellungseigenschaften",

@@ -14,7 +14,7 @@ jobs:
     if: ${{ github.event_name == 'push' || github.event_name == 'pull_request' }}
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - run: docker build -t test-docker-image-build .
 
   # build the editor
@@ -30,8 +30,8 @@ jobs:
         os: [ ubuntu-latest, windows-latest, macos-latest ]
 
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
         with:
           node-version-file: '.nvmrc'
       - run: npm ci
@@ -47,8 +47,8 @@ jobs:
     if: ${{ github.event_name == 'push' || github.event_name == 'pull_request' }}
 
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
         with:
           node-version-file: '.nvmrc'
       - run: npm ci
@@ -61,7 +61,7 @@ jobs:
 
       # Build and upload desktop CLI artifacts
       - name: Set up Go
-        uses: actions/setup-go@v5
+        uses: actions/setup-go@v6
         with:
           go-version: ^1.23.x
           cache-dependency-path: desktop/go.sum
@@ -98,7 +98,7 @@ jobs:
     runs-on: ubuntu-22.04
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
       - run: npm ci
       - name: Cypress run
         uses: cypress-io/github-action@v6
