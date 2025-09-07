@@ -30,6 +30,12 @@
     "thumbnail": "https://maputnik.github.io/thumbnails/dark-matter.png"
   },
   {
+    "id": "locationiq-streets",
+    "title": "LocationIQ Streets",
+    "url": "https://tiles.locationiq.com/v3/streets/vector.json?key={key}",
+    "thumbnail": "https://static-assets.locationiq.com/maputnik/locationiq-streets.png"
+  },
+  {
     "id": "maptiler-basic-gl-style",
     "title": "MapTiler Basic",
     "url": "https://cdn.jsdelivr.net/gh/openmaptiles/klokantech-basic-gl-style@v1.10/style.json",

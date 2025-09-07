@@ -1,10 +1,10 @@
 import React from 'react'
-
-import latest from '@maplibre/maplibre-gl-style-spec/dist/latest.json'
+import {v8} from '@maplibre/maplibre-gl-style-spec'
 import Block from './Block'
 import InputSelect from './InputSelect'
 import InputString from './InputString'
 import { WithTranslation, withTranslation } from 'react-i18next';
+import { startCase } from 'lodash'
 
 type FieldTypeInternalProps = {
   value: string
@@ -16,8 +16,9 @@ type FieldTypeInternalProps = {
 
 const FieldTypeInternal: React.FC<FieldTypeInternalProps> = (props) => {
   const t = props.t;
+  const layerstypes: [string, string][] = Object.keys(v8.layer.type.values || {}).map(v => [v, startCase(v.replace(/-/g, ' '))]);
   return (
-    <Block label={t('Type')} fieldSpec={latest.layer.type}
+    <Block label={t('Type')} fieldSpec={v8.layer.type}
       data-wd-key={props.wdKey}
       error={props.error}
     >
@@ -26,17 +27,7 @@ const FieldTypeInternal: React.FC<FieldTypeInternalProps> = (props) => {
       )}
       {!props.disabled && (
         <InputSelect
-          options={[
-            ['background', 'Background'],
-            ['fill', 'Fill'],
-            ['line', 'Line'],
-            ['symbol', 'Symbol'],
-            ['raster', 'Raster'],
-            ['circle', 'Circle'],
-            ['fill-extrusion', 'Fill Extrusion'],
-            ['hillshade', 'Hillshade'],
-            ['heatmap', 'Heatmap'],
-          ]}
+          options={layerstypes}
           onChange={props.onChange}
           value={props.value}
           data-wd-key={props.wdKey + '.select'}

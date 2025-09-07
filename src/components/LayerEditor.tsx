@@ -4,6 +4,7 @@ import {Accordion} from 'react-accessible-accordion';
 import {MdMoreVert} from 'react-icons/md'
 import { IconContext } from 'react-icons'
 import {BackgroundLayerSpecification, LayerSpecification, SourceSpecification} from 'maplibre-gl';
+import {v8} from '@maplibre/maplibre-gl-style-spec';
 
 import FieldJson from './FieldJson'
 import FilterEditor from './FilterEditor'
@@ -17,23 +18,78 @@ import FieldComment from './FieldComment'
 import FieldSource from './FieldSource'
 import FieldSourceLayer from './FieldSourceLayer'
 import { changeType, changeProperty } from '../libs/layer'
-import layout from '../config/layout.json'
 import {formatLayerId} from '../libs/format';
 import { WithTranslation, withTranslation } from 'react-i18next';
 import { TFunction } from 'i18next';
+import { NON_SOURCE_LAYERS } from '../libs/non-source-layers';
 
+type MaputnikLayoutGroup = {
+  id: string;
+  title: string;
+  type: string;
+  fields: string[];
+}
 
-function getLayoutForType(type: LayerSpecification["type"], t: TFunction) {
-  return layout[type] ? {
-    ...layout[type],
-    groups: layout[type].groups.map(group => {
-      return {
-        ...group,
-        id: group.title.replace(/ /g, "_"),
-        title: t(group.title)
-      };
-    }),
-  } : layout.invalid;
+function getLayoutForSymbolType(t: TFunction): MaputnikLayoutGroup[] {
+  const groups: MaputnikLayoutGroup[] = [];
+  groups.push({
+    title: t("General layout properties"),
+    id: "General_layout_properties",
+    type: "properties",
+    fields: Object.keys(v8["layout_symbol"]).filter(f => f.startsWith("symbol-"))
+  });
+  groups.push({
+    title: t("Text layout properties"),
+    id: "Text_layout_properties",
+    type: "properties",
+    fields: Object.keys(v8["layout_symbol"]).filter(f => f.startsWith("text-"))
+  });
+  groups.push({
+    title: t("Icon layout properties"),
+    id: "Icon_layout_properties",
+    type: "properties",
+    fields: Object.keys(v8["layout_symbol"]).filter(f => f.startsWith("icon-"))
+  });
+  groups.push({
+    title: t("Text paint properties"),
+    id: "Text_paint_properties",
+    type: "properties",
+    fields: Object.keys(v8["paint_symbol"]).filter(f => f.startsWith("text-"))
+  });
+  groups.push({
+    title: t("Icon paint properties"),
+    id: "Icon_paint_properties",
+    type: "properties",
+    fields: Object.keys(v8["paint_symbol"]).filter(f => f.startsWith("icon-"))
+  });
+  return groups;
+}
+
+function getLayoutForType(type: LayerSpecification["type"], t: TFunction): MaputnikLayoutGroup[] {
+  if (Object.keys(v8.layer.type.values).indexOf(type) < 0) {
+    return []
+  }
+  if (type === "symbol") {
+    return getLayoutForSymbolType(t);
+  }
+  const groups: MaputnikLayoutGroup[] = [];
+  if (Object.keys(v8["paint_" + type]).length > 0) {
+    groups.push({
+      title: t("Paint properties"),
+      id: "Paint_properties",
+      type: "properties",
+      fields: Object.keys(v8["paint_" + type]),
+    });
+  }
+  if (Object.keys(v8["layout_" + type]).length > 0) {
+    groups.push({
+      title: t("Layout properties"),
+      id: "Layout_properties",
+      type: "properties",
+      fields: Object.keys(v8["layout_" + type])
+    });
+  }
+  return groups;
 }
 
 function layoutGroups(layerType: LayerSpecification["type"], t: TFunction): {id: string, title: string, type: string, fields?: string[]}[] {
@@ -53,13 +109,13 @@ function layoutGroups(layerType: LayerSpecification["type"], t: TFunction): {id:
     type: 'jsoneditor'
   }
   return [layerGroup, filterGroup]
-    .concat(getLayoutForType(layerType, t).groups)
+    .concat(getLayoutForType(layerType, t))
     .concat([editorGroup])
 }
 
 type LayerEditorInternalProps = {
   layer: LayerSpecification
-  sources: {[key: string]: SourceSpecification}
+  sources: {[key: string]: SourceSpecification & {layers: string[]}}
   vectorLayers: {[key: string]: any}
   spec: object
   onLayerChanged(...args: unknown[]): unknown
@@ -89,11 +145,10 @@ class LayerEditorInternal extends React.Component<LayerEditorInternalProps, Laye
   constructor(props: LayerEditorInternalProps) {
     super(props)
 
-    //TODO: Clean this up and refactor into function
     const editorGroups: {[keys:string]: boolean} = {}
-    layoutGroups(this.props.layer.type, props.t).forEach(group => {
+    for (const group of layoutGroups(this.props.layer.type, props.t)) {
       editorGroups[group.title] = true
-    })
+    }
 
     this.state = { editorGroups }
   }
@@ -101,11 +156,11 @@ class LayerEditorInternal extends React.Component<LayerEditorInternalProps, Laye
   static getDerivedStateFromProps(props: Readonly<LayerEditorInternalProps>, state: LayerEditorState) {
     const additionalGroups = { ...state.editorGroups }
 
-    getLayoutForType(props.layer.type, props.t).groups.forEach(group => {
+    for (const group of getLayoutForType(props.layer.type, props.t)) {
       if(!(group.title in additionalGroups)) {
         additionalGroups[group.title] = true
       }
-    })
+    }
 
     return {
       editorGroups: additionalGroups
@@ -153,7 +208,7 @@ class LayerEditorInternal extends React.Component<LayerEditorInternalProps, Laye
     let sourceLayerIds;
     const layer = this.props.layer as Exclude<LayerSpecification, BackgroundLayerSpecification>;
     if(Object.prototype.hasOwnProperty.call(this.props.sources, layer.source)) {
-      sourceLayerIds = (this.props.sources[layer.source] as any).layers;
+      sourceLayerIds = this.props.sources[layer.source].layers;
     }
 
     switch(type) {
@@ -180,7 +235,7 @@ class LayerEditorInternal extends React.Component<LayerEditorInternalProps, Laye
         onChange={v => this.changeProperty(null, 'source', v)}
       />
       }
-      {['background', 'raster', 'hillshade', 'heatmap'].indexOf(this.props.layer.type) < 0 &&
+      {!NON_SOURCE_LAYERS.includes(this.props.layer.type) &&
         <FieldSourceLayer
           error={errorData['source-layer']}
           sourceLayerIds={sourceLayerIds}
