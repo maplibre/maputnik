@@ -16,11 +16,12 @@ import FieldMinZoom from './FieldMinZoom'
 import FieldMaxZoom from './FieldMaxZoom'
 import FieldComment from './FieldComment'
 import FieldSource from './FieldSource'
-import FieldSourceLayer, { NON_SOURCE_LAYERS } from './FieldSourceLayer'
+import FieldSourceLayer from './FieldSourceLayer'
 import { changeType, changeProperty } from '../libs/layer'
 import {formatLayerId} from '../libs/format';
 import { WithTranslation, withTranslation } from 'react-i18next';
 import { TFunction } from 'i18next';
+import { NON_SOURCE_LAYERS } from '../libs/non-source-layers';
 
 type MaputnikLayoutGroup = {
   id: string;
@@ -32,36 +33,36 @@ type MaputnikLayoutGroup = {
 function getLayoutForSymbolType(t: TFunction): MaputnikLayoutGroup[] {
   const groups: MaputnikLayoutGroup[] = [];
   groups.push({
-      title: t("General layout properties"),
-      id: "General_layout_properties",
-      type: "properties",
-      fields: Object.keys(v8["layout_symbol"]).filter(f => f.startsWith("symbol-"))
-    });
-    groups.push({
-      title: t("Text layout properties"),
-      id: "Text_layout_properties",
-      type: "properties",
-      fields: Object.keys(v8["layout_symbol"]).filter(f => f.startsWith("text-"))
-    });
-    groups.push({
-      title: t("Icon layout properties"),
-      id: "Icon_layout_properties",
-      type: "properties",
-      fields: Object.keys(v8["layout_symbol"]).filter(f => f.startsWith("icon-"))
-    });
-    groups.push({
-      title: t("Text paint properties"),
-      id: "Text_paint_properties",
-      type: "properties",
-      fields: Object.keys(v8["paint_symbol"]).filter(f => f.startsWith("text-"))
-    });
-    groups.push({
-      title: t("Icon paint properties"),
-      id: "Icon_paint_properties",
-      type: "properties",
-      fields: Object.keys(v8["paint_symbol"]).filter(f => f.startsWith("icon-"))
-    });
-    return groups;
+    title: t("General layout properties"),
+    id: "General_layout_properties",
+    type: "properties",
+    fields: Object.keys(v8["layout_symbol"]).filter(f => f.startsWith("symbol-"))
+  });
+  groups.push({
+    title: t("Text layout properties"),
+    id: "Text_layout_properties",
+    type: "properties",
+    fields: Object.keys(v8["layout_symbol"]).filter(f => f.startsWith("text-"))
+  });
+  groups.push({
+    title: t("Icon layout properties"),
+    id: "Icon_layout_properties",
+    type: "properties",
+    fields: Object.keys(v8["layout_symbol"]).filter(f => f.startsWith("icon-"))
+  });
+  groups.push({
+    title: t("Text paint properties"),
+    id: "Text_paint_properties",
+    type: "properties",
+    fields: Object.keys(v8["paint_symbol"]).filter(f => f.startsWith("text-"))
+  });
+  groups.push({
+    title: t("Icon paint properties"),
+    id: "Icon_paint_properties",
+    type: "properties",
+    fields: Object.keys(v8["paint_symbol"]).filter(f => f.startsWith("icon-"))
+  });
+  return groups;
 }
 
 function getLayoutForType(type: LayerSpecification["type"], t: TFunction): MaputnikLayoutGroup[] {

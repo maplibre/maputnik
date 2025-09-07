@@ -677,13 +677,13 @@ export default class App extends React.Component<any, AppState> {
 
         try {
           if (url!.startsWith("pmtiles://")) {
-          const json = await (new PMTiles(url!.substring(10))).getTileJson("");
-          setVectorLayers(json);
-        } else {
-          const response = await fetch(url!, { mode: 'cors' });
-          const json = await response.json();
-          setVectorLayers(json);
-        }
+            const json = await (new PMTiles(url!.substring(10))).getTileJson("");
+            setVectorLayers(json);
+          } else {
+            const response = await fetch(url!, { mode: 'cors' });
+            const json = await response.json();
+            setVectorLayers(json);
+          }
         } catch(err) {
           console.error(`Failed to process source for url: '${url}', ${err}`);
         }

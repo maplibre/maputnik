@@ -5,9 +5,10 @@ import Modal from './Modal'
 import FieldType from './FieldType'
 import FieldId from './FieldId'
 import FieldSource from './FieldSource'
-import FieldSourceLayer, { NON_SOURCE_LAYERS } from './FieldSourceLayer'
+import FieldSourceLayer from './FieldSourceLayer'
 import type {LayerSpecification, SourceSpecification} from 'maplibre-gl'
 import { WithTranslation, withTranslation } from 'react-i18next';
+import { NON_SOURCE_LAYERS } from '../libs/non-source-layers'
 
 type ModalAddInternalProps = {
   layers: LayerSpecification[]
@@ -63,7 +64,7 @@ class ModalAddInternal extends React.Component<ModalAddInternalProps, ModalAddSt
 
     if(Object.keys(props.sources).length > 0) {
       state.source = Object.keys(this.props.sources)[0];
-      let sourceLayers = this.props.sources[state.source].layers || []
+      const sourceLayers = this.props.sources[state.source].layers || []
       if (sourceLayers.length > 0) {
         state['source-layer'] = sourceLayers[0];
       }
@@ -103,22 +104,22 @@ class ModalAddInternal extends React.Component<ModalAddInternalProps, ModalAddSt
   getSources(type: LayerSpecification["type"]) {
 
     switch(type) {
-      case 'background':
-        return [];
-      case 'hillshade':
-      case 'color-relief':
-        return Object.entries(this.props.sources).filter(([_, v]) => v.type === 'raster-dem').map(([k, _]) => k);
-      case 'raster':
-          return Object.entries(this.props.sources).filter(([_, v]) => v.type === 'raster').map(([k, _]) => k);
-      case 'heatmap':
-      case 'circle':
-      case 'fill':
-      case 'fill-extrusion':
-      case 'line':
-      case 'symbol':
-        return Object.entries(this.props.sources).filter(([_, v]) => v.type === 'vector' || v.type === 'geojson').map(([k, _]) => k);
-      default:
-        return [];
+    case 'background':
+      return [];
+    case 'hillshade':
+    case 'color-relief':
+      return Object.entries(this.props.sources).filter(([_, v]) => v.type === 'raster-dem').map(([k, _]) => k);
+    case 'raster':
+      return Object.entries(this.props.sources).filter(([_, v]) => v.type === 'raster').map(([k, _]) => k);
+    case 'heatmap':
+    case 'circle':
+    case 'fill':
+    case 'fill-extrusion':
+    case 'line':
+    case 'symbol':
+      return Object.entries(this.props.sources).filter(([_, v]) => v.type === 'vector' || v.type === 'geojson').map(([k, _]) => k);
+    default:
+      return [];
     }
   }
 

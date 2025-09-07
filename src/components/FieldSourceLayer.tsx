@@ -5,8 +5,6 @@ import Block from './Block'
 import InputAutocomplete from './InputAutocomplete'
 import { WithTranslation, withTranslation } from 'react-i18next';
 
-export const NON_SOURCE_LAYERS = ['background', 'raster', 'hillshade', 'heatmap', 'color-relief']
-
 type FieldSourceLayerInternalProps = {
   value?: string
   onChange?(...args: unknown[]): unknown
