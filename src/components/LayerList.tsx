@@ -7,7 +7,7 @@ import LayerListItem from './LayerListItem'
 import ModalAdd from './ModalAdd'
 
 import {SortEndHandler, SortableContainer} from 'react-sortable-hoc';
-import type {LayerSpecification} from 'maplibre-gl';
+import type {LayerSpecification, SourceSpecification} from 'maplibre-gl';
 import generateUniqueId from '../libs/document-uid';
 import { findClosestCommonPrefix, layerPrefix } from '../libs/layer';
 import { WithTranslation, withTranslation } from 'react-i18next';
@@ -20,7 +20,7 @@ type LayerListContainerProps = {
   onLayerDestroy?(...args: unknown[]): unknown
   onLayerCopy(...args: unknown[]): unknown
   onLayerVisibilityToggle(...args: unknown[]): unknown
-  sources: object
+  sources: Record<string, SourceSpecification & {layers: string[]}>;
   errors: any[]
 };
 type LayerListContainerInternalProps = LayerListContainerProps & WithTranslation;

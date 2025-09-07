@@ -6,8 +6,9 @@ import FieldType from './FieldType'
 import FieldId from './FieldId'
 import FieldSource from './FieldSource'
 import FieldSourceLayer from './FieldSourceLayer'
-import type {LayerSpecification} from 'maplibre-gl'
+import type {LayerSpecification, SourceSpecification} from 'maplibre-gl'
 import { WithTranslation, withTranslation } from 'react-i18next';
+import { NON_SOURCE_LAYERS } from '../libs/non-source-layers'
 
 type ModalAddInternalProps = {
   layers: LayerSpecification[]
@@ -15,7 +16,7 @@ type ModalAddInternalProps = {
   isOpen: boolean
   onOpenToggle(open: boolean): unknown
   // A dict of source id's and the available source layers
-  sources: any
+  sources: Record<string, SourceSpecification & {layers: string[]}>;
 } & WithTranslation;
 
 type ModalAddState = {
@@ -41,7 +42,7 @@ class ModalAddInternal extends React.Component<ModalAddInternalProps, ModalAddSt
 
     if(this.state.type !== 'background') {
       layer.source = this.state.source
-      if(this.state.type !== 'raster' && this.state['source-layer']) {
+      if(!NON_SOURCE_LAYERS.includes(this.state.type) && this.state['source-layer']) {
         layer['source-layer'] = this.state['source-layer']
       }
     }
@@ -61,9 +62,12 @@ class ModalAddInternal extends React.Component<ModalAddInternalProps, ModalAddSt
       error: null,
     }
 
-    if(props.sources.length > 0) {
+    if(Object.keys(props.sources).length > 0) {
       state.source = Object.keys(this.props.sources)[0];
-      state['source-layer'] = this.props.sources[state.source as keyof ModalAddInternalProps["sources"]][0]
+      const sourceLayers = this.props.sources[state.source].layers || []
+      if (sourceLayers.length > 0) {
+        state['source-layer'] = sourceLayers[0];
+      }
     }
     this.state = state;
   }
@@ -97,39 +101,26 @@ class ModalAddInternal extends React.Component<ModalAddInternalProps, ModalAddSt
     return sourceObj.layers || [];
   }
 
-  getSources(type: string) {
-    const sources = [];
+  getSources(type: LayerSpecification["type"]) {
 
-    const types = {
-      vector: [
-        "fill",
-        "line",
-        "symbol",
-        "circle",
-        "fill-extrusion",
-        "heatmap"
-      ],
-      raster: [
-        "raster"
-      ],
-      geojson: [
-        "fill",
-        "line",
-        "symbol",
-        "circle",
-        "fill-extrusion",
-        "heatmap"
-      ]
+    switch(type) {
+    case 'background':
+      return [];
+    case 'hillshade':
+    case 'color-relief':
+      return Object.entries(this.props.sources).filter(([_, v]) => v.type === 'raster-dem').map(([k, _]) => k);
+    case 'raster':
+      return Object.entries(this.props.sources).filter(([_, v]) => v.type === 'raster').map(([k, _]) => k);
+    case 'heatmap':
+    case 'circle':
+    case 'fill':
+    case 'fill-extrusion':
+    case 'line':
+    case 'symbol':
+      return Object.entries(this.props.sources).filter(([_, v]) => v.type === 'vector' || v.type === 'geojson').map(([k, _]) => k);
+    default:
+      return [];
     }
-
-    for(const [key, val] of Object.entries(this.props.sources) as any) {
-      const valType = val.type as keyof typeof types;
-      if(types[valType] && types[valType].indexOf(type) > -1) {
-        sources.push(key);
-      }
-    }
-
-    return sources;
   }
 
 
@@ -182,7 +173,7 @@ class ModalAddInternal extends React.Component<ModalAddInternalProps, ModalAddSt
         onChange={(v: string) => this.setState({ source: v })}
       />
         }
-        {['background', 'raster', 'hillshade', 'heatmap'].indexOf(this.state.type) < 0 &&
+        {!NON_SOURCE_LAYERS.includes(this.state.type) &&
       <FieldSourceLayer
         isFixed={true}
         sourceLayerIds={layers}

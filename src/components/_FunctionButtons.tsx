@@ -17,7 +17,7 @@ class FunctionInputButtonsInternal extends React.Component<FunctionInputButtonsI
     const t = this.props.t;
     let makeZoomInputButton, makeDataInputButton, expressionInputButton;
 
-    if (this.props.fieldSpec.expression.parameters.includes('zoom')) {
+    if (this.props.fieldSpec.expression?.parameters.includes('zoom')) {
       expressionInputButton = (
         <InputButton
           className="maputnik-make-zoom-function"
