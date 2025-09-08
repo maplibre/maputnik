@@ -324,8 +324,8 @@ class LayerEditorInternal extends React.Component<LayerEditorInternalProps, Laye
     const layout = this.props.layer.layout || {}
 
     const items: {[key: string]: {
-      text: string, 
-      handler: () => void, 
+      text: string,
+      handler: () => void,
       disabled?: boolean,
       wdKey?: string
     }} = {
