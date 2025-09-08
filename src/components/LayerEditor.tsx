@@ -22,6 +22,7 @@ import {formatLayerId} from '../libs/format';
 import { WithTranslation, withTranslation } from 'react-i18next';
 import { TFunction } from 'i18next';
 import { NON_SOURCE_LAYERS } from '../libs/non-source-layers';
+import { OnMoveLayerCallback } from '../libs/definitions';
 
 type MaputnikLayoutGroup = {
   id: string;
@@ -120,7 +121,7 @@ type LayerEditorInternalProps = {
   spec: object
   onLayerChanged(...args: unknown[]): unknown
   onLayerIdChange(...args: unknown[]): unknown
-  onMoveLayer(...args: unknown[]): unknown
+  onMoveLayer: OnMoveLayerCallback
   onLayerDestroy(...args: unknown[]): unknown
   onLayerCopy(...args: unknown[]): unknown
   onLayerVisibilityToggle(...args: unknown[]): unknown

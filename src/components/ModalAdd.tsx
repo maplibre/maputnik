@@ -175,7 +175,6 @@ class ModalAddInternal extends React.Component<ModalAddInternalProps, ModalAddSt
         }
         {!NON_SOURCE_LAYERS.includes(this.state.type) &&
       <FieldSourceLayer
-        isFixed={true}
         sourceLayerIds={layers}
         value={this.state['source-layer']}
         onChange={(v: string) => this.setState({ 'source-layer': v })}
