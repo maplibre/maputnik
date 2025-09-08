@@ -7,17 +7,7 @@ on:
     branches: [ main ]
 
 jobs:
-  build-docker:
-    name: build docker
-    runs-on: ubuntu-latest
 
-    if: ${{ github.event_name == 'push' || github.event_name == 'pull_request' }}
-
-    steps:
-      - uses: actions/checkout@v5
-      - run: docker build -t test-docker-image-build .
-
-  # build the editor
   build-node:
     name: "build on ${{ matrix.os }}"
     runs-on: ${{ matrix.os }}
