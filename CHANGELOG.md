@@ -18,6 +18,7 @@
 - Replace react-autocomplete with Downshift in the autocomplete component
 - Add LocationIQ as supported map provider with access token field and gallery style
 - Revmove support for `debug` and `localport` url parameters
+- Replace react-sortable-hoc with dnd-kit to avoid react console warnings and also use a maintained library
 - _...Add new stuff here..._
 
 ### 🐞 Bug fixes
