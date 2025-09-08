@@ -10,7 +10,7 @@ $(BINARY): $(GOBIN)/gox $(GOBIN)/go-winres $(SOURCES) version.go rice-box.go win
 	$(GOBIN)/go-winres make --product-version=$(VERSION)
 	$(GOBIN)/gox -osarch "windows/amd64 linux/amd64 darwin/amd64" -output "bin/{{.OS}}/${BINARY}"
 
-bin/linux/$(BINARY): 
+bin/linux/$(BINARY):
 	$(GOBIN)/go-winres make --product-version=$(VERSION)
 	$(GOBIN)/gox -osarch "linux/amd64" -output "bin/{{.OS}}/${BINARY}"
 
