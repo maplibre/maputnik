@@ -110,7 +110,7 @@ export class MaputnikDriver {
       styleProperties: "geojson" | "raster" | "both" | "layer" | "",
       zoom?: number
     ) => {
-      let url = new URL(baseUrl);
+      const url = new URL(baseUrl);
       switch (styleProperties) {
       case "geojson":
         url.searchParams.set("style", baseUrl + "geojson-style.json");
