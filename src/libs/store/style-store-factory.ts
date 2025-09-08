@@ -1,3 +1,4 @@
+/// <reference types="vite/client" />
 import { IStyleStore, OnStyleChangedCallback } from "../definitions";
 import { getStyleUrlAndRemoveItIfNeeded, loadStyleUrl } from "../urlopen";
 import { ApiStyleStore } from "./apistore";
@@ -7,7 +8,7 @@ export async function createStyleStore(onStyleChanged: OnStyleChangedCallback): 
   const styleUrl = getStyleUrlAndRemoveItIfNeeded();
   const useStyleUrl = styleUrl && window.confirm("Load style from URL: " + styleUrl + " and discard current changes?");
   let styleStore: IStyleStore;
-  if ((import.meta as any).env.MODE === 'desktop' && !useStyleUrl) {
+  if (import.meta.env.MODE === 'desktop' && !useStyleUrl) {
     const apiStyleStore = new ApiStyleStore({
       onLocalStyleChange: mapStyle => onStyleChanged(mapStyle, {save: false}),
     });
