@@ -10,6 +10,8 @@ export type OnStyleChangedOpts = {
 
 export type OnStyleChangedCallback = (newStyle: StyleSpecificationWithId, opts: OnStyleChangedOpts={}) => void;
 
+export type OnMoveLayerCallback = (move: {oldIndex: number; newIndex: number}) => void;
+
 export interface IStyleStore {
   getLatestStyle(): Promise<StyleSpecificationWithId>;
   save(mapStyle: StyleSpecificationWithId): StyleSpecificationWithId;

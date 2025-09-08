@@ -33,7 +33,6 @@ import { RevisionStore } from '../libs/revisions'
 import LayerWatcher from '../libs/layerwatcher'
 import tokens from '../config/tokens.json'
 import isEqual from 'lodash.isequal'
-import { SortEnd } from 'react-sortable-hoc';
 import { MapOptions } from 'maplibre-gl';
 import { OnStyleChangedOpts, StyleSpecificationWithId } from '../libs/definitions'
 
@@ -436,7 +435,7 @@ export default class App extends React.Component<any, AppState> {
     if (errors.length > 0) {
       dirtyMapStyle = cloneDeep(newStyle);
 
-      errors.forEach(error => {
+      for (const error of errors) {
         const {message} = error;
         if (message) {
           try {
@@ -446,10 +445,10 @@ export default class App extends React.Component<any, AppState> {
             unset(dirtyMapStyle, unsetPath);
           }
           catch (err) {
-            console.warn(err);
+            console.warn(message + " " + err);
           }
         }
-      });
+      }
     }
 
     if(newStyle.glyphs !== this.state.mapStyle.glyphs) {
@@ -496,7 +495,7 @@ export default class App extends React.Component<any, AppState> {
     })
   }
 
-  onMoveLayer = (move: SortEnd) => {
+  onMoveLayer = (move: {oldIndex: number; newIndex: number}) => {
     let { oldIndex, newIndex } = move;
     let layers = this.state.mapStyle.layers;
     oldIndex = clamp(oldIndex, 0, layers.length-1);

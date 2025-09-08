@@ -1,16 +1,28 @@
 import React, {type JSX} from 'react'
 import classnames from 'classnames'
 import lodash from 'lodash';
+import {
+  DndContext,
+  PointerSensor,
+  useSensor,
+  useSensors,
+  closestCenter,
+  DragEndEvent,
+} from '@dnd-kit/core';
+import {
+  SortableContext,
+  verticalListSortingStrategy,
+} from '@dnd-kit/sortable';
 
 import LayerListGroup from './LayerListGroup'
 import LayerListItem from './LayerListItem'
 import ModalAdd from './ModalAdd'
 
-import {SortEndHandler, SortableContainer} from 'react-sortable-hoc';
 import type {LayerSpecification, SourceSpecification} from 'maplibre-gl';
 import generateUniqueId from '../libs/document-uid';
 import { findClosestCommonPrefix, layerPrefix } from '../libs/layer';
 import { WithTranslation, withTranslation } from 'react-i18next';
+import { OnMoveLayerCallback } from '../libs/definitions';
 
 type LayerListContainerProps = {
   layers: LayerSpecification[]
@@ -242,7 +254,6 @@ class LayerListContainerInternal extends React.Component<LayerListContainerInter
             'maputnik-layer-list-item-group-last': idxInGroup == layers.length - 1 && layers.length > 1,
             'maputnik-layer-list-item--error': !!layerError
           })}
-          index={idx}
           key={layer.key}
           id={layer.key}
           layerId={layer.id}
@@ -319,20 +330,35 @@ class LayerListContainerInternal extends React.Component<LayerListContainerInter
 }
 
 const LayerListContainer = withTranslation()(LayerListContainerInternal);
-const LayerListContainerSortable = SortableContainer((props: LayerListContainerProps) => <LayerListContainer {...props} />)
 
 type LayerListProps = LayerListContainerProps & {
-  onMoveLayer: SortEndHandler
+  onMoveLayer: OnMoveLayerCallback
 };
 
-export default class LayerList extends React.Component<LayerListProps> {
-  render() {
-    return <LayerListContainerSortable
-      {...this.props}
-      helperClass='sortableHelper'
-      onSortEnd={this.props.onMoveLayer.bind(this)}
-      useDragHandle={true}
-      shouldCancelStart={() => false}
-    />
-  }
+const LayerList: React.FC<LayerListProps> = (props) => {
+  const sensors = useSensors(useSensor(PointerSensor));
+
+  const handleDragEnd = (event: DragEndEvent) => {
+    const {active, over} = event;
+    if (!over) return;
+
+    const oldIndex = props.layers.findIndex(layer => layer.id === active.id);
+    const newIndex = props.layers.findIndex(layer => layer.id === over.id);
+
+    if (oldIndex !== -1 && newIndex !== -1 && oldIndex !== newIndex) {
+      props.onMoveLayer({oldIndex, newIndex});
+    }
+  };
+
+  const layerIds = props.layers.map(layer => layer.id);
+
+  return (
+    <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
+      <SortableContext items={layerIds} strategy={verticalListSortingStrategy}>
+        <LayerListContainer {...props} />
+      </SortableContext>
+    </DndContext>
+  );
 }
+
+export default LayerList;

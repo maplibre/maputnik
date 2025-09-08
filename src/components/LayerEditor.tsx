@@ -22,6 +22,7 @@ import {formatLayerId} from '../libs/format';
 import { WithTranslation, withTranslation } from 'react-i18next';
 import { TFunction } from 'i18next';
 import { NON_SOURCE_LAYERS } from '../libs/non-source-layers';
+import { OnMoveLayerCallback } from '../libs/definitions';
 
 type MaputnikLayoutGroup = {
   id: string;
@@ -120,7 +121,7 @@ type LayerEditorInternalProps = {
   spec: object
   onLayerChanged(...args: unknown[]): unknown
   onLayerIdChange(...args: unknown[]): unknown
-  onMoveLayer(...args: unknown[]): unknown
+  onMoveLayer: OnMoveLayerCallback
   onLayerDestroy(...args: unknown[]): unknown
   onLayerCopy(...args: unknown[]): unknown
   onLayerVisibilityToggle(...args: unknown[]): unknown
@@ -322,30 +323,38 @@ class LayerEditorInternal extends React.Component<LayerEditorInternalProps, Laye
 
     const layout = this.props.layer.layout || {}
 
-    const items: {[key: string]: {text: string, handler: () => void, disabled?: boolean}} = {
+    const items: {[key: string]: {
+      text: string,
+      handler: () => void,
+      disabled?: boolean,
+      wdKey?: string
+    }} = {
       delete: {
         text: t("Delete"),
-        handler: () => this.props.onLayerDestroy(this.props.layerIndex)
+        handler: () => this.props.onLayerDestroy(this.props.layerIndex),
+        wdKey: "menu-delete-layer"
       },
       duplicate: {
         text: t("Duplicate"),
-        handler: () => this.props.onLayerCopy(this.props.layerIndex)
+        handler: () => this.props.onLayerCopy(this.props.layerIndex),
+        wdKey: "menu-duplicate-layer"
       },
       hide: {
         text: (layout.visibility === "none") ? t("Show") : t("Hide"),
-        handler: () => this.props.onLayerVisibilityToggle(this.props.layerIndex)
+        handler: () => this.props.onLayerVisibilityToggle(this.props.layerIndex),
+        wdKey: "menu-hide-layer"
       },
       moveLayerUp: {
         text: t("Move layer up"),
-        // Not actually used...
         disabled: this.props.isFirstLayer,
-        handler: () => this.moveLayer(-1)
+        handler: () => this.moveLayer(-1),
+        wdKey: "menu-move-layer-up"
       },
       moveLayerDown: {
         text: t("Move layer down"),
-        // Not actually used...
         disabled: this.props.isLastLayer,
-        handler: () => this.moveLayer(+1)
+        handler: () => this.moveLayer(+1),
+        wdKey: "menu-move-layer-down"
       }
     }
 
@@ -382,7 +391,7 @@ class LayerEditorInternal extends React.Component<LayerEditorInternalProps, Laye
                     {Object.keys(items).map((id) => {
                       const item = items[id];
                       return <li key={id}>
-                        <MenuItem value={id} className='more-menu__menu__item'>
+                        <MenuItem value={id} className='more-menu__menu__item' data-wd-key={item.wdKey}>
                           {item.text}
                         </MenuItem>
                       </li>
