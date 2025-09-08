@@ -1,7 +1,7 @@
 FROM golang:1.23-alpine AS builder
 WORKDIR /maputnik
 
-RUN apk add --no-cache nodejs npm make git
+RUN apk add --no-cache nodejs npm make git gcc g++ libc-dev
 
 # Build maputnik
 COPY . .
