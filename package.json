@@ -8,6 +8,7 @@
     "start": "vite",
     "build": "tsc && vite build --base=/maputnik/",
     "build-desktop": "tsc && vite build --base=/ && cd desktop && make",
+    "build-linux": "tsc && vite build --base=/ && cd desktop && make bin/linux/maputnik",
     "i18n:refresh": "i18next 'src/**/*.{ts,tsx,js,jsx}'",
     "lint": "eslint",
     "test": "cypress run",

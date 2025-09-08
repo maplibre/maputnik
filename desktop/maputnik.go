@@ -5,8 +5,7 @@ import (
 	"net/http"
 	"os"
 	"path/filepath"
-
-        "github.com/GeertJohan/go.rice"
+    "github.com/GeertJohan/go.rice"
 	"github.com/gorilla/handlers"
 	"github.com/gorilla/mux"
 	"github.com/maputnik/desktop/filewatch"

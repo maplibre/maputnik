@@ -1,16 +1,15 @@
-FROM node:22 as builder
+FROM golang:1.23-alpine AS builder
 WORKDIR /maputnik
 
-# Only copy package.json to prevent npm install from running on every build
-COPY package.json package-lock.json .npmrc ./
-RUN npm ci
+RUN apk add --no-cache nodejs npm make git
 
 # Build maputnik
 COPY . .
-RUN npx vite build
+RUN npm ci
+RUN go install github.com/GeertJohan/go.rice/rice@latest
+RUN CGO_ENABLED=1 GOOS=linux npm run build-linux
 
-#---------------------------------------------------------------------------
-# Create a clean nginx-alpine slim image with just the build results
-FROM nginx:alpine-slim
-
-COPY --from=builder /maputnik/dist /usr/share/nginx/html/
+FROM alpine:latest
+WORKDIR /app
+COPY --from=builder /maputnik/desktop/bin/linux ./
+ENTRYPOINT ["/app/maputnik"]
