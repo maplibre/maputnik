@@ -341,10 +341,10 @@ const LayerList: React.FC<LayerListProps> = (props) => {
   const handleDragEnd = (event: DragEndEvent) => {
     const {active, over} = event;
     if (!over) return;
-    
+
     const oldIndex = props.layers.findIndex(layer => layer.id === active.id);
     const newIndex = props.layers.findIndex(layer => layer.id === over.id);
-    
+
     if (oldIndex !== -1 && newIndex !== -1 && oldIndex !== newIndex) {
       props.onMoveLayer({oldIndex, newIndex});
     }

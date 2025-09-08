@@ -110,7 +110,7 @@ const LayerListItem = React.forwardRef<HTMLLIElement, LayerListItemProps>((props
   };
 
   const visibilityAction = visibility === 'visible' ? 'show' : 'hide';
-  
+
   // Cast ref to MutableRefObject since we know from the codebase that's what's always passed
   const refObject = ref as React.MutableRefObject<HTMLLIElement | null> | null;
 
