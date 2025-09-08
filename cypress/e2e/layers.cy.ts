@@ -378,8 +378,57 @@ describe("layers", () => {
     });
 
     it("groups", () => {
-      // TODO
-      // Click each of the layer groups.
+      when.modal.open();
+      const id1 = when.modal.fillLayers({
+        id: "aa",
+        type: "line",
+        layer: "example",
+      });
+
+      when.modal.open();
+      const id2 = when.modal.fillLayers({
+        id: "aa-2",
+        type: "line",
+        layer: "example",
+      });
+
+      when.modal.open();
+      const id3 = when.modal.fillLayers({
+        id: "b",
+        type: "line",
+        layer: "example",
+      });
+
+      then(get.elementByTestId("layer-list-item:" + id1)).shouldBeVisible();
+      then(get.elementByTestId("layer-list-item:" + id2)).shouldNotBeVisible();
+      then(get.elementByTestId("layer-list-item:" + id3)).shouldBeVisible();
+      when.click("layer-list-group:aa-0");
+      then(get.elementByTestId("layer-list-item:" + id1)).shouldBeVisible();
+      then(get.elementByTestId("layer-list-item:" + id2)).shouldBeVisible();
+      then(get.elementByTestId("layer-list-item:" + id3)).shouldBeVisible();
+      when.click("layer-list-item:" + id2);
+      when.click("skip-target-layer-editor");
+      when.click("menu-move-layer-down");
+      then(get.elementByTestId("layer-list-group:aa-0")).shouldNotExist();
+      then(get.styleFromLocalStorage()).shouldDeepNestedInclude({
+        layers: [
+          {
+            id: "aa",
+            type: "line",
+            source: "example",
+          },
+          {
+            id: "b",
+            type: "line",
+            source: "example",
+          },
+          {
+            id: "aa-2",
+            type: "line",
+            source: "example",
+          },
+        ],
+      });
     });
   });
 
@@ -495,9 +544,7 @@ describe("layers", () => {
     });
   });
 
-
   describe("layereditor jsonlint should error", ()=>{
-
     it("add", () => {
       const id = when.modal.fillLayers({
         type: "circle",
@@ -521,6 +568,44 @@ describe("layers", () => {
 
       const error = get.element('.CodeMirror-lint-marker-error');
       error.should('exist');
+    });
+  });
+
+  describe("drag and drop", () => {
+    it("move layer should update local storage", () => {
+      when.modal.open();
+      const firstId = when.modal.fillLayers({
+        id: "a",
+        type: "background",
+      });
+      when.modal.open();
+      const secondId = when.modal.fillLayers({
+        id: "b",
+        type: "background",
+      });
+      when.modal.open();
+      const thirdId = when.modal.fillLayers({
+        id: "c",
+        type: "background",
+      });
+      when.dragAndDrop(get.elementByTestId("layer-list-item:" + firstId), get.elementByTestId("layer-list-item:" + thirdId));
+
+      then(get.styleFromLocalStorage()).shouldDeepNestedInclude({
+        layers: [
+          {
+            id: secondId,
+            type: "background",
+          },
+          {
+            id: thirdId,
+            type: "background",
+          },
+          {
+            id: firstId,
+            type: "background",
+          },
+        ],
+      });
     });
   });
 });

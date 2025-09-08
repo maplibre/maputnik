@@ -94,8 +94,8 @@ export class MaputnikDriver {
   public when = {
     ...this.helper.when,
     modal: this.modalDriver.when,
-    within: (selector: string, fn: () => void) => {
-      this.helper.when.within(fn, selector);
+    doWithin: (selector: string, fn: () => void) => {
+      this.helper.when.doWithin(fn, selector);
     },
     tab: () => this.helper.get.element("body").tab(),
     waitForExampleFileResponse: () => {
@@ -145,7 +145,7 @@ export class MaputnikDriver {
     },
 
     selectWithin: (selector: string, value: string) => {
-      this.when.within(selector, () => {
+      this.when.doWithin(selector, () => {
         this.helper.get.element("select").select(value);
       });
     },
