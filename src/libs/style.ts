@@ -34,7 +34,7 @@ function ensureHasNoInteractive(style: StyleSpecificationWithId) {
   }
 }
 
-function ensureHasNoRefs(style: StyleSpecification & {id: string}) {
+function ensureHasNoRefs(style: StyleSpecificationWithId) {
   return {
     ...style,
     layers: derefLayers(style.layers)

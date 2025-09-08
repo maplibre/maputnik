@@ -285,7 +285,7 @@ export default class App extends React.Component<any, AppState> {
     window.removeEventListener("keydown", this.handleKeyPress);
   }
 
-  saveStyle(snapshotStyle: StyleSpecification & {id: string}) {
+  saveStyle(snapshotStyle: StyleSpecificationWithId) {
     this.styleStore?.save(snapshotStyle)
   }
 
@@ -463,7 +463,7 @@ export default class App extends React.Component<any, AppState> {
       this.revisionStore.addRevision(newStyle);
     }
     if (opts.save) {
-      this.saveStyle(newStyle as StyleSpecification & {id: string});
+      this.saveStyle(newStyle);
     }
 
     this.setState({
