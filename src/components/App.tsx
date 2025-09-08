@@ -163,7 +163,6 @@ export default class App extends React.Component<any, AppState> {
         open: false,
         shortcuts: false,
         export: false,
-        // TODO: Disabled for now, this should be opened on the Nth visit to the editor
         debug: false,
       },
       maplibreGlDebugOptions: {
