@@ -17,6 +17,7 @@
 - Refactor Field components to use arrow function syntax
 - Replace react-autocomplete with Downshift in the autocomplete component
 - Add LocationIQ as supported map provider with access token field and gallery style
+- Use maputnik go binary for the docker image to allow file watching
 - _...Add new stuff here..._
 
 ### 🐞 Bug fixes
