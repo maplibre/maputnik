@@ -1,7 +1,7 @@
 import style from './style'
 import { StyleSpecificationWithId } from './definitions';
 
-export function getStyleUrlAndRemoveItIfNeeded(): string | null {
+export function getStyleUrlFromAddressbarAndRemoveItIfNeeded(): string | null {
   const initialUrl = new URL(window.location.href);
   const styleUrl = initialUrl.searchParams.get('style');
   if (styleUrl) {
