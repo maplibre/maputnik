@@ -14,12 +14,12 @@ type FieldTypeInternalProps = {
   disabled?: boolean
 } & WithTranslation;
 
-const FieldTypeInternal: React.FC<FieldTypeInternalProps> = ({ 
-  t, 
-  value, 
-  wdKey, 
-  onChange, 
-  error, 
+const FieldTypeInternal: React.FC<FieldTypeInternalProps> = ({
+  t,
+  value,
+  wdKey,
+  onChange,
+  error,
   disabled = false
 }) => {
   const layerstypes: [string, string][] = Object.keys(v8.layer.type.values || {}).map(v => [v, startCase(v.replace(/-/g, ' '))]);
