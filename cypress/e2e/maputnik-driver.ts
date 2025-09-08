@@ -110,25 +110,25 @@ export class MaputnikDriver {
       styleProperties: "geojson" | "raster" | "both" | "layer" | "",
       zoom?: number
     ) => {
-      let url = "";
+      let url = new URL(baseUrl);
       switch (styleProperties) {
       case "geojson":
-        url += `?style=${baseUrl}geojson-style.json`;
+        url.searchParams.set("style", baseUrl + "geojson-style.json");
         break;
       case "raster":
-        url += `?style=${baseUrl}raster-style.json`;
+        url.searchParams.set("style", baseUrl + "raster-style.json");
         break;
       case "both":
-        url += `?style=${baseUrl}geojson-raster-style.json`;
+        url.searchParams.set("style", baseUrl + "geojson-raster-style.json");
         break;
       case "layer":
-        url += `?style=${baseUrl}/example-layer-style.json`;
+        url.searchParams.set("style", baseUrl + "example-layer-style.json");
         break;
       }
       if (zoom) {
-        url += `#${zoom}/41.3805/2.1635`;
+        url.hash = `#${zoom}/41.3805/2.1635`;
       }
-      this.helper.when.visit(baseUrl + url);
+      this.helper.when.visit(url.toString());
       if (styleProperties) {
         this.helper.when.acceptConfirm();
       }
