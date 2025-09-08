@@ -126,7 +126,7 @@ export class MaputnikDriver {
         break;
       }
       if (zoom) {
-        url.hash = `#${zoom}/41.3805/2.1635`;
+        url.hash = `${zoom}/41.3805/2.1635`;
       }
       this.helper.when.visit(url.toString());
       if (styleProperties) {
