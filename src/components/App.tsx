@@ -435,7 +435,7 @@ export default class App extends React.Component<any, AppState> {
     if (errors.length > 0) {
       dirtyMapStyle = cloneDeep(newStyle);
 
-      for (let error of errors) {
+      for (const error of errors) {
         const {message} = error;
         if (message) {
           try {
