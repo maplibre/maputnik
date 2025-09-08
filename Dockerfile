@@ -6,7 +6,6 @@ RUN apk add --no-cache nodejs npm make git gcc g++ libc-dev
 # Build maputnik
 COPY . .
 RUN npm ci
-RUN go install github.com/GeertJohan/go.rice/rice@latest
 RUN CGO_ENABLED=1 GOOS=linux npm run build-linux
 
 FROM alpine:latest
