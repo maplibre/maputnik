@@ -110,19 +110,19 @@ export class MaputnikDriver {
       styleProperties: "geojson" | "raster" | "both" | "layer" | "",
       zoom?: number
     ) => {
-      let url = "?debug";
+      let url = "";
       switch (styleProperties) {
       case "geojson":
-        url += `&style=${baseUrl}geojson-style.json`;
+        url += `?style=${baseUrl}geojson-style.json`;
         break;
       case "raster":
-        url += `&style=${baseUrl}raster-style.json`;
+        url += `?style=${baseUrl}raster-style.json`;
         break;
       case "both":
-        url += `&style=${baseUrl}geojson-raster-style.json`;
+        url += `?style=${baseUrl}geojson-raster-style.json`;
         break;
       case "layer":
-        url += `&style=${baseUrl}/example-layer-style.json`;
+        url += `?style=${baseUrl}/example-layer-style.json`;
         break;
       }
       if (zoom) {

@@ -3,7 +3,6 @@ import Slugify from 'slugify'
 import {saveAs} from 'file-saver'
 import {version} from 'maplibre-gl/package.json'
 import {format} from '@maplibre/maplibre-gl-style-spec'
-import type {StyleSpecification} from 'maplibre-gl'
 import {MdMap, MdSave} from 'react-icons/md'
 import {WithTranslation, withTranslation} from 'react-i18next';
 
@@ -12,6 +11,7 @@ import InputButton from './InputButton'
 import Modal from './Modal'
 import style from '../libs/style'
 import fieldSpecAdditional from '../libs/field-spec-additional'
+import type {OnStyleChangedCallback, StyleSpecificationWithId} from '../libs/definitions'
 
 
 const MAPLIBRE_GL_VERSION = version;
@@ -19,8 +19,8 @@ const showSaveFilePickerAvailable = typeof window.showSaveFilePicker === "functi
 
 
 type ModalExportInternalProps = {
-  mapStyle: StyleSpecification & { id: string }
-  onStyleChanged(...args: unknown[]): unknown
+  mapStyle: StyleSpecificationWithId
+  onStyleChanged: OnStyleChangedCallback
   isOpen: boolean
   onOpenToggle(...args: unknown[]): unknown
   onSetFileHandle(fileHandle: FileSystemFileHandle | null): unknown

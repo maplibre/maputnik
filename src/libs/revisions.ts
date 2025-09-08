@@ -1,7 +1,7 @@
-import type {StyleSpecification} from "maplibre-gl";
+import { StyleSpecificationWithId } from "./definitions";
 
 export class RevisionStore {
-  revisions: (StyleSpecification & {id: string})[];
+  revisions: StyleSpecificationWithId[];
   currentIdx: number;
 
 
@@ -18,7 +18,7 @@ export class RevisionStore {
     return this.revisions[this.currentIdx]
   }
 
-  addRevision(revision: StyleSpecification & {id: string}) {
+  addRevision(revision: StyleSpecificationWithId) {
     // clear any "redo" revisions once a change is made
     // and ensure current index is at end of list
     this.revisions = this.revisions.slice(0, this.currentIdx + 1);

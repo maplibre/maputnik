@@ -3,7 +3,7 @@ import react from "@vitejs/plugin-react";
 import { defineConfig } from "vite";
 import istanbul from "vite-plugin-istanbul";
 
-export default defineConfig({
+export default defineConfig(({ mode }) => ({
   server: {
     port: 8888,
   },
@@ -27,7 +27,9 @@ export default defineConfig({
       forceBuildInstrument: true, //Instrument the source code for cypress runs
     }),
   ],
+  base: mode === "desktop" ? "/" : "/maputnik/",
   define: {
     global: "window",
+    __mode__: JSON.stringify(mode)
   },
-});
+}));

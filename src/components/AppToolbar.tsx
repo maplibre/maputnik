@@ -16,6 +16,7 @@ import pkgJson from '../../package.json'
 import maputnikLogo from 'maputnik-design/logos/logo-color.svg?inline'
 import { withTranslation, WithTranslation } from 'react-i18next';
 import { supportedLanguages } from '../i18n';
+import type { OnStyleChangedCallback } from '../libs/definitions';
 
 // This is required because of <https://stackoverflow.com/a/49846426>, there isn't another way to detect support that I'm aware of.
 const browser = detect();
@@ -93,9 +94,9 @@ export type MapState = "map" | "inspect" | "filter-achromatopsia" | "filter-deut
 type AppToolbarInternalProps = {
   mapStyle: object
   inspectModeEnabled: boolean
-  onStyleChanged(...args: unknown[]): unknown
+  onStyleChanged: OnStyleChangedCallback
   // A new style has been uploaded
-  onStyleOpen(...args: unknown[]): unknown
+  onStyleOpen: OnStyleChangedCallback
   // A dict of source id's and the available source layers
   sources: object
   children?: React.ReactNode

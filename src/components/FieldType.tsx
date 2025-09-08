@@ -14,31 +14,33 @@ type FieldTypeInternalProps = {
   disabled?: boolean
 } & WithTranslation;
 
-const FieldTypeInternal: React.FC<FieldTypeInternalProps> = (props) => {
-  const t = props.t;
+const FieldTypeInternal: React.FC<FieldTypeInternalProps> = ({ 
+  t, 
+  value, 
+  wdKey, 
+  onChange, 
+  error, 
+  disabled = false
+}) => {
   const layerstypes: [string, string][] = Object.keys(v8.layer.type.values || {}).map(v => [v, startCase(v.replace(/-/g, ' '))]);
   return (
     <Block label={t('Type')} fieldSpec={v8.layer.type}
-      data-wd-key={props.wdKey}
-      error={props.error}
+      data-wd-key={wdKey}
+      error={error}
     >
-      {props.disabled && (
-        <InputString value={props.value} disabled={true} />
+      {disabled && (
+        <InputString value={value} disabled={true} />
       )}
-      {!props.disabled && (
+      {!disabled && (
         <InputSelect
           options={layerstypes}
-          onChange={props.onChange}
-          value={props.value}
-          data-wd-key={props.wdKey + '.select'}
+          onChange={onChange}
+          value={value}
+          data-wd-key={wdKey + '.select'}
         />
       )}
     </Block>
   );
-};
-
-FieldTypeInternal.defaultProps = {
-  disabled: false,
 };
 
 const FieldType = withTranslation()(FieldTypeInternal);
