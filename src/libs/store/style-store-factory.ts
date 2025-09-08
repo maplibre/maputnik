@@ -3,13 +3,11 @@ import { getStyleUrlAndRemoveItIfNeeded, loadStyleUrl } from "../urlopen";
 import { ApiStyleStore } from "./apistore";
 import { StyleStore } from "./stylestore";
 
-declare const __mode__: 'desktop' | 'production' | 'development';
-
 export async function createStyleStore(onStyleChanged: OnStyleChangedCallback): Promise<IStyleStore> {
   const styleUrl = getStyleUrlAndRemoveItIfNeeded();
   const useStyleUrl = styleUrl && window.confirm("Load style from URL: " + styleUrl + " and discard current changes?");
   let styleStore: IStyleStore;
-  if (__mode__ === 'desktop' && !useStyleUrl) {
+  if ((import.meta as any).env.MODE === 'desktop' && !useStyleUrl) {
     const apiStyleStore = new ApiStyleStore({
       onLocalStyleChange: mapStyle => onStyleChanged(mapStyle, {save: false}),
     });

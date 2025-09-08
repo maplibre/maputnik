@@ -29,7 +29,6 @@ export default defineConfig(({ mode }) => ({
   ],
   base: mode === "desktop" ? "/" : "/maputnik/",
   define: {
-    global: "window",
-    __mode__: JSON.stringify(mode)
+    global: "window"
   },
 }));
