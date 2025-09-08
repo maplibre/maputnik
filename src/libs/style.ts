@@ -1,6 +1,7 @@
 import {derefLayers} from '@maplibre/maplibre-gl-style-spec'
 import type {StyleSpecification, LayerSpecification} from 'maplibre-gl'
 import tokens from '../config/tokens.json'
+import type {StyleSpecificationWithId} from './definitions'
 
 // Empty style is always used if no style could be restored or fetched
 const emptyStyle = ensureStyleValidity({
@@ -13,15 +14,14 @@ function generateId() {
   return Math.random().toString(36).substring(2, 9)
 }
 
-function ensureHasId(style: StyleSpecification & { id?: string }): StyleSpecification & { id: string } {
+function ensureHasId(style: StyleSpecification & { id?: string }): StyleSpecificationWithId {
   if(!('id' in style) || !style.id) {
     style.id = generateId();
-    return style as StyleSpecification & { id: string };
   }
-  return style as StyleSpecification & { id: string };
+  return style as StyleSpecificationWithId;
 }
 
-function ensureHasNoInteractive(style: StyleSpecification & {id: string}) {
+function ensureHasNoInteractive(style: StyleSpecificationWithId) {
   const changedLayers = style.layers.map(layer => {
     const changedLayer: LayerSpecification & { interactive?: any } = { ...layer }
     delete changedLayer.interactive
@@ -34,14 +34,14 @@ function ensureHasNoInteractive(style: StyleSpecification & {id: string}) {
   }
 }
 
-function ensureHasNoRefs(style: StyleSpecification & {id: string}) {
+function ensureHasNoRefs(style: StyleSpecificationWithId) {
   return {
     ...style,
     layers: derefLayers(style.layers)
   }
 }
 
-function ensureStyleValidity(style: StyleSpecification): StyleSpecification & { id: string } {
+function ensureStyleValidity(style: StyleSpecification): StyleSpecificationWithId {
   return ensureHasNoInteractive(ensureHasNoRefs(ensureHasId(style)))
 }
 

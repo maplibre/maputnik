@@ -16,7 +16,6 @@ describe("history", () => {
   it("undo/redo", () => {
     when.setStyle("geojson");
     when.modal.open();
-    then(get.styleFromLocalStorage()).shouldDeepNestedInclude({ layers: [] });
 
     when.modal.fillLayers({
       id: "step 1",

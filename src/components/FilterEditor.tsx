@@ -1,7 +1,7 @@
 import React from 'react'
 import {mdiTableRowPlusAfter} from '@mdi/js';
 import {isEqual} from 'lodash';
-import {ExpressionSpecification, LegacyFilterSpecification, StyleSpecification} from 'maplibre-gl'
+import {ExpressionSpecification, LegacyFilterSpecification} from 'maplibre-gl'
 import {latest, migrate, convertFilter} from '@maplibre/maplibre-gl-style-spec'
 import {mdiFunctionVariant} from '@mdi/js';
 
@@ -14,6 +14,7 @@ import InputButton from './InputButton'
 import Doc from './Doc'
 import ExpressionProperty from './_ExpressionProperty';
 import { WithTranslation, withTranslation } from 'react-i18next';
+import type { StyleSpecificationWithId } from '../libs/definitions';
 
 
 function combiningFilter(props: FilterEditorInternalProps): LegacyFilterSpecification | ExpressionSpecification {
@@ -39,7 +40,7 @@ function migrateFilter(filter: LegacyFilterSpecification | ExpressionSpecificati
   return (migrate(createStyleFromFilter(filter) as any).layers[0] as any).filter;
 }
 
-function createStyleFromFilter(filter: LegacyFilterSpecification | ExpressionSpecification): StyleSpecification & {id: string} {
+function createStyleFromFilter(filter: LegacyFilterSpecification | ExpressionSpecification): StyleSpecificationWithId {
   return {
     "id": "tmp",
     "version": 8,
