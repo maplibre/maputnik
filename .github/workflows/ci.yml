@@ -114,7 +114,7 @@ jobs:
         uses: cypress-io/github-action@v6
         with:
           build: docker build -t maputnik .
-          start: docker run --rm maputnik --port=8888
+          start: docker run --rm --network host maputnik --port=8888
           browser: chrome
       - name: Upload coverage reports to Codecov
         uses: codecov/codecov-action@v5
