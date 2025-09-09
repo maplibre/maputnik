@@ -41,9 +41,16 @@
     flex: 1;
     display: flex;
     cursor: grab;
-
+    align-items: center;
     svg {
       margin-right: 4px;
+    }
+  }
+
+  [dir="rtl"] &-item-handle {
+    svg {
+      margin-right: 0;
+      margin-left: 4px;
     }
   }
 
@@ -286,6 +293,11 @@
     border: solid 1px vars.$color-midgray;
     right: 0;
     min-width: 120px;
+  }
+
+  [dir="rtl"] &__menu {
+    left: 0;
+    right: auto;
   }
 
   &__button__svg {
