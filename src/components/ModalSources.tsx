@@ -1,7 +1,7 @@
 import React from 'react'
 import {MdAddCircleOutline, MdDelete} from 'react-icons/md'
 import latest from '@maplibre/maplibre-gl-style-spec/dist/latest.json'
-import type {GeoJSONSourceSpecification, RasterDEMSourceSpecification, RasterSourceSpecification, SourceSpecification, StyleSpecification, VectorSourceSpecification} from 'maplibre-gl'
+import type {GeoJSONSourceSpecification, RasterDEMSourceSpecification, RasterSourceSpecification, SourceSpecification, VectorSourceSpecification} from 'maplibre-gl'
 import { WithTranslation, withTranslation } from 'react-i18next';
 
 import Modal from './Modal'
@@ -13,6 +13,7 @@ import ModalSourcesTypeEditor, { EditorMode } from './ModalSourcesTypeEditor'
 import style from '../libs/style'
 import { deleteSource, addSource, changeSource } from '../libs/source'
 import publicSources from '../config/tilesets.json'
+import { OnStyleChangedCallback, StyleSpecificationWithId } from '../libs/definitions';
 
 
 type PublicSourceProps = {
@@ -270,10 +271,10 @@ class AddSource extends React.Component<AddSourceProps, AddSourceState> {
 }
 
 type ModalSourcesInternalProps = {
-  mapStyle: StyleSpecification
+  mapStyle: StyleSpecificationWithId
   isOpen: boolean
   onOpenToggle(...args: unknown[]): unknown
-  onStyleChanged(...args: unknown[]): unknown
+  onStyleChanged: OnStyleChangedCallback
 } & WithTranslation;
 
 class ModalSourcesInternal extends React.Component<ModalSourcesInternalProps> {

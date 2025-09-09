@@ -12,10 +12,11 @@ import FieldEnum from './FieldEnum'
 import FieldColor from './FieldColor'
 import Modal from './Modal'
 import fieldSpecAdditional from '../libs/field-spec-additional'
+import type {OnStyleChangedCallback, StyleSpecificationWithId} from '../libs/definitions';
 
 type ModalSettingsInternalProps = {
-  mapStyle: StyleSpecification
-  onStyleChanged(...args: unknown[]): unknown
+  mapStyle: StyleSpecificationWithId
+  onStyleChanged: OnStyleChangedCallback
   onChangeMetadataProperty(...args: unknown[]): unknown
   isOpen: boolean
   onOpenToggle(...args: unknown[]): unknown
@@ -62,7 +63,7 @@ class ModalSettingsInternal extends React.Component<ModalSettingsInternalProps> 
   changeTerrainProperty(property: keyof TerrainSpecification, value: any) {
     const terrain = {
       ...this.props.mapStyle.terrain,
-    }
+    } as TerrainSpecification;
 
     if (value === undefined) {
       delete terrain[property];

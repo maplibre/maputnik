@@ -27,17 +27,14 @@ import ModalDebug from './ModalDebug'
 
 import {downloadGlyphsMetadata, downloadSpriteMetadata} from '../libs/metadata'
 import style from '../libs/style'
-import { initialStyleUrl, loadStyleUrl, removeStyleQuerystring } from '../libs/urlopen'
 import { undoMessages, redoMessages } from '../libs/diffmessage'
-import { StyleStore } from '../libs/stylestore'
-import { ApiStyleStore } from '../libs/apistore'
+import { createStyleStore, type IStyleStore } from '../libs/store/style-store-factory'
 import { RevisionStore } from '../libs/revisions'
 import LayerWatcher from '../libs/layerwatcher'
 import tokens from '../config/tokens.json'
 import isEqual from 'lodash.isequal'
-import Debug from '../libs/debug'
-import { SortEnd } from 'react-sortable-hoc';
 import { MapOptions } from 'maplibre-gl';
+import { OnStyleChangedOpts, StyleSpecificationWithId } from '../libs/definitions'
 
 // Buffer must be defined globally for @maplibre/maplibre-gl-style-spec validate() function to succeed.
 window.Buffer = buffer.Buffer;
@@ -83,12 +80,6 @@ function updateRootSpec(spec: any, fieldName: string, newValues: any) {
   }
 }
 
-type OnStyleChangedOpts = {
-  save?: boolean
-  addRevision?: boolean
-  initialLoad?: boolean
-}
-
 type MappedErrors = {
   message: string
   parsed?: {
@@ -104,7 +95,7 @@ type MappedErrors = {
 type AppState = {
   errors: MappedErrors[],
   infos: string[],
-  mapStyle: StyleSpecification & {id: string},
+  mapStyle: StyleSpecificationWithId,
   dirtyMapStyle?: StyleSpecification,
   selectedLayerIndex: number,
   selectedLayerOriginalId?: string,
@@ -140,25 +131,56 @@ type AppState = {
 
 export default class App extends React.Component<any, AppState> {
   revisionStore: RevisionStore;
-  styleStore: StyleStore | ApiStyleStore;
+  styleStore: IStyleStore | null = null;
   layerWatcher: LayerWatcher;
 
   constructor(props: any) {
     super(props)
 
-    this.revisionStore = new RevisionStore()
-    const params = new URLSearchParams(window.location.search.substring(1))
-    let port = params.get("localport")
-    if (port == null && (window.location.port !== "80" && window.location.port !== "443")) {
-      port = window.location.port
+    this.revisionStore = new RevisionStore();
+    this.configureKeyboardShortcuts();
+
+    this.state = {
+      errors: [],
+      infos: [],
+      mapStyle: style.emptyStyle,
+      selectedLayerIndex: 0,
+      sources: {},
+      vectorLayers: {},
+      mapState: "map",
+      spec: latest,
+      mapView: {
+        zoom: 0,
+        center: {
+          lng: 0,
+          lat: 0,
+        },
+      },
+      isOpen: {
+        settings: false,
+        sources: false,
+        open: false,
+        shortcuts: false,
+        export: false,
+        debug: false,
+      },
+      maplibreGlDebugOptions: {
+        showTileBoundaries: false,
+        showCollisionBoxes: false,
+        showOverdrawInspector: false,
+      },
+      openlayersDebugOptions: {
+        debugToolbox: false,
+      },
+      fileHandle: null,
     }
-    this.styleStore = new ApiStyleStore({
-      onLocalStyleChange: mapStyle => this.onStyleChanged(mapStyle, {save: false}),
-      port: port,
-      host: params.get("localhost")
+
+    this.layerWatcher = new LayerWatcher({
+      onVectorLayersChange: v => this.setState({ vectorLayers: v })
     })
+  }
 
-
+  configureKeyboardShortcuts = () => {
     const shortcuts = [
       {
         key: "?",
@@ -228,74 +250,6 @@ export default class App extends React.Component<any, AppState> {
         }
       }
     })
-
-    const styleUrl = initialStyleUrl()
-    if(styleUrl && window.confirm("Load style from URL: " + styleUrl + " and discard current changes?")) {
-      this.styleStore = new StyleStore()
-      loadStyleUrl(styleUrl, mapStyle => this.onStyleChanged(mapStyle))
-      removeStyleQuerystring()
-    } else {
-      if(styleUrl) {
-        removeStyleQuerystring()
-      }
-      this.styleStore.init(err => {
-        if(err) {
-          console.log('Falling back to local storage for storing styles')
-          this.styleStore = new StyleStore()
-        }
-        this.styleStore.latestStyle(mapStyle => this.onStyleChanged(mapStyle, {initialLoad: true}))
-
-        if(Debug.enabled()) {
-          Debug.set("maputnik", "styleStore", this.styleStore);
-          Debug.set("maputnik", "revisionStore", this.revisionStore);
-        }
-      })
-    }
-
-    if(Debug.enabled()) {
-      Debug.set("maputnik", "revisionStore", this.revisionStore);
-      Debug.set("maputnik", "styleStore", this.styleStore);
-    }
-
-    this.state = {
-      errors: [],
-      infos: [],
-      mapStyle: style.emptyStyle,
-      selectedLayerIndex: 0,
-      sources: {},
-      vectorLayers: {},
-      mapState: "map",
-      spec: latest,
-      mapView: {
-        zoom: 0,
-        center: {
-          lng: 0,
-          lat: 0,
-        },
-      },
-      isOpen: {
-        settings: false,
-        sources: false,
-        open: false,
-        shortcuts: false,
-        export: false,
-        // TODO: Disabled for now, this should be opened on the Nth visit to the editor
-        debug: false,
-      },
-      maplibreGlDebugOptions: {
-        showTileBoundaries: false,
-        showCollisionBoxes: false,
-        showOverdrawInspector: false,
-      },
-      openlayersDebugOptions: {
-        debugToolbox: false,
-      },
-      fileHandle: null,
-    }
-
-    this.layerWatcher = new LayerWatcher({
-      onVectorLayersChange: v => this.setState({ vectorLayers: v })
-    })
   }
 
   handleKeyPress = (e: KeyboardEvent) => {
@@ -321,7 +275,8 @@ export default class App extends React.Component<any, AppState> {
     }
   }
 
-  componentDidMount() {
+  async componentDidMount() {
+    this.styleStore = await createStyleStore((mapStyle, opts) => this.onStyleChanged(mapStyle, opts));
     window.addEventListener("keydown", this.handleKeyPress);
   }
 
@@ -329,8 +284,8 @@ export default class App extends React.Component<any, AppState> {
     window.removeEventListener("keydown", this.handleKeyPress);
   }
 
-  saveStyle(snapshotStyle: StyleSpecification & {id: string}) {
-    this.styleStore.save(snapshotStyle)
+  saveStyle(snapshotStyle: StyleSpecificationWithId) {
+    this.styleStore?.save(snapshotStyle)
   }
 
   updateFonts(urlTemplate: string) {
@@ -371,7 +326,7 @@ export default class App extends React.Component<any, AppState> {
     this.onStyleChanged(changedStyle)
   }
 
-  onStyleChanged = (newStyle: StyleSpecification & {id: string}, opts: OnStyleChangedOpts={}) => {
+  onStyleChanged = (newStyle: StyleSpecificationWithId, opts: OnStyleChangedOpts={}): void => {
     opts = {
       save: true,
       addRevision: true,
@@ -480,7 +435,7 @@ export default class App extends React.Component<any, AppState> {
     if (errors.length > 0) {
       dirtyMapStyle = cloneDeep(newStyle);
 
-      errors.forEach(error => {
+      for (const error of errors) {
         const {message} = error;
         if (message) {
           try {
@@ -490,10 +445,10 @@ export default class App extends React.Component<any, AppState> {
             unset(dirtyMapStyle, unsetPath);
           }
           catch (err) {
-            console.warn(err);
+            console.warn(message + " " + err);
           }
         }
-      });
+      }
     }
 
     if(newStyle.glyphs !== this.state.mapStyle.glyphs) {
@@ -507,7 +462,7 @@ export default class App extends React.Component<any, AppState> {
       this.revisionStore.addRevision(newStyle);
     }
     if (opts.save) {
-      this.saveStyle(newStyle as StyleSpecification & {id: string});
+      this.saveStyle(newStyle);
     }
 
     this.setState({
@@ -540,7 +495,7 @@ export default class App extends React.Component<any, AppState> {
     })
   }
 
-  onMoveLayer = (move: SortEnd) => {
+  onMoveLayer = (move: {oldIndex: number; newIndex: number}) => {
     let { oldIndex, newIndex } = move;
     let layers = this.state.mapStyle.layers;
     oldIndex = clamp(oldIndex, 0, layers.length-1);
@@ -620,7 +575,7 @@ export default class App extends React.Component<any, AppState> {
     }, this.setStateInUrl);
   }
 
-  setDefaultValues = (styleObj: StyleSpecification & {id: string}) => {
+  setDefaultValues = (styleObj: StyleSpecificationWithId) => {
     const metadata: {[key: string]: string} = styleObj.metadata || {} as any
     if(metadata['maputnik:renderer'] === undefined) {
       const changedStyle = {
@@ -636,7 +591,7 @@ export default class App extends React.Component<any, AppState> {
     }
   }
 
-  openStyle = (styleObj: StyleSpecification & {id: string}, fileHandle: FileSystemFileHandle | null) => {
+  openStyle = (styleObj: StyleSpecificationWithId, fileHandle: FileSystemFileHandle | null) => {
     this.setState({fileHandle: fileHandle});
     styleObj = this.setDefaultValues(styleObj)
     this.onStyleChanged(styleObj)

@@ -1,7 +1,7 @@
-import style from './style'
-import {loadStyleUrl} from './urlopen'
-import publicSources from '../config/styles.json'
-import type {StyleSpecification} from 'maplibre-gl'
+import style from '../style'
+import {loadStyleUrl} from '../urlopen'
+import publicSources from '../../config/styles.json'
+import type {IStyleStore, StyleSpecificationWithId} from '../definitions'
 
 const storagePrefix = "maputnik"
 const stylePrefix = 'style'
@@ -13,8 +13,8 @@ const storageKeys = {
 const defaultStyleUrl = publicSources[0].url
 
 // Fetch a default style via URL and return it or a fallback style via callback
-export function loadDefaultStyle(cb: (...args: any[]) => void) {
-  loadStyleUrl(defaultStyleUrl, cb)
+export function loadDefaultStyle(): Promise<StyleSpecificationWithId> {
+  return loadStyleUrl(defaultStyleUrl);
 }
 
 // Return style ids and dates of all styles stored in local storage
@@ -51,7 +51,7 @@ function styleKey(styleId: string) {
 }
 
 // Manages many possible styles that are stored in the local storage
-export class StyleStore {
+export class StyleStore implements IStyleStore {
   /**
    * List of style ids
    */
@@ -61,10 +61,6 @@ export class StyleStore {
   // assume they do not change will working on it
   constructor() {
     this.mapStyles = loadStoredStyles();
-  }
-
-  init(cb: (...args: any[]) => void) {
-    cb(null)
   }
 
   // Delete entire style history
@@ -78,17 +74,21 @@ export class StyleStore {
   }
 
   // Find the last edited style
-  latestStyle(cb: (...args: any[]) => void) {
-    if(this.mapStyles.length === 0) return loadDefaultStyle(cb)
+  async getLatestStyle(): Promise<StyleSpecificationWithId> {
+    if(this.mapStyles.length === 0) {
+      return loadDefaultStyle();
+    }
     const styleId = window.localStorage.getItem(storageKeys.latest) as string;
     const styleItem = window.localStorage.getItem(styleKey(styleId))
 
-    if(styleItem) return cb(JSON.parse(styleItem))
-    loadDefaultStyle(cb)
+    if (styleItem) {
+      return JSON.parse(styleItem) as StyleSpecificationWithId;
+    }
+    return loadDefaultStyle();
   }
 
   // Save current style replacing previous version
-  save(mapStyle: StyleSpecification & { id: string }) {
+  save(mapStyle: StyleSpecificationWithId) {
     mapStyle = style.ensureStyleValidity(mapStyle)
     const key = styleKey(mapStyle.id)
 

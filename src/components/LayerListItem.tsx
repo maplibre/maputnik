@@ -1,20 +1,23 @@
 import React from 'react'
 import classnames from 'classnames'
-
 import {MdContentCopy, MdVisibility, MdVisibilityOff, MdDelete} from 'react-icons/md'
 import { IconContext } from 'react-icons'
+import {useSortable} from '@dnd-kit/sortable'
+import {CSS} from '@dnd-kit/utilities'
 
 import IconLayer from './IconLayer'
-import {SortableElement, SortableHandle} from 'react-sortable-hoc'
 
 
 type DraggableLabelProps = {
   layerId: string
   layerType: string
+  dragAttributes?: React.HTMLAttributes<HTMLElement>
+  dragListeners?: React.HTMLAttributes<HTMLElement>
 };
 
-const DraggableLabel = SortableHandle((props: DraggableLabelProps) => {
-  return <div className="maputnik-layer-list-item-handle">
+const DraggableLabel: React.FC<DraggableLabelProps> = (props) => {
+  const {dragAttributes, dragListeners} = props;
+  return <div className="maputnik-layer-list-item-handle" {...dragAttributes} {...dragListeners}>
     <IconLayer
       className="layer-handle__icon"
       type={props.layerType}
@@ -23,7 +26,7 @@ const DraggableLabel = SortableHandle((props: DraggableLabelProps) => {
       {props.layerId}
     </button>
   </div>
-});
+};
 
 type IconActionProps = {
   action: string
@@ -82,55 +85,80 @@ type LayerListItemProps = {
   onLayerVisibilityToggle?(...args: unknown[]): unknown
 };
 
-class LayerListItem extends React.Component<LayerListItemProps> {
-  static defaultProps = {
-    isSelected: false,
-    visibility: 'visible',
-    onLayerCopy: () => {},
-    onLayerDestroy: () => {},
-    onLayerVisibilityToggle: () => {},
-  }
+const LayerListItem = React.forwardRef<HTMLLIElement, LayerListItemProps>((props, ref) => {
+  const {
+    isSelected = false,
+    visibility = 'visible',
+    onLayerCopy = () => {},
+    onLayerDestroy = () => {},
+    onLayerVisibilityToggle = () => {},
+  } = props;
 
-  render() {
-    const visibilityAction = this.props.visibility === 'visible' ? 'show' : 'hide';
+  const {
+    attributes,
+    listeners,
+    setNodeRef,
+    transform,
+    transition,
+    isDragging,
+  } = useSortable({id: props.layerId});
 
-    return <IconContext.Provider value={{size: '14px'}}>
-      <li
-        id={this.props.id}
-        key={this.props.layerId}
-        onClick={_e => this.props.onLayerSelect(this.props.layerIndex)}
-        data-wd-key={"layer-list-item:"+this.props.layerId}
-        className={classnames({
-          "maputnik-layer-list-item": true,
-          "maputnik-layer-list-item-selected": this.props.isSelected,
-          [this.props.className!]: true,
-        })}>
-        <DraggableLabel {...this.props} />
-        <span style={{flexGrow: 1}} />
-        <IconAction
-          wdKey={"layer-list-item:"+this.props.layerId+":delete"}
-          action={'delete'}
-          classBlockName="delete"
-          onClick={_e => this.props.onLayerDestroy!(this.props.layerIndex)}
-        />
-        <IconAction
-          wdKey={"layer-list-item:"+this.props.layerId+":copy"}
-          action={'duplicate'}
-          classBlockName="duplicate"
-          onClick={_e => this.props.onLayerCopy!(this.props.layerIndex)}
-        />
-        <IconAction
-          wdKey={"layer-list-item:"+this.props.layerId+":toggle-visibility"}
-          action={visibilityAction}
-          classBlockName="visibility"
-          classBlockModifier={visibilityAction}
-          onClick={_e => this.props.onLayerVisibilityToggle!(this.props.layerIndex)}
-        />
-      </li>
-    </IconContext.Provider>
-  }
-}
+  const style = {
+    transform: CSS.Transform.toString(transform),
+    transition,
+    opacity: isDragging ? 0.5 : 1,
+  };
 
-const LayerListItemSortable = SortableElement<LayerListItemProps>((props: LayerListItemProps) => <LayerListItem {...props} />);
+  const visibilityAction = visibility === 'visible' ? 'show' : 'hide';
 
-export default LayerListItemSortable;
+  // Cast ref to MutableRefObject since we know from the codebase that's what's always passed
+  const refObject = ref as React.MutableRefObject<HTMLLIElement | null> | null;
+
+  return <IconContext.Provider value={{size: '14px'}}>
+    <li
+      ref={(node) => {
+        setNodeRef(node);
+        if (refObject) {
+          refObject.current = node;
+        }
+      }}
+      style={style}
+      id={props.id}
+      onClick={_e => props.onLayerSelect(props.layerIndex)}
+      data-wd-key={"layer-list-item:" + props.layerId}
+      className={classnames({
+        "maputnik-layer-list-item": true,
+        "maputnik-layer-list-item-selected": isSelected,
+        [props.className!]: true,
+      })}>
+      <DraggableLabel
+        layerId={props.layerId}
+        layerType={props.layerType}
+        dragAttributes={attributes}
+        dragListeners={listeners}
+      />
+      <span style={{flexGrow: 1}} />
+      <IconAction
+        wdKey={"layer-list-item:" + props.layerId+":delete"}
+        action={'delete'}
+        classBlockName="delete"
+        onClick={_e => onLayerDestroy!(props.layerIndex)}
+      />
+      <IconAction
+        wdKey={"layer-list-item:" + props.layerId+":copy"}
+        action={'duplicate'}
+        classBlockName="duplicate"
+        onClick={_e => onLayerCopy!(props.layerIndex)}
+      />
+      <IconAction
+        wdKey={"layer-list-item:"+props.layerId+":toggle-visibility"}
+        action={visibilityAction}
+        classBlockName="visibility"
+        classBlockModifier={visibilityAction}
+        onClick={_e => onLayerVisibilityToggle!(props.layerIndex)}
+      />
+    </li>
+  </IconContext.Provider>
+});
+
+export default LayerListItem;
