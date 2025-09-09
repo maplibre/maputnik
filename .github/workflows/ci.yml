@@ -7,17 +7,7 @@ on:
     branches: [ main ]
 
 jobs:
-  build-docker:
-    name: build docker
-    runs-on: ubuntu-latest
 
-    if: ${{ github.event_name == 'push' || github.event_name == 'pull_request' }}
-
-    steps:
-      - uses: actions/checkout@v5
-      - run: docker build -t test-docker-image-build .
-
-  # build the editor
   build-node:
     name: "build on ${{ matrix.os }}"
     runs-on: ${{ matrix.os }}
@@ -89,13 +79,9 @@ jobs:
           path: ./desktop/bin/windows/
 
   e2e-tests:
-    name: "E2E tests using ${{ matrix.browser }}"
-    strategy:
-      fail-fast: false
-      matrix:
-        browser: [ chrome ]
+    name: "E2E tests using chrome"
 
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v5
@@ -105,7 +91,27 @@ jobs:
         with:
           build: npm run build
           start: npm run start
-          browser: ${{ matrix.browser }}
+          browser: chrome
+      - name: Upload coverage reports to Codecov
+        uses: codecov/codecov-action@v5
+        with:
+          files: ${{ github.workspace }}/.nyc_output/out.json
+          verbose: true
+
+  e2e-tests-docker:
+    name: "E2E tests using chrome and docker"
+
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+      - run: npm ci
+      - name: Cypress run
+        uses: cypress-io/github-action@v6
+        with:
+          build: docker build -t maputnik .
+          start: docker run --rm --network host maputnik --port=8888
+          browser: chrome
       - name: Upload coverage reports to Codecov
         uses: codecov/codecov-action@v5
         with:

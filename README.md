@@ -18,8 +18,14 @@ targeted at developers and map designers.
 - In a Docker, run this command and browse to http://localhost:8888, Ctrl+C to stop the server.
 
 ```bash
-docker run -it --rm -p 8888:80 ghcr.io/maplibre/maputnik:main
+docker run -it --rm -p 8888:8000 ghcr.io/maplibre/maputnik:main
 ```
+
+To see the CLI options (for example file watching or style serving) run:
+```bash
+docker run -it --rm -p 8888:8000 ghcr.io/maplibre/maputnik:main --help
+```
+You might need to mount a volume (`-v`) to be able to use these options.
 
 ## Documentation
 
