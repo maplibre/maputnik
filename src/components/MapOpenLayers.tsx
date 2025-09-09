@@ -29,7 +29,7 @@ type MapOpenLayersInternalProps = {
   mapStyle: object
   accessToken?: string
   style?: object
-  onLayerSelect(...args: unknown[]): unknown
+  onLayerSelect(layerId: string): void
   debugToolbox: boolean
   replaceAccessTokens(...args: unknown[]): unknown
   onChange(...args: unknown[]): unknown

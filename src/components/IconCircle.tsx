@@ -1,9 +1,9 @@
-import React from 'react'
-import {MdCircle} from 'react-icons/md'
+import React, { type CSSProperties } from 'react'
+import {MdOutlineCircle} from 'react-icons/md'
 
-const IconCircle: React.FC<React.SVGProps<SVGSVGElement>> = (props) => {
+const IconCircle: React.FC<{style: CSSProperties | undefined}> = (props) => {
   return (
-    <MdCircle {...props} />
+    <MdOutlineCircle {...props} />
   )
 }
 export default IconCircle;

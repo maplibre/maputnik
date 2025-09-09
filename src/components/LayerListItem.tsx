@@ -21,6 +21,7 @@ const DraggableLabel: React.FC<DraggableLabelProps> = (props) => {
     <IconLayer
       className="layer-handle__icon"
       type={props.layerType}
+      style={{ width: '1em', height: '1em', verticalAlign: 'middle' }}
     />
     <button className="maputnik-layer-list-item-id">
       {props.layerId}
@@ -79,7 +80,7 @@ type LayerListItemProps = {
   isSelected?: boolean
   visibility?: string
   className?: string
-  onLayerSelect(...args: unknown[]): unknown
+  onLayerSelect(index: number): void;
   onLayerCopy?(...args: unknown[]): unknown
   onLayerDestroy?(...args: unknown[]): unknown
   onLayerVisibilityToggle?(...args: unknown[]): unknown

@@ -1,8 +1,7 @@
-import React from 'react'
+import React, { type CSSProperties } from 'react'
 import {MdPriorityHigh} from 'react-icons/md'
 
-
-const IconMissing: React.FC<React.SVGProps<SVGSVGElement>> = (props) => {
+const IconMissing: React.FC<{style: CSSProperties | undefined}> = (props) => {
   return (
     <MdPriorityHigh {...props} />
   )

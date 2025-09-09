@@ -28,7 +28,7 @@ type LayerListContainerProps = {
   layers: LayerSpecification[]
   selectedLayerIndex: number
   onLayersChange(layers: LayerSpecification[]): unknown
-  onLayerSelect(...args: unknown[]): unknown
+  onLayerSelect(index: number): void;
   onLayerDestroy?(...args: unknown[]): unknown
   onLayerCopy(...args: unknown[]): unknown
   onLayerVisibilityToggle(...args: unknown[]): unknown

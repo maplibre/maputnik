@@ -696,7 +696,7 @@ export default class App extends React.Component<any, AppState> {
         {...mapProps}
         onChange={this.onMapChange}
         debugToolbox={this.state.openlayersDebugOptions.debugToolbox}
-        onLayerSelect={this.onLayerSelect}
+        onLayerSelect={(layerId) => this.onLayerSelect(+layerId)}
       />
     } else {
 

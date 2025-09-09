@@ -61,7 +61,7 @@ function buildInspectStyle(originalMapStyle: StyleSpecification, coloredLayers: 
 
 type MapMaplibreGlInternalProps = {
   onDataChange?(event: {map: Map | null}): unknown
-  onLayerSelect(...args: unknown[]): unknown
+  onLayerSelect(index: number): void
   mapStyle: StyleSpecification
   inspectModeEnabled: boolean
   highlightedLayer?: HighlightedLayer
