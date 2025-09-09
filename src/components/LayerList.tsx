@@ -276,6 +276,7 @@ class LayerListContainerInternal extends React.Component<LayerListContainerInter
 
     return <section
       className="maputnik-layer-list"
+      data-wd-key="layer-list"
       role="complementary"
       aria-label={t("Layers list")}
       ref={this.scrollContainerRef}
