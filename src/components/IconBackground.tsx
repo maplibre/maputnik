@@ -3,7 +3,7 @@ import { BsDiamondFill } from 'react-icons/bs';
 
 const IconBackground: React.FC<{style: CSSProperties | undefined}> = (props) => {
   return (
-   <BsDiamondFill {...props} />
+    <BsDiamondFill {...props} />
   )
 }
 
