@@ -2,10 +2,9 @@ import React from 'react'
 import {MdPriorityHigh} from 'react-icons/md'
 
 
-export default class IconMissing extends React.Component {
-  render() {
-    return (
-      <MdPriorityHigh {...this.props} />
-    )
-  }
+const IconMissing: React.FC<React.SVGProps<SVGSVGElement>> = (props) => {
+  return (
+    <MdPriorityHigh {...props} />
+  )
 }
+export default IconMissing;

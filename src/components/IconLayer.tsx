@@ -13,20 +13,20 @@ type IconLayerProps = {
   className?: string
 };
 
-export default class IconLayer extends React.Component<IconLayerProps> {
-  render() {
-    const iconProps = { style: this.props.style }
-    switch(this.props.type) {
-    case 'fill-extrusion': return <IconBackground {...iconProps} />
-    case 'raster': return <IconFill {...iconProps} />
-    case 'hillshade': return <IconFill {...iconProps} />
-    case 'heatmap': return <IconFill {...iconProps} />
-    case 'fill': return <IconFill {...iconProps} />
-    case 'background': return <IconBackground {...iconProps} />
-    case 'line': return <IconLine {...iconProps} />
-    case 'symbol': return <IconSymbol {...iconProps} />
-    case 'circle': return <IconCircle {...iconProps} />
-    default: return <IconMissing {...iconProps} />
-    }
+const IconLayer: React.FC<IconLayerProps> = (props) => {
+  const iconProps = { style: props.style }
+  switch(props.type) {
+  case 'fill-extrusion': return <IconBackground {...iconProps} />
+  case 'raster': return <IconFill {...iconProps} />
+  case 'hillshade': return <IconFill {...iconProps} />
+  case 'heatmap': return <IconFill {...iconProps} />
+  case 'fill': return <IconFill {...iconProps} />
+  case 'background': return <IconBackground {...iconProps} />
+  case 'line': return <IconLine {...iconProps} />
+  case 'symbol': return <IconSymbol {...iconProps} />
+  case 'circle': return <IconCircle {...iconProps} />
+  default: return <IconMissing {...iconProps} />
   }
 }
+
+export default IconLayer;
