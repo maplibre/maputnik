@@ -4,6 +4,7 @@
 - _...Add new stuff here..._
 
 ### 🐞 Bug fixes
+
 - _...Add new stuff here..._
 
 ## 3.0.0
