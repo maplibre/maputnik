@@ -1,6 +1,6 @@
 {
   "name": "maputnik",
-  "version": "2.1.1",
+  "version": "3.0.0",
   "description": "A MapLibre GL visual style editor",
   "type": "module",
   "main": "''",
@@ -8,6 +8,7 @@
     "start": "vite",
     "build": "tsc && vite build --mode=production",
     "build-desktop": "tsc && vite build --mode=desktop && cd desktop && make",
+    "build-linux": "tsc && vite build --mode=desktop && cd desktop && make bin/linux/maputnik",
     "i18n:refresh": "i18next 'src/**/*.{ts,tsx,js,jsx}'",
     "lint": "eslint",
     "test": "cypress run",

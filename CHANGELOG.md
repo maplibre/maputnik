@@ -1,6 +1,15 @@
 ## main
 
 ### ✨ Features and improvements
+- _...Add new stuff here..._
+
+### 🐞 Bug fixes
+
+- _...Add new stuff here..._
+
+## 3.0.0
+
+### ✨ Features and improvements
 - Fix radio/delete filter buttons styling regression
 - Add german translation
 - Use same version number for web and desktop versions
@@ -17,9 +26,9 @@
 - Refactor Field components to use arrow function syntax
 - Replace react-autocomplete with Downshift in the autocomplete component
 - Add LocationIQ as supported map provider with access token field and gallery style
+- Use maputnik go binary for the docker image to allow file watching
 - Revmove support for `debug` and `localport` url parameters
 - Replace react-sortable-hoc with dnd-kit to avoid react console warnings and also use a maintained library
-- _...Add new stuff here..._
 
 ### 🐞 Bug fixes
 
@@ -27,7 +36,6 @@
 - Show an error when adding a layer with a duplicate ID
 - Replace deprecated `ReactDOM.render` usage with `createRoot` and drop the
   `DOMNodeRemoved` cleanup hack
-- _...Add new stuff here..._
 
 ## 2.1.1
 

@@ -2,14 +2,17 @@ SOURCEDIR=.
 SOURCES := $(shell find $(SOURCEDIR) -name '*.go')
 BINARY=maputnik
 VERSION := $(shell node -p "require('../package.json').version")
-GOPATH := $(if $(GOPATH),$(GOPATH),$(HOME)/go)
-GOBIN := $(if $(GOBIN),$(GOBIN),$(HOME)/go/bin)
+GOBIN := $(or $(shell if [ -d /go/bin ]; then echo "/go/bin"; fi),$(HOME)/go/bin)
 
 all: $(BINARY)
 
 $(BINARY): $(GOBIN)/gox $(GOBIN)/go-winres $(SOURCES) version.go rice-box.go winres/winres.json
 	$(GOBIN)/go-winres make --product-version=$(VERSION)
 	$(GOBIN)/gox -osarch "windows/amd64 linux/amd64 darwin/amd64" -output "bin/{{.OS}}/${BINARY}"
+
+bin/linux/$(BINARY): $(GOBIN)/gox $(GOBIN)/go-winres $(SOURCES) version.go rice-box.go winres/winres.json
+	$(GOBIN)/go-winres make --product-version=$(VERSION)
+	$(GOBIN)/gox -osarch "linux/amd64" -output "bin/{{.OS}}/${BINARY}"
 
 winres/winres.json: winres/winres_template.json
 	sed 's/{{.Version}}/$(VERSION)/g' winres/winres_template.json > $@
