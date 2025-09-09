@@ -97,7 +97,7 @@ describe("layers", () => {
           });
         });
       });
-      
+
       describe("when selecting a layer", () => {
         let secondId: string;
         beforeEach(() => {
