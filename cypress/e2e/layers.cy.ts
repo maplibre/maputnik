@@ -606,7 +606,8 @@ describe("layers", () => {
         id: "c",
         type: "background",
       });
-      when.dragAndDrop(get.elementByTestId("layer-list-item:" + firstId), get.elementByTestId("layer-list-item:" + thirdId));
+
+      when.dragAndDropWithWait("layer-list-item:" + firstId, "layer-list-item:" + thirdId);
 
       then(get.styleFromLocalStorage()).shouldDeepNestedInclude({
         layers: [

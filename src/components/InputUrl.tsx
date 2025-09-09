@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { JSX } from 'react'
 import InputString from './InputString'
 import SmallError from './SmallError'
 import { Trans, WithTranslation, withTranslation } from 'react-i18next';

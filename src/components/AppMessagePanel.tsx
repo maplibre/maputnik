@@ -7,7 +7,7 @@ type AppMessagePanelInternalProps = {
   errors?: unknown[]
   infos?: string[]
   mapStyle?: StyleSpecification
-  onLayerSelect?(...args: unknown[]): unknown
+  onLayerSelect?(index: number): void;
   currentLayer?: LayerSpecification
   selectedLayerIndex?: number
 } & WithTranslation;

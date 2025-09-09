@@ -28,7 +28,7 @@ type LayerListContainerProps = {
   layers: LayerSpecification[]
   selectedLayerIndex: number
   onLayersChange(layers: LayerSpecification[]): unknown
-  onLayerSelect(...args: unknown[]): unknown
+  onLayerSelect(index: number): void;
   onLayerDestroy?(...args: unknown[]): unknown
   onLayerCopy(...args: unknown[]): unknown
   onLayerVisibilityToggle(...args: unknown[]): unknown
@@ -50,7 +50,7 @@ class LayerListContainerInternal extends React.Component<LayerListContainerInter
     onLayerSelect: () => {},
   }
   selectedItemRef: React.RefObject<any>;
-  scrollContainerRef: React.RefObject<HTMLElement>;
+  scrollContainerRef: React.RefObject<HTMLElement | null>;
 
   constructor(props: LayerListContainerInternalProps) {
     super(props);
@@ -276,6 +276,7 @@ class LayerListContainerInternal extends React.Component<LayerListContainerInter
 
     return <section
       className="maputnik-layer-list"
+      data-wd-key="layer-list"
       role="complementary"
       aria-label={t("Layers list")}
       ref={this.scrollContainerRef}
