@@ -97,8 +97,26 @@ describe("layers", () => {
           });
         });
       });
+      
+      describe("when selecting a layer", () => {
+        let secondId: string;
+        beforeEach(() => {
+          when.modal.open();
+          secondId = when.modal.fillLayers({
+            id: "second-layer",
+            type: "background",
+          });
+        });
+        it("should show the selected layer in the editor", () => {
+          when.realClick("layer-list-item:" + secondId);
+          then(get.elementByTestId("layer-editor.layer-id.input")).shouldHaveValue(secondId);
+          when.realClick("layer-list-item:" + id);
+          then(get.elementByTestId("layer-editor.layer-id.input")).shouldHaveValue(id);
+        });
+      });
     });
   });
+
   describe("background", () => {
     it("add", () => {
       const id = when.modal.fillLayers({
