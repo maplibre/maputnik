@@ -173,7 +173,7 @@ class InputJsonInternal extends React.Component<InputJsonInternalProps, InputJso
       </div>
       <div
         className={classnames("codemirror-container", this.props.className)}
-        ref={(el) => this._el = el}
+        ref={(el) => {this._el = el}}
         style={style}
       />
     </div>

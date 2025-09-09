@@ -306,7 +306,7 @@ class MapMaplibreGlInternal extends React.Component<MapMaplibreGlInternalProps, 
       className="maputnik-map__map"
       role="region"
       aria-label={t("Map view")}
-      ref={x => this.container = x}
+      ref={x => {this.container = x}}
       data-wd-key="maplibre:map"
     ></div>
   }

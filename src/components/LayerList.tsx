@@ -50,7 +50,7 @@ class LayerListContainerInternal extends React.Component<LayerListContainerInter
     onLayerSelect: () => {},
   }
   selectedItemRef: React.RefObject<any>;
-  scrollContainerRef: React.RefObject<HTMLElement>;
+  scrollContainerRef: React.RefObject<HTMLElement | null>;
 
   constructor(props: LayerListContainerInternalProps) {
     super(props);

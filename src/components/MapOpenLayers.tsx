@@ -156,7 +156,7 @@ class MapOpenLayersInternal extends React.Component<MapOpenLayersInternalProps, 
     const t = this.props.t;
     return <div className="maputnik-ol-container">
       <div
-        ref={x => this.popupContainer = x}
+        ref={x => {this.popupContainer = x}}
         style={{background: "black"}}
         className="maputnik-popup"
       >
@@ -193,7 +193,7 @@ class MapOpenLayersInternal extends React.Component<MapOpenLayersInternalProps, 
       }
       <div
         className="maputnik-ol"
-        ref={x => this.container = x}
+        ref={x => {this.container = x}}
         role="region"
         aria-label={t("Map view")}
         style={{

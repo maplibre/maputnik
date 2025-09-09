@@ -122,7 +122,7 @@ export default class InputColor extends React.Component<InputColorProps> {
         spellCheck="false"
         autoComplete="off"
         className="maputnik-color"
-        ref={(input) => this.colorInput = input}
+        ref={(input) => {this.colorInput = input}}
         onClick={this.togglePicker}
         style={this.props.style}
         name={this.props.name}
