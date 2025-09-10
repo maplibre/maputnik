@@ -5,6 +5,7 @@
 
 ### 🐞 Bug fixes
 
+- Fixed an issue when clicking on a popup and then clicking on the map again
 - _...Add new stuff here..._
 
 ## 3.0.0
