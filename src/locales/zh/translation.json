@@ -89,6 +89,8 @@
   "Layer ID already exists": "图层ID已存在",
   "Debug": "调试",
   "Options": "选项",
+  "Links": "链接",
+  "<0>Open in OSM</0>. Opens the current view on openstreetmap.org": "在 openstreetmap.org 打开当前视图",
   "Save Style": "保存样式",
   "Save the JSON style to your computer.": "将JSON样式保存到您的计算机。",
   "Save as": "另存为",
@@ -195,6 +197,5 @@
   "Style Renderer": "样式渲染器",
   "Choose the default Maputnik renderer for this style.": "为这种样式选择默认的Maputnik渲染器。",
   "Language": "语言",
-  "<0>Open in OSM</0> — Opens the current view on openstreetmap.org": "在 openstreetmap.org 打开当前视图",
   "Layer options": "图层选项"
 }

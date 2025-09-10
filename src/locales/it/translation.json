@@ -89,6 +89,8 @@
   "Layer ID already exists": "L'ID del layer esiste già",
   "Debug": "Debug",
   "Options": "Opzioni",
+  "Links": "Collegamenti",
+  "<0>Open in OSM</0>. Opens the current view on openstreetmap.org": "<0>Apri in OSM</0>. Apre la vista corrente su openstreetmap.org",
   "Save Style": "Opzioni stile",
   "Save the JSON style to your computer.": "Salva lo style JSON nel tuo computer.",
   "Save as": "Salva con nome",

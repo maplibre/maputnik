@@ -1,6 +1,6 @@
 import React from 'react'
-
 import { Trans, WithTranslation, withTranslation } from 'react-i18next';
+
 import Modal from './Modal'
 
 
@@ -62,7 +62,7 @@ class ModalDebugInternal extends React.Component<ModalDebugInternalProps> {
         }
       </section>
       <section className="maputnik-modal-section">
-        <h1>Links</h1>
+        <h1>{t("Links")}</h1>
         <p>
           <Trans t={t}>
             <a
@@ -71,7 +71,7 @@ class ModalDebugInternal extends React.Component<ModalDebugInternalProps> {
               href={`https://www.openstreetmap.org/#map=${osmZoom}/${osmLat}/${osmLon}`}
             >
               Open in OSM
-            </a> &mdash; Opens the current view on openstreetmap.org
+            </a>. Opens the current view on openstreetmap.org
           </Trans>
         </p>
       </section>
