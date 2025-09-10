@@ -1,10 +1,13 @@
 ## main
 
 ### ✨ Features and improvements
+- Added translation to "Links" in debug modal
 - _...Add new stuff here..._
 
 ### 🐞 Bug fixes
 
+- Fix modal close button possition
+- Fixed an issue with the generation of tranlations
 - _...Add new stuff here..._
 
 ## 3.0.0
