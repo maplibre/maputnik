@@ -21,6 +21,11 @@ export default class MaputnikCypressHelper {
       this.helper.when.wait(1);
       this.helper.get.elementByTestId(targetElement).realMouseUp();
     },
+    clickCenter: (element: string) => {
+      this.helper.get.elementByTestId(element).realMouseDown({ button: "left", position: "center" });
+      this.helper.when.wait(200);
+      this.helper.get.elementByTestId(element).realMouseUp();
+    },
     ...this.helper.when,
   };
 

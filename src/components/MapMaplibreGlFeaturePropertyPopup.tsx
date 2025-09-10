@@ -66,7 +66,7 @@ type FeaturePropertyPopupProps = {
 class FeaturePropertyPopup extends React.Component<FeaturePropertyPopupProps> {
   render() {
     const features = removeDuplicatedFeatures(this.props.features)
-    return <div className="maputnik-feature-property-popup">
+    return <div className="maputnik-feature-property-popup" dir="ltr" data-wd-key="feature-property-popup">
       <table className="maputnik-popup-table">
         <tbody>
           {features.map(renderFeature)}

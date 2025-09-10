@@ -104,7 +104,7 @@ class FeatureLayerPopup extends React.Component<FeatureLayerPopupProps> {
       </div>
     })
 
-    return <div className="maputnik-feature-layer-popup">
+    return <div className="maputnik-feature-layer-popup" data-wd-key="feature-layer-popup" dir="ltr">
       {items}
     </div>
   }
