@@ -135,7 +135,7 @@ export class MaputnikDriver {
         url.searchParams.set("style", baseUrl + "rectangles-style.json");
         break;
       }
-        
+
       if (zoom) {
         url.hash = `${zoom}/41.3805/2.1635`;
       }
