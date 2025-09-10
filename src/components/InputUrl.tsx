@@ -68,18 +68,18 @@ export type FieldUrlProps = {
   className?: string
 };
 
-type FieldUrlInternalProps = FieldUrlProps & WithTranslation;
+type InputUrlInternalProps = FieldUrlProps & WithTranslation;
 
-type FieldUrlState = {
+type InputUrlState = {
   error?: React.ReactNode
 }
 
-class FieldUrlInternal extends React.Component<FieldUrlInternalProps, FieldUrlState> {
+class InputUrlInternal extends React.Component<InputUrlInternalProps, InputUrlState> {
   static defaultProps = {
     onInput: () => {},
   }
 
-  constructor (props: FieldUrlInternalProps) {
+  constructor (props: InputUrlInternalProps) {
     super(props);
     this.state = {
       error: validate(props.value, props.t),
@@ -115,5 +115,5 @@ class FieldUrlInternal extends React.Component<FieldUrlInternalProps, FieldUrlSt
   }
 }
 
-const FieldUrl = withTranslation()(FieldUrlInternal);
-export default FieldUrl;
+const InputUrl = withTranslation()(InputUrlInternal);
+export default InputUrl;

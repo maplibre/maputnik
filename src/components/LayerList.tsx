@@ -16,7 +16,7 @@ import {
 
 import LayerListGroup from './LayerListGroup'
 import LayerListItem from './LayerListItem'
-import ModalAdd from './ModalAdd'
+import ModalAdd from './modals/ModalAdd'
 
 import type {LayerSpecification, SourceSpecification} from 'maplibre-gl';
 import generateUniqueId from '../libs/document-uid';

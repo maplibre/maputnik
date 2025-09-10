@@ -1,12 +1,9 @@
 import React from 'react'
 
-import IconLine from './IconLine'
-import IconFill from './IconFill'
-import IconSymbol from './IconSymbol'
-import IconBackground from './IconBackground'
-import IconCircle from './IconCircle'
-import IconMissing from './IconMissing'
 import type {CSSProperties} from 'react'
+import { BsDiamond, BsDiamondFill, BsFonts } from 'react-icons/bs'
+import { MdOutlineCircle, MdPriorityHigh } from 'react-icons/md'
+import { IoAnalyticsOutline } from 'react-icons/io5'
 
 type IconLayerProps = {
   type: string
@@ -17,16 +14,16 @@ type IconLayerProps = {
 const IconLayer: React.FC<IconLayerProps> = (props) => {
   const iconProps = { style: props.style }
   switch(props.type) {
-  case 'fill-extrusion': return <IconBackground {...iconProps} />
-  case 'raster': return <IconFill {...iconProps} />
-  case 'hillshade': return <IconFill {...iconProps} />
-  case 'heatmap': return <IconFill {...iconProps} />
-  case 'fill': return <IconFill {...iconProps} />
-  case 'background': return <IconBackground {...iconProps} />
-  case 'line': return <IconLine {...iconProps} />
-  case 'symbol': return <IconSymbol {...iconProps} />
-  case 'circle': return <IconCircle {...iconProps} />
-  default: return <IconMissing {...iconProps} />
+  case 'fill-extrusion': return <BsDiamondFill {...iconProps} />
+  case 'raster': return <BsDiamond {...iconProps} />
+  case 'hillshade': return <BsDiamond {...iconProps} />
+  case 'heatmap': return <BsDiamond {...iconProps} />
+  case 'fill': return <BsDiamond {...iconProps} />
+  case 'background': return <BsDiamondFill {...iconProps} />
+  case 'line': return <IoAnalyticsOutline {...iconProps} />
+  case 'symbol': return <BsFonts {...iconProps} />
+  case 'circle': return <MdOutlineCircle {...iconProps} />
+  default: return <MdPriorityHigh {...iconProps} />
   }
 }
 

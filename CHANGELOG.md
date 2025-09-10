@@ -1,11 +1,14 @@
 ## main
 
 ### ✨ Features and improvements
+- Added translation to "Links" in debug modal
 - _...Add new stuff here..._
 
 ### 🐞 Bug fixes
 
 - Fixed an issue when clicking on a popup and then clicking on the map again
+- Fix modal close button possition
+- Fixed an issue with the generation of tranlations
 - _...Add new stuff here..._
 
 ## 3.0.0

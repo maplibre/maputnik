@@ -10,7 +10,6 @@ type ModalInternalProps = PropsWithChildren & {
   title: string
   onOpenToggle(value: boolean): unknown
   underlayClickExits?: boolean
-  underlayProps?: any
   className?: string
 } & WithTranslation;
 
@@ -37,18 +36,17 @@ class ModalInternal extends React.Component<ModalInternalProps> {
       return <AriaModal
         titleText={this.props.title}
         underlayClickExits={this.props.underlayClickExits}
-        // @ts-ignore
-        underlayProps={this.props.underlayProps}
         data-wd-key={this.props["data-wd-key"]}
         verticallyCenter={true}
         onExit={this.onClose}
+        dialogClass='maputnik-modal-container'
       >
         <div className={classnames("maputnik-modal", this.props.className)}
           data-wd-key={this.props["data-wd-key"]}
         >
           <header className="maputnik-modal-header">
             <h1 className="maputnik-modal-header-title">{this.props.title}</h1>
-            <span className="maputnik-modal-header-space"></span>
+            <span className="maputnik-space"></span>
             <button className="maputnik-modal-header-toggle"
               title={t("Close modal")}
               onClick={this.onClose}

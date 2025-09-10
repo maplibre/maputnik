@@ -2,6 +2,15 @@
 @use "vars";
 
 //MODAL
+
+.maputnik-modal-container {
+  text-align: left !important;
+}
+
+[dir="rtl"] .maputnik-modal-container {
+  text-align: right !important;
+}
+
 .maputnik-modal {
   min-width: 350px;
   max-width: 600px;
@@ -72,10 +81,6 @@
   padding: vars.$margin-3;
 
   @include mixins.flex-column;
-}
-
-.maputnik-modal-header-space {
-  @extend .maputnik-space !optional; /* stylelint-disable-line */
 }
 
 //OPEN MODAL

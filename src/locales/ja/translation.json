@@ -89,6 +89,8 @@
   "Layer ID already exists": "レイヤーIDは既に存在します",
   "Debug": "デバッグ",
   "Options": "設定",
+  "Links": "リンク",
+  "<0>Open in OSM</0>. Opens the current view on openstreetmap.org": "現在のビューを <0>openstreetmap.org で開く</0>",
   "Save Style": "スタイルを保存",
   "Save the JSON style to your computer.": "JSONスタイルをコンピュータに保存します。",
   "Save as": "名前を付けて保存",
@@ -195,6 +197,5 @@
   "Style Renderer": "スタイルレンダラ",
   "Choose the default Maputnik renderer for this style.": "このスタイルのデフォルトの Maputnik レンダラを選択してください",
   "Language": "言語",
-  "<0>Open in OSM</0> — Opens the current view on openstreetmap.org": "現在のビューを <0>openstreetmap.org で開く</0>",
   "Layer options": "レイヤー設定"
 }

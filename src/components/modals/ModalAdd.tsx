@@ -1,14 +1,14 @@
 import React from 'react'
-
-import InputButton from './InputButton'
-import Modal from './Modal'
-import FieldType from './FieldType'
-import FieldId from './FieldId'
-import FieldSource from './FieldSource'
-import FieldSourceLayer from './FieldSourceLayer'
-import type {LayerSpecification, SourceSpecification} from 'maplibre-gl'
 import { WithTranslation, withTranslation } from 'react-i18next';
-import { NON_SOURCE_LAYERS } from '../libs/non-source-layers'
+import type {LayerSpecification, SourceSpecification} from 'maplibre-gl'
+
+import InputButton from '../InputButton'
+import Modal from './Modal'
+import FieldType from '../FieldType'
+import FieldId from '../FieldId'
+import FieldSource from '../FieldSource'
+import FieldSourceLayer from '../FieldSourceLayer'
+import { NON_SOURCE_LAYERS } from '../../libs/non-source-layers'
 
 type ModalAddInternalProps = {
   layers: LayerSpecification[]

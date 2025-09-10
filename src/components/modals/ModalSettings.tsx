@@ -3,16 +3,16 @@ import latest from '@maplibre/maplibre-gl-style-spec/dist/latest.json'
 import type {LightSpecification, StyleSpecification, TerrainSpecification, TransitionSpecification} from 'maplibre-gl'
 import { WithTranslation, withTranslation } from 'react-i18next';
 
-import FieldArray from './FieldArray'
-import FieldNumber from './FieldNumber'
-import FieldString from './FieldString'
-import FieldUrl from './FieldUrl'
-import FieldSelect from './FieldSelect'
-import FieldEnum from './FieldEnum'
-import FieldColor from './FieldColor'
+import FieldArray from '../FieldArray'
+import FieldNumber from '../FieldNumber'
+import FieldString from '../FieldString'
+import FieldUrl from '../FieldUrl'
+import FieldSelect from '../FieldSelect'
+import FieldEnum from '../FieldEnum'
+import FieldColor from '../FieldColor'
 import Modal from './Modal'
-import fieldSpecAdditional from '../libs/field-spec-additional'
-import type {OnStyleChangedCallback, StyleSpecificationWithId} from '../libs/definitions';
+import fieldSpecAdditional from '../../libs/field-spec-additional'
+import type {OnStyleChangedCallback, StyleSpecificationWithId} from '../../libs/definitions';
 
 type ModalSettingsInternalProps = {
   mapStyle: StyleSpecificationWithId

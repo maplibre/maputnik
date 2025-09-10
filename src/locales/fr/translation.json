@@ -89,6 +89,8 @@
   "Layer ID already exists": "L'identifiant du calque existe déjà",
   "Debug": "Déboguer",
   "Options": "Options",
+  "Links": "Liens",
+  "<0>Open in OSM</0>. Opens the current view on openstreetmap.org": "<0>Ouvrir dans OSM</0>. Ouvre la vue actuelle sur openstreetmap.org",
   "Save Style": "Enregistrer le style",
   "Save the JSON style to your computer.": "Enregistrer le style JSON sur votre ordinateur.",
   "Save as": "Enregistrer sous",
