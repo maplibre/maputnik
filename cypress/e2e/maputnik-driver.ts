@@ -80,6 +80,13 @@ export class MaputnikDriver {
       });
       this.helper.given.interceptAndMockResponse({
         method: "GET",
+        url: baseUrl + "rectangles-style.json",
+        response: {
+          fixture: "rectangles-style.json",
+        },
+      });
+      this.helper.given.interceptAndMockResponse({
+        method: "GET",
         url: "*example.local/*",
         response: [],
       });
@@ -107,7 +114,7 @@ export class MaputnikDriver {
         .selectFile("cypress/fixtures/example-style.json", { force: true });
     },
     setStyle: (
-      styleProperties: "geojson" | "raster" | "both" | "layer" | "",
+      styleProperties: "geojson" | "raster" | "both" | "layer" | "rectangles" | "",
       zoom?: number
     ) => {
       const url = new URL(baseUrl);
@@ -124,7 +131,11 @@ export class MaputnikDriver {
       case "layer":
         url.searchParams.set("style", baseUrl + "example-layer-style.json");
         break;
+      case "rectangles":
+        url.searchParams.set("style", baseUrl + "rectangles-style.json");
+        break;
       }
+
       if (zoom) {
         url.hash = `${zoom}/41.3805/2.1635`;
       }
@@ -164,6 +175,10 @@ export class MaputnikDriver {
         .clear()
         .type(text, { parseSpecialCharSequences: false });
     },
+
+    closePopup: () => {
+      this.helper.get.element(".maplibregl-popup-close-button").click();
+    }
   };
 
   public get = {

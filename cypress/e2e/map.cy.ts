@@ -29,4 +29,23 @@ describe("map", () => {
       then(get.searchControl()).shouldBeVisible();
     });
   });
+
+  describe("popup", () => {
+    beforeEach(() => {
+      when.setStyle("rectangles");
+    })
+    it("should open on feature click", () => {
+      when.clickCenter("maplibre:map");
+      then(get.elementByTestId("feature-layer-popup")).shouldBeVisible();
+    });
+
+    it("should open a second feature after closing popup", () => {
+      when.clickCenter("maplibre:map");
+      then(get.elementByTestId("feature-layer-popup")).shouldBeVisible();
+      when.closePopup();
+      then(get.elementByTestId("feature-layer-popup")).shouldNotExist();
+      when.clickCenter("maplibre:map");
+      then(get.elementByTestId("feature-layer-popup")).shouldBeVisible();
+    });
+  });
 });

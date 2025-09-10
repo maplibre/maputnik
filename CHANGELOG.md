@@ -6,6 +6,7 @@
 
 ### 🐞 Bug fixes
 
+- Fixed an issue when clicking on a popup and then clicking on the map again
 - Fix modal close button possition
 - Fixed an issue with the generation of tranlations
 - _...Add new stuff here..._
