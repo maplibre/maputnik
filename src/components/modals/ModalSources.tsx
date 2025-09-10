@@ -5,15 +5,15 @@ import type {GeoJSONSourceSpecification, RasterDEMSourceSpecification, RasterSou
 import { WithTranslation, withTranslation } from 'react-i18next';
 
 import Modal from './Modal'
-import InputButton from './InputButton'
-import FieldString from './FieldString'
-import FieldSelect from './FieldSelect'
+import InputButton from '../InputButton'
+import FieldString from '../FieldString'
+import FieldSelect from '../FieldSelect'
 import ModalSourcesTypeEditor, { EditorMode } from './ModalSourcesTypeEditor'
 
-import style from '../libs/style'
-import { deleteSource, addSource, changeSource } from '../libs/source'
-import publicSources from '../config/tilesets.json'
-import { OnStyleChangedCallback, StyleSpecificationWithId } from '../libs/definitions';
+import style from '../../libs/style'
+import { deleteSource, addSource, changeSource } from '../../libs/source'
+import publicSources from '../../config/tilesets.json'
+import { OnStyleChangedCallback, StyleSpecificationWithId } from '../../libs/definitions';
 
 
 type PublicSourceProps = {

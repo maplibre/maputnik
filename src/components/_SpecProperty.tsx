@@ -1,12 +1,12 @@
 import React from 'react'
 
-import SpecField, {SpecFieldProps} from './SpecField'
+import FieldSpec, {FieldSpecProps} from './FieldSpec'
 import FunctionButtons from './_FunctionButtons'
 
 import labelFromFieldName from '../libs/label-from-field-name'
 
 
-type SpecPropertyProps = SpecFieldProps & {
+type SpecPropertyProps = FieldSpecProps & {
   onZoomClick(...args: unknown[]): unknown
   onDataClick(...args: unknown[]): unknown
   fieldName?: string
@@ -35,7 +35,7 @@ export default class SpecProperty extends React.Component<SpecPropertyProps> {
 
     const error = errors![fieldType+"."+fieldName as any] as any;
 
-    return <SpecField
+    return <FieldSpec
       {...this.props}
       error={error}
       fieldSpec={this.props.fieldSpec}

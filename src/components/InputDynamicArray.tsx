@@ -11,7 +11,7 @@ import InputEnum from './InputEnum'
 import InputUrl from './InputUrl'
 
 
-export type FieldDynamicArrayProps = {
+export type InputDynamicArrayProps = {
   value?: (string | number | undefined)[]
   type?: 'url' | 'number' | 'enum' | 'string'
   default?: (string | number | undefined)[]
@@ -24,9 +24,9 @@ export type FieldDynamicArrayProps = {
   label: string
 }
 
-type FieldDynamicArrayInternalProps = FieldDynamicArrayProps & WithTranslation;
+type InputDynamicArrayInternalProps = InputDynamicArrayProps & WithTranslation;
 
-class FieldDynamicArrayInternal extends React.Component<FieldDynamicArrayInternalProps> {
+class InputDynamicArrayInternal extends React.Component<InputDynamicArrayInternalProps> {
   changeValue(idx: number, newValue: string | number | undefined) {
     const values = this.values.slice(0)
     values[idx] = newValue
@@ -131,8 +131,8 @@ class FieldDynamicArrayInternal extends React.Component<FieldDynamicArrayInterna
   }
 }
 
-const FieldDynamicArray = withTranslation()(FieldDynamicArrayInternal);
-export default FieldDynamicArray;
+const InputDynamicArray = withTranslation()(InputDynamicArrayInternal);
+export default InputDynamicArray;
 
 type DeleteValueInputButtonProps = {
   onClick?(...args: unknown[]): unknown

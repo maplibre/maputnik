@@ -89,6 +89,8 @@
   "Layer ID already exists": "מזהה השכבה כבר קיים",
   "Debug": "דיבאג",
   "Options": "אפשרויות",
+  "Links": "קישורים",
+  "<0>Open in OSM</0>. Opens the current view on openstreetmap.org": "<0>פתיחה ב-OSM</0>. פתיחה של התצוגה הנוכחית ב- openstreetmap.org",
   "Save Style": "שמירת הסטייל",
   "Save the JSON style to your computer.": "שמירת הסטייל JSON במחשב שלך.",
   "Save as": "שמירה בשם",
@@ -194,6 +196,5 @@
   "Public access token for LocationIQ services.": "Public access token for LocationIQ services.",
   "Style Renderer": "צייר הסטייל",
   "Choose the default Maputnik renderer for this style.": "בחירת צייר ברירת המחדל של מפוטניק עבור הסטייל הזה",
-  "Language": "שפה",
-  "<0>Open in OSM</0> — Opens the current view on openstreetmap.org": "<0>פתיחה ב-OSM</0> - פתיחה של התצוגה הנוכחית ב- openstreetmap.org"
+  "Language": "שפה"
 }

@@ -6,12 +6,12 @@ import {format} from '@maplibre/maplibre-gl-style-spec'
 import {MdMap, MdSave} from 'react-icons/md'
 import {WithTranslation, withTranslation} from 'react-i18next';
 
-import FieldString from './FieldString'
-import InputButton from './InputButton'
+import FieldString from '../FieldString'
+import InputButton from '../InputButton'
 import Modal from './Modal'
-import style from '../libs/style'
-import fieldSpecAdditional from '../libs/field-spec-additional'
-import type {OnStyleChangedCallback, StyleSpecificationWithId} from '../libs/definitions'
+import style from '../../libs/style'
+import fieldSpecAdditional from '../../libs/field-spec-additional'
+import type {OnStyleChangedCallback, StyleSpecificationWithId} from '../../libs/definitions'
 
 
 const MAPLIBRE_GL_VERSION = version;

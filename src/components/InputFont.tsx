@@ -1,7 +1,7 @@
 import React from 'react'
 import InputAutocomplete from './InputAutocomplete'
 
-export type FieldFontProps = {
+export type InputFontProps = {
   name: string
   value?: string[]
   default?: string[]
@@ -11,7 +11,7 @@ export type FieldFontProps = {
   'aria-label'?: string
 };
 
-export default class FieldFont extends React.Component<FieldFontProps> {
+export default class InputFont extends React.Component<InputFontProps> {
   static defaultProps = {
     fonts: []
   }

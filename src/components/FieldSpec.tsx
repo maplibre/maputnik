@@ -1,5 +1,5 @@
 import Block from './Block'
-import InputSpec, { SpecFieldProps as InputFieldSpecProps } from './InputSpec'
+import InputSpec, { InputSpecProps } from './InputSpec'
 import Fieldset from './Fieldset'
 
 
@@ -15,11 +15,11 @@ const typeMap = {
   padding: () => Block,
 };
 
-export type SpecFieldProps = InputFieldSpecProps & {
+export type FieldSpecProps = InputSpecProps & {
   name?: string
 };
 
-const SpecField: React.FC<SpecFieldProps> = (props) => {
+const FieldSpec: React.FC<FieldSpecProps> = (props) => {
   const fieldType = props.fieldSpec?.type;
 
   const typeBlockFn = typeMap[fieldType!];
@@ -40,4 +40,4 @@ const SpecField: React.FC<SpecFieldProps> = (props) => {
   );
 };
 
-export default SpecField;
+export default FieldSpec;
