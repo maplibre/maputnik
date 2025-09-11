@@ -467,6 +467,30 @@ describe("layers", () => {
         ],
       });
     });
+
+    it("should show spec info when hovering and clicking single line property", () => {
+      when.modal.fillLayers({
+        type: "symbol",
+        layer: "example",
+      });
+
+      when.hover("spec-field-container:text-rotate");
+      then(get.elementByTestId("field-doc-button-Rotate")).shouldBeVisible();
+      when.click("field-doc-button-Rotate", 0);
+      then(get.elementByTestId("spec-field-doc")).shouldContainText("Rotate the");
+    });
+
+    it("should show spec info when hovering and clicking multi line property", () => {
+      when.modal.fillLayers({
+        type: "symbol",
+        layer: "example",
+      });
+
+      when.hover("spec-field-container:text-offset");
+      then(get.elementByTestId("field-doc-button-Offset")).shouldBeVisible();
+      when.click("field-doc-button-Offset", 0);
+      then(get.elementByTestId("spec-field-doc")).shouldContainText("Offset distance");
+    });
   });
 
   describe("raster", () => {
