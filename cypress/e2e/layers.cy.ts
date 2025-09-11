@@ -549,6 +549,8 @@ describe("layers", () => {
         type: "hillshade",
         layer: "example",
       });
+      when.collapseGroupInLayerEditor();
+      when.collapseGroupInLayerEditor(1);
       when.setValueToPropertyArray("spec-field:hillshade-illumination-direction", '1');
       when.addValueToPropertyArray("spec-field:hillshade-illumination-direction", '2');
       when.addValueToPropertyArray("spec-field:hillshade-illumination-direction", '3');
@@ -573,6 +575,7 @@ describe("layers", () => {
         type: "hillshade",
         layer: "example",
       });
+      when.collapseGroupInLayerEditor();
       when.setValueToPropertyArray("spec-field:hillshade-highlight-color", 'blue');
       when.addValueToPropertyArray("spec-field:hillshade-highlight-color", '#00ff00');
       when.addValueToPropertyArray("spec-field:hillshade-highlight-color", 'rgba(255, 255, 0, 1)');
