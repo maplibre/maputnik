@@ -10,10 +10,11 @@ import 'codemirror/lib/codemirror.css'
 import 'codemirror/addon/lint/lint.css'
 import stringifyPretty from 'json-stringify-pretty-compact'
 import '../libs/codemirror-mgl';
+import type { LayerSpecification } from 'maplibre-gl';
 
 
 export type InputJsonProps = {
-  layer: any
+  layer: LayerSpecification
   maxHeight?: number
   onChange?(...args: unknown[]): unknown
   lineNumbers?: boolean

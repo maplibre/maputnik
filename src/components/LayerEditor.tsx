@@ -118,7 +118,7 @@ type LayerEditorInternalProps = {
   layer: LayerSpecification
   sources: {[key: string]: SourceSpecification & {layers: string[]}}
   vectorLayers: {[key: string]: any}
-  spec: object
+  spec: any
   onLayerChanged(...args: unknown[]): unknown
   onLayerIdChange(...args: unknown[]): unknown
   onMoveLayer: OnMoveLayerCallback

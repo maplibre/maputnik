@@ -90,6 +90,18 @@ function getDataType(value: any, fieldSpec={} as any) {
   else if (fieldSpec.type === "array" && isArrayOfPrimatives(value)) {
     return "value";
   }
+  else if (fieldSpec.type === "numberArray" && isArrayOfPrimatives(value)) {
+    return "value";
+  }
+  else if (fieldSpec.type === "colorArray") {
+    return "value";
+  }
+  else if (fieldSpec.type === "padding") {
+    return "value";
+  }
+  else if (fieldSpec.type === "variableAnchorOffsetCollection") {
+    return "value";
+  }
   else if (isZoomField(value)) {
     return "zoom_function";
   }
