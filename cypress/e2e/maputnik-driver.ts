@@ -178,14 +178,16 @@ export class MaputnikDriver {
 
     setValueToPropertyArray: (selector: string, value: string) => {
       this.when.doWithin(selector, () => {
-        this.helper.get.element(".maputnik-array-block-content input").last().clear({ force: true }).type(value, { parseSpecialCharSequences: false, force: true });
+        this.helper.get.element(".maputnik-array-block-content input").last().clear({ force: true })
+        this.helper.get.element(".maputnik-array-block-content input").last().type(value, { parseSpecialCharSequences: false, force: true });
       });
     },
 
     addValueToPropertyArray: (selector: string, value: string) => {
       this.when.doWithin(selector, () => {
         this.helper.get.element(".maputnik-array-add-value").click({ force: true });
-        this.helper.get.element(".maputnik-array-block-content input").last().clear({ force: true }).type(value, { parseSpecialCharSequences: false, force: true });
+        this.helper.get.element(".maputnik-array-block-content input").last().clear({ force: true })
+        this.helper.get.element(".maputnik-array-block-content input").last().type(value, { parseSpecialCharSequences: false, force: true });
       });
     },
 
