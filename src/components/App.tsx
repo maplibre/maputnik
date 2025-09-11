@@ -8,7 +8,8 @@ import {arrayMoveMutable} from 'array-move'
 import hash from "string-hash";
 import { PMTiles } from "pmtiles";
 import {Map, LayerSpecification, StyleSpecification, ValidationError, SourceSpecification} from 'maplibre-gl'
-import {latest, validateStyleMin} from '@maplibre/maplibre-gl-style-spec'
+import {validateStyleMin} from '@maplibre/maplibre-gl-style-spec'
+import latest from '@maplibre/maplibre-gl-style-spec/dist/latest.json'
 
 import MapMaplibreGl from './MapMaplibreGl'
 import MapOpenLayers from './MapOpenLayers'
