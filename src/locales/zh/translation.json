@@ -16,6 +16,7 @@
   "Delete expression": "删除表达式",
   "Convert property into a zoom function": "将属性转换为缩放函数",
   "Convert property to data function": "将属性转换为数据函数",
+  "Convert property into a elevation function": "将属性转换为高程函数",
   "Layer <1>{formatLayerId(layerId)}</1>: {parsed.data.message}": "图层<1>{formatLayerId(layerId)}</1>: {parsed.data.message}",
   "switch to layer": "切换到图层",
   "Map": "地图",

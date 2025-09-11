@@ -16,6 +16,7 @@
   "Delete expression": "מחיקת ביטוי",
   "Convert property into a zoom function": "המרה לפונקציית זום",
   "Convert property to data function": "המרה לפונקציית מידע",
+  "Convert property into a elevation function": "המרה לפונקציית גובה",
   "Layer <1>{formatLayerId(layerId)}</1>: {parsed.data.message}": "שכבה <1>{formatLayerId(layerId)}</1>: {parsed.data.message}",
   "switch to layer": "שינוי לשכבה",
   "Map": "מפה",

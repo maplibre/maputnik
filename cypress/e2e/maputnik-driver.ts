@@ -176,8 +176,25 @@ export class MaputnikDriver {
         .type(text, { parseSpecialCharSequences: false });
     },
 
+    setValueToPropertyArray: (selector: string, value: string) => {
+      this.when.doWithin(selector, () => {
+        this.helper.get.element(".maputnik-array-block-content input").last().type("{selectall}"+value, {force: true });
+      });
+    },
+
+    addValueToPropertyArray: (selector: string, value: string) => {
+      this.when.doWithin(selector, () => {
+        this.helper.get.element(".maputnik-array-add-value").click({ force: true });
+        this.helper.get.element(".maputnik-array-block-content input").last().type("{selectall}"+value, {force: true });
+      });
+    },
+
     closePopup: () => {
       this.helper.get.element(".maplibregl-popup-close-button").click();
+    },
+
+    collapseGroupInLayerEditor: (index = 0) => {
+      this.helper.get.element(".maputnik-layer-editor-group__button").eq(index).realClick();
     }
   };
 

@@ -1,8 +1,8 @@
 import React from 'react'
 
 import type {CSSProperties} from 'react'
-import { BsDiamond, BsDiamondFill, BsFonts } from 'react-icons/bs'
-import { MdOutlineCircle, MdPriorityHigh } from 'react-icons/md'
+import { BsDiamond, BsDiamondFill, BsFonts, BsSun } from 'react-icons/bs'
+import { MdBubbleChart, MdOutlineCircle, MdPriorityHigh } from 'react-icons/md'
 import { IoAnalyticsOutline } from 'react-icons/io5'
 
 type IconLayerProps = {
@@ -16,7 +16,8 @@ const IconLayer: React.FC<IconLayerProps> = (props) => {
   switch(props.type) {
   case 'fill-extrusion': return <BsDiamondFill {...iconProps} />
   case 'raster': return <BsDiamond {...iconProps} />
-  case 'hillshade': return <BsDiamond {...iconProps} />
+  case 'hillshade': return <BsSun {...iconProps} />
+  case 'color-relief': return <MdBubbleChart {...iconProps} />
   case 'heatmap': return <BsDiamond {...iconProps} />
   case 'fill': return <BsDiamond {...iconProps} />
   case 'background': return <BsDiamondFill {...iconProps} />

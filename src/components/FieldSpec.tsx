@@ -1,37 +1,45 @@
 import Block from './Block'
-import InputSpec, { InputSpecProps } from './InputSpec'
+import InputSpec, { FieldSpecType, InputSpecProps } from './InputSpec'
 import Fieldset from './Fieldset'
 
-
-const typeMap = {
-  color: () => Block,
-  enum: ({fieldSpec}: any) => (Object.keys(fieldSpec.values).length <= 3 ? Fieldset : Block),
-  boolean: () => Block,
-  array: () => Fieldset,
-  resolvedImage: () => Block,
-  number: () => Block,
-  string: () => Block,
-  formatted: () => Block,
-  padding: () => Block,
-};
+function getElementFromType(fieldSpec: { type?: FieldSpecType, values?: unknown[] }): typeof Fieldset | typeof Block {
+  switch(fieldSpec.type) {
+  case 'color':
+    return Block;
+  case 'enum':
+    return (Object.keys(fieldSpec.values!).length <= 3 ? Fieldset : Block)
+  case 'boolean':
+    return Block;
+  case 'array':
+    return Fieldset;
+  case 'resolvedImage':
+    return Block;
+  case 'number':
+    return Block;
+  case 'string':
+    return Block;
+  case 'formatted':
+    return Block;
+  case 'padding':
+    return Block;
+  case 'numberArray':
+    return Fieldset;
+  case 'colorArray':
+    return Fieldset;
+  case 'variableAnchorOffsetCollection':
+    return Fieldset;
+  default:
+    console.warn("No such type for: " + fieldSpec.type);
+    return Block;
+  }
+}
 
 export type FieldSpecProps = InputSpecProps & {
   name?: string
 };
 
 const FieldSpec: React.FC<FieldSpecProps> = (props) => {
-  const fieldType = props.fieldSpec?.type;
-
-  const typeBlockFn = typeMap[fieldType!];
-
-  let TypeBlock;
-  if (typeBlockFn) {
-    TypeBlock = typeBlockFn(props);
-  }
-  else {
-    console.warn("No such type for '%s'", fieldType);
-    TypeBlock = Block;
-  }
+  const TypeBlock = getElementFromType(props.fieldSpec!);
 
   return (
     <TypeBlock label={props.label} action={props.action} fieldSpec={props.fieldSpec}>

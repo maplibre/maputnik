@@ -16,6 +16,7 @@
   "Delete expression": "Supprimer l'expression",
   "Convert property into a zoom function": "Convertir la propriété en fonction de zoom",
   "Convert property to data function": "Convertir la propriété en fonction de données",
+  "Convert property into a elevation function": "Convertir la propriété en fonction d'élévation",
   "Layer <1>{formatLayerId(layerId)}</1>: {parsed.data.message}": "Calque <1>{formatLayerId(layerId)}</1> : {parsed.data.message}",
   "switch to layer": "changer de calque",
   "Map": "Carte",

@@ -13,12 +13,14 @@ import capitalize from 'lodash.capitalize'
 
 const iconProperties = ['background-pattern', 'fill-pattern', 'line-pattern', 'fill-extrusion-pattern', 'icon-image']
 
+export type FieldSpecType = 'number' | 'enum' | 'resolvedImage' | 'formatted' | 'string' | 'color' | 'boolean' | 'array' | 'numberArray' | 'padding' | 'colorArray' | 'variableAnchorOffsetCollection';
+
 export type InputSpecProps = {
   onChange?(fieldName: string | undefined, value: number | undefined | (string | number | undefined)[]): unknown
   fieldName?: string
   fieldSpec?: {
     default?: unknown
-    type?: 'number' | 'enum' | 'resolvedImage' | 'formatted' | 'string' | 'color' | 'boolean' | 'array'
+    type?: FieldSpecType
     minimum?: number
     maximum?: number
     values?: unknown[]
@@ -114,7 +116,33 @@ export default class InputSpec extends React.Component<InputSpecProps> {
           />
         }
       }
-    default: return null
+    case 'numberArray': return (
+      <InputDynamicArray
+        {...commonProps as InputDynamicArrayProps}
+        fieldSpec={this.props.fieldSpec}
+        type="number"
+        value={(Array.isArray(this.props.value) ? this.props.value : [this.props.value]) as (string | number | undefined)[]}
+      />
+    )
+    case 'colorArray': return (
+      <InputDynamicArray
+        {...commonProps as InputDynamicArrayProps}
+        fieldSpec={this.props.fieldSpec}
+        type="color"
+        value={(Array.isArray(this.props.value) ? this.props.value : [this.props.value]) as (string | number | undefined)[]}
+      />
+    )
+    case 'padding': return (
+      <InputArray
+        {...commonProps as InputArrayProps}
+        type="number"
+        value={(Array.isArray(this.props.value) ? this.props.value : [this.props.value]) as (string | number | undefined)[]}
+        length={4}
+      />
+    )
+    default:
+      console.warn(`No proper field input for ${this.props.fieldName} type: ${this.props.fieldSpec?.type}`);
+      return null
     }
   }
 

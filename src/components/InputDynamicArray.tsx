@@ -9,11 +9,12 @@ import InputButton from './InputButton'
 import FieldDocLabel from './FieldDocLabel'
 import InputEnum from './InputEnum'
 import InputUrl from './InputUrl'
+import InputColor from './InputColor';
 
 
 export type InputDynamicArrayProps = {
   value?: (string | number | undefined)[]
-  type?: 'url' | 'number' | 'enum' | 'string'
+  type?: 'url' | 'number' | 'enum' | 'string' | 'color'
   default?: (string | number | undefined)[]
   onChange?(values: (string | number | undefined)[] | undefined): unknown
   style?: object
@@ -49,6 +50,8 @@ class InputDynamicArrayInternal extends React.Component<InputDynamicArrayInterna
       const {fieldSpec} = this.props;
       const defaultValue = Object.keys(fieldSpec!.values)[0];
       values.push(defaultValue);
+    } else if (this.props.type === 'color') {
+      values.push("#000000");
     } else {
       values.push("")
     }
@@ -90,6 +93,13 @@ class InputDynamicArrayInternal extends React.Component<InputDynamicArrayInterna
         const options = Object.keys(this.props.fieldSpec?.values).map(v => [v, capitalize(v)]);
         input = <InputEnum
           options={options}
+          value={v as string}
+          onChange={this.changeValue.bind(this, i)}
+          aria-label={this.props['aria-label'] || this.props.label}
+        />
+      }
+      else if (this.props.type === 'color') {
+        input = <InputColor
           value={v as string}
           onChange={this.changeValue.bind(this, i)}
           aria-label={this.props['aria-label'] || this.props.label}
