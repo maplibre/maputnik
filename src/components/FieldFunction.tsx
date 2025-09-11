@@ -305,6 +305,20 @@ const FieldFunction: React.FC<FieldFunctionProps> = (props) => {
     props.onChange(props.fieldName, dataFunc);
   };
 
+  const makeElevationFunction = () => {
+    let expression = [
+      "interpolate",
+      ["linear"],
+      ["elevation"],
+      0,
+      "black",
+      2000,
+      "white"
+    ];
+
+    props.onChange(props.fieldName, expression);
+  };
+
   const onMarkEditing = () => {
     setIsEditing(true);
   };
@@ -376,6 +390,7 @@ const FieldFunction: React.FC<FieldFunctionProps> = (props) => {
         onZoomClick={makeZoomFunction}
         onDataClick={makeDataFunction}
         onExpressionClick={makeExpression}
+        onElevationClick={makeElevationFunction}
       />
     );
   }

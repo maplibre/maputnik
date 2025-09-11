@@ -610,7 +610,7 @@ describe("layers", () => {
       });
     });
 
-    it.only("adds elevation expression when clicking the elevation button", () => {
+    it("adds elevation expression when clicking the elevation button", () => {
       when.modal.fillLayers({
         type: "color-relief",
         layer: "example",

@@ -367,6 +367,7 @@ class LayerEditorInternal extends React.Component<LayerEditorInternalProps, Laye
       <section className="maputnik-layer-editor"
         role="main"
         aria-label={t("Layer editor")}
+        data-wd-key="layer-editor"
       >
         <header>
           <div className="layer-header">
