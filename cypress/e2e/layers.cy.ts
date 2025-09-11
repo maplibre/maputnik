@@ -468,7 +468,7 @@ describe("layers", () => {
       });
     });
 
-    it.only("should show spec info when hovering and clicking single line property", () => {
+    it("should show spec info when hovering and clicking single line property", () => {
       when.modal.fillLayers({
         type: "symbol",
         layer: "example",
