@@ -116,30 +116,30 @@ export default class InputSpec extends React.Component<InputSpecProps> {
           />
         }
       }
-      case 'numberArray': return (
-        <InputDynamicArray
-          {...commonProps as InputDynamicArrayProps}
-          fieldSpec={this.props.fieldSpec}
-          type="number"
-          value={(Array.isArray(this.props.value) ? this.props.value : [this.props.value]) as (string | number | undefined)[]}
-        />
-      )
-      case 'colorArray': return (
-        <InputDynamicArray
-          {...commonProps as InputDynamicArrayProps}
-          fieldSpec={this.props.fieldSpec}
-          type="color"
-          value={(Array.isArray(this.props.value) ? this.props.value : [this.props.value]) as (string | number | undefined)[]}
-        />
-      )
-      case 'padding': return (
-        <InputArray
-          {...commonProps as InputArrayProps}
-          type="number"
-          value={(Array.isArray(this.props.value) ? this.props.value : [this.props.value]) as (string | number | undefined)[]}
-          length={4}
-        />
-      )
+    case 'numberArray': return (
+      <InputDynamicArray
+        {...commonProps as InputDynamicArrayProps}
+        fieldSpec={this.props.fieldSpec}
+        type="number"
+        value={(Array.isArray(this.props.value) ? this.props.value : [this.props.value]) as (string | number | undefined)[]}
+      />
+    )
+    case 'colorArray': return (
+      <InputDynamicArray
+        {...commonProps as InputDynamicArrayProps}
+        fieldSpec={this.props.fieldSpec}
+        type="color"
+        value={(Array.isArray(this.props.value) ? this.props.value : [this.props.value]) as (string | number | undefined)[]}
+      />
+    )
+    case 'padding': return (
+      <InputArray
+        {...commonProps as InputArrayProps}
+        type="number"
+        value={(Array.isArray(this.props.value) ? this.props.value : [this.props.value]) as (string | number | undefined)[]}
+        length={4}
+      />
+    )
     default:
       console.warn(`No proper field input for ${this.props.fieldName} type: ${this.props.fieldSpec?.type}`);
       return null

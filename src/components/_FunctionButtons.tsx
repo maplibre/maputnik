@@ -18,7 +18,7 @@ class FunctionInputButtonsInternal extends React.Component<FunctionInputButtonsI
     const t = this.props.t;
 
     if (this.props.fieldSpec.expression?.parameters.includes('zoom')) {
-      let expressionInputButton = (
+      const expressionInputButton = (
         <InputButton
           className="maputnik-make-zoom-function"
           onClick={this.props.onExpressionClick}
@@ -30,7 +30,7 @@ class FunctionInputButtonsInternal extends React.Component<FunctionInputButtonsI
         </InputButton>
       );
 
-      let makeZoomInputButton = <InputButton
+      const makeZoomInputButton = <InputButton
         className="maputnik-make-zoom-function"
         onClick={this.props.onZoomClick}
         title={t("Convert property into a zoom function")}
@@ -54,7 +54,7 @@ class FunctionInputButtonsInternal extends React.Component<FunctionInputButtonsI
         {makeZoomInputButton}
       </div>
     } else if (this.props.fieldSpec.expression?.parameters.includes('elevation')) {
-      let inputElevationButton = <InputButton
+      const inputElevationButton = <InputButton
         className="maputnik-make-elevation-function"
         onClick={this.props.onElevationClick}
         title={t("Convert property into a elevation function")}

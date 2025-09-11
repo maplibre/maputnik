@@ -306,7 +306,7 @@ const FieldFunction: React.FC<FieldFunctionProps> = (props) => {
   };
 
   const makeElevationFunction = () => {
-    let expression = [
+    const expression = [
       "interpolate",
       ["linear"],
       ["elevation"],
