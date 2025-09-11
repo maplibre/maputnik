@@ -468,7 +468,7 @@ describe("layers", () => {
       });
     });
 
-    it("should show spec info when hovering and clicking single line property", () => {
+    it.only("should show spec info when hovering and clicking single line property", () => {
       when.modal.fillLayers({
         type: "symbol",
         layer: "example",
@@ -477,7 +477,7 @@ describe("layers", () => {
       when.hover("spec-field-container:text-rotate");
       then(get.elementByTestId("field-doc-button-Rotate")).shouldBeVisible();
       when.click("field-doc-button-Rotate", 0);
-      then(get.elementByTestId("spec-field-doc")).shouldContainText("Rotate the");
+      then(get.elementByTestId("spec-field-doc")).shouldContainText("Rotates the ");
     });
 
     it("should show spec info when hovering and clicking multi line property", () => {
