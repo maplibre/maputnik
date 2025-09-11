@@ -4,29 +4,29 @@ import Fieldset from './Fieldset'
 
 function getElementFromType(fieldSpec: { type?: FieldSpecType, values?: unknown[] }): typeof Fieldset | typeof Block {
   switch(fieldSpec.type) {
-    case 'color': 
+    case 'color':
       return Block;
     case 'enum':
       return (Object.keys(fieldSpec.values!).length <= 3 ? Fieldset : Block)
-    case 'boolean': 
+    case 'boolean':
       return Block;
-    case 'array': 
+    case 'array':
       return Fieldset;
     case 'resolvedImage':
       return Block;
-    case 'number': 
+    case 'number':
       return Block;
-    case 'string': 
+    case 'string':
       return Block;
-    case 'formatted': 
+    case 'formatted':
       return Block;
-    case 'padding': 
+    case 'padding':
       return Block;
-    case 'numberArray': 
+    case 'numberArray':
       return Fieldset;
-    case 'colorArray': 
+    case 'colorArray':
       return Fieldset;
-    case 'variableAnchorOffsetCollection': 
+    case 'variableAnchorOffsetCollection':
       return Fieldset;
     default:
       console.warn("No such type for: " + fieldSpec.type);
