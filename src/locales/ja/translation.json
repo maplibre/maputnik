@@ -16,6 +16,7 @@
   "Delete expression": "式を削除",
   "Convert property into a zoom function": "プロパティをズーム関数に変換する",
   "Convert property to data function": "プロパティをデータ関数に変換する",
+  "Convert property into a elevation function": "プロパティを標高関数に変換する",
   "Layer <1>{formatLayerId(layerId)}</1>: {parsed.data.message}": "レイヤ<1>{formatLayerId(layerId)}</1>: {parsed.data.message}",
   "switch to layer": "レイヤへ切替",
   "Map": "地図",
