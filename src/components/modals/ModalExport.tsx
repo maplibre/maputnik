@@ -22,7 +22,7 @@ type ModalExportInternalProps = {
   mapStyle: StyleSpecificationWithId
   onStyleChanged: OnStyleChangedCallback
   isOpen: boolean
-  onOpenToggle(...args: unknown[]): unknown
+  onOpenToggle(): void
   onSetFileHandle(fileHandle: FileSystemFileHandle | null): unknown
   fileHandle: FileSystemFileHandle | null
 } & WithTranslation;

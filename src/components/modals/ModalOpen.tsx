@@ -45,7 +45,7 @@ class PublicStyle extends React.Component<PublicStyleProps> {
 
 type ModalOpenInternalProps = {
   isOpen: boolean
-  onOpenToggle(...args: unknown[]): unknown
+  onOpenToggle(): void
   onStyleOpen(...args: unknown[]): unknown
   fileHandle: FileSystemFileHandle | null
 } & WithTranslation;

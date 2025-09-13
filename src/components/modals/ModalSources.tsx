@@ -273,7 +273,7 @@ class AddSource extends React.Component<AddSourceProps, AddSourceState> {
 type ModalSourcesInternalProps = {
   mapStyle: StyleSpecificationWithId
   isOpen: boolean
-  onOpenToggle(...args: unknown[]): unknown
+  onOpenToggle(): void
   onStyleChanged: OnStyleChangedCallback
 } & WithTranslation;
 

@@ -9,7 +9,8 @@ import {
   MdHelpOutline,
   MdFindInPage,
   MdLanguage,
-  MdSave
+  MdSave,
+  MdPublic
 } from "react-icons/md";
 import pkgJson from "../../package.json";
 //@ts-ignore
@@ -235,6 +236,10 @@ class AppToolbarInternal extends React.Component<AppToolbarInternalProps> {
           <ToolbarAction wdKey="nav:settings" onClick={this.props.onToggleModal.bind(this, "settings")}>
             <MdSettings />
             <IconText>{t("Style Settings")}</IconText>
+          </ToolbarAction>
+          <ToolbarAction wdKey="nav:global-state" onClick={this.props.onToggleModal.bind(this, "globalState")}>
+            <MdPublic />
+            <IconText>{t("Global State")}</IconText>
           </ToolbarAction>
 
           <ToolbarSelect wdKey="nav:inspect">

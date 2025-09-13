@@ -19,7 +19,7 @@ type ModalSettingsInternalProps = {
   onStyleChanged: OnStyleChangedCallback
   onChangeMetadataProperty(...args: unknown[]): unknown
   isOpen: boolean
-  onOpenToggle(...args: unknown[]): unknown
+  onOpenToggle(): void
 } & WithTranslation;
 
 class ModalSettingsInternal extends React.Component<ModalSettingsInternalProps> {
