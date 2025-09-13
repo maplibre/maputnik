@@ -332,50 +332,50 @@ class ModalSourcesTypeEditorInternal extends React.Component<ModalSourcesTypeEdi
       tReady: this.props.tReady,
     };
     switch(this.props.mode) {
-    case 'geojson_url': return <GeoJSONSourceUrlEditor {...commonProps} />
-    case 'geojson_json': return <GeoJSONSourceFieldJsonEditor {...commonProps} />
-    case 'tilejson_vector': return <TileJSONSourceEditor {...commonProps} />
-    case 'tile_vector': return <TileURLSourceEditor {...commonProps} />
-    case 'tilejson_raster': return <TileJSONSourceEditor {...commonProps} />
-    case 'tile_raster': return <TileURLSourceEditor {...commonProps}>
-      <FieldNumber
-        label={t("Tile Size")}
-        fieldSpec={latest.source_raster.tileSize}
-        onChange={tileSize => this.props.onChange({
-          ...this.props.source,
-          tileSize: tileSize
-        })}
-        value={this.props.source.tileSize || latest.source_raster.tileSize.default}
-        data-wd-key="modal:sources.add.tile_size"
-      />
-    </TileURLSourceEditor>
-    case 'tilejson_raster-dem': return <TileJSONSourceEditor {...commonProps} />
-    case 'tilexyz_raster-dem': return <TileURLSourceEditor {...commonProps}>
-      <FieldNumber
-        label={t("Tile Size")}
-        fieldSpec={latest.source_raster_dem.tileSize}
-        onChange={tileSize => this.props.onChange({
-          ...this.props.source,
-          tileSize: tileSize
-        })}
-        value={this.props.source.tileSize || latest.source_raster_dem.tileSize.default}
-        data-wd-key="modal:sources.add.tile_size"
-      />
-      <FieldSelect
-        label={t("Encoding")}
-        fieldSpec={latest.source_raster_dem.encoding}
-        options={Object.keys(latest.source_raster_dem.encoding.values)}
-        onChange={encoding => this.props.onChange({
-          ...this.props.source,
-          encoding: encoding
-        })}
-        value={this.props.source.encoding || latest.source_raster_dem.encoding.default}
-      />
-    </TileURLSourceEditor>
-    case 'pmtiles_vector': return <PMTilesSourceEditor {...commonProps} />
-    case 'image': return <ImageSourceEditor {...commonProps} />
-    case 'video': return <VideoSourceEditor {...commonProps} />
-    default: return null
+      case 'geojson_url': return <GeoJSONSourceUrlEditor {...commonProps} />
+      case 'geojson_json': return <GeoJSONSourceFieldJsonEditor {...commonProps} />
+      case 'tilejson_vector': return <TileJSONSourceEditor {...commonProps} />
+      case 'tile_vector': return <TileURLSourceEditor {...commonProps} />
+      case 'tilejson_raster': return <TileJSONSourceEditor {...commonProps} />
+      case 'tile_raster': return <TileURLSourceEditor {...commonProps}>
+        <FieldNumber
+          label={t("Tile Size")}
+          fieldSpec={latest.source_raster.tileSize}
+          onChange={tileSize => this.props.onChange({
+            ...this.props.source,
+            tileSize: tileSize
+          })}
+          value={this.props.source.tileSize || latest.source_raster.tileSize.default}
+          data-wd-key="modal:sources.add.tile_size"
+        />
+      </TileURLSourceEditor>
+      case 'tilejson_raster-dem': return <TileJSONSourceEditor {...commonProps} />
+      case 'tilexyz_raster-dem': return <TileURLSourceEditor {...commonProps}>
+        <FieldNumber
+          label={t("Tile Size")}
+          fieldSpec={latest.source_raster_dem.tileSize}
+          onChange={tileSize => this.props.onChange({
+            ...this.props.source,
+            tileSize: tileSize
+          })}
+          value={this.props.source.tileSize || latest.source_raster_dem.tileSize.default}
+          data-wd-key="modal:sources.add.tile_size"
+        />
+        <FieldSelect
+          label={t("Encoding")}
+          fieldSpec={latest.source_raster_dem.encoding}
+          options={Object.keys(latest.source_raster_dem.encoding.values)}
+          onChange={encoding => this.props.onChange({
+            ...this.props.source,
+            encoding: encoding
+          })}
+          value={this.props.source.encoding || latest.source_raster_dem.encoding.default}
+        />
+      </TileURLSourceEditor>
+      case 'pmtiles_vector': return <PMTilesSourceEditor {...commonProps} />
+      case 'image': return <ImageSourceEditor {...commonProps} />
+      case 'video': return <VideoSourceEditor {...commonProps} />
+      default: return null
     }
   }
 }

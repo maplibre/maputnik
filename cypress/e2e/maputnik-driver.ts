@@ -119,21 +119,21 @@ export class MaputnikDriver {
     ) => {
       const url = new URL(baseUrl);
       switch (styleProperties) {
-      case "geojson":
-        url.searchParams.set("style", baseUrl + "geojson-style.json");
-        break;
-      case "raster":
-        url.searchParams.set("style", baseUrl + "raster-style.json");
-        break;
-      case "both":
-        url.searchParams.set("style", baseUrl + "geojson-raster-style.json");
-        break;
-      case "layer":
-        url.searchParams.set("style", baseUrl + "example-layer-style.json");
-        break;
-      case "rectangles":
-        url.searchParams.set("style", baseUrl + "rectangles-style.json");
-        break;
+        case "geojson":
+          url.searchParams.set("style", baseUrl + "geojson-style.json");
+          break;
+        case "raster":
+          url.searchParams.set("style", baseUrl + "raster-style.json");
+          break;
+        case "both":
+          url.searchParams.set("style", baseUrl + "geojson-raster-style.json");
+          break;
+        case "layer":
+          url.searchParams.set("style", baseUrl + "example-layer-style.json");
+          break;
+        case "rectangles":
+          url.searchParams.set("style", baseUrl + "rectangles-style.json");
+          break;
       }
 
       if (zoom) {

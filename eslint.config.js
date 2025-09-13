@@ -1,10 +1,12 @@
 import eslint from '@eslint/js';
+import {defineConfig} from 'eslint/config';
+import stylisticTs from '@stylistic/eslint-plugin';
 import tseslint from 'typescript-eslint';
 import reactPlugin from 'eslint-plugin-react';
 import reactHooksPlugin from 'eslint-plugin-react-hooks';
 import reactRefreshPlugin from 'eslint-plugin-react-refresh';
 
-export default tseslint.config({
+export default defineConfig({
   extends: [
     eslint.configs.recommended,
     tseslint.configs.recommended,
@@ -26,7 +28,8 @@ export default tseslint.config({
   plugins: {
     'react': reactPlugin,
     'react-hooks': reactHooksPlugin,
-    'react-refresh': reactRefreshPlugin
+    'react-refresh': reactRefreshPlugin,
+    '@stylistic': stylisticTs
   },
   rules: {
     'react-refresh/only-export-components': [
@@ -46,7 +49,8 @@ export default tseslint.config({
     'no-unused-vars': 'off',
     'react/prop-types': 'off',
     'no-undef': 'off',
-    'indent': ['error', 2],
+    'indent': 'off',
+    '@stylistic/indent': ['error', 2],
     'no-var': 'error',
     '@typescript-eslint/no-non-null-asserted-optional-chain': 'off',
     '@typescript-eslint/ban-ts-comment': 'off',

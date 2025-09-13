@@ -104,22 +104,22 @@ class ModalAddInternal extends React.Component<ModalAddInternalProps, ModalAddSt
   getSources(type: LayerSpecification["type"]) {
 
     switch(type) {
-    case 'background':
-      return [];
-    case 'hillshade':
-    case 'color-relief':
-      return Object.entries(this.props.sources).filter(([_, v]) => v.type === 'raster-dem').map(([k, _]) => k);
-    case 'raster':
-      return Object.entries(this.props.sources).filter(([_, v]) => v.type === 'raster').map(([k, _]) => k);
-    case 'heatmap':
-    case 'circle':
-    case 'fill':
-    case 'fill-extrusion':
-    case 'line':
-    case 'symbol':
-      return Object.entries(this.props.sources).filter(([_, v]) => v.type === 'vector' || v.type === 'geojson').map(([k, _]) => k);
-    default:
-      return [];
+      case 'background':
+        return [];
+      case 'hillshade':
+      case 'color-relief':
+        return Object.entries(this.props.sources).filter(([_, v]) => v.type === 'raster-dem').map(([k, _]) => k);
+      case 'raster':
+        return Object.entries(this.props.sources).filter(([_, v]) => v.type === 'raster').map(([k, _]) => k);
+      case 'heatmap':
+      case 'circle':
+      case 'fill':
+      case 'fill-extrusion':
+      case 'line':
+      case 'symbol':
+        return Object.entries(this.props.sources).filter(([_, v]) => v.type === 'vector' || v.type === 'geojson').map(([k, _]) => k);
+      default:
+        return [];
     }
   }
 

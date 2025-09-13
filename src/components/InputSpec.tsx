@@ -56,93 +56,93 @@ export default class InputSpec extends React.Component<InputSpecProps> {
       'aria-label': this.props['aria-label'],
     }
     switch(this.props.fieldSpec?.type) {
-    case 'number': return (
-      <InputNumber
-        {...commonProps as InputNumberProps}
-        min={this.props.fieldSpec.minimum}
-        max={this.props.fieldSpec.maximum}
-      />
-    )
-    case 'enum': {
-      const options = Object.keys(this.props.fieldSpec.values || []).map(v => [v, capitalize(v)])
-
-      return <InputEnum
-        {...commonProps as Omit<InputEnumProps, "options">}
-        options={options}
-      />
-    }
-    case 'resolvedImage':
-    case 'formatted':
-    case 'string':
-      if (iconProperties.indexOf(this.props.fieldName!) >= 0) {
-        const options = this.props.fieldSpec.values || [];
-        return <InputAutocomplete
-          {...commonProps as Omit<InputAutocompleteProps, "options">}
-          options={options.map(f => [f, f])}
+      case 'number': return (
+        <InputNumber
+          {...commonProps as InputNumberProps}
+          min={this.props.fieldSpec.minimum}
+          max={this.props.fieldSpec.maximum}
         />
-      } else {
-        return <InputString
-          {...commonProps as InputStringProps}
+      )
+      case 'enum': {
+        const options = Object.keys(this.props.fieldSpec.values || []).map(v => [v, capitalize(v)])
+
+        return <InputEnum
+          {...commonProps as Omit<InputEnumProps, "options">}
+          options={options}
         />
       }
-    case 'color': return (
-      <InputColor
-        {...commonProps as InputColorProps}
-      />
-    )
-    case 'boolean': return (
-      <InputCheckbox
-        {...commonProps as InputCheckboxProps}
-      />
-    )
-    case 'array':
-      if(this.props.fieldName === 'text-font') {
-        return <InputFont
-          {...commonProps as InputFontProps}
-          fonts={this.props.fieldSpec.values}
-        />
-      } else {
-        if (this.props.fieldSpec.length) {
-          return <InputArray
-            {...commonProps as InputArrayProps}
-            type={this.props.fieldSpec.value}
-            length={this.props.fieldSpec.length}
+      case 'resolvedImage':
+      case 'formatted':
+      case 'string':
+        if (iconProperties.indexOf(this.props.fieldName!) >= 0) {
+          const options = this.props.fieldSpec.values || [];
+          return <InputAutocomplete
+            {...commonProps as Omit<InputAutocompleteProps, "options">}
+            options={options.map(f => [f, f])}
           />
         } else {
-          return <InputDynamicArray
-            {...commonProps as InputDynamicArrayProps}
-            fieldSpec={this.props.fieldSpec}
-            type={this.props.fieldSpec.value as InputDynamicArrayProps['type']}
+          return <InputString
+            {...commonProps as InputStringProps}
           />
         }
-      }
-    case 'numberArray': return (
-      <InputDynamicArray
-        {...commonProps as InputDynamicArrayProps}
-        fieldSpec={this.props.fieldSpec}
-        type="number"
-        value={(Array.isArray(this.props.value) ? this.props.value : [this.props.value]) as (string | number | undefined)[]}
-      />
-    )
-    case 'colorArray': return (
-      <InputDynamicArray
-        {...commonProps as InputDynamicArrayProps}
-        fieldSpec={this.props.fieldSpec}
-        type="color"
-        value={(Array.isArray(this.props.value) ? this.props.value : [this.props.value]) as (string | number | undefined)[]}
-      />
-    )
-    case 'padding': return (
-      <InputArray
-        {...commonProps as InputArrayProps}
-        type="number"
-        value={(Array.isArray(this.props.value) ? this.props.value : [this.props.value]) as (string | number | undefined)[]}
-        length={4}
-      />
-    )
-    default:
-      console.warn(`No proper field input for ${this.props.fieldName} type: ${this.props.fieldSpec?.type}`);
-      return null
+      case 'color': return (
+        <InputColor
+          {...commonProps as InputColorProps}
+        />
+      )
+      case 'boolean': return (
+        <InputCheckbox
+          {...commonProps as InputCheckboxProps}
+        />
+      )
+      case 'array':
+        if(this.props.fieldName === 'text-font') {
+          return <InputFont
+            {...commonProps as InputFontProps}
+            fonts={this.props.fieldSpec.values}
+          />
+        } else {
+          if (this.props.fieldSpec.length) {
+            return <InputArray
+              {...commonProps as InputArrayProps}
+              type={this.props.fieldSpec.value}
+              length={this.props.fieldSpec.length}
+            />
+          } else {
+            return <InputDynamicArray
+              {...commonProps as InputDynamicArrayProps}
+              fieldSpec={this.props.fieldSpec}
+              type={this.props.fieldSpec.value as InputDynamicArrayProps['type']}
+            />
+          }
+        }
+      case 'numberArray': return (
+        <InputDynamicArray
+          {...commonProps as InputDynamicArrayProps}
+          fieldSpec={this.props.fieldSpec}
+          type="number"
+          value={(Array.isArray(this.props.value) ? this.props.value : [this.props.value]) as (string | number | undefined)[]}
+        />
+      )
+      case 'colorArray': return (
+        <InputDynamicArray
+          {...commonProps as InputDynamicArrayProps}
+          fieldSpec={this.props.fieldSpec}
+          type="color"
+          value={(Array.isArray(this.props.value) ? this.props.value : [this.props.value]) as (string | number | undefined)[]}
+        />
+      )
+      case 'padding': return (
+        <InputArray
+          {...commonProps as InputArrayProps}
+          type="number"
+          value={(Array.isArray(this.props.value) ? this.props.value : [this.props.value]) as (string | number | undefined)[]}
+          length={4}
+        />
+      )
+      default:
+        console.warn(`No proper field input for ${this.props.fieldName} type: ${this.props.fieldSpec?.type}`);
+        return null
     }
   }
 

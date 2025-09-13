@@ -131,76 +131,76 @@ class AddSource extends React.Component<AddSourceProps, AddSourceState> {
     const {protocol} = window.location;
 
     switch(mode) {
-    case 'pmtiles_vector': return {
-      type: 'vector',
-      url: `${protocol}//localhost:3000/file.pmtiles`
-    }
-    case 'geojson_url': return {
-      type: 'geojson',
-      data: `${protocol}//localhost:3000/geojson.json`
-    }
-    case 'geojson_json': return {
-      type: 'geojson',
-      cluster: (source as GeoJSONSourceSpecification).cluster || false,
-      data: ''
-    }
-    case 'tilejson_vector': return {
-      type: 'vector',
-      url: (source as VectorSourceSpecification).url || `${protocol}//localhost:3000/tilejson.json`
-    }
-    case 'tile_vector': return {
-      type: 'vector',
-      tiles: (source as VectorSourceSpecification).tiles || [`${protocol}//localhost:3000/{x}/{y}/{z}.pbf`],
-      minzoom: (source as VectorSourceSpecification).minzoom || 0,
-      maxzoom: (source as VectorSourceSpecification).maxzoom || 14,
-      scheme: (source as VectorSourceSpecification).scheme || 'xyz'
-    }
-    case 'tilejson_raster': return {
-      type: 'raster',
-      url: (source as RasterSourceSpecification).url || `${protocol}//localhost:3000/tilejson.json`
-    }
-    case 'tile_raster': return {
-      type: 'raster',
-      tiles: (source as RasterSourceSpecification).tiles || [`${protocol}//localhost:3000/{x}/{y}/{z}.png`],
-      minzoom: (source as RasterSourceSpecification).minzoom || 0,
-      maxzoom: (source as RasterSourceSpecification).maxzoom || 14,
-      scheme: (source as RasterSourceSpecification).scheme || 'xyz',
-      tileSize: (source as RasterSourceSpecification).tileSize || 512,
-    }
-    case 'tilejson_raster-dem': return {
-      type: 'raster-dem',
-      url: (source as RasterDEMSourceSpecification).url || `${protocol}//localhost:3000/tilejson.json`
-    }
-    case 'tilexyz_raster-dem': return {
-      type: 'raster-dem',
-      tiles: (source as RasterDEMSourceSpecification).tiles || [`${protocol}//localhost:3000/{x}/{y}/{z}.png`],
-      minzoom: (source as RasterDEMSourceSpecification).minzoom || 0,
-      maxzoom: (source as RasterDEMSourceSpecification).maxzoom || 14,
-      tileSize: (source as RasterDEMSourceSpecification).tileSize || 512
-    }
-    case 'image': return {
-      type: 'image',
-      url: `${protocol}//localhost:3000/image.png`,
-      coordinates: [
-        [0,0],
-        [0,0],
-        [0,0],
-        [0,0],
-      ],
-    }
-    case 'video': return {
-      type: 'video',
-      urls: [
-        `${protocol}//localhost:3000/movie.mp4`
-      ],
-      coordinates: [
-        [0,0],
-        [0,0],
-        [0,0],
-        [0,0],
-      ],
-    }
-    default: return {} as any
+      case 'pmtiles_vector': return {
+        type: 'vector',
+        url: `${protocol}//localhost:3000/file.pmtiles`
+      }
+      case 'geojson_url': return {
+        type: 'geojson',
+        data: `${protocol}//localhost:3000/geojson.json`
+      }
+      case 'geojson_json': return {
+        type: 'geojson',
+        cluster: (source as GeoJSONSourceSpecification).cluster || false,
+        data: ''
+      }
+      case 'tilejson_vector': return {
+        type: 'vector',
+        url: (source as VectorSourceSpecification).url || `${protocol}//localhost:3000/tilejson.json`
+      }
+      case 'tile_vector': return {
+        type: 'vector',
+        tiles: (source as VectorSourceSpecification).tiles || [`${protocol}//localhost:3000/{x}/{y}/{z}.pbf`],
+        minzoom: (source as VectorSourceSpecification).minzoom || 0,
+        maxzoom: (source as VectorSourceSpecification).maxzoom || 14,
+        scheme: (source as VectorSourceSpecification).scheme || 'xyz'
+      }
+      case 'tilejson_raster': return {
+        type: 'raster',
+        url: (source as RasterSourceSpecification).url || `${protocol}//localhost:3000/tilejson.json`
+      }
+      case 'tile_raster': return {
+        type: 'raster',
+        tiles: (source as RasterSourceSpecification).tiles || [`${protocol}//localhost:3000/{x}/{y}/{z}.png`],
+        minzoom: (source as RasterSourceSpecification).minzoom || 0,
+        maxzoom: (source as RasterSourceSpecification).maxzoom || 14,
+        scheme: (source as RasterSourceSpecification).scheme || 'xyz',
+        tileSize: (source as RasterSourceSpecification).tileSize || 512,
+      }
+      case 'tilejson_raster-dem': return {
+        type: 'raster-dem',
+        url: (source as RasterDEMSourceSpecification).url || `${protocol}//localhost:3000/tilejson.json`
+      }
+      case 'tilexyz_raster-dem': return {
+        type: 'raster-dem',
+        tiles: (source as RasterDEMSourceSpecification).tiles || [`${protocol}//localhost:3000/{x}/{y}/{z}.png`],
+        minzoom: (source as RasterDEMSourceSpecification).minzoom || 0,
+        maxzoom: (source as RasterDEMSourceSpecification).maxzoom || 14,
+        tileSize: (source as RasterDEMSourceSpecification).tileSize || 512
+      }
+      case 'image': return {
+        type: 'image',
+        url: `${protocol}//localhost:3000/image.png`,
+        coordinates: [
+          [0,0],
+          [0,0],
+          [0,0],
+          [0,0],
+        ],
+      }
+      case 'video': return {
+        type: 'video',
+        urls: [
+          `${protocol}//localhost:3000/movie.mp4`
+        ],
+        coordinates: [
+          [0,0],
+          [0,0],
+          [0,0],
+          [0,0],
+        ],
+      }
+      default: return {} as any
     }
   }
 

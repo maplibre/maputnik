@@ -40,10 +40,10 @@ type IconActionProps = {
 class IconAction extends React.Component<IconActionProps> {
   renderIcon() {
     switch(this.props.action) {
-    case 'duplicate': return <MdContentCopy />
-    case 'show': return <MdVisibility />
-    case 'hide': return <MdVisibilityOff />
-    case 'delete': return <MdDelete />
+      case 'duplicate': return <MdContentCopy />
+      case 'show': return <MdVisibility />
+      case 'hide': return <MdVisibilityOff />
+      case 'delete': return <MdDelete />
     }
   }
 
