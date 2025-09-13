@@ -1,9 +1,9 @@
-import React from 'react'
+import React from "react";
 
-import FieldSpec, {FieldSpecProps} from './FieldSpec'
-import FunctionButtons from './_FunctionButtons'
+import FieldSpec, {type FieldSpecProps} from "./FieldSpec";
+import FunctionButtons from "./_FunctionButtons";
 
-import labelFromFieldName from '../libs/label-from-field-name'
+import labelFromFieldName from "../libs/label-from-field-name";
 
 
 type SpecPropertyProps = FieldSpecProps & {
@@ -22,7 +22,7 @@ type SpecPropertyProps = FieldSpecProps & {
 export default class SpecProperty extends React.Component<SpecPropertyProps> {
   static defaultProps = {
     errors: {},
-  }
+  };
 
   render() {
     const {errors, fieldName, fieldType} = this.props;
@@ -33,7 +33,7 @@ export default class SpecProperty extends React.Component<SpecPropertyProps> {
       onDataClick={this.props.onDataClick}
       onExpressionClick={this.props.onExpressionClick}
       onElevationClick={this.props.onElevationClick}
-    />
+    />;
 
     const error = errors![fieldType+"."+fieldName as any] as any;
 
@@ -41,8 +41,8 @@ export default class SpecProperty extends React.Component<SpecPropertyProps> {
       {...this.props}
       error={error}
       fieldSpec={this.props.fieldSpec}
-      label={labelFromFieldName(this.props.fieldName || '')}
+      label={labelFromFieldName(this.props.fieldName || "")}
       action={functionBtn}
-    />
+    />;
   }
 }

@@ -1,8 +1,8 @@
-import React, { JSX } from 'react'
-import InputString from './InputString'
-import SmallError from './SmallError'
-import { Trans, WithTranslation, withTranslation } from 'react-i18next';
-import { TFunction } from 'i18next';
+import React, { type JSX } from "react";
+import InputString from "./InputString";
+import SmallError from "./SmallError";
+import { Trans, type WithTranslation, withTranslation } from "react-i18next";
+import { type TFunction } from "i18next";
 
 function validate(url: string, t: TFunction): JSX.Element | undefined {
   if (url === "") {
@@ -63,7 +63,7 @@ export type FieldUrlProps = {
   onInput?(...args: unknown[]): unknown
   multi?: boolean
   required?: boolean
-  'aria-label'?: string
+  "aria-label"?: string
   type?: string
   className?: string
 };
@@ -72,12 +72,12 @@ type InputUrlInternalProps = FieldUrlProps & WithTranslation;
 
 type InputUrlState = {
   error?: React.ReactNode
-}
+};
 
 class InputUrlInternal extends React.Component<InputUrlInternalProps, InputUrlState> {
   static defaultProps = {
     onInput: () => {},
-  }
+  };
 
   constructor (props: InputUrlInternalProps) {
     super(props);
@@ -91,14 +91,14 @@ class InputUrlInternal extends React.Component<InputUrlInternalProps, InputUrlSt
       error: validate(url, this.props.t),
     });
     if (this.props.onInput) this.props.onInput(url);
-  }
+  };
 
   onChange = (url: string) => {
     this.setState({
       error: validate(url, this.props.t),
     });
     this.props.onChange(url);
-  }
+  };
 
   render () {
     return (
@@ -107,7 +107,7 @@ class InputUrlInternal extends React.Component<InputUrlInternalProps, InputUrlSt
           {...this.props}
           onInput={this.onInput}
           onChange={this.onChange}
-          aria-label={this.props['aria-label']}
+          aria-label={this.props["aria-label"]}
         />
         {this.state.error}
       </div>

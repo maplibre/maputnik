@@ -1,9 +1,9 @@
-import React from 'react'
+import React from "react";
 
-import InputButton from './InputButton'
-import {MdFunctions, MdInsertChart} from 'react-icons/md'
-import { WithTranslation, withTranslation } from 'react-i18next';
-import { TbMathFunction } from 'react-icons/tb';
+import InputButton from "./InputButton";
+import {MdFunctions, MdInsertChart} from "react-icons/md";
+import { TbMathFunction } from "react-icons/tb";
+import { type WithTranslation, withTranslation } from "react-i18next";
 
 type FunctionInputButtonsInternalProps = {
   fieldSpec?: any
@@ -17,7 +17,7 @@ class FunctionInputButtonsInternal extends React.Component<FunctionInputButtonsI
   render() {
     const t = this.props.t;
 
-    if (this.props.fieldSpec.expression?.parameters.includes('zoom')) {
+    if (this.props.fieldSpec.expression?.parameters.includes("zoom")) {
       const expressionInputButton = (
         <InputButton
           className="maputnik-make-zoom-function"
@@ -34,24 +34,24 @@ class FunctionInputButtonsInternal extends React.Component<FunctionInputButtonsI
         title={t("Convert property into a zoom function")}
       >
         <MdFunctions />
-      </InputButton>
+      </InputButton>;
 
       let makeDataInputButton;
-      if (this.props.fieldSpec['property-type'] === 'data-driven') {
+      if (this.props.fieldSpec["property-type"] === "data-driven") {
         makeDataInputButton = <InputButton
           className="maputnik-make-data-function"
           onClick={this.props.onDataClick}
           title={t("Convert property to data function")}
         >
           <MdInsertChart />
-        </InputButton>
+        </InputButton>;
       }
       return <div>
         {expressionInputButton}
         {makeDataInputButton}
         {makeZoomInputButton}
-      </div>
-    } else if (this.props.fieldSpec.expression?.parameters.includes('elevation')) {
+      </div>;
+    } else if (this.props.fieldSpec.expression?.parameters.includes("elevation")) {
       const inputElevationButton = <InputButton
         className="maputnik-make-elevation-function"
         onClick={this.props.onElevationClick}
@@ -59,10 +59,10 @@ class FunctionInputButtonsInternal extends React.Component<FunctionInputButtonsI
         data-wd-key='make-elevation-function'
       >
         <MdFunctions />
-      </InputButton>
-      return <div>{inputElevationButton}</div>
+      </InputButton>;
+      return <div>{inputElevationButton}</div>;
     } else {
-      return <div></div>
+      return <div></div>;
     }
   }
 }

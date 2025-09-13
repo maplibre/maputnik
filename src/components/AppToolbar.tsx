@@ -1,6 +1,6 @@
-import React from 'react'
-import classnames from 'classnames'
-import {detect} from 'detect-browser';
+import React from "react";
+import classnames from "classnames";
+import {detect} from "detect-browser";
 
 import {
   MdOpenInBrowser,
@@ -10,17 +10,17 @@ import {
   MdFindInPage,
   MdLanguage,
   MdSave
-} from 'react-icons/md'
-import pkgJson from '../../package.json'
+} from "react-icons/md";
+import pkgJson from "../../package.json";
 //@ts-ignore
-import maputnikLogo from 'maputnik-design/logos/logo-color.svg?inline'
-import { withTranslation, WithTranslation } from 'react-i18next';
-import { supportedLanguages } from '../i18n';
-import type { OnStyleChangedCallback } from '../libs/definitions';
+import maputnikLogo from "maputnik-design/logos/logo-color.svg?inline";
+import { withTranslation, type WithTranslation } from "react-i18next";
+import { supportedLanguages } from "../i18n";
+import type { OnStyleChangedCallback } from "../libs/definitions";
 
 // This is required because of <https://stackoverflow.com/a/49846426>, there isn't another way to detect support that I'm aware of.
 const browser = detect();
-const colorAccessibilityFiltersEnabled = ['chrome', 'firefox'].indexOf(browser!.name) > -1;
+const colorAccessibilityFiltersEnabled = ["chrome", "firefox"].indexOf(browser!.name) > -1;
 
 
 type IconTextProps = {
@@ -30,7 +30,7 @@ type IconTextProps = {
 
 class IconText extends React.Component<IconTextProps> {
   render() {
-    return <span className="maputnik-icon-text">{this.props.children}</span>
+    return <span className="maputnik-icon-text">{this.props.children}</span>;
   }
 }
 
@@ -44,14 +44,14 @@ type ToolbarLinkProps = {
 class ToolbarLink extends React.Component<ToolbarLinkProps> {
   render() {
     return <a
-      className={classnames('maputnik-toolbar-link', this.props.className)}
+      className={classnames("maputnik-toolbar-link", this.props.className)}
       href={this.props.href}
       rel="noopener noreferrer"
       target="_blank"
       data-wd-key="toolbar:link"
     >
       {this.props.children}
-    </a>
+    </a>;
   }
 }
 
@@ -67,7 +67,7 @@ class ToolbarSelect extends React.Component<ToolbarSelectProps> {
       data-wd-key={this.props.wdKey}
     >
       {this.props.children}
-    </div>
+    </div>;
   }
 }
 
@@ -85,7 +85,7 @@ class ToolbarAction extends React.Component<ToolbarActionProps> {
       onClick={this.props.onClick}
     >
       {this.props.children}
-    </button>
+    </button>;
   }
 }
 
@@ -115,7 +115,7 @@ class AppToolbarInternal extends React.Component<AppToolbarInternalProps> {
       add: false,
       export: false,
     }
-  }
+  };
 
   handleSelection(val: MapState) {
     this.props.onSetMapState(val);
@@ -133,7 +133,7 @@ class AppToolbarInternal extends React.Component<AppToolbarInternalProps> {
       const el = document.querySelector("#skip-target-"+target) as HTMLButtonElement;
       el.focus();
     }
-  }
+  };
 
   render() {
     const t = this.props.t;
@@ -147,7 +147,7 @@ class AppToolbarInternal extends React.Component<AppToolbarInternalProps> {
         id: "inspect",
         group: "general",
         title: t("Inspect"),
-        disabled: this.props.renderer === 'ol',
+        disabled: this.props.renderer === "ol",
       },
       {
         id: "filter-deuteranopia",
@@ -220,19 +220,19 @@ class AppToolbarInternal extends React.Component<AppToolbarInternalProps> {
           </a>
         </div>
         <div className="maputnik-toolbar__actions" role="navigation" aria-label="Toolbar">
-          <ToolbarAction wdKey="nav:open" onClick={this.props.onToggleModal.bind(this, 'open')}>
+          <ToolbarAction wdKey="nav:open" onClick={this.props.onToggleModal.bind(this, "open")}>
             <MdOpenInBrowser />
             <IconText>{t("Open")}</IconText>
           </ToolbarAction>
-          <ToolbarAction wdKey="nav:export" onClick={this.props.onToggleModal.bind(this, 'export')}>
+          <ToolbarAction wdKey="nav:export" onClick={this.props.onToggleModal.bind(this, "export")}>
             <MdSave />
             <IconText>{t("Save")}</IconText>
           </ToolbarAction>
-          <ToolbarAction wdKey="nav:sources" onClick={this.props.onToggleModal.bind(this, 'sources')}>
+          <ToolbarAction wdKey="nav:sources" onClick={this.props.onToggleModal.bind(this, "sources")}>
             <MdLayers />
             <IconText>{t("Data Sources")}</IconText>
           </ToolbarAction>
-          <ToolbarAction wdKey="nav:settings" onClick={this.props.onToggleModal.bind(this, 'settings')}>
+          <ToolbarAction wdKey="nav:settings" onClick={this.props.onToggleModal.bind(this, "settings")}>
             <MdSettings />
             <IconText>{t("Style Settings")}</IconText>
           </ToolbarAction>
@@ -292,7 +292,7 @@ class AppToolbarInternal extends React.Component<AppToolbarInternalProps> {
           </ToolbarLink>
         </div>
       </div>
-    </nav>
+    </nav>;
   }
 }
 

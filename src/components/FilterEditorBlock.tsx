@@ -1,7 +1,7 @@
-import React, { PropsWithChildren } from 'react'
-import InputButton from './InputButton'
-import {MdDelete} from 'react-icons/md'
-import { WithTranslation, withTranslation } from 'react-i18next';
+import React, { type PropsWithChildren } from "react";
+import InputButton from "./InputButton";
+import {MdDelete} from "react-icons/md";
+import { type WithTranslation, withTranslation } from "react-i18next";
 
 type FilterEditorBlockInternalProps = PropsWithChildren & {
   onDelete(...args: unknown[]): unknown
@@ -23,7 +23,7 @@ class FilterEditorBlockInternal extends React.Component<FilterEditorBlockInterna
           <MdDelete />
         </InputButton>
       </div>
-    </div>
+    </div>;
   }
 }
 

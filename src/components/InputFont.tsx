@@ -1,5 +1,5 @@
-import React from 'react'
-import InputAutocomplete from './InputAutocomplete'
+import React from "react";
+import InputAutocomplete from "./InputAutocomplete";
 
 export type InputFontProps = {
   name: string
@@ -8,13 +8,13 @@ export type InputFontProps = {
   fonts?: unknown[]
   style?: object
   onChange(...args: unknown[]): unknown
-  'aria-label'?: string
+  "aria-label"?: string
 };
 
 export default class InputFont extends React.Component<InputFontProps> {
   static defaultProps = {
     fonts: []
-  }
+  };
 
   get values() {
     const out = this.props.value || this.props.default || [];
@@ -29,11 +29,11 @@ export default class InputFont extends React.Component<InputFontProps> {
   }
 
   changeFont(idx: number, newValue: string) {
-    const changedValues = this.values.slice(0)
-    changedValues[idx] = newValue
+    const changedValues = this.values.slice(0);
+    changedValues[idx] = newValue;
     const filteredValues = changedValues
       .filter(v => v !== undefined)
-      .filter(v => v !== "")
+      .filter(v => v !== "");
 
     this.props.onChange(filteredValues);
   }
@@ -44,13 +44,13 @@ export default class InputFont extends React.Component<InputFontProps> {
         key={i}
       >
         <InputAutocomplete
-          aria-label={this.props['aria-label'] || this.props.name}
+          aria-label={this.props["aria-label"] || this.props.name}
           value={value}
           options={this.props.fonts?.map(f => [f, f])}
           onChange={this.changeFont.bind(this, i)}
         />
-      </li>
-    })
+      </li>;
+    });
 
     return (
       <ul className="maputnik-font">

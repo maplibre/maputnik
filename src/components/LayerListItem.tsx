@@ -1,11 +1,11 @@
-import React from 'react'
-import classnames from 'classnames'
-import {MdContentCopy, MdVisibility, MdVisibilityOff, MdDelete} from 'react-icons/md'
-import { IconContext } from 'react-icons'
-import {useSortable} from '@dnd-kit/sortable'
-import {CSS} from '@dnd-kit/utilities'
+import React from "react";
+import classnames from "classnames";
+import {MdContentCopy, MdVisibility, MdVisibilityOff, MdDelete} from "react-icons/md";
+import { IconContext } from "react-icons";
+import {useSortable} from "@dnd-kit/sortable";
+import {CSS} from "@dnd-kit/utilities";
 
-import IconLayer from './IconLayer'
+import IconLayer from "./IconLayer";
 
 
 type DraggableLabelProps = {
@@ -21,12 +21,12 @@ const DraggableLabel: React.FC<DraggableLabelProps> = (props) => {
     <IconLayer
       className="layer-handle__icon"
       type={props.layerType}
-      style={{ width: '1em', height: '1em', verticalAlign: 'middle' }}
+      style={{ width: "1em", height: "1em", verticalAlign: "middle" }}
     />
     <button className="maputnik-layer-list-item-id">
       {props.layerId}
     </button>
-  </div>
+  </div>;
 };
 
 type IconActionProps = {
@@ -40,17 +40,17 @@ type IconActionProps = {
 class IconAction extends React.Component<IconActionProps> {
   renderIcon() {
     switch(this.props.action) {
-    case 'duplicate': return <MdContentCopy />
-    case 'show': return <MdVisibility />
-    case 'hide': return <MdVisibilityOff />
-    case 'delete': return <MdDelete />
+      case "duplicate": return <MdContentCopy />;
+      case "show": return <MdVisibility />;
+      case "hide": return <MdVisibilityOff />;
+      case "delete": return <MdDelete />;
     }
   }
 
   render() {
     const {classBlockName, classBlockModifier} = this.props;
 
-    let classAdditions = '';
+    let classAdditions = "";
     if (classBlockName) {
       classAdditions = `maputnik-layer-list-icon-action__${classBlockName}`;
 
@@ -68,7 +68,7 @@ class IconAction extends React.Component<IconActionProps> {
       aria-hidden="true"
     >
       {this.renderIcon()}
-    </button>
+    </button>;
   }
 }
 
@@ -89,7 +89,7 @@ type LayerListItemProps = {
 const LayerListItem = React.forwardRef<HTMLLIElement, LayerListItemProps>((props, ref) => {
   const {
     isSelected = false,
-    visibility = 'visible',
+    visibility = "visible",
     onLayerCopy = () => {},
     onLayerDestroy = () => {},
     onLayerVisibilityToggle = () => {},
@@ -110,12 +110,12 @@ const LayerListItem = React.forwardRef<HTMLLIElement, LayerListItemProps>((props
     opacity: isDragging ? 0.5 : 1,
   };
 
-  const visibilityAction = visibility === 'visible' ? 'show' : 'hide';
+  const visibilityAction = visibility === "visible" ? "show" : "hide";
 
   // Cast ref to MutableRefObject since we know from the codebase that's what's always passed
   const refObject = ref as React.MutableRefObject<HTMLLIElement | null> | null;
 
-  return <IconContext.Provider value={{size: '14px'}}>
+  return <IconContext.Provider value={{size: "14px"}}>
     <li
       ref={(node) => {
         setNodeRef(node);
@@ -141,13 +141,13 @@ const LayerListItem = React.forwardRef<HTMLLIElement, LayerListItemProps>((props
       <span style={{flexGrow: 1}} />
       <IconAction
         wdKey={"layer-list-item:" + props.layerId+":delete"}
-        action={'delete'}
+        action={"delete"}
         classBlockName="delete"
         onClick={_e => onLayerDestroy!(props.layerIndex)}
       />
       <IconAction
         wdKey={"layer-list-item:" + props.layerId+":copy"}
-        action={'duplicate'}
+        action={"duplicate"}
         classBlockName="duplicate"
         onClick={_e => onLayerCopy!(props.layerIndex)}
       />
@@ -159,7 +159,7 @@ const LayerListItem = React.forwardRef<HTMLLIElement, LayerListItemProps>((props
         onClick={_e => onLayerVisibilityToggle!(props.layerIndex)}
       />
     </li>
-  </IconContext.Provider>
+  </IconContext.Provider>;
 });
 
 export default LayerListItem;
