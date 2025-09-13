@@ -24,11 +24,12 @@ const FieldDocLabel: React.FC<FieldDocLabelProps> = (props) => {
 
   if (doc) {
     return (
-      <label className="maputnik-doc-wrapper">
+      <div className="maputnik-doc-wrapper">
         <div className="maputnik-doc-target">
           {label}
           {"\xa0"}
           <button
+            type="button"
             aria-label={
               open
                 ? "close property documentation"
@@ -41,13 +42,13 @@ const FieldDocLabel: React.FC<FieldDocLabelProps> = (props) => {
             {open ? <MdHighlightOff /> : <MdInfoOutline />}
           </button>
         </div>
-      </label>
+      </div>
     );
   } else if (label) {
     return (
-      <label className="maputnik-doc-wrapper">
+      <div className="maputnik-doc-wrapper">
         <div className="maputnik-doc-target">{label}</div>
-      </label>
+      </div>
     );
   }
   return <div />;

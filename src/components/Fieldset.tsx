@@ -18,9 +18,8 @@ const Fieldset: React.FC<FieldsetProps> = (props) => {
   };
 
   return (
-    <div
+    <fieldset
       className="maputnik-input-block"
-      role="group"
       aria-labelledby={labelId.current}
     >
       {props.fieldSpec && (
@@ -33,7 +32,9 @@ const Fieldset: React.FC<FieldsetProps> = (props) => {
         </div>
       )}
       {!props.fieldSpec && (
-        <div className="maputnik-input-block-label">{props.label}</div>
+        <legend className="maputnik-input-block-label" id={labelId.current}>
+          {props.label}
+        </legend>
       )}
       <div className="maputnik-input-block-action">{props.action}</div>
       <div className="maputnik-input-block-content">{props.children}</div>
@@ -45,7 +46,7 @@ const Fieldset: React.FC<FieldsetProps> = (props) => {
           <Doc fieldSpec={props.fieldSpec} />
         </div>
       )}
-    </div>
+    </fieldset>
   );
 };
 

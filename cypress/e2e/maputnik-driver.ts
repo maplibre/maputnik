@@ -37,6 +37,7 @@ export class MaputnikDriver {
     });
   };
 
+  // biome-ignore lint/suspicious/noThenProperty: Cypress chainable pattern intentionally uses then-like helper
   public then = (chainable: Cypress.Chainable<any>) =>
     new MaputnikAssertable(chainable);
 

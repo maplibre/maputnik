@@ -37,7 +37,7 @@ class FunctionInputButtonsInternal extends React.Component<FunctionInputButtonsI
         </InputButton>
       );
 
-      let makeDataInputButton;
+      let makeDataInputButton: React.ReactNode;
       if (this.props.fieldSpec["property-type"] === "data-driven") {
         makeDataInputButton = (
           <InputButton

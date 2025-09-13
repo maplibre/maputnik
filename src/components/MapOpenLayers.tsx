@@ -6,7 +6,7 @@ import MapMaplibreGlLayerPopup from "./MapMaplibreGlLayerPopup";
 
 import "ol/ol.css";
 import type { StyleSpecification } from "maplibre-gl";
-import { Map, Overlay, View } from "ol";
+import { Map as OlMap, Overlay, View } from "ol";
 
 import { toLonLat } from "ol/proj";
 import { apply } from "ol-mapbox-style";
@@ -53,7 +53,7 @@ class MapOpenLayersInternal extends React.Component<
   };
   updateStyle: any;
   map: any;
-  container: HTMLDivElement | null = null;
+  container: HTMLElement | null = null;
   overlay: Overlay | undefined;
   popupContainer: HTMLElement | null = null;
 
@@ -92,7 +92,7 @@ class MapOpenLayersInternal extends React.Component<
       },
     });
 
-    const map = new Map({
+    const map = new OlMap({
       target: this.container!,
       overlays: [this.overlay],
       view: new View({
@@ -129,7 +129,7 @@ class MapOpenLayersInternal extends React.Component<
       this.setState({
         center: [center[0].toFixed(2), center[1].toFixed(2)],
         rotation: map.getView().getRotation().toFixed(2),
-        zoom: map.getView().getZoom()?.toFixed(2),
+        zoom: map.getView().getZoom()?.toFixed(2) ?? "",
       });
     });
 
@@ -154,6 +154,7 @@ class MapOpenLayersInternal extends React.Component<
           className="maputnik-popup"
         >
           <button
+            type="button"
             className="maplibregl-popup-close-button"
             onClick={this.closeOverlay}
             aria-label={t("Close popup")}
@@ -171,30 +172,30 @@ class MapOpenLayersInternal extends React.Component<
         {this.props.debugToolbox && (
           <div className="maputnik-ol-debug">
             <div>
-              <label>{t("cursor:")} </label>
+              <span className="maputnik-ol-debug-label">{t("cursor:")} </span>
               <span>{renderCoords(this.state.cursor)}</span>
             </div>
             <div>
-              <label>{t("center:")} </label>
+              <span className="maputnik-ol-debug-label">{t("center:")} </span>
               <span>{renderCoords(this.state.center)}</span>
             </div>
             <div>
-              <label>{t("rotation:")} </label>
+              <span className="maputnik-ol-debug-label">{t("rotation:")} </span>
               <span>{this.state.rotation}</span>
             </div>
           </div>
         )}
-        <div
+        <section
           className="maputnik-ol"
           ref={(x) => {
             this.container = x;
           }}
-          role="region"
+          // biome-ignore lint/a11y/useSemanticElements: This container behaves like a region for screen readers
           aria-label={t("Map view")}
           style={{
             ...this.props.style,
           }}
-        ></div>
+        ></section>
       </div>
     );
   }

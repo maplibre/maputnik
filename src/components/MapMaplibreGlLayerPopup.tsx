@@ -78,12 +78,16 @@ class FeatureLayerPopup extends React.Component<FeatureLayerPopupProps> {
           const featureColor = this._getFeatureColor(feature, this.props.zoom);
 
           return (
-            <div key={idx} className="maputnik-popup-layer">
+            <div
+              key={`${feature.layer.id}-${idx}`}
+              className="maputnik-popup-layer"
+            >
               <div
                 className="maputnik-popup-layer__swatch"
                 style={{ background: featureColor }}
               ></div>
-              <label
+              <button
+                type="button"
                 className="maputnik-popup-layer__label"
                 onClick={() => {
                   this.props.onLayerSelect(feature.layer.id);
@@ -101,7 +105,7 @@ class FeatureLayerPopup extends React.Component<FeatureLayerPopupProps> {
                 )}
                 {feature.layer.id}
                 {feature.counter && <span> × {feature.counter}</span>}
-              </label>
+              </button>
             </div>
           );
         },

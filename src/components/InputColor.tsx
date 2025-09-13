@@ -97,6 +97,8 @@ export default class InputColor extends React.Component<InputColorProps> {
           color={currentChromeColor}
           onChange={(c) => this.onChangeNoCheck(formatColor(c))}
         />
+        {/* biome-ignore lint/a11y/noStaticElementInteractions: This overlay is clickable to close the picker */}
+        {/* biome-ignore lint/a11y/useKeyWithClickEvents: Closing is also available via input focus/blur */}
         <div
           className="maputnik-color-picker-offset"
           onClick={this.togglePicker}
@@ -108,6 +110,7 @@ export default class InputColor extends React.Component<InputColorProps> {
             bottom: "0px",
             left: "0px",
           }}
+          aria-hidden="true"
         />
       </div>
     );

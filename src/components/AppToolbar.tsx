@@ -19,7 +19,7 @@ import type { OnStyleChangedCallback } from "../libs/definitions";
 // This is required because of <https://stackoverflow.com/a/49846426>, there isn't another way to detect support that I'm aware of.
 const browser = detect();
 const colorAccessibilityFiltersEnabled =
-  ["chrome", "firefox"].indexOf(browser?.name) > -1;
+  ["chrome", "firefox"].indexOf(browser?.name ?? "") > -1;
 
 type IconTextProps = {
   children?: React.ReactNode;
@@ -79,6 +79,7 @@ class ToolbarAction extends React.Component<ToolbarActionProps> {
   render() {
     return (
       <button
+        type="button"
         className="maputnik-toolbar-action"
         data-wd-key={this.props.wdKey}
         onClick={this.props.onClick}
@@ -194,6 +195,7 @@ class AppToolbarInternal extends React.Component<AppToolbarInternalProps> {
           <div className="maputnik-toolbar-logo-container">
             {/* Keyboard accessible quick links */}
             <button
+              type="button"
               data-wd-key="root:skip:layer-list"
               className="maputnik-toolbar-skip"
               onClick={(_e) => this.onSkip("layer-list")}
@@ -201,6 +203,7 @@ class AppToolbarInternal extends React.Component<AppToolbarInternalProps> {
               {t("Layers list")}
             </button>
             <button
+              type="button"
               data-wd-key="root:skip:layer-editor"
               className="maputnik-toolbar-skip"
               onClick={(_e) => this.onSkip("layer-editor")}
@@ -208,6 +211,7 @@ class AppToolbarInternal extends React.Component<AppToolbarInternalProps> {
               {t("Layer editor")}
             </button>
             <button
+              type="button"
               data-wd-key="root:skip:map-view"
               className="maputnik-toolbar-skip"
               onClick={(_e) => this.onSkip("map")}
@@ -229,11 +233,7 @@ class AppToolbarInternal extends React.Component<AppToolbarInternalProps> {
               </h1>
             </a>
           </div>
-          <div
-            className="maputnik-toolbar__actions"
-            role="navigation"
-            aria-label="Toolbar"
-          >
+          <nav className="maputnik-toolbar__actions" aria-label="Toolbar">
             <ToolbarAction
               wdKey="nav:open"
               onClick={this.props.onToggleModal.bind(this, "open")}
@@ -333,7 +333,7 @@ class AppToolbarInternal extends React.Component<AppToolbarInternalProps> {
               <MdHelpOutline />
               <IconText>{t("Help")}</IconText>
             </ToolbarLink>
-          </div>
+          </nav>
         </div>
       </nav>
     );

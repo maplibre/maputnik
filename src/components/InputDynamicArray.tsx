@@ -73,7 +73,7 @@ class InputDynamicArrayInternal extends React.Component<InputDynamicArrayInterna
           {...i18nProps}
         />
       );
-      let input;
+      let input: React.ReactElement | null;
       if (this.props.type === "url") {
         input = (
           <InputUrl
@@ -121,8 +121,14 @@ class InputDynamicArrayInternal extends React.Component<InputDynamicArrayInterna
         );
       }
 
+      const keyStr = `${i}-${String(v)}`;
       return (
-        <div style={this.props.style} key={i} className="maputnik-array-block">
+        // biome-ignore lint/suspicious/noArrayIndexKey: Order is user-driven; fall back to index when value repeats
+        <div
+          style={this.props.style}
+          key={keyStr}
+          className="maputnik-array-block"
+        >
           <div className="maputnik-array-block-action">{deleteValueBtn}</div>
           <div className="maputnik-array-block-content">{input}</div>
         </div>

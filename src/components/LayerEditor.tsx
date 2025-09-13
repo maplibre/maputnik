@@ -228,7 +228,7 @@ class LayerEditorInternal extends React.Component<
       }
     });
 
-    let sourceLayerIds;
+    let sourceLayerIds: string[] | undefined;
     const layer = this.props.layer as Exclude<
       LayerSpecification,
       BackgroundLayerSpecification
@@ -424,9 +424,8 @@ class LayerEditorInternal extends React.Component<
 
     return (
       <IconContext.Provider value={{ size: "14px", color: "#8e8e8e" }}>
-        <section
+        <main
           className="maputnik-layer-editor"
-          role="main"
           aria-label={t("Layer editor")}
           data-wd-key="layer-editor"
         >
@@ -444,7 +443,6 @@ class LayerEditorInternal extends React.Component<
                   closeOnSelection={false}
                 >
                   <Button
-                    id="skip-target-layer-editor"
                     data-wd-key="skip-target-layer-editor"
                     className="more-menu__button"
                     title={"Layer options"}
@@ -480,7 +478,7 @@ class LayerEditorInternal extends React.Component<
           >
             {groups}
           </Accordion>
-        </section>
+        </main>
       </IconContext.Provider>
     );
   }

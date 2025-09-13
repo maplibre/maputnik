@@ -19,8 +19,9 @@ class AppMessagePanelInternal extends React.Component<AppMessagePanelInternalPro
 
   render() {
     const { t, selectedLayerIndex } = this.props;
+    // biome-ignore lint/suspicious/noArrayIndexKey: Error list order is informational and not stable; acceptable to use index
     const errors = this.props.errors?.map((error: any, idx) => {
-      let content;
+      let content: React.ReactNode;
       if (error.parsed && error.parsed.type === "layer") {
         const { parsed } = error;
         const layerId = this.props.mapStyle?.layers[parsed.data.index].id;
@@ -33,6 +34,7 @@ class AppMessagePanelInternal extends React.Component<AppMessagePanelInternalPro
               <>
                 &nbsp;&mdash;&nbsp;
                 <button
+                  type="button"
                   className="maputnik-message-panel__switch-button"
                   onClick={() => this.props.onLayerSelect?.(parsed.data.index)}
                 >
@@ -45,15 +47,20 @@ class AppMessagePanelInternal extends React.Component<AppMessagePanelInternalPro
       } else {
         content = error.message;
       }
+      const errKey = (
+        error?.parsed?.data?.index ??
+        error?.message ??
+        idx
+      ).toString();
       return (
-        <p key={`error-${idx}`} className="maputnik-message-panel-error">
+        <p key={`error-${errKey}`} className="maputnik-message-panel-error">
           {content}
         </p>
       );
     });
 
-    const infos = this.props.infos?.map((m, i) => {
-      return <p key={`info-${i}`}>{m}</p>;
+    const infos = this.props.infos?.map((m) => {
+      return <p key={`info-${m}`}>{m}</p>;
     });
 
     return (

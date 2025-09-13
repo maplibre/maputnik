@@ -298,7 +298,7 @@ class LayerListContainerInternal extends React.Component<
       <section
         className="maputnik-layer-list"
         data-wd-key="layer-list"
-        role="complementary"
+        // biome-ignore lint/a11y/useSemanticElements: Using section with label to group layer list
         aria-label={t("Layers list")}
         ref={this.scrollContainerRef}
       >
@@ -318,7 +318,7 @@ class LayerListContainerInternal extends React.Component<
           <div className="maputnik-default-property">
             <div className="maputnik-multibutton">
               <button
-                id="skip-target-layer-list"
+                type="button"
                 data-wd-key="skip-target-layer-list"
                 onClick={this.toggleLayers}
                 className="maputnik-button"
@@ -332,6 +332,7 @@ class LayerListContainerInternal extends React.Component<
           <div className="maputnik-default-property">
             <div className="maputnik-multibutton">
               <button
+                type="button"
                 onClick={this.toggleModal.bind(this, "add")}
                 data-wd-key="layer-list:add-layer"
                 className="maputnik-button maputnik-button-selected"
@@ -341,9 +342,9 @@ class LayerListContainerInternal extends React.Component<
             </div>
           </div>
         </header>
-        <div role="navigation" aria-label={t("Layers list")}>
+        <nav aria-label={t("Layers list")}>
           <ul className="maputnik-layer-list-container">{listItems}</ul>
-        </div>
+        </nav>
       </section>
     );
   }

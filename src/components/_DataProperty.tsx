@@ -240,7 +240,7 @@ class DataPropertyInternal extends React.Component<
       this.props.value!.type = this.getFieldFunctionType(this.props.fieldSpec);
     }
 
-    let dataFields;
+    let dataFields: React.ReactNode[] | undefined;
     if (this.props.value?.stops) {
       dataFields = this.props.value.stops.map((stop, idx) => {
         const zoomLevel =
@@ -266,7 +266,7 @@ class DataPropertyInternal extends React.Component<
             ),
         };
 
-        let dataInput;
+        let dataInput: React.ReactNode;
         if (this.props.value?.type === "categorical") {
           dataInput = <InputString {...dataProps} />;
         } else {
@@ -327,7 +327,10 @@ class DataPropertyInternal extends React.Component<
             <Block label={t("Function")} key="function">
               <div className="maputnik-data-spec-property-input">
                 <InputSelect
-                  value={this.props.value?.type}
+                  value={
+                    this.props.value?.type ??
+                    this.getFieldFunctionType(this.props.fieldSpec)
+                  }
                   onChange={(propVal: string) => this.changeDataType(propVal)}
                   title={t(
                     "Select a type of data scale (default is 'categorical').",

@@ -136,11 +136,15 @@ class ModalShortcutsInternal extends React.Component<ModalShortcutsInternalProps
             </Trans>
           </p>
           <dl>
-            {help.map((item, idx) => {
+            {help.map((item) => {
+              const keyStr = String(item.text);
               return (
-                <div key={idx} className="maputnik-modal-shortcuts__shortcut">
-                  <dt key={`dt${idx}`}>{item.key}</dt>
-                  <dd key={`dd${idx}`}>{item.text}</dd>
+                <div
+                  key={keyStr}
+                  className="maputnik-modal-shortcuts__shortcut"
+                >
+                  <dt>{item.key}</dt>
+                  <dd>{item.text}</dd>
                 </div>
               );
             })}
@@ -149,9 +153,10 @@ class ModalShortcutsInternal extends React.Component<ModalShortcutsInternalProps
             {t("If the Map is in focused you can use the following shortcuts")}
           </p>
           <ul>
-            {mapShortcuts.map((item, idx) => {
+            {mapShortcuts.map((item) => {
+              const keyStr = String(item.text);
               return (
-                <li key={idx}>
+                <li key={keyStr}>
                   <span>{item.key}</span> {item.text}
                 </li>
               );

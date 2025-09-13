@@ -1,3 +1,4 @@
+// biome-ignore lint/suspicious/noShadowRestrictedNames: Using Map type from maplibre-gl is intentional and clear in context
 import type { Map } from "maplibre-gl";
 
 export default class ZoomControl {
@@ -18,14 +19,16 @@ export default class ZoomControl {
   }
 
   updateZoomLevel() {
-    this._textEl!.innerHTML = this._map?.getZoom().toFixed(2);
+    this._textEl!.innerHTML = this._map?.getZoom().toFixed(2) ?? "";
   }
 
   setLabel(label: string) {
     this._container!.innerHTML = `
       ${label} <span></span>
     `;
-    this._textEl = this._container?.querySelector("span");
+    this._textEl =
+      (this._container?.querySelector("span") as HTMLSpanElement | null) ??
+      null;
     this.updateZoomLevel();
   }
 

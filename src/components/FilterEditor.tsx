@@ -263,10 +263,18 @@ class FilterEditorInternal extends React.Component<
       const editorBlocks = filters.map((f, idx) => {
         const error = errors?.[`filter[${idx + 1}]`];
 
+        const keyStr = (() => {
+          try {
+            return JSON.stringify(f);
+          } catch {
+            return String(idx);
+          }
+        })();
+
         return (
-          <div key={`block-${idx}`}>
+          <div key={`block-${keyStr}`}>
             <FilterEditorBlock
-              key={idx}
+              key={keyStr}
               onDelete={this.deleteFilterItem.bind(this, idx)}
             >
               <SingleFilterEditor
@@ -342,6 +350,7 @@ class FilterEditorInternal extends React.Component<
             <div className="maputnik-expr-infobox">
               {t("You've entered an old style filter.")}{" "}
               <button
+                type="button"
                 onClick={this.makeFilter}
                 className="maputnik-expr-infobox__button"
               >

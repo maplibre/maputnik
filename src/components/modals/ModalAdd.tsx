@@ -140,18 +140,19 @@ class ModalAddInternal extends React.Component<
     const t = this.props.t;
     const sources = this.getSources(this.state.type);
     const layers = this.getLayersForSource(this.state.source!);
-    let errorElement;
+    let errorElement: React.ReactNode | undefined;
     if (this.state.error) {
       errorElement = (
         <div className="maputnik-modal-error">
           {this.state.error}
-          <a
-            href="#"
+          <button
+            type="button"
             onClick={() => this.setState({ error: null })}
             className="maputnik-modal-error-close"
+            aria-label={t("Close error")}
           >
             ×
-          </a>
+          </button>
         </div>
       );
     }

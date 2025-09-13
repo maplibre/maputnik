@@ -4,8 +4,8 @@ import Color from "color";
 import MapLibreGl, {
   type LayerSpecification,
   type LngLat,
-  type Map,
   type MapOptions,
+  type Map as MlMap,
   type SourceSpecification,
   type StyleSpecification,
 } from "maplibre-gl";
@@ -68,7 +68,7 @@ function buildInspectStyle(
 }
 
 type MapMaplibreGlInternalProps = {
-  onDataChange?(event: { map: Map | null }): unknown;
+  onDataChange?(event: { map: MlMap | null }): unknown;
   onLayerSelect(index: number): void;
   mapStyle: StyleSpecification;
   inspectModeEnabled: boolean;
@@ -83,7 +83,7 @@ type MapMaplibreGlInternalProps = {
 } & WithTranslation;
 
 type MapMaplibreGlState = {
-  map: Map | null;
+  map: MlMap | null;
   inspect: MaplibreInspect | null;
   geocoder: MaplibreGeocoder | null;
   zoomControl: ZoomControl | null;
@@ -101,7 +101,7 @@ class MapMaplibreGlInternal extends React.Component<
     onChange: () => {},
     options: {} as MapOptions,
   };
-  container: HTMLDivElement | null = null;
+  container: HTMLElement | null = null;
 
   constructor(props: MapMaplibreGlInternalProps) {
     super(props);
@@ -285,7 +285,7 @@ class MapMaplibreGlInternal extends React.Component<
     this.props.onLayerSelect(index);
   };
 
-  initGeocoder(map: Map) {
+  initGeocoder(map: MlMap) {
     const geocoderConfig = {
       forwardGeocode: async (config: MaplibreGeocoderApiConfig) => {
         const features = [];
@@ -333,15 +333,14 @@ class MapMaplibreGlInternal extends React.Component<
     this.state.geocoder?.setPlaceholder(t("Search"));
     this.state.zoomControl?.setLabel(t("Zoom:"));
     return (
-      <div
+      <section
         className="maputnik-map__map"
-        role="region"
         aria-label={t("Map view")}
         ref={(x) => {
           this.container = x;
         }}
         data-wd-key="maplibre:map"
-      ></div>
+      ></section>
     );
   }
 }

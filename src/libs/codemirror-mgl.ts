@@ -68,7 +68,7 @@ CodeMirror.registerHelper(
         return undefined;
       } else {
         const key = path[0];
-        let newNode;
+        let newNode: any;
         if (key.match(/^[0-9]+$/)) {
           newNode = node.children[path[0]];
         } else {

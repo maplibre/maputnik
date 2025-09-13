@@ -9,8 +9,8 @@ import get from "lodash.get";
 import isEqual from "lodash.isequal";
 import type {
   LayerSpecification,
-  Map,
   MapOptions,
+  Map as MapType,
   SourceSpecification,
   StyleSpecification,
   ValidationError,
@@ -472,7 +472,7 @@ export default class App extends React.Component<any, AppState> {
             const objPath = message.split(":")[0];
             // Errors can be deply nested for example 'layers[0].filter[1][1][0]' we only care upto the property 'layers[0].filter'
             const unsetPath = objPath.match(/^\S+?\[\d+\]\.[^[]+/)?.[0];
-            unset(dirtyMapStyle, unsetPath);
+            if (unsetPath) unset(dirtyMapStyle, unsetPath);
           } catch (err) {
             console.warn(`${message} ${err}`);
           }
@@ -723,7 +723,7 @@ export default class App extends React.Component<any, AppState> {
           allowFallback: true,
         });
       },
-      onDataChange: (e: { map: Map }) => {
+      onDataChange: (e: { map: MapType }) => {
         this.layerWatcher.analyzeMap(e.map);
         this.fetchSources();
       },
@@ -731,7 +731,7 @@ export default class App extends React.Component<any, AppState> {
 
     const renderer = this._getRenderer();
 
-    let mapElement;
+    let mapElement: React.ReactNode;
 
     // Check if OL code has been loaded?
     if (renderer === "ol") {
@@ -758,7 +758,7 @@ export default class App extends React.Component<any, AppState> {
       );
     }
 
-    let filterName;
+    let filterName: string | undefined;
     if (this.state.mapState.match(/^filter-/)) {
       filterName = this.state.mapState.replace(/^filter-/, "");
     }

@@ -13,12 +13,15 @@ export default class LayerListGroup extends React.Component<LayerListGroupProps>
   render() {
     return (
       <li className="maputnik-layer-list-group">
+        {/* biome-ignore lint/a11y/noStaticElementInteractions: This header acts as a clickable region controlling the group */}
+        {/* biome-ignore lint/a11y/useKeyWithClickEvents: Interaction is also available via the nested button */}
         <div
           className="maputnik-layer-list-group-header"
           data-wd-key={`layer-list-group:${this.props["data-wd-key"]}`}
           onClick={(_e) => this.props.onActiveToggle(!this.props.isActive)}
         >
           <button
+            type="button"
             className="maputnik-layer-list-group-title"
             aria-controls={this.props["aria-controls"]}
             aria-expanded={this.props.isActive}

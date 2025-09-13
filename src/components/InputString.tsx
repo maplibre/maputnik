@@ -49,8 +49,8 @@ export default class InputString extends React.Component<
   }
 
   render() {
-    let tag;
-    let classes;
+    let tag: "input" | "textarea";
+    let classes: string[];
 
     if (this.props.multi) {
       tag = "textarea";

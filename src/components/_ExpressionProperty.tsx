@@ -102,7 +102,7 @@ class ExpressionPropertyInternal extends React.Component<
           return key.startsWith(errorKeyStart);
         })
         .forEach(([_key, error]) => {
-          return foundErrors.push(error);
+          foundErrors.push(error);
         });
 
       if (fieldError) {

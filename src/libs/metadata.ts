@@ -42,7 +42,7 @@ export function downloadGlyphsMetadata(
   if (urlObj.pathname === normPathPart) {
     urlObj.pathname = "/fontstacks.json";
   } else {
-    urlObj.pathname = urlObj.pathname?.replace(normPathPart, ".json");
+    urlObj.pathname = (urlObj.pathname ?? "").replace(normPathPart, ".json");
   }
   const url = npmurl.format(urlObj);
 

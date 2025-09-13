@@ -155,7 +155,7 @@ class ModalOpenInternal extends React.Component<
     const file = await fileHandle.getFile();
     const content = await file.text();
 
-    let mapStyle;
+    let mapStyle: any;
     try {
       mapStyle = JSON.parse(content);
     } catch (err) {
@@ -180,7 +180,7 @@ class ModalOpenInternal extends React.Component<
 
     reader.readAsText(file, "UTF-8");
     reader.onload = (e) => {
-      let mapStyle;
+      let mapStyle: any;
       try {
         mapStyle = JSON.parse(e.target?.result as string);
       } catch (err) {
@@ -224,18 +224,19 @@ class ModalOpenInternal extends React.Component<
       );
     });
 
-    let errorElement;
+    let errorElement: React.ReactNode;
     if (this.state.error) {
       errorElement = (
         <div className="maputnik-modal-error">
           {this.state.error}
-          <a
-            href="#"
+          <button
+            type="button"
             onClick={() => this.clearError()}
             className="maputnik-modal-error-close"
+            aria-label={t("Close error")}
           >
             ×
-          </a>
+          </button>
         </div>
       );
     }

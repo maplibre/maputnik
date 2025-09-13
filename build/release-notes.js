@@ -21,12 +21,11 @@ const changelog = fs.readFileSync(changelogPath, "utf8");
 const regex = /^## (\d+\.\d+\.\d+.*?)\n(.+?)(?=\n^## \d+\.\d+\.\d+.*?\n)/gms;
 
 const releaseNotes = [];
-let match;
-// eslint-disable-next-line no-cond-assign
-while ((match = regex.exec(changelog))) {
+// Iterate over all matches without using assignment in the loop condition
+for (const m of changelog.matchAll(regex)) {
   releaseNotes.push({
-    version: match[1],
-    changelog: match[2].trim(),
+    version: m[1],
+    changelog: m[2].trim(),
   });
 }
 

@@ -9,7 +9,7 @@ function validate(url: string, t: TFunction): JSX.Element | undefined {
     return;
   }
 
-  let error;
+  let error: JSX.Element | undefined;
   const getProtocol = (url: string) => {
     try {
       const urlObj = new URL(url);

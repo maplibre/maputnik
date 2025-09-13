@@ -40,6 +40,7 @@ export default class InputFont extends React.Component<InputFontProps> {
   render() {
     const inputs = this.values.map((value, i) => {
       return (
+        // biome-ignore lint/suspicious/noArrayIndexKey: font list is ordered by user input; indices are acceptable here
         <li key={i}>
           <InputAutocomplete
             aria-label={this.props["aria-label"] || this.props.name}

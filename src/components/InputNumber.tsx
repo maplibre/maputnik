@@ -172,7 +172,7 @@ export default class InputNumber extends React.Component<
         : this.state.value;
       const defaultValue =
         this.props.default === undefined ? "" : this.props.default;
-      let inputValue;
+      let inputValue: number | string | undefined;
       if (this.state.editingRange) {
         inputValue = this.state.value;
       } else {

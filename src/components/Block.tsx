@@ -64,6 +64,8 @@ export default class Block extends React.Component<BlockProps, BlockState> {
 
   render() {
     return (
+      // biome-ignore lint/a11y/useKeyWithClickEvents: Label acts as a proxy for nested interactive content managed elsewhere
+      // biome-ignore lint/a11y/noLabelWithoutControl: This wrapper groups input label and content; actual controls are within
       <label
         style={this.props.style}
         data-wd-key={this.props["data-wd-key"]}
@@ -73,6 +75,7 @@ export default class Block extends React.Component<BlockProps, BlockState> {
           "maputnik-action-block": this.props.action,
         })}
         onClick={this.onLabelClick}
+        onKeyDown={() => {}}
       >
         {this.props.fieldSpec && (
           <div className="maputnik-input-block-label">

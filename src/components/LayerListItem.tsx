@@ -32,7 +32,9 @@ const DraggableLabel: React.FC<DraggableLabelProps> = (props) => {
         type={props.layerType}
         style={{ width: "1em", height: "1em", verticalAlign: "middle" }}
       />
-      <button className="maputnik-layer-list-item-id">{props.layerId}</button>
+      <button type="button" className="maputnik-layer-list-item-id">
+        {props.layerId}
+      </button>
     </div>
   );
 };
@@ -73,6 +75,7 @@ class IconAction extends React.Component<IconActionProps> {
 
     return (
       <button
+        type="button"
         tabIndex={-1}
         title={this.props.action}
         className={`maputnik-layer-list-icon-action ${classAdditions}`}
@@ -133,6 +136,7 @@ const LayerListItem = React.forwardRef<HTMLLIElement, LayerListItemProps>(
 
     return (
       <IconContext.Provider value={{ size: "14px" }}>
+        {/* biome-ignore lint/a11y/useKeyWithClickEvents: Clickable list item forwards interactions to internal buttons; keyboard navigation provided elsewhere */}
         <li
           ref={(node) => {
             setNodeRef(node);

@@ -231,7 +231,7 @@ const FieldFunction: React.FC<FieldFunctionProps> = (props) => {
 
   const makeExpression = () => {
     const { value, fieldSpec } = props;
-    let expression;
+    let expression: any;
 
     if (typeof value === "object" && "stops" in value) {
       expression = styleFunction.convertFunction(value, fieldSpec);
@@ -247,7 +247,7 @@ const FieldFunction: React.FC<FieldFunctionProps> = (props) => {
     const functionType = getFieldFunctionType(props.fieldSpec);
     const stopValue = functionType === "categorical" ? "" : 0;
     const { value } = props;
-    let dataFunc;
+    let dataFunc: any;
 
     if (typeof value === "object") {
       if (value.stops) {
@@ -327,7 +327,7 @@ const FieldFunction: React.FC<FieldFunctionProps> = (props) => {
       ? "maputnik-default-property"
       : "maputnik-modified-property";
 
-  let specField;
+  let specField: React.ReactElement | null;
 
   if (dataType === "expression") {
     specField = (

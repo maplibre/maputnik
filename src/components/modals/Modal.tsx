@@ -51,6 +51,7 @@ class ModalInternal extends React.Component<ModalInternalProps> {
               </h1>
               <span className="maputnik-space"></span>
               <button
+                type="button"
                 className="maputnik-modal-header-toggle"
                 title={t("Close modal")}
                 onClick={this.onClose}

@@ -44,7 +44,7 @@ export default class InputArray extends React.Component<
 
     Array(props.length)
       .fill(null)
-      .map((_, i) => {
+      .forEach((_, i) => {
         if (props.value[i] === state.initialPropsValue[i]) {
           value[i] = state.value[i];
         } else {
@@ -102,6 +102,7 @@ export default class InputArray extends React.Component<
         if (this.props.type === "number") {
           return (
             <InputNumber
+              // biome-ignore lint/suspicious/noArrayIndexKey: Inputs are positional in fixed-length arrays
               key={i}
               default={
                 containsValues || !this.props.default
@@ -117,6 +118,7 @@ export default class InputArray extends React.Component<
         } else {
           return (
             <InputString
+              // biome-ignore lint/suspicious/noArrayIndexKey: Inputs are positional in fixed-length arrays
               key={i}
               default={
                 containsValues || !this.props.default
