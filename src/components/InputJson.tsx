@@ -1,6 +1,6 @@
-import React from "react";
 import classnames from "classnames";
 import CodeMirror, { type ModeSpec } from "codemirror";
+import React from "react";
 import { Trans, type WithTranslation, withTranslation } from "react-i18next";
 
 import "codemirror/mode/javascript/javascript";
@@ -12,38 +12,40 @@ import stringifyPretty from "json-stringify-pretty-compact";
 import "../libs/codemirror-mgl";
 import type { LayerSpecification } from "maplibre-gl";
 
-
 export type InputJsonProps = {
-  layer: LayerSpecification
-  maxHeight?: number
-  onChange?(...args: unknown[]): unknown
-  lineNumbers?: boolean
-  lineWrapping?: boolean
-  getValue?(data: any): string
-  gutters?: string[]
-  className?: string
-  onFocus?(...args: unknown[]): unknown
-  onBlur?(...args: unknown[]): unknown
-  onJSONValid?(...args: unknown[]): unknown
-  onJSONInvalid?(...args: unknown[]): unknown
-  mode?: ModeSpec<any>
-  lint?: boolean | object
+  layer: LayerSpecification;
+  maxHeight?: number;
+  onChange?(...args: unknown[]): unknown;
+  lineNumbers?: boolean;
+  lineWrapping?: boolean;
+  getValue?(data: any): string;
+  gutters?: string[];
+  className?: string;
+  onFocus?(...args: unknown[]): unknown;
+  onBlur?(...args: unknown[]): unknown;
+  onJSONValid?(...args: unknown[]): unknown;
+  onJSONInvalid?(...args: unknown[]): unknown;
+  mode?: ModeSpec<any>;
+  lint?: boolean | object;
 };
 type InputJsonInternalProps = InputJsonProps & WithTranslation;
 
 type InputJsonState = {
-  isEditing: boolean
-  showMessage: boolean
-  prevValue: string
+  isEditing: boolean;
+  showMessage: boolean;
+  prevValue: string;
 };
 
-class InputJsonInternal extends React.Component<InputJsonInternalProps, InputJsonState> {
+class InputJsonInternal extends React.Component<
+  InputJsonInternalProps,
+  InputJsonState
+> {
   static defaultProps = {
     lineNumbers: true,
     lineWrapping: false,
     gutters: ["CodeMirror-lint-markers"],
     getValue: (data: any) => {
-      return stringifyPretty(data, {indent: 2, maxLength: 40});
+      return stringifyPretty(data, { indent: 2, maxLength: 40 });
     },
     onFocus: () => {},
     onBlur: () => {},
@@ -65,7 +67,7 @@ class InputJsonInternal extends React.Component<InputJsonInternalProps, InputJso
     };
   }
 
-  componentDidMount () {
+  componentDidMount() {
     this._doc = CodeMirror(this._el!, {
       value: this.props.getValue!(this.props.layer),
       mode: this.props.mode || {
@@ -77,7 +79,7 @@ class InputJsonInternal extends React.Component<InputJsonInternalProps, InputJso
       viewportMargin: Infinity,
       lineNumbers: this.props.lineNumbers,
       lint: this.props.lint || {
-        context: "layer"
+        context: "layer",
       },
       matchBrackets: true,
       gutters: this.props.gutters,
@@ -97,7 +99,7 @@ class InputJsonInternal extends React.Component<InputJsonInternalProps, InputJso
     if (this.props.onFocus) this.props.onFocus();
     this.setState({
       isEditing: true,
-      showMessage: (this._keyEvent === "keyboard"),
+      showMessage: this._keyEvent === "keyboard",
     });
   };
 
@@ -110,7 +112,7 @@ class InputJsonInternal extends React.Component<InputJsonInternalProps, InputJso
     });
   };
 
-  componentWillUnMount () {
+  componentWillUnMount() {
     this._doc!.off("change", this.onChange);
     this._doc!.off("focus", this.onFocus);
     this._doc!.off("blur", this.onBlur);
@@ -119,9 +121,7 @@ class InputJsonInternal extends React.Component<InputJsonInternalProps, InputJso
   componentDidUpdate(prevProps: InputJsonProps) {
     if (!this.state.isEditing && prevProps.layer !== this.props.layer) {
       this._cancelNextChange = true;
-      this._doc!.setValue(
-        this.props.getValue!(this.props.layer),
-      );
+      this._doc!.setValue(this.props.getValue!(this.props.layer));
     }
   }
 
@@ -139,15 +139,14 @@ class InputJsonInternal extends React.Component<InputJsonInternalProps, InputJso
       let parsedLayer, err;
       try {
         parsedLayer = JSON.parse(newCode);
-      } catch(_err) {
+      } catch (_err) {
         err = _err;
         console.warn(_err);
       }
 
       if (err && this.props.onJSONInvalid) {
         this.props.onJSONInvalid();
-      }
-      else {
+      } else {
         if (this.props.onChange) this.props.onChange(parsedLayer);
         if (this.props.onJSONValid) this.props.onJSONValid();
       }
@@ -160,24 +159,36 @@ class InputJsonInternal extends React.Component<InputJsonInternalProps, InputJso
 
   render() {
     const t = this.props.t;
-    const {showMessage} = this.state;
-    const style = {} as {maxHeight?: number};
+    const { showMessage } = this.state;
+    const style = {} as { maxHeight?: number };
     if (this.props.maxHeight) {
       style.maxHeight = this.props.maxHeight;
     }
 
-    return <div className="JSONEditor" onPointerDown={this.onPointerDown} aria-hidden="true">
-      <div className={classnames("JSONEditor__message", {"JSONEditor__message--on": showMessage})}>
-        <Trans t={t}>
-          Press <kbd>ESC</kbd> to lose focus
-        </Trans>
-      </div>
+    return (
       <div
-        className={classnames("codemirror-container", this.props.className)}
-        ref={(el) => {this._el = el;}}
-        style={style}
-      />
-    </div>;
+        className="JSONEditor"
+        onPointerDown={this.onPointerDown}
+        aria-hidden="true"
+      >
+        <div
+          className={classnames("JSONEditor__message", {
+            "JSONEditor__message--on": showMessage,
+          })}
+        >
+          <Trans t={t}>
+            Press <kbd>ESC</kbd> to lose focus
+          </Trans>
+        </div>
+        <div
+          className={classnames("codemirror-container", this.props.className)}
+          ref={(el) => {
+            this._el = el;
+          }}
+          style={style}
+        />
+      </div>
+    );
   }
 }
 

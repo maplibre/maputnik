@@ -1,5 +1,5 @@
+import type { StyleSpecificationWithId } from "./definitions";
 import style from "./style";
-import { type StyleSpecificationWithId } from "./definitions";
 
 export function getStyleUrlFromAddressbarAndRemoveItIfNeeded(): string | null {
   const initialUrl = new URL(window.location.href);
@@ -11,12 +11,14 @@ export function getStyleUrlFromAddressbarAndRemoveItIfNeeded(): string | null {
   return styleUrl;
 }
 
-export async function loadStyleUrl(styleUrl: string): Promise<StyleSpecificationWithId> {
+export async function loadStyleUrl(
+  styleUrl: string,
+): Promise<StyleSpecificationWithId> {
   console.log("Loading style", styleUrl);
   try {
     const response = await fetch(styleUrl, {
       mode: "cors",
-      credentials: "same-origin"
+      credentials: "same-origin",
     });
     const body = await response.json();
     return style.ensureStyleValidity(body);

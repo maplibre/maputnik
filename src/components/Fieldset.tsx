@@ -1,14 +1,13 @@
 import React, { type PropsWithChildren, type ReactElement } from "react";
-import FieldDocLabel from "./FieldDocLabel";
-import Doc from "./Doc";
 import generateUniqueId from "../libs/document-uid";
+import Doc from "./Doc";
+import FieldDocLabel from "./FieldDocLabel";
 
 type FieldsetProps = PropsWithChildren & {
-  label?: string,
-  fieldSpec?: { doc?: string },
-  action?: ReactElement,
+  label?: string;
+  fieldSpec?: { doc?: string };
+  action?: ReactElement;
 };
-
 
 const Fieldset: React.FC<FieldsetProps> = (props) => {
   const [showDoc, setShowDoc] = React.useState(false);
@@ -19,7 +18,11 @@ const Fieldset: React.FC<FieldsetProps> = (props) => {
   };
 
   return (
-    <div className="maputnik-input-block" role="group" aria-labelledby={labelId.current}>
+    <div
+      className="maputnik-input-block"
+      role="group"
+      aria-labelledby={labelId.current}
+    >
       {props.fieldSpec && (
         <div className="maputnik-input-block-label">
           <FieldDocLabel
@@ -30,14 +33,15 @@ const Fieldset: React.FC<FieldsetProps> = (props) => {
         </div>
       )}
       {!props.fieldSpec && (
-        <div className="maputnik-input-block-label">
-          {props.label}
-        </div>
+        <div className="maputnik-input-block-label">{props.label}</div>
       )}
       <div className="maputnik-input-block-action">{props.action}</div>
       <div className="maputnik-input-block-content">{props.children}</div>
       {props.fieldSpec && (
-        <div className="maputnik-doc-inline" style={{ display: showDoc ? "" : "none" }}>
+        <div
+          className="maputnik-doc-inline"
+          style={{ display: showDoc ? "" : "none" }}
+        >
           <Doc fieldSpec={props.fieldSpec} />
         </div>
       )}

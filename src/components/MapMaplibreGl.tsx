@@ -1,41 +1,60 @@
-import React from "react";
-import {createRoot} from "react-dom/client";
-import MapLibreGl, {type LayerSpecification, type LngLat, type Map, type MapOptions, type SourceSpecification, type StyleSpecification} from "maplibre-gl";
 import MaplibreInspect from "@maplibre/maplibre-gl-inspect";
 import colors from "@maplibre/maplibre-gl-inspect/lib/colors";
-import MapMaplibreGlLayerPopup from "./MapMaplibreGlLayerPopup";
-import MapMaplibreGlFeaturePropertyPopup, { type InspectFeature } from "./MapMaplibreGlFeaturePropertyPopup";
 import Color from "color";
+import MapLibreGl, {
+  type LayerSpecification,
+  type LngLat,
+  type Map,
+  type MapOptions,
+  type SourceSpecification,
+  type StyleSpecification,
+} from "maplibre-gl";
+import React from "react";
+import { createRoot } from "react-dom/client";
+import {
+  colorHighlightedLayer,
+  type HighlightedLayer,
+} from "../libs/highlight";
 import ZoomControl from "../libs/zoomcontrol";
-import { type HighlightedLayer, colorHighlightedLayer } from "../libs/highlight";
+import MapMaplibreGlFeaturePropertyPopup, {
+  type InspectFeature,
+} from "./MapMaplibreGlFeaturePropertyPopup";
+import MapMaplibreGlLayerPopup from "./MapMaplibreGlLayerPopup";
 import "maplibre-gl/dist/maplibre-gl.css";
 import "../maplibregl.css";
 import "../libs/maplibre-rtl";
-import MaplibreGeocoder, { type MaplibreGeocoderApi, type MaplibreGeocoderApiConfig } from "@maplibre/maplibre-gl-geocoder";
+import MaplibreGeocoder, {
+  type MaplibreGeocoderApi,
+  type MaplibreGeocoderApiConfig,
+} from "@maplibre/maplibre-gl-geocoder";
 import "@maplibre/maplibre-gl-geocoder/dist/maplibre-gl-geocoder.css";
-import { withTranslation, type WithTranslation } from "react-i18next";
 import i18next from "i18next";
 import { Protocol } from "pmtiles";
+import { type WithTranslation, withTranslation } from "react-i18next";
 
-function buildInspectStyle(originalMapStyle: StyleSpecification, coloredLayers: HighlightedLayer[], highlightedLayer?: HighlightedLayer) {
+function buildInspectStyle(
+  originalMapStyle: StyleSpecification,
+  coloredLayers: HighlightedLayer[],
+  highlightedLayer?: HighlightedLayer,
+) {
   const backgroundLayer = {
-    "id": "background",
-    "type": "background",
-    "paint": {
+    id: "background",
+    type: "background",
+    paint: {
       "background-color": "#1c1f24",
-    }
+    },
   } as LayerSpecification;
 
   const layer = colorHighlightedLayer(highlightedLayer);
-  if(layer) {
+  if (layer) {
     coloredLayers.push(layer);
   }
 
-  const sources: {[key:string]: SourceSpecification} = {};
+  const sources: { [key: string]: SourceSpecification } = {};
 
-  Object.keys(originalMapStyle.sources).forEach(sourceId => {
+  Object.keys(originalMapStyle.sources).forEach((sourceId) => {
     const source = originalMapStyle.sources[sourceId];
-    if(source.type !== "raster" && source.type !== "raster-dem") {
+    if (source.type !== "raster" && source.type !== "raster-dem") {
       sources[sourceId] = source;
     }
   });
@@ -43,24 +62,24 @@ function buildInspectStyle(originalMapStyle: StyleSpecification, coloredLayers: 
   const inspectStyle = {
     ...originalMapStyle,
     sources: sources,
-    layers: [backgroundLayer].concat(coloredLayers as LayerSpecification[])
+    layers: [backgroundLayer].concat(coloredLayers as LayerSpecification[]),
   };
   return inspectStyle;
 }
 
 type MapMaplibreGlInternalProps = {
-  onDataChange?(event: {map: Map | null}): unknown
-  onLayerSelect(index: number): void
-  mapStyle: StyleSpecification
-  inspectModeEnabled: boolean
-  highlightedLayer?: HighlightedLayer
+  onDataChange?(event: { map: Map | null }): unknown;
+  onLayerSelect(index: number): void;
+  mapStyle: StyleSpecification;
+  inspectModeEnabled: boolean;
+  highlightedLayer?: HighlightedLayer;
   options?: Partial<MapOptions> & {
-    showTileBoundaries?: boolean
-    showCollisionBoxes?: boolean
-    showOverdrawInspector?: boolean
-  }
-  replaceAccessTokens(mapStyle: StyleSpecification): StyleSpecification
-  onChange(value: {center: LngLat, zoom: number}): unknown
+    showTileBoundaries?: boolean;
+    showCollisionBoxes?: boolean;
+    showOverdrawInspector?: boolean;
+  };
+  replaceAccessTokens(mapStyle: StyleSpecification): StyleSpecification;
+  onChange(value: { center: LngLat; zoom: number }): unknown;
 } & WithTranslation;
 
 type MapMaplibreGlState = {
@@ -71,7 +90,10 @@ type MapMaplibreGlState = {
   zoom?: number;
 };
 
-class MapMaplibreGlInternal extends React.Component<MapMaplibreGlInternalProps, MapMaplibreGlState> {
+class MapMaplibreGlInternal extends React.Component<
+  MapMaplibreGlInternalProps,
+  MapMaplibreGlState
+> {
   static defaultProps = {
     onMapLoaded: () => {},
     onDataChange: () => {},
@@ -94,12 +116,16 @@ class MapMaplibreGlInternal extends React.Component<MapMaplibreGlInternalProps, 
     });
   }
 
-
-  shouldComponentUpdate(nextProps: MapMaplibreGlInternalProps, nextState: MapMaplibreGlState) {
+  shouldComponentUpdate(
+    nextProps: MapMaplibreGlInternalProps,
+    nextState: MapMaplibreGlState,
+  ) {
     let should = false;
     try {
-      should = JSON.stringify(this.props) !== JSON.stringify(nextProps) || JSON.stringify(this.state) !== JSON.stringify(nextState);
-    } catch(_e) {
+      should =
+        JSON.stringify(this.props) !== JSON.stringify(nextProps) ||
+        JSON.stringify(this.state) !== JSON.stringify(nextState);
+    } catch (_e) {
       // no biggie, carry on
     }
     return should;
@@ -113,13 +139,16 @@ class MapMaplibreGlInternal extends React.Component<MapMaplibreGlInternalProps, 
       // Maplibre GL now does diffing natively so we don't need to calculate
       // the necessary operations ourselves!
       // We also need to update the style for inspect to work properly
-      map.setStyle(styleWithTokens, {diff: true});
+      map.setStyle(styleWithTokens, { diff: true });
       map.showTileBoundaries = this.props.options?.showTileBoundaries!;
       map.showCollisionBoxes = this.props.options?.showCollisionBoxes!;
       map.showOverdrawInspector = this.props.options?.showOverdrawInspector!;
     }
 
-    if(this.state.inspect && this.props.inspectModeEnabled !== this.state.inspect._showInspectMap) {
+    if (
+      this.state.inspect &&
+      this.props.inspectModeEnabled !== this.state.inspect._showInspectMap
+    ) {
       this.state.inspect.toggleInspector();
     }
     if (this.state.inspect && this.props.inspectModeEnabled) {
@@ -129,7 +158,6 @@ class MapMaplibreGlInternal extends React.Component<MapMaplibreGlInternalProps, 
         this.state.inspect!.render();
       }, 500);
     }
-
   }
 
   componentDidMount() {
@@ -141,17 +169,17 @@ class MapMaplibreGlInternal extends React.Component<MapMaplibreGlInternalProps, 
       maxZoom: 24,
       // setting to always load glyphs of CJK fonts from server
       // https://maplibre.org/maplibre-gl-js/docs/examples/local-ideographs/
-      localIdeographFontFamily: false
+      localIdeographFontFamily: false,
     } satisfies MapOptions;
 
-    const protocol = new Protocol({metadata: true});
-    MapLibreGl.addProtocol("pmtiles",protocol.tile);
+    const protocol = new Protocol({ metadata: true });
+    MapLibreGl.addProtocol("pmtiles", protocol.tile);
     const map = new MapLibreGl.Map(mapOpts);
 
     const mapViewChange = () => {
       const center = map.getCenter();
       const zoom = map.getZoom();
-      this.props.onChange({center, zoom});
+      this.props.onChange({ center, zoom });
     };
     mapViewChange();
 
@@ -164,14 +192,14 @@ class MapMaplibreGlInternal extends React.Component<MapMaplibreGlInternalProps, 
     const zoomControl = new ZoomControl();
     map.addControl(zoomControl, "top-right");
 
-    const nav = new MapLibreGl.NavigationControl({visualizePitch:true});
+    const nav = new MapLibreGl.NavigationControl({ visualizePitch: true });
     map.addControl(nav, "top-right");
 
     const tmpNode = document.createElement("div");
     const root = createRoot(tmpNode);
 
     const inspectPopup = new MapLibreGl.Popup({
-      closeOnClick: false
+      closeOnClick: false,
     });
 
     const inspect = new MaplibreInspect({
@@ -182,26 +210,40 @@ class MapMaplibreGlInternal extends React.Component<MapMaplibreGlInternalProps, 
       showInspectButton: false,
       blockHoverPopupOnClick: true,
       assignLayerColor: (layerId: string, alpha: number) => {
-        return Color(colors.brightColor(layerId, alpha)).desaturate(0.5).string();
+        return Color(colors.brightColor(layerId, alpha))
+          .desaturate(0.5)
+          .string();
       },
-      buildInspectStyle: (originalMapStyle: StyleSpecification, coloredLayers: HighlightedLayer[]) => buildInspectStyle(originalMapStyle, coloredLayers, this.props.highlightedLayer),
+      buildInspectStyle: (
+        originalMapStyle: StyleSpecification,
+        coloredLayers: HighlightedLayer[],
+      ) =>
+        buildInspectStyle(
+          originalMapStyle,
+          coloredLayers,
+          this.props.highlightedLayer,
+        ),
       renderPopup: (features: InspectFeature[]) => {
-        if(this.props.inspectModeEnabled) {
+        if (this.props.inspectModeEnabled) {
           inspectPopup.once("open", () => {
-            root.render(<MapMaplibreGlFeaturePropertyPopup features={features} />);
+            root.render(
+              <MapMaplibreGlFeaturePropertyPopup features={features} />,
+            );
           });
           return tmpNode;
         } else {
           inspectPopup.once("open", () => {
-            root.render(<MapMaplibreGlLayerPopup
-              features={features}
-              onLayerSelect={this.onLayerSelectById}
-              zoom={this.state.zoom}
-            />,);
+            root.render(
+              <MapMaplibreGlLayerPopup
+                features={features}
+                onLayerSelect={this.onLayerSelectById}
+                zoom={this.state.zoom}
+              />,
+            );
           });
           return tmpNode;
         }
-      }
+      },
     });
     map.addControl(inspect);
 
@@ -211,24 +253,24 @@ class MapMaplibreGlInternal extends React.Component<MapMaplibreGlInternalProps, 
         inspect,
         geocoder,
         zoomControl,
-        zoom: map.getZoom()
+        zoom: map.getZoom(),
       });
     });
 
-    map.on("data", e => {
-      if(e.dataType !== "tile") return;
+    map.on("data", (e) => {
+      if (e.dataType !== "tile") return;
       this.props.onDataChange!({
-        map: this.state.map
+        map: this.state.map,
       });
     });
 
-    map.on("error", e => {
+    map.on("error", (e) => {
       console.log("ERROR", e);
     });
 
-    map.on("zoom", _e => {
+    map.on("zoom", (_e) => {
       this.setState({
-        zoom: map.getZoom()
+        zoom: map.getZoom(),
       });
     });
 
@@ -237,7 +279,9 @@ class MapMaplibreGlInternal extends React.Component<MapMaplibreGlInternalProps, 
   }
 
   onLayerSelectById = (id: string) => {
-    const index = this.props.mapStyle.layers.findIndex(layer => layer.id === id);
+    const index = this.props.mapStyle.layers.findIndex(
+      (layer) => layer.id === id,
+    );
     this.props.onLayerSelect(index);
   };
 
@@ -251,22 +295,20 @@ class MapMaplibreGlInternal extends React.Component<MapMaplibreGlInternalProps, 
           const geojson = await response.json();
           for (const feature of geojson.features) {
             const center = [
-              feature.bbox[0] +
-                  (feature.bbox[2] - feature.bbox[0]) / 2,
-              feature.bbox[1] +
-                  (feature.bbox[3] - feature.bbox[1]) / 2
+              feature.bbox[0] + (feature.bbox[2] - feature.bbox[0]) / 2,
+              feature.bbox[1] + (feature.bbox[3] - feature.bbox[1]) / 2,
             ];
             const point = {
               type: "Feature",
               geometry: {
                 type: "Point",
-                coordinates: center
+                coordinates: center,
               },
               place_name: feature.properties.display_name,
               properties: feature.properties,
               text: feature.properties.display_name,
               place_type: ["place"],
-              center
+              center,
             };
             features.push(point);
           }
@@ -274,7 +316,7 @@ class MapMaplibreGlInternal extends React.Component<MapMaplibreGlInternalProps, 
           console.error(`Failed to forwardGeocode with error: ${e}`);
         }
         return {
-          features
+          features,
         };
       },
     } as unknown as MaplibreGeocoderApi;
@@ -290,13 +332,17 @@ class MapMaplibreGlInternal extends React.Component<MapMaplibreGlInternalProps, 
     const t = this.props.t;
     this.state.geocoder?.setPlaceholder(t("Search"));
     this.state.zoomControl?.setLabel(t("Zoom:"));
-    return <div
-      className="maputnik-map__map"
-      role="region"
-      aria-label={t("Map view")}
-      ref={x => {this.container = x;}}
-      data-wd-key="maplibre:map"
-    ></div>;
+    return (
+      <div
+        className="maputnik-map__map"
+        role="region"
+        aria-label={t("Map view")}
+        ref={(x) => {
+          this.container = x;
+        }}
+        data-wd-key="maplibre:map"
+      ></div>
+    );
   }
 }
 

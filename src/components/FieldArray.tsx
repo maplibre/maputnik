@@ -1,11 +1,11 @@
-import InputArray, { type InputArrayProps } from "./InputArray";
 import Fieldset from "./Fieldset";
+import InputArray, { type InputArrayProps } from "./InputArray";
 
 type FieldArrayProps = InputArrayProps & {
-  name?: string
+  name?: string;
   fieldSpec?: {
-    doc: string
-  }
+    doc: string;
+  };
 };
 
 const FieldArray: React.FC<FieldArrayProps> = (props) => {

@@ -1,20 +1,21 @@
-import React from "react";
-
 import latest from "@maplibre/maplibre-gl-style-spec/dist/latest.json";
+import type React from "react";
+import { type WithTranslation, withTranslation } from "react-i18next";
 import Block from "./Block";
 import InputNumber from "./InputNumber";
-import { type WithTranslation, withTranslation } from "react-i18next";
 
 type FieldMaxZoomInternalProps = {
-  value?: number
-  onChange(value: number | undefined): unknown
-  error?: {message: string}
+  value?: number;
+  onChange(value: number | undefined): unknown;
+  error?: { message: string };
 } & WithTranslation;
 
 const FieldMaxZoomInternal: React.FC<FieldMaxZoomInternalProps> = (props) => {
   const t = props.t;
   return (
-    <Block label={t("Max Zoom")} fieldSpec={latest.layer.maxzoom}
+    <Block
+      label={t("Max Zoom")}
+      fieldSpec={latest.layer.maxzoom}
       error={props.error}
       data-wd-key="max-zoom"
     >

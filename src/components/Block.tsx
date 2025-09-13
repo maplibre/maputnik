@@ -1,35 +1,37 @@
-import React, {type PropsWithChildren, type SyntheticEvent} from "react";
 import classnames from "classnames";
-import FieldDocLabel from "./FieldDocLabel";
+import React, { type PropsWithChildren, type SyntheticEvent } from "react";
 import Doc from "./Doc";
+import FieldDocLabel from "./FieldDocLabel";
 
 type BlockProps = PropsWithChildren & {
-  "data-wd-key"?: string
-  label?: string
-  action?: React.ReactElement
-  style?: object
-  onChange?(...args: unknown[]): unknown
-  fieldSpec?: object
-  wideMode?: boolean
-  error?: {message: string}
+  "data-wd-key"?: string;
+  label?: string;
+  action?: React.ReactElement;
+  style?: object;
+  onChange?(...args: unknown[]): unknown;
+  fieldSpec?: object;
+  wideMode?: boolean;
+  error?: { message: string };
 };
 
 type BlockState = {
-  showDoc: boolean
+  showDoc: boolean;
 };
 
 /** Wrap a component with a label */
 export default class Block extends React.Component<BlockProps, BlockState> {
   _blockEl: HTMLDivElement | null = null;
 
-  constructor (props: BlockProps) {
+  constructor(props: BlockProps) {
     super(props);
     this.state = {
       showDoc: false,
     };
   }
 
-  onChange(e: React.BaseSyntheticEvent<Event, HTMLInputElement, HTMLInputElement>) {
+  onChange(
+    e: React.BaseSyntheticEvent<Event, HTMLInputElement, HTMLInputElement>,
+  ) {
     const value = e.target.value;
     if (this.props.onChange) {
       return this.props.onChange(value === "" ? undefined : value);
@@ -38,7 +40,7 @@ export default class Block extends React.Component<BlockProps, BlockState> {
 
   onToggleDoc = (val: boolean) => {
     this.setState({
-      showDoc: val
+      showDoc: val,
     });
   };
 
@@ -61,43 +63,47 @@ export default class Block extends React.Component<BlockProps, BlockState> {
   };
 
   render() {
-    return <label style={this.props.style}
-      data-wd-key={this.props["data-wd-key"]}
-      className={classnames({
-        "maputnik-input-block": true,
-        "maputnik-input-block--wide": this.props.wideMode,
-        "maputnik-action-block": this.props.action
-      })}
-      onClick={this.onLabelClick}
-    >
-      {this.props.fieldSpec &&
-        <div className="maputnik-input-block-label">
-          <FieldDocLabel
-            label={this.props.label}
-            onToggleDoc={this.onToggleDoc}
-            fieldSpec={this.props.fieldSpec}
-          />
-        </div>
-      }
-      {!this.props.fieldSpec &&
-        <div className="maputnik-input-block-label">
-          {this.props.label}
-        </div>
-      }
-      <div className="maputnik-input-block-action">
-        {this.props.action}
-      </div>
-      <div className="maputnik-input-block-content" ref={el => {this._blockEl = el;}}>
-        {this.props.children}
-      </div>
-      {this.props.fieldSpec &&
+    return (
+      <label
+        style={this.props.style}
+        data-wd-key={this.props["data-wd-key"]}
+        className={classnames({
+          "maputnik-input-block": true,
+          "maputnik-input-block--wide": this.props.wideMode,
+          "maputnik-action-block": this.props.action,
+        })}
+        onClick={this.onLabelClick}
+      >
+        {this.props.fieldSpec && (
+          <div className="maputnik-input-block-label">
+            <FieldDocLabel
+              label={this.props.label}
+              onToggleDoc={this.onToggleDoc}
+              fieldSpec={this.props.fieldSpec}
+            />
+          </div>
+        )}
+        {!this.props.fieldSpec && (
+          <div className="maputnik-input-block-label">{this.props.label}</div>
+        )}
+        <div className="maputnik-input-block-action">{this.props.action}</div>
         <div
-          className="maputnik-doc-inline"
-          style={{display: this.state.showDoc ? "" : "none"}}
+          className="maputnik-input-block-content"
+          ref={(el) => {
+            this._blockEl = el;
+          }}
         >
-          <Doc fieldSpec={this.props.fieldSpec} />
+          {this.props.children}
         </div>
-      }
-    </label>;
+        {this.props.fieldSpec && (
+          <div
+            className="maputnik-doc-inline"
+            style={{ display: this.state.showDoc ? "" : "none" }}
+          >
+            <Doc fieldSpec={this.props.fieldSpec} />
+          </div>
+        )}
+      </label>
+    );
   }
 }

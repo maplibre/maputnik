@@ -1,13 +1,13 @@
-import style from "../style";
-import {loadStyleUrl} from "../urlopen";
 import publicSources from "../../config/styles.json";
-import type {IStyleStore, StyleSpecificationWithId} from "../definitions";
+import type { IStyleStore, StyleSpecificationWithId } from "../definitions";
+import style from "../style";
+import { loadStyleUrl } from "../urlopen";
 
 const storagePrefix = "maputnik";
 const stylePrefix = "style";
 const storageKeys = {
   latest: [storagePrefix, "latest_style"].join(":"),
-  accessToken: [storagePrefix, "access_token"].join(":")
+  accessToken: [storagePrefix, "access_token"].join(":"),
 };
 
 const defaultStyleUrl = publicSources[0].url;
@@ -22,7 +22,7 @@ function loadStoredStyles() {
   const styles = [];
   for (let i = 0; i < window.localStorage.length; i++) {
     const key = window.localStorage.key(i);
-    if(isStyleKey(key!)) {
+    if (isStyleKey(key!)) {
       styles.push(fromKey(key!));
     }
   }
@@ -31,12 +31,14 @@ function loadStoredStyles() {
 
 function isStyleKey(key: string) {
   const parts = key.split(":");
-  return parts.length === 3 && parts[0] === storagePrefix && parts[1] === stylePrefix;
+  return (
+    parts.length === 3 && parts[0] === storagePrefix && parts[1] === stylePrefix
+  );
 }
 
 // Load style id from key
 function fromKey(key: string) {
-  if(!isStyleKey(key)) {
+  if (!isStyleKey(key)) {
     throw "Key is not a valid style key";
   }
 
@@ -67,7 +69,7 @@ export class StyleStore implements IStyleStore {
   purge() {
     for (let i = 0; i < window.localStorage.length; i++) {
       const key = window.localStorage.key(i) as string;
-      if(key.startsWith(storagePrefix)) {
+      if (key.startsWith(storagePrefix)) {
         window.localStorage.removeItem(key);
       }
     }
@@ -75,7 +77,7 @@ export class StyleStore implements IStyleStore {
 
   // Find the last edited style
   async getLatestStyle(): Promise<StyleSpecificationWithId> {
-    if(this.mapStyles.length === 0) {
+    if (this.mapStyles.length === 0) {
       return loadDefaultStyle();
     }
     const styleId = window.localStorage.getItem(storageKeys.latest) as string;
@@ -101,12 +103,13 @@ export class StyleStore implements IStyleStore {
       saveFn();
     } catch (e) {
       // Handle quota exceeded error
-      if (e instanceof DOMException && (
-        e.code === 22 || // Firefox
-        e.code === 1014 || // Firefox
-        e.name === "QuotaExceededError" ||
-        e.name === "NS_ERROR_DOM_QUOTA_REACHED"
-      )) {
+      if (
+        e instanceof DOMException &&
+        (e.code === 22 || // Firefox
+          e.code === 1014 || // Firefox
+          e.name === "QuotaExceededError" ||
+          e.name === "NS_ERROR_DOM_QUOTA_REACHED")
+      ) {
         this.purge();
         saveFn(); // Retry after clearing
       } else {

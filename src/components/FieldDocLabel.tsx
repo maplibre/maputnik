@@ -1,14 +1,13 @@
 import React, { type JSX } from "react";
-import {MdInfoOutline, MdHighlightOff} from "react-icons/md";
+import { MdHighlightOff, MdInfoOutline } from "react-icons/md";
 
 type FieldDocLabelProps = {
-  label: JSX.Element | string | undefined
+  label: JSX.Element | string | undefined;
   fieldSpec?: {
-    doc?: string
-  }
-  onToggleDoc?(...args: unknown[]): unknown
+    doc?: string;
+  };
+  onToggleDoc?(...args: unknown[]): unknown;
 };
-
 
 const FieldDocLabel: React.FC<FieldDocLabelProps> = (props) => {
   const [open, setOpen] = React.useState(false);
@@ -30,7 +29,11 @@ const FieldDocLabel: React.FC<FieldDocLabelProps> = (props) => {
           {label}
           {"\xa0"}
           <button
-            aria-label={open ? "close property documentation" : "open property documentation"}
+            aria-label={
+              open
+                ? "close property documentation"
+                : "open property documentation"
+            }
             className={`maputnik-doc-button maputnik-doc-button--${open ? "open" : "closed"}`}
             onClick={() => onToggleDoc(!open)}
             data-wd-key={"field-doc-button-" + label}

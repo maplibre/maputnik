@@ -4,6 +4,7 @@ import { CypressHelper } from "@shellygo/cypress-test-utils";
 import { Assertable, then } from "@shellygo/cypress-test-utils/assertable";
 import MaputnikCypressHelper from "./maputnik-cypress-helper";
 import ModalDriver from "./modal-driver";
+
 const baseUrl = "http://localhost:8888/";
 
 const styleFromWindow = (win: Window) => {
@@ -21,7 +22,7 @@ export class MaputnikAssertable<T> extends Assertable<T> {
       new CypressHelper().get.window().then((win: Window) => {
         const style = styleFromWindow(win);
         then(this.chainable).shouldDeepNestedInclude(style);
-      })
+      }),
     );
 }
 
@@ -114,8 +115,14 @@ export class MaputnikDriver {
         .selectFile("cypress/fixtures/example-style.json", { force: true });
     },
     setStyle: (
-      styleProperties: "geojson" | "raster" | "both" | "layer" | "rectangles" | "",
-      zoom?: number
+      styleProperties:
+        | "geojson"
+        | "raster"
+        | "both"
+        | "layer"
+        | "rectangles"
+        | "",
+      zoom?: number,
     ) => {
       const url = new URL(baseUrl);
       switch (styleProperties) {
@@ -178,14 +185,22 @@ export class MaputnikDriver {
 
     setValueToPropertyArray: (selector: string, value: string) => {
       this.when.doWithin(selector, () => {
-        this.helper.get.element(".maputnik-array-block-content input").last().type("{selectall}"+value, {force: true });
+        this.helper.get
+          .element(".maputnik-array-block-content input")
+          .last()
+          .type("{selectall}" + value, { force: true });
       });
     },
 
     addValueToPropertyArray: (selector: string, value: string) => {
       this.when.doWithin(selector, () => {
-        this.helper.get.element(".maputnik-array-add-value").click({ force: true });
-        this.helper.get.element(".maputnik-array-block-content input").last().type("{selectall}"+value, {force: true });
+        this.helper.get
+          .element(".maputnik-array-add-value")
+          .click({ force: true });
+        this.helper.get
+          .element(".maputnik-array-block-content input")
+          .last()
+          .type("{selectall}" + value, { force: true });
       });
     },
 
@@ -194,8 +209,11 @@ export class MaputnikDriver {
     },
 
     collapseGroupInLayerEditor: (index = 0) => {
-      this.helper.get.element(".maputnik-layer-editor-group__button").eq(index).realClick();
-    }
+      this.helper.get
+        .element(".maputnik-layer-editor-group__button")
+        .eq(index)
+        .realClick();
+    },
   };
 
   public get = {
@@ -215,6 +233,6 @@ export class MaputnikDriver {
     skipTargetLayerEditor: () =>
       this.helper.get.elementByTestId("skip-target-layer-editor"),
     canvas: () => this.helper.get.element("canvas"),
-    searchControl: () => this.helper.get.element(".maplibregl-ctrl-geocoder")
+    searchControl: () => this.helper.get.element(".maplibregl-ctrl-geocoder"),
   };
 }

@@ -1,15 +1,15 @@
+import type { LayerSpecification, StyleSpecification } from "maplibre-gl";
 import React from "react";
-import {formatLayerId} from "../libs/format";
-import {type LayerSpecification, type StyleSpecification} from "maplibre-gl";
 import { Trans, type WithTranslation, withTranslation } from "react-i18next";
+import { formatLayerId } from "../libs/format";
 
 type AppMessagePanelInternalProps = {
-  errors?: unknown[]
-  infos?: string[]
-  mapStyle?: StyleSpecification
+  errors?: unknown[];
+  infos?: string[];
+  mapStyle?: StyleSpecification;
   onLayerSelect?(index: number): void;
-  currentLayer?: LayerSpecification
-  selectedLayerIndex?: number
+  currentLayer?: LayerSpecification;
+  selectedLayerIndex?: number;
 } & WithTranslation;
 
 class AppMessagePanelInternal extends React.Component<AppMessagePanelInternalProps> {
@@ -18,18 +18,18 @@ class AppMessagePanelInternal extends React.Component<AppMessagePanelInternalPro
   };
 
   render() {
-    const {t, selectedLayerIndex} = this.props;
+    const { t, selectedLayerIndex } = this.props;
     const errors = this.props.errors?.map((error: any, idx) => {
       let content;
       if (error.parsed && error.parsed.type === "layer") {
-        const {parsed} = error;
+        const { parsed } = error;
         const layerId = this.props.mapStyle?.layers[parsed.data.index].id;
         content = (
           <>
             <Trans t={t}>
               Layer <span>{formatLayerId(layerId)}</span>: {parsed.data.message}
             </Trans>
-            {selectedLayerIndex !== parsed.data.index &&
+            {selectedLayerIndex !== parsed.data.index && (
               <>
                 &nbsp;&mdash;&nbsp;
                 <button
@@ -39,26 +39,29 @@ class AppMessagePanelInternal extends React.Component<AppMessagePanelInternalPro
                   {t("switch to layer")}
                 </button>
               </>
-            }
+            )}
           </>
         );
-      }
-      else {
+      } else {
         content = error.message;
       }
-      return <p key={"error-"+idx} className="maputnik-message-panel-error">
-        {content}
-      </p>;
+      return (
+        <p key={"error-" + idx} className="maputnik-message-panel-error">
+          {content}
+        </p>
+      );
     });
 
     const infos = this.props.infos?.map((m, i) => {
-      return <p key={"info-"+i}>{m}</p>;
+      return <p key={"info-" + i}>{m}</p>;
     });
 
-    return <div className="maputnik-message-panel">
-      {errors}
-      {infos}
-    </div>;
+    return (
+      <div className="maputnik-message-panel">
+        {errors}
+        {infos}
+      </div>
+    );
   }
 }
 

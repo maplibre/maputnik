@@ -109,9 +109,13 @@ describe("layers", () => {
         });
         it("should show the selected layer in the editor", () => {
           when.realClick("layer-list-item:" + secondId);
-          then(get.elementByTestId("layer-editor.layer-id.input")).shouldHaveValue(secondId);
+          then(
+            get.elementByTestId("layer-editor.layer-id.input"),
+          ).shouldHaveValue(secondId);
           when.realClick("layer-list-item:" + id);
-          then(get.elementByTestId("layer-editor.layer-id.input")).shouldHaveValue(id);
+          then(
+            get.elementByTestId("layer-editor.layer-id.input"),
+          ).shouldHaveValue(id);
         });
       });
     });
@@ -308,15 +312,18 @@ describe("layers", () => {
           });
 
           it("should keep '.' in the input field", () => {
-            then(get.elementByTestId("spec-field-input:background-opacity")).shouldHaveValue("0.");
+            then(
+              get.elementByTestId("spec-field-input:background-opacity"),
+            ).shouldHaveValue("0.");
           });
 
           it("should revert to a valid value when focus out", () => {
             when.click("layer-list-item:background:" + bgId);
-            then(get.elementByTestId("spec-field-input:background-opacity")).shouldHaveValue("0");
+            then(
+              get.elementByTestId("spec-field-input:background-opacity"),
+            ).shouldHaveValue("0");
           });
         });
-
       });
 
       describe("filter", () => {
@@ -347,7 +354,7 @@ describe("layers", () => {
 
           when.click(".CodeMirror");
           when.typeKeys(
-            "\uE013\uE013\uE013\uE013\uE013\uE013\uE013\uE013\uE013\uE013\uE013\uE013 {"
+            "\uE013\uE013\uE013\uE013\uE013\uE013\uE013\uE013\uE013\uE013\uE013\uE013 {",
           );
           then(get.elementByTestId(errorSelector)).shouldExist();
         });
@@ -477,7 +484,9 @@ describe("layers", () => {
       when.hover("spec-field-container:text-rotate");
       then(get.elementByTestId("field-doc-button-Rotate")).shouldBeVisible();
       when.click("field-doc-button-Rotate", 0);
-      then(get.elementByTestId("spec-field-doc")).shouldContainText("Rotates the ");
+      then(get.elementByTestId("spec-field-doc")).shouldContainText(
+        "Rotates the ",
+      );
     });
 
     it("should show spec info when hovering and clicking multi line property", () => {
@@ -489,7 +498,9 @@ describe("layers", () => {
       when.hover("spec-field-container:text-offset");
       then(get.elementByTestId("field-doc-button-Offset")).shouldBeVisible();
       when.click("field-doc-button-Offset", 0);
-      then(get.elementByTestId("spec-field-doc")).shouldContainText("Offset distance");
+      then(get.elementByTestId("spec-field-doc")).shouldContainText(
+        "Offset distance",
+      );
     });
   });
 
@@ -575,10 +586,22 @@ describe("layers", () => {
       });
       when.collapseGroupInLayerEditor();
       when.collapseGroupInLayerEditor(1);
-      when.setValueToPropertyArray("spec-field:hillshade-illumination-direction", "1");
-      when.addValueToPropertyArray("spec-field:hillshade-illumination-direction", "2");
-      when.addValueToPropertyArray("spec-field:hillshade-illumination-direction", "3");
-      when.addValueToPropertyArray("spec-field:hillshade-illumination-direction", "4");
+      when.setValueToPropertyArray(
+        "spec-field:hillshade-illumination-direction",
+        "1",
+      );
+      when.addValueToPropertyArray(
+        "spec-field:hillshade-illumination-direction",
+        "2",
+      );
+      when.addValueToPropertyArray(
+        "spec-field:hillshade-illumination-direction",
+        "3",
+      );
+      when.addValueToPropertyArray(
+        "spec-field:hillshade-illumination-direction",
+        "4",
+      );
 
       then(get.styleFromLocalStorage()).shouldDeepNestedInclude({
         layers: [
@@ -587,8 +610,8 @@ describe("layers", () => {
             type: "hillshade",
             source: "example",
             paint: {
-              "hillshade-illumination-direction": [ 1, 2, 3, 4 ]
-            }
+              "hillshade-illumination-direction": [1, 2, 3, 4],
+            },
           },
         ],
       });
@@ -600,9 +623,18 @@ describe("layers", () => {
         layer: "example",
       });
       when.collapseGroupInLayerEditor();
-      when.setValueToPropertyArray("spec-field:hillshade-highlight-color", "blue");
-      when.addValueToPropertyArray("spec-field:hillshade-highlight-color", "#00ff00");
-      when.addValueToPropertyArray("spec-field:hillshade-highlight-color", "rgba(255, 255, 0, 1)");
+      when.setValueToPropertyArray(
+        "spec-field:hillshade-highlight-color",
+        "blue",
+      );
+      when.addValueToPropertyArray(
+        "spec-field:hillshade-highlight-color",
+        "#00ff00",
+      );
+      when.addValueToPropertyArray(
+        "spec-field:hillshade-highlight-color",
+        "rgba(255, 255, 0, 1)",
+      );
 
       then(get.styleFromLocalStorage()).shouldDeepNestedInclude({
         layers: [
@@ -611,8 +643,12 @@ describe("layers", () => {
             type: "hillshade",
             source: "example",
             paint: {
-              "hillshade-highlight-color": [ "blue", "#00ff00", "rgba(255, 255, 0, 1)" ]
-            }
+              "hillshade-highlight-color": [
+                "blue",
+                "#00ff00",
+                "rgba(255, 255, 0, 1)",
+              ],
+            },
           },
         ],
       });
@@ -644,7 +680,11 @@ describe("layers", () => {
       });
       when.collapseGroupInLayerEditor();
       when.click("make-elevation-function");
-      then(get.element("[data-wd-key='spec-field-container:color-relief-color'] .CodeMirror-line")).shouldBeVisible();
+      then(
+        get.element(
+          "[data-wd-key='spec-field-container:color-relief-color'] .CodeMirror-line",
+        ),
+      ).shouldBeVisible();
     });
   });
 
@@ -673,18 +713,18 @@ describe("layers", () => {
       then(get.elementByTestId("layer-list-item:foo")).shouldBeVisible();
       then(get.elementByTestId("layer-list-item:foo_bar")).shouldNotBeVisible();
       then(
-        get.elementByTestId("layer-list-item:foo_bar_baz")
+        get.elementByTestId("layer-list-item:foo_bar_baz"),
       ).shouldNotBeVisible();
       when.click("layer-list-group:foo-0");
       then(get.elementByTestId("layer-list-item:foo")).shouldBeVisible();
       then(get.elementByTestId("layer-list-item:foo_bar")).shouldBeVisible();
       then(
-        get.elementByTestId("layer-list-item:foo_bar_baz")
+        get.elementByTestId("layer-list-item:foo_bar_baz"),
       ).shouldBeVisible();
     });
   });
 
-  describe("layereditor jsonlint should error", ()=>{
+  describe("layereditor jsonlint should error", () => {
     it("add", () => {
       const id = when.modal.fillLayers({
         type: "circle",
@@ -704,7 +744,7 @@ describe("layers", () => {
       const sourceText = get.elementByText('"source"');
 
       sourceText.click();
-      sourceText.type("\"");
+      sourceText.type('"');
 
       const error = get.element(".CodeMirror-lint-marker-error");
       error.should("exist");
@@ -729,7 +769,10 @@ describe("layers", () => {
         type: "background",
       });
 
-      when.dragAndDropWithWait("layer-list-item:" + firstId, "layer-list-item:" + thirdId);
+      when.dragAndDropWithWait(
+        "layer-list-item:" + firstId,
+        "layer-list-item:" + thirdId,
+      );
 
       then(get.styleFromLocalStorage()).shouldDeepNestedInclude({
         layers: [

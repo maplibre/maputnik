@@ -1,17 +1,17 @@
-import React from "react";
-import {v8} from "@maplibre/maplibre-gl-style-spec";
+import { v8 } from "@maplibre/maplibre-gl-style-spec";
+import { startCase } from "lodash";
+import type React from "react";
+import { type WithTranslation, withTranslation } from "react-i18next";
 import Block from "./Block";
 import InputSelect from "./InputSelect";
 import InputString from "./InputString";
-import { type WithTranslation, withTranslation } from "react-i18next";
-import { startCase } from "lodash";
 
 type FieldTypeInternalProps = {
-  value: string
-  wdKey?: string
-  onChange(value: string): unknown
-  error?: {message: string}
-  disabled?: boolean
+  value: string;
+  wdKey?: string;
+  onChange(value: string): unknown;
+  error?: { message: string };
+  disabled?: boolean;
 } & WithTranslation;
 
 const FieldTypeInternal: React.FC<FieldTypeInternalProps> = ({
@@ -20,17 +20,19 @@ const FieldTypeInternal: React.FC<FieldTypeInternalProps> = ({
   wdKey,
   onChange,
   error,
-  disabled = false
+  disabled = false,
 }) => {
-  const layerstypes: [string, string][] = Object.keys(v8.layer.type.values || {}).map(v => [v, startCase(v.replace(/-/g, " "))]);
+  const layerstypes: [string, string][] = Object.keys(
+    v8.layer.type.values || {},
+  ).map((v) => [v, startCase(v.replace(/-/g, " "))]);
   return (
-    <Block label={t("Type")} fieldSpec={v8.layer.type}
+    <Block
+      label={t("Type")}
+      fieldSpec={v8.layer.type}
       data-wd-key={wdKey}
       error={error}
     >
-      {disabled && (
-        <InputString value={value} disabled={true} />
-      )}
+      {disabled && <InputString value={value} disabled={true} />}
       {!disabled && (
         <InputSelect
           options={layerstypes}

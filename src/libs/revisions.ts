@@ -1,11 +1,10 @@
-import { type StyleSpecificationWithId } from "./definitions";
+import type { StyleSpecificationWithId } from "./definitions";
 
 export class RevisionStore {
   revisions: StyleSpecificationWithId[];
   currentIdx: number;
 
-
-  constructor(initialRevisions=[]) {
+  constructor(initialRevisions = []) {
     this.revisions = initialRevisions;
     this.currentIdx = initialRevisions.length - 1;
   }
@@ -29,14 +28,14 @@ export class RevisionStore {
   }
 
   undo() {
-    if(this.currentIdx > 0) {
+    if (this.currentIdx > 0) {
       this.currentIdx--;
     }
     return this.current;
   }
 
   redo() {
-    if(this.currentIdx < this.revisions.length - 1) {
+    if (this.currentIdx < this.revisions.length - 1) {
       this.currentIdx++;
     }
     return this.current;

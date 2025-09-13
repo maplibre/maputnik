@@ -1,20 +1,21 @@
-import React from "react";
-
 import latest from "@maplibre/maplibre-gl-style-spec/dist/latest.json";
+import type React from "react";
+import { type WithTranslation, withTranslation } from "react-i18next";
 import Block from "./Block";
 import InputNumber from "./InputNumber";
-import { type WithTranslation, withTranslation } from "react-i18next";
 
 type FieldMinZoomInternalProps = {
-  value?: number
-  onChange(...args: unknown[]): unknown
-  error?: {message: string}
+  value?: number;
+  onChange(...args: unknown[]): unknown;
+  error?: { message: string };
 } & WithTranslation;
 
 const FieldMinZoomInternal: React.FC<FieldMinZoomInternalProps> = (props) => {
   const t = props.t;
   return (
-    <Block label={t("Min Zoom")} fieldSpec={latest.layer.minzoom}
+    <Block
+      label={t("Min Zoom")}
+      fieldSpec={latest.layer.minzoom}
       error={props.error}
       data-wd-key="min-zoom"
     >
@@ -25,7 +26,7 @@ const FieldMinZoomInternal: React.FC<FieldMinZoomInternalProps> = (props) => {
         min={latest.layer.minzoom.minimum}
         max={latest.layer.minzoom.maximum}
         default={latest.layer.minzoom.minimum}
-        data-wd-key='min-zoom.input'
+        data-wd-key="min-zoom.input"
       />
     </Block>
   );

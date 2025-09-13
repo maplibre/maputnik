@@ -1,23 +1,30 @@
+import {
+  convertFilter,
+  latest,
+  migrate,
+} from "@maplibre/maplibre-gl-style-spec";
+import { isEqual } from "lodash";
+import type {
+  ExpressionSpecification,
+  LegacyFilterSpecification,
+} from "maplibre-gl";
 import React from "react";
-import { TbMathFunction } from "react-icons/tb";
+import { type WithTranslation, withTranslation } from "react-i18next";
 import { PiListPlusBold } from "react-icons/pi";
-import {isEqual} from "lodash";
-import {type ExpressionSpecification, type LegacyFilterSpecification} from "maplibre-gl";
-import {latest, migrate, convertFilter} from "@maplibre/maplibre-gl-style-spec";
-
-import {combiningFilterOps} from "../libs/filterops";
-import InputSelect from "./InputSelect";
+import { TbMathFunction } from "react-icons/tb";
+import type { StyleSpecificationWithId } from "../libs/definitions";
+import { combiningFilterOps } from "../libs/filterops";
+import ExpressionProperty from "./_ExpressionProperty";
 import Block from "./Block";
-import SingleFilterEditor from "./SingleFilterEditor";
+import Doc from "./Doc";
 import FilterEditorBlock from "./FilterEditorBlock";
 import InputButton from "./InputButton";
-import Doc from "./Doc";
-import ExpressionProperty from "./_ExpressionProperty";
-import { type WithTranslation, withTranslation } from "react-i18next";
-import type { StyleSpecificationWithId } from "../libs/definitions";
+import InputSelect from "./InputSelect";
+import SingleFilterEditor from "./SingleFilterEditor";
 
-
-function combiningFilter(props: FilterEditorInternalProps): LegacyFilterSpecification | ExpressionSpecification {
+function combiningFilter(
+  props: FilterEditorInternalProps,
+): LegacyFilterSpecification | ExpressionSpecification {
   const filter = props.filter || ["all"];
 
   if (!Array.isArray(filter)) {
@@ -27,34 +34,42 @@ function combiningFilter(props: FilterEditorInternalProps): LegacyFilterSpecific
   let combiningOp = filter[0];
   let filters = filter.slice(1);
 
-  if(combiningFilterOps.indexOf(combiningOp) < 0) {
+  if (combiningFilterOps.indexOf(combiningOp) < 0) {
     combiningOp = "all";
     filters = [filter.slice(0)];
   }
 
-  return [combiningOp, ...filters] as LegacyFilterSpecification | ExpressionSpecification;
+  return [combiningOp, ...filters] as
+    | LegacyFilterSpecification
+    | ExpressionSpecification;
 }
 
-function migrateFilter(filter: LegacyFilterSpecification | ExpressionSpecification) {
+function migrateFilter(
+  filter: LegacyFilterSpecification | ExpressionSpecification,
+) {
   // This "any" can be removed in latest version of maplibre where maplibre re-exported types from style-spec
-  return (migrate(createStyleFromFilter(filter) as any).layers[0] as any).filter;
+  return (migrate(createStyleFromFilter(filter) as any).layers[0] as any)
+    .filter;
 }
 
-function createStyleFromFilter(filter: LegacyFilterSpecification | ExpressionSpecification): StyleSpecificationWithId {
+function createStyleFromFilter(
+  filter: LegacyFilterSpecification | ExpressionSpecification,
+): StyleSpecificationWithId {
   return {
-    "id": "tmp",
-    "version": 8,
-    "name": "Empty Style",
-    "metadata": {"maputnik:renderer": "mlgljs"},
-    "sources": {
-      "tmp": {
-        "type": "geojson",
-        "data": ""
-      }
+    id: "tmp",
+    version: 8,
+    name: "Empty Style",
+    metadata: { "maputnik:renderer": "mlgljs" },
+    sources: {
+      tmp: {
+        type: "geojson",
+        data: "",
+      },
     },
-    "sprite": "",
-    "glyphs": "https://orangemug.github.io/font-glyphs/glyphs/{fontstack}/{range}.pbf",
-    "layers": [
+    sprite: "",
+    glyphs:
+      "https://orangemug.github.io/font-glyphs/glyphs/{fontstack}/{range}.pbf",
+    layers: [
       {
         id: "tmp",
         type: "fill",
@@ -65,14 +80,12 @@ function createStyleFromFilter(filter: LegacyFilterSpecification | ExpressionSpe
   };
 }
 
-const FILTER_OPS = [
-  "all",
-  "any",
-  "none"
-];
+const FILTER_OPS = ["all", "any", "none"];
 
 // If we convert a filter that is an expression to an expression it'll remain the same in value
-function checkIfSimpleFilter (filter: LegacyFilterSpecification | ExpressionSpecification) {
+function checkIfSimpleFilter(
+  filter: LegacyFilterSpecification | ExpressionSpecification,
+) {
   if (filter.length === 1 && FILTER_OPS.includes(filter[0])) {
     return true;
   }
@@ -80,37 +93,49 @@ function checkIfSimpleFilter (filter: LegacyFilterSpecification | ExpressionSpec
   return !isEqual(expression, filter);
 }
 
-function hasCombiningFilter(filter: LegacyFilterSpecification | ExpressionSpecification) {
+function hasCombiningFilter(
+  filter: LegacyFilterSpecification | ExpressionSpecification,
+) {
   return combiningFilterOps.indexOf(filter[0]) >= 0;
 }
 
-function hasNestedCombiningFilter(filter: LegacyFilterSpecification | ExpressionSpecification) {
-  if(hasCombiningFilter(filter)) {
-    return filter.slice(1).map(f => hasCombiningFilter(f as any)).filter(f => f == true).length > 0;
+function hasNestedCombiningFilter(
+  filter: LegacyFilterSpecification | ExpressionSpecification,
+) {
+  if (hasCombiningFilter(filter)) {
+    return (
+      filter
+        .slice(1)
+        .map((f) => hasCombiningFilter(f as any))
+        .filter((f) => f == true).length > 0
+    );
   }
   return false;
 }
 
 type FilterEditorInternalProps = {
   /** Properties of the vector layer and the available fields */
-  properties?: {[key:string]: any}
-  filter?: any[]
-  errors?: {[key:string]: any}
-  onChange(value: LegacyFilterSpecification | ExpressionSpecification): unknown
+  properties?: { [key: string]: any };
+  filter?: any[];
+  errors?: { [key: string]: any };
+  onChange(value: LegacyFilterSpecification | ExpressionSpecification): unknown;
 } & WithTranslation;
 
 type FilterEditorState = {
-  showDoc: boolean
-  displaySimpleFilter: boolean
-  valueIsSimpleFilter?: boolean
+  showDoc: boolean;
+  displaySimpleFilter: boolean;
+  valueIsSimpleFilter?: boolean;
 };
 
-class FilterEditorInternal extends React.Component<FilterEditorInternalProps, FilterEditorState> {
+class FilterEditorInternal extends React.Component<
+  FilterEditorInternalProps,
+  FilterEditorState
+> {
   static defaultProps = {
     filter: ["all"],
   };
 
-  constructor (props: FilterEditorInternalProps) {
+  constructor(props: FilterEditorInternalProps) {
     super(props);
     this.state = {
       showDoc: false,
@@ -120,26 +145,32 @@ class FilterEditorInternal extends React.Component<FilterEditorInternalProps, Fi
 
   // Convert filter to combining filter
   onFilterPartChanged(filterIdx: number, newPart: any[]) {
-    const newFilter = combiningFilter(this.props).slice(0) as LegacyFilterSpecification | ExpressionSpecification;
+    const newFilter = combiningFilter(this.props).slice(0) as
+      | LegacyFilterSpecification
+      | ExpressionSpecification;
     newFilter[filterIdx] = newPart;
     this.props.onChange(newFilter);
   }
 
   deleteFilterItem(filterIdx: number) {
-    const newFilter = combiningFilter(this.props).slice(0) as LegacyFilterSpecification | ExpressionSpecification;
+    const newFilter = combiningFilter(this.props).slice(0) as
+      | LegacyFilterSpecification
+      | ExpressionSpecification;
     newFilter.splice(filterIdx + 1, 1);
     this.props.onChange(newFilter);
   }
 
   addFilterItem = () => {
-    const newFilterItem = combiningFilter(this.props).slice(0) as LegacyFilterSpecification | ExpressionSpecification;
+    const newFilterItem = combiningFilter(this.props).slice(0) as
+      | LegacyFilterSpecification
+      | ExpressionSpecification;
     (newFilterItem as any[]).push(["==", "name", ""]);
     this.props.onChange(newFilterItem);
   };
 
   onToggleDoc = (val: boolean) => {
     this.setState({
-      showDoc: val
+      showDoc: val,
     });
   };
 
@@ -157,7 +188,10 @@ class FilterEditorInternal extends React.Component<FilterEditorInternalProps, Fi
     });
   };
 
-  static getDerivedStateFromProps(props: Readonly<FilterEditorInternalProps>, state: FilterEditorState) {
+  static getDerivedStateFromProps(
+    props: Readonly<FilterEditorInternalProps>,
+    state: FilterEditorState,
+  ) {
     const displaySimpleFilter = checkIfSimpleFilter(combiningFilter(props));
 
     // Upgrade but never downgrade
@@ -166,13 +200,11 @@ class FilterEditorInternal extends React.Component<FilterEditorInternalProps, Fi
         displaySimpleFilter: false,
         valueIsSimpleFilter: false,
       };
-    }
-    else if (displaySimpleFilter && state.displaySimpleFilter === false) {
+    } else if (displaySimpleFilter && state.displaySimpleFilter === false) {
       return {
         valueIsSimpleFilter: true,
       };
-    }
-    else {
+    } else {
       return {
         valueIsSimpleFilter: false,
       };
@@ -180,33 +212,41 @@ class FilterEditorInternal extends React.Component<FilterEditorInternalProps, Fi
   }
 
   render() {
-    const {errors, t} = this.props;
-    const {displaySimpleFilter} = this.state;
-    const fieldSpec={
-      doc: latest.layer.filter.doc + " Combine multiple filters together by using a compound filter."
+    const { errors, t } = this.props;
+    const { displaySimpleFilter } = this.state;
+    const fieldSpec = {
+      doc:
+        latest.layer.filter.doc +
+        " Combine multiple filters together by using a compound filter.",
     };
-    const defaultFilter = ["all"] as LegacyFilterSpecification | ExpressionSpecification;
+    const defaultFilter = ["all"] as
+      | LegacyFilterSpecification
+      | ExpressionSpecification;
 
-    const isNestedCombiningFilter = displaySimpleFilter && hasNestedCombiningFilter(combiningFilter(this.props));
+    const isNestedCombiningFilter =
+      displaySimpleFilter &&
+      hasNestedCombiningFilter(combiningFilter(this.props));
 
     if (isNestedCombiningFilter) {
-      return <div className="maputnik-filter-editor-unsupported">
-        <p>
-          {t("Nested filters are not supported.")}
-        </p>
-        <InputButton
-          onClick={this.makeExpression}
-          title={t("Convert to expression")}
-        >
-          <TbMathFunction />
-          {t("Upgrade to expression")}
-        </InputButton>
-      </div>;
-    }
-    else if (displaySimpleFilter) {
+      return (
+        <div className="maputnik-filter-editor-unsupported">
+          <p>{t("Nested filters are not supported.")}</p>
+          <InputButton
+            onClick={this.makeExpression}
+            title={t("Convert to expression")}
+          >
+            <TbMathFunction />
+            {t("Upgrade to expression")}
+          </InputButton>
+        </div>
+      );
+    } else if (displaySimpleFilter) {
       const filter = combiningFilter(this.props);
       const combiningOp = filter[0];
-      const filters = filter.slice(1) as (LegacyFilterSpecification | ExpressionSpecification)[];
+      const filters = filter.slice(1) as (
+        | LegacyFilterSpecification
+        | ExpressionSpecification
+      )[];
 
       const actions = (
         <div>
@@ -221,24 +261,28 @@ class FilterEditorInternal extends React.Component<FilterEditorInternalProps, Fi
       );
 
       const editorBlocks = filters.map((f, idx) => {
-        const error = errors![`filter[${idx+1}]`];
+        const error = errors![`filter[${idx + 1}]`];
 
         return (
           <div key={`block-${idx}`}>
-            <FilterEditorBlock key={idx} onDelete={this.deleteFilterItem.bind(this, idx)}>
+            <FilterEditorBlock
+              key={idx}
+              onDelete={this.deleteFilterItem.bind(this, idx)}
+            >
               <SingleFilterEditor
                 properties={this.props.properties}
                 filter={f}
                 onChange={this.onFilterPartChanged.bind(this, idx + 1)}
               />
             </FilterEditorBlock>
-            {error &&
-              <div key="error" className="maputnik-inline-error">{error.message}</div>
-            }
+            {error && (
+              <div key="error" className="maputnik-inline-error">
+                {error.message}
+              </div>
+            )}
           </div>
         );
       });
-
 
       return (
         <>
@@ -254,15 +298,12 @@ class FilterEditorInternal extends React.Component<FilterEditorInternalProps, Fi
               options={[
                 ["all", t("every filter matches")],
                 ["none", t("no filter matches")],
-                ["any", t("any filter matches")]
+                ["any", t("any filter matches")],
               ]}
             />
           </Block>
           {editorBlocks}
-          <div
-            key="buttons"
-            className="maputnik-filter-editor-add-wrapper"
-          >
+          <div key="buttons" className="maputnik-filter-editor-add-wrapper">
             <InputButton
               data-wd-key="layer-filter-button"
               className="maputnik-add-filter"
@@ -275,21 +316,20 @@ class FilterEditorInternal extends React.Component<FilterEditorInternalProps, Fi
           <div
             key="doc"
             className="maputnik-doc-inline"
-            style={{display: this.state.showDoc ? "" : "none"}}
+            style={{ display: this.state.showDoc ? "" : "none" }}
           >
             <Doc fieldSpec={fieldSpec} />
           </div>
         </>
       );
-    }
-    else {
-      const {filter} = this.props;
+    } else {
+      const { filter } = this.props;
 
       return (
         <>
           <ExpressionProperty
             onDelete={() => {
-              this.setState({displaySimpleFilter: true});
+              this.setState({ displaySimpleFilter: true });
               this.props.onChange(defaultFilter);
             }}
             fieldName="filter"
@@ -298,10 +338,9 @@ class FilterEditorInternal extends React.Component<FilterEditorInternalProps, Fi
             errors={errors}
             onChange={this.props.onChange}
           />
-          {this.state.valueIsSimpleFilter &&
+          {this.state.valueIsSimpleFilter && (
             <div className="maputnik-expr-infobox">
-              {t("You've entered an old style filter.")}
-              {" "}
+              {t("You've entered an old style filter.")}{" "}
               <button
                 onClick={this.makeFilter}
                 className="maputnik-expr-infobox__button"
@@ -309,7 +348,7 @@ class FilterEditorInternal extends React.Component<FilterEditorInternalProps, Fi
                 {t("Switch to filter editor.")}
               </button>
             </div>
-          }
+          )}
         </>
       );
     }

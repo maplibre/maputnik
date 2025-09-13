@@ -1,14 +1,12 @@
-export default function(num1: string | number, num2: string| number) {
+export default function (num1: string | number, num2: string | number) {
   const a = +num1;
   const b = +num2;
 
-  if(a < b) {
+  if (a < b) {
     return -1;
-  }
-  else if(a > b) {
+  } else if (a > b) {
     return 1;
-  }
-  else {
+  } else {
     return 0;
   }
 }

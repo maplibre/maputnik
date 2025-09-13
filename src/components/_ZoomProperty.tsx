@@ -1,36 +1,35 @@
+import latest from "@maplibre/maplibre-gl-style-spec/dist/latest.json";
 import React from "react";
+import { type WithTranslation, withTranslation } from "react-i18next";
 import { PiListPlusBold } from "react-icons/pi";
 import { TbMathFunction } from "react-icons/tb";
-import latest from "@maplibre/maplibre-gl-style-spec/dist/latest.json";
-import { type WithTranslation, withTranslation } from "react-i18next";
-
+import docUid from "../libs/document-uid";
+import labelFromFieldName from "../libs/label-from-field-name";
+import sortNumerically from "../libs/sort-numerically";
+import DeleteStopButton from "./_DeleteStopButton";
+import Block from "./Block";
 import InputButton from "./InputButton";
-import InputSpec from "./InputSpec";
 import InputNumber from "./InputNumber";
 import InputSelect from "./InputSelect";
-import Block from "./Block";
-
-import DeleteStopButton from "./_DeleteStopButton";
-import labelFromFieldName from "../libs/label-from-field-name";
-
-import docUid from "../libs/document-uid";
-import sortNumerically from "../libs/sort-numerically";
-
+import InputSpec from "./InputSpec";
 
 /**
  * We cache a reference for each stop by its index.
  *
  * When the stops are reordered the references are also updated (see this.orderStops) this allows React to use the same key for the element and keep keyboard focus.
  */
-function setStopRefs(props: ZoomPropertyInternalProps, state: ZoomPropertyState) {
+function setStopRefs(
+  props: ZoomPropertyInternalProps,
+  state: ZoomPropertyState,
+) {
   // This is initialsed below only if required to improved performance.
-  let newRefs: {[key: number]: string} = {};
+  let newRefs: { [key: number]: string } = {};
 
-  if(props.value && (props.value as ZoomWithStops).stops) {
+  if (props.value && (props.value as ZoomWithStops).stops) {
     (props.value as ZoomWithStops).stops.forEach((_val, idx: number) => {
-      if(Object.prototype.hasOwnProperty.call(!state.refs, idx)) {
-        if(!newRefs) {
-          newRefs = {...state};
+      if (Object.hasOwn(!state.refs, idx)) {
+        if (!newRefs) {
+          newRefs = { ...state };
         }
         newRefs[idx] = docUid("stop-");
       } else {
@@ -42,55 +41,60 @@ function setStopRefs(props: ZoomPropertyInternalProps, state: ZoomPropertyState)
 }
 
 type ZoomWithStops = {
-  stops: [number | undefined, number][]
-  base?: number
+  stops: [number | undefined, number][];
+  base?: number;
 };
 
-
 type ZoomPropertyInternalProps = {
-  onChange?(...args: unknown[]): unknown
-  onChangeToDataFunction?(...args: unknown[]): unknown
-  onDeleteStop?(...args: unknown[]): unknown
-  onAddStop?(...args: unknown[]): unknown
-  onExpressionClick?(...args: unknown[]): unknown
-  fieldType?: string
-  fieldName: string
+  onChange?(...args: unknown[]): unknown;
+  onChangeToDataFunction?(...args: unknown[]): unknown;
+  onDeleteStop?(...args: unknown[]): unknown;
+  onAddStop?(...args: unknown[]): unknown;
+  onExpressionClick?(...args: unknown[]): unknown;
+  fieldType?: string;
+  fieldName: string;
   fieldSpec?: {
-    "property-type"?: string
-    "function-type"?: string
-  }
-  errors?: object
-  value?: ZoomWithStops
+    "property-type"?: string;
+    "function-type"?: string;
+  };
+  errors?: object;
+  value?: ZoomWithStops;
 } & WithTranslation;
 
 type ZoomPropertyState = {
-  refs: {[key: number]: string}
+  refs: { [key: number]: string };
 };
 
-class ZoomPropertyInternal extends React.Component<ZoomPropertyInternalProps, ZoomPropertyState> {
+class ZoomPropertyInternal extends React.Component<
+  ZoomPropertyInternalProps,
+  ZoomPropertyState
+> {
   static defaultProps = {
     errors: {},
   };
 
   state = {
-    refs: {} as {[key: number]: string}
+    refs: {} as { [key: number]: string },
   };
 
   componentDidMount() {
     const newRefs = setStopRefs(this.props, this.state);
 
-    if(newRefs) {
+    if (newRefs) {
       this.setState({
-        refs: newRefs
+        refs: newRefs,
       });
     }
   }
 
-  static getDerivedStateFromProps(props: Readonly<ZoomPropertyInternalProps>, state: ZoomPropertyState) {
+  static getDerivedStateFromProps(
+    props: Readonly<ZoomPropertyInternalProps>,
+    state: ZoomPropertyState,
+  ) {
     const newRefs = setStopRefs(props, state);
-    if(newRefs) {
+    if (newRefs) {
       return {
-        refs: newRefs
+        refs: newRefs,
       };
     }
     return null;
@@ -102,35 +106,38 @@ class ZoomPropertyInternal extends React.Component<ZoomPropertyInternalProps, Zo
       .map((stop, idx) => {
         return {
           ref: this.state.refs[idx],
-          data: stop
+          data: stop,
         };
       })
-    // Sort by zoom
+      // Sort by zoom
       .sort((a, b) => sortNumerically(a.data[0]!, b.data[0]!));
 
     // Fetch the new position of the stops
-    const newRefs: {[key:number]: string} = {};
-    mappedWithRef
-      .forEach((stop, idx) =>{
-        newRefs[idx] = stop.ref;
-      });
+    const newRefs: { [key: number]: string } = {};
+    mappedWithRef.forEach((stop, idx) => {
+      newRefs[idx] = stop.ref;
+    });
 
     this.setState({
-      refs: newRefs
+      refs: newRefs,
     });
 
     return mappedWithRef.map((item) => item.data);
   }
 
-  changeZoomStop(changeIdx: number, stopData: number | undefined, value: number) {
+  changeZoomStop(
+    changeIdx: number,
+    stopData: number | undefined,
+    value: number,
+  ) {
     const stops = (this.props.value as ZoomWithStops).stops.slice(0);
     stops[changeIdx] = [stopData, value];
 
     const orderedStops = this.orderStopsByZoom(stops);
 
     const changedValue = {
-      ...this.props.value as ZoomWithStops,
-      stops: orderedStops
+      ...(this.props.value as ZoomWithStops),
+      stops: orderedStops,
     };
     this.props.onChange!(this.props.fieldName, changedValue);
   }
@@ -138,7 +145,7 @@ class ZoomPropertyInternal extends React.Component<ZoomPropertyInternalProps, Zo
   changeBase(newValue: number | undefined) {
     const changedValue = {
       ...this.props.value,
-      base: newValue
+      base: newValue,
     };
 
     if (changedValue.base === undefined) {
@@ -158,106 +165,119 @@ class ZoomPropertyInternal extends React.Component<ZoomPropertyInternalProps, Zo
     const zoomFields = this.props.value?.stops.map((stop, idx) => {
       const zoomLevel = stop[0];
       const value = stop[1];
-      const deleteStopBtn = <DeleteStopButton onClick={this.props.onDeleteStop?.bind(this, idx)} />;
-      return <tr
-        key={`${stop[0]}-${stop[1]}`}
-      >
-        <td>
-          <InputNumber
-            aria-label={t("Zoom")}
-            value={zoomLevel}
-            onChange={changedStop => this.changeZoomStop(idx, changedStop, value)}
-            min={0}
-            max={22}
-          />
-        </td>
-        <td>
-          <InputSpec
-            aria-label={t("Output value")}
-            fieldName={this.props.fieldName}
-            fieldSpec={this.props.fieldSpec as any}
-            value={value}
-            onChange={(_, newValue) => this.changeZoomStop(idx, zoomLevel, newValue as number)}
-          />
-        </td>
-        <td>
-          {deleteStopBtn}
-        </td>
-      </tr>;
+      const deleteStopBtn = (
+        <DeleteStopButton onClick={this.props.onDeleteStop?.bind(this, idx)} />
+      );
+      return (
+        <tr key={`${stop[0]}-${stop[1]}`}>
+          <td>
+            <InputNumber
+              aria-label={t("Zoom")}
+              value={zoomLevel}
+              onChange={(changedStop) =>
+                this.changeZoomStop(idx, changedStop, value)
+              }
+              min={0}
+              max={22}
+            />
+          </td>
+          <td>
+            <InputSpec
+              aria-label={t("Output value")}
+              fieldName={this.props.fieldName}
+              fieldSpec={this.props.fieldSpec as any}
+              value={value}
+              onChange={(_, newValue) =>
+                this.changeZoomStop(idx, zoomLevel, newValue as number)
+              }
+            />
+          </td>
+          <td>{deleteStopBtn}</td>
+        </tr>
+      );
     });
 
     // return <div className="maputnik-zoom-spec-property">
-    return <div className="maputnik-data-spec-block">
-      <fieldset className="maputnik-data-spec-property">
-        <legend>{labelFromFieldName(this.props.fieldName)}</legend>
-        <div className="maputnik-data-fieldset-inner">
-          <Block
-            label={t("Function")}
-          >
-            <div className="maputnik-data-spec-property-input">
-              <InputSelect
-                value={"interpolate"}
-                onChange={(propVal: string) => this.changeDataType(propVal)}
-                title={t("Select a type of data scale (default is 'categorical').")}
-                options={this.getDataFunctionTypes(this.props.fieldSpec!)}
-              />
+    return (
+      <div className="maputnik-data-spec-block">
+        <fieldset className="maputnik-data-spec-property">
+          <legend>{labelFromFieldName(this.props.fieldName)}</legend>
+          <div className="maputnik-data-fieldset-inner">
+            <Block label={t("Function")}>
+              <div className="maputnik-data-spec-property-input">
+                <InputSelect
+                  value={"interpolate"}
+                  onChange={(propVal: string) => this.changeDataType(propVal)}
+                  title={t(
+                    "Select a type of data scale (default is 'categorical').",
+                  )}
+                  options={this.getDataFunctionTypes(this.props.fieldSpec!)}
+                />
+              </div>
+            </Block>
+            <Block label={t("Base")}>
+              <div className="maputnik-data-spec-property-input">
+                <InputSpec
+                  fieldName={"base"}
+                  fieldSpec={
+                    latest.function.base as typeof latest.function.base & {
+                      type: "number";
+                    }
+                  }
+                  value={this.props.value?.base}
+                  onChange={(_, newValue) =>
+                    this.changeBase(newValue as number | undefined)
+                  }
+                />
+              </div>
+            </Block>
+            <div className="maputnik-function-stop">
+              <table className="maputnik-function-stop-table maputnik-function-stop-table--zoom">
+                <caption>{t("Stops")}</caption>
+                <thead>
+                  <tr>
+                    <th>{t("Zoom")}</th>
+                    <th rowSpan={2}>{t("Output value")}</th>
+                  </tr>
+                </thead>
+                <tbody>{zoomFields}</tbody>
+              </table>
             </div>
-          </Block>
-          <Block
-            label={t("Base")}
-          >
-            <div className="maputnik-data-spec-property-input">
-              <InputSpec
-                fieldName={"base"}
-                fieldSpec={latest.function.base as typeof latest.function.base & { type: "number" }}
-                value={this.props.value?.base}
-                onChange={(_, newValue) => this.changeBase(newValue as number | undefined)}
-              />
+            <div className="maputnik-toolbox">
+              <InputButton
+                className="maputnik-add-stop"
+                onClick={this.props.onAddStop?.bind(this)}
+              >
+                <PiListPlusBold style={{ verticalAlign: "text-bottom" }} />
+                {t("Add stop")}
+              </InputButton>
+              <InputButton
+                className="maputnik-add-stop"
+                onClick={this.props.onExpressionClick?.bind(this)}
+              >
+                <TbMathFunction style={{ verticalAlign: "text-bottom" }} />
+                {t("Convert to expression")}
+              </InputButton>
             </div>
-          </Block>
-          <div className="maputnik-function-stop">
-            <table className="maputnik-function-stop-table maputnik-function-stop-table--zoom">
-              <caption>{t("Stops")}</caption>
-              <thead>
-                <tr>
-                  <th>{t("Zoom")}</th>
-                  <th rowSpan={2}>{t("Output value")}</th>
-                </tr>
-              </thead>
-              <tbody>
-                {zoomFields}
-              </tbody>
-            </table>
           </div>
-          <div className="maputnik-toolbox">
-            <InputButton
-              className="maputnik-add-stop"
-              onClick={this.props.onAddStop?.bind(this)}
-            >
-              <PiListPlusBold style={{ verticalAlign: "text-bottom" }} />
-              {t("Add stop")}
-            </InputButton>
-            <InputButton
-              className="maputnik-add-stop"
-              onClick={this.props.onExpressionClick?.bind(this)}
-            >
-              <TbMathFunction style={{ verticalAlign: "text-bottom" }} />
-              {t("Convert to expression")}
-            </InputButton>
-          </div>
-        </div>
-      </fieldset>
-    </div>;
+        </fieldset>
+      </div>
+    );
   }
 
   getDataFunctionTypes(fieldSpec: {
-    "property-type"?: string
-    "function-type"?: string
+    "property-type"?: string;
+    "function-type"?: string;
   }) {
     if (fieldSpec["property-type"] === "data-driven") {
-      return ["interpolate", "categorical", "interval", "exponential", "identity"];
-    }
-    else {
+      return [
+        "interpolate",
+        "categorical",
+        "interval",
+        "exponential",
+        "identity",
+      ];
+    } else {
       return ["interpolate"];
     }
   }

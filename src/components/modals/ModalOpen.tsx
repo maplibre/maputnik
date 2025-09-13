@@ -1,85 +1,87 @@
 import React, { type FormEvent } from "react";
-import {MdFileUpload} from "react-icons/md";
-import {MdAddCircleOutline} from "react-icons/md";
 import FileReaderInput, { type Result } from "react-file-reader-input";
 import { Trans, type WithTranslation, withTranslation } from "react-i18next";
-
-import ModalLoading from "./ModalLoading";
-import Modal from "./Modal";
+import { MdAddCircleOutline, MdFileUpload } from "react-icons/md";
+import publicStyles from "../../config/styles.json";
+import style from "../../libs/style";
 import InputButton from "../InputButton";
 import InputUrl from "../InputUrl";
-
-import style from "../../libs/style";
-import publicStyles from "../../config/styles.json";
+import Modal from "./Modal";
+import ModalLoading from "./ModalLoading";
 
 type PublicStyleProps = {
-  url: string
-  thumbnailUrl: string
-  title: string
-  onSelect(...args: unknown[]): unknown
+  url: string;
+  thumbnailUrl: string;
+  title: string;
+  onSelect(...args: unknown[]): unknown;
 };
 
 class PublicStyle extends React.Component<PublicStyleProps> {
   render() {
-    return <div className="maputnik-public-style">
-      <InputButton
-        className="maputnik-public-style-button"
-        aria-label={this.props.title}
-        onClick={() => this.props.onSelect(this.props.url)}
-      >
-        <div className="maputnik-public-style-header">
-          <div>{this.props.title}</div>
-          <span className="maputnik-space" />
-          <MdAddCircleOutline />
-        </div>
-        <div
-          className="maputnik-public-style-thumbnail"
-          style={{
-            backgroundImage: `url(${this.props.thumbnailUrl})`
-          }}
-        ></div>
-      </InputButton>
-    </div>;
+    return (
+      <div className="maputnik-public-style">
+        <InputButton
+          className="maputnik-public-style-button"
+          aria-label={this.props.title}
+          onClick={() => this.props.onSelect(this.props.url)}
+        >
+          <div className="maputnik-public-style-header">
+            <div>{this.props.title}</div>
+            <span className="maputnik-space" />
+            <MdAddCircleOutline />
+          </div>
+          <div
+            className="maputnik-public-style-thumbnail"
+            style={{
+              backgroundImage: `url(${this.props.thumbnailUrl})`,
+            }}
+          ></div>
+        </InputButton>
+      </div>
+    );
   }
 }
 
 type ModalOpenInternalProps = {
-  isOpen: boolean
-  onOpenToggle(...args: unknown[]): unknown
-  onStyleOpen(...args: unknown[]): unknown
-  fileHandle: FileSystemFileHandle | null
+  isOpen: boolean;
+  onOpenToggle(...args: unknown[]): unknown;
+  onStyleOpen(...args: unknown[]): unknown;
+  fileHandle: FileSystemFileHandle | null;
 } & WithTranslation;
 
 type ModalOpenState = {
-  styleUrl: string
-  error?: string | null
-  activeRequest?: any
-  activeRequestUrl?: string | null
+  styleUrl: string;
+  error?: string | null;
+  activeRequest?: any;
+  activeRequestUrl?: string | null;
 };
 
-class ModalOpenInternal extends React.Component<ModalOpenInternalProps, ModalOpenState> {
+class ModalOpenInternal extends React.Component<
+  ModalOpenInternalProps,
+  ModalOpenState
+> {
   constructor(props: ModalOpenInternalProps) {
     super(props);
     this.state = {
-      styleUrl: ""
+      styleUrl: "",
     };
   }
 
   clearError() {
     this.setState({
-      error: null
+      error: null,
     });
   }
 
   onCancelActiveRequest(e: Event) {
     // Else the click propagates to the underlying modal
-    if(e) e.stopPropagation();
+    if (e) e.stopPropagation();
 
-    if(this.state.activeRequest) {
+    if (this.state.activeRequest) {
       this.state.activeRequest.abort();
       this.setState({
         activeRequest: null,
-        activeRequestUrl: null
+        activeRequestUrl: null,
       });
     }
   }
@@ -91,19 +93,17 @@ class ModalOpenInternal extends React.Component<ModalOpenInternalProps, ModalOpe
 
     fetch(styleUrl, {
       mode: "cors",
-      credentials: "same-origin"
+      credentials: "same-origin",
     })
-      .then(function(response) {
-        return response.json();
-      })
+      .then((response) => response.json())
       .then((body) => {
-        if(canceled) {
+        if (canceled) {
           return;
         }
 
         this.setState({
           activeRequest: null,
-          activeRequestUrl: null
+          activeRequestUrl: null,
         });
 
         const mapStyle = style.ensureStyleValidity(body);
@@ -115,7 +115,7 @@ class ModalOpenInternal extends React.Component<ModalOpenInternalProps, ModalOpe
         this.setState({
           error: `Failed to load: '${styleUrl}'`,
           activeRequest: null,
-          activeRequestUrl: null
+          activeRequestUrl: null,
         });
         console.error(err);
         console.warn("Could not open the style URL", styleUrl);
@@ -123,11 +123,11 @@ class ModalOpenInternal extends React.Component<ModalOpenInternalProps, ModalOpe
 
     this.setState({
       activeRequest: {
-        abort: function() {
+        abort: () => {
           canceled = true;
-        }
+        },
       },
-      activeRequestUrl: styleUrl
+      activeRequestUrl: styleUrl,
     });
   };
 
@@ -149,7 +149,9 @@ class ModalOpenInternal extends React.Component<ModalOpenInternalProps, ModalOpe
       multiple: false,
     };
 
-    const [fileHandle] = await window.showOpenFilePicker(pickerOpts) as Array<FileSystemFileHandle>;
+    const [fileHandle] = (await window.showOpenFilePicker(
+      pickerOpts,
+    )) as Array<FileSystemFileHandle>;
     const file = await fileHandle.getFile();
     const content = await file.text();
 
@@ -158,7 +160,7 @@ class ModalOpenInternal extends React.Component<ModalOpenInternalProps, ModalOpe
       mapStyle = JSON.parse(content);
     } catch (err) {
       this.setState({
-        error: (err as Error).toString()
+        error: (err as Error).toString(),
       });
       return;
     }
@@ -177,14 +179,13 @@ class ModalOpenInternal extends React.Component<ModalOpenInternalProps, ModalOpe
     this.clearError();
 
     reader.readAsText(file, "UTF-8");
-    reader.onload = e => {
+    reader.onload = (e) => {
       let mapStyle;
       try {
         mapStyle = JSON.parse(e.target?.result as string);
-      }
-      catch(err) {
+      } catch (err) {
         this.setState({
-          error: (err as Error).toString()
+          error: (err as Error).toString(),
         });
         return;
       }
@@ -192,12 +193,12 @@ class ModalOpenInternal extends React.Component<ModalOpenInternalProps, ModalOpe
       this.props.onStyleOpen(mapStyle);
       this.onOpenToggle();
     };
-    reader.onerror = e => console.log(e.target);
+    reader.onerror = (e) => console.log(e.target);
   };
 
   onOpenToggle() {
     this.setState({
-      styleUrl: ""
+      styleUrl: "",
     });
     this.clearError();
     this.props.onOpenToggle();
@@ -211,22 +212,30 @@ class ModalOpenInternal extends React.Component<ModalOpenInternalProps, ModalOpe
 
   render() {
     const t = this.props.t;
-    const styleOptions = publicStyles.map(style => {
-      return <PublicStyle
-        key={style.id}
-        url={style.url}
-        title={style.title}
-        thumbnailUrl={style.thumbnail}
-        onSelect={this.onStyleSelect}
-      />;
+    const styleOptions = publicStyles.map((style) => {
+      return (
+        <PublicStyle
+          key={style.id}
+          url={style.url}
+          title={style.title}
+          thumbnailUrl={style.thumbnail}
+          onSelect={this.onStyleSelect}
+        />
+      );
     });
 
     let errorElement;
-    if(this.state.error) {
+    if (this.state.error) {
       errorElement = (
         <div className="maputnik-modal-error">
           {this.state.error}
-          <a href="#" onClick={() => this.clearError()} className="maputnik-modal-error-close">×</a>
+          <a
+            href="#"
+            onClick={() => this.clearError()}
+            className="maputnik-modal-error-close"
+          >
+            ×
+          </a>
         </div>
       );
     }
@@ -247,11 +256,19 @@ class ModalOpenInternal extends React.Component<ModalOpenInternalProps, ModalOpe
               {typeof window.showOpenFilePicker === "function" ? (
                 <InputButton
                   className="maputnik-big-button"
-                  onClick={this.onOpenFile}><MdFileUpload/> {t("Open Style")}
+                  onClick={this.onOpenFile}
+                >
+                  <MdFileUpload /> {t("Open Style")}
                 </InputButton>
               ) : (
-                <FileReaderInput onChange={this.onFileChanged} tabIndex={-1} aria-label={t("Open Style")}>
-                  <InputButton className="maputnik-upload-button"><MdFileUpload /> {t("Open Style")}</InputButton>
+                <FileReaderInput
+                  onChange={this.onFileChanged}
+                  tabIndex={-1}
+                  aria-label={t("Open Style")}
+                >
+                  <InputButton className="maputnik-upload-button">
+                    <MdFileUpload /> {t("Open Style")}
+                  </InputButton>
                 </FileReaderInput>
               )}
             </div>
@@ -262,7 +279,15 @@ class ModalOpenInternal extends React.Component<ModalOpenInternalProps, ModalOpe
               <h1>{t("Load from URL")}</h1>
               <p>
                 <Trans t={t}>
-                  Load from a URL. Note that the URL must have <a href="https://enable-cors.org" target="_blank" rel="noopener noreferrer">CORS enabled</a>.
+                  Load from a URL. Note that the URL must have{" "}
+                  <a
+                    href="https://enable-cors.org"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    CORS enabled
+                  </a>
+                  .
                 </Trans>
               </p>
               <InputUrl
@@ -281,7 +306,9 @@ class ModalOpenInternal extends React.Component<ModalOpenInternalProps, ModalOpe
                   type="submit"
                   className="maputnik-big-button"
                   disabled={this.state.styleUrl.length < 1}
-                >Load from URL</InputButton>
+                >
+                  Load from URL
+                </InputButton>
               </div>
             </form>
           </section>
@@ -301,7 +328,9 @@ class ModalOpenInternal extends React.Component<ModalOpenInternalProps, ModalOpe
           isOpen={!!this.state.activeRequest}
           title={t("Loading style")}
           onCancel={(e: Event) => this.onCancelActiveRequest(e)}
-          message={t("Loading: {{requestUrl}}", { requestUrl: this.state.activeRequestUrl })}
+          message={t("Loading: {{requestUrl}}", {
+            requestUrl: this.state.activeRequestUrl,
+          })}
         />
       </div>
     );

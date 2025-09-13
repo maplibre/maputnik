@@ -15,14 +15,22 @@ export default class MaputnikCypressHelper {
 
   public when = {
     dragAndDropWithWait: (element: string, targetElement: string) => {
-      this.helper.get.elementByTestId(element).realMouseDown({ button: "left", position: "center" });
-      this.helper.get.elementByTestId(element).realMouseMove(0, 10, { position: "center" });
-      this.helper.get.elementByTestId(targetElement).realMouseMove(0, 0, { position: "center" });
+      this.helper.get
+        .elementByTestId(element)
+        .realMouseDown({ button: "left", position: "center" });
+      this.helper.get
+        .elementByTestId(element)
+        .realMouseMove(0, 10, { position: "center" });
+      this.helper.get
+        .elementByTestId(targetElement)
+        .realMouseMove(0, 0, { position: "center" });
       this.helper.when.wait(1);
       this.helper.get.elementByTestId(targetElement).realMouseUp();
     },
     clickCenter: (element: string) => {
-      this.helper.get.elementByTestId(element).realMouseDown({ button: "left", position: "center" });
+      this.helper.get
+        .elementByTestId(element)
+        .realMouseDown({ button: "left", position: "center" });
       this.helper.when.wait(200);
       this.helper.get.elementByTestId(element).realMouseUp();
     },

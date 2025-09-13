@@ -1,5 +1,5 @@
+import tokens from "../../src/config/tokens.json" with { type: "json" };
 import { MaputnikDriver } from "./maputnik-driver";
-import tokens from "../../src/config/tokens.json" with {type: "json"};
 
 describe("modals", () => {
   const { beforeAndAfter, when, get, given, then } = new MaputnikDriver();
@@ -78,7 +78,7 @@ describe("modals", () => {
       when.click("modal:sources.add.add_source");
       when.wait(200);
       then(
-        get.styleFromLocalStorage().then((style) => style.sources[sourceId])
+        get.styleFromLocalStorage().then((style) => style.sources[sourceId]),
       ).shouldInclude({
         scheme: "tms",
       });
@@ -88,7 +88,10 @@ describe("modals", () => {
       const sourceId = "pmtilestest";
       when.setValue("modal:sources.add.source_id", sourceId);
       when.select("modal:sources.add.source_type", "pmtiles_vector");
-      when.setValue("modal:sources.add.source_url", "https://data.source.coop/protomaps/openstreetmap/v4.pmtiles");
+      when.setValue(
+        "modal:sources.add.source_url",
+        "https://data.source.coop/protomaps/openstreetmap/v4.pmtiles",
+      );
       when.click("modal:sources.add.add_source");
       when.click("modal:sources.add.add_source");
       when.wait(200);
@@ -111,7 +114,7 @@ describe("modals", () => {
       when.click("modal:sources.add.add_source");
       when.wait(200);
       then(
-        get.styleFromLocalStorage().then((style) => style.sources[sourceId])
+        get.styleFromLocalStorage().then((style) => style.sources[sourceId]),
       ).shouldInclude({
         tileSize: 128,
       });
@@ -138,7 +141,7 @@ describe("modals", () => {
 
       it("should show the spec information", () => {
         then(get.elementsText("spec-field-doc")).shouldInclude(
-          "name for the style"
+          "name for the style",
         );
       });
     });
@@ -190,11 +193,11 @@ describe("modals", () => {
       const apiKey = "testing123";
       when.setValue(
         "modal:settings.maputnik:openmaptiles_access_token",
-        apiKey
+        apiKey,
       );
       when.click("modal:settings.name");
       then(
-        get.styleFromLocalStorage().then((style) => style.metadata)
+        get.styleFromLocalStorage().then((style) => style.metadata),
       ).shouldInclude({
         "maputnik:openmaptiles_access_token": apiKey,
       });
@@ -204,35 +207,29 @@ describe("modals", () => {
       const apiKey = "testing123";
       when.setValue(
         "modal:settings.maputnik:thunderforest_access_token",
-        apiKey
+        apiKey,
       );
       when.click("modal:settings.name");
       then(
-        get.styleFromLocalStorage().then((style) => style.metadata)
+        get.styleFromLocalStorage().then((style) => style.metadata),
       ).shouldInclude({ "maputnik:thunderforest_access_token": apiKey });
     });
 
     it("stadia access token", () => {
       const apiKey = "testing123";
-      when.setValue(
-        "modal:settings.maputnik:stadia_access_token",
-        apiKey
-      );
+      when.setValue("modal:settings.maputnik:stadia_access_token", apiKey);
       when.click("modal:settings.name");
       then(
-        get.styleFromLocalStorage().then((style) => style.metadata)
+        get.styleFromLocalStorage().then((style) => style.metadata),
       ).shouldInclude({ "maputnik:stadia_access_token": apiKey });
     });
 
     it("locationiq access token", () => {
       const apiKey = "testing123";
-      when.setValue(
-        "modal:settings.maputnik:locationiq_access_token",
-        apiKey
-      );
+      when.setValue("modal:settings.maputnik:locationiq_access_token", apiKey);
       when.click("modal:settings.name");
       then(
-        get.styleFromLocalStorage().then((style) => style.metadata)
+        get.styleFromLocalStorage().then((style) => style.metadata),
       ).shouldInclude({ "maputnik:locationiq_access_token": apiKey });
     });
 
@@ -240,7 +237,7 @@ describe("modals", () => {
       cy.on("uncaught:exception", () => false); // this is due to the fact that this is an invalid style for openlayers
       when.select("modal:settings.maputnik:renderer", "ol");
       then(get.inputValue("modal:settings.maputnik:renderer")).shouldEqual(
-        "ol"
+        "ol",
       );
 
       when.click("modal:settings.name");
@@ -249,39 +246,63 @@ describe("modals", () => {
       });
     });
 
-
-
     it("inlcude API key when change renderer", () => {
-
       when.click("modal:settings.close-modal");
       when.click("nav:open");
 
-      get.elementByAttribute("aria-label", "MapTiler Basic").should("exist").click();
+      get
+        .elementByAttribute("aria-label", "MapTiler Basic")
+        .should("exist")
+        .click();
       when.wait(1000);
       when.click("nav:settings");
 
       when.select("modal:settings.maputnik:renderer", "mlgljs");
       then(get.inputValue("modal:settings.maputnik:renderer")).shouldEqual(
-        "mlgljs"
+        "mlgljs",
       );
 
       when.select("modal:settings.maputnik:renderer", "ol");
       then(get.inputValue("modal:settings.maputnik:renderer")).shouldEqual(
-        "ol"
+        "ol",
       );
 
-      given.intercept("https://api.maptiler.com/tiles/v3-openmaptiles/tiles.json?key=*", "tileRequest", "GET");
+      given.intercept(
+        "https://api.maptiler.com/tiles/v3-openmaptiles/tiles.json?key=*",
+        "tileRequest",
+        "GET",
+      );
 
       when.select("modal:settings.maputnik:renderer", "mlgljs");
       then(get.inputValue("modal:settings.maputnik:renderer")).shouldEqual(
-        "mlgljs"
+        "mlgljs",
       );
 
-      when.waitForResponse("tileRequest").its("request").its("url").should("include", `https://api.maptiler.com/tiles/v3-openmaptiles/tiles.json?key=${tokens.openmaptiles}`);
-      when.waitForResponse("tileRequest").its("request").its("url").should("include", `https://api.maptiler.com/tiles/v3-openmaptiles/tiles.json?key=${tokens.openmaptiles}`);
-      when.waitForResponse("tileRequest").its("request").its("url").should("include", `https://api.maptiler.com/tiles/v3-openmaptiles/tiles.json?key=${tokens.openmaptiles}`);
+      when
+        .waitForResponse("tileRequest")
+        .its("request")
+        .its("url")
+        .should(
+          "include",
+          `https://api.maptiler.com/tiles/v3-openmaptiles/tiles.json?key=${tokens.openmaptiles}`,
+        );
+      when
+        .waitForResponse("tileRequest")
+        .its("request")
+        .its("url")
+        .should(
+          "include",
+          `https://api.maptiler.com/tiles/v3-openmaptiles/tiles.json?key=${tokens.openmaptiles}`,
+        );
+      when
+        .waitForResponse("tileRequest")
+        .its("request")
+        .its("url")
+        .should(
+          "include",
+          `https://api.maptiler.com/tiles/v3-openmaptiles/tiles.json?key=${tokens.openmaptiles}`,
+        );
     });
-
   });
 
   describe("add layer", () => {
@@ -295,7 +316,7 @@ describe("modals", () => {
       when.click("add-layer");
       then(get.elementByTestId("modal:add-layer")).shouldExist();
       then(get.element(".maputnik-modal-error")).shouldContainText(
-        "Layer ID already exists"
+        "Layer ID already exists",
       );
     });
   });
@@ -310,7 +331,7 @@ describe("modals", () => {
       cy.clearLocalStorage();
 
       // fill localStorage until we get a QuotaExceededError
-      cy.window().then(win => {
+      cy.window().then((win) => {
         let chunkSize = 1000;
         const chunk = new Array(chunkSize).join("x");
         let index = 0;

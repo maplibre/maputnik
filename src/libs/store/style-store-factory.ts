@@ -1,16 +1,26 @@
 /// <reference types="vite/client" />
-import { type IStyleStore, type OnStyleChangedCallback } from "../definitions";
-import { getStyleUrlFromAddressbarAndRemoveItIfNeeded, loadStyleUrl } from "../urlopen";
+import type { IStyleStore, OnStyleChangedCallback } from "../definitions";
+import {
+  getStyleUrlFromAddressbarAndRemoveItIfNeeded,
+  loadStyleUrl,
+} from "../urlopen";
 import { ApiStyleStore } from "./apistore";
 import { StyleStore } from "./stylestore";
 
-export async function createStyleStore(onStyleChanged: OnStyleChangedCallback): Promise<IStyleStore> {
+export async function createStyleStore(
+  onStyleChanged: OnStyleChangedCallback,
+): Promise<IStyleStore> {
   const styleUrl = getStyleUrlFromAddressbarAndRemoveItIfNeeded();
-  const useStyleUrl = styleUrl && window.confirm("Load style from URL: " + styleUrl + " and discard current changes?");
+  const useStyleUrl =
+    styleUrl &&
+    window.confirm(
+      "Load style from URL: " + styleUrl + " and discard current changes?",
+    );
   let styleStore: IStyleStore;
   if (import.meta.env.MODE === "desktop" && !useStyleUrl) {
     const apiStyleStore = new ApiStyleStore({
-      onLocalStyleChange: mapStyle => onStyleChanged(mapStyle, {save: false}),
+      onLocalStyleChange: (mapStyle) =>
+        onStyleChanged(mapStyle, { save: false }),
     });
     try {
       await apiStyleStore.init();
@@ -21,8 +31,10 @@ export async function createStyleStore(onStyleChanged: OnStyleChangedCallback): 
   } else {
     styleStore = new StyleStore();
   }
-  const styleToLoad = useStyleUrl ? await loadStyleUrl(styleUrl) : await styleStore.getLatestStyle();
-  onStyleChanged(styleToLoad, {initialLoad: true, save: false});
+  const styleToLoad = useStyleUrl
+    ? await loadStyleUrl(styleUrl)
+    : await styleStore.getLatestStyle();
+  onStyleChanged(styleToLoad, { initialLoad: true, save: false });
   return styleStore;
 }
 

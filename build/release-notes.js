@@ -23,10 +23,10 @@ const regex = /^## (\d+\.\d+\.\d+.*?)\n(.+?)(?=\n^## \d+\.\d+\.\d+.*?\n)/gms;
 const releaseNotes = [];
 let match;
 // eslint-disable-next-line no-cond-assign
-while (match = regex.exec(changelog)) {
+while ((match = regex.exec(changelog))) {
   releaseNotes.push({
-    "version": match[1],
-    "changelog": match[2].trim(),
+    version: match[1],
+    changelog: match[2].trim(),
   });
 }
 

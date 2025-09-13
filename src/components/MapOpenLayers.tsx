@@ -1,49 +1,52 @@
+import { throttle } from "lodash";
 import React from "react";
-import {throttle} from "lodash";
 import { type WithTranslation, withTranslation } from "react-i18next";
 
 import MapMaplibreGlLayerPopup from "./MapMaplibreGlLayerPopup";
 
 import "ol/ol.css";
-//@ts-ignore
-import {apply} from "ol-mapbox-style";
-import {Map, View, Overlay} from "ol";
+import type { StyleSpecification } from "maplibre-gl";
+import { Map, Overlay, View } from "ol";
 
-import {toLonLat} from "ol/proj";
-import type {StyleSpecification} from "maplibre-gl";
+import { toLonLat } from "ol/proj";
+//@ts-expect-error
+import { apply } from "ol-mapbox-style";
 
-
-function renderCoords (coords: string[]) {
+function renderCoords(coords: string[]) {
   if (!coords || coords.length < 2) {
     return null;
-  }
-  else {
-    return <span className="maputnik-coords">
-      {coords.map((coord) => String(coord).padStart(7, "\u00A0")).join(", ")}
-    </span>;
+  } else {
+    return (
+      <span className="maputnik-coords">
+        {coords.map((coord) => String(coord).padStart(7, "\u00A0")).join(", ")}
+      </span>
+    );
   }
 }
 
 type MapOpenLayersInternalProps = {
-  onDataChange?(...args: unknown[]): unknown
-  mapStyle: object
-  accessToken?: string
-  style?: object
-  onLayerSelect(layerId: string): void
-  debugToolbox: boolean
-  replaceAccessTokens(...args: unknown[]): unknown
-  onChange(...args: unknown[]): unknown
+  onDataChange?(...args: unknown[]): unknown;
+  mapStyle: object;
+  accessToken?: string;
+  style?: object;
+  onLayerSelect(layerId: string): void;
+  debugToolbox: boolean;
+  replaceAccessTokens(...args: unknown[]): unknown;
+  onChange(...args: unknown[]): unknown;
 } & WithTranslation;
 
 type MapOpenLayersState = {
-  zoom: string
-  rotation: string
-  cursor: string[]
-  center: string[]
-  selectedFeatures?: any[]
+  zoom: string;
+  rotation: string;
+  cursor: string[];
+  center: string[];
+  selectedFeatures?: any[];
 };
 
-class MapOpenLayersInternal extends React.Component<MapOpenLayersInternalProps, MapOpenLayersState> {
+class MapOpenLayersInternal extends React.Component<
+  MapOpenLayersInternalProps,
+  MapOpenLayersState
+> {
   static defaultProps = {
     onMapLoaded: () => {},
     onDataChange: () => {},
@@ -67,7 +70,7 @@ class MapOpenLayersInternal extends React.Component<MapOpenLayersInternalProps, 
   }
 
   _updateStyle(newMapStyle: StyleSpecification) {
-    if(!this.map) return;
+    if (!this.map) return;
 
     // See <https://github.com/openlayers/ol-mapbox-style/issues/215#issuecomment-493198815>
     this.map.getLayers().clear();
@@ -76,9 +79,7 @@ class MapOpenLayersInternal extends React.Component<MapOpenLayersInternalProps, 
 
   componentDidUpdate(prevProps: MapOpenLayersInternalProps) {
     if (this.props.mapStyle !== prevProps.mapStyle) {
-      this.updateStyle(
-        this.props.replaceAccessTokens(this.props.mapStyle)
-      );
+      this.updateStyle(this.props.replaceAccessTokens(this.props.mapStyle));
     }
   }
 
@@ -87,8 +88,8 @@ class MapOpenLayersInternal extends React.Component<MapOpenLayersInternalProps, 
       element: this.popupContainer!,
       autoPan: {
         animation: {
-          duration: 250
-        }
+          duration: 250,
+        },
       },
     });
 
@@ -98,16 +99,13 @@ class MapOpenLayersInternal extends React.Component<MapOpenLayersInternalProps, 
       view: new View({
         zoom: 1,
         center: [180, -90],
-      })
+      }),
     });
 
     map.on("pointermove", (evt) => {
       const coords = toLonLat(evt.coordinate);
       this.setState({
-        cursor: [
-          coords[0].toFixed(2),
-          coords[1].toFixed(2)
-        ]
+        cursor: [coords[0].toFixed(2), coords[1].toFixed(2)],
       });
     });
 
@@ -130,21 +128,14 @@ class MapOpenLayersInternal extends React.Component<MapOpenLayersInternalProps, 
     map.on("postrender", (_e) => {
       const center = toLonLat(map.getView().getCenter()!);
       this.setState({
-        center: [
-          center[0].toFixed(2),
-          center[1].toFixed(2),
-        ],
+        center: [center[0].toFixed(2), center[1].toFixed(2)],
         rotation: map.getView().getRotation().toFixed(2),
-        zoom: map.getView().getZoom()!.toFixed(2)
+        zoom: map.getView().getZoom()!.toFixed(2),
       });
     });
 
-
-
     this.map = map;
-    this.updateStyle(
-      this.props.replaceAccessTokens(this.props.mapStyle)
-    );
+    this.updateStyle(this.props.replaceAccessTokens(this.props.mapStyle));
   }
 
   closeOverlay = (e: any) => {
@@ -154,53 +145,59 @@ class MapOpenLayersInternal extends React.Component<MapOpenLayersInternalProps, 
 
   render() {
     const t = this.props.t;
-    return <div className="maputnik-ol-container">
-      <div
-        ref={x => {this.popupContainer = x;}}
-        style={{background: "black"}}
-        className="maputnik-popup"
-      >
-        <button
-          className="maplibregl-popup-close-button"
-          onClick={this.closeOverlay}
-          aria-label={t("Close popup")}
+    return (
+      <div className="maputnik-ol-container">
+        <div
+          ref={(x) => {
+            this.popupContainer = x;
+          }}
+          style={{ background: "black" }}
+          className="maputnik-popup"
         >
-          ×
-        </button>
-        <MapMaplibreGlLayerPopup
-          features={this.state.selectedFeatures || []}
-          onLayerSelect={this.props.onLayerSelect}
-        />
-      </div>
-      <div className="maputnik-ol-zoom">
-        {t("Zoom:")} {this.state.zoom}
-      </div>
-      {this.props.debugToolbox &&
-        <div className="maputnik-ol-debug">
-          <div>
-            <label>{t("cursor:")} </label>
-            <span>{renderCoords(this.state.cursor)}</span>
-          </div>
-          <div>
-            <label>{t("center:")} </label>
-            <span>{renderCoords(this.state.center)}</span>
-          </div>
-          <div>
-            <label>{t("rotation:")} </label>
-            <span>{this.state.rotation}</span>
-          </div>
+          <button
+            className="maplibregl-popup-close-button"
+            onClick={this.closeOverlay}
+            aria-label={t("Close popup")}
+          >
+            ×
+          </button>
+          <MapMaplibreGlLayerPopup
+            features={this.state.selectedFeatures || []}
+            onLayerSelect={this.props.onLayerSelect}
+          />
         </div>
-      }
-      <div
-        className="maputnik-ol"
-        ref={x => {this.container = x;}}
-        role="region"
-        aria-label={t("Map view")}
-        style={{
-          ...this.props.style,
-        }}>
+        <div className="maputnik-ol-zoom">
+          {t("Zoom:")} {this.state.zoom}
+        </div>
+        {this.props.debugToolbox && (
+          <div className="maputnik-ol-debug">
+            <div>
+              <label>{t("cursor:")} </label>
+              <span>{renderCoords(this.state.cursor)}</span>
+            </div>
+            <div>
+              <label>{t("center:")} </label>
+              <span>{renderCoords(this.state.center)}</span>
+            </div>
+            <div>
+              <label>{t("rotation:")} </label>
+              <span>{this.state.rotation}</span>
+            </div>
+          </div>
+        )}
+        <div
+          className="maputnik-ol"
+          ref={(x) => {
+            this.container = x;
+          }}
+          role="region"
+          aria-label={t("Map view")}
+          style={{
+            ...this.props.style,
+          }}
+        ></div>
       </div>
-    </div>;
+    );
   }
 }
 

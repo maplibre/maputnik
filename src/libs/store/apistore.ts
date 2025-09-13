@@ -1,14 +1,17 @@
-import style from "../style";
-import {format} from "@maplibre/maplibre-gl-style-spec";
+import { format } from "@maplibre/maplibre-gl-style-spec";
 import ReconnectingWebSocket from "reconnecting-websocket";
-import type {IStyleStore, OnStyleChangedCallback, StyleSpecificationWithId} from "../definitions";
+import type {
+  IStyleStore,
+  OnStyleChangedCallback,
+  StyleSpecificationWithId,
+} from "../definitions";
+import style from "../style";
 
 export type ApiStyleStoreOptions = {
-  onLocalStyleChange?: OnStyleChangedCallback
+  onLocalStyleChange?: OnStyleChangedCallback;
 };
 
 export class ApiStyleStore implements IStyleStore {
-
   localUrl: string;
   websocketUrl: string;
   latestStyleId: string | undefined = undefined;
@@ -25,7 +28,7 @@ export class ApiStyleStore implements IStyleStore {
 
   async init(): Promise<void> {
     try {
-      const response = await fetch(this.localUrl + "/styles", {mode: "cors"});
+      const response = await fetch(this.localUrl + "/styles", { mode: "cors" });
       const body = await response.json();
       const styleIds = body;
       this.latestStyleId = styleIds[0];
@@ -37,13 +40,13 @@ export class ApiStyleStore implements IStyleStore {
 
   notifyLocalChanges() {
     const connection = new ReconnectingWebSocket(this.websocketUrl);
-    connection.onmessage = e => {
-      if(!e.data) return;
+    connection.onmessage = (e) => {
+      if (!e.data) return;
       console.log("Received style update from API");
       let parsedStyle = style.emptyStyle;
       try {
         parsedStyle = JSON.parse(e.data);
-      } catch(err) {
+      } catch (err) {
         console.error(err);
       }
       const updatedStyle = style.ensureStyleValidity(parsedStyle);
@@ -52,23 +55,26 @@ export class ApiStyleStore implements IStyleStore {
   }
 
   async getLatestStyle(): Promise<StyleSpecificationWithId> {
-    if(this.latestStyleId) {
-      const response = await fetch(this.localUrl + "/styles/" + this.latestStyleId, {
-        mode: "cors",
-      });
+    if (this.latestStyleId) {
+      const response = await fetch(
+        this.localUrl + "/styles/" + this.latestStyleId,
+        {
+          mode: "cors",
+        },
+      );
       const body = await response.json();
       return style.ensureStyleValidity(body);
     } else {
-      throw new Error("No latest style available. You need to init the api backend first.");
+      throw new Error(
+        "No latest style available. You need to init the api backend first.",
+      );
     }
   }
 
   // Save current style replacing previous version
   save(mapStyle: StyleSpecificationWithId) {
     const styleJSON = format(
-      style.stripAccessTokens(
-        style.replaceAccessTokens(mapStyle)
-      )
+      style.stripAccessTokens(style.replaceAccessTokens(mapStyle)),
     );
 
     const id = mapStyle.id;
@@ -78,11 +84,10 @@ export class ApiStyleStore implements IStyleStore {
       headers: {
         "Content-Type": "application/json; charset=utf-8",
       },
-      body: styleJSON
-    })
-      .catch(function(error) {
-        if(error) console.error(error);
-      });
+      body: styleJSON,
+    }).catch((error) => {
+      if (error) console.error(error);
+    });
     return mapStyle;
   }
 }

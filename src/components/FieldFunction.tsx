@@ -1,135 +1,112 @@
+import { function as styleFunction } from "@maplibre/maplibre-gl-style-spec";
 import React from "react";
-
-import SpecProperty from "./_SpecProperty";
+import { findDefaultFromSpec } from "../libs/spec-helper";
 import DataProperty, { type Stop } from "./_DataProperty";
-import ZoomProperty from "./_ZoomProperty";
 import ExpressionProperty from "./_ExpressionProperty";
-import {function as styleFunction} from "@maplibre/maplibre-gl-style-spec";
-import {findDefaultFromSpec} from "../libs/spec-helper";
-
+import SpecProperty from "./_SpecProperty";
+import ZoomProperty from "./_ZoomProperty";
 
 function isLiteralExpression(value: any) {
-  return (Array.isArray(value) && value.length === 2 && value[0] === "literal");
+  return Array.isArray(value) && value.length === 2 && value[0] === "literal";
 }
 
 function isGetExpression(value: any) {
-  return (
-    Array.isArray(value) &&
-    value.length === 2 &&
-    value[0] === "get"
-  );
+  return Array.isArray(value) && value.length === 2 && value[0] === "get";
 }
 
 function isZoomField(value: any) {
   return (
-    typeof(value) === "object" &&
+    typeof value === "object" &&
     value.stops &&
-    typeof(value.property) === "undefined" &&
+    typeof value.property === "undefined" &&
     Array.isArray(value.stops) &&
     value.stops.length > 1 &&
     value.stops.every((stop: Stop) => {
-      return (
-        Array.isArray(stop) &&
-        stop.length === 2
-      );
+      return Array.isArray(stop) && stop.length === 2;
     })
   );
 }
 
 function isIdentityProperty(value: any) {
   return (
-    typeof(value) === "object" &&
+    typeof value === "object" &&
     value.type === "identity" &&
-    Object.prototype.hasOwnProperty.call(value, "property")
+    Object.hasOwn(value, "property")
   );
 }
 
 function isDataStopProperty(value: any) {
   return (
-    typeof(value) === "object" &&
+    typeof value === "object" &&
     value.stops &&
-    typeof(value.property) !== "undefined" &&
+    typeof value.property !== "undefined" &&
     value.stops.length > 1 &&
     Array.isArray(value.stops) &&
     value.stops.every((stop: Stop) => {
       return (
-        Array.isArray(stop) &&
-        stop.length === 2 &&
-        typeof(stop[0]) === "object"
+        Array.isArray(stop) && stop.length === 2 && typeof stop[0] === "object"
       );
     })
   );
 }
 
 function isDataField(value: any) {
-  return (
-    isIdentityProperty(value) ||
-    isDataStopProperty(value)
-  );
+  return isIdentityProperty(value) || isDataStopProperty(value);
 }
 
 function isPrimative(value: any): value is string | boolean | number {
   const valid = ["string", "boolean", "number"];
-  return valid.includes(typeof(value));
+  return valid.includes(typeof value);
 }
 
-function isArrayOfPrimatives(values: any): values is Array<string | boolean | number> {
+function isArrayOfPrimatives(
+  values: any,
+): values is Array<string | boolean | number> {
   if (Array.isArray(values)) {
     return values.every(isPrimative);
   }
   return false;
 }
 
-function getDataType(value: any, fieldSpec={} as any) {
+function getDataType(value: any, fieldSpec = {} as any) {
   if (value === undefined) {
     return "value";
-  }
-  else if (isPrimative(value)) {
+  } else if (isPrimative(value)) {
     return "value";
-  }
-  else if (fieldSpec.type === "array" && isArrayOfPrimatives(value)) {
+  } else if (fieldSpec.type === "array" && isArrayOfPrimatives(value)) {
     return "value";
-  }
-  else if (fieldSpec.type === "numberArray" && isArrayOfPrimatives(value)) {
+  } else if (fieldSpec.type === "numberArray" && isArrayOfPrimatives(value)) {
     return "value";
-  }
-  else if (fieldSpec.type === "colorArray") {
+  } else if (fieldSpec.type === "colorArray") {
     return "value";
-  }
-  else if (fieldSpec.type === "padding") {
+  } else if (fieldSpec.type === "padding") {
     return "value";
-  }
-  else if (fieldSpec.type === "variableAnchorOffsetCollection") {
+  } else if (fieldSpec.type === "variableAnchorOffsetCollection") {
     return "value";
-  }
-  else if (isZoomField(value)) {
+  } else if (isZoomField(value)) {
     return "zoom_function";
-  }
-  else if (isDataField(value)) {
+  } else if (isDataField(value)) {
     return "data_function";
-  }
-  else {
+  } else {
     return "expression";
   }
 }
 
-
 type FieldFunctionProps = {
-  onChange(fieldName: string, value: any): unknown
-  fieldName: string
-  fieldType: string
-  fieldSpec: any
-  errors?: {[key: string]: {message: string}}
-  value?: any
+  onChange(fieldName: string, value: any): unknown;
+  fieldName: string;
+  fieldType: string;
+  fieldSpec: any;
+  errors?: { [key: string]: { message: string } };
+  value?: any;
 };
-
 
 /** Supports displaying spec field for zoom function objects
  * https://www.mapbox.com/mapbox-gl-style-spec/#types-function-zoom-property
  */
 const FieldFunction: React.FC<FieldFunctionProps> = (props) => {
   const [dataType, setDataType] = React.useState(
-    getDataType(props.value, props.fieldSpec)
+    getDataType(props.value, props.fieldSpec),
   );
   const [isEditing, setIsEditing] = React.useState(false);
 
@@ -200,7 +177,10 @@ const FieldFunction: React.FC<FieldFunctionProps> = (props) => {
         zoomFunc = {
           base: value.base,
           stops: value.stops.map((stop: Stop) => {
-            return [stop[0].zoom, stop[1] || findDefaultFromSpec(props.fieldSpec)];
+            return [
+              stop[0].zoom,
+              stop[1] || findDefaultFromSpec(props.fieldSpec),
+            ];
           }),
         };
       } else {
@@ -276,7 +256,10 @@ const FieldFunction: React.FC<FieldFunctionProps> = (props) => {
           type: functionType,
           base: value.base,
           stops: value.stops.map((stop: Stop) => {
-            return [{ zoom: stop[0], value: stopValue }, stop[1] || findDefaultFromSpec(props.fieldSpec)];
+            return [
+              { zoom: stop[0], value: stopValue },
+              stop[1] || findDefaultFromSpec(props.fieldSpec),
+            ];
           }),
         };
       } else {
@@ -285,8 +268,14 @@ const FieldFunction: React.FC<FieldFunctionProps> = (props) => {
           type: functionType,
           base: value.base,
           stops: [
-            [{ zoom: 6, value: stopValue }, findDefaultFromSpec(props.fieldSpec)],
-            [{ zoom: 10, value: stopValue }, findDefaultFromSpec(props.fieldSpec)],
+            [
+              { zoom: 6, value: stopValue },
+              findDefaultFromSpec(props.fieldSpec),
+            ],
+            [
+              { zoom: 10, value: stopValue },
+              findDefaultFromSpec(props.fieldSpec),
+            ],
           ],
         };
       }
@@ -296,8 +285,14 @@ const FieldFunction: React.FC<FieldFunctionProps> = (props) => {
         type: functionType,
         base: value.base,
         stops: [
-          [{ zoom: 6, value: stopValue }, props.value || findDefaultFromSpec(props.fieldSpec)],
-          [{ zoom: 10, value: stopValue }, props.value || findDefaultFromSpec(props.fieldSpec)],
+          [
+            { zoom: 6, value: stopValue },
+            props.value || findDefaultFromSpec(props.fieldSpec),
+          ],
+          [
+            { zoom: 10, value: stopValue },
+            props.value || findDefaultFromSpec(props.fieldSpec),
+          ],
         ],
       };
     }
@@ -313,7 +308,7 @@ const FieldFunction: React.FC<FieldFunctionProps> = (props) => {
       0,
       "black",
       2000,
-      "white"
+      "white",
     ];
 
     props.onChange(props.fieldName, expression);
@@ -328,7 +323,9 @@ const FieldFunction: React.FC<FieldFunctionProps> = (props) => {
   };
 
   const propClass =
-    props.fieldSpec.default === props.value ? "maputnik-default-property" : "maputnik-modified-property";
+    props.fieldSpec.default === props.value
+      ? "maputnik-default-property"
+      : "maputnik-modified-property";
 
   let specField;
 
@@ -396,7 +393,10 @@ const FieldFunction: React.FC<FieldFunctionProps> = (props) => {
   }
 
   return (
-    <div className={propClass} data-wd-key={"spec-field-container:" + props.fieldName}>
+    <div
+      className={propClass}
+      data-wd-key={"spec-field-container:" + props.fieldName}
+    >
       {specField}
     </div>
   );

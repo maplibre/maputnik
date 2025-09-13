@@ -4,13 +4,13 @@ import resourcesToBackend from "i18next-resources-to-backend";
 import { initReactI18next } from "react-i18next";
 
 export const supportedLanguages = {
-  "de": "Deutsch",
-  "en": "English",
-  "fr": "Français",
-  "he": "עברית",
-  "it": "Italiano",
-  "ja": "日本語",
-  "zh": "简体中文"
+  de: "Deutsch",
+  en: "English",
+  fr: "Français",
+  he: "עברית",
+  it: "Italiano",
+  ja: "日本語",
+  zh: "简体中文",
 } as const;
 
 i18n
@@ -22,7 +22,7 @@ i18n
         return {};
       }
       return import(`./locales/${lang}/${ns}.json`);
-    })
+    }),
   )
   .use(initReactI18next) // required to initialize react-i18next
   .init({
@@ -30,14 +30,16 @@ i18n
     keySeparator: false, // we do not use keys in form messages.welcome
     nsSeparator: false,
     interpolation: {
-      escapeValue: false // React already escapes for us
+      escapeValue: false, // React already escapes for us
     },
     saveMissing: true, // this needs to be set for missingKeyHandler to work
     fallbackLng: false, // we set the fallback to false so we can get the correct language in the missingKeyHandler
     missingKeyHandler: (lngs, _ns, key) => {
-      if (lngs[0] === "en") { return; }
+      if (lngs[0] === "en") {
+        return;
+      }
       console.warn(`Missing translation for "${key}" in "${lngs.join(", ")}"`);
-    }
+    },
   });
 
 export default i18n;
