@@ -2,5 +2,10 @@
   "$schema": "./node_modules/@biomejs/biome/configuration_schema.json",
   "formatter": {
     "indentStyle": "space"
-  }
+  },
+  "vcs": {
+		"enabled": true,
+		"clientKind": "git",
+		"useIgnoreFile": true
+	},
 }
