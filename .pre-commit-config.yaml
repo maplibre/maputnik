@@ -22,3 +22,7 @@ repos:
       - id: mixed-line-ending
         args: [ --fix=lf ]
       - id: trailing-whitespace
+  - repo: https://github.com/biomejs/pre-commit
+    rev: v2.2.4 # Use the sha / tag you want to point at
+    hooks:
+      - id: biome-check
