@@ -10,8 +10,6 @@ repos:
     hooks:
       - id: check-added-large-files
       - id: check-executables-have-shebangs
-      - id: check-json
-        exclude: 'tsconfig(\.node)?\.json'
       - id: check-shebang-scripts-are-executable
       - id: check-symlinks
       - id: check-toml

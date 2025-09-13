@@ -7,5 +7,5 @@
 		"enabled": true,
 		"clientKind": "git",
 		"useIgnoreFile": true
-	},
+	}
 }
