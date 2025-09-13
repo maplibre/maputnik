@@ -4,8 +4,8 @@
     "indentStyle": "space"
   },
   "vcs": {
-		"enabled": true,
-		"clientKind": "git",
-		"useIgnoreFile": true
-	}
+    "enabled": true,
+    "clientKind": "git",
+    "useIgnoreFile": true
+  }
 }
