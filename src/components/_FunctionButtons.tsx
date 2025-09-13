@@ -2,8 +2,8 @@ import React from 'react'
 
 import InputButton from './InputButton'
 import {MdFunctions, MdInsertChart} from 'react-icons/md'
-import {mdiFunctionVariant} from '@mdi/js';
 import { WithTranslation, withTranslation } from 'react-i18next';
+import { TbMathFunction } from 'react-icons/tb';
 
 type FunctionInputButtonsInternalProps = {
   fieldSpec?: any
@@ -24,9 +24,7 @@ class FunctionInputButtonsInternal extends React.Component<FunctionInputButtonsI
           onClick={this.props.onExpressionClick}
           title={t("Convert to expression")}
         >
-          <svg style={{width:"14px", height:"14px", verticalAlign: "middle"}} viewBox="0 0 24 24">
-            <path fill="currentColor" d={mdiFunctionVariant} />
-          </svg>
+          <TbMathFunction />
         </InputButton>
       );
 

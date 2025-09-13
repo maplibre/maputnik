@@ -1,5 +1,6 @@
 import React from 'react'
-import {mdiFunctionVariant, mdiTableRowPlusAfter} from '@mdi/js';
+import {PiListPlusBold} from "react-icons/pi";
+import {TbMathFunction} from "react-icons/tb";
 import latest from '@maplibre/maplibre-gl-style-spec/dist/latest.json'
 
 import InputButton from './InputButton'
@@ -360,18 +361,16 @@ class DataPropertyInternal extends React.Component<DataPropertyInternalProps, Da
                 className="maputnik-add-stop"
                 onClick={this.props.onAddStop?.bind(this)}
               >
-                <svg style={{width:"14px", height:"14px", verticalAlign: "text-bottom"}} viewBox="0 0 24 24">
-                  <path fill="currentColor" d={mdiTableRowPlusAfter} />
-                </svg> {t("Add stop")}
+                <PiListPlusBold style={{ verticalAlign: "text-bottom" }} />
+                {t("Add stop")}
               </InputButton>
             }
             <InputButton
               className="maputnik-add-stop"
               onClick={this.props.onExpressionClick?.bind(this)}
             >
-              <svg style={{width:"14px", height:"14px", verticalAlign: "text-bottom"}} viewBox="0 0 24 24">
-                <path fill="currentColor" d={mdiFunctionVariant} />
-              </svg> {t("Convert to expression")}
+              <TbMathFunction style={{ verticalAlign: "text-bottom" }} />
+              {t("Convert to expression")}
             </InputButton>
           </div>
         </div>

@@ -1,9 +1,5 @@
 import React from 'react'
-import Icon from '@mdi/react'
-import {
-  mdiMenuDown,
-  mdiMenuUp
-} from '@mdi/js';
+import {MdArrowDropDown, MdArrowDropUp} from 'react-icons/md'
 import {
   AccordionItem,
   AccordionItemHeading,
@@ -30,17 +26,9 @@ export default class LayerEditorGroup extends React.Component<LayerEditorGroupPr
         onClick={_e => this.props.onActiveToggle(!this.props.isActive)}
       >
         <AccordionItemButton className="maputnik-layer-editor-group__button">
-          <span style={{flexGrow: 1}}>{this.props.title}</span>
-          <Icon
-            path={mdiMenuUp}
-            size={1}
-            className="maputnik-layer-editor-group__button__icon maputnik-layer-editor-group__button__icon--up"
-          />
-          <Icon
-            path={mdiMenuDown}
-            size={1}
-            className="maputnik-layer-editor-group__button__icon maputnik-layer-editor-group__button__icon--down"
-          />
+          <span style={{flexGrow: 1, alignContent: 'center'}}>{this.props.title}</span>
+          <MdArrowDropUp size={"2em"} className="maputnik-layer-editor-group__button__icon maputnik-layer-editor-group__button__icon--up"></MdArrowDropUp>
+          <MdArrowDropDown size={"2em"} className="maputnik-layer-editor-group__button__icon maputnik-layer-editor-group__button__icon--down"></MdArrowDropDown>
         </AccordionItemButton>
       </AccordionItemHeading>
       <AccordionItemPanel>
