@@ -268,7 +268,7 @@ class FilterEditorInternal extends React.Component<FilterEditorInternalProps, Fi
               className="maputnik-add-filter"
               onClick={this.addFilterItem}
             >
-              <PiListPlusBold style={{ verticalAlign: "text-bottom" }} /> 
+              <PiListPlusBold style={{ verticalAlign: "text-bottom" }} />
               {t("Add filter")}
             </InputButton>
           </div>
