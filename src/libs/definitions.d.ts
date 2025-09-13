@@ -1,6 +1,6 @@
 import type { StyleSpecification } from "maplibre-gl";
 
-export type StyleSpecificationWithId = StyleSpecification & {id: string};
+export type StyleSpecificationWithId = StyleSpecification & { id: string };
 
 export type OnStyleChangedOpts = {
   save?: boolean;
@@ -8,9 +8,15 @@ export type OnStyleChangedOpts = {
   initialLoad?: boolean;
 };
 
-export type OnStyleChangedCallback = (newStyle: StyleSpecificationWithId, opts: OnStyleChangedOpts={}) => void;
+export type OnStyleChangedCallback = (
+  newStyle: StyleSpecificationWithId,
+  opts: OnStyleChangedOpts = {},
+) => void;
 
-export type OnMoveLayerCallback = (move: {oldIndex: number; newIndex: number}) => void;
+export type OnMoveLayerCallback = (move: {
+  oldIndex: number;
+  newIndex: number;
+}) => void;
 
 export interface IStyleStore {
   getLatestStyle(): Promise<StyleSpecificationWithId>;

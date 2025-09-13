@@ -1,15 +1,14 @@
-import React from "react";
-
-import {latest} from "@maplibre/maplibre-gl-style-spec";
+import { latest } from "@maplibre/maplibre-gl-style-spec";
+import type React from "react";
+import { type WithTranslation, withTranslation } from "react-i18next";
 import Block from "./Block";
 import InputAutocomplete from "./InputAutocomplete";
-import { type WithTranslation, withTranslation } from "react-i18next";
 
 type FieldSourceLayerInternalProps = {
-  value?: string
-  onChange?(...args: unknown[]): unknown
-  sourceLayerIds?: unknown[]
-  error?: {message: string}
+  value?: string;
+  onChange?(...args: unknown[]): unknown;
+  sourceLayerIds?: unknown[];
+  error?: { message: string };
 } & WithTranslation;
 
 const FieldSourceLayerInternal: React.FC<FieldSourceLayerInternalProps> = ({
@@ -17,7 +16,7 @@ const FieldSourceLayerInternal: React.FC<FieldSourceLayerInternalProps> = ({
   sourceLayerIds = [],
   value,
   error,
-  t
+  t,
 }) => {
   return (
     <Block

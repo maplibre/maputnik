@@ -10,8 +10,6 @@ repos:
     hooks:
       - id: check-added-large-files
       - id: check-executables-have-shebangs
-      - id: check-json
-        exclude: 'tsconfig(\.node)?\.json'
       - id: check-shebang-scripts-are-executable
       - id: check-symlinks
       - id: check-toml
@@ -22,3 +20,7 @@ repos:
       - id: mixed-line-ending
         args: [ --fix=lf ]
       - id: trailing-whitespace
+  - repo: https://github.com/biomejs/pre-commit
+    rev: v2.2.4 # Use the sha / tag you want to point at
+    hooks:
+      - id: biome-check

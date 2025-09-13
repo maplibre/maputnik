@@ -1,16 +1,15 @@
-import React from "react";
-
 import latest from "@maplibre/maplibre-gl-style-spec/dist/latest.json";
+import type React from "react";
+import { type WithTranslation, withTranslation } from "react-i18next";
 import Block from "./Block";
 import InputAutocomplete from "./InputAutocomplete";
-import { type WithTranslation, withTranslation } from "react-i18next";
 
 type FieldSourceInternalProps = {
-  value?: string
-  wdKey?: string
-  onChange?(value: string| undefined): unknown
-  sourceIds?: unknown[]
-  error?: {message: string}
+  value?: string;
+  wdKey?: string;
+  onChange?(value: string | undefined): unknown;
+  sourceIds?: unknown[];
+  error?: { message: string };
 } & WithTranslation;
 
 const FieldSourceInternal: React.FC<FieldSourceInternalProps> = ({
@@ -19,7 +18,7 @@ const FieldSourceInternal: React.FC<FieldSourceInternalProps> = ({
   wdKey,
   value,
   error,
-  t
+  t,
 }) => {
   return (
     <Block
@@ -36,7 +35,6 @@ const FieldSourceInternal: React.FC<FieldSourceInternalProps> = ({
     </Block>
   );
 };
-
 
 const FieldSource = withTranslation()(FieldSourceInternal);
 export default FieldSource;

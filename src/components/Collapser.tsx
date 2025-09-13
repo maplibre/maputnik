@@ -1,9 +1,9 @@
 import React from "react";
-import {MdArrowDropDown, MdArrowDropUp} from "react-icons/md";
+import { MdArrowDropDown, MdArrowDropUp } from "react-icons/md";
 
 type CollapserProps = {
-  isCollapsed: boolean
-  style?: object
+  isCollapsed: boolean;
+  style?: object;
 };
 
 export default class Collapser extends React.Component<CollapserProps> {
@@ -13,6 +13,10 @@ export default class Collapser extends React.Component<CollapserProps> {
       height: 20,
       ...this.props.style,
     };
-    return this.props.isCollapsed ? <MdArrowDropUp style={iconStyle}/> : <MdArrowDropDown style={iconStyle} />;
+    return this.props.isCollapsed ? (
+      <MdArrowDropUp style={iconStyle} />
+    ) : (
+      <MdArrowDropDown style={iconStyle} />
+    );
   }
 }

@@ -1,9 +1,7 @@
 {
   "RT_GROUP_ICON": {
     "APP": {
-      "0000": [
-        "../../src/img/maputnik.png"
-      ]
+      "0000": ["../../src/img/maputnik.png"]
     }
   },
   "RT_MANIFEST": {

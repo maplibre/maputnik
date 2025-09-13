@@ -9,40 +9,41 @@ const headers = {
 
 type DocProps = {
   fieldSpec: {
-    doc?: string
+    doc?: string;
     values?: {
       [key: string]: {
-        doc?: string
-      }
-    }
+        doc?: string;
+      };
+    };
     "sdk-support"?: {
-      [key: string]: typeof headers
-    }
-    docUrl?: string,
-    docUrlLinkText?: string
-  }
+      [key: string]: typeof headers;
+    };
+    docUrl?: string;
+    docUrlLinkText?: string;
+  };
 };
 
 export default class Doc extends React.Component<DocProps> {
-  render () {
-    const {fieldSpec} = this.props;
+  render() {
+    const { fieldSpec } = this.props;
 
-    const {doc, values, docUrl, docUrlLinkText} = fieldSpec;
+    const { doc, values, docUrl, docUrlLinkText } = fieldSpec;
     const sdkSupport = fieldSpec["sdk-support"];
 
-    const renderValues = (
+    const renderValues =
       !!values &&
       // HACK: Currently we merge additional values into the style spec, so this is required
       // See <https://github.com/maplibre/maputnik/blob/main/src/components/PropertyGroup.jsx#L16>
-      !Array.isArray(values)
-    );
+      !Array.isArray(values);
 
     return (
       <>
-        {doc &&
+        {doc && (
           <div className="SpecDoc">
-            <div className="SpecDoc__doc" data-wd-key='spec-field-doc'>{doc}</div>
-            {renderValues &&
+            <div className="SpecDoc__doc" data-wd-key="spec-field-doc">
+              {doc}
+            </div>
+            {renderValues && (
               <ul className="SpecDoc__values">
                 {Object.entries(values).map(([key, value]) => {
                   return (
@@ -53,16 +54,16 @@ export default class Doc extends React.Component<DocProps> {
                   );
                 })}
               </ul>
-            }
+            )}
           </div>
-        }
-        {sdkSupport &&
+        )}
+        {sdkSupport && (
           <div className="SpecDoc__sdk-support">
             <table className="SpecDoc__sdk-support__table">
               <thead>
                 <tr>
                   <th></th>
-                  {Object.values(headers).map(header => {
+                  {Object.values(headers).map((header) => {
                     return <th key={header}>{header}</th>;
                   })}
                 </tr>
@@ -73,10 +74,13 @@ export default class Doc extends React.Component<DocProps> {
                     <tr key={key}>
                       <td>{key}</td>
                       {Object.keys(headers).map((k) => {
-                        if (Object.prototype.hasOwnProperty.call(supportObj, k)) {
-                          return <td key={k}>{supportObj[k as keyof typeof headers]}</td>;
-                        }
-                        else {
+                        if (Object.hasOwn(supportObj, k)) {
+                          return (
+                            <td key={k}>
+                              {supportObj[k as keyof typeof headers]}
+                            </td>
+                          );
+                        } else {
                           return <td key={k}>no</td>;
                         }
                       })}
@@ -86,12 +90,14 @@ export default class Doc extends React.Component<DocProps> {
               </tbody>
             </table>
           </div>
-        }
-        {docUrl && docUrlLinkText &&
+        )}
+        {docUrl && docUrlLinkText && (
           <div className="SpecDoc__learn-more">
-            <a href={docUrl}  target="_blank" rel="noreferrer">{docUrlLinkText}</a>
+            <a href={docUrl} target="_blank" rel="noreferrer">
+              {docUrlLinkText}
+            </a>
           </div>
-        }
+        )}
       </>
     );
   }

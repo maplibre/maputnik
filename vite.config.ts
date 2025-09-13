@@ -8,7 +8,7 @@ export default defineConfig(({ mode }) => ({
     port: 8888,
   },
   build: {
-    sourcemap: true
+    sourcemap: true,
   },
   plugins: [
     replace({
@@ -29,6 +29,6 @@ export default defineConfig(({ mode }) => ({
   ],
   base: mode === "desktop" ? "/" : "/maputnik/",
   define: {
-    global: "window"
+    global: "window",
   },
 }));

@@ -1,11 +1,9 @@
 import Block from "./Block";
-import InputCheckbox, {type InputCheckboxProps} from "./InputCheckbox";
-
+import InputCheckbox, { type InputCheckboxProps } from "./InputCheckbox";
 
 type FieldCheckboxProps = InputCheckboxProps & {
   label?: string;
 };
-
 
 const FieldCheckbox: React.FC<FieldCheckboxProps> = (props) => {
   return (

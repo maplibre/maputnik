@@ -4,6 +4,7 @@ import { CypressHelper } from "@shellygo/cypress-test-utils";
 import { Assertable, then } from "@shellygo/cypress-test-utils/assertable";
 import MaputnikCypressHelper from "./maputnik-cypress-helper";
 import ModalDriver from "./modal-driver";
+
 const baseUrl = "http://localhost:8888/";
 
 const styleFromWindow = (win: Window) => {
@@ -21,7 +22,7 @@ export class MaputnikAssertable<T> extends Assertable<T> {
       new CypressHelper().get.window().then((win: Window) => {
         const style = styleFromWindow(win);
         then(this.chainable).shouldDeepNestedInclude(style);
-      })
+      }),
     );
 }
 
@@ -36,6 +37,7 @@ export class MaputnikDriver {
     });
   };
 
+  // biome-ignore lint/suspicious/noThenProperty: Cypress chainable pattern intentionally uses then-like helper
   public then = (chainable: Cypress.Chainable<any>) =>
     new MaputnikAssertable(chainable);
 
@@ -44,7 +46,7 @@ export class MaputnikDriver {
     setupMockBackedResponses: () => {
       this.helper.given.interceptAndMockResponse({
         method: "GET",
-        url: baseUrl + "example-style.json",
+        url: `${baseUrl}example-style.json`,
         response: {
           fixture: "example-style.json",
         },
@@ -52,35 +54,35 @@ export class MaputnikDriver {
       });
       this.helper.given.interceptAndMockResponse({
         method: "GET",
-        url: baseUrl + "example-layer-style.json",
+        url: `${baseUrl}example-layer-style.json`,
         response: {
           fixture: "example-layer-style.json",
         },
       });
       this.helper.given.interceptAndMockResponse({
         method: "GET",
-        url: baseUrl + "geojson-style.json",
+        url: `${baseUrl}geojson-style.json`,
         response: {
           fixture: "geojson-style.json",
         },
       });
       this.helper.given.interceptAndMockResponse({
         method: "GET",
-        url: baseUrl + "raster-style.json",
+        url: `${baseUrl}raster-style.json`,
         response: {
           fixture: "raster-style.json",
         },
       });
       this.helper.given.interceptAndMockResponse({
         method: "GET",
-        url: baseUrl + "geojson-raster-style.json",
+        url: `${baseUrl}geojson-raster-style.json`,
         response: {
           fixture: "geojson-raster-style.json",
         },
       });
       this.helper.given.interceptAndMockResponse({
         method: "GET",
-        url: baseUrl + "rectangles-style.json",
+        url: `${baseUrl}rectangles-style.json`,
         response: {
           fixture: "rectangles-style.json",
         },
@@ -114,25 +116,31 @@ export class MaputnikDriver {
         .selectFile("cypress/fixtures/example-style.json", { force: true });
     },
     setStyle: (
-      styleProperties: "geojson" | "raster" | "both" | "layer" | "rectangles" | "",
-      zoom?: number
+      styleProperties:
+        | "geojson"
+        | "raster"
+        | "both"
+        | "layer"
+        | "rectangles"
+        | "",
+      zoom?: number,
     ) => {
       const url = new URL(baseUrl);
       switch (styleProperties) {
         case "geojson":
-          url.searchParams.set("style", baseUrl + "geojson-style.json");
+          url.searchParams.set("style", `${baseUrl}geojson-style.json`);
           break;
         case "raster":
-          url.searchParams.set("style", baseUrl + "raster-style.json");
+          url.searchParams.set("style", `${baseUrl}raster-style.json`);
           break;
         case "both":
-          url.searchParams.set("style", baseUrl + "geojson-raster-style.json");
+          url.searchParams.set("style", `${baseUrl}geojson-raster-style.json`);
           break;
         case "layer":
-          url.searchParams.set("style", baseUrl + "example-layer-style.json");
+          url.searchParams.set("style", `${baseUrl}example-layer-style.json`);
           break;
         case "rectangles":
-          url.searchParams.set("style", baseUrl + "rectangles-style.json");
+          url.searchParams.set("style", `${baseUrl}rectangles-style.json`);
           break;
       }
 
@@ -178,14 +186,22 @@ export class MaputnikDriver {
 
     setValueToPropertyArray: (selector: string, value: string) => {
       this.when.doWithin(selector, () => {
-        this.helper.get.element(".maputnik-array-block-content input").last().type("{selectall}"+value, {force: true });
+        this.helper.get
+          .element(".maputnik-array-block-content input")
+          .last()
+          .type(`{selectall}${value}`, { force: true });
       });
     },
 
     addValueToPropertyArray: (selector: string, value: string) => {
       this.when.doWithin(selector, () => {
-        this.helper.get.element(".maputnik-array-add-value").click({ force: true });
-        this.helper.get.element(".maputnik-array-block-content input").last().type("{selectall}"+value, {force: true });
+        this.helper.get
+          .element(".maputnik-array-add-value")
+          .click({ force: true });
+        this.helper.get
+          .element(".maputnik-array-block-content input")
+          .last()
+          .type(`{selectall}${value}`, { force: true });
       });
     },
 
@@ -194,8 +210,11 @@ export class MaputnikDriver {
     },
 
     collapseGroupInLayerEditor: (index = 0) => {
-      this.helper.get.element(".maputnik-layer-editor-group__button").eq(index).realClick();
-    }
+      this.helper.get
+        .element(".maputnik-layer-editor-group__button")
+        .eq(index)
+        .realClick();
+    },
   };
 
   public get = {
@@ -208,13 +227,13 @@ export class MaputnikDriver {
       this.helper.get.window().then((win) => styleFromWindow(win)),
 
     exampleFileUrl: () => {
-      return baseUrl + "example-style.json";
+      return `${baseUrl}example-style.json`;
     },
     skipTargetLayerList: () =>
       this.helper.get.elementByTestId("skip-target-layer-list"),
     skipTargetLayerEditor: () =>
       this.helper.get.elementByTestId("skip-target-layer-editor"),
     canvas: () => this.helper.get.element("canvas"),
-    searchControl: () => this.helper.get.element(".maplibregl-ctrl-geocoder")
+    searchControl: () => this.helper.get.element(".maplibregl-ctrl-geocoder"),
   };
 }

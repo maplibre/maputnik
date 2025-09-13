@@ -6,7 +6,7 @@ To get started, install all npm packages:
 npm install
 ```
 
-Verify code correctness by running ESLint:
+Verify code correctness by running Biome:
 
 ```
 npm run lint
@@ -15,7 +15,7 @@ npm run lint
 Or try fixing lint issues with:
 
 ```
-npm run lint -- --fix
+npx biome --write --unsafe
 ```
 
 The project type checked and built with:

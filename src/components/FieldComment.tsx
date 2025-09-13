@@ -1,20 +1,19 @@
-import React from "react";
-
+import type React from "react";
+import { type WithTranslation, withTranslation } from "react-i18next";
 import Block from "./Block";
 import InputString from "./InputString";
-import { type WithTranslation, withTranslation } from "react-i18next";
 
 type FieldCommentInternalProps = {
-  value?: string
-  onChange(value: string | undefined): unknown
-  error: {message: string}
+  value?: string;
+  onChange(value: string | undefined): unknown;
+  error: { message: string };
 } & WithTranslation;
 
 const FieldCommentInternal: React.FC<FieldCommentInternalProps> = (props) => {
   const t = props.t;
   const fieldSpec = {
     doc: t(
-      "Comments for the current layer. This is non-standard and not in the spec."
+      "Comments for the current layer. This is non-standard and not in the spec.",
     ),
   };
 

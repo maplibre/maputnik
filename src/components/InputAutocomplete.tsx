@@ -1,14 +1,14 @@
-import React from "react";
 import classnames from "classnames";
-import {useCombobox} from "downshift";
+import { useCombobox } from "downshift";
+import React from "react";
 
 const MAX_HEIGHT = 140;
 
 export type InputAutocompleteProps = {
-  value?: string
-  options?: any[]
-  onChange?(value: string | undefined): unknown
-  "aria-label"?: string
+  value?: string;
+  options?: any[];
+  onChange?(value: string | undefined): unknown;
+  "aria-label"?: string;
 };
 
 export default function InputAutocomplete({
@@ -28,7 +28,8 @@ export default function InputAutocomplete({
 
   const calcMaxHeight = React.useCallback(() => {
     if (menuRef.current) {
-      const space = window.innerHeight - menuRef.current.getBoundingClientRect().top;
+      const space =
+        window.innerHeight - menuRef.current.getBoundingClientRect().top;
       setMaxHeight(Math.min(space, MAX_HEIGHT));
     }
   }, []);
@@ -46,16 +47,16 @@ export default function InputAutocomplete({
     itemToString: (item) => (item ? item[0] : ""),
     stateReducer: (_state, action) => {
       if (action.type === useCombobox.stateChangeTypes.InputClick) {
-        return {...action.changes, isOpen: true};
+        return { ...action.changes, isOpen: true };
       }
       return action.changes;
     },
-    onSelectedItemChange: ({selectedItem}) => {
+    onSelectedItemChange: ({ selectedItem }) => {
       const v = selectedItem ? selectedItem[0] : "";
       setInput(v);
       onChange(selectedItem ? selectedItem[0] : undefined);
     },
-    onInputValueChange: ({inputValue: v}) => {
+    onInputValueChange: ({ inputValue: v }) => {
       if (typeof v === "string") {
         setInput(v);
         onChange(v === "" ? undefined : v);
@@ -90,9 +91,9 @@ export default function InputAutocomplete({
         })}
       />
       <div
-        {...getMenuProps({}, {suppressRefError: true})}
+        {...getMenuProps({}, { suppressRefError: true })}
         ref={menuRef}
-        style={{position: "fixed", overflow: "auto", maxHeight, zIndex: 998}}
+        style={{ position: "fixed", overflow: "auto", maxHeight, zIndex: 998 }}
         className="maputnik-autocomplete-menu"
       >
         {isOpen &&
@@ -103,7 +104,8 @@ export default function InputAutocomplete({
                 item,
                 index,
                 className: classnames("maputnik-autocomplete-menu-item", {
-                  "maputnik-autocomplete-menu-item-selected": highlightedIndex === index,
+                  "maputnik-autocomplete-menu-item-selected":
+                    highlightedIndex === index,
                 }),
               })}
             >

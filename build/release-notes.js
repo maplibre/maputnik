@@ -3,7 +3,7 @@
 // Copied from maplibre/maplibre-gl-js
 // https://github.com/maplibre/maplibre-gl-js/blob/bc70bc559cea5c987fa1b79fd44766cef68bbe28/build/release-notes.js
 
-import * as fs from "fs";
+import * as fs from "node:fs";
 
 const changelogPath = "CHANGELOG.md";
 const changelog = fs.readFileSync(changelogPath, "utf8");
@@ -21,12 +21,11 @@ const changelog = fs.readFileSync(changelogPath, "utf8");
 const regex = /^## (\d+\.\d+\.\d+.*?)\n(.+?)(?=\n^## \d+\.\d+\.\d+.*?\n)/gms;
 
 const releaseNotes = [];
-let match;
-// eslint-disable-next-line no-cond-assign
-while (match = regex.exec(changelog)) {
+// Iterate over all matches without using assignment in the loop condition
+for (const m of changelog.matchAll(regex)) {
   releaseNotes.push({
-    "version": match[1],
-    "changelog": match[2].trim(),
+    version: m[1],
+    changelog: m[2].trim(),
   });
 }
 
