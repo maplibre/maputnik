@@ -1,5 +1,5 @@
-import Block from './Block'
-import InputAutocomplete, { InputAutocompleteProps } from './InputAutocomplete'
+import Block from "./Block";
+import InputAutocomplete, { InputAutocompleteProps } from "./InputAutocomplete";
 
 
 type FieldAutocompleteProps = InputAutocompleteProps & {

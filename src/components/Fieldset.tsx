@@ -1,7 +1,7 @@
-import React, { PropsWithChildren, ReactElement } from 'react'
-import FieldDocLabel from './FieldDocLabel'
-import Doc from './Doc'
-import generateUniqueId from '../libs/document-uid';
+import React, { PropsWithChildren, ReactElement } from "react";
+import FieldDocLabel from "./FieldDocLabel";
+import Doc from "./Doc";
+import generateUniqueId from "../libs/document-uid";
 
 type FieldsetProps = PropsWithChildren & {
   label?: string,
@@ -12,7 +12,7 @@ type FieldsetProps = PropsWithChildren & {
 
 const Fieldset: React.FC<FieldsetProps> = (props) => {
   const [showDoc, setShowDoc] = React.useState(false);
-  const labelId = React.useRef(generateUniqueId('fieldset_label_'));
+  const labelId = React.useRef(generateUniqueId("fieldset_label_"));
 
   const onToggleDoc = (val: boolean) => {
     setShowDoc(val);
@@ -37,7 +37,7 @@ const Fieldset: React.FC<FieldsetProps> = (props) => {
       <div className="maputnik-input-block-action">{props.action}</div>
       <div className="maputnik-input-block-content">{props.children}</div>
       {props.fieldSpec && (
-        <div className="maputnik-doc-inline" style={{ display: showDoc ? '' : 'none' }}>
+        <div className="maputnik-doc-inline" style={{ display: showDoc ? "" : "none" }}>
           <Doc fieldSpec={props.fieldSpec} />
         </div>
       )}

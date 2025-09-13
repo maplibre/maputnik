@@ -1,8 +1,8 @@
-import React from 'react'
+import React from "react";
 
-import Block from './Block'
-import InputString from './InputString'
-import { WithTranslation, withTranslation } from 'react-i18next';
+import Block from "./Block";
+import InputString from "./InputString";
+import { WithTranslation, withTranslation } from "react-i18next";
 
 type FieldCommentInternalProps = {
   value?: string

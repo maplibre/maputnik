@@ -1,6 +1,6 @@
-import React from 'react'
-import InputString from './InputString'
-import InputNumber from './InputNumber'
+import React from "react";
+import InputString from "./InputString";
+import InputNumber from "./InputNumber";
 
 export type InputArrayProps = {
   value: (string | number | undefined)[]
@@ -8,20 +8,20 @@ export type InputArrayProps = {
   length?: number
   default?: (string | number | undefined)[]
   onChange?(value: (string | number | undefined)[] | undefined): unknown
-  'aria-label'?: string
+  "aria-label"?: string
   label?: string
 };
 
 type InputArrayState = {
   value: (string | number | undefined)[]
   initialPropsValue: unknown[]
-}
+};
 
 export default class InputArray extends React.Component<InputArrayProps, InputArrayState> {
   static defaultProps = {
     value: [],
     default: [],
-  }
+  };
 
   constructor (props: InputArrayProps) {
     super(props);
@@ -44,7 +44,7 @@ export default class InputArray extends React.Component<InputArrayProps, InputAr
         value[i] = state.value[i];
         initialPropsValue[i] = state.value[i];
       }
-    })
+    });
 
     return {
       value,
@@ -54,7 +54,7 @@ export default class InputArray extends React.Component<InputArrayProps, InputAr
 
   isComplete(value: unknown[]) {
     return Array(this.props.length).fill(null).every((_, i) => {
-      const val = value[i]
+      const val = value[i];
       return !(val === undefined || val === "");
     });
   }
@@ -82,20 +82,20 @@ export default class InputArray extends React.Component<InputArrayProps, InputAr
     const containsValues = (
       value.length > 0 &&
       !value.every(val => {
-        return (val === "" || val === undefined)
+        return (val === "" || val === undefined);
       })
     );
 
     const inputs = Array(this.props.length).fill(null).map((_, i) => {
-      if(this.props.type === 'number') {
+      if(this.props.type === "number") {
         return <InputNumber
           key={i}
           default={containsValues || !this.props.default ? undefined : this.props.default[i] as number}
           value={value[i] as number}
           required={containsValues ? true : false}
           onChange={(v) => this.changeValue(i, v)}
-          aria-label={this.props['aria-label'] || this.props.label}
-        />
+          aria-label={this.props["aria-label"] || this.props.label}
+        />;
       } else {
         return <InputString
           key={i}
@@ -103,15 +103,15 @@ export default class InputArray extends React.Component<InputArrayProps, InputAr
           value={value[i] as string}
           required={containsValues ? true : false}
           onChange={this.changeValue.bind(this, i)}
-          aria-label={this.props['aria-label'] || this.props.label}
-        />
+          aria-label={this.props["aria-label"] || this.props.label}
+        />;
       }
-    })
+    });
 
     return (
       <div className="maputnik-array">
         {inputs}
       </div>
-    )
+    );
   }
 }

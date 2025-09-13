@@ -1,9 +1,9 @@
-import React from 'react'
+import React from "react";
 
-import {latest} from '@maplibre/maplibre-gl-style-spec'
-import Block from './Block'
-import InputAutocomplete from './InputAutocomplete'
-import { WithTranslation, withTranslation } from 'react-i18next';
+import {latest} from "@maplibre/maplibre-gl-style-spec";
+import Block from "./Block";
+import InputAutocomplete from "./InputAutocomplete";
+import { WithTranslation, withTranslation } from "react-i18next";
 
 type FieldSourceLayerInternalProps = {
   value?: string
@@ -21,8 +21,8 @@ const FieldSourceLayerInternal: React.FC<FieldSourceLayerInternalProps> = ({
 }) => {
   return (
     <Block
-      label={t('Source Layer')}
-      fieldSpec={latest.layer['source-layer']}
+      label={t("Source Layer")}
+      fieldSpec={latest.layer["source-layer"]}
       data-wd-key="layer-source-layer"
       error={error}
     >

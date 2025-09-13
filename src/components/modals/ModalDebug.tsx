@@ -1,7 +1,7 @@
-import React from 'react'
-import { Trans, WithTranslation, withTranslation } from 'react-i18next';
+import React from "react";
+import { Trans, WithTranslation, withTranslation } from "react-i18next";
 
-import Modal from './Modal'
+import Modal from "./Modal";
 
 
 type ModalDebugInternalProps = {
@@ -34,29 +34,29 @@ class ModalDebugInternal extends React.Component<ModalDebugInternalProps> {
       data-wd-key="modal:debug"
       isOpen={this.props.isOpen}
       onOpenToggle={this.props.onOpenToggle}
-      title={t('Debug')}
+      title={t("Debug")}
     >
       <section className="maputnik-modal-section maputnik-modal-shortcuts">
         <h1>{t("Options")}</h1>
-        {this.props.renderer === 'mlgljs' &&
+        {this.props.renderer === "mlgljs" &&
           <ul>
             {Object.entries(this.props.maplibreGlDebugOptions!).map(([key, val]) => {
               return <li key={key}>
                 <label>
                   <input type="checkbox" checked={val} onChange={(e) => this.props.onChangeMaplibreGlDebug(key, e.target.checked)} /> {key}
                 </label>
-              </li>
+              </li>;
             })}
           </ul>
         }
-        {this.props.renderer === 'ol' &&
+        {this.props.renderer === "ol" &&
           <ul>
             {Object.entries(this.props.openlayersDebugOptions!).map(([key, val]) => {
               return <li key={key}>
                 <label>
                   <input type="checkbox" checked={val} onChange={(e) => this.props.onChangeOpenlayersDebug(key, e.target.checked)} /> {key}
                 </label>
-              </li>
+              </li>;
             })}
           </ul>
         }
@@ -75,7 +75,7 @@ class ModalDebugInternal extends React.Component<ModalDebugInternalProps> {
           </Trans>
         </p>
       </section>
-    </Modal>
+    </Modal>;
   }
 }
 

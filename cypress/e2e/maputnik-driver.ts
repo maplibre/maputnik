@@ -144,7 +144,7 @@ export class MaputnikDriver {
         this.helper.when.acceptConfirm();
       }
       // when methods should not include assertions
-      const toolbarLink = this.helper.get.elementByTestId("toolbar:link")
+      const toolbarLink = this.helper.get.elementByTestId("toolbar:link");
       toolbarLink.scrollIntoView();
       toolbarLink.should("be.visible");
     },
@@ -215,6 +215,6 @@ export class MaputnikDriver {
     skipTargetLayerEditor: () =>
       this.helper.get.elementByTestId("skip-target-layer-editor"),
     canvas: () => this.helper.get.element("canvas"),
-    searchControl: () => this.helper.get.element('.maplibregl-ctrl-geocoder')
+    searchControl: () => this.helper.get.element(".maplibregl-ctrl-geocoder")
   };
 }

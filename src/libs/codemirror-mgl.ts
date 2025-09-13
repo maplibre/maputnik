@@ -1,7 +1,7 @@
-import {parse} from '@prantlf/jsonlint';
-import CodeMirror, { MarkerRange } from 'codemirror';
-import jsonToAst from 'json-to-ast';
-import {expression, validateStyleMin} from '@maplibre/maplibre-gl-style-spec';
+import {parse} from "@prantlf/jsonlint";
+import CodeMirror, { MarkerRange } from "codemirror";
+import jsonToAst from "json-to-ast";
+import {expression, validateStyleMin} from "@maplibre/maplibre-gl-style-spec";
 
 type MarkerRangeWithMessage = MarkerRange & {message: string};
 
@@ -90,7 +90,7 @@ CodeMirror.registerHelper("lint", "mgl", (text: string, opts: any, doc: any) => 
           newNode = newNode.value;
         }
       }
-      return getArrayPositionalFromAst(newNode, path.slice(1))
+      return getArrayPositionalFromAst(newNode, path.slice(1));
     }
   }
 
@@ -121,12 +121,12 @@ CodeMirror.registerHelper("lint", "mgl", (text: string, opts: any, doc: any) => 
             // Remove the 'layers[0].' as we're validating the layer only here
             const errMessageParts = err.message.replace(/^layers\[0\]./, "").split(":");
             return {
-              name: '',
+              name: "",
               key: errMessageParts[0],
               message: errMessageParts[1],
             };
           })
-      }
+      };
     }
   }
   else if (context === "expression") {
@@ -147,11 +147,11 @@ CodeMirror.registerHelper("lint", "mgl", (text: string, opts: any, doc: any) => 
           from: CodeMirror.Pos(doc.firstLine(), 0),
           to: CodeMirror.Pos(doc.lastLine(), lastLineHandle.text.length),
           message: message,
-        }
+        };
         found.push(err);
       }
       else if (key) {
-        const path = key.replace(/^\[|\]$/g, "").split(/\.|[[\]]+/).filter(Boolean)
+        const path = key.replace(/^\[|\]$/g, "").split(/\.|[[\]]+/).filter(Boolean);
         const parsedError = getArrayPositionalFromAst(ast, path);
         if (!parsedError) {
           console.warn("Something went wrong parsing error:", error);
@@ -167,7 +167,7 @@ CodeMirror.registerHelper("lint", "mgl", (text: string, opts: any, doc: any) => 
           message: message,
         });
       }
-    })
+    });
   }
 
   return found;

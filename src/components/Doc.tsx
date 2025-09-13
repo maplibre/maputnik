@@ -1,4 +1,4 @@
-import React from 'react'
+import React from "react";
 
 const headers = {
   js: "JS",
@@ -15,7 +15,7 @@ type DocProps = {
         doc?: string
       }
     }
-    'sdk-support'?: {
+    "sdk-support"?: {
       [key: string]: typeof headers
     }
     docUrl?: string,
@@ -28,7 +28,7 @@ export default class Doc extends React.Component<DocProps> {
     const {fieldSpec} = this.props;
 
     const {doc, values, docUrl, docUrlLinkText} = fieldSpec;
-    const sdkSupport = fieldSpec['sdk-support'];
+    const sdkSupport = fieldSpec["sdk-support"];
 
     const renderValues = (
       !!values &&

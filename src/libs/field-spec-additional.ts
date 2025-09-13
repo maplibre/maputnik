@@ -31,6 +31,6 @@ const spec = (t: TFunction) => ({
       doc: t("Choose the default Maputnik renderer for this style.")
     },
   }
-})
+});
 
 export default spec;

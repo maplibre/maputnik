@@ -1,15 +1,15 @@
-import React from 'react'
-import Icon from '@mdi/react'
+import React from "react";
+import Icon from "@mdi/react";
 import {
   mdiMenuDown,
   mdiMenuUp
-} from '@mdi/js';
+} from "@mdi/js";
 import {
   AccordionItem,
   AccordionItemHeading,
   AccordionItemButton,
   AccordionItemPanel,
-} from 'react-accessible-accordion';
+} from "react-accessible-accordion";
 
 
 type LayerEditorGroupProps = {
@@ -46,6 +46,6 @@ export default class LayerEditorGroup extends React.Component<LayerEditorGroupPr
       <AccordionItemPanel>
         {this.props.children}
       </AccordionItemPanel>
-    </AccordionItem>
+    </AccordionItem>;
   }
 }

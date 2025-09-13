@@ -1,24 +1,24 @@
-import React from 'react'
-import {mdiTableRowPlusAfter} from '@mdi/js';
-import {isEqual} from 'lodash';
-import {ExpressionSpecification, LegacyFilterSpecification} from 'maplibre-gl'
-import {latest, migrate, convertFilter} from '@maplibre/maplibre-gl-style-spec'
-import {mdiFunctionVariant} from '@mdi/js';
+import React from "react";
+import {mdiTableRowPlusAfter} from "@mdi/js";
+import {isEqual} from "lodash";
+import {ExpressionSpecification, LegacyFilterSpecification} from "maplibre-gl";
+import {latest, migrate, convertFilter} from "@maplibre/maplibre-gl-style-spec";
+import {mdiFunctionVariant} from "@mdi/js";
 
-import {combiningFilterOps} from '../libs/filterops'
-import InputSelect from './InputSelect'
-import Block from './Block'
-import SingleFilterEditor from './SingleFilterEditor'
-import FilterEditorBlock from './FilterEditorBlock'
-import InputButton from './InputButton'
-import Doc from './Doc'
-import ExpressionProperty from './_ExpressionProperty';
-import { WithTranslation, withTranslation } from 'react-i18next';
-import type { StyleSpecificationWithId } from '../libs/definitions';
+import {combiningFilterOps} from "../libs/filterops";
+import InputSelect from "./InputSelect";
+import Block from "./Block";
+import SingleFilterEditor from "./SingleFilterEditor";
+import FilterEditorBlock from "./FilterEditorBlock";
+import InputButton from "./InputButton";
+import Doc from "./Doc";
+import ExpressionProperty from "./_ExpressionProperty";
+import { WithTranslation, withTranslation } from "react-i18next";
+import type { StyleSpecificationWithId } from "../libs/definitions";
 
 
 function combiningFilter(props: FilterEditorInternalProps): LegacyFilterSpecification | ExpressionSpecification {
-  const filter = props.filter || ['all'];
+  const filter = props.filter || ["all"];
 
   if (!Array.isArray(filter)) {
     return filter;
@@ -28,7 +28,7 @@ function combiningFilter(props: FilterEditorInternalProps): LegacyFilterSpecific
   let filters = filter.slice(1);
 
   if(combiningFilterOps.indexOf(combiningOp) < 0) {
-    combiningOp = 'all';
+    combiningOp = "all";
     filters = [filter.slice(0)];
   }
 
@@ -49,7 +49,7 @@ function createStyleFromFilter(filter: LegacyFilterSpecification | ExpressionSpe
     "sources": {
       "tmp": {
         "type": "geojson",
-        "data": ''
+        "data": ""
       }
     },
     "sprite": "",
@@ -81,14 +81,14 @@ function checkIfSimpleFilter (filter: LegacyFilterSpecification | ExpressionSpec
 }
 
 function hasCombiningFilter(filter: LegacyFilterSpecification | ExpressionSpecification) {
-  return combiningFilterOps.indexOf(filter[0]) >= 0
+  return combiningFilterOps.indexOf(filter[0]) >= 0;
 }
 
 function hasNestedCombiningFilter(filter: LegacyFilterSpecification | ExpressionSpecification) {
   if(hasCombiningFilter(filter)) {
-    return filter.slice(1).map(f => hasCombiningFilter(f as any)).filter(f => f == true).length > 0
+    return filter.slice(1).map(f => hasCombiningFilter(f as any)).filter(f => f == true).length > 0;
   }
-  return false
+  return false;
 }
 
 type FilterEditorInternalProps = {
@@ -108,7 +108,7 @@ type FilterEditorState = {
 class FilterEditorInternal extends React.Component<FilterEditorInternalProps, FilterEditorState> {
   static defaultProps = {
     filter: ["all"],
-  }
+  };
 
   constructor (props: FilterEditorInternalProps) {
     super(props);
@@ -120,42 +120,42 @@ class FilterEditorInternal extends React.Component<FilterEditorInternalProps, Fi
 
   // Convert filter to combining filter
   onFilterPartChanged(filterIdx: number, newPart: any[]) {
-    const newFilter = combiningFilter(this.props).slice(0) as LegacyFilterSpecification | ExpressionSpecification
-    newFilter[filterIdx] = newPart
-    this.props.onChange(newFilter)
+    const newFilter = combiningFilter(this.props).slice(0) as LegacyFilterSpecification | ExpressionSpecification;
+    newFilter[filterIdx] = newPart;
+    this.props.onChange(newFilter);
   }
 
   deleteFilterItem(filterIdx: number) {
-    const newFilter = combiningFilter(this.props).slice(0) as LegacyFilterSpecification | ExpressionSpecification
-    newFilter.splice(filterIdx + 1, 1)
-    this.props.onChange(newFilter)
+    const newFilter = combiningFilter(this.props).slice(0) as LegacyFilterSpecification | ExpressionSpecification;
+    newFilter.splice(filterIdx + 1, 1);
+    this.props.onChange(newFilter);
   }
 
   addFilterItem = () => {
-    const newFilterItem = combiningFilter(this.props).slice(0) as LegacyFilterSpecification | ExpressionSpecification
-    (newFilterItem as any[]).push(['==', 'name', ''])
-    this.props.onChange(newFilterItem)
-  }
+    const newFilterItem = combiningFilter(this.props).slice(0) as LegacyFilterSpecification | ExpressionSpecification;
+    (newFilterItem as any[]).push(["==", "name", ""]);
+    this.props.onChange(newFilterItem);
+  };
 
   onToggleDoc = (val: boolean) => {
     this.setState({
       showDoc: val
     });
-  }
+  };
 
   makeFilter = () => {
     this.setState({
       displaySimpleFilter: true,
-    })
-  }
+    });
+  };
 
   makeExpression = () => {
     const filter = combiningFilter(this.props);
     this.props.onChange(migrateFilter(filter));
     this.setState({
       displaySimpleFilter: false,
-    })
-  }
+    });
+  };
 
   static getDerivedStateFromProps(props: Readonly<FilterEditorInternalProps>, state: FilterEditorState) {
     const displaySimpleFilter = checkIfSimpleFilter(combiningFilter(props));
@@ -170,7 +170,7 @@ class FilterEditorInternal extends React.Component<FilterEditorInternalProps, Fi
     else if (displaySimpleFilter && state.displaySimpleFilter === false) {
       return {
         valueIsSimpleFilter: true,
-      }
+      };
     }
     else {
       return {
@@ -203,7 +203,7 @@ class FilterEditorInternal extends React.Component<FilterEditorInternalProps, Fi
           </svg>
           {t("Upgrade to expression")}
         </InputButton>
-      </div>
+      </div>;
     }
     else if (displaySimpleFilter) {
       const filter = combiningFilter(this.props);
@@ -241,7 +241,7 @@ class FilterEditorInternal extends React.Component<FilterEditorInternalProps, Fi
             }
           </div>
         );
-      })
+      });
 
 
       return (
@@ -280,7 +280,7 @@ class FilterEditorInternal extends React.Component<FilterEditorInternalProps, Fi
           <div
             key="doc"
             className="maputnik-doc-inline"
-            style={{display: this.state.showDoc ? '' : 'none'}}
+            style={{display: this.state.showDoc ? "" : "none"}}
           >
             <Doc fieldSpec={fieldSpec} />
           </div>
@@ -306,7 +306,7 @@ class FilterEditorInternal extends React.Component<FilterEditorInternalProps, Fi
           {this.state.valueIsSimpleFilter &&
             <div className="maputnik-expr-infobox">
               {t("You've entered an old style filter.")}
-              {' '}
+              {" "}
               <button
                 onClick={this.makeFilter}
                 className="maputnik-expr-infobox__button"

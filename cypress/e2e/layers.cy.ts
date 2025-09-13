@@ -313,7 +313,7 @@ describe("layers", () => {
 
           it("should revert to a valid value when focus out", () => {
             when.click("layer-list-item:background:" + bgId);
-            then(get.elementByTestId("spec-field-input:background-opacity")).shouldHaveValue('0');
+            then(get.elementByTestId("spec-field-input:background-opacity")).shouldHaveValue("0");
           });
         });
 
@@ -575,10 +575,10 @@ describe("layers", () => {
       });
       when.collapseGroupInLayerEditor();
       when.collapseGroupInLayerEditor(1);
-      when.setValueToPropertyArray("spec-field:hillshade-illumination-direction", '1');
-      when.addValueToPropertyArray("spec-field:hillshade-illumination-direction", '2');
-      when.addValueToPropertyArray("spec-field:hillshade-illumination-direction", '3');
-      when.addValueToPropertyArray("spec-field:hillshade-illumination-direction", '4');
+      when.setValueToPropertyArray("spec-field:hillshade-illumination-direction", "1");
+      when.addValueToPropertyArray("spec-field:hillshade-illumination-direction", "2");
+      when.addValueToPropertyArray("spec-field:hillshade-illumination-direction", "3");
+      when.addValueToPropertyArray("spec-field:hillshade-illumination-direction", "4");
 
       then(get.styleFromLocalStorage()).shouldDeepNestedInclude({
         layers: [
@@ -600,9 +600,9 @@ describe("layers", () => {
         layer: "example",
       });
       when.collapseGroupInLayerEditor();
-      when.setValueToPropertyArray("spec-field:hillshade-highlight-color", 'blue');
-      when.addValueToPropertyArray("spec-field:hillshade-highlight-color", '#00ff00');
-      when.addValueToPropertyArray("spec-field:hillshade-highlight-color", 'rgba(255, 255, 0, 1)');
+      when.setValueToPropertyArray("spec-field:hillshade-highlight-color", "blue");
+      when.addValueToPropertyArray("spec-field:hillshade-highlight-color", "#00ff00");
+      when.addValueToPropertyArray("spec-field:hillshade-highlight-color", "rgba(255, 255, 0, 1)");
 
       then(get.styleFromLocalStorage()).shouldDeepNestedInclude({
         layers: [
@@ -706,8 +706,8 @@ describe("layers", () => {
       sourceText.click();
       sourceText.type("\"");
 
-      const error = get.element('.CodeMirror-lint-marker-error');
-      error.should('exist');
+      const error = get.element(".CodeMirror-lint-marker-error");
+      error.should("exist");
     });
   });
 

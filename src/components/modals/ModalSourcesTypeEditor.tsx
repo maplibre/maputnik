@@ -1,16 +1,16 @@
-import React from 'react'
-import {latest} from '@maplibre/maplibre-gl-style-spec'
-import { WithTranslation, withTranslation } from 'react-i18next';
-import { TFunction } from 'i18next'
+import React from "react";
+import {latest} from "@maplibre/maplibre-gl-style-spec";
+import { WithTranslation, withTranslation } from "react-i18next";
+import { TFunction } from "i18next";
 
-import Block from '../Block'
-import FieldUrl from '../FieldUrl'
-import FieldNumber from '../FieldNumber'
-import FieldSelect from '../FieldSelect'
-import FieldDynamicArray from '../FieldDynamicArray'
-import FieldArray from '../FieldArray'
-import FieldJson from '../FieldJson'
-import FieldCheckbox from '../FieldCheckbox'
+import Block from "../Block";
+import FieldUrl from "../FieldUrl";
+import FieldNumber from "../FieldNumber";
+import FieldSelect from "../FieldSelect";
+import FieldDynamicArray from "../FieldDynamicArray";
+import FieldArray from "../FieldArray";
+import FieldJson from "../FieldJson";
+import FieldCheckbox from "../FieldCheckbox";
 
 
 export type EditorMode = "video" | "image" | "tilejson_vector" | "tile_raster" | "tilejson_raster" | "tilexyz_raster-dem" | "tilejson_raster-dem" | "pmtiles_vector" | "tile_vector" | "geojson_url" | "geojson_json" | null;
@@ -38,7 +38,7 @@ class TileJSONSourceEditor extends React.Component<TileJSONSourceEditorProps> {
         })}
       />
       {this.props.children}
-    </div>
+    </div>;
   }
 }
 
@@ -47,7 +47,7 @@ type TileURLSourceEditorProps = {
     tiles: string[]
     minzoom: number
     maxzoom: number
-    scheme: 'xyz' | 'tms'
+    scheme: "xyz" | "tms"
   }
   onChange(...args: unknown[]): unknown
   children?: React.ReactNode
@@ -58,7 +58,7 @@ class TileURLSourceEditor extends React.Component<TileURLSourceEditorProps> {
     this.props.onChange({
       ...this.props.source,
       tiles,
-    })
+    });
   }
 
   renderTileUrls() {
@@ -69,7 +69,7 @@ class TileURLSourceEditor extends React.Component<TileURLSourceEditorProps> {
       type="url"
       value={tiles}
       onChange={this.changeTileUrls.bind(this)}
-    />
+    />;
   }
 
   render() {
@@ -80,8 +80,8 @@ class TileURLSourceEditor extends React.Component<TileURLSourceEditorProps> {
         label={t("Scheme Type")}
         fieldSpec={latest.source_vector.scheme}
         options={[
-          ['xyz', 'xyz (Slippy map tilenames scheme)'],
-          ['tms', 'tms (OSGeo spec scheme)'],
+          ["xyz", "xyz (Slippy map tilenames scheme)"],
+          ["tms", "tms (OSGeo spec scheme)"],
         ]}
         onChange={scheme => this.props.onChange({
           ...this.props.source,
@@ -109,7 +109,7 @@ class TileURLSourceEditor extends React.Component<TileURLSourceEditorProps> {
         })}
       />
       {this.props.children}
-    </div>
+    </div>;
 
   }
 }
@@ -140,7 +140,7 @@ class ImageSourceEditor extends React.Component<ImageSourceEditorProps> {
         ...this.props.source,
         coordinates,
       });
-    }
+    };
 
     return <div>
       <FieldUrl
@@ -165,7 +165,7 @@ class ImageSourceEditor extends React.Component<ImageSourceEditorProps> {
           />
         );
       })}
-    </div>
+    </div>;
   }
 }
 
@@ -188,14 +188,14 @@ class VideoSourceEditor extends React.Component<VideoSourceEditorProps> {
         ...this.props.source,
         coordinates,
       });
-    }
+    };
 
     const changeUrls = (urls: string[]) => {
       this.props.onChange({
         ...this.props.source,
         urls,
       });
-    }
+    };
 
     return <div>
       <FieldDynamicArray
@@ -219,7 +219,7 @@ class VideoSourceEditor extends React.Component<VideoSourceEditorProps> {
           />
         );
       })}
-    </div>
+    </div>;
   }
 }
 
@@ -241,7 +241,7 @@ class GeoJSONSourceUrlEditor extends React.Component<GeoJSONSourceUrlEditorProps
         ...this.props.source,
         data: data
       })}
-    />
+    />;
   }
 }
 
@@ -270,21 +270,21 @@ class GeoJSONSourceFieldJsonEditor extends React.Component<GeoJSONSourceFieldJso
             this.props.onChange({
               ...this.props.source,
               data,
-            })
+            });
           }}
         />
       </Block>
       <FieldCheckbox
-        label={t('Cluster')}
+        label={t("Cluster")}
         value={this.props.source.cluster}
         onChange={cluster => {
           this.props.onChange({
             ...this.props.source,
             cluster: cluster,
-          })
+          });
         }}
       />
-    </div>
+    </div>;
   }
 }
 
@@ -311,7 +311,7 @@ class PMTilesSourceEditor extends React.Component<PMTilesSourceEditorProps> {
         })}
       />
       {this.props.children}
-    </div>
+    </div>;
   }
 }
 
@@ -332,12 +332,12 @@ class ModalSourcesTypeEditorInternal extends React.Component<ModalSourcesTypeEdi
       tReady: this.props.tReady,
     };
     switch(this.props.mode) {
-      case 'geojson_url': return <GeoJSONSourceUrlEditor {...commonProps} />
-      case 'geojson_json': return <GeoJSONSourceFieldJsonEditor {...commonProps} />
-      case 'tilejson_vector': return <TileJSONSourceEditor {...commonProps} />
-      case 'tile_vector': return <TileURLSourceEditor {...commonProps} />
-      case 'tilejson_raster': return <TileJSONSourceEditor {...commonProps} />
-      case 'tile_raster': return <TileURLSourceEditor {...commonProps}>
+      case "geojson_url": return <GeoJSONSourceUrlEditor {...commonProps} />;
+      case "geojson_json": return <GeoJSONSourceFieldJsonEditor {...commonProps} />;
+      case "tilejson_vector": return <TileJSONSourceEditor {...commonProps} />;
+      case "tile_vector": return <TileURLSourceEditor {...commonProps} />;
+      case "tilejson_raster": return <TileJSONSourceEditor {...commonProps} />;
+      case "tile_raster": return <TileURLSourceEditor {...commonProps}>
         <FieldNumber
           label={t("Tile Size")}
           fieldSpec={latest.source_raster.tileSize}
@@ -348,9 +348,9 @@ class ModalSourcesTypeEditorInternal extends React.Component<ModalSourcesTypeEdi
           value={this.props.source.tileSize || latest.source_raster.tileSize.default}
           data-wd-key="modal:sources.add.tile_size"
         />
-      </TileURLSourceEditor>
-      case 'tilejson_raster-dem': return <TileJSONSourceEditor {...commonProps} />
-      case 'tilexyz_raster-dem': return <TileURLSourceEditor {...commonProps}>
+      </TileURLSourceEditor>;
+      case "tilejson_raster-dem": return <TileJSONSourceEditor {...commonProps} />;
+      case "tilexyz_raster-dem": return <TileURLSourceEditor {...commonProps}>
         <FieldNumber
           label={t("Tile Size")}
           fieldSpec={latest.source_raster_dem.tileSize}
@@ -371,11 +371,11 @@ class ModalSourcesTypeEditorInternal extends React.Component<ModalSourcesTypeEdi
           })}
           value={this.props.source.encoding || latest.source_raster_dem.encoding.default}
         />
-      </TileURLSourceEditor>
-      case 'pmtiles_vector': return <PMTilesSourceEditor {...commonProps} />
-      case 'image': return <ImageSourceEditor {...commonProps} />
-      case 'video': return <VideoSourceEditor {...commonProps} />
-      default: return null
+      </TileURLSourceEditor>;
+      case "pmtiles_vector": return <PMTilesSourceEditor {...commonProps} />;
+      case "image": return <ImageSourceEditor {...commonProps} />;
+      case "video": return <VideoSourceEditor {...commonProps} />;
+      default: return null;
     }
   }
 }

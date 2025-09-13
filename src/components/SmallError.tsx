@@ -1,6 +1,6 @@
-import React from 'react'
-import { WithTranslation, withTranslation } from 'react-i18next';
-import './SmallError.scss';
+import React from "react";
+import { WithTranslation, withTranslation } from "react-i18next";
+import "./SmallError.scss";
 
 
 type SmallErrorInternalProps = {

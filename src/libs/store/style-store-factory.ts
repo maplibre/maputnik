@@ -8,7 +8,7 @@ export async function createStyleStore(onStyleChanged: OnStyleChangedCallback): 
   const styleUrl = getStyleUrlFromAddressbarAndRemoveItIfNeeded();
   const useStyleUrl = styleUrl && window.confirm("Load style from URL: " + styleUrl + " and discard current changes?");
   let styleStore: IStyleStore;
-  if (import.meta.env.MODE === 'desktop' && !useStyleUrl) {
+  if (import.meta.env.MODE === "desktop" && !useStyleUrl) {
     const apiStyleStore = new ApiStyleStore({
       onLocalStyleChange: mapStyle => onStyleChanged(mapStyle, {save: false}),
     });

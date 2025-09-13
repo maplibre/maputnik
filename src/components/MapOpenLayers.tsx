@@ -1,16 +1,16 @@
-import React from 'react'
-import {throttle} from 'lodash';
-import { WithTranslation, withTranslation } from 'react-i18next';
+import React from "react";
+import {throttle} from "lodash";
+import { WithTranslation, withTranslation } from "react-i18next";
 
-import MapMaplibreGlLayerPopup from './MapMaplibreGlLayerPopup';
+import MapMaplibreGlLayerPopup from "./MapMaplibreGlLayerPopup";
 
-import 'ol/ol.css'
+import "ol/ol.css";
 //@ts-ignore
-import {apply} from 'ol-mapbox-style';
-import {Map, View, Overlay} from 'ol';
+import {apply} from "ol-mapbox-style";
+import {Map, View, Overlay} from "ol";
 
-import {toLonLat} from 'ol/proj';
-import type {StyleSpecification} from 'maplibre-gl';
+import {toLonLat} from "ol/proj";
+import type {StyleSpecification} from "maplibre-gl";
 
 
 function renderCoords (coords: string[]) {
@@ -19,8 +19,8 @@ function renderCoords (coords: string[]) {
   }
   else {
     return <span className="maputnik-coords">
-      {coords.map((coord) => String(coord).padStart(7, "\u00A0")).join(', ')}
-    </span>
+      {coords.map((coord) => String(coord).padStart(7, "\u00A0")).join(", ")}
+    </span>;
   }
 }
 
@@ -48,7 +48,7 @@ class MapOpenLayersInternal extends React.Component<MapOpenLayersInternalProps, 
     onMapLoaded: () => {},
     onDataChange: () => {},
     onLayerSelect: () => {},
-  }
+  };
   updateStyle: any;
   map: any;
   container: HTMLDivElement | null = null;
@@ -101,15 +101,15 @@ class MapOpenLayersInternal extends React.Component<MapOpenLayersInternalProps, 
       })
     });
 
-    map.on('pointermove', (evt) => {
+    map.on("pointermove", (evt) => {
       const coords = toLonLat(evt.coordinate);
       this.setState({
         cursor: [
           coords[0].toFixed(2),
           coords[1].toFixed(2)
         ]
-      })
-    })
+      });
+    });
 
     const onMoveEnd = () => {
       const zoom = map.getView().getZoom();
@@ -122,12 +122,12 @@ class MapOpenLayersInternal extends React.Component<MapOpenLayersInternalProps, 
           lat: center[1],
         },
       });
-    }
+    };
 
     onMoveEnd();
-    map.on('moveend', onMoveEnd);
+    map.on("moveend", onMoveEnd);
 
-    map.on('postrender', (_e) => {
+    map.on("postrender", (_e) => {
       const center = toLonLat(map.getView().getCenter()!);
       this.setState({
         center: [
@@ -150,13 +150,13 @@ class MapOpenLayersInternal extends React.Component<MapOpenLayersInternalProps, 
   closeOverlay = (e: any) => {
     e.target.blur();
     this.overlay!.setPosition(undefined);
-  }
+  };
 
   render() {
     const t = this.props.t;
     return <div className="maputnik-ol-container">
       <div
-        ref={x => {this.popupContainer = x}}
+        ref={x => {this.popupContainer = x;}}
         style={{background: "black"}}
         className="maputnik-popup"
       >
@@ -193,14 +193,14 @@ class MapOpenLayersInternal extends React.Component<MapOpenLayersInternalProps, 
       }
       <div
         className="maputnik-ol"
-        ref={x => {this.container = x}}
+        ref={x => {this.container = x;}}
         role="region"
         aria-label={t("Map view")}
         style={{
           ...this.props.style,
         }}>
       </div>
-    </div>
+    </div>;
   }
 }
 

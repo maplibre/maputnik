@@ -1,4 +1,4 @@
-import React from 'react'
+import React from "react";
 
 export type InputStringProps = {
   "data-wd-key"?: string
@@ -11,26 +11,26 @@ export type InputStringProps = {
   required?: boolean
   disabled?: boolean
   spellCheck?: boolean
-  'aria-label'?: string
+  "aria-label"?: string
   title?: string
 };
 
 type InputStringState = {
   editing: boolean
   value?: string
-}
+};
 
 export default class InputString extends React.Component<InputStringProps, InputStringState> {
   static defaultProps = {
     onInput: () => {},
-  }
+  };
 
   constructor(props: InputStringProps) {
-    super(props)
+    super(props);
     this.state = {
       editing: false,
-      value: props.value || ''
-    }
+      value: props.value || ""
+    };
   }
 
   static getDerivedStateFromProps(props: Readonly<InputStringProps>, state: InputStringState) {
@@ -47,17 +47,17 @@ export default class InputString extends React.Component<InputStringProps, Input
     let classes;
 
     if(this.props.multi) {
-      tag = "textarea"
+      tag = "textarea";
       classes = [
         "maputnik-string",
         "maputnik-string--multi"
-      ]
+      ];
     }
     else {
-      tag = "input"
+      tag = "input";
       classes = [
         "maputnik-string"
-      ]
+      ];
     }
 
     if(this.props.disabled) {

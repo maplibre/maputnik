@@ -1,8 +1,8 @@
-import React from 'react'
-import { WithTranslation, withTranslation } from 'react-i18next';
+import React from "react";
+import { WithTranslation, withTranslation } from "react-i18next";
 
-import InputButton from '../InputButton'
-import Modal from './Modal'
+import InputButton from "../InputButton";
+import Modal from "./Modal";
 
 
 type ModalLoadingInternalProps = {
@@ -31,7 +31,7 @@ class ModalLoadingInternal extends React.Component<ModalLoadingInternalProps> {
           {t("Cancel")}
         </InputButton>
       </p>
-    </Modal>
+    </Modal>;
   }
 }
 

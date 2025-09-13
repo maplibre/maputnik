@@ -1,5 +1,5 @@
-import React, { JSX } from 'react'
-import {MdInfoOutline, MdHighlightOff} from 'react-icons/md'
+import React, { JSX } from "react";
+import {MdInfoOutline, MdHighlightOff} from "react-icons/md";
 
 type FieldDocLabelProps = {
   label: JSX.Element | string | undefined
@@ -28,12 +28,12 @@ const FieldDocLabel: React.FC<FieldDocLabelProps> = (props) => {
       <label className="maputnik-doc-wrapper">
         <div className="maputnik-doc-target">
           {label}
-          {'\xa0'}
+          {"\xa0"}
           <button
-            aria-label={open ? 'close property documentation' : 'open property documentation'}
-            className={`maputnik-doc-button maputnik-doc-button--${open ? 'open' : 'closed'}`}
+            aria-label={open ? "close property documentation" : "open property documentation"}
+            className={`maputnik-doc-button maputnik-doc-button--${open ? "open" : "closed"}`}
             onClick={() => onToggleDoc(!open)}
-            data-wd-key={'field-doc-button-' + label}
+            data-wd-key={"field-doc-button-" + label}
           >
             {open ? <MdHighlightOff /> : <MdInfoOutline />}
           </button>

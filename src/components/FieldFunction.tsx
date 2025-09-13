@@ -1,11 +1,11 @@
-import React from 'react'
+import React from "react";
 
-import SpecProperty from './_SpecProperty'
-import DataProperty, { Stop } from './_DataProperty'
-import ZoomProperty from './_ZoomProperty'
-import ExpressionProperty from './_ExpressionProperty'
-import {function as styleFunction} from '@maplibre/maplibre-gl-style-spec';
-import {findDefaultFromSpec} from '../libs/spec-helper';
+import SpecProperty from "./_SpecProperty";
+import DataProperty, { Stop } from "./_DataProperty";
+import ZoomProperty from "./_ZoomProperty";
+import ExpressionProperty from "./_ExpressionProperty";
+import {function as styleFunction} from "@maplibre/maplibre-gl-style-spec";
+import {findDefaultFromSpec} from "../libs/spec-helper";
 
 
 function isLiteralExpression(value: any) {
@@ -22,9 +22,9 @@ function isGetExpression(value: any) {
 
 function isZoomField(value: any) {
   return (
-    typeof(value) === 'object' &&
+    typeof(value) === "object" &&
     value.stops &&
-    typeof(value.property) === 'undefined' &&
+    typeof(value.property) === "undefined" &&
     Array.isArray(value.stops) &&
     value.stops.length > 1 &&
     value.stops.every((stop: Stop) => {
@@ -38,7 +38,7 @@ function isZoomField(value: any) {
 
 function isIdentityProperty(value: any) {
   return (
-    typeof(value) === 'object' &&
+    typeof(value) === "object" &&
     value.type === "identity" &&
     Object.prototype.hasOwnProperty.call(value, "property")
   );
@@ -46,16 +46,16 @@ function isIdentityProperty(value: any) {
 
 function isDataStopProperty(value: any) {
   return (
-    typeof(value) === 'object' &&
+    typeof(value) === "object" &&
     value.stops &&
-    typeof(value.property) !== 'undefined' &&
+    typeof(value.property) !== "undefined" &&
     value.stops.length > 1 &&
     Array.isArray(value.stops) &&
     value.stops.every((stop: Stop) => {
       return (
         Array.isArray(stop) &&
         stop.length === 2 &&
-        typeof(stop[0]) === 'object'
+        typeof(stop[0]) === "object"
       );
     })
   );
@@ -141,18 +141,18 @@ const FieldFunction: React.FC<FieldFunctionProps> = (props) => {
 
   const getFieldFunctionType = (fieldSpec: any) => {
     if (fieldSpec.expression.interpolated) {
-      return 'exponential';
+      return "exponential";
     }
-    if (fieldSpec.type === 'number') {
-      return 'interval';
+    if (fieldSpec.type === "number") {
+      return "interval";
     }
-    return 'categorical';
+    return "categorical";
   };
 
   const addStop = () => {
     const stops = props.value.stops.slice(0);
     const lastStop = stops[stops.length - 1];
-    if (typeof lastStop[0] === 'object') {
+    if (typeof lastStop[0] === "object") {
       stops.push([
         { zoom: lastStop[0].zoom + 1, value: lastStop[0].value },
         lastStop[1],
@@ -172,7 +172,7 @@ const FieldFunction: React.FC<FieldFunctionProps> = (props) => {
   const deleteExpression = () => {
     const { fieldSpec, fieldName } = props;
     props.onChange(fieldName, fieldSpec.default);
-    setDataType('value');
+    setDataType("value");
   };
 
   const deleteStop = (stopIdx: number) => {
@@ -195,7 +195,7 @@ const FieldFunction: React.FC<FieldFunctionProps> = (props) => {
     const { value } = props;
 
     let zoomFunc: any;
-    if (typeof value === 'object') {
+    if (typeof value === "object") {
       if (value.stops) {
         zoomFunc = {
           base: value.base,
@@ -229,13 +229,13 @@ const FieldFunction: React.FC<FieldFunctionProps> = (props) => {
 
     if (isGetExpression(value)) {
       props.onChange(fieldName, {
-        type: 'identity',
+        type: "identity",
         property: value[1],
       });
-      setDataType('value');
+      setDataType("value");
     } else if (isLiteralExpression(value)) {
       props.onChange(fieldName, value[1]);
-      setDataType('value');
+      setDataType("value");
     }
   };
 
@@ -245,7 +245,7 @@ const FieldFunction: React.FC<FieldFunctionProps> = (props) => {
       isGetExpression(value) ||
       isLiteralExpression(value) ||
       isPrimative(value) ||
-      (Array.isArray(value) && fieldSpec.type === 'array')
+      (Array.isArray(value) && fieldSpec.type === "array")
     );
   };
 
@@ -253,26 +253,26 @@ const FieldFunction: React.FC<FieldFunctionProps> = (props) => {
     const { value, fieldSpec } = props;
     let expression;
 
-    if (typeof value === 'object' && 'stops' in value) {
+    if (typeof value === "object" && "stops" in value) {
       expression = styleFunction.convertFunction(value, fieldSpec);
     } else if (isIdentityProperty(value)) {
-      expression = ['get', value.property];
+      expression = ["get", value.property];
     } else {
-      expression = ['literal', value || props.fieldSpec.default];
+      expression = ["literal", value || props.fieldSpec.default];
     }
     props.onChange(props.fieldName, expression);
   };
 
   const makeDataFunction = () => {
     const functionType = getFieldFunctionType(props.fieldSpec);
-    const stopValue = functionType === 'categorical' ? '' : 0;
+    const stopValue = functionType === "categorical" ? "" : 0;
     const { value } = props;
     let dataFunc;
 
-    if (typeof value === 'object') {
+    if (typeof value === "object") {
       if (value.stops) {
         dataFunc = {
-          property: '',
+          property: "",
           type: functionType,
           base: value.base,
           stops: value.stops.map((stop: Stop) => {
@@ -281,7 +281,7 @@ const FieldFunction: React.FC<FieldFunctionProps> = (props) => {
         };
       } else {
         dataFunc = {
-          property: '',
+          property: "",
           type: functionType,
           base: value.base,
           stops: [
@@ -292,7 +292,7 @@ const FieldFunction: React.FC<FieldFunctionProps> = (props) => {
       }
     } else {
       dataFunc = {
-        property: '',
+        property: "",
         type: functionType,
         base: value.base,
         stops: [
@@ -328,11 +328,11 @@ const FieldFunction: React.FC<FieldFunctionProps> = (props) => {
   };
 
   const propClass =
-    props.fieldSpec.default === props.value ? 'maputnik-default-property' : 'maputnik-modified-property';
+    props.fieldSpec.default === props.value ? "maputnik-default-property" : "maputnik-modified-property";
 
   let specField;
 
-  if (dataType === 'expression') {
+  if (dataType === "expression") {
     specField = (
       <ExpressionProperty
         errors={props.errors}
@@ -348,7 +348,7 @@ const FieldFunction: React.FC<FieldFunctionProps> = (props) => {
         onBlur={onUnmarkEditing}
       />
     );
-  } else if (dataType === 'zoom_function') {
+  } else if (dataType === "zoom_function") {
     specField = (
       <ZoomProperty
         errors={props.errors}
@@ -363,7 +363,7 @@ const FieldFunction: React.FC<FieldFunctionProps> = (props) => {
         onExpressionClick={makeExpression}
       />
     );
-  } else if (dataType === 'data_function') {
+  } else if (dataType === "data_function") {
     specField = (
       <DataProperty
         errors={props.errors}
@@ -396,7 +396,7 @@ const FieldFunction: React.FC<FieldFunctionProps> = (props) => {
   }
 
   return (
-    <div className={propClass} data-wd-key={'spec-field-container:' + props.fieldName}>
+    <div className={propClass} data-wd-key={"spec-field-container:" + props.fieldName}>
       {specField}
     </div>
   );

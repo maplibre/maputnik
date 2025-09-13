@@ -1,35 +1,35 @@
-import React, {type JSX} from 'react'
-import { Wrapper, Button, Menu, MenuItem } from 'react-aria-menubutton'
-import {Accordion} from 'react-accessible-accordion';
-import {MdMoreVert} from 'react-icons/md'
-import { IconContext } from 'react-icons'
-import {BackgroundLayerSpecification, LayerSpecification, SourceSpecification} from 'maplibre-gl';
-import {v8} from '@maplibre/maplibre-gl-style-spec';
+import React, {type JSX} from "react";
+import { Wrapper, Button, Menu, MenuItem } from "react-aria-menubutton";
+import {Accordion} from "react-accessible-accordion";
+import {MdMoreVert} from "react-icons/md";
+import { IconContext } from "react-icons";
+import {BackgroundLayerSpecification, LayerSpecification, SourceSpecification} from "maplibre-gl";
+import {v8} from "@maplibre/maplibre-gl-style-spec";
 
-import FieldJson from './FieldJson'
-import FilterEditor from './FilterEditor'
-import PropertyGroup from './PropertyGroup'
-import LayerEditorGroup from './LayerEditorGroup'
-import FieldType from './FieldType'
-import FieldId from './FieldId'
-import FieldMinZoom from './FieldMinZoom'
-import FieldMaxZoom from './FieldMaxZoom'
-import FieldComment from './FieldComment'
-import FieldSource from './FieldSource'
-import FieldSourceLayer from './FieldSourceLayer'
-import { changeType, changeProperty } from '../libs/layer'
-import {formatLayerId} from '../libs/format';
-import { WithTranslation, withTranslation } from 'react-i18next';
-import { TFunction } from 'i18next';
-import { NON_SOURCE_LAYERS } from '../libs/non-source-layers';
-import { OnMoveLayerCallback } from '../libs/definitions';
+import FieldJson from "./FieldJson";
+import FilterEditor from "./FilterEditor";
+import PropertyGroup from "./PropertyGroup";
+import LayerEditorGroup from "./LayerEditorGroup";
+import FieldType from "./FieldType";
+import FieldId from "./FieldId";
+import FieldMinZoom from "./FieldMinZoom";
+import FieldMaxZoom from "./FieldMaxZoom";
+import FieldComment from "./FieldComment";
+import FieldSource from "./FieldSource";
+import FieldSourceLayer from "./FieldSourceLayer";
+import { changeType, changeProperty } from "../libs/layer";
+import {formatLayerId} from "../libs/format";
+import { WithTranslation, withTranslation } from "react-i18next";
+import { TFunction } from "i18next";
+import { NON_SOURCE_LAYERS } from "../libs/non-source-layers";
+import { OnMoveLayerCallback } from "../libs/definitions";
 
 type MaputnikLayoutGroup = {
   id: string;
   title: string;
   type: string;
   fields: string[];
-}
+};
 
 function getLayoutForSymbolType(t: TFunction): MaputnikLayoutGroup[] {
   const groups: MaputnikLayoutGroup[] = [];
@@ -68,7 +68,7 @@ function getLayoutForSymbolType(t: TFunction): MaputnikLayoutGroup[] {
 
 function getLayoutForType(type: LayerSpecification["type"], t: TFunction): MaputnikLayoutGroup[] {
   if (Object.keys(v8.layer.type.values).indexOf(type) < 0) {
-    return []
+    return [];
   }
   if (type === "symbol") {
     return getLayoutForSymbolType(t);
@@ -95,23 +95,23 @@ function getLayoutForType(type: LayerSpecification["type"], t: TFunction): Maput
 
 function layoutGroups(layerType: LayerSpecification["type"], t: TFunction): {id: string, title: string, type: string, fields?: string[]}[] {
   const layerGroup = {
-    id: 'layer',
-    title: t('Layer'),
-    type: 'layer'
-  }
+    id: "layer",
+    title: t("Layer"),
+    type: "layer"
+  };
   const filterGroup = {
-    id: 'filter',
-    title: t('Filter'),
-    type: 'filter'
-  }
+    id: "filter",
+    title: t("Filter"),
+    type: "filter"
+  };
   const editorGroup = {
-    id: 'jsoneditor',
-    title: t('JSON Editor'),
-    type: 'jsoneditor'
-  }
+    id: "jsoneditor",
+    title: t("JSON Editor"),
+    type: "jsoneditor"
+  };
   return [layerGroup, filterGroup]
     .concat(getLayoutForType(layerType, t))
-    .concat([editorGroup])
+    .concat([editorGroup]);
 }
 
 type LayerEditorInternalProps = {
@@ -141,25 +141,25 @@ class LayerEditorInternal extends React.Component<LayerEditorInternalProps, Laye
     onLayerChanged: () => {},
     onLayerIdChange: () => {},
     onLayerDestroyed: () => {},
-  }
+  };
 
   constructor(props: LayerEditorInternalProps) {
-    super(props)
+    super(props);
 
-    const editorGroups: {[keys:string]: boolean} = {}
+    const editorGroups: {[keys:string]: boolean} = {};
     for (const group of layoutGroups(this.props.layer.type, props.t)) {
-      editorGroups[group.title] = true
+      editorGroups[group.title] = true;
     }
 
-    this.state = { editorGroups }
+    this.state = { editorGroups };
   }
 
   static getDerivedStateFromProps(props: Readonly<LayerEditorInternalProps>, state: LayerEditorState) {
-    const additionalGroups = { ...state.editorGroups }
+    const additionalGroups = { ...state.editorGroups };
 
     for (const group of getLayoutForType(props.layer.type, props.t)) {
       if(!(group.title in additionalGroups)) {
-        additionalGroups[group.title] = true
+        additionalGroups[group.title] = true;
       }
     }
 
@@ -173,23 +173,23 @@ class LayerEditorInternal extends React.Component<LayerEditorInternalProps, Laye
     this.props.onLayerChanged(
       this.props.layerIndex,
       changeProperty(this.props.layer, group, property, newValue)
-    )
+    );
   }
 
   onGroupToggle(groupTitle: string, active: boolean) {
     const changedActiveGroups = {
       ...this.state.editorGroups,
       [groupTitle]: active,
-    }
+    };
     this.setState({
       editorGroups: changedActiveGroups
-    })
+    });
   }
 
   renderGroupType(type: string, fields?: string[]): JSX.Element {
-    let comment = ""
+    let comment = "";
     if(this.props.layer.metadata) {
-      comment = (this.props.layer.metadata as any)['maputnik:comment']
+      comment = (this.props.layer.metadata as any)["maputnik:comment"];
     }
     const {errors, layerIndex} = this.props;
 
@@ -204,7 +204,7 @@ class LayerEditorInternal extends React.Component<LayerEditorInternalProps, Laye
           message: error.parsed.data.message
         };
       }
-    })
+    });
 
     let sourceLayerIds;
     const layer = this.props.layer as Exclude<LayerSpecification, BackgroundLayerSpecification>;
@@ -213,7 +213,7 @@ class LayerEditorInternal extends React.Component<LayerEditorInternalProps, Laye
     }
 
     switch(type) {
-      case 'layer': return <div>
+      case "layer": return <div>
         <FieldId
           value={this.props.layer.id}
           wdKey="layer-editor.layer-id"
@@ -229,56 +229,56 @@ class LayerEditorInternal extends React.Component<LayerEditorInternalProps, Laye
             changeType(this.props.layer, newType)
           )}
         />
-        {this.props.layer.type !== 'background' && <FieldSource
+        {this.props.layer.type !== "background" && <FieldSource
           error={errorData.source}
           sourceIds={Object.keys(this.props.sources!)}
           value={this.props.layer.source}
-          onChange={v => this.changeProperty(null, 'source', v)}
+          onChange={v => this.changeProperty(null, "source", v)}
         />
         }
         {!NON_SOURCE_LAYERS.includes(this.props.layer.type) &&
         <FieldSourceLayer
-          error={errorData['source-layer']}
+          error={errorData["source-layer"]}
           sourceLayerIds={sourceLayerIds}
-          value={(this.props.layer as any)['source-layer']}
-          onChange={v => this.changeProperty(null, 'source-layer', v)}
+          value={(this.props.layer as any)["source-layer"]}
+          onChange={v => this.changeProperty(null, "source-layer", v)}
         />
         }
         <FieldMinZoom
           error={errorData.minzoom}
           value={this.props.layer.minzoom}
-          onChange={v => this.changeProperty(null, 'minzoom', v)}
+          onChange={v => this.changeProperty(null, "minzoom", v)}
         />
         <FieldMaxZoom
           error={errorData.maxzoom}
           value={this.props.layer.maxzoom}
-          onChange={v => this.changeProperty(null, 'maxzoom', v)}
+          onChange={v => this.changeProperty(null, "maxzoom", v)}
         />
         <FieldComment
           error={errorData.comment}
           value={comment}
-          onChange={v => this.changeProperty('metadata', 'maputnik:comment', v == ""  ? undefined : v)}
+          onChange={v => this.changeProperty("metadata", "maputnik:comment", v == ""  ? undefined : v)}
         />
-      </div>
-      case 'filter': return <div>
+      </div>;
+      case "filter": return <div>
         <div className="maputnik-filter-editor-wrapper">
           <FilterEditor
             errors={errorData}
             filter={(this.props.layer as any).filter}
-            properties={this.props.vectorLayers[(this.props.layer as any)['source-layer']]}
-            onChange={f => this.changeProperty(null, 'filter', f)}
+            properties={this.props.vectorLayers[(this.props.layer as any)["source-layer"]]}
+            onChange={f => this.changeProperty(null, "filter", f)}
           />
         </div>
-      </div>
-      case 'properties':
+      </div>;
+      case "properties":
         return <PropertyGroup
           errors={errorData}
           layer={this.props.layer}
           groupFields={fields!}
           spec={this.props.spec}
           onChange={this.changeProperty.bind(this)}
-        />
-      case 'jsoneditor':
+        />;
+      case "jsoneditor":
         return <FieldJson
           layer={this.props.layer}
           onChange={(layer) => {
@@ -287,8 +287,8 @@ class LayerEditorInternal extends React.Component<LayerEditorInternalProps, Laye
               layer
             );
           }}
-        />
-      default: return <></>
+        />;
+      default: return <></>;
     }
   }
 
@@ -296,16 +296,16 @@ class LayerEditorInternal extends React.Component<LayerEditorInternalProps, Laye
     this.props.onMoveLayer({
       oldIndex: this.props.layerIndex,
       newIndex: this.props.layerIndex+offset
-    })
+    });
   }
 
   render() {
     const t = this.props.t;
 
     const groupIds: string[] = [];
-    const layerType = this.props.layer.type
+    const layerType = this.props.layer.type;
     const groups = layoutGroups(layerType, t).filter(group => {
-      return !(layerType === 'background' && group.type === 'source')
+      return !(layerType === "background" && group.type === "source");
     }).map(group => {
       const groupId = group.id;
       groupIds.push(groupId);
@@ -318,10 +318,10 @@ class LayerEditorInternal extends React.Component<LayerEditorInternalProps, Laye
         onActiveToggle={this.onGroupToggle.bind(this, group.title)}
       >
         {this.renderGroupType(group.type, group.fields)}
-      </LayerEditorGroup>
-    })
+      </LayerEditorGroup>;
+    });
 
-    const layout = this.props.layer.layout || {}
+    const layout = this.props.layer.layout || {};
 
     const items: {[key: string]: {
       text: string,
@@ -356,14 +356,14 @@ class LayerEditorInternal extends React.Component<LayerEditorInternalProps, Laye
         handler: () => this.moveLayer(+1),
         wdKey: "menu-move-layer-down"
       }
-    }
+    };
 
     function handleSelection(id: string, event: React.SyntheticEvent) {
       event.stopPropagation();
       items[id].handler();
     }
 
-    return <IconContext.Provider value={{size: '14px', color: '#8e8e8e'}}>
+    return <IconContext.Provider value={{size: "14px", color: "#8e8e8e"}}>
       <section className="maputnik-layer-editor"
         role="main"
         aria-label={t("Layer editor")}
@@ -395,7 +395,7 @@ class LayerEditorInternal extends React.Component<LayerEditorInternalProps, Laye
                         <MenuItem value={id} className='more-menu__menu__item' data-wd-key={item.wdKey}>
                           {item.text}
                         </MenuItem>
-                      </li>
+                      </li>;
                     })}
                   </ul>
                 </Menu>
@@ -412,7 +412,7 @@ class LayerEditorInternal extends React.Component<LayerEditorInternalProps, Laye
           {groups}
         </Accordion>
       </section>
-    </IconContext.Provider>
+    </IconContext.Provider>;
   }
 }
 

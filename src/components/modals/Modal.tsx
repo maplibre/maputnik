@@ -1,8 +1,8 @@
-import React, { PropsWithChildren } from 'react'
-import {MdClose} from 'react-icons/md'
-import AriaModal from 'react-aria-modal'
-import classnames from 'classnames';
-import { WithTranslation, withTranslation } from 'react-i18next';
+import React, { PropsWithChildren } from "react";
+import {MdClose} from "react-icons/md";
+import AriaModal from "react-aria-modal";
+import classnames from "classnames";
+import { WithTranslation, withTranslation } from "react-i18next";
 
 type ModalInternalProps = PropsWithChildren & {
   "data-wd-key"?: string
@@ -17,7 +17,7 @@ type ModalInternalProps = PropsWithChildren & {
 class ModalInternal extends React.Component<ModalInternalProps> {
   static defaultProps = {
     underlayClickExits: true
-  }
+  };
 
   // See <https://github.com/maplibre/maputnik/issues/416>
   onClose = () => {
@@ -28,7 +28,7 @@ class ModalInternal extends React.Component<ModalInternalProps> {
     setTimeout(() => {
       this.props.onOpenToggle(false);
     }, 0);
-  }
+  };
 
   render() {
     const t = this.props.t;
@@ -59,7 +59,7 @@ class ModalInternal extends React.Component<ModalInternalProps> {
             <div className="maputnik-modal-content">{this.props.children}</div>
           </div>
         </div>
-      </AriaModal>
+      </AriaModal>;
     }
     else {
       return false;

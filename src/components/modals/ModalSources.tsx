@@ -1,19 +1,19 @@
-import React from 'react'
-import {MdAddCircleOutline, MdDelete} from 'react-icons/md'
-import latest from '@maplibre/maplibre-gl-style-spec/dist/latest.json'
-import type {GeoJSONSourceSpecification, RasterDEMSourceSpecification, RasterSourceSpecification, SourceSpecification, VectorSourceSpecification} from 'maplibre-gl'
-import { WithTranslation, withTranslation } from 'react-i18next';
+import React from "react";
+import {MdAddCircleOutline, MdDelete} from "react-icons/md";
+import latest from "@maplibre/maplibre-gl-style-spec/dist/latest.json";
+import type {GeoJSONSourceSpecification, RasterDEMSourceSpecification, RasterSourceSpecification, SourceSpecification, VectorSourceSpecification} from "maplibre-gl";
+import { WithTranslation, withTranslation } from "react-i18next";
 
-import Modal from './Modal'
-import InputButton from '../InputButton'
-import FieldString from '../FieldString'
-import FieldSelect from '../FieldSelect'
-import ModalSourcesTypeEditor, { EditorMode } from './ModalSourcesTypeEditor'
+import Modal from "./Modal";
+import InputButton from "../InputButton";
+import FieldString from "../FieldString";
+import FieldSelect from "../FieldSelect";
+import ModalSourcesTypeEditor, { EditorMode } from "./ModalSourcesTypeEditor";
 
-import style from '../../libs/style'
-import { deleteSource, addSource, changeSource } from '../../libs/source'
-import publicSources from '../../config/tilesets.json'
-import { OnStyleChangedCallback, StyleSpecificationWithId } from '../../libs/definitions';
+import style from "../../libs/style";
+import { deleteSource, addSource, changeSource } from "../../libs/source";
+import publicSources from "../../config/tilesets.json";
+import { OnStyleChangedCallback, StyleSpecificationWithId } from "../../libs/definitions";
 
 
 type PublicSourceProps = {
@@ -37,39 +37,39 @@ class PublicSource extends React.Component<PublicSourceProps> {
         <span className="maputnik-space" />
         <MdAddCircleOutline />
       </InputButton>
-    </div>
+    </div>;
   }
 }
 
 function editorMode(source: SourceSpecification) {
-  if(source.type === 'raster') {
-    if(source.tiles) return 'tile_raster'
-    return 'tilejson_raster'
+  if(source.type === "raster") {
+    if(source.tiles) return "tile_raster";
+    return "tilejson_raster";
   }
-  if(source.type === 'raster-dem') {
-    if(source.tiles) return 'tilexyz_raster-dem'
-    return 'tilejson_raster-dem'
+  if(source.type === "raster-dem") {
+    if(source.tiles) return "tilexyz_raster-dem";
+    return "tilejson_raster-dem";
   }
-  if(source.type === 'vector') {
-    if(source.tiles) return 'tile_vector'
-    if(source.url && source.url.startsWith("pmtiles://")) return 'pmtiles_vector'
-    return 'tilejson_vector'
+  if(source.type === "vector") {
+    if(source.tiles) return "tile_vector";
+    if(source.url && source.url.startsWith("pmtiles://")) return "pmtiles_vector";
+    return "tilejson_vector";
   }
-  if(source.type === 'geojson') {
+  if(source.type === "geojson") {
     if (typeof(source.data) === "string") {
-      return 'geojson_url';
+      return "geojson_url";
     }
     else {
-      return 'geojson_json';
+      return "geojson_json";
     }
   }
-  if(source.type === 'image') {
-    return 'image';
+  if(source.type === "image") {
+    return "image";
   }
-  if(source.type === 'video') {
-    return 'video';
+  if(source.type === "video") {
+    return "video";
   }
-  return null
+  return null;
 }
 
 type ActiveModalSourcesTypeEditorProps = {
@@ -90,7 +90,7 @@ class ActiveModalSourcesTypeEditor extends React.Component<ActiveModalSourcesTyp
           aria-label={t("Remove '{{sourceId}}' source", {sourceId: this.props.sourceId})}
           className="maputnik-active-source-type-editor-header-delete"
           onClick={()=> this.props.onDelete(this.props.sourceId)}
-          style={{backgroundColor: 'transparent'}}
+          style={{backgroundColor: "transparent"}}
         >
           <MdDelete />
         </InputButton>
@@ -102,7 +102,7 @@ class ActiveModalSourcesTypeEditor extends React.Component<ActiveModalSourcesTyp
           source={this.props.source}
         />
       </div>
-    </div>
+    </div>;
   }
 }
 
@@ -118,68 +118,68 @@ type AddSourceState = {
 
 class AddSource extends React.Component<AddSourceProps, AddSourceState> {
   constructor(props: AddSourceProps) {
-    super(props)
+    super(props);
     this.state = {
-      mode: 'tilejson_vector',
+      mode: "tilejson_vector",
       sourceId: style.generateId(),
-      source: this.defaultSource('tilejson_vector'),
-    }
+      source: this.defaultSource("tilejson_vector"),
+    };
   }
 
   defaultSource(mode: EditorMode): SourceSpecification {
-    const source = (this.state || {}).source || {}
+    const source = (this.state || {}).source || {};
     const {protocol} = window.location;
 
     switch(mode) {
-      case 'pmtiles_vector': return {
-        type: 'vector',
+      case "pmtiles_vector": return {
+        type: "vector",
         url: `${protocol}//localhost:3000/file.pmtiles`
-      }
-      case 'geojson_url': return {
-        type: 'geojson',
+      };
+      case "geojson_url": return {
+        type: "geojson",
         data: `${protocol}//localhost:3000/geojson.json`
-      }
-      case 'geojson_json': return {
-        type: 'geojson',
+      };
+      case "geojson_json": return {
+        type: "geojson",
         cluster: (source as GeoJSONSourceSpecification).cluster || false,
-        data: ''
-      }
-      case 'tilejson_vector': return {
-        type: 'vector',
+        data: ""
+      };
+      case "tilejson_vector": return {
+        type: "vector",
         url: (source as VectorSourceSpecification).url || `${protocol}//localhost:3000/tilejson.json`
-      }
-      case 'tile_vector': return {
-        type: 'vector',
+      };
+      case "tile_vector": return {
+        type: "vector",
         tiles: (source as VectorSourceSpecification).tiles || [`${protocol}//localhost:3000/{x}/{y}/{z}.pbf`],
         minzoom: (source as VectorSourceSpecification).minzoom || 0,
         maxzoom: (source as VectorSourceSpecification).maxzoom || 14,
-        scheme: (source as VectorSourceSpecification).scheme || 'xyz'
-      }
-      case 'tilejson_raster': return {
-        type: 'raster',
+        scheme: (source as VectorSourceSpecification).scheme || "xyz"
+      };
+      case "tilejson_raster": return {
+        type: "raster",
         url: (source as RasterSourceSpecification).url || `${protocol}//localhost:3000/tilejson.json`
-      }
-      case 'tile_raster': return {
-        type: 'raster',
+      };
+      case "tile_raster": return {
+        type: "raster",
         tiles: (source as RasterSourceSpecification).tiles || [`${protocol}//localhost:3000/{x}/{y}/{z}.png`],
         minzoom: (source as RasterSourceSpecification).minzoom || 0,
         maxzoom: (source as RasterSourceSpecification).maxzoom || 14,
-        scheme: (source as RasterSourceSpecification).scheme || 'xyz',
+        scheme: (source as RasterSourceSpecification).scheme || "xyz",
         tileSize: (source as RasterSourceSpecification).tileSize || 512,
-      }
-      case 'tilejson_raster-dem': return {
-        type: 'raster-dem',
+      };
+      case "tilejson_raster-dem": return {
+        type: "raster-dem",
         url: (source as RasterDEMSourceSpecification).url || `${protocol}//localhost:3000/tilejson.json`
-      }
-      case 'tilexyz_raster-dem': return {
-        type: 'raster-dem',
+      };
+      case "tilexyz_raster-dem": return {
+        type: "raster-dem",
         tiles: (source as RasterDEMSourceSpecification).tiles || [`${protocol}//localhost:3000/{x}/{y}/{z}.png`],
         minzoom: (source as RasterDEMSourceSpecification).minzoom || 0,
         maxzoom: (source as RasterDEMSourceSpecification).maxzoom || 14,
         tileSize: (source as RasterDEMSourceSpecification).tileSize || 512
-      }
-      case 'image': return {
-        type: 'image',
+      };
+      case "image": return {
+        type: "image",
         url: `${protocol}//localhost:3000/image.png`,
         coordinates: [
           [0,0],
@@ -187,9 +187,9 @@ class AddSource extends React.Component<AddSourceProps, AddSourceState> {
           [0,0],
           [0,0],
         ],
-      }
-      case 'video': return {
-        type: 'video',
+      };
+      case "video": return {
+        type: "video",
         urls: [
           `${protocol}//localhost:3000/movie.mp4`
         ],
@@ -199,19 +199,19 @@ class AddSource extends React.Component<AddSourceProps, AddSourceState> {
           [0,0],
           [0,0],
         ],
-      }
-      default: return {} as any
+      };
+      default: return {} as any;
     }
   }
 
   onAdd = () => {
     const {source, sourceId} = this.state;
     this.props.onAdd(sourceId, source);
-  }
+  };
 
   onChangeSource = (source: SourceSpecification) => {
     this.setState({source});
-  }
+  };
 
   render() {
     const t = this.props.t;
@@ -238,17 +238,17 @@ class AddSource extends React.Component<AddSourceProps, AddSourceState> {
         label={t("Source Type")}
         fieldSpec={sourceTypeFieldSpec}
         options={[
-          ['geojson_json', t('GeoJSON (JSON)')],
-          ['geojson_url', t('GeoJSON (URL)')],
-          ['tilejson_vector', t('Vector (TileJSON URL)')],
-          ['tile_vector', t('Vector (Tile URLs)')],
-          ['tilejson_raster', t('Raster (TileJSON URL)')],
-          ['tile_raster', t('Raster (Tile URLs)')],
-          ['tilejson_raster-dem', t('Raster DEM (TileJSON URL)')],
-          ['tilexyz_raster-dem', t('Raster DEM (XYZ URLs)')],
-          ['pmtiles_vector', t('Vector (PMTiles)')],
-          ['image', t('Image')],
-          ['video', t('Video')],
+          ["geojson_json", t("GeoJSON (JSON)")],
+          ["geojson_url", t("GeoJSON (URL)")],
+          ["tilejson_vector", t("Vector (TileJSON URL)")],
+          ["tile_vector", t("Vector (Tile URLs)")],
+          ["tilejson_raster", t("Raster (TileJSON URL)")],
+          ["tile_raster", t("Raster (Tile URLs)")],
+          ["tilejson_raster-dem", t("Raster DEM (TileJSON URL)")],
+          ["tilexyz_raster-dem", t("Raster DEM (XYZ URLs)")],
+          ["pmtiles_vector", t("Vector (PMTiles)")],
+          ["image", t("Image")],
+          ["video", t("Video")],
         ]}
         onChange={mode => this.setState({mode: mode as EditorMode, source: this.defaultSource(mode as EditorMode)})}
         value={this.state.mode as string}
@@ -266,7 +266,7 @@ class AddSource extends React.Component<AddSourceProps, AddSourceState> {
       >
         {t("Add Source")}
       </InputButton>
-    </div>
+    </div>;
   }
 }
 
@@ -279,16 +279,16 @@ type ModalSourcesInternalProps = {
 
 class ModalSourcesInternal extends React.Component<ModalSourcesInternalProps> {
   stripTitle(source: SourceSpecification & {title?: string}): SourceSpecification {
-    const strippedSource = {...source}
-    delete strippedSource['title']
-    return strippedSource
+    const strippedSource = {...source};
+    delete strippedSource["title"];
+    return strippedSource;
   }
 
   render() {
     const {t, mapStyle} = this.props;
     const i18nProps = {t, i18n: this.props.i18n, tReady: this.props.tReady};
     const activeSources = Object.keys(mapStyle.sources).map(sourceId => {
-      const source = mapStyle.sources[sourceId]
+      const source = mapStyle.sources[sourceId];
       return <ActiveModalSourcesTypeEditor
         key={sourceId}
         sourceId={sourceId}
@@ -296,8 +296,8 @@ class ModalSourcesInternal extends React.Component<ModalSourcesInternalProps> {
         onChange={(src: SourceSpecification) => this.props.onStyleChanged(changeSource(mapStyle, sourceId, src))}
         onDelete={() => this.props.onStyleChanged(deleteSource(mapStyle, sourceId))}
         {...i18nProps}
-      />
-    })
+      />;
+    });
 
     const tilesetOptions = Object.keys(publicSources).filter((sourceId: string) => !(sourceId in mapStyle.sources)).map((sourceId: string) => {
       const source = publicSources[sourceId as keyof typeof publicSources] as SourceSpecification & {title: string};
@@ -307,14 +307,14 @@ class ModalSourcesInternal extends React.Component<ModalSourcesInternalProps> {
         type={source.type}
         title={source.title}
         onSelect={() => this.props.onStyleChanged(addSource(mapStyle, sourceId, this.stripTitle(source)))}
-      />
-    })
+      />;
+    });
 
     return <Modal
       data-wd-key="modal:sources"
       isOpen={this.props.isOpen}
       onOpenToggle={this.props.onOpenToggle}
-      title={t('Sources')}
+      title={t("Sources")}
     >
       <section className="maputnik-modal-section">
         <h1>{t("Active Sources")}</h1>
@@ -339,7 +339,7 @@ class ModalSourcesInternal extends React.Component<ModalSourcesInternalProps> {
           {...i18nProps}
         />
       </section>
-    </Modal>
+    </Modal>;
   }
 }
 
