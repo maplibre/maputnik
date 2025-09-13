@@ -1,9 +1,9 @@
 import React from "react";
-import {mdiTableRowPlusAfter} from "@mdi/js";
+import { TbMathFunction } from "react-icons/tb";
+import { PiListPlusBold } from "react-icons/pi";
 import {isEqual} from "lodash";
 import {type ExpressionSpecification, type LegacyFilterSpecification} from "maplibre-gl";
 import {latest, migrate, convertFilter} from "@maplibre/maplibre-gl-style-spec";
-import {mdiFunctionVariant} from "@mdi/js";
 
 import {combiningFilterOps} from "../libs/filterops";
 import InputSelect from "./InputSelect";
@@ -198,9 +198,7 @@ class FilterEditorInternal extends React.Component<FilterEditorInternalProps, Fi
           onClick={this.makeExpression}
           title={t("Convert to expression")}
         >
-          <svg style={{marginRight: "0.2em", width:"14px", height:"14px", verticalAlign: "middle"}} viewBox="0 0 24 24">
-            <path fill="currentColor" d={mdiFunctionVariant} />
-          </svg>
+          <TbMathFunction />
           {t("Upgrade to expression")}
         </InputButton>
       </div>;
@@ -217,9 +215,7 @@ class FilterEditorInternal extends React.Component<FilterEditorInternalProps, Fi
             title={t("Convert to expression")}
             className="maputnik-make-zoom-function"
           >
-            <svg style={{width:"14px", height:"14px", verticalAlign: "middle"}} viewBox="0 0 24 24">
-              <path fill="currentColor" d={mdiFunctionVariant} />
-            </svg>
+            <TbMathFunction />
           </InputButton>
         </div>
       );
@@ -272,9 +268,8 @@ class FilterEditorInternal extends React.Component<FilterEditorInternalProps, Fi
               className="maputnik-add-filter"
               onClick={this.addFilterItem}
             >
-              <svg style={{width:"14px", height:"14px", verticalAlign: "text-bottom"}} viewBox="0 0 24 24">
-                <path fill="currentColor" d={mdiTableRowPlusAfter} />
-              </svg> {t("Add filter")}
+              <PiListPlusBold style={{ verticalAlign: "text-bottom" }} />
+              {t("Add filter")}
             </InputButton>
           </div>
           <div
