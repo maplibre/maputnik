@@ -2,7 +2,7 @@ import React from 'react'
 import InputString from './InputString'
 import InputNumber from './InputNumber'
 
-export type FieldArrayProps = {
+export type InputArrayProps = {
   value: (string | number | undefined)[]
   type?: string
   length?: number
@@ -12,18 +12,18 @@ export type FieldArrayProps = {
   label?: string
 };
 
-type FieldArrayState = {
+type InputArrayState = {
   value: (string | number | undefined)[]
   initialPropsValue: unknown[]
 }
 
-export default class FieldArray extends React.Component<FieldArrayProps, FieldArrayState> {
+export default class InputArray extends React.Component<InputArrayProps, InputArrayState> {
   static defaultProps = {
     value: [],
     default: [],
   }
 
-  constructor (props: FieldArrayProps) {
+  constructor (props: InputArrayProps) {
     super(props);
     this.state = {
       value: this.props.value.slice(0),
@@ -32,7 +32,7 @@ export default class FieldArray extends React.Component<FieldArrayProps, FieldAr
     };
   }
 
-  static getDerivedStateFromProps(props: Readonly<FieldArrayProps>, state: FieldArrayState) {
+  static getDerivedStateFromProps(props: Readonly<InputArrayProps>, state: InputArrayState) {
     const value: any[] = [];
     const initialPropsValue = state.initialPropsValue.slice(0);
 

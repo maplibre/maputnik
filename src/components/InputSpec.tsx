@@ -4,21 +4,23 @@ import InputColor, { InputColorProps } from './InputColor'
 import InputNumber, { InputNumberProps } from './InputNumber'
 import InputCheckbox, { InputCheckboxProps } from './InputCheckbox'
 import InputString, { InputStringProps } from './InputString'
-import InputArray, { FieldArrayProps } from './InputArray'
-import InputDynamicArray, { FieldDynamicArrayProps } from './InputDynamicArray'
-import InputFont, { FieldFontProps } from './InputFont'
+import InputArray, { InputArrayProps } from './InputArray'
+import InputDynamicArray, { InputDynamicArrayProps } from './InputDynamicArray'
+import InputFont, { InputFontProps } from './InputFont'
 import InputAutocomplete, { InputAutocompleteProps } from './InputAutocomplete'
 import InputEnum, { InputEnumProps } from './InputEnum'
 import capitalize from 'lodash.capitalize'
 
 const iconProperties = ['background-pattern', 'fill-pattern', 'line-pattern', 'fill-extrusion-pattern', 'icon-image']
 
-export type SpecFieldProps = {
+export type FieldSpecType = 'number' | 'enum' | 'resolvedImage' | 'formatted' | 'string' | 'color' | 'boolean' | 'array' | 'numberArray' | 'padding' | 'colorArray' | 'variableAnchorOffsetCollection';
+
+export type InputSpecProps = {
   onChange?(fieldName: string | undefined, value: number | undefined | (string | number | undefined)[]): unknown
   fieldName?: string
   fieldSpec?: {
     default?: unknown
-    type?: 'number' | 'enum' | 'resolvedImage' | 'formatted' | 'string' | 'color' | 'boolean' | 'array'
+    type?: FieldSpecType
     minimum?: number
     maximum?: number
     values?: unknown[]
@@ -37,7 +39,7 @@ export type SpecFieldProps = {
 /** Display any field from the Maplibre GL style spec and
  * choose the correct field component based on the @{fieldSpec}
  * to display @{value}. */
-export default class SpecField extends React.Component<SpecFieldProps> {
+export default class InputSpec extends React.Component<InputSpecProps> {
 
   childNodes() {
     const commonProps = {
@@ -96,25 +98,51 @@ export default class SpecField extends React.Component<SpecFieldProps> {
     case 'array':
       if(this.props.fieldName === 'text-font') {
         return <InputFont
-          {...commonProps as FieldFontProps}
+          {...commonProps as InputFontProps}
           fonts={this.props.fieldSpec.values}
         />
       } else {
         if (this.props.fieldSpec.length) {
           return <InputArray
-            {...commonProps as FieldArrayProps}
+            {...commonProps as InputArrayProps}
             type={this.props.fieldSpec.value}
             length={this.props.fieldSpec.length}
           />
         } else {
           return <InputDynamicArray
-            {...commonProps as FieldDynamicArrayProps}
+            {...commonProps as InputDynamicArrayProps}
             fieldSpec={this.props.fieldSpec}
-            type={this.props.fieldSpec.value as FieldDynamicArrayProps['type']}
+            type={this.props.fieldSpec.value as InputDynamicArrayProps['type']}
           />
         }
       }
-    default: return null
+    case 'numberArray': return (
+      <InputDynamicArray
+        {...commonProps as InputDynamicArrayProps}
+        fieldSpec={this.props.fieldSpec}
+        type="number"
+        value={(Array.isArray(this.props.value) ? this.props.value : [this.props.value]) as (string | number | undefined)[]}
+      />
+    )
+    case 'colorArray': return (
+      <InputDynamicArray
+        {...commonProps as InputDynamicArrayProps}
+        fieldSpec={this.props.fieldSpec}
+        type="color"
+        value={(Array.isArray(this.props.value) ? this.props.value : [this.props.value]) as (string | number | undefined)[]}
+      />
+    )
+    case 'padding': return (
+      <InputArray
+        {...commonProps as InputArrayProps}
+        type="number"
+        value={(Array.isArray(this.props.value) ? this.props.value : [this.props.value]) as (string | number | undefined)[]}
+        length={4}
+      />
+    )
+    default:
+      console.warn(`No proper field input for ${this.props.fieldName} type: ${this.props.fieldSpec?.type}`);
+      return null
     }
   }
 

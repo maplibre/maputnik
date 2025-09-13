@@ -9,11 +9,12 @@ import InputButton from './InputButton'
 import FieldDocLabel from './FieldDocLabel'
 import InputEnum from './InputEnum'
 import InputUrl from './InputUrl'
+import InputColor from './InputColor';
 
 
-export type FieldDynamicArrayProps = {
+export type InputDynamicArrayProps = {
   value?: (string | number | undefined)[]
-  type?: 'url' | 'number' | 'enum' | 'string'
+  type?: 'url' | 'number' | 'enum' | 'string' | 'color'
   default?: (string | number | undefined)[]
   onChange?(values: (string | number | undefined)[] | undefined): unknown
   style?: object
@@ -24,9 +25,9 @@ export type FieldDynamicArrayProps = {
   label: string
 }
 
-type FieldDynamicArrayInternalProps = FieldDynamicArrayProps & WithTranslation;
+type InputDynamicArrayInternalProps = InputDynamicArrayProps & WithTranslation;
 
-class FieldDynamicArrayInternal extends React.Component<FieldDynamicArrayInternalProps> {
+class InputDynamicArrayInternal extends React.Component<InputDynamicArrayInternalProps> {
   changeValue(idx: number, newValue: string | number | undefined) {
     const values = this.values.slice(0)
     values[idx] = newValue
@@ -49,6 +50,8 @@ class FieldDynamicArrayInternal extends React.Component<FieldDynamicArrayInterna
       const {fieldSpec} = this.props;
       const defaultValue = Object.keys(fieldSpec!.values)[0];
       values.push(defaultValue);
+    } else if (this.props.type === 'color') {
+      values.push("#000000");
     } else {
       values.push("")
     }
@@ -95,6 +98,13 @@ class FieldDynamicArrayInternal extends React.Component<FieldDynamicArrayInterna
           aria-label={this.props['aria-label'] || this.props.label}
         />
       }
+      else if (this.props.type === 'color') {
+        input = <InputColor
+          value={v as string}
+          onChange={this.changeValue.bind(this, i)}
+          aria-label={this.props['aria-label'] || this.props.label}
+        />
+      }
       else {
         input = <InputString
           value={v as string}
@@ -131,8 +141,8 @@ class FieldDynamicArrayInternal extends React.Component<FieldDynamicArrayInterna
   }
 }
 
-const FieldDynamicArray = withTranslation()(FieldDynamicArrayInternal);
-export default FieldDynamicArray;
+const InputDynamicArray = withTranslation()(InputDynamicArrayInternal);
+export default InputDynamicArray;
 
 type DeleteValueInputButtonProps = {
   onClick?(...args: unknown[]): unknown

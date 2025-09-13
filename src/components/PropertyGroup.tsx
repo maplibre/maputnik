@@ -26,13 +26,9 @@ function getFieldSpec(spec: any, layerType: LayerSpecification["type"], fieldNam
   return fieldSpec
 }
 
-function getGroupName(spec: any, layerType: LayerSpecification["type"], fieldName: string) {
-  const paint  = spec['paint_' + layerType] || {}
-  if (fieldName in paint) {
-    return 'paint'
-  } else {
-    return 'layout'
-  }
+function getGroupName(spec: any, layerType: LayerSpecification["type"], fieldName: string): 'paint' | 'layout' {
+  const paint = spec['paint_' + layerType] || {}
+  return (fieldName in paint) ? 'paint' : 'layout';
 }
 
 type PropertyGroupProps = {

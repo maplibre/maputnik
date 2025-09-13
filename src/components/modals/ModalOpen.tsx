@@ -6,11 +6,11 @@ import { Trans, WithTranslation, withTranslation } from 'react-i18next';
 
 import ModalLoading from './ModalLoading'
 import Modal from './Modal'
-import InputButton from './InputButton'
-import InputUrl from './InputUrl'
+import InputButton from '../InputButton'
+import InputUrl from '../InputUrl'
 
-import style from '../libs/style'
-import publicStyles from '../config/styles.json'
+import style from '../../libs/style'
+import publicStyles from '../../config/styles.json'
 
 type PublicStyleProps = {
   url: string

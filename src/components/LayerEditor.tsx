@@ -118,7 +118,7 @@ type LayerEditorInternalProps = {
   layer: LayerSpecification
   sources: {[key: string]: SourceSpecification & {layers: string[]}}
   vectorLayers: {[key: string]: any}
-  spec: object
+  spec: any
   onLayerChanged(...args: unknown[]): unknown
   onLayerIdChange(...args: unknown[]): unknown
   onMoveLayer: OnMoveLayerCallback
@@ -367,6 +367,7 @@ class LayerEditorInternal extends React.Component<LayerEditorInternalProps, Laye
       <section className="maputnik-layer-editor"
         role="main"
         aria-label={t("Layer editor")}
+        data-wd-key="layer-editor"
       >
         <header>
           <div className="layer-header">

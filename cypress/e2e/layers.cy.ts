@@ -467,6 +467,30 @@ describe("layers", () => {
         ],
       });
     });
+
+    it("should show spec info when hovering and clicking single line property", () => {
+      when.modal.fillLayers({
+        type: "symbol",
+        layer: "example",
+      });
+
+      when.hover("spec-field-container:text-rotate");
+      then(get.elementByTestId("field-doc-button-Rotate")).shouldBeVisible();
+      when.click("field-doc-button-Rotate", 0);
+      then(get.elementByTestId("spec-field-doc")).shouldContainText("Rotates the ");
+    });
+
+    it("should show spec info when hovering and clicking multi line property", () => {
+      when.modal.fillLayers({
+        type: "symbol",
+        layer: "example",
+      });
+
+      when.hover("spec-field-container:text-offset");
+      then(get.elementByTestId("field-doc-button-Offset")).shouldBeVisible();
+      when.click("field-doc-button-Offset", 0);
+      then(get.elementByTestId("spec-field-doc")).shouldContainText("Offset distance");
+    });
   });
 
   describe("raster", () => {
@@ -523,6 +547,104 @@ describe("layers", () => {
           },
         ],
       });
+    });
+  });
+
+  describe("hillshade", () => {
+    it("add", () => {
+      const id = when.modal.fillLayers({
+        type: "hillshade",
+        layer: "example",
+      });
+
+      then(get.styleFromLocalStorage()).shouldDeepNestedInclude({
+        layers: [
+          {
+            id: id,
+            type: "hillshade",
+            source: "example",
+          },
+        ],
+      });
+    });
+
+    it("set hillshade illumination direction array", () => {
+      const id = when.modal.fillLayers({
+        type: "hillshade",
+        layer: "example",
+      });
+      when.collapseGroupInLayerEditor();
+      when.collapseGroupInLayerEditor(1);
+      when.setValueToPropertyArray("spec-field:hillshade-illumination-direction", '1');
+      when.addValueToPropertyArray("spec-field:hillshade-illumination-direction", '2');
+      when.addValueToPropertyArray("spec-field:hillshade-illumination-direction", '3');
+      when.addValueToPropertyArray("spec-field:hillshade-illumination-direction", '4');
+
+      then(get.styleFromLocalStorage()).shouldDeepNestedInclude({
+        layers: [
+          {
+            id: id,
+            type: "hillshade",
+            source: "example",
+            paint: {
+              "hillshade-illumination-direction": [ 1, 2, 3, 4 ]
+            }
+          },
+        ],
+      });
+    });
+
+    it("set hillshade highlight color array", () => {
+      const id = when.modal.fillLayers({
+        type: "hillshade",
+        layer: "example",
+      });
+      when.collapseGroupInLayerEditor();
+      when.setValueToPropertyArray("spec-field:hillshade-highlight-color", 'blue');
+      when.addValueToPropertyArray("spec-field:hillshade-highlight-color", '#00ff00');
+      when.addValueToPropertyArray("spec-field:hillshade-highlight-color", 'rgba(255, 255, 0, 1)');
+
+      then(get.styleFromLocalStorage()).shouldDeepNestedInclude({
+        layers: [
+          {
+            id: id,
+            type: "hillshade",
+            source: "example",
+            paint: {
+              "hillshade-highlight-color": [ "blue", "#00ff00", "rgba(255, 255, 0, 1)" ]
+            }
+          },
+        ],
+      });
+    });
+  });
+
+  describe("color-relief", () => {
+    it("add", () => {
+      const id = when.modal.fillLayers({
+        type: "color-relief",
+        layer: "example",
+      });
+
+      then(get.styleFromLocalStorage()).shouldDeepNestedInclude({
+        layers: [
+          {
+            id: id,
+            type: "color-relief",
+            source: "example",
+          },
+        ],
+      });
+    });
+
+    it("adds elevation expression when clicking the elevation button", () => {
+      when.modal.fillLayers({
+        type: "color-relief",
+        layer: "example",
+      });
+      when.collapseGroupInLayerEditor();
+      when.click("make-elevation-function");
+      then(get.element("[data-wd-key='spec-field-container:color-relief-color'] .CodeMirror-line")).shouldBeVisible();
     });
   });
 

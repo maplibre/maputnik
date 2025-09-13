@@ -1,4 +1,4 @@
-import InputDynamicArray, {FieldDynamicArrayProps as InputDynamicArrayProps} from './InputDynamicArray'
+import InputDynamicArray, {InputDynamicArrayProps} from './InputDynamicArray'
 import Fieldset from './Fieldset'
 
 type FieldDynamicArrayProps = InputDynamicArrayProps & {

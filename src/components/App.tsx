@@ -8,7 +8,8 @@ import {arrayMoveMutable} from 'array-move'
 import hash from "string-hash";
 import { PMTiles } from "pmtiles";
 import {Map, LayerSpecification, StyleSpecification, ValidationError, SourceSpecification} from 'maplibre-gl'
-import {latest, validateStyleMin} from '@maplibre/maplibre-gl-style-spec'
+import {validateStyleMin} from '@maplibre/maplibre-gl-style-spec'
+import latest from '@maplibre/maplibre-gl-style-spec/dist/latest.json'
 
 import MapMaplibreGl from './MapMaplibreGl'
 import MapOpenLayers from './MapOpenLayers'
@@ -18,12 +19,12 @@ import AppToolbar, { MapState } from './AppToolbar'
 import AppLayout from './AppLayout'
 import MessagePanel from './AppMessagePanel'
 
-import ModalSettings from './ModalSettings'
-import ModalExport from './ModalExport'
-import ModalSources from './ModalSources'
-import ModalOpen from './ModalOpen'
-import ModalShortcuts from './ModalShortcuts'
-import ModalDebug from './ModalDebug'
+import ModalSettings from './modals/ModalSettings'
+import ModalExport from './modals/ModalExport'
+import ModalSources from './modals/ModalSources'
+import ModalOpen from './modals/ModalOpen'
+import ModalShortcuts from './modals/ModalShortcuts'
+import ModalDebug from './modals/ModalDebug'
 
 import {downloadGlyphsMetadata, downloadSpriteMetadata} from '../libs/metadata'
 import style from '../libs/style'
