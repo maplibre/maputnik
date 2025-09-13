@@ -1,4 +1,4 @@
-import React, { BaseSyntheticEvent } from "react";
+import React, { type BaseSyntheticEvent } from "react";
 import generateUniqueId from "../libs/document-uid";
 
 export type InputNumberProps = {

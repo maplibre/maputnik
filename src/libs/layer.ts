@@ -1,5 +1,5 @@
 import {latest} from "@maplibre/maplibre-gl-style-spec";
-import { LayerSpecification } from "maplibre-gl";
+import { type LayerSpecification } from "maplibre-gl";
 
 export function changeType(layer: LayerSpecification, newType: string) {
   const changedPaintProps: LayerSpecification["paint"] = { ...layer.paint };

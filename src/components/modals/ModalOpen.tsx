@@ -1,8 +1,8 @@
-import React, { FormEvent } from "react";
+import React, { type FormEvent } from "react";
 import {MdFileUpload} from "react-icons/md";
 import {MdAddCircleOutline} from "react-icons/md";
-import FileReaderInput, { Result } from "react-file-reader-input";
-import { Trans, WithTranslation, withTranslation } from "react-i18next";
+import FileReaderInput, { type Result } from "react-file-reader-input";
+import { Trans, type WithTranslation, withTranslation } from "react-i18next";
 
 import ModalLoading from "./ModalLoading";
 import Modal from "./Modal";

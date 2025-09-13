@@ -1,7 +1,7 @@
 import React from "react";
 import {latest} from "@maplibre/maplibre-gl-style-spec";
-import { WithTranslation, withTranslation } from "react-i18next";
-import { TFunction } from "i18next";
+import { type WithTranslation, withTranslation } from "react-i18next";
+import { type TFunction } from "i18next";
 
 import Block from "../Block";
 import FieldUrl from "../FieldUrl";

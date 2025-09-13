@@ -1,4 +1,4 @@
-import InputMultiInput, {InputMultiInputProps} from "./InputMultiInput";
+import InputMultiInput, {type InputMultiInputProps} from "./InputMultiInput";
 import Fieldset from "./Fieldset";
 
 

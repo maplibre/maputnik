@@ -1,6 +1,6 @@
 import React from "react";
 import {throttle} from "lodash";
-import { WithTranslation, withTranslation } from "react-i18next";
+import { type WithTranslation, withTranslation } from "react-i18next";
 
 import MapMaplibreGlLayerPopup from "./MapMaplibreGlLayerPopup";
 

@@ -1,4 +1,4 @@
-import { StyleSpecificationWithId } from "./definitions";
+import { type StyleSpecificationWithId } from "./definitions";
 
 export class RevisionStore {
   revisions: StyleSpecificationWithId[];

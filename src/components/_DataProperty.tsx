@@ -11,7 +11,7 @@ import Block from "./Block";
 import docUid from "../libs/document-uid";
 import sortNumerically from "../libs/sort-numerically";
 import {findDefaultFromSpec} from "../libs/spec-helper";
-import { WithTranslation, withTranslation } from "react-i18next";
+import { type WithTranslation, withTranslation } from "react-i18next";
 
 import labelFromFieldName from "../libs/label-from-field-name";
 import DeleteStopButton from "./_DeleteStopButton";

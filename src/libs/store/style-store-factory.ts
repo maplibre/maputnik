@@ -1,5 +1,5 @@
 /// <reference types="vite/client" />
-import { IStyleStore, OnStyleChangedCallback } from "../definitions";
+import { type IStyleStore, type OnStyleChangedCallback } from "../definitions";
 import { getStyleUrlFromAddressbarAndRemoveItIfNeeded, loadStyleUrl } from "../urlopen";
 import { ApiStyleStore } from "./apistore";
 import { StyleStore } from "./stylestore";

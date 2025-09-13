@@ -1,7 +1,7 @@
 import React from "react";
 import {mdiFunctionVariant, mdiTableRowPlusAfter} from "@mdi/js";
 import latest from "@maplibre/maplibre-gl-style-spec/dist/latest.json";
-import { WithTranslation, withTranslation } from "react-i18next";
+import { type WithTranslation, withTranslation } from "react-i18next";
 
 import InputButton from "./InputButton";
 import InputSpec from "./InputSpec";

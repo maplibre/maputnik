@@ -1,5 +1,5 @@
 import Block from "./Block";
-import InputSelect, {InputSelectProps} from "./InputSelect";
+import InputSelect, {type InputSelectProps} from "./InputSelect";
 
 
 type FieldSelectProps = InputSelectProps & {

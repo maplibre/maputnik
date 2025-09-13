@@ -3,7 +3,7 @@ import React from "react";
 import InputButton from "./InputButton";
 import {MdFunctions, MdInsertChart} from "react-icons/md";
 import {mdiFunctionVariant} from "@mdi/js";
-import { WithTranslation, withTranslation } from "react-i18next";
+import { type WithTranslation, withTranslation } from "react-i18next";
 
 type FunctionInputButtonsInternalProps = {
   fieldSpec?: any

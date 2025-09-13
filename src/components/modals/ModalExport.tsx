@@ -4,7 +4,7 @@ import {saveAs} from "file-saver";
 import {version} from "maplibre-gl/package.json";
 import {format} from "@maplibre/maplibre-gl-style-spec";
 import {MdMap, MdSave} from "react-icons/md";
-import {WithTranslation, withTranslation} from "react-i18next";
+import {type WithTranslation, withTranslation} from "react-i18next";
 
 import FieldString from "../FieldString";
 import InputButton from "../InputButton";

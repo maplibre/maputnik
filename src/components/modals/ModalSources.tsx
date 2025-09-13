@@ -2,18 +2,18 @@ import React from "react";
 import {MdAddCircleOutline, MdDelete} from "react-icons/md";
 import latest from "@maplibre/maplibre-gl-style-spec/dist/latest.json";
 import type {GeoJSONSourceSpecification, RasterDEMSourceSpecification, RasterSourceSpecification, SourceSpecification, VectorSourceSpecification} from "maplibre-gl";
-import { WithTranslation, withTranslation } from "react-i18next";
+import { type WithTranslation, withTranslation } from "react-i18next";
 
 import Modal from "./Modal";
 import InputButton from "../InputButton";
 import FieldString from "../FieldString";
 import FieldSelect from "../FieldSelect";
-import ModalSourcesTypeEditor, { EditorMode } from "./ModalSourcesTypeEditor";
+import ModalSourcesTypeEditor, { type EditorMode } from "./ModalSourcesTypeEditor";
 
 import style from "../../libs/style";
 import { deleteSource, addSource, changeSource } from "../../libs/source";
 import publicSources from "../../config/tilesets.json";
-import { OnStyleChangedCallback, StyleSpecificationWithId } from "../../libs/definitions";
+import { type OnStyleChangedCallback, type StyleSpecificationWithId } from "../../libs/definitions";
 
 
 type PublicSourceProps = {

@@ -3,7 +3,7 @@ import React from "react";
 import latest from "@maplibre/maplibre-gl-style-spec/dist/latest.json";
 import Block from "./Block";
 import InputNumber from "./InputNumber";
-import { WithTranslation, withTranslation } from "react-i18next";
+import { type WithTranslation, withTranslation } from "react-i18next";
 
 type FieldMaxZoomInternalProps = {
   value?: number

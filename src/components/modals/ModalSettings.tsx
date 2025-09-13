@@ -1,7 +1,7 @@
 import React from "react";
 import latest from "@maplibre/maplibre-gl-style-spec/dist/latest.json";
 import type {LightSpecification, StyleSpecification, TerrainSpecification, TransitionSpecification} from "maplibre-gl";
-import { WithTranslation, withTranslation } from "react-i18next";
+import { type WithTranslation, withTranslation } from "react-i18next";
 
 import FieldArray from "../FieldArray";
 import FieldNumber from "../FieldNumber";

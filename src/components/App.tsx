@@ -7,7 +7,7 @@ import {unset} from "lodash";
 import {arrayMoveMutable} from "array-move";
 import hash from "string-hash";
 import { PMTiles } from "pmtiles";
-import {Map, LayerSpecification, StyleSpecification, ValidationError, SourceSpecification} from "maplibre-gl";
+import {type Map, type LayerSpecification, type StyleSpecification, type ValidationError, type SourceSpecification} from "maplibre-gl";
 import {validateStyleMin} from "@maplibre/maplibre-gl-style-spec";
 import latest from "@maplibre/maplibre-gl-style-spec/dist/latest.json";
 
@@ -15,7 +15,7 @@ import MapMaplibreGl from "./MapMaplibreGl";
 import MapOpenLayers from "./MapOpenLayers";
 import LayerList from "./LayerList";
 import LayerEditor from "./LayerEditor";
-import AppToolbar, { MapState } from "./AppToolbar";
+import AppToolbar, { type MapState } from "./AppToolbar";
 import AppLayout from "./AppLayout";
 import MessagePanel from "./AppMessagePanel";
 
@@ -34,8 +34,8 @@ import { RevisionStore } from "../libs/revisions";
 import LayerWatcher from "../libs/layerwatcher";
 import tokens from "../config/tokens.json";
 import isEqual from "lodash.isequal";
-import { MapOptions } from "maplibre-gl";
-import { OnStyleChangedOpts, StyleSpecificationWithId } from "../libs/definitions";
+import { type MapOptions } from "maplibre-gl";
+import { type OnStyleChangedOpts, type StyleSpecificationWithId } from "../libs/definitions";
 
 // Buffer must be defined globally for @maplibre/maplibre-gl-style-spec validate() function to succeed.
 window.Buffer = buffer.Buffer;

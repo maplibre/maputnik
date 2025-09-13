@@ -1,8 +1,8 @@
-import React, { PropsWithChildren } from "react";
+import React, { type PropsWithChildren } from "react";
 import {MdClose} from "react-icons/md";
 import AriaModal from "react-aria-modal";
 import classnames from "classnames";
-import { WithTranslation, withTranslation } from "react-i18next";
+import { type WithTranslation, withTranslation } from "react-i18next";
 
 type ModalInternalProps = PropsWithChildren & {
   "data-wd-key"?: string

@@ -3,7 +3,7 @@ import { Wrapper, Button, Menu, MenuItem } from "react-aria-menubutton";
 import {Accordion} from "react-accessible-accordion";
 import {MdMoreVert} from "react-icons/md";
 import { IconContext } from "react-icons";
-import {BackgroundLayerSpecification, LayerSpecification, SourceSpecification} from "maplibre-gl";
+import {type BackgroundLayerSpecification, type LayerSpecification, type SourceSpecification} from "maplibre-gl";
 import {v8} from "@maplibre/maplibre-gl-style-spec";
 
 import FieldJson from "./FieldJson";
@@ -19,10 +19,10 @@ import FieldSource from "./FieldSource";
 import FieldSourceLayer from "./FieldSourceLayer";
 import { changeType, changeProperty } from "../libs/layer";
 import {formatLayerId} from "../libs/format";
-import { WithTranslation, withTranslation } from "react-i18next";
-import { TFunction } from "i18next";
+import { type WithTranslation, withTranslation } from "react-i18next";
+import { type TFunction } from "i18next";
 import { NON_SOURCE_LAYERS } from "../libs/non-source-layers";
-import { OnMoveLayerCallback } from "../libs/definitions";
+import { type OnMoveLayerCallback } from "../libs/definitions";
 
 type MaputnikLayoutGroup = {
   id: string;

@@ -1,4 +1,4 @@
-import InputNumber, {InputNumberProps} from "./InputNumber";
+import InputNumber, {type InputNumberProps} from "./InputNumber";
 import Block from "./Block";
 
 

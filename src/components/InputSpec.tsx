@@ -1,14 +1,14 @@
-import React, { ReactElement } from "react";
+import React, { type ReactElement } from "react";
 
-import InputColor, { InputColorProps } from "./InputColor";
-import InputNumber, { InputNumberProps } from "./InputNumber";
-import InputCheckbox, { InputCheckboxProps } from "./InputCheckbox";
-import InputString, { InputStringProps } from "./InputString";
-import InputArray, { InputArrayProps } from "./InputArray";
-import InputDynamicArray, { InputDynamicArrayProps } from "./InputDynamicArray";
-import InputFont, { InputFontProps } from "./InputFont";
-import InputAutocomplete, { InputAutocompleteProps } from "./InputAutocomplete";
-import InputEnum, { InputEnumProps } from "./InputEnum";
+import InputColor, { type InputColorProps } from "./InputColor";
+import InputNumber, { type InputNumberProps } from "./InputNumber";
+import InputCheckbox, { type InputCheckboxProps } from "./InputCheckbox";
+import InputString, { type InputStringProps } from "./InputString";
+import InputArray, { type InputArrayProps } from "./InputArray";
+import InputDynamicArray, { type InputDynamicArrayProps } from "./InputDynamicArray";
+import InputFont, { type InputFontProps } from "./InputFont";
+import InputAutocomplete, { type InputAutocompleteProps } from "./InputAutocomplete";
+import InputEnum, { type InputEnumProps } from "./InputEnum";
 import capitalize from "lodash.capitalize";
 
 const iconProperties = ["background-pattern", "fill-pattern", "line-pattern", "fill-extrusion-pattern", "icon-image"];

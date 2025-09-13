@@ -3,7 +3,7 @@ import React from "react";
 import {latest} from "@maplibre/maplibre-gl-style-spec";
 import Block from "./Block";
 import InputAutocomplete from "./InputAutocomplete";
-import { WithTranslation, withTranslation } from "react-i18next";
+import { type WithTranslation, withTranslation } from "react-i18next";
 
 type FieldSourceLayerInternalProps = {
   value?: string

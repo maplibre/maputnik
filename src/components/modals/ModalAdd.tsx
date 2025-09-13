@@ -1,5 +1,5 @@
 import React from "react";
-import { WithTranslation, withTranslation } from "react-i18next";
+import { type WithTranslation, withTranslation } from "react-i18next";
 import type {LayerSpecification, SourceSpecification} from "maplibre-gl";
 
 import InputButton from "../InputButton";

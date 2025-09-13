@@ -1,6 +1,6 @@
 import throttle from "lodash.throttle";
 import isEqual from "lodash.isequal";
-import { Map } from "maplibre-gl";
+import { type Map } from "maplibre-gl";
 
 export type LayerWatcherOptions = {
   onSourcesChange?: (sources: { [sourceId: string]: string[] }) => void;

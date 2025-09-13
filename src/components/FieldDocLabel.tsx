@@ -1,4 +1,4 @@
-import React, { JSX } from "react";
+import React, { type JSX } from "react";
 import {MdInfoOutline, MdHighlightOff} from "react-icons/md";
 
 type FieldDocLabelProps = {

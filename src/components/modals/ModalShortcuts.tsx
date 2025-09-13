@@ -1,5 +1,5 @@
 import React from "react";
-import { Trans, WithTranslation, withTranslation } from "react-i18next";
+import { Trans, type WithTranslation, withTranslation } from "react-i18next";
 
 import Modal from "./Modal";
 

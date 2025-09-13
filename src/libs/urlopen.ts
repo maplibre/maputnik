@@ -1,5 +1,5 @@
 import style from "./style";
-import { StyleSpecificationWithId } from "./definitions";
+import { type StyleSpecificationWithId } from "./definitions";
 
 export function getStyleUrlFromAddressbarAndRemoveItIfNeeded(): string | null {
   const initialUrl = new URL(window.location.href);

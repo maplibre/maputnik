@@ -1,7 +1,7 @@
 import React from "react";
 import {MdDelete, MdUndo} from "react-icons/md";
 import stringifyPretty from "json-stringify-pretty-compact";
-import { WithTranslation, withTranslation } from "react-i18next";
+import { type WithTranslation, withTranslation } from "react-i18next";
 
 import Block from "./Block";
 import InputButton from "./InputButton";

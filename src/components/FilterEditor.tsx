@@ -1,7 +1,7 @@
 import React from "react";
 import {mdiTableRowPlusAfter} from "@mdi/js";
 import {isEqual} from "lodash";
-import {ExpressionSpecification, LegacyFilterSpecification} from "maplibre-gl";
+import {type ExpressionSpecification, type LegacyFilterSpecification} from "maplibre-gl";
 import {latest, migrate, convertFilter} from "@maplibre/maplibre-gl-style-spec";
 import {mdiFunctionVariant} from "@mdi/js";
 
@@ -13,7 +13,7 @@ import FilterEditorBlock from "./FilterEditorBlock";
 import InputButton from "./InputButton";
 import Doc from "./Doc";
 import ExpressionProperty from "./_ExpressionProperty";
-import { WithTranslation, withTranslation } from "react-i18next";
+import { type WithTranslation, withTranslation } from "react-i18next";
 import type { StyleSpecificationWithId } from "../libs/definitions";
 
 

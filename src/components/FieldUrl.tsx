@@ -1,4 +1,4 @@
-import InputUrl, {FieldUrlProps as InputUrlProps} from "./InputUrl";
+import InputUrl, {type FieldUrlProps as InputUrlProps} from "./InputUrl";
 import Block from "./Block";
 
 

@@ -1,7 +1,7 @@
 import React from "react";
 import classnames from "classnames";
-import CodeMirror, { ModeSpec } from "codemirror";
-import { Trans, WithTranslation, withTranslation } from "react-i18next";
+import CodeMirror, { type ModeSpec } from "codemirror";
+import { Trans, type WithTranslation, withTranslation } from "react-i18next";
 
 import "codemirror/mode/javascript/javascript";
 import "codemirror/addon/lint/lint";

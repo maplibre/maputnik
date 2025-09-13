@@ -1,5 +1,5 @@
 import Block from "./Block";
-import InputColor, {InputColorProps} from "./InputColor";
+import InputColor, {type InputColorProps} from "./InputColor";
 
 
 type FieldColorProps = InputColorProps & {

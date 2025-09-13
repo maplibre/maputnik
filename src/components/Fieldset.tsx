@@ -1,4 +1,4 @@
-import React, { PropsWithChildren, ReactElement } from "react";
+import React, { type PropsWithChildren, type ReactElement } from "react";
 import FieldDocLabel from "./FieldDocLabel";
 import Doc from "./Doc";
 import generateUniqueId from "../libs/document-uid";

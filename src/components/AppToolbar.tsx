@@ -14,7 +14,7 @@ import {
 import pkgJson from "../../package.json";
 //@ts-ignore
 import maputnikLogo from "maputnik-design/logos/logo-color.svg?inline";
-import { withTranslation, WithTranslation } from "react-i18next";
+import { withTranslation, type WithTranslation } from "react-i18next";
 import { supportedLanguages } from "../i18n";
 import type { OnStyleChangedCallback } from "../libs/definitions";
 

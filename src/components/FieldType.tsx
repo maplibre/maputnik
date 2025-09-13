@@ -3,7 +3,7 @@ import {v8} from "@maplibre/maplibre-gl-style-spec";
 import Block from "./Block";
 import InputSelect from "./InputSelect";
 import InputString from "./InputString";
-import { WithTranslation, withTranslation } from "react-i18next";
+import { type WithTranslation, withTranslation } from "react-i18next";
 import { startCase } from "lodash";
 
 type FieldTypeInternalProps = {

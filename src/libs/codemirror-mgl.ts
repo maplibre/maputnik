@@ -1,5 +1,5 @@
 import {parse} from "@prantlf/jsonlint";
-import CodeMirror, { MarkerRange } from "codemirror";
+import CodeMirror, { type MarkerRange } from "codemirror";
 import jsonToAst from "json-to-ast";
 import {expression, validateStyleMin} from "@maplibre/maplibre-gl-style-spec";
 

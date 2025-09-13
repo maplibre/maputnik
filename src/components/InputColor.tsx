@@ -1,7 +1,7 @@
 import React from "react";
 import Color from "color";
 import ChromePicker from "react-color/lib/components/chrome/Chrome";
-import {ColorResult} from "react-color";
+import {type ColorResult} from "react-color";
 import lodash from "lodash";
 
 function formatColor(color: ColorResult): string {

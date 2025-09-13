@@ -1,7 +1,7 @@
 import React from "react";
 
 import SpecProperty from "./_SpecProperty";
-import DataProperty, { Stop } from "./_DataProperty";
+import DataProperty, { type Stop } from "./_DataProperty";
 import ZoomProperty from "./_ZoomProperty";
 import ExpressionProperty from "./_ExpressionProperty";
 import {function as styleFunction} from "@maplibre/maplibre-gl-style-spec";

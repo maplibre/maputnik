@@ -1,4 +1,4 @@
-import React, {PropsWithChildren, SyntheticEvent} from "react";
+import React, {type PropsWithChildren, type SyntheticEvent} from "react";
 import classnames from "classnames";
 import FieldDocLabel from "./FieldDocLabel";
 import Doc from "./Doc";

@@ -1,8 +1,8 @@
-import React, { JSX } from "react";
+import React, { type JSX } from "react";
 import InputString from "./InputString";
 import SmallError from "./SmallError";
-import { Trans, WithTranslation, withTranslation } from "react-i18next";
-import { TFunction } from "i18next";
+import { Trans, type WithTranslation, withTranslation } from "react-i18next";
+import { type TFunction } from "i18next";
 
 function validate(url: string, t: TFunction): JSX.Element | undefined {
   if (url === "") {

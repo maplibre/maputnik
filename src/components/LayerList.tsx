@@ -7,7 +7,7 @@ import {
   useSensor,
   useSensors,
   closestCenter,
-  DragEndEvent,
+  type DragEndEvent,
 } from "@dnd-kit/core";
 import {
   SortableContext,
@@ -21,8 +21,8 @@ import ModalAdd from "./modals/ModalAdd";
 import type {LayerSpecification, SourceSpecification} from "maplibre-gl";
 import generateUniqueId from "../libs/document-uid";
 import { findClosestCommonPrefix, layerPrefix } from "../libs/layer";
-import { WithTranslation, withTranslation } from "react-i18next";
-import { OnMoveLayerCallback } from "../libs/definitions";
+import { type WithTranslation, withTranslation } from "react-i18next";
+import { type OnMoveLayerCallback } from "../libs/definitions";
 
 type LayerListContainerProps = {
   layers: LayerSpecification[]

@@ -1,19 +1,19 @@
 import React from "react";
 import {createRoot} from "react-dom/client";
-import MapLibreGl, {LayerSpecification, LngLat, Map, MapOptions, SourceSpecification, StyleSpecification} from "maplibre-gl";
+import MapLibreGl, {type LayerSpecification, type LngLat, type Map, type MapOptions, type SourceSpecification, type StyleSpecification} from "maplibre-gl";
 import MaplibreInspect from "@maplibre/maplibre-gl-inspect";
 import colors from "@maplibre/maplibre-gl-inspect/lib/colors";
 import MapMaplibreGlLayerPopup from "./MapMaplibreGlLayerPopup";
-import MapMaplibreGlFeaturePropertyPopup, { InspectFeature } from "./MapMaplibreGlFeaturePropertyPopup";
+import MapMaplibreGlFeaturePropertyPopup, { type InspectFeature } from "./MapMaplibreGlFeaturePropertyPopup";
 import Color from "color";
 import ZoomControl from "../libs/zoomcontrol";
-import { HighlightedLayer, colorHighlightedLayer } from "../libs/highlight";
+import { type HighlightedLayer, colorHighlightedLayer } from "../libs/highlight";
 import "maplibre-gl/dist/maplibre-gl.css";
 import "../maplibregl.css";
 import "../libs/maplibre-rtl";
-import MaplibreGeocoder, { MaplibreGeocoderApi, MaplibreGeocoderApiConfig } from "@maplibre/maplibre-gl-geocoder";
+import MaplibreGeocoder, { type MaplibreGeocoderApi, type MaplibreGeocoderApiConfig } from "@maplibre/maplibre-gl-geocoder";
 import "@maplibre/maplibre-gl-geocoder/dist/maplibre-gl-geocoder.css";
-import { withTranslation, WithTranslation } from "react-i18next";
+import { withTranslation, type WithTranslation } from "react-i18next";
 import i18next from "i18next";
 import { Protocol } from "pmtiles";
 

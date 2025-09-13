@@ -1,6 +1,6 @@
 import React from "react";
 import ScrollContainer from "./ScrollContainer";
-import { WithTranslation, withTranslation } from "react-i18next";
+import { type WithTranslation, withTranslation } from "react-i18next";
 import { IconContext } from "react-icons";
 
 type AppLayoutInternalProps = {

@@ -1,7 +1,7 @@
 import React from "react";
 import capitalize from "lodash.capitalize";
 import {MdDelete} from "react-icons/md";
-import { WithTranslation, withTranslation } from "react-i18next";
+import { type WithTranslation, withTranslation } from "react-i18next";
 
 import InputString from "./InputString";
 import InputNumber from "./InputNumber";
