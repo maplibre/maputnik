@@ -1,12 +1,12 @@
-import React from 'react'
-import {MdDelete, MdUndo} from 'react-icons/md'
-import stringifyPretty from 'json-stringify-pretty-compact'
-import { WithTranslation, withTranslation } from 'react-i18next';
+import React from "react";
+import {MdDelete, MdUndo} from "react-icons/md";
+import stringifyPretty from "json-stringify-pretty-compact";
+import { type WithTranslation, withTranslation } from "react-i18next";
 
-import Block from './Block'
-import InputButton from './InputButton'
-import labelFromFieldName from '../libs/label-from-field-name'
-import FieldJson from './FieldJson'
+import Block from "./Block";
+import InputButton from "./InputButton";
+import labelFromFieldName from "../libs/label-from-field-name";
+import FieldJson from "./FieldJson";
 
 
 type ExpressionPropertyInternalProps = {
@@ -32,7 +32,7 @@ class ExpressionPropertyInternal extends React.Component<ExpressionPropertyInter
     errors: {},
     onFocus: () => {},
     onBlur: () => {},
-  }
+  };
 
   constructor(props: ExpressionPropertyInternalProps) {
     super(props);
@@ -44,14 +44,14 @@ class ExpressionPropertyInternal extends React.Component<ExpressionPropertyInter
   onJSONInvalid = (_err: Error) => {
     this.setState({
       jsonError: true,
-    })
-  }
+    });
+  };
 
   onJSONValid = () => {
     this.setState({
       jsonError: false,
-    })
-  }
+    });
+  };
 
   render() {
     const {t, errors, fieldName, fieldType, value, canUndo} = this.props;
@@ -89,7 +89,7 @@ class ExpressionPropertyInternal extends React.Component<ExpressionPropertyInter
     const foundErrors = [];
 
     function getValue(data: any) {
-      return stringifyPretty(data, {indent: 2, maxLength: 38})
+      return stringifyPretty(data, {indent: 2, maxLength: 38});
     }
 
     if (jsonError) {
@@ -102,7 +102,7 @@ class ExpressionPropertyInternal extends React.Component<ExpressionPropertyInter
         })
         .forEach(([_key, error]) => {
           return foundErrors.push(error);
-        })
+        });
 
       if (fieldError) {
         foundErrors.push(fieldError);
@@ -135,7 +135,7 @@ class ExpressionPropertyInternal extends React.Component<ExpressionPropertyInter
         getValue={getValue}
         onChange={this.props.onChange}
       />
-    </Block>
+    </Block>;
   }
 }
 

@@ -119,21 +119,21 @@ export class MaputnikDriver {
     ) => {
       const url = new URL(baseUrl);
       switch (styleProperties) {
-      case "geojson":
-        url.searchParams.set("style", baseUrl + "geojson-style.json");
-        break;
-      case "raster":
-        url.searchParams.set("style", baseUrl + "raster-style.json");
-        break;
-      case "both":
-        url.searchParams.set("style", baseUrl + "geojson-raster-style.json");
-        break;
-      case "layer":
-        url.searchParams.set("style", baseUrl + "example-layer-style.json");
-        break;
-      case "rectangles":
-        url.searchParams.set("style", baseUrl + "rectangles-style.json");
-        break;
+        case "geojson":
+          url.searchParams.set("style", baseUrl + "geojson-style.json");
+          break;
+        case "raster":
+          url.searchParams.set("style", baseUrl + "raster-style.json");
+          break;
+        case "both":
+          url.searchParams.set("style", baseUrl + "geojson-raster-style.json");
+          break;
+        case "layer":
+          url.searchParams.set("style", baseUrl + "example-layer-style.json");
+          break;
+        case "rectangles":
+          url.searchParams.set("style", baseUrl + "rectangles-style.json");
+          break;
       }
 
       if (zoom) {
@@ -144,7 +144,7 @@ export class MaputnikDriver {
         this.helper.when.acceptConfirm();
       }
       // when methods should not include assertions
-      const toolbarLink = this.helper.get.elementByTestId("toolbar:link")
+      const toolbarLink = this.helper.get.elementByTestId("toolbar:link");
       toolbarLink.scrollIntoView();
       toolbarLink.should("be.visible");
     },
@@ -215,6 +215,6 @@ export class MaputnikDriver {
     skipTargetLayerEditor: () =>
       this.helper.get.elementByTestId("skip-target-layer-editor"),
     canvas: () => this.helper.get.element("canvas"),
-    searchControl: () => this.helper.get.element('.maplibregl-ctrl-geocoder')
+    searchControl: () => this.helper.get.element(".maplibregl-ctrl-geocoder")
   };
 }

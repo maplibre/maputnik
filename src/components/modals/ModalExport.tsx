@@ -1,17 +1,17 @@
-import React from 'react'
-import Slugify from 'slugify'
-import {saveAs} from 'file-saver'
-import {version} from 'maplibre-gl/package.json'
-import {format} from '@maplibre/maplibre-gl-style-spec'
-import {MdMap, MdSave} from 'react-icons/md'
-import {WithTranslation, withTranslation} from 'react-i18next';
+import React from "react";
+import Slugify from "slugify";
+import {saveAs} from "file-saver";
+import {version} from "maplibre-gl/package.json";
+import {format} from "@maplibre/maplibre-gl-style-spec";
+import {MdMap, MdSave} from "react-icons/md";
+import {type WithTranslation, withTranslation} from "react-i18next";
 
-import FieldString from '../FieldString'
-import InputButton from '../InputButton'
-import Modal from './Modal'
-import style from '../../libs/style'
-import fieldSpecAdditional from '../../libs/field-spec-additional'
-import type {OnStyleChangedCallback, StyleSpecificationWithId} from '../../libs/definitions'
+import FieldString from "../FieldString";
+import InputButton from "../InputButton";
+import Modal from "./Modal";
+import style from "../../libs/style";
+import fieldSpecAdditional from "../../libs/field-spec-additional";
+import type {OnStyleChangedCallback, StyleSpecificationWithId} from "../../libs/definitions";
 
 
 const MAPLIBRE_GL_VERSION = version;
@@ -41,12 +41,12 @@ class ModalExportInternal extends React.Component<ModalExportInternalProps> {
   exportName() {
     if (this.props.mapStyle.name) {
       return Slugify(this.props.mapStyle.name, {
-        replacement: '_',
+        replacement: "_",
         remove: /[*\-+~.()'"!:]/g,
         lower: true
       });
     } else {
-      return this.props.mapStyle.id
+      return this.props.mapStyle.id;
     }
   }
 
@@ -99,7 +99,7 @@ class ModalExportInternal extends React.Component<ModalExportInternalProps> {
     let fileHandle = this.props.fileHandle;
     if (fileHandle == null) {
       fileHandle = await this.createFileHandle();
-      this.props.onSetFileHandle(fileHandle)
+      this.props.onSetFileHandle(fileHandle);
       if (fileHandle == null) return;
     }
 
@@ -113,7 +113,7 @@ class ModalExportInternal extends React.Component<ModalExportInternalProps> {
     const tokenStyle = this.tokenizedStyle();
 
     const fileHandle = await this.createFileHandle();
-    this.props.onSetFileHandle(fileHandle)
+    this.props.onSetFileHandle(fileHandle);
     if (fileHandle == null) return;
 
     const writable = await fileHandle.createWritable();
@@ -134,7 +134,7 @@ class ModalExportInternal extends React.Component<ModalExportInternalProps> {
     };
 
     const fileHandle = await window.showSaveFilePicker(pickerOpts) as FileSystemFileHandle;
-    this.props.onSetFileHandle(fileHandle)
+    this.props.onSetFileHandle(fileHandle);
     return fileHandle;
   }
 
@@ -145,8 +145,8 @@ class ModalExportInternal extends React.Component<ModalExportInternalProps> {
         ...this.props.mapStyle.metadata as any,
         [property]: value
       }
-    }
-    this.props.onStyleChanged(changedStyle)
+    };
+    this.props.onStyleChanged(changedStyle);
   }
 
 
@@ -157,7 +157,7 @@ class ModalExportInternal extends React.Component<ModalExportInternalProps> {
       data-wd-key="modal:export"
       isOpen={this.props.isOpen}
       onOpenToggle={this.props.onOpenToggle}
-      title={t('Save Style')}
+      title={t("Save Style")}
       className="maputnik-export-modal"
     >
 
@@ -171,25 +171,25 @@ class ModalExportInternal extends React.Component<ModalExportInternalProps> {
           <FieldString
             label={fsa.maputnik.maptiler_access_token.label}
             fieldSpec={fsa.maputnik.maptiler_access_token}
-            value={(this.props.mapStyle.metadata || {} as any)['maputnik:openmaptiles_access_token']}
+            value={(this.props.mapStyle.metadata || {} as any)["maputnik:openmaptiles_access_token"]}
             onChange={this.changeMetadataProperty.bind(this, "maputnik:openmaptiles_access_token")}
           />
           <FieldString
             label={fsa.maputnik.thunderforest_access_token.label}
             fieldSpec={fsa.maputnik.thunderforest_access_token}
-            value={(this.props.mapStyle.metadata || {} as any)['maputnik:thunderforest_access_token']}
+            value={(this.props.mapStyle.metadata || {} as any)["maputnik:thunderforest_access_token"]}
             onChange={this.changeMetadataProperty.bind(this, "maputnik:thunderforest_access_token")}
           />
           <FieldString
             label={fsa.maputnik.stadia_access_token.label}
             fieldSpec={fsa.maputnik.stadia_access_token}
-            value={(this.props.mapStyle.metadata || {} as any)['maputnik:stadia_access_token']}
+            value={(this.props.mapStyle.metadata || {} as any)["maputnik:stadia_access_token"]}
             onChange={this.changeMetadataProperty.bind(this, "maputnik:stadia_access_token")}
           />
           <FieldString
             label={fsa.maputnik.locationiq_access_token.label}
             fieldSpec={fsa.maputnik.locationiq_access_token}
-            value={(this.props.mapStyle.metadata || {} as any)['maputnik:locationiq_access_token']}
+            value={(this.props.mapStyle.metadata || {} as any)["maputnik:locationiq_access_token"]}
             onChange={this.changeMetadataProperty.bind(this, "maputnik:locationiq_access_token")}
           />
         </div>
@@ -213,7 +213,7 @@ class ModalExportInternal extends React.Component<ModalExportInternalProps> {
         </div>
       </section>
 
-    </Modal>
+    </Modal>;
   }
 }
 

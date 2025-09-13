@@ -1,29 +1,29 @@
-import React from 'react'
-import IconLayer from './IconLayer'
-import type {InspectFeature} from './MapMaplibreGlFeaturePropertyPopup';
+import React from "react";
+import IconLayer from "./IconLayer";
+import type {InspectFeature} from "./MapMaplibreGlFeaturePropertyPopup";
 
 function groupFeaturesBySourceLayer(features: InspectFeature[]) {
-  const sources: {[key: string]: InspectFeature[]} = {}
+  const sources: {[key: string]: InspectFeature[]} = {};
 
-  const returnedFeatures: {[key: string]: number} = {}
+  const returnedFeatures: {[key: string]: number} = {};
 
   features.forEach(feature => {
-    const sourceKey = feature.layer['source-layer'] as string;
+    const sourceKey = feature.layer["source-layer"] as string;
     if(Object.prototype.hasOwnProperty.call(returnedFeatures, feature.layer.id)) {
-      returnedFeatures[feature.layer.id]++
+      returnedFeatures[feature.layer.id]++;
 
-      const featureObject = sources[sourceKey].find((f: InspectFeature) => f.layer.id === feature.layer.id)
+      const featureObject = sources[sourceKey].find((f: InspectFeature) => f.layer.id === feature.layer.id);
 
-      featureObject!.counter = returnedFeatures[feature.layer.id]
+      featureObject!.counter = returnedFeatures[feature.layer.id];
     } else {
-      sources[sourceKey] = sources[sourceKey] || []
-      sources[sourceKey].push(feature)
+      sources[sourceKey] = sources[sourceKey] || [];
+      sources[sourceKey].push(feature);
 
-      returnedFeatures[feature.layer.id] = 1
+      returnedFeatures[feature.layer.id] = 1;
     }
-  })
+  });
 
-  return sources
+  return sources;
 }
 
 type FeatureLayerPopupProps = {
@@ -66,7 +66,7 @@ class FeatureLayerPopup extends React.Component<FeatureLayerPopupProps> {
   }
 
   render() {
-    const sources = groupFeaturesBySourceLayer(this.props.features)
+    const sources = groupFeaturesBySourceLayer(this.props.features);
 
     const items = Object.keys(sources).map(vectorLayerId => {
       const layers = sources[vectorLayerId].map((feature: InspectFeature, idx: number) => {
@@ -83,7 +83,7 @@ class FeatureLayerPopup extends React.Component<FeatureLayerPopupProps> {
           <label
             className="maputnik-popup-layer__label"
             onClick={() => {
-              this.props.onLayerSelect(feature.layer.id)
+              this.props.onLayerSelect(feature.layer.id);
             }}
           >
             {feature.layer.type &&
@@ -96,19 +96,19 @@ class FeatureLayerPopup extends React.Component<FeatureLayerPopupProps> {
             {feature.layer.id}
             {feature.counter && <span> × {feature.counter}</span>}
           </label>
-        </div>
-      })
+        </div>;
+      });
       return <div key={vectorLayerId}>
         <div className="maputnik-popup-layer-id">{vectorLayerId}</div>
         {layers}
-      </div>
-    })
+      </div>;
+    });
 
     return <div className="maputnik-feature-layer-popup" data-wd-key="feature-layer-popup" dir="ltr">
       {items}
-    </div>
+    </div>;
   }
 }
 
 
-export default FeatureLayerPopup
+export default FeatureLayerPopup;

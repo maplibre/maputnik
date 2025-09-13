@@ -1,12 +1,12 @@
-import React from 'react'
-import Collapser from './Collapser'
+import React from "react";
+import Collapser from "./Collapser";
 
 type LayerListGroupProps = {
   title: string
   "data-wd-key"?: string
   isActive: boolean
   onActiveToggle(...args: unknown[]): unknown
-  'aria-controls'?: string
+  "aria-controls"?: string
 };
 
 export default class LayerListGroup extends React.Component<LayerListGroupProps> {
@@ -18,7 +18,7 @@ export default class LayerListGroup extends React.Component<LayerListGroupProps>
       >
         <button
           className="maputnik-layer-list-group-title"
-          aria-controls={this.props['aria-controls']}
+          aria-controls={this.props["aria-controls"]}
           aria-expanded={this.props.isActive}
         >
           {this.props.title}
@@ -29,6 +29,6 @@ export default class LayerListGroup extends React.Component<LayerListGroupProps>
           isCollapsed={this.props.isActive}
         />
       </div>
-    </li>
+    </li>;
   }
 }

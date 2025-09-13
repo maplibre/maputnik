@@ -1,5 +1,5 @@
-import Block from './Block'
-import InputCheckbox, {InputCheckboxProps} from './InputCheckbox'
+import Block from "./Block";
+import InputCheckbox, {type InputCheckboxProps} from "./InputCheckbox";
 
 
 type FieldCheckboxProps = InputCheckboxProps & {

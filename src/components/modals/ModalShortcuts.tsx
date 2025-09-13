@@ -1,7 +1,7 @@
-import React from 'react'
-import { Trans, WithTranslation, withTranslation } from 'react-i18next';
+import React from "react";
+import { Trans, type WithTranslation, withTranslation } from "react-i18next";
 
-import Modal from './Modal'
+import Modal from "./Modal";
 
 
 type ModalShortcutsInternalProps = {
@@ -46,7 +46,7 @@ class ModalShortcutsInternal extends React.Component<ModalShortcutsInternalProps
         key: <kbd>!</kbd>,
         text: t("Debug modal")
       },
-    ]
+    ];
 
 
     const mapShortcuts = [
@@ -98,14 +98,14 @@ class ModalShortcutsInternal extends React.Component<ModalShortcutsInternalProps
         key: <><kbd>Shift</kbd> + <kbd>Down</kbd></>,
         text: t("Decrease the pitch by 10 degrees.")
       },
-    ]
+    ];
 
 
     return <Modal
       data-wd-key="modal:shortcuts"
       isOpen={this.props.isOpen}
       onOpenToggle={this.props.onOpenToggle}
-      title={t('Shortcuts')}
+      title={t("Shortcuts")}
     >
       <section className="maputnik-modal-section maputnik-modal-shortcuts">
         <p>
@@ -118,7 +118,7 @@ class ModalShortcutsInternal extends React.Component<ModalShortcutsInternalProps
             return <div key={idx} className="maputnik-modal-shortcuts__shortcut">
               <dt key={"dt"+idx}>{item.key}</dt>
               <dd key={"dd"+idx}>{item.text}</dd>
-            </div>
+            </div>;
           })}
         </dl>
         <p>{t("If the Map is in focused you can use the following shortcuts")}</p>
@@ -126,11 +126,11 @@ class ModalShortcutsInternal extends React.Component<ModalShortcutsInternalProps
           {mapShortcuts.map((item, idx) => {
             return <li key={idx}>
               <span>{item.key}</span> {item.text}
-            </li>
+            </li>;
           })}
         </ul>
       </section>
-    </Modal>
+    </Modal>;
   }
 }
 

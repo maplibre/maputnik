@@ -1,67 +1,67 @@
-import React from 'react'
-import capitalize from 'lodash.capitalize'
-import {MdDelete} from 'react-icons/md'
-import { WithTranslation, withTranslation } from 'react-i18next';
+import React from "react";
+import capitalize from "lodash.capitalize";
+import {MdDelete} from "react-icons/md";
+import { type WithTranslation, withTranslation } from "react-i18next";
 
-import InputString from './InputString'
-import InputNumber from './InputNumber'
-import InputButton from './InputButton'
-import FieldDocLabel from './FieldDocLabel'
-import InputEnum from './InputEnum'
-import InputUrl from './InputUrl'
-import InputColor from './InputColor';
+import InputString from "./InputString";
+import InputNumber from "./InputNumber";
+import InputButton from "./InputButton";
+import FieldDocLabel from "./FieldDocLabel";
+import InputEnum from "./InputEnum";
+import InputUrl from "./InputUrl";
+import InputColor from "./InputColor";
 
 
 export type InputDynamicArrayProps = {
   value?: (string | number | undefined)[]
-  type?: 'url' | 'number' | 'enum' | 'string' | 'color'
+  type?: "url" | "number" | "enum" | "string" | "color"
   default?: (string | number | undefined)[]
   onChange?(values: (string | number | undefined)[] | undefined): unknown
   style?: object
   fieldSpec?: {
     values?: any
   }
-  'aria-label'?: string
+  "aria-label"?: string
   label: string
-}
+};
 
 type InputDynamicArrayInternalProps = InputDynamicArrayProps & WithTranslation;
 
 class InputDynamicArrayInternal extends React.Component<InputDynamicArrayInternalProps> {
   changeValue(idx: number, newValue: string | number | undefined) {
-    const values = this.values.slice(0)
-    values[idx] = newValue
-    if (this.props.onChange) this.props.onChange(values)
+    const values = this.values.slice(0);
+    values[idx] = newValue;
+    if (this.props.onChange) this.props.onChange(values);
   }
 
   get values() {
-    return this.props.value || this.props.default || []
+    return this.props.value || this.props.default || [];
   }
 
   addValue = () => {
-    const values = this.values.slice(0)
-    if (this.props.type === 'number') {
-      values.push(0)
+    const values = this.values.slice(0);
+    if (this.props.type === "number") {
+      values.push(0);
     }
-    else if (this.props.type === 'url') {
+    else if (this.props.type === "url") {
       values.push("");
     }
-    else if (this.props.type === 'enum') {
+    else if (this.props.type === "enum") {
       const {fieldSpec} = this.props;
       const defaultValue = Object.keys(fieldSpec!.values)[0];
       values.push(defaultValue);
-    } else if (this.props.type === 'color') {
+    } else if (this.props.type === "color") {
       values.push("#000000");
     } else {
-      values.push("")
+      values.push("");
     }
 
-    if (this.props.onChange) this.props.onChange(values)
-  }
+    if (this.props.onChange) this.props.onChange(values);
+  };
 
   deleteValue(valueIdx: number) {
-    const values = this.values.slice(0)
-    values.splice(valueIdx, 1)
+    const values = this.values.slice(0);
+    values.splice(valueIdx, 1);
 
     if (this.props.onChange) this.props.onChange(values.length > 0 ? values : undefined);
   }
@@ -75,42 +75,42 @@ class InputDynamicArrayInternal extends React.Component<InputDynamicArrayInterna
         {...i18nProps}
       />;
       let input;
-      if(this.props.type === 'url') {
+      if(this.props.type === "url") {
         input = <InputUrl
           value={v as string}
           onChange={this.changeValue.bind(this, i)}
-          aria-label={this.props['aria-label'] || this.props.label}
-        />
+          aria-label={this.props["aria-label"] || this.props.label}
+        />;
       }
-      else if (this.props.type === 'number') {
+      else if (this.props.type === "number") {
         input = <InputNumber
           value={v as number}
           onChange={this.changeValue.bind(this, i)}
-          aria-label={this.props['aria-label'] || this.props.label}
-        />
+          aria-label={this.props["aria-label"] || this.props.label}
+        />;
       }
-      else if (this.props.type === 'enum') {
+      else if (this.props.type === "enum") {
         const options = Object.keys(this.props.fieldSpec?.values).map(v => [v, capitalize(v)]);
         input = <InputEnum
           options={options}
           value={v as string}
           onChange={this.changeValue.bind(this, i)}
-          aria-label={this.props['aria-label'] || this.props.label}
-        />
+          aria-label={this.props["aria-label"] || this.props.label}
+        />;
       }
-      else if (this.props.type === 'color') {
+      else if (this.props.type === "color") {
         input = <InputColor
           value={v as string}
           onChange={this.changeValue.bind(this, i)}
-          aria-label={this.props['aria-label'] || this.props.label}
-        />
+          aria-label={this.props["aria-label"] || this.props.label}
+        />;
       }
       else {
         input = <InputString
           value={v as string}
           onChange={this.changeValue.bind(this, i)}
-          aria-label={this.props['aria-label'] || this.props.label}
-        />
+          aria-label={this.props["aria-label"] || this.props.label}
+        />;
       }
 
       return <div
@@ -124,8 +124,8 @@ class InputDynamicArrayInternal extends React.Component<InputDynamicArrayInterna
         <div className="maputnik-array-block-content">
           {input}
         </div>
-      </div>
-    })
+      </div>;
+    });
 
     return (
       <div className="maputnik-array">
@@ -159,6 +159,6 @@ class DeleteValueInputButton extends React.Component<DeleteValueInputButtonProps
       <FieldDocLabel
         label={<MdDelete />}
       />
-    </InputButton>
+    </InputButton>;
   }
 }

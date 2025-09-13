@@ -6,7 +6,7 @@ export type OnStyleChangedOpts = {
   save?: boolean;
   addRevision?: boolean;
   initialLoad?: boolean;
-}
+};
 
 export type OnStyleChangedCallback = (newStyle: StyleSpecificationWithId, opts: OnStyleChangedOpts={}) => void;
 

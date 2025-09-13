@@ -1,5 +1,5 @@
-import InputArray, { InputArrayProps } from './InputArray'
-import Fieldset from './Fieldset'
+import InputArray, { type InputArrayProps } from "./InputArray";
+import Fieldset from "./Fieldset";
 
 type FieldArrayProps = InputArrayProps & {
   name?: string

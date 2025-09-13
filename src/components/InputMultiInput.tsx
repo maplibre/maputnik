@@ -1,22 +1,22 @@
-import React from 'react'
-import classnames from 'classnames'
+import React from "react";
+import classnames from "classnames";
 
 export type InputMultiInputProps = {
   name?: string
   value: string
   options: any[]
   onChange(...args: unknown[]): unknown
-  'aria-label'?: string
+  "aria-label"?: string
 };
 
 export default class InputMultiInput extends React.Component<InputMultiInputProps> {
   render() {
-    let options = this.props.options
+    let options = this.props.options;
     if(options.length > 0 && !Array.isArray(options[0])) {
-      options = options.map(v => [v, v])
+      options = options.map(v => [v, v]);
     }
 
-    const selectedValue = this.props.value || options[0][0]
+    const selectedValue = this.props.value || options[0][0];
     const radios = options.map(([val, label])=> {
       return <label
         key={val}
@@ -29,11 +29,11 @@ export default class InputMultiInput extends React.Component<InputMultiInputProp
           checked={val === selectedValue}
         />
         {label}
-      </label>
-    })
+      </label>;
+    });
 
-    return <fieldset className="maputnik-multibutton" aria-label={this.props['aria-label']}>
+    return <fieldset className="maputnik-multibutton" aria-label={this.props["aria-label"]}>
       {radios}
-    </fieldset>
+    </fieldset>;
   }
 }

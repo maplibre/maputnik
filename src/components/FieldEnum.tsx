@@ -1,5 +1,5 @@
-import InputEnum, {InputEnumProps} from './InputEnum'
-import Fieldset from './Fieldset';
+import InputEnum, {type InputEnumProps} from "./InputEnum";
+import Fieldset from "./Fieldset";
 
 
 type FieldEnumProps = InputEnumProps & {

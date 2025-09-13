@@ -253,10 +253,10 @@ describe("modals", () => {
 
     it("inlcude API key when change renderer", () => {
 
-      when.click("modal:settings.close-modal")
+      when.click("modal:settings.close-modal");
       when.click("nav:open");
 
-      get.elementByAttribute('aria-label', "MapTiler Basic").should('exist').click();
+      get.elementByAttribute("aria-label", "MapTiler Basic").should("exist").click();
       when.wait(1000);
       when.click("nav:settings");
 
@@ -322,7 +322,7 @@ describe("modals", () => {
             win.localStorage.setItem(key, chunk);
           } catch (e: any) {
             // Verify it's a quota error
-            if (e.name === 'QuotaExceededError') {
+            if (e.name === "QuotaExceededError") {
               if (chunkSize <= 1) return;
               else {
                 chunkSize /= 2;

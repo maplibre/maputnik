@@ -25,7 +25,7 @@ describe("map", () => {
   });
 
   describe("search", () => {
-    it('should exist', () => {
+    it("should exist", () => {
       then(get.searchControl()).shouldBeVisible();
     });
   });
@@ -33,7 +33,7 @@ describe("map", () => {
   describe("popup", () => {
     beforeEach(() => {
       when.setStyle("rectangles");
-    })
+    });
     it("should open on feature click", () => {
       when.clickCenter("maplibre:map");
       then(get.elementByTestId("feature-layer-popup")).shouldBeVisible();

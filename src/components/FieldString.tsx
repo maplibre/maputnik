@@ -1,5 +1,5 @@
-import Block from './Block'
-import InputString, {InputStringProps} from './InputString'
+import Block from "./Block";
+import InputString, {type InputStringProps} from "./InputString";
 
 type FieldStringProps = InputStringProps & {
   name?: string

@@ -1,5 +1,5 @@
-import InputNumber, {InputNumberProps} from './InputNumber'
-import Block from './Block'
+import InputNumber, {type InputNumberProps} from "./InputNumber";
+import Block from "./Block";
 
 
 type FieldNumberProps = InputNumberProps & {

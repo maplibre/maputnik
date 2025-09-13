@@ -1,4 +1,4 @@
-import { StyleSpecificationWithId } from "./definitions";
+import { type StyleSpecificationWithId } from "./definitions";
 
 export class RevisionStore {
   revisions: StyleSpecificationWithId[];
@@ -6,16 +6,16 @@ export class RevisionStore {
 
 
   constructor(initialRevisions=[]) {
-    this.revisions = initialRevisions
-    this.currentIdx = initialRevisions.length - 1
+    this.revisions = initialRevisions;
+    this.currentIdx = initialRevisions.length - 1;
   }
 
   get latest() {
-    return this.revisions[this.revisions.length - 1]
+    return this.revisions[this.revisions.length - 1];
   }
 
   get current() {
-    return this.revisions[this.currentIdx]
+    return this.revisions[this.currentIdx];
   }
 
   addRevision(revision: StyleSpecificationWithId) {
@@ -23,8 +23,8 @@ export class RevisionStore {
     // and ensure current index is at end of list
     this.revisions = this.revisions.slice(0, this.currentIdx + 1);
 
-    this.revisions.push(revision)
-    this.currentIdx++
+    this.revisions.push(revision);
+    this.currentIdx++;
     //}
   }
 
@@ -37,7 +37,7 @@ export class RevisionStore {
 
   redo() {
     if(this.currentIdx < this.revisions.length - 1) {
-      this.currentIdx++
+      this.currentIdx++;
     }
     return this.current;
   }
