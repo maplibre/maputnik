@@ -74,7 +74,6 @@ Lint the JavaScript code.
 ```
 # run linter
 npm run lint
-npm run lint-css
 npm run sort-styles
 ```
 
