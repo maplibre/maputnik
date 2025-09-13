@@ -9,7 +9,7 @@ describe("map", () => {
       when.setStyle("geojson", zoomLevel);
       then(get.elementByTestId("maplibre:ctrl-zoom")).shouldBeVisible();
       then(get.elementByTestId("maplibre:ctrl-zoom")).shouldContainText(
-        "Zoom: " + zoomLevel,
+        `Zoom: ${zoomLevel}`,
       );
     });
 
@@ -19,7 +19,7 @@ describe("map", () => {
       then(get.elementByTestId("maplibre:ctrl-zoom")).shouldBeVisible();
       when.clickZoomIn();
       then(get.elementByTestId("maplibre:ctrl-zoom")).shouldContainText(
-        "Zoom: " + (zoomLevel + 1),
+        `Zoom: ${zoomLevel + 1}`,
       );
     });
   });

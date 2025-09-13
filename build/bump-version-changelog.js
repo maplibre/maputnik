@@ -10,14 +10,13 @@
  * https://github.com/maplibre/maplibre-gl-js/blob/bc70bc559cea5c987fa1b79fd44766cef68bbe28/build/release-notes.js
  */
 
-import * as fs from "fs";
+import * as fs from "node:fs";
 
 const changelogPath = "CHANGELOG.md";
 let changelog = fs.readFileSync(changelogPath, "utf8");
 changelog = changelog.replace("## main", `## ${process.argv[2]}`);
 changelog = changelog.replaceAll("- _...Add new stuff here..._\n", "");
-changelog =
-  `## main
+changelog = `## main
 
 ### ✨ Features and improvements
 - _...Add new stuff here..._
@@ -25,6 +24,6 @@ changelog =
 ### 🐞 Bug fixes
 - _...Add new stuff here..._
 
-` + changelog;
+${changelog}`;
 
 fs.writeFileSync(changelogPath, changelog, "utf8");

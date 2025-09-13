@@ -78,7 +78,7 @@ class ModalExportInternal extends React.Component<ModalExportInternalProps> {
 
     const blob = new Blob([html], { type: "text/html;charset=utf-8" });
     const exportName = this.exportName();
-    saveAs(blob, exportName + ".html");
+    saveAs(blob, `${exportName}.html`);
   }
 
   async saveStyle() {
@@ -91,7 +91,7 @@ class ModalExportInternal extends React.Component<ModalExportInternalProps> {
         type: "application/json;charset=utf-8",
       });
       const exportName = this.exportName();
-      saveAs(blob, exportName + ".json");
+      saveAs(blob, `${exportName}.json`);
       return;
     }
 

@@ -44,7 +44,7 @@ class InputDynamicArrayInternal extends React.Component<InputDynamicArrayInterna
       values.push("");
     } else if (this.props.type === "enum") {
       const { fieldSpec } = this.props;
-      const defaultValue = Object.keys(fieldSpec!.values)[0];
+      const defaultValue = Object.keys(fieldSpec?.values)[0];
       values.push(defaultValue);
     } else if (this.props.type === "color") {
       values.push("#000000");

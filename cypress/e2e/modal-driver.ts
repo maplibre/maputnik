@@ -34,7 +34,7 @@ export default class ModalDriver {
     },
 
     close: (key: string) => {
-      this.helper.when.click(key + ".close-modal");
+      this.helper.when.click(`${key}.close-modal`);
     },
   };
 }

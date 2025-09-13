@@ -63,13 +63,13 @@ class InputJsonInternal extends React.Component<
     this.state = {
       isEditing: false,
       showMessage: false,
-      prevValue: this.props.getValue!(this.props.layer),
+      prevValue: this.props.getValue?.(this.props.layer),
     };
   }
 
   componentDidMount() {
     this._doc = CodeMirror(this._el!, {
-      value: this.props.getValue!(this.props.layer),
+      value: this.props.getValue?.(this.props.layer),
       mode: this.props.mode || {
         name: "mgl",
       },
@@ -113,15 +113,15 @@ class InputJsonInternal extends React.Component<
   };
 
   componentWillUnMount() {
-    this._doc!.off("change", this.onChange);
-    this._doc!.off("focus", this.onFocus);
-    this._doc!.off("blur", this.onBlur);
+    this._doc?.off("change", this.onChange);
+    this._doc?.off("focus", this.onFocus);
+    this._doc?.off("blur", this.onBlur);
   }
 
   componentDidUpdate(prevProps: InputJsonProps) {
     if (!this.state.isEditing && prevProps.layer !== this.props.layer) {
       this._cancelNextChange = true;
-      this._doc!.setValue(this.props.getValue!(this.props.layer));
+      this._doc?.setValue(this.props.getValue?.(this.props.layer));
     }
   }
 
@@ -129,11 +129,11 @@ class InputJsonInternal extends React.Component<
     if (this._cancelNextChange) {
       this._cancelNextChange = false;
       this.setState({
-        prevValue: this._doc!.getValue(),
+        prevValue: this._doc?.getValue(),
       });
       return;
     }
-    const newCode = this._doc!.getValue();
+    const newCode = this._doc?.getValue();
 
     if (this.state.prevValue !== newCode) {
       let parsedLayer, err;

@@ -45,7 +45,7 @@ export class MaputnikDriver {
     setupMockBackedResponses: () => {
       this.helper.given.interceptAndMockResponse({
         method: "GET",
-        url: baseUrl + "example-style.json",
+        url: `${baseUrl}example-style.json`,
         response: {
           fixture: "example-style.json",
         },
@@ -53,35 +53,35 @@ export class MaputnikDriver {
       });
       this.helper.given.interceptAndMockResponse({
         method: "GET",
-        url: baseUrl + "example-layer-style.json",
+        url: `${baseUrl}example-layer-style.json`,
         response: {
           fixture: "example-layer-style.json",
         },
       });
       this.helper.given.interceptAndMockResponse({
         method: "GET",
-        url: baseUrl + "geojson-style.json",
+        url: `${baseUrl}geojson-style.json`,
         response: {
           fixture: "geojson-style.json",
         },
       });
       this.helper.given.interceptAndMockResponse({
         method: "GET",
-        url: baseUrl + "raster-style.json",
+        url: `${baseUrl}raster-style.json`,
         response: {
           fixture: "raster-style.json",
         },
       });
       this.helper.given.interceptAndMockResponse({
         method: "GET",
-        url: baseUrl + "geojson-raster-style.json",
+        url: `${baseUrl}geojson-raster-style.json`,
         response: {
           fixture: "geojson-raster-style.json",
         },
       });
       this.helper.given.interceptAndMockResponse({
         method: "GET",
-        url: baseUrl + "rectangles-style.json",
+        url: `${baseUrl}rectangles-style.json`,
         response: {
           fixture: "rectangles-style.json",
         },
@@ -127,19 +127,19 @@ export class MaputnikDriver {
       const url = new URL(baseUrl);
       switch (styleProperties) {
         case "geojson":
-          url.searchParams.set("style", baseUrl + "geojson-style.json");
+          url.searchParams.set("style", `${baseUrl}geojson-style.json`);
           break;
         case "raster":
-          url.searchParams.set("style", baseUrl + "raster-style.json");
+          url.searchParams.set("style", `${baseUrl}raster-style.json`);
           break;
         case "both":
-          url.searchParams.set("style", baseUrl + "geojson-raster-style.json");
+          url.searchParams.set("style", `${baseUrl}geojson-raster-style.json`);
           break;
         case "layer":
-          url.searchParams.set("style", baseUrl + "example-layer-style.json");
+          url.searchParams.set("style", `${baseUrl}example-layer-style.json`);
           break;
         case "rectangles":
-          url.searchParams.set("style", baseUrl + "rectangles-style.json");
+          url.searchParams.set("style", `${baseUrl}rectangles-style.json`);
           break;
       }
 
@@ -188,7 +188,7 @@ export class MaputnikDriver {
         this.helper.get
           .element(".maputnik-array-block-content input")
           .last()
-          .type("{selectall}" + value, { force: true });
+          .type(`{selectall}${value}`, { force: true });
       });
     },
 
@@ -200,7 +200,7 @@ export class MaputnikDriver {
         this.helper.get
           .element(".maputnik-array-block-content input")
           .last()
-          .type("{selectall}" + value, { force: true });
+          .type(`{selectall}${value}`, { force: true });
       });
     },
 
@@ -226,7 +226,7 @@ export class MaputnikDriver {
       this.helper.get.window().then((win) => styleFromWindow(win)),
 
     exampleFileUrl: () => {
-      return baseUrl + "example-style.json";
+      return `${baseUrl}example-style.json`;
     },
     skipTargetLayerList: () =>
       this.helper.get.elementByTestId("skip-target-layer-list"),

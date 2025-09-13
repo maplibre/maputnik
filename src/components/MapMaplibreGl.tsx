@@ -155,7 +155,7 @@ class MapMaplibreGlInternal extends React.Component<
       this.state.inspect.setOriginalStyle(styleWithTokens);
       // In case the sources are the same, there's a need to refresh the style
       setTimeout(() => {
-        this.state.inspect!.render();
+        this.state.inspect?.render();
       }, 500);
     }
   }
@@ -259,7 +259,7 @@ class MapMaplibreGlInternal extends React.Component<
 
     map.on("data", (e) => {
       if (e.dataType !== "tile") return;
-      this.props.onDataChange!({
+      this.props.onDataChange?.({
         map: this.state.map,
       });
     });

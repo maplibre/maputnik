@@ -11,7 +11,7 @@ function loadJSON(
   })
     .then((response) => {
       if (!response.ok) {
-        throw new Error("Failed to load metadata for " + url);
+        throw new Error(`Failed to load metadata for ${url}`);
       }
       return response.json();
     })
@@ -42,7 +42,7 @@ export function downloadGlyphsMetadata(
   if (urlObj.pathname === normPathPart) {
     urlObj.pathname = "/fontstacks.json";
   } else {
-    urlObj.pathname = urlObj.pathname!.replace(normPathPart, ".json");
+    urlObj.pathname = urlObj.pathname?.replace(normPathPart, ".json");
   }
   const url = npmurl.format(urlObj);
 
@@ -54,6 +54,6 @@ export function downloadSpriteMetadata(
   cb: (...args: any[]) => void,
 ) {
   if (!baseUrl) return cb([]);
-  const url = baseUrl + ".json";
+  const url = `${baseUrl}.json`;
   loadJSON(url, {}, (glyphs) => cb(Object.keys(glyphs)));
 }

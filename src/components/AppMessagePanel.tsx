@@ -34,7 +34,7 @@ class AppMessagePanelInternal extends React.Component<AppMessagePanelInternalPro
                 &nbsp;&mdash;&nbsp;
                 <button
                   className="maputnik-message-panel__switch-button"
-                  onClick={() => this.props.onLayerSelect!(parsed.data.index)}
+                  onClick={() => this.props.onLayerSelect?.(parsed.data.index)}
                 >
                   {t("switch to layer")}
                 </button>
@@ -46,14 +46,14 @@ class AppMessagePanelInternal extends React.Component<AppMessagePanelInternalPro
         content = error.message;
       }
       return (
-        <p key={"error-" + idx} className="maputnik-message-panel-error">
+        <p key={`error-${idx}`} className="maputnik-message-panel-error">
           {content}
         </p>
       );
     });
 
     const infos = this.props.infos?.map((m, i) => {
-      return <p key={"info-" + i}>{m}</p>;
+      return <p key={`info-${i}`}>{m}</p>;
     });
 
     return (

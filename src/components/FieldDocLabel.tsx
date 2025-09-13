@@ -36,7 +36,7 @@ const FieldDocLabel: React.FC<FieldDocLabelProps> = (props) => {
             }
             className={`maputnik-doc-button maputnik-doc-button--${open ? "open" : "closed"}`}
             onClick={() => onToggleDoc(!open)}
-            data-wd-key={"field-doc-button-" + label}
+            data-wd-key={`field-doc-button-${label}`}
           >
             {open ? <MdHighlightOff /> : <MdInfoOutline />}
           </button>

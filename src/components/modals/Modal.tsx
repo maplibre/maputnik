@@ -54,7 +54,7 @@ class ModalInternal extends React.Component<ModalInternalProps> {
                 className="maputnik-modal-header-toggle"
                 title={t("Close modal")}
                 onClick={this.onClose}
-                data-wd-key={this.props["data-wd-key"] + ".close-modal"}
+                data-wd-key={`${this.props["data-wd-key"]}.close-modal`}
               >
                 <MdClose />
               </button>

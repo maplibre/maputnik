@@ -74,10 +74,10 @@ export default class InputSpec extends React.Component<InputSpecProps> {
       value: this.props.value,
       default: this.props.fieldSpec?.default,
       name: this.props.fieldName,
-      "data-wd-key": "spec-field-input:" + this.props.fieldName,
+      "data-wd-key": `spec-field-input:${this.props.fieldName}`,
       onChange: (
         newValue: number | undefined | (string | number | undefined)[],
-      ) => this.props.onChange!(this.props.fieldName, newValue),
+      ) => this.props.onChange?.(this.props.fieldName, newValue),
       "aria-label": this.props["aria-label"],
     };
     switch (this.props.fieldSpec?.type) {
@@ -197,7 +197,7 @@ export default class InputSpec extends React.Component<InputSpecProps> {
 
   render() {
     return (
-      <div data-wd-key={"spec-field:" + this.props.fieldName}>
+      <div data-wd-key={`spec-field:${this.props.fieldName}`}>
         {this.childNodes()}
       </div>
     );

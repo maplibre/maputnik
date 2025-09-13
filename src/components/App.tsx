@@ -385,7 +385,7 @@ export default class App extends React.Component<any, AppState> {
     // The validate function doesn't give us errors for duplicate error with
     // empty string for layer.id, manually deal with that here.
     const layerErrors: (Error | ValidationError)[] = [];
-    if (newStyle && newStyle.layers) {
+    if (newStyle?.layers) {
       const foundLayers = new global.Map();
       newStyle.layers.forEach((layer, index) => {
         if (layer.id === "" && foundLayers.has(layer.id)) {
@@ -471,10 +471,10 @@ export default class App extends React.Component<any, AppState> {
           try {
             const objPath = message.split(":")[0];
             // Errors can be deply nested for example 'layers[0].filter[1][1][0]' we only care upto the property 'layers[0].filter'
-            const unsetPath = objPath.match(/^\S+?\[\d+\]\.[^[]+/)![0];
+            const unsetPath = objPath.match(/^\S+?\[\d+\]\.[^[]+/)?.[0];
             unset(dirtyMapStyle, unsetPath);
           } catch (err) {
-            console.warn(message + " " + err);
+            console.warn(`${message} ${err}`);
           }
         }
       }
@@ -564,7 +564,7 @@ export default class App extends React.Component<any, AppState> {
     const changedLayers = layers.slice(0);
 
     const clonedLayer = cloneDeep(changedLayers[index]);
-    clonedLayer.id = clonedLayer.id + "-copy";
+    clonedLayer.id = `${clonedLayer.id}-copy`;
     changedLayers.splice(index, 0, clonedLayer);
     this.onLayersChange(changedLayers);
   };
@@ -673,8 +673,8 @@ export default class App extends React.Component<any, AppState> {
         };
 
         try {
-          if (url!.startsWith("pmtiles://")) {
-            const json = await new PMTiles(url!.substring(10)).getTileJson("");
+          if (url?.startsWith("pmtiles://")) {
+            const json = await new PMTiles(url?.substring(10)).getTileJson("");
             setVectorLayers(json);
           } else {
             const response = await fetch(url!, { mode: "cors" });

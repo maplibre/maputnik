@@ -139,7 +139,7 @@ class ZoomPropertyInternal extends React.Component<
       ...(this.props.value as ZoomWithStops),
       stops: orderedStops,
     };
-    this.props.onChange!(this.props.fieldName, changedValue);
+    this.props.onChange?.(this.props.fieldName, changedValue);
   }
 
   changeBase(newValue: number | undefined) {
@@ -149,9 +149,9 @@ class ZoomPropertyInternal extends React.Component<
     };
 
     if (changedValue.base === undefined) {
-      delete changedValue["base"];
+      delete changedValue.base;
     }
-    this.props.onChange!(this.props.fieldName, changedValue);
+    this.props.onChange?.(this.props.fieldName, changedValue);
   }
 
   changeDataType = (type: string) => {

@@ -107,7 +107,7 @@ function hasNestedCombiningFilter(
       filter
         .slice(1)
         .map((f) => hasCombiningFilter(f as any))
-        .filter((f) => f == true).length > 0
+        .filter((f) => f === true).length > 0
     );
   }
   return false;
@@ -261,7 +261,7 @@ class FilterEditorInternal extends React.Component<
       );
 
       const editorBlocks = filters.map((f, idx) => {
-        const error = errors![`filter[${idx + 1}]`];
+        const error = errors?.[`filter[${idx + 1}]`];
 
         return (
           <div key={`block-${idx}`}>

@@ -20,7 +20,7 @@ const FieldId: React.FC<FieldIdProps> = (props) => {
       <InputString
         value={props.value}
         onInput={props.onChange}
-        data-wd-key={props.wdKey + ".input"}
+        data-wd-key={`${props.wdKey}.input`}
       />
     </Block>
   );

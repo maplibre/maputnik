@@ -22,7 +22,7 @@ function setStopRefs(
   // This is initialsed below only if required to improved performance.
   let newRefs: { [key: number]: string } | undefined;
 
-  if (props.value && props.value.stops) {
+  if (props.value?.stops) {
     props.value.stops.forEach((_val, idx) => {
       if (!Object.hasOwn(state.refs, idx)) {
         if (!newRefs) {
@@ -174,7 +174,7 @@ class DataPropertyInternal extends React.Component<
         ...value,
       };
     }
-    this.props.onChange!(fieldName, value);
+    this.props.onChange?.(fieldName, value);
   };
 
   changeStop(
@@ -208,9 +208,9 @@ class DataPropertyInternal extends React.Component<
     };
 
     if (changedValue.base === undefined) {
-      delete changedValue["base"];
+      delete changedValue.base;
     }
-    this.props.onChange!(this.props.fieldName, changedValue);
+    this.props.onChange?.(this.props.fieldName, changedValue);
   }
 
   changeDataType(propVal: string) {
@@ -228,7 +228,7 @@ class DataPropertyInternal extends React.Component<
     if (propVal) {
       this.props.value![propName] = propVal;
     } else {
-      delete this.props.value![propName];
+      delete this.props.value?.[propName];
     }
     this.onChange(this.props.fieldName, this.props.value);
   }
@@ -327,7 +327,7 @@ class DataPropertyInternal extends React.Component<
             <Block label={t("Function")} key="function">
               <div className="maputnik-data-spec-property-input">
                 <InputSelect
-                  value={this.props.value!.type}
+                  value={this.props.value?.type}
                   onChange={(propVal: string) => this.changeDataType(propVal)}
                   title={t(
                     "Select a type of data scale (default is 'categorical').",

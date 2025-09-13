@@ -395,7 +395,7 @@ const FieldFunction: React.FC<FieldFunctionProps> = (props) => {
   return (
     <div
       className={propClass}
-      data-wd-key={"spec-field-container:" + props.fieldName}
+      data-wd-key={`spec-field-container:${props.fieldName}`}
     >
       {specField}
     </div>

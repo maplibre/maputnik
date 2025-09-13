@@ -23,7 +23,7 @@ export async function loadStyleUrl(
     const body = await response.json();
     return style.ensureStyleValidity(body);
   } catch {
-    console.warn("Could not fetch default style: " + styleUrl);
+    console.warn(`Could not fetch default style: ${styleUrl}`);
     return style.emptyStyle;
   }
 }

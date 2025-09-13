@@ -19,7 +19,7 @@ import type { OnStyleChangedCallback } from "../libs/definitions";
 // This is required because of <https://stackoverflow.com/a/49846426>, there isn't another way to detect support that I'm aware of.
 const browser = detect();
 const colorAccessibilityFiltersEnabled =
-  ["chrome", "firefox"].indexOf(browser!.name) > -1;
+  ["chrome", "firefox"].indexOf(browser?.name) > -1;
 
 type IconTextProps = {
   children?: React.ReactNode;
@@ -138,7 +138,7 @@ class AppToolbarInternal extends React.Component<AppToolbarInternalProps> {
       ).focus();
     } else {
       const el = document.querySelector(
-        "#skip-target-" + target,
+        `#skip-target-${target}`,
       ) as HTMLButtonElement;
       el.focus();
     }

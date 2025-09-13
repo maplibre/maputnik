@@ -129,7 +129,7 @@ class MapOpenLayersInternal extends React.Component<
       this.setState({
         center: [center[0].toFixed(2), center[1].toFixed(2)],
         rotation: map.getView().getRotation().toFixed(2),
-        zoom: map.getView().getZoom()!.toFixed(2),
+        zoom: map.getView().getZoom()?.toFixed(2),
       });
     });
 
@@ -139,7 +139,7 @@ class MapOpenLayersInternal extends React.Component<
 
   closeOverlay = (e: any) => {
     e.target.blur();
-    this.overlay!.setPosition(undefined);
+    this.overlay?.setPosition(undefined);
   };
 
   render() {

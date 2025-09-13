@@ -86,7 +86,7 @@ class ExpressionPropertyInternal extends React.Component<
     const fieldKey =
       fieldType === undefined ? fieldName : `${fieldType}.${fieldName}`;
 
-    const fieldError = errors![fieldKey];
+    const fieldError = errors?.[fieldKey];
     const errorKeyStart = `${fieldKey}[`;
     const foundErrors = [];
 

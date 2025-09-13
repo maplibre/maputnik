@@ -14,7 +14,7 @@ export async function createStyleStore(
   const useStyleUrl =
     styleUrl &&
     window.confirm(
-      "Load style from URL: " + styleUrl + " and discard current changes?",
+      `Load style from URL: ${styleUrl} and discard current changes?`,
     );
   let styleStore: IStyleStore;
   if (import.meta.env.MODE === "desktop" && !useStyleUrl) {

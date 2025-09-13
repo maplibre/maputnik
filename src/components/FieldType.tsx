@@ -38,7 +38,7 @@ const FieldTypeInternal: React.FC<FieldTypeInternalProps> = ({
           options={layerstypes}
           onChange={onChange}
           value={value}
-          data-wd-key={wdKey + ".select"}
+          data-wd-key={`${wdKey}.select`}
         />
       )}
     </Block>

@@ -124,7 +124,7 @@ class LayerListContainerInternal extends React.Component<
       };
       if (
         previousLayer &&
-        layerPrefix(previousLayer.id) == layerPrefix(layer.id)
+        layerPrefix(previousLayer.id) === layerPrefix(layer.id)
       ) {
         const lastGroup = groups[groups.length - 1];
         lastGroup.push(layer);
@@ -185,7 +185,7 @@ class LayerListContainerInternal extends React.Component<
       const out = {
         ...props,
       } as LayerListContainerProps & { layers?: any };
-      delete out["layers"];
+      delete out.layers;
       return out;
     }
 
@@ -203,7 +203,7 @@ class LayerListContainerInternal extends React.Component<
   componentDidUpdate(prevProps: LayerListContainerProps) {
     if (prevProps.selectedLayerIndex !== this.props.selectedLayerIndex) {
       const selectedItemNode = this.selectedItemRef.current;
-      if (selectedItemNode && selectedItemNode.node) {
+      if (selectedItemNode?.node) {
         const target = selectedItemNode.node;
         const options = {
           root: this.scrollContainerRef.current,
@@ -251,7 +251,7 @@ class LayerListContainerInternal extends React.Component<
           return (
             error.parsed &&
             error.parsed.type === "layer" &&
-            error.parsed.data.index == idx
+            error.parsed.data.index === idx
           );
         });
 
@@ -268,7 +268,7 @@ class LayerListContainerInternal extends React.Component<
                 this.isCollapsed(groupPrefix, groupIdx) &&
                 idx !== this.props.selectedLayerIndex,
               "maputnik-layer-list-item-group-last":
-                idxInGroup == layers.length - 1 && layers.length > 1,
+                idxInGroup === layers.length - 1 && layers.length > 1,
               "maputnik-layer-list-item--error": !!layerError,
             })}
             key={layer.key}
@@ -276,7 +276,7 @@ class LayerListContainerInternal extends React.Component<
             layerId={layer.id}
             layerIndex={idx}
             layerType={layer.type}
-            visibility={(layer.layout || {}).visibility}
+            visibility={layer.layout?.visibility}
             isSelected={idx === this.props.selectedLayerIndex}
             onLayerSelect={this.props.onLayerSelect}
             onLayerDestroy={this.props.onLayerDestroy?.bind(this)}

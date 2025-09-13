@@ -139,8 +139,8 @@ class ModalShortcutsInternal extends React.Component<ModalShortcutsInternalProps
             {help.map((item, idx) => {
               return (
                 <div key={idx} className="maputnik-modal-shortcuts__shortcut">
-                  <dt key={"dt" + idx}>{item.key}</dt>
-                  <dd key={"dd" + idx}>{item.text}</dd>
+                  <dt key={`dt${idx}`}>{item.key}</dt>
+                  <dd key={`dd${idx}`}>{item.text}</dd>
                 </div>
               );
             })}

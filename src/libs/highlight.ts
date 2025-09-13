@@ -16,9 +16,9 @@ function changeLayer(l: HighlightedLayer, layer: LayerSpecification) {
   if ("filter" in layer) {
     l.filter = layer.filter;
   } else {
-    delete l["filter"];
+    delete l.filter;
   }
-  l.id = l.id + "_highlight";
+  l.id = `${l.id}_highlight`;
   return l;
 }
 

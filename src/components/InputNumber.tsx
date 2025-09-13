@@ -84,15 +84,15 @@ export default class InputNumber extends React.Component<
     }
 
     const value = +v;
-    if (isNaN(value)) {
+    if (Number.isNaN(value)) {
       return false;
     }
 
-    if (!isNaN(this.props.min!) && value < this.props.min!) {
+    if (!Number.isNaN(this.props.min!) && value < this.props.min!) {
       return false;
     }
 
-    if (!isNaN(this.props.max!) && value > this.props.max!) {
+    if (!Number.isNaN(this.props.max!) && value > this.props.max!) {
       return false;
     }
 
@@ -208,7 +208,7 @@ export default class InputNumber extends React.Component<
                 dirtyValue: this.state.value,
               });
             }}
-            data-wd-key={this.props["data-wd-key"] + "-range"}
+            data-wd-key={`${this.props["data-wd-key"]}-range`}
           />
           <input
             key="text"
@@ -227,7 +227,7 @@ export default class InputNumber extends React.Component<
               this.setState({ editing: false });
               this.resetValue();
             }}
-            data-wd-key={this.props["data-wd-key"] + "-text"}
+            data-wd-key={`${this.props["data-wd-key"]}-text`}
           />
         </div>
       );

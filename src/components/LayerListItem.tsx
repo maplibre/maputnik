@@ -143,7 +143,7 @@ const LayerListItem = React.forwardRef<HTMLLIElement, LayerListItemProps>(
           style={style}
           id={props.id}
           onClick={(_e) => props.onLayerSelect(props.layerIndex)}
-          data-wd-key={"layer-list-item:" + props.layerId}
+          data-wd-key={`layer-list-item:${props.layerId}`}
           className={classnames({
             "maputnik-layer-list-item": true,
             "maputnik-layer-list-item-selected": isSelected,
@@ -158,23 +158,23 @@ const LayerListItem = React.forwardRef<HTMLLIElement, LayerListItemProps>(
           />
           <span style={{ flexGrow: 1 }} />
           <IconAction
-            wdKey={"layer-list-item:" + props.layerId + ":delete"}
+            wdKey={`layer-list-item:${props.layerId}:delete`}
             action={"delete"}
             classBlockName="delete"
-            onClick={(_e) => onLayerDestroy!(props.layerIndex)}
+            onClick={(_e) => onLayerDestroy?.(props.layerIndex)}
           />
           <IconAction
-            wdKey={"layer-list-item:" + props.layerId + ":copy"}
+            wdKey={`layer-list-item:${props.layerId}:copy`}
             action={"duplicate"}
             classBlockName="duplicate"
-            onClick={(_e) => onLayerCopy!(props.layerIndex)}
+            onClick={(_e) => onLayerCopy?.(props.layerIndex)}
           />
           <IconAction
-            wdKey={"layer-list-item:" + props.layerId + ":toggle-visibility"}
+            wdKey={`layer-list-item:${props.layerId}:toggle-visibility`}
             action={visibilityAction}
             classBlockName="visibility"
             classBlockModifier={visibilityAction}
-            onClick={(_e) => onLayerVisibilityToggle!(props.layerIndex)}
+            onClick={(_e) => onLayerVisibilityToggle?.(props.layerIndex)}
           />
         </li>
       </IconContext.Provider>

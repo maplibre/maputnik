@@ -40,7 +40,7 @@ function getLayoutForSymbolType(t: TFunction): MaputnikLayoutGroup[] {
     title: t("General layout properties"),
     id: "General_layout_properties",
     type: "properties",
-    fields: Object.keys(v8["layout_symbol"]).filter((f) =>
+    fields: Object.keys(v8.layout_symbol).filter((f) =>
       f.startsWith("symbol-"),
     ),
   });
@@ -48,33 +48,25 @@ function getLayoutForSymbolType(t: TFunction): MaputnikLayoutGroup[] {
     title: t("Text layout properties"),
     id: "Text_layout_properties",
     type: "properties",
-    fields: Object.keys(v8["layout_symbol"]).filter((f) =>
-      f.startsWith("text-"),
-    ),
+    fields: Object.keys(v8.layout_symbol).filter((f) => f.startsWith("text-")),
   });
   groups.push({
     title: t("Icon layout properties"),
     id: "Icon_layout_properties",
     type: "properties",
-    fields: Object.keys(v8["layout_symbol"]).filter((f) =>
-      f.startsWith("icon-"),
-    ),
+    fields: Object.keys(v8.layout_symbol).filter((f) => f.startsWith("icon-")),
   });
   groups.push({
     title: t("Text paint properties"),
     id: "Text_paint_properties",
     type: "properties",
-    fields: Object.keys(v8["paint_symbol"]).filter((f) =>
-      f.startsWith("text-"),
-    ),
+    fields: Object.keys(v8.paint_symbol).filter((f) => f.startsWith("text-")),
   });
   groups.push({
     title: t("Icon paint properties"),
     id: "Icon_paint_properties",
     type: "properties",
-    fields: Object.keys(v8["paint_symbol"]).filter((f) =>
-      f.startsWith("icon-"),
-    ),
+    fields: Object.keys(v8.paint_symbol).filter((f) => f.startsWith("icon-")),
   });
   return groups;
 }
@@ -90,20 +82,20 @@ function getLayoutForType(
     return getLayoutForSymbolType(t);
   }
   const groups: MaputnikLayoutGroup[] = [];
-  if (Object.keys(v8["paint_" + type]).length > 0) {
+  if (Object.keys(v8[`paint_${type}`]).length > 0) {
     groups.push({
       title: t("Paint properties"),
       id: "Paint_properties",
       type: "properties",
-      fields: Object.keys(v8["paint_" + type]),
+      fields: Object.keys(v8[`paint_${type}`]),
     });
   }
-  if (Object.keys(v8["layout_" + type]).length > 0) {
+  if (Object.keys(v8[`layout_${type}`]).length > 0) {
     groups.push({
       title: t("Layout properties"),
       id: "Layout_properties",
       type: "properties",
-      fields: Object.keys(v8["layout_" + type]),
+      fields: Object.keys(v8[`layout_${type}`]),
     });
   }
   return groups;
@@ -224,11 +216,11 @@ class LayerEditorInternal extends React.Component<
     const errorData: {
       [key in LayerSpecification as string]: { message: string };
     } = {};
-    errors!.forEach((error) => {
+    errors?.forEach((error) => {
       if (
         error.parsed &&
         error.parsed.type === "layer" &&
-        error.parsed.data.index == layerIndex
+        error.parsed.data.index === layerIndex
       ) {
         errorData[error.parsed.data.key] = {
           message: error.parsed.data.message,
@@ -305,7 +297,7 @@ class LayerEditorInternal extends React.Component<
                 this.changeProperty(
                   "metadata",
                   "maputnik:comment",
-                  v == "" ? undefined : v,
+                  v === "" ? undefined : v,
                 )
               }
             />

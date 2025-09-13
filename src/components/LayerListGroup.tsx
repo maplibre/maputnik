@@ -15,7 +15,7 @@ export default class LayerListGroup extends React.Component<LayerListGroupProps>
       <li className="maputnik-layer-list-group">
         <div
           className="maputnik-layer-list-group-header"
-          data-wd-key={"layer-list-group:" + this.props["data-wd-key"]}
+          data-wd-key={`layer-list-group:${this.props["data-wd-key"]}`}
           onClick={(_e) => this.props.onActiveToggle(!this.props.isActive)}
         >
           <button

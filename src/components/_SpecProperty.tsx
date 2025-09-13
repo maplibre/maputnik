@@ -33,7 +33,7 @@ export default class SpecProperty extends React.Component<SpecPropertyProps> {
       />
     );
 
-    const error = errors![(fieldType + "." + fieldName) as any] as any;
+    const error = errors?.[`${fieldType}.${fieldName}` as any] as any;
 
     return (
       <FieldSpec

@@ -3,7 +3,7 @@
 // Copied from maplibre/maplibre-gl-js
 // https://github.com/maplibre/maplibre-gl-js/blob/bc70bc559cea5c987fa1b79fd44766cef68bbe28/build/release-notes.js
 
-import * as fs from "fs";
+import * as fs from "node:fs";
 
 const changelogPath = "CHANGELOG.md";
 const changelog = fs.readFileSync(changelogPath, "utf8");

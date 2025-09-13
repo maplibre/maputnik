@@ -18,7 +18,7 @@ function getFieldSpec(
   fieldName: string,
 ) {
   const groupName = getGroupName(spec, layerType, fieldName);
-  const group = spec[groupName + "_" + layerType];
+  const group = spec[`${groupName}_${layerType}`];
   const fieldSpec = group[fieldName];
   if (iconProperties.indexOf(fieldName) >= 0) {
     return {
@@ -40,7 +40,7 @@ function getGroupName(
   layerType: LayerSpecification["type"],
   fieldName: string,
 ): "paint" | "layout" {
-  const paint = spec["paint_" + layerType] || {};
+  const paint = spec[`paint_${layerType}`] || {};
   return fieldName in paint ? "paint" : "layout";
 }
 

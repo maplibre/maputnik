@@ -7,7 +7,7 @@ import InputString from "./InputString";
 
 function tryParseInt(v: string | number) {
   if (v === "") return v;
-  if (isNaN(v as number)) return v;
+  if (Number.isNaN(v as number)) return v;
   return parseFloat(v as string);
 }
 

@@ -28,7 +28,7 @@ export class ApiStyleStore implements IStyleStore {
 
   async init(): Promise<void> {
     try {
-      const response = await fetch(this.localUrl + "/styles", { mode: "cors" });
+      const response = await fetch(`${this.localUrl}/styles`, { mode: "cors" });
       const body = await response.json();
       const styleIds = body;
       this.latestStyleId = styleIds[0];
@@ -57,7 +57,7 @@ export class ApiStyleStore implements IStyleStore {
   async getLatestStyle(): Promise<StyleSpecificationWithId> {
     if (this.latestStyleId) {
       const response = await fetch(
-        this.localUrl + "/styles/" + this.latestStyleId,
+        `${this.localUrl}/styles/${this.latestStyleId}`,
         {
           mode: "cors",
         },
@@ -78,7 +78,7 @@ export class ApiStyleStore implements IStyleStore {
     );
 
     const id = mapStyle.id;
-    fetch(this.localUrl + "/styles/" + id, {
+    fetch(`${this.localUrl}/styles/${id}`, {
       method: "PUT",
       mode: "cors",
       headers: {

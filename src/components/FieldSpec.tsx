@@ -35,7 +35,7 @@ function getElementFromType(fieldSpec: {
     case "variableAnchorOffsetCollection":
       return Fieldset;
     default:
-      console.warn("No such type for: " + fieldSpec.type);
+      console.warn(`No such type for: ${fieldSpec.type}`);
       return Block;
   }
 }

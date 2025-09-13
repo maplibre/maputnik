@@ -30,7 +30,7 @@ describe("layers", () => {
 
     describe("when clicking delete", () => {
       beforeEach(() => {
-        when.click("layer-list-item:" + id + ":delete");
+        when.click(`layer-list-item:${id}:delete`);
       });
       it("should empty layers in local storage", () => {
         then(get.styleFromLocalStorage()).shouldDeepNestedInclude({
@@ -41,13 +41,13 @@ describe("layers", () => {
 
     describe("when clicking duplicate", () => {
       beforeEach(() => {
-        when.click("layer-list-item:" + id + ":copy");
+        when.click(`layer-list-item:${id}:copy`);
       });
       it("should add copy layer in local storage", () => {
         then(get.styleFromLocalStorage()).shouldDeepNestedInclude({
           layers: [
             {
-              id: id + "-copy",
+              id: `${id}-copy`,
               type: "background",
             },
             {
@@ -61,7 +61,7 @@ describe("layers", () => {
 
     describe("when clicking hide", () => {
       beforeEach(() => {
-        when.click("layer-list-item:" + id + ":toggle-visibility");
+        when.click(`layer-list-item:${id}:toggle-visibility`);
       });
 
       it("should update visibility to none in local storage", () => {
@@ -80,7 +80,7 @@ describe("layers", () => {
 
       describe("when clicking show", () => {
         beforeEach(() => {
-          when.click("layer-list-item:" + id + ":toggle-visibility");
+          when.click(`layer-list-item:${id}:toggle-visibility`);
         });
 
         it("should update visibility to visible in local storage", () => {
@@ -108,11 +108,11 @@ describe("layers", () => {
           });
         });
         it("should show the selected layer in the editor", () => {
-          when.realClick("layer-list-item:" + secondId);
+          when.realClick(`layer-list-item:${secondId}`);
           then(
             get.elementByTestId("layer-editor.layer-id.input"),
           ).shouldHaveValue(secondId);
-          when.realClick("layer-list-item:" + id);
+          when.realClick(`layer-list-item:${id}`);
           then(
             get.elementByTestId("layer-editor.layer-id.input"),
           ).shouldHaveValue(id);
@@ -142,14 +142,14 @@ describe("layers", () => {
         const id = uuid();
 
         when.selectWithin("add-layer.layer-type", "background");
-        when.setValue("add-layer.layer-id.input", "background:" + id);
+        when.setValue("add-layer.layer-id.input", `background:${id}`);
 
         when.click("add-layer");
 
         then(get.styleFromLocalStorage()).shouldDeepNestedInclude({
           layers: [
             {
-              id: "background:" + id,
+              id: `background:${id}`,
               type: "background",
             },
           ],
@@ -163,16 +163,16 @@ describe("layers", () => {
         it("id", () => {
           const bgId = createBackground();
 
-          when.click("layer-list-item:background:" + bgId);
+          when.click(`layer-list-item:background:${bgId}`);
 
           const id = uuid();
-          when.setValue("layer-editor.layer-id.input", "foobar:" + id);
+          when.setValue("layer-editor.layer-id.input", `foobar:${id}`);
           when.click("min-zoom");
 
           then(get.styleFromLocalStorage()).shouldDeepNestedInclude({
             layers: [
               {
-                id: "foobar:" + id,
+                id: `foobar:${id}`,
                 type: "background",
               },
             ],
@@ -184,7 +184,7 @@ describe("layers", () => {
 
           beforeEach(() => {
             bgId = createBackground();
-            when.click("layer-list-item:background:" + bgId);
+            when.click(`layer-list-item:background:${bgId}`);
             when.setValue("min-zoom.input-text", "1");
             when.click("layer-editor.layer-id");
           });
@@ -193,7 +193,7 @@ describe("layers", () => {
             then(get.styleFromLocalStorage()).shouldDeepNestedInclude({
               layers: [
                 {
-                  id: "background:" + bgId,
+                  id: `background:${bgId}`,
                   type: "background",
                   minzoom: 1,
                 },
@@ -207,7 +207,7 @@ describe("layers", () => {
             then(get.styleFromLocalStorage()).shouldDeepNestedInclude({
               layers: [
                 {
-                  id: "background:" + bgId,
+                  id: `background:${bgId}`,
                   type: "background",
                   minzoom: 1,
                 },
@@ -221,7 +221,7 @@ describe("layers", () => {
 
           beforeEach(() => {
             bgId = createBackground();
-            when.click("layer-list-item:background:" + bgId);
+            when.click(`layer-list-item:background:${bgId}`);
             when.setValue("max-zoom.input-text", "1");
             when.click("layer-editor.layer-id");
           });
@@ -230,7 +230,7 @@ describe("layers", () => {
             then(get.styleFromLocalStorage()).shouldDeepNestedInclude({
               layers: [
                 {
-                  id: "background:" + bgId,
+                  id: `background:${bgId}`,
                   type: "background",
                   maxzoom: 1,
                 },
@@ -245,7 +245,7 @@ describe("layers", () => {
 
           beforeEach(() => {
             bgId = createBackground();
-            when.click("layer-list-item:background:" + bgId);
+            when.click(`layer-list-item:background:${bgId}`);
             when.setValue("layer-comment.input", comment);
             when.click("layer-editor.layer-id");
           });
@@ -254,7 +254,7 @@ describe("layers", () => {
             then(get.styleFromLocalStorage()).shouldDeepNestedInclude({
               layers: [
                 {
-                  id: "background:" + bgId,
+                  id: `background:${bgId}`,
                   type: "background",
                   metadata: {
                     "maputnik:comment": comment,
@@ -274,7 +274,7 @@ describe("layers", () => {
               then(get.styleFromLocalStorage()).shouldDeepNestedInclude({
                 layers: [
                   {
-                    id: "background:" + bgId,
+                    id: `background:${bgId}`,
                     type: "background",
                   },
                 ],
@@ -287,7 +287,7 @@ describe("layers", () => {
           let bgId: string;
           beforeEach(() => {
             bgId = createBackground();
-            when.click("layer-list-item:background:" + bgId);
+            when.click(`layer-list-item:background:${bgId}`);
             when.click("spec-field:background-color");
           });
 
@@ -295,7 +295,7 @@ describe("layers", () => {
             then(get.styleFromLocalStorage()).shouldDeepNestedInclude({
               layers: [
                 {
-                  id: "background:" + bgId,
+                  id: `background:${bgId}`,
                   type: "background",
                 },
               ],
@@ -307,7 +307,7 @@ describe("layers", () => {
           let bgId: string;
           beforeEach(() => {
             bgId = createBackground();
-            when.click("layer-list-item:background:" + bgId);
+            when.click(`layer-list-item:background:${bgId}`);
             when.type("spec-field-input:background-opacity", "0.");
           });
 
@@ -318,7 +318,7 @@ describe("layers", () => {
           });
 
           it("should revert to a valid value when focus out", () => {
-            when.click("layer-list-item:background:" + bgId);
+            when.click(`layer-list-item:background:${bgId}`);
             then(
               get.elementByTestId("spec-field-input:background-opacity"),
             ).shouldHaveValue("0");
@@ -347,7 +347,7 @@ describe("layers", () => {
         it.skip("parse error", () => {
           const bgId = createBackground();
 
-          when.click("layer-list-item:background:" + bgId);
+          when.click(`layer-list-item:background:${bgId}`);
 
           const errorSelector = ".CodeMirror-lint-marker-error";
           then(get.elementByTestId(errorSelector)).shouldNotExist();
@@ -424,14 +424,14 @@ describe("layers", () => {
         layer: "example",
       });
 
-      then(get.elementByTestId("layer-list-item:" + id1)).shouldBeVisible();
-      then(get.elementByTestId("layer-list-item:" + id2)).shouldNotBeVisible();
-      then(get.elementByTestId("layer-list-item:" + id3)).shouldBeVisible();
+      then(get.elementByTestId(`layer-list-item:${id1}`)).shouldBeVisible();
+      then(get.elementByTestId(`layer-list-item:${id2}`)).shouldNotBeVisible();
+      then(get.elementByTestId(`layer-list-item:${id3}`)).shouldBeVisible();
       when.click("layer-list-group:aa-0");
-      then(get.elementByTestId("layer-list-item:" + id1)).shouldBeVisible();
-      then(get.elementByTestId("layer-list-item:" + id2)).shouldBeVisible();
-      then(get.elementByTestId("layer-list-item:" + id3)).shouldBeVisible();
-      when.click("layer-list-item:" + id2);
+      then(get.elementByTestId(`layer-list-item:${id1}`)).shouldBeVisible();
+      then(get.elementByTestId(`layer-list-item:${id2}`)).shouldBeVisible();
+      then(get.elementByTestId(`layer-list-item:${id3}`)).shouldBeVisible();
+      when.click(`layer-list-item:${id2}`);
       when.click("skip-target-layer-editor");
       when.click("menu-move-layer-down");
       then(get.elementByTestId("layer-list-group:aa-0")).shouldNotExist();
@@ -770,8 +770,8 @@ describe("layers", () => {
       });
 
       when.dragAndDropWithWait(
-        "layer-list-item:" + firstId,
-        "layer-list-item:" + thirdId,
+        `layer-list-item:${firstId}`,
+        `layer-list-item:${thirdId}`,
       );
 
       then(get.styleFromLocalStorage()).shouldDeepNestedInclude({

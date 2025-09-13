@@ -106,7 +106,7 @@ function replaceSourceAccessToken(
   }
 
   let sourceUrl: string;
-  if (authSourceName == "stadia") {
+  if (authSourceName === "stadia") {
     // Stadia Maps does not always require an API key,
     // so there is no placeholder in our styles.
     // We append it at the end of the URL when exporting if necessary.

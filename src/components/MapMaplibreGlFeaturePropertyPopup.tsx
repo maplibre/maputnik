@@ -32,7 +32,7 @@ function renderFeature(feature: InspectFeature, idx: number) {
     <React.Fragment key={idx}>
       <tr>
         <td colSpan={2} className="maputnik-popup-layer-id">
-          {feature.layer["source"]}: {feature.layer["source-layer"]}
+          {feature.layer.source}: {feature.layer["source-layer"]}
           {feature.inspectModeCounter && (
             <span> × {feature.inspectModeCounter}</span>
           )}

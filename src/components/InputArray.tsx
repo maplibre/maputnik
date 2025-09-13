@@ -109,7 +109,7 @@ export default class InputArray extends React.Component<
                   : (this.props.default[i] as number)
               }
               value={value[i] as number}
-              required={containsValues ? true : false}
+              required={!!containsValues}
               onChange={(v) => this.changeValue(i, v)}
               aria-label={this.props["aria-label"] || this.props.label}
             />
@@ -124,7 +124,7 @@ export default class InputArray extends React.Component<
                   : (this.props.default[i] as string)
               }
               value={value[i] as string}
-              required={containsValues ? true : false}
+              required={!!containsValues}
               onChange={this.changeValue.bind(this, i)}
               aria-label={this.props["aria-label"] || this.props.label}
             />

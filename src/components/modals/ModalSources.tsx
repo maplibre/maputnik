@@ -62,8 +62,7 @@ function editorMode(source: SourceSpecification) {
   }
   if (source.type === "vector") {
     if (source.tiles) return "tile_vector";
-    if (source.url && source.url.startsWith("pmtiles://"))
-      return "pmtiles_vector";
+    if (source.url?.startsWith("pmtiles://")) return "pmtiles_vector";
     return "tilejson_vector";
   }
   if (source.type === "geojson") {
@@ -143,7 +142,7 @@ class AddSource extends React.Component<AddSourceProps, AddSourceState> {
   }
 
   defaultSource(mode: EditorMode): SourceSpecification {
-    const source = (this.state || {}).source || {};
+    const source = this.state?.source || {};
     const { protocol } = window.location;
 
     switch (mode) {
@@ -331,7 +330,7 @@ class ModalSourcesInternal extends React.Component<ModalSourcesInternalProps> {
     source: SourceSpecification & { title?: string },
   ): SourceSpecification {
     const strippedSource = { ...source };
-    delete strippedSource["title"];
+    delete strippedSource.title;
     return strippedSource;
   }
 
