@@ -1,8 +1,8 @@
-import React from 'react'
-import InputString from './InputString'
-import SmallError from './SmallError'
-import { Trans, WithTranslation, withTranslation } from 'react-i18next';
-import { TFunction } from 'i18next';
+import React, { type JSX } from "react";
+import InputString from "./InputString";
+import SmallError from "./SmallError";
+import { Trans, type WithTranslation, withTranslation } from "react-i18next";
+import { type TFunction } from "i18next";
 
 function validate(url: string, t: TFunction): JSX.Element | undefined {
   if (url === "") {
@@ -63,23 +63,23 @@ export type FieldUrlProps = {
   onInput?(...args: unknown[]): unknown
   multi?: boolean
   required?: boolean
-  'aria-label'?: string
+  "aria-label"?: string
   type?: string
   className?: string
 };
 
-type FieldUrlInternalProps = FieldUrlProps & WithTranslation;
+type InputUrlInternalProps = FieldUrlProps & WithTranslation;
 
-type FieldUrlState = {
+type InputUrlState = {
   error?: React.ReactNode
-}
+};
 
-class FieldUrlInternal extends React.Component<FieldUrlInternalProps, FieldUrlState> {
+class InputUrlInternal extends React.Component<InputUrlInternalProps, InputUrlState> {
   static defaultProps = {
     onInput: () => {},
-  }
+  };
 
-  constructor (props: FieldUrlInternalProps) {
+  constructor (props: InputUrlInternalProps) {
     super(props);
     this.state = {
       error: validate(props.value, props.t),
@@ -91,14 +91,14 @@ class FieldUrlInternal extends React.Component<FieldUrlInternalProps, FieldUrlSt
       error: validate(url, this.props.t),
     });
     if (this.props.onInput) this.props.onInput(url);
-  }
+  };
 
   onChange = (url: string) => {
     this.setState({
       error: validate(url, this.props.t),
     });
     this.props.onChange(url);
-  }
+  };
 
   render () {
     return (
@@ -107,7 +107,7 @@ class FieldUrlInternal extends React.Component<FieldUrlInternalProps, FieldUrlSt
           {...this.props}
           onInput={this.onInput}
           onChange={this.onChange}
-          aria-label={this.props['aria-label']}
+          aria-label={this.props["aria-label"]}
         />
         {this.state.error}
       </div>
@@ -115,5 +115,5 @@ class FieldUrlInternal extends React.Component<FieldUrlInternalProps, FieldUrlSt
   }
 }
 
-const FieldUrl = withTranslation()(FieldUrlInternal);
-export default FieldUrl;
+const InputUrl = withTranslation()(InputUrlInternal);
+export default InputUrl;

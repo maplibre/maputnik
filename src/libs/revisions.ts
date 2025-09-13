@@ -1,30 +1,30 @@
-import type {StyleSpecification} from "maplibre-gl";
+import { type StyleSpecificationWithId } from "./definitions";
 
 export class RevisionStore {
-  revisions: (StyleSpecification & {id: string})[];
+  revisions: StyleSpecificationWithId[];
   currentIdx: number;
 
 
   constructor(initialRevisions=[]) {
-    this.revisions = initialRevisions
-    this.currentIdx = initialRevisions.length - 1
+    this.revisions = initialRevisions;
+    this.currentIdx = initialRevisions.length - 1;
   }
 
   get latest() {
-    return this.revisions[this.revisions.length - 1]
+    return this.revisions[this.revisions.length - 1];
   }
 
   get current() {
-    return this.revisions[this.currentIdx]
+    return this.revisions[this.currentIdx];
   }
 
-  addRevision(revision: StyleSpecification & {id: string}) {
+  addRevision(revision: StyleSpecificationWithId) {
     // clear any "redo" revisions once a change is made
     // and ensure current index is at end of list
     this.revisions = this.revisions.slice(0, this.currentIdx + 1);
 
-    this.revisions.push(revision)
-    this.currentIdx++
+    this.revisions.push(revision);
+    this.currentIdx++;
     //}
   }
 
@@ -37,7 +37,7 @@ export class RevisionStore {
 
   redo() {
     if(this.currentIdx < this.revisions.length - 1) {
-      this.currentIdx++
+      this.currentIdx++;
     }
     return this.current;
   }

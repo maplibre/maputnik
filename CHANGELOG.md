@@ -1,6 +1,22 @@
 ## main
 
 ### ✨ Features and improvements
+- Added translation to "Links" in debug modal
+- Add support for hillshade's color arrays and relief-color elevation expression
+- Remove `@mdi` packages in favor of `react-icons`
+- _...Add new stuff here..._
+
+### 🐞 Bug fixes
+
+- Fixed an issue when clicking on a popup and then clicking on the map again
+- Fix modal close button possition
+- Fixed an issue with the generation of tranlations
+- Fix missing spec info when clicking next to a property
+- _...Add new stuff here..._
+
+## 3.0.0
+
+### ✨ Features and improvements
 - Fix radio/delete filter buttons styling regression
 - Add german translation
 - Use same version number for web and desktop versions
@@ -16,13 +32,17 @@
 - Remove usage of legacy `childContextTypes` API
 - Refactor Field components to use arrow function syntax
 - Replace react-autocomplete with Downshift in the autocomplete component
-- _...Add new stuff here..._
+- Add LocationIQ as supported map provider with access token field and gallery style
+- Use maputnik go binary for the docker image to allow file watching
+- Revmove support for `debug` and `localport` url parameters
+- Replace react-sortable-hoc with dnd-kit to avoid react console warnings and also use a maintained library
 
 ### 🐞 Bug fixes
 
 - Fix incorrect handing of network error response (#944)
 - Show an error when adding a layer with a duplicate ID
-- _...Add new stuff here..._
+- Replace deprecated `ReactDOM.render` usage with `createRoot` and drop the
+  `DOMNodeRemoved` cleanup hack
 
 ## 2.1.1
 

@@ -1,12 +1,12 @@
-import React from 'react'
-import Color from 'color'
-import ChromePicker from 'react-color/lib/components/chrome/Chrome'
-import {ColorResult} from 'react-color';
-import lodash from 'lodash';
+import React from "react";
+import Color from "color";
+import ChromePicker from "react-color/lib/components/chrome/Chrome";
+import {type ColorResult} from "react-color";
+import lodash from "lodash";
 
 function formatColor(color: ColorResult): string {
-  const rgb = color.rgb
-  return `rgba(${rgb.r}, ${rgb.g}, ${rgb.b}, ${rgb.a})`
+  const rgb = color.rgb;
+  return `rgba(${rgb.r}, ${rgb.g}, ${rgb.b}, ${rgb.a})`;
 }
 
 export type InputColorProps = {
@@ -16,14 +16,14 @@ export type InputColorProps = {
   doc?: string
   style?: object
   default?: string
-  'aria-label'?: string
+  "aria-label"?: string
 };
 
 /*** Number fields with support for min, max and units and documentation*/
 export default class InputColor extends React.Component<InputColorProps> {
   state = {
     pickerOpened: false
-  }
+  };
   colorInput: HTMLInputElement | null = null;
 
   constructor (props: InputColorProps) {
@@ -39,29 +39,29 @@ export default class InputColor extends React.Component<InputColorProps> {
   //but I am too stupid to get it to work together with fixed position
   //and scrollbars so I have to fallback to JavaScript
   calcPickerOffset = () => {
-    const elem = this.colorInput
+    const elem = this.colorInput;
     if(elem) {
-      const pos = elem.getBoundingClientRect()
+      const pos = elem.getBoundingClientRect();
       return {
         top: pos.top,
         left: pos.left + 196,
-      }
+      };
     } else {
       return {
         top: 160,
         left: 555,
-      }
+      };
     }
-  }
+  };
 
   togglePicker = () => {
-    this.setState({ pickerOpened: !this.state.pickerOpened })
-  }
+    this.setState({ pickerOpened: !this.state.pickerOpened });
+  };
 
   get color() {
     // Catch invalid color.
     try {
-      return Color(this.props.value).rgb()
+      return Color(this.props.value).rgb();
     }
     catch(err) {
       console.warn("Error parsing color: ", err);
@@ -74,7 +74,7 @@ export default class InputColor extends React.Component<InputColorProps> {
   }
 
   render() {
-    const offset = this.calcPickerOffset()
+    const offset = this.calcPickerOffset();
     const currentColor = this.color.object();
     const currentChromeColor = {
       r: currentColor.r,
@@ -82,12 +82,12 @@ export default class InputColor extends React.Component<InputColorProps> {
       b: currentColor.b,
       // Rename alpha -> a for ChromePicker
       a: currentColor.alpha!
-    }
+    };
 
     const picker = <div
       className="maputnik-color-picker-offset"
       style={{
-        position: 'fixed',
+        position: "fixed",
         zIndex: 1,
         left: offset.left,
         top: offset.top,
@@ -101,14 +101,14 @@ export default class InputColor extends React.Component<InputColorProps> {
         onClick={this.togglePicker}
         style={{
           zIndex: -1,
-          position: 'fixed',
-          top: '0px',
-          right: '0px',
-          bottom: '0px',
-          left: '0px',
+          position: "fixed",
+          top: "0px",
+          right: "0px",
+          bottom: "0px",
+          left: "0px",
         }}
       />
-    </div>
+    </div>;
 
     const swatchStyle = {
       backgroundColor: this.props.value
@@ -118,11 +118,11 @@ export default class InputColor extends React.Component<InputColorProps> {
       {this.state.pickerOpened && picker}
       <div className="maputnik-color-swatch" style={swatchStyle}></div>
       <input
-        aria-label={this.props['aria-label']}
+        aria-label={this.props["aria-label"]}
         spellCheck="false"
         autoComplete="off"
         className="maputnik-color"
-        ref={(input) => this.colorInput = input}
+        ref={(input) => {this.colorInput = input;}}
         onClick={this.togglePicker}
         style={this.props.style}
         name={this.props.name}
@@ -130,6 +130,6 @@ export default class InputColor extends React.Component<InputColorProps> {
         value={this.props.value ? this.props.value : ""}
         onChange={(e) => this.onChange(e.target.value)}
       />
-    </div>
+    </div>;
   }
 }

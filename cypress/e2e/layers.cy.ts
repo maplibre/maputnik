@@ -97,8 +97,26 @@ describe("layers", () => {
           });
         });
       });
+
+      describe("when selecting a layer", () => {
+        let secondId: string;
+        beforeEach(() => {
+          when.modal.open();
+          secondId = when.modal.fillLayers({
+            id: "second-layer",
+            type: "background",
+          });
+        });
+        it("should show the selected layer in the editor", () => {
+          when.realClick("layer-list-item:" + secondId);
+          then(get.elementByTestId("layer-editor.layer-id.input")).shouldHaveValue(secondId);
+          when.realClick("layer-list-item:" + id);
+          then(get.elementByTestId("layer-editor.layer-id.input")).shouldHaveValue(id);
+        });
+      });
     });
   });
+
   describe("background", () => {
     it("add", () => {
       const id = when.modal.fillLayers({
@@ -295,7 +313,7 @@ describe("layers", () => {
 
           it("should revert to a valid value when focus out", () => {
             when.click("layer-list-item:background:" + bgId);
-            then(get.elementByTestId("spec-field-input:background-opacity")).shouldHaveValue('0');
+            then(get.elementByTestId("spec-field-input:background-opacity")).shouldHaveValue("0");
           });
         });
 
@@ -378,8 +396,57 @@ describe("layers", () => {
     });
 
     it("groups", () => {
-      // TODO
-      // Click each of the layer groups.
+      when.modal.open();
+      const id1 = when.modal.fillLayers({
+        id: "aa",
+        type: "line",
+        layer: "example",
+      });
+
+      when.modal.open();
+      const id2 = when.modal.fillLayers({
+        id: "aa-2",
+        type: "line",
+        layer: "example",
+      });
+
+      when.modal.open();
+      const id3 = when.modal.fillLayers({
+        id: "b",
+        type: "line",
+        layer: "example",
+      });
+
+      then(get.elementByTestId("layer-list-item:" + id1)).shouldBeVisible();
+      then(get.elementByTestId("layer-list-item:" + id2)).shouldNotBeVisible();
+      then(get.elementByTestId("layer-list-item:" + id3)).shouldBeVisible();
+      when.click("layer-list-group:aa-0");
+      then(get.elementByTestId("layer-list-item:" + id1)).shouldBeVisible();
+      then(get.elementByTestId("layer-list-item:" + id2)).shouldBeVisible();
+      then(get.elementByTestId("layer-list-item:" + id3)).shouldBeVisible();
+      when.click("layer-list-item:" + id2);
+      when.click("skip-target-layer-editor");
+      when.click("menu-move-layer-down");
+      then(get.elementByTestId("layer-list-group:aa-0")).shouldNotExist();
+      then(get.styleFromLocalStorage()).shouldDeepNestedInclude({
+        layers: [
+          {
+            id: "aa",
+            type: "line",
+            source: "example",
+          },
+          {
+            id: "b",
+            type: "line",
+            source: "example",
+          },
+          {
+            id: "aa-2",
+            type: "line",
+            source: "example",
+          },
+        ],
+      });
     });
   });
 
@@ -399,6 +466,30 @@ describe("layers", () => {
           },
         ],
       });
+    });
+
+    it("should show spec info when hovering and clicking single line property", () => {
+      when.modal.fillLayers({
+        type: "symbol",
+        layer: "example",
+      });
+
+      when.hover("spec-field-container:text-rotate");
+      then(get.elementByTestId("field-doc-button-Rotate")).shouldBeVisible();
+      when.click("field-doc-button-Rotate", 0);
+      then(get.elementByTestId("spec-field-doc")).shouldContainText("Rotates the ");
+    });
+
+    it("should show spec info when hovering and clicking multi line property", () => {
+      when.modal.fillLayers({
+        type: "symbol",
+        layer: "example",
+      });
+
+      when.hover("spec-field-container:text-offset");
+      then(get.elementByTestId("field-doc-button-Offset")).shouldBeVisible();
+      when.click("field-doc-button-Offset", 0);
+      then(get.elementByTestId("spec-field-doc")).shouldContainText("Offset distance");
     });
   });
 
@@ -459,6 +550,104 @@ describe("layers", () => {
     });
   });
 
+  describe("hillshade", () => {
+    it("add", () => {
+      const id = when.modal.fillLayers({
+        type: "hillshade",
+        layer: "example",
+      });
+
+      then(get.styleFromLocalStorage()).shouldDeepNestedInclude({
+        layers: [
+          {
+            id: id,
+            type: "hillshade",
+            source: "example",
+          },
+        ],
+      });
+    });
+
+    it("set hillshade illumination direction array", () => {
+      const id = when.modal.fillLayers({
+        type: "hillshade",
+        layer: "example",
+      });
+      when.collapseGroupInLayerEditor();
+      when.collapseGroupInLayerEditor(1);
+      when.setValueToPropertyArray("spec-field:hillshade-illumination-direction", "1");
+      when.addValueToPropertyArray("spec-field:hillshade-illumination-direction", "2");
+      when.addValueToPropertyArray("spec-field:hillshade-illumination-direction", "3");
+      when.addValueToPropertyArray("spec-field:hillshade-illumination-direction", "4");
+
+      then(get.styleFromLocalStorage()).shouldDeepNestedInclude({
+        layers: [
+          {
+            id: id,
+            type: "hillshade",
+            source: "example",
+            paint: {
+              "hillshade-illumination-direction": [ 1, 2, 3, 4 ]
+            }
+          },
+        ],
+      });
+    });
+
+    it("set hillshade highlight color array", () => {
+      const id = when.modal.fillLayers({
+        type: "hillshade",
+        layer: "example",
+      });
+      when.collapseGroupInLayerEditor();
+      when.setValueToPropertyArray("spec-field:hillshade-highlight-color", "blue");
+      when.addValueToPropertyArray("spec-field:hillshade-highlight-color", "#00ff00");
+      when.addValueToPropertyArray("spec-field:hillshade-highlight-color", "rgba(255, 255, 0, 1)");
+
+      then(get.styleFromLocalStorage()).shouldDeepNestedInclude({
+        layers: [
+          {
+            id: id,
+            type: "hillshade",
+            source: "example",
+            paint: {
+              "hillshade-highlight-color": [ "blue", "#00ff00", "rgba(255, 255, 0, 1)" ]
+            }
+          },
+        ],
+      });
+    });
+  });
+
+  describe("color-relief", () => {
+    it("add", () => {
+      const id = when.modal.fillLayers({
+        type: "color-relief",
+        layer: "example",
+      });
+
+      then(get.styleFromLocalStorage()).shouldDeepNestedInclude({
+        layers: [
+          {
+            id: id,
+            type: "color-relief",
+            source: "example",
+          },
+        ],
+      });
+    });
+
+    it("adds elevation expression when clicking the elevation button", () => {
+      when.modal.fillLayers({
+        type: "color-relief",
+        layer: "example",
+      });
+      when.collapseGroupInLayerEditor();
+      when.click("make-elevation-function");
+      then(get.element("[data-wd-key='spec-field-container:color-relief-color'] .CodeMirror-line")).shouldBeVisible();
+    });
+  });
+
   describe("groups", () => {
     it("simple", () => {
       when.setStyle("geojson");
@@ -495,9 +684,7 @@ describe("layers", () => {
     });
   });
 
-
   describe("layereditor jsonlint should error", ()=>{
-
     it("add", () => {
       const id = when.modal.fillLayers({
         type: "circle",
@@ -519,8 +706,47 @@ describe("layers", () => {
       sourceText.click();
       sourceText.type("\"");
 
-      const error = get.element('.CodeMirror-lint-marker-error');
-      error.should('exist');
+      const error = get.element(".CodeMirror-lint-marker-error");
+      error.should("exist");
+    });
+  });
+
+  describe("drag and drop", () => {
+    it("move layer should update local storage", () => {
+      when.modal.open();
+      const firstId = when.modal.fillLayers({
+        id: "a",
+        type: "background",
+      });
+      when.modal.open();
+      const secondId = when.modal.fillLayers({
+        id: "b",
+        type: "background",
+      });
+      when.modal.open();
+      const thirdId = when.modal.fillLayers({
+        id: "c",
+        type: "background",
+      });
+
+      when.dragAndDropWithWait("layer-list-item:" + firstId, "layer-list-item:" + thirdId);
+
+      then(get.styleFromLocalStorage()).shouldDeepNestedInclude({
+        layers: [
+          {
+            id: secondId,
+            type: "background",
+          },
+          {
+            id: thirdId,
+            type: "background",
+          },
+          {
+            id: firstId,
+            type: "background",
+          },
+        ],
+      });
     });
   });
 });

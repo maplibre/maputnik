@@ -1,21 +1,22 @@
-import React from 'react'
-import latest from '@maplibre/maplibre-gl-style-spec/dist/latest.json'
-import type {LightSpecification, StyleSpecification, TerrainSpecification, TransitionSpecification} from 'maplibre-gl'
-import { WithTranslation, withTranslation } from 'react-i18next';
+import React from "react";
+import latest from "@maplibre/maplibre-gl-style-spec/dist/latest.json";
+import type {LightSpecification, StyleSpecification, TerrainSpecification, TransitionSpecification} from "maplibre-gl";
+import { type WithTranslation, withTranslation } from "react-i18next";
 
-import FieldArray from './FieldArray'
-import FieldNumber from './FieldNumber'
-import FieldString from './FieldString'
-import FieldUrl from './FieldUrl'
-import FieldSelect from './FieldSelect'
-import FieldEnum from './FieldEnum'
-import FieldColor from './FieldColor'
-import Modal from './Modal'
-import fieldSpecAdditional from '../libs/field-spec-additional'
+import FieldArray from "../FieldArray";
+import FieldNumber from "../FieldNumber";
+import FieldString from "../FieldString";
+import FieldUrl from "../FieldUrl";
+import FieldSelect from "../FieldSelect";
+import FieldEnum from "../FieldEnum";
+import FieldColor from "../FieldColor";
+import Modal from "./Modal";
+import fieldSpecAdditional from "../../libs/field-spec-additional";
+import type {OnStyleChangedCallback, StyleSpecificationWithId} from "../../libs/definitions";
 
 type ModalSettingsInternalProps = {
-  mapStyle: StyleSpecification
-  onStyleChanged(...args: unknown[]): unknown
+  mapStyle: StyleSpecificationWithId
+  onStyleChanged: OnStyleChangedCallback
   onChangeMetadataProperty(...args: unknown[]): unknown
   isOpen: boolean
   onOpenToggle(...args: unknown[]): unknown
@@ -25,7 +26,7 @@ class ModalSettingsInternal extends React.Component<ModalSettingsInternalProps> 
   changeTransitionProperty(property: keyof TransitionSpecification, value: number | undefined) {
     const transition = {
       ...this.props.mapStyle.transition,
-    }
+    };
 
     if (value === undefined) {
       delete transition[property];
@@ -43,7 +44,7 @@ class ModalSettingsInternal extends React.Component<ModalSettingsInternalProps> 
   changeLightProperty(property: keyof LightSpecification, value: any) {
     const light = {
       ...this.props.mapStyle.light,
-    }
+    };
 
     if (value === undefined) {
       delete light[property];
@@ -62,7 +63,7 @@ class ModalSettingsInternal extends React.Component<ModalSettingsInternalProps> 
   changeTerrainProperty(property: keyof TerrainSpecification, value: any) {
     const terrain = {
       ...this.props.mapStyle.terrain,
-    }
+    } as TerrainSpecification;
 
     if (value === undefined) {
       delete terrain[property];
@@ -107,7 +108,7 @@ class ModalSettingsInternal extends React.Component<ModalSettingsInternalProps> 
       data-wd-key="modal:settings"
       isOpen={this.props.isOpen}
       onOpenToggle={this.props.onOpenToggle}
-      title={t('Style Settings')}
+      title={t("Style Settings")}
     >
       <div className="modal:settings">
         <FieldString
@@ -144,7 +145,7 @@ class ModalSettingsInternal extends React.Component<ModalSettingsInternalProps> 
           label={fsa.maputnik.maptiler_access_token.label}
           fieldSpec={fsa.maputnik.maptiler_access_token}
           data-wd-key="modal:settings.maputnik:openmaptiles_access_token"
-          value={metadata['maputnik:openmaptiles_access_token']}
+          value={metadata["maputnik:openmaptiles_access_token"]}
           onChange={onChangeMetadataProperty.bind(this, "maputnik:openmaptiles_access_token")}
         />
 
@@ -152,7 +153,7 @@ class ModalSettingsInternal extends React.Component<ModalSettingsInternalProps> 
           label={fsa.maputnik.thunderforest_access_token.label}
           fieldSpec={fsa.maputnik.thunderforest_access_token}
           data-wd-key="modal:settings.maputnik:thunderforest_access_token"
-          value={metadata['maputnik:thunderforest_access_token']}
+          value={metadata["maputnik:thunderforest_access_token"]}
           onChange={onChangeMetadataProperty.bind(this, "maputnik:thunderforest_access_token")}
         />
 
@@ -160,8 +161,16 @@ class ModalSettingsInternal extends React.Component<ModalSettingsInternalProps> 
           label={fsa.maputnik.stadia_access_token.label}
           fieldSpec={fsa.maputnik.stadia_access_token}
           data-wd-key="modal:settings.maputnik:stadia_access_token"
-          value={metadata['maputnik:stadia_access_token']}
+          value={metadata["maputnik:stadia_access_token"]}
           onChange={onChangeMetadataProperty.bind(this, "maputnik:stadia_access_token")}
+        />
+
+        <FieldString
+          label={fsa.maputnik.locationiq_access_token.label}
+          fieldSpec={fsa.maputnik.locationiq_access_token}
+          data-wd-key="modal:settings.maputnik:locationiq_access_token"
+          value={metadata["maputnik:locationiq_access_token"]}
+          onChange={onChangeMetadataProperty.bind(this, "maputnik:locationiq_access_token")}
         />
 
         <FieldArray
@@ -271,16 +280,16 @@ class ModalSettingsInternal extends React.Component<ModalSettingsInternalProps> 
           fieldSpec={fsa.maputnik.style_renderer}
           data-wd-key="modal:settings.maputnik:renderer"
           options={[
-            ['mlgljs', 'MapLibreGL JS'],
-            ['ol', t('Open Layers (experimental)')],
+            ["mlgljs", "MapLibreGL JS"],
+            ["ol", t("Open Layers (experimental)")],
           ]}
-          value={metadata['maputnik:renderer'] || 'mlgljs'}
-          onChange={onChangeMetadataProperty.bind(this, 'maputnik:renderer')}
+          value={metadata["maputnik:renderer"] || "mlgljs"}
+          onChange={onChangeMetadataProperty.bind(this, "maputnik:renderer")}
         />
       </div>
-    </Modal>
+    </Modal>;
   }
 }
 
-const ModalSettings = withTranslation()(ModalSettingsInternal)
+const ModalSettings = withTranslation()(ModalSettingsInternal);
 export default ModalSettings;

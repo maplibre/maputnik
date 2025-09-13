@@ -1,13 +1,14 @@
-import React from 'react'
+import React from "react";
+import { type WithTranslation, withTranslation } from "react-i18next";
+import type {LayerSpecification, SourceSpecification} from "maplibre-gl";
 
-import InputButton from './InputButton'
-import Modal from './Modal'
-import FieldType from './FieldType'
-import FieldId from './FieldId'
-import FieldSource from './FieldSource'
-import FieldSourceLayer from './FieldSourceLayer'
-import type {LayerSpecification} from 'maplibre-gl'
-import { WithTranslation, withTranslation } from 'react-i18next';
+import InputButton from "../InputButton";
+import Modal from "./Modal";
+import FieldType from "../FieldType";
+import FieldId from "../FieldId";
+import FieldSource from "../FieldSource";
+import FieldSourceLayer from "../FieldSourceLayer";
+import { NON_SOURCE_LAYERS } from "../../libs/non-source-layers";
 
 type ModalAddInternalProps = {
   layers: LayerSpecification[]
@@ -15,55 +16,58 @@ type ModalAddInternalProps = {
   isOpen: boolean
   onOpenToggle(open: boolean): unknown
   // A dict of source id's and the available source layers
-  sources: any
+  sources: Record<string, SourceSpecification & {layers: string[]}>;
 } & WithTranslation;
 
 type ModalAddState = {
   type: LayerSpecification["type"]
   id: string
   source?: string
-  'source-layer'?: string
+  "source-layer"?: string
   error?: string | null
 };
 
 class ModalAddInternal extends React.Component<ModalAddInternalProps, ModalAddState> {
   addLayer = () => {
     if (this.props.layers.some(l => l.id === this.state.id)) {
-      this.setState({ error: this.props.t('Layer ID already exists') })
-      return
+      this.setState({ error: this.props.t("Layer ID already exists") });
+      return;
     }
 
-    const changedLayers = this.props.layers.slice(0)
+    const changedLayers = this.props.layers.slice(0);
     const layer: ModalAddState = {
       id: this.state.id,
       type: this.state.type,
-    }
+    };
 
-    if(this.state.type !== 'background') {
-      layer.source = this.state.source
-      if(this.state.type !== 'raster' && this.state['source-layer']) {
-        layer['source-layer'] = this.state['source-layer']
+    if(this.state.type !== "background") {
+      layer.source = this.state.source;
+      if(!NON_SOURCE_LAYERS.includes(this.state.type) && this.state["source-layer"]) {
+        layer["source-layer"] = this.state["source-layer"];
       }
     }
 
-    changedLayers.push(layer as LayerSpecification)
+    changedLayers.push(layer as LayerSpecification);
     this.setState({ error: null }, () => {
-      this.props.onLayersChange(changedLayers)
-      this.props.onOpenToggle(false)
-    })
-  }
+      this.props.onLayersChange(changedLayers);
+      this.props.onOpenToggle(false);
+    });
+  };
 
   constructor(props: ModalAddInternalProps) {
-    super(props)
+    super(props);
     const state: ModalAddState = {
-      type: 'fill',
-      id: '',
+      type: "fill",
+      id: "",
       error: null,
-    }
+    };
 
-    if(props.sources.length > 0) {
+    if(Object.keys(props.sources).length > 0) {
       state.source = Object.keys(this.props.sources)[0];
-      state['source-layer'] = this.props.sources[state.source as keyof ModalAddInternalProps["sources"]][0]
+      const sourceLayers = this.props.sources[state.source].layers || [];
+      if (sourceLayers.length > 0) {
+        state["source-layer"] = sourceLayers[0];
+      }
     }
     this.state = state;
   }
@@ -97,39 +101,26 @@ class ModalAddInternal extends React.Component<ModalAddInternalProps, ModalAddSt
     return sourceObj.layers || [];
   }
 
-  getSources(type: string) {
-    const sources = [];
+  getSources(type: LayerSpecification["type"]) {
 
-    const types = {
-      vector: [
-        "fill",
-        "line",
-        "symbol",
-        "circle",
-        "fill-extrusion",
-        "heatmap"
-      ],
-      raster: [
-        "raster"
-      ],
-      geojson: [
-        "fill",
-        "line",
-        "symbol",
-        "circle",
-        "fill-extrusion",
-        "heatmap"
-      ]
+    switch(type) {
+      case "background":
+        return [];
+      case "hillshade":
+      case "color-relief":
+        return Object.entries(this.props.sources).filter(([_, v]) => v.type === "raster-dem").map(([k, _]) => k);
+      case "raster":
+        return Object.entries(this.props.sources).filter(([_, v]) => v.type === "raster").map(([k, _]) => k);
+      case "heatmap":
+      case "circle":
+      case "fill":
+      case "fill-extrusion":
+      case "line":
+      case "symbol":
+        return Object.entries(this.props.sources).filter(([_, v]) => v.type === "vector" || v.type === "geojson").map(([k, _]) => k);
+      default:
+        return [];
     }
-
-    for(const [key, val] of Object.entries(this.props.sources) as any) {
-      const valType = val.type as keyof typeof types;
-      if(types[valType] && types[valType].indexOf(type) > -1) {
-        sources.push(key);
-      }
-    }
-
-    return sources;
   }
 
 
@@ -156,7 +147,7 @@ class ModalAddInternal extends React.Component<ModalAddInternalProps, ModalAddSt
     return <Modal
       isOpen={this.props.isOpen}
       onOpenToggle={this.props.onOpenToggle}
-      title={t('Add Layer')}
+      title={t("Add Layer")}
       data-wd-key="modal:add-layer"
       className="maputnik-add-modal"
     >
@@ -166,7 +157,7 @@ class ModalAddInternal extends React.Component<ModalAddInternalProps, ModalAddSt
           value={this.state.id}
           wdKey="add-layer.layer-id"
           onChange={(v: string) => {
-            this.setState({ id: v, error: null })
+            this.setState({ id: v, error: null });
           }}
         />
         <FieldType
@@ -174,7 +165,7 @@ class ModalAddInternal extends React.Component<ModalAddInternalProps, ModalAddSt
           wdKey="add-layer.layer-type"
           onChange={(v: LayerSpecification["type"]) => this.setState({ type: v })}
         />
-        {this.state.type !== 'background' &&
+        {this.state.type !== "background" &&
       <FieldSource
         sourceIds={sources}
         wdKey="add-layer.layer-source-block"
@@ -182,12 +173,11 @@ class ModalAddInternal extends React.Component<ModalAddInternalProps, ModalAddSt
         onChange={(v: string) => this.setState({ source: v })}
       />
         }
-        {['background', 'raster', 'hillshade', 'heatmap'].indexOf(this.state.type) < 0 &&
+        {!NON_SOURCE_LAYERS.includes(this.state.type) &&
       <FieldSourceLayer
-        isFixed={true}
         sourceLayerIds={layers}
-        value={this.state['source-layer']}
-        onChange={(v: string) => this.setState({ 'source-layer': v })}
+        value={this.state["source-layer"]}
+        onChange={(v: string) => this.setState({ "source-layer": v })}
       />
         }
         <InputButton
@@ -198,7 +188,7 @@ class ModalAddInternal extends React.Component<ModalAddInternalProps, ModalAddSt
           {t("Add Layer")}
         </InputButton>
       </div>
-    </Modal>
+    </Modal>;
   }
 }
 

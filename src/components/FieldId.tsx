@@ -1,7 +1,7 @@
 
-import latest from '@maplibre/maplibre-gl-style-spec/dist/latest.json'
-import Block from './Block'
-import InputString from './InputString'
+import latest from "@maplibre/maplibre-gl-style-spec/dist/latest.json";
+import Block from "./Block";
+import InputString from "./InputString";
 
 type FieldIdProps = {
   value: string

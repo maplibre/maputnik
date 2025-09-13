@@ -1,4 +1,4 @@
-import InputJson, {InputJsonProps} from './InputJson'
+import InputJson, {type InputJsonProps} from "./InputJson";
 
 
 type FieldJsonProps = InputJsonProps & {};

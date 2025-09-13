@@ -1,19 +1,20 @@
-import React from 'react'
-import {mdiFunctionVariant, mdiTableRowPlusAfter} from '@mdi/js';
-import latest from '@maplibre/maplibre-gl-style-spec/dist/latest.json'
-import { WithTranslation, withTranslation } from 'react-i18next';
+import React from "react";
+import { PiListPlusBold } from "react-icons/pi";
+import { TbMathFunction } from "react-icons/tb";
+import latest from "@maplibre/maplibre-gl-style-spec/dist/latest.json";
+import { type WithTranslation, withTranslation } from "react-i18next";
 
-import InputButton from './InputButton'
-import InputSpec from './InputSpec'
-import InputNumber from './InputNumber'
-import InputSelect from './InputSelect'
-import Block from './Block'
+import InputButton from "./InputButton";
+import InputSpec from "./InputSpec";
+import InputNumber from "./InputNumber";
+import InputSelect from "./InputSelect";
+import Block from "./Block";
 
-import DeleteStopButton from './_DeleteStopButton'
-import labelFromFieldName from '../libs/label-from-field-name'
+import DeleteStopButton from "./_DeleteStopButton";
+import labelFromFieldName from "../libs/label-from-field-name";
 
-import docUid from '../libs/document-uid'
-import sortNumerically from '../libs/sort-numerically'
+import docUid from "../libs/document-uid";
+import sortNumerically from "../libs/sort-numerically";
 
 
 /**
@@ -35,7 +36,7 @@ function setStopRefs(props: ZoomPropertyInternalProps, state: ZoomPropertyState)
       } else {
         newRefs[idx] = state.refs[idx];
       }
-    })
+    });
   }
   return newRefs;
 }
@@ -43,7 +44,7 @@ function setStopRefs(props: ZoomPropertyInternalProps, state: ZoomPropertyState)
 type ZoomWithStops = {
   stops: [number | undefined, number][]
   base?: number
-}
+};
 
 
 type ZoomPropertyInternalProps = {
@@ -64,16 +65,16 @@ type ZoomPropertyInternalProps = {
 
 type ZoomPropertyState = {
   refs: {[key: number]: string}
-}
+};
 
 class ZoomPropertyInternal extends React.Component<ZoomPropertyInternalProps, ZoomPropertyState> {
   static defaultProps = {
     errors: {},
-  }
+  };
 
   state = {
     refs: {} as {[key: number]: string}
-  }
+  };
 
   componentDidMount() {
     const newRefs = setStopRefs(this.props, this.state);
@@ -81,7 +82,7 @@ class ZoomPropertyInternal extends React.Component<ZoomPropertyInternalProps, Zo
     if(newRefs) {
       this.setState({
         refs: newRefs
-      })
+      });
     }
   }
 
@@ -102,7 +103,7 @@ class ZoomPropertyInternal extends React.Component<ZoomPropertyInternalProps, Zo
         return {
           ref: this.state.refs[idx],
           data: stop
-        }
+        };
       })
     // Sort by zoom
       .sort((a, b) => sortNumerically(a.data[0]!, b.data[0]!));
@@ -112,7 +113,7 @@ class ZoomPropertyInternal extends React.Component<ZoomPropertyInternalProps, Zo
     mappedWithRef
       .forEach((stop, idx) =>{
         newRefs[idx] = stop.ref;
-      })
+      });
 
     this.setState({
       refs: newRefs
@@ -130,34 +131,34 @@ class ZoomPropertyInternal extends React.Component<ZoomPropertyInternalProps, Zo
     const changedValue = {
       ...this.props.value as ZoomWithStops,
       stops: orderedStops
-    }
-    this.props.onChange!(this.props.fieldName, changedValue)
+    };
+    this.props.onChange!(this.props.fieldName, changedValue);
   }
 
   changeBase(newValue: number | undefined) {
     const changedValue = {
       ...this.props.value,
       base: newValue
-    }
+    };
 
     if (changedValue.base === undefined) {
       delete changedValue["base"];
     }
-    this.props.onChange!(this.props.fieldName, changedValue)
+    this.props.onChange!(this.props.fieldName, changedValue);
   }
 
   changeDataType = (type: string) => {
     if (type !== "interpolate" && this.props.onChangeToDataFunction) {
       this.props.onChangeToDataFunction(type);
     }
-  }
+  };
 
   render() {
     const t = this.props.t;
     const zoomFields = this.props.value?.stops.map((stop, idx) => {
-      const zoomLevel = stop[0]
-      const value = stop[1]
-      const deleteStopBtn = <DeleteStopButton onClick={this.props.onDeleteStop?.bind(this, idx)} />
+      const zoomLevel = stop[0];
+      const value = stop[1];
+      const deleteStopBtn = <DeleteStopButton onClick={this.props.onDeleteStop?.bind(this, idx)} />;
       return <tr
         key={`${stop[0]}-${stop[1]}`}
       >
@@ -182,7 +183,7 @@ class ZoomPropertyInternal extends React.Component<ZoomPropertyInternalProps, Zo
         <td>
           {deleteStopBtn}
         </td>
-      </tr>
+      </tr>;
     });
 
     // return <div className="maputnik-zoom-spec-property">
@@ -233,29 +234,27 @@ class ZoomPropertyInternal extends React.Component<ZoomPropertyInternalProps, Zo
               className="maputnik-add-stop"
               onClick={this.props.onAddStop?.bind(this)}
             >
-              <svg style={{width:"14px", height:"14px", verticalAlign: "text-bottom"}} viewBox="0 0 24 24">
-                <path fill="currentColor" d={mdiTableRowPlusAfter} />
-              </svg> {t("Add stop")}
+              <PiListPlusBold style={{ verticalAlign: "text-bottom" }} />
+              {t("Add stop")}
             </InputButton>
             <InputButton
               className="maputnik-add-stop"
               onClick={this.props.onExpressionClick?.bind(this)}
             >
-              <svg style={{width:"14px", height:"14px", verticalAlign: "text-bottom"}} viewBox="0 0 24 24">
-                <path fill="currentColor" d={mdiFunctionVariant} />
-              </svg> {t("Convert to expression")}
+              <TbMathFunction style={{ verticalAlign: "text-bottom" }} />
+              {t("Convert to expression")}
             </InputButton>
           </div>
         </div>
       </fieldset>
-    </div>
+    </div>;
   }
 
   getDataFunctionTypes(fieldSpec: {
     "property-type"?: string
     "function-type"?: string
   }) {
-    if (fieldSpec['property-type'] === 'data-driven') {
+    if (fieldSpec["property-type"] === "data-driven") {
       return ["interpolate", "categorical", "interval", "exponential", "identity"];
     }
     else {

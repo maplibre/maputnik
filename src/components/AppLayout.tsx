@@ -1,7 +1,7 @@
-import React from 'react'
-import ScrollContainer from './ScrollContainer'
-import { WithTranslation, withTranslation } from 'react-i18next';
-import { IconContext } from 'react-icons';
+import React from "react";
+import ScrollContainer from "./ScrollContainer";
+import { type WithTranslation, withTranslation } from "react-i18next";
+import { IconContext } from "react-icons";
 
 type AppLayoutInternalProps = {
   toolbar: React.ReactElement
@@ -17,7 +17,7 @@ class AppLayoutInternal extends React.Component<AppLayoutInternalProps> {
   render() {
     document.body.dir = this.props.i18n.dir();
 
-    return <IconContext.Provider value={{size: '14px'}}>
+    return <IconContext.Provider value={{size: "14px"}}>
       <div className="maputnik-layout">
         {this.props.toolbar}
         <div className="maputnik-layout-main">
@@ -37,7 +37,7 @@ class AppLayoutInternal extends React.Component<AppLayoutInternalProps> {
         }
         {this.props.modals}
       </div>
-    </IconContext.Provider>
+    </IconContext.Provider>;
   }
 }
 

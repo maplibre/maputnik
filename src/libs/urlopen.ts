@@ -1,30 +1,27 @@
-import style from './style'
+import style from "./style";
+import { type StyleSpecificationWithId } from "./definitions";
 
-export function initialStyleUrl() {
+export function getStyleUrlFromAddressbarAndRemoveItIfNeeded(): string | null {
   const initialUrl = new URL(window.location.href);
-  return initialUrl.searchParams.get('style');
+  const styleUrl = initialUrl.searchParams.get("style");
+  if (styleUrl) {
+    initialUrl.searchParams.delete("style");
+    window.history.replaceState({}, document.title, initialUrl.toString());
+  }
+  return styleUrl;
 }
 
-export function loadStyleUrl(styleUrl: string, cb: (...args: any[]) => void) {
-  console.log('Loading style', styleUrl)
-  fetch(styleUrl, {
-    mode: 'cors',
-    credentials: "same-origin"
-  })
-    .then(function(response) {
-      return response.json();
-    })
-    .then(function(body) {
-      cb(style.ensureStyleValidity(body))
-    })
-    .catch(function() {
-      console.warn('Could not fetch default style', styleUrl)
-      cb(style.emptyStyle)
-    })
-}
-
-export function removeStyleQuerystring() {
-  const initialUrl = new URL(window.location.href);
-  initialUrl.searchParams.delete('style');
-  window.history.replaceState({}, document.title, initialUrl.toString())
+export async function loadStyleUrl(styleUrl: string): Promise<StyleSpecificationWithId> {
+  console.log("Loading style", styleUrl);
+  try {
+    const response = await fetch(styleUrl, {
+      mode: "cors",
+      credentials: "same-origin"
+    });
+    const body = await response.json();
+    return style.ensureStyleValidity(body);
+  } catch {
+    console.warn("Could not fetch default style: " + styleUrl);
+    return style.emptyStyle;
+  }
 }

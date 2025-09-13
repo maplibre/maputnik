@@ -1,9 +1,9 @@
-import React from 'react'
+import React from "react";
 
-import latest from '@maplibre/maplibre-gl-style-spec/dist/latest.json'
-import Block from './Block'
-import InputNumber from './InputNumber'
-import { WithTranslation, withTranslation } from 'react-i18next';
+import latest from "@maplibre/maplibre-gl-style-spec/dist/latest.json";
+import Block from "./Block";
+import InputNumber from "./InputNumber";
+import { type WithTranslation, withTranslation } from "react-i18next";
 
 type FieldMaxZoomInternalProps = {
   value?: number
@@ -14,7 +14,7 @@ type FieldMaxZoomInternalProps = {
 const FieldMaxZoomInternal: React.FC<FieldMaxZoomInternalProps> = (props) => {
   const t = props.t;
   return (
-    <Block label={t('Max Zoom')} fieldSpec={latest.layer.maxzoom}
+    <Block label={t("Max Zoom")} fieldSpec={latest.layer.maxzoom}
       error={props.error}
       data-wd-key="max-zoom"
     >

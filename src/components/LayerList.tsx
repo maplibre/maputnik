@@ -1,26 +1,38 @@
-import React, {type JSX} from 'react'
-import classnames from 'classnames'
-import lodash from 'lodash';
+import React, {type JSX} from "react";
+import classnames from "classnames";
+import lodash from "lodash";
+import {
+  DndContext,
+  PointerSensor,
+  useSensor,
+  useSensors,
+  closestCenter,
+  type DragEndEvent,
+} from "@dnd-kit/core";
+import {
+  SortableContext,
+  verticalListSortingStrategy,
+} from "@dnd-kit/sortable";
 
-import LayerListGroup from './LayerListGroup'
-import LayerListItem from './LayerListItem'
-import ModalAdd from './ModalAdd'
+import LayerListGroup from "./LayerListGroup";
+import LayerListItem from "./LayerListItem";
+import ModalAdd from "./modals/ModalAdd";
 
-import {SortEndHandler, SortableContainer} from 'react-sortable-hoc';
-import type {LayerSpecification} from 'maplibre-gl';
-import generateUniqueId from '../libs/document-uid';
-import { findClosestCommonPrefix, layerPrefix } from '../libs/layer';
-import { WithTranslation, withTranslation } from 'react-i18next';
+import type {LayerSpecification, SourceSpecification} from "maplibre-gl";
+import generateUniqueId from "../libs/document-uid";
+import { findClosestCommonPrefix, layerPrefix } from "../libs/layer";
+import { type WithTranslation, withTranslation } from "react-i18next";
+import { type OnMoveLayerCallback } from "../libs/definitions";
 
 type LayerListContainerProps = {
   layers: LayerSpecification[]
   selectedLayerIndex: number
   onLayersChange(layers: LayerSpecification[]): unknown
-  onLayerSelect(...args: unknown[]): unknown
+  onLayerSelect(index: number): void;
   onLayerDestroy?(...args: unknown[]): unknown
   onLayerCopy(...args: unknown[]): unknown
   onLayerVisibilityToggle(...args: unknown[]): unknown
-  sources: object
+  sources: Record<string, SourceSpecification & {layers: string[]}>;
   errors: any[]
 };
 type LayerListContainerInternalProps = LayerListContainerProps & WithTranslation;
@@ -36,9 +48,9 @@ type LayerListContainerState = {
 class LayerListContainerInternal extends React.Component<LayerListContainerInternalProps, LayerListContainerState> {
   static defaultProps = {
     onLayerSelect: () => {},
-  }
+  };
   selectedItemRef: React.RefObject<any>;
-  scrollContainerRef: React.RefObject<HTMLElement>;
+  scrollContainerRef: React.RefObject<HTMLElement | null>;
 
   constructor(props: LayerListContainerInternalProps) {
     super(props);
@@ -53,7 +65,7 @@ class LayerListContainerInternal extends React.Component<LayerListContainerInter
       isOpen: {
         add: false,
       }
-    }
+    };
   }
 
   toggleModal(modalName: string) {
@@ -66,74 +78,74 @@ class LayerListContainerInternal extends React.Component<LayerListContainerInter
         ...this.state.isOpen,
         [modalName]: !this.state.isOpen[modalName]
       }
-    })
+    });
   }
 
   toggleLayers = () => {
-    let idx = 0
+    let idx = 0;
 
-    const newGroups: {[key:string]: boolean} = {}
+    const newGroups: {[key:string]: boolean} = {};
 
     this.groupedLayers().forEach(layers => {
-      const groupPrefix = layerPrefix(layers[0].id)
-      const lookupKey = [groupPrefix, idx].join('-')
+      const groupPrefix = layerPrefix(layers[0].id);
+      const lookupKey = [groupPrefix, idx].join("-");
 
 
       if (layers.length > 1) {
-        newGroups[lookupKey] = this.state.areAllGroupsExpanded
+        newGroups[lookupKey] = this.state.areAllGroupsExpanded;
       }
 
       layers.forEach((_layer) => {
-        idx += 1
-      })
+        idx += 1;
+      });
     });
 
     this.setState({
       collapsedGroups: newGroups,
       areAllGroupsExpanded: !this.state.areAllGroupsExpanded
-    })
-  }
+    });
+  };
 
   groupedLayers(): (LayerSpecification & {key: string})[][] {
-    const groups = []
+    const groups = [];
     const layerIdCount = new Map();
 
     for (let i = 0; i < this.props.layers.length; i++) {
       const origLayer = this.props.layers[i];
-      const previousLayer = this.props.layers[i-1]
+      const previousLayer = this.props.layers[i-1];
       layerIdCount.set(origLayer.id,
         layerIdCount.has(origLayer.id) ? layerIdCount.get(origLayer.id) + 1 : 0
       );
       const layer = {
         ...origLayer,
         key: `layers-list-${origLayer.id}-${layerIdCount.get(origLayer.id)}`,
-      }
+      };
       if(previousLayer && layerPrefix(previousLayer.id) == layerPrefix(layer.id)) {
-        const lastGroup = groups[groups.length - 1]
-        lastGroup.push(layer)
+        const lastGroup = groups[groups.length - 1];
+        lastGroup.push(layer);
       } else {
-        groups.push([layer])
+        groups.push([layer]);
       }
     }
-    return groups
+    return groups;
   }
 
   toggleLayerGroup(groupPrefix: string, idx: number) {
-    const lookupKey = [groupPrefix, idx].join('-')
-    const newGroups = { ...this.state.collapsedGroups }
+    const lookupKey = [groupPrefix, idx].join("-");
+    const newGroups = { ...this.state.collapsedGroups };
     if(lookupKey in this.state.collapsedGroups) {
-      newGroups[lookupKey] = !this.state.collapsedGroups[lookupKey]
+      newGroups[lookupKey] = !this.state.collapsedGroups[lookupKey];
     } else {
-      newGroups[lookupKey] = false
+      newGroups[lookupKey] = false;
     }
     this.setState({
       collapsedGroups: newGroups
-    })
+    });
   }
 
   isCollapsed(groupPrefix: string, idx: number) {
-    const collapsed = this.state.collapsedGroups[[groupPrefix, idx].join('-')]
-    return collapsed === undefined ? true : collapsed
+    const collapsed = this.state.collapsedGroups[[groupPrefix, idx].join("-")];
+    return collapsed === undefined ? true : collapsed;
   }
 
   shouldComponentUpdate (nextProps: LayerListContainerProps, nextState: LayerListContainerState) {
@@ -165,7 +177,7 @@ class LayerListContainerInternal extends React.Component<LayerListContainerInter
       const out = {
         ...props
       } as LayerListContainerProps & { layers?: any };
-      delete out['layers'];
+      delete out["layers"];
       return out;
     }
 
@@ -188,7 +200,7 @@ class LayerListContainerInternal extends React.Component<LayerListContainerInter
         const options = {
           root: this.scrollContainerRef.current,
           threshold: 1.0
-        }
+        };
         const observer = new IntersectionObserver(entries => {
           observer.unobserve(target);
           if (entries.length > 0 && entries[0].intersectionRatio < 1) {
@@ -203,25 +215,25 @@ class LayerListContainerInternal extends React.Component<LayerListContainerInter
 
   render() {
 
-    const listItems: JSX.Element[] = []
-    let idx = 0
+    const listItems: JSX.Element[] = [];
+    let idx = 0;
     const layersByGroup = this.groupedLayers();
     layersByGroup.forEach(layers => {
-      const groupPrefix = layerPrefix(layers[0].id)
+      const groupPrefix = layerPrefix(layers[0].id);
       if(layers.length > 1) {
         const grp = <LayerListGroup
-          data-wd-key={[groupPrefix, idx].join('-')}
+          data-wd-key={[groupPrefix, idx].join("-")}
           aria-controls={layers.map(l => l.key).join(" ")}
           key={`group-${groupPrefix}-${idx}`}
           title={groupPrefix}
           isActive={!this.isCollapsed(groupPrefix, idx) || idx === this.props.selectedLayerIndex}
           onActiveToggle={this.toggleLayerGroup.bind(this, groupPrefix, idx)}
-        />
-        listItems.push(grp)
+        />;
+        listItems.push(grp);
       }
 
       layers.forEach((layer, idxInGroup) => {
-        const groupIdx = findClosestCommonPrefix(this.props.layers, idx)
+        const groupIdx = findClosestCommonPrefix(this.props.layers, idx);
 
         const layerError = this.props.errors.find(error => {
           return (
@@ -238,11 +250,10 @@ class LayerListContainerInternal extends React.Component<LayerListContainerInter
 
         const listItem = <LayerListItem
           className={classnames({
-            'maputnik-layer-list-item-collapsed': layers.length > 1 && this.isCollapsed(groupPrefix, groupIdx) && idx !== this.props.selectedLayerIndex,
-            'maputnik-layer-list-item-group-last': idxInGroup == layers.length - 1 && layers.length > 1,
-            'maputnik-layer-list-item--error': !!layerError
+            "maputnik-layer-list-item-collapsed": layers.length > 1 && this.isCollapsed(groupPrefix, groupIdx) && idx !== this.props.selectedLayerIndex,
+            "maputnik-layer-list-item-group-last": idxInGroup == layers.length - 1 && layers.length > 1,
+            "maputnik-layer-list-item--error": !!layerError
           })}
-          index={idx}
           key={layer.key}
           id={layer.key}
           layerId={layer.id}
@@ -255,16 +266,17 @@ class LayerListContainerInternal extends React.Component<LayerListContainerInter
           onLayerCopy={this.props.onLayerCopy.bind(this)}
           onLayerVisibilityToggle={this.props.onLayerVisibilityToggle.bind(this)}
           {...additionalProps}
-        />
-        listItems.push(listItem)
-        idx += 1
-      })
-    })
+        />;
+        listItems.push(listItem);
+        idx += 1;
+      });
+    });
 
     const t = this.props.t;
 
     return <section
       className="maputnik-layer-list"
+      data-wd-key="layer-list"
       role="complementary"
       aria-label={t("Layers list")}
       ref={this.scrollContainerRef}
@@ -274,7 +286,7 @@ class LayerListContainerInternal extends React.Component<LayerListContainerInter
         layers={this.props.layers}
         sources={this.props.sources}
         isOpen={this.state.isOpen.add}
-        onOpenToggle={this.toggleModal.bind(this, 'add')}
+        onOpenToggle={this.toggleModal.bind(this, "add")}
         onLayersChange={this.props.onLayersChange}
       />
       <header className="maputnik-layer-list-header">
@@ -298,7 +310,7 @@ class LayerListContainerInternal extends React.Component<LayerListContainerInter
         <div className="maputnik-default-property">
           <div className="maputnik-multibutton">
             <button
-              onClick={this.toggleModal.bind(this, 'add')}
+              onClick={this.toggleModal.bind(this, "add")}
               data-wd-key="layer-list:add-layer"
               className="maputnik-button maputnik-button-selected">
               {t("Add Layer")}
@@ -314,25 +326,40 @@ class LayerListContainerInternal extends React.Component<LayerListContainerInter
           {listItems}
         </ul>
       </div>
-    </section>
+    </section>;
   }
 }
 
 const LayerListContainer = withTranslation()(LayerListContainerInternal);
-const LayerListContainerSortable = SortableContainer((props: LayerListContainerProps) => <LayerListContainer {...props} />)
 
 type LayerListProps = LayerListContainerProps & {
-  onMoveLayer: SortEndHandler
+  onMoveLayer: OnMoveLayerCallback
 };
 
-export default class LayerList extends React.Component<LayerListProps> {
-  render() {
-    return <LayerListContainerSortable
-      {...this.props}
-      helperClass='sortableHelper'
-      onSortEnd={this.props.onMoveLayer.bind(this)}
-      useDragHandle={true}
-      shouldCancelStart={() => false}
-    />
-  }
-}
+const LayerList: React.FC<LayerListProps> = (props) => {
+  const sensors = useSensors(useSensor(PointerSensor, { activationConstraint: { distance: 5 } }));
+
+  const handleDragEnd = (event: DragEndEvent) => {
+    const {active, over} = event;
+    if (!over) return;
+
+    const oldIndex = props.layers.findIndex(layer => layer.id === active.id);
+    const newIndex = props.layers.findIndex(layer => layer.id === over.id);
+
+    if (oldIndex !== -1 && newIndex !== -1 && oldIndex !== newIndex) {
+      props.onMoveLayer({oldIndex, newIndex});
+    }
+  };
+
+  const layerIds = props.layers.map(layer => layer.id);
+
+  return (
+    <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
+      <SortableContext items={layerIds} strategy={verticalListSortingStrategy}>
+        <LayerListContainer {...props} />
+      </SortableContext>
+    </DndContext>
+  );
+};
+
+export default LayerList;

@@ -1,20 +1,21 @@
-import React from 'react'
-import {mdiFunctionVariant, mdiTableRowPlusAfter} from '@mdi/js';
-import latest from '@maplibre/maplibre-gl-style-spec/dist/latest.json'
+import React from "react";
+import {PiListPlusBold} from "react-icons/pi";
+import {TbMathFunction} from "react-icons/tb";
+import latest from "@maplibre/maplibre-gl-style-spec/dist/latest.json";
 
-import InputButton from './InputButton'
-import InputSpec from './InputSpec'
-import InputNumber from './InputNumber'
-import InputString from './InputString'
-import InputSelect from './InputSelect'
-import Block from './Block'
-import docUid from '../libs/document-uid'
-import sortNumerically from '../libs/sort-numerically'
-import {findDefaultFromSpec} from '../libs/spec-helper';
-import { WithTranslation, withTranslation } from 'react-i18next';
+import InputButton from "./InputButton";
+import InputSpec from "./InputSpec";
+import InputNumber from "./InputNumber";
+import InputString from "./InputString";
+import InputSelect from "./InputSelect";
+import Block from "./Block";
+import docUid from "../libs/document-uid";
+import sortNumerically from "../libs/sort-numerically";
+import {findDefaultFromSpec} from "../libs/spec-helper";
+import { type WithTranslation, withTranslation } from "react-i18next";
 
-import labelFromFieldName from '../libs/label-from-field-name'
-import DeleteStopButton from './_DeleteStopButton'
+import labelFromFieldName from "../libs/label-from-field-name";
+import DeleteStopButton from "./_DeleteStopButton";
 
 
 
@@ -30,7 +31,7 @@ function setStopRefs(props: DataPropertyInternalProps, state: DataPropertyState)
         }
         newRefs[idx] = docUid("stop-");
       }
-    })
+    });
   }
 
   return newRefs;
@@ -59,17 +60,17 @@ type DataPropertyValue = {
   base?: number
   type?: string
   stops: Stop[]
-}
+};
 
 export type Stop = [{
   zoom: number
   value: number
-}, number]
+}, number];
 
 class DataPropertyInternal extends React.Component<DataPropertyInternalProps, DataPropertyState> {
   state = {
     refs: {} as {[key: number]: string}
-  }
+  };
 
   componentDidMount() {
     const newRefs = setStopRefs(this.props, this.state);
@@ -77,7 +78,7 @@ class DataPropertyInternal extends React.Component<DataPropertyInternalProps, Da
     if(newRefs) {
       this.setState({
         refs: newRefs
-      })
+      });
     }
   }
 
@@ -93,20 +94,20 @@ class DataPropertyInternal extends React.Component<DataPropertyInternalProps, Da
 
   getFieldFunctionType(fieldSpec: any) {
     if (fieldSpec.expression.interpolated) {
-      return "exponential"
+      return "exponential";
     }
     if (fieldSpec.type === "number") {
-      return "interval"
+      return "interval";
     }
-    return "categorical"
+    return "categorical";
   }
 
   getDataFunctionTypes(fieldSpec: any) {
     if (fieldSpec.expression.interpolated) {
-      return ["interpolate", "categorical", "interval", "exponential", "identity"]
+      return ["interpolate", "categorical", "interval", "exponential", "identity"];
     }
     else {
-      return ["categorical", "interval", "identity"]
+      return ["categorical", "interval", "identity"];
     }
   }
 
@@ -117,7 +118,7 @@ class DataPropertyInternal extends React.Component<DataPropertyInternalProps, Da
         return {
           ref: this.state.refs[idx],
           data: stop
-        }
+        };
       })
     // Sort by zoom
       .sort((a, b) => sortNumerically(a.data[0].zoom, b.data[0].zoom));
@@ -127,7 +128,7 @@ class DataPropertyInternal extends React.Component<DataPropertyInternalProps, Da
     mappedWithRef
       .forEach((stop, idx) =>{
         newRefs[idx] = stop.ref;
-      })
+      });
 
     this.setState({
       refs: newRefs
@@ -144,7 +145,7 @@ class DataPropertyInternal extends React.Component<DataPropertyInternalProps, Da
       };
     }
     else {
-      const stopValue = value.type === 'categorical' ? '' : 0;
+      const stopValue = value.type === "categorical" ? "" : 0;
       value = {
         property: "",
         type: value.type,
@@ -154,13 +155,13 @@ class DataPropertyInternal extends React.Component<DataPropertyInternalProps, Da
           [{zoom: 10, value: stopValue}, findDefaultFromSpec(this.props.fieldSpec as any)]
         ],
         ...value,
-      }
+      };
     }
     this.props.onChange!(fieldName, value);
-  }
+  };
 
   changeStop(changeIdx: number, stopData: { zoom: number | undefined, value: number }, value: number) {
-    const stops = this.props.value?.stops.slice(0) || []
+    const stops = this.props.value?.stops.slice(0) || [];
     // const changedStop = stopData.zoom === undefined ? stopData.value : stopData
     stops[changeIdx] = [
       {
@@ -175,20 +176,20 @@ class DataPropertyInternal extends React.Component<DataPropertyInternalProps, Da
     const changedValue = {
       ...this.props.value,
       stops: orderedStops,
-    }
-    this.onChange(this.props.fieldName, changedValue)
+    };
+    this.onChange(this.props.fieldName, changedValue);
   }
 
   changeBase(newValue: number | undefined) {
     const changedValue = {
       ...this.props.value,
       base: newValue
-    }
+    };
 
     if (changedValue.base === undefined) {
       delete changedValue["base"];
     }
-    this.props.onChange!(this.props.fieldName, changedValue)
+    this.props.onChange!(this.props.fieldName, changedValue);
   }
 
   changeDataType(propVal: string) {
@@ -205,43 +206,43 @@ class DataPropertyInternal extends React.Component<DataPropertyInternalProps, Da
 
   changeDataProperty(propName: "property" | "default", propVal: any) {
     if (propVal) {
-      this.props.value![propName] = propVal
+      this.props.value![propName] = propVal;
     }
     else {
-      delete this.props.value![propName]
+      delete this.props.value![propName];
     }
-    this.onChange(this.props.fieldName, this.props.value)
+    this.onChange(this.props.fieldName, this.props.value);
   }
 
   render() {
     const t = this.props.t;
 
     if (typeof this.props.value?.type === "undefined") {
-      this.props.value!.type = this.getFieldFunctionType(this.props.fieldSpec)
+      this.props.value!.type = this.getFieldFunctionType(this.props.fieldSpec);
     }
 
     let dataFields;
     if (this.props.value?.stops) {
       dataFields = this.props.value.stops.map((stop, idx) => {
-        const zoomLevel = typeof stop[0] === 'object' ? stop[0].zoom : undefined;
+        const zoomLevel = typeof stop[0] === "object" ? stop[0].zoom : undefined;
         const key  = this.state.refs[idx];
-        const dataLevel = typeof stop[0] === 'object' ? stop[0].value : stop[0];
-        const value = stop[1]
-        const deleteStopBtn = <DeleteStopButton onClick={this.props.onDeleteStop?.bind(this, idx)} />
+        const dataLevel = typeof stop[0] === "object" ? stop[0].value : stop[0];
+        const value = stop[1];
+        const deleteStopBtn = <DeleteStopButton onClick={this.props.onDeleteStop?.bind(this, idx)} />;
 
         const dataProps = {
-          'aria-label': t("Input value"),
+          "aria-label": t("Input value"),
           label: t("Data value"),
           value: dataLevel as any,
           onChange: (newData: string | number | undefined) => this.changeStop(idx, { zoom: zoomLevel, value: newData as number }, value)
-        }
+        };
 
         let dataInput;
         if(this.props.value?.type === "categorical") {
-          dataInput = <InputString {...dataProps} />
+          dataInput = <InputString {...dataProps} />;
         }
         else {
-          dataInput = <InputNumber {...dataProps} />
+          dataInput = <InputNumber {...dataProps} />;
         }
 
         let zoomInput = null;
@@ -254,7 +255,7 @@ class DataPropertyInternal extends React.Component<DataPropertyInternalProps, Da
               min={0}
               max={22}
             />
-          </div>
+          </div>;
         }
 
         return <tr key={key}>
@@ -276,8 +277,8 @@ class DataPropertyInternal extends React.Component<DataPropertyInternalProps, Da
           <td>
             {deleteStopBtn}
           </td>
-        </tr>
-      })
+        </tr>;
+      });
     }
 
     return <div className="maputnik-data-spec-block">
@@ -360,23 +361,21 @@ class DataPropertyInternal extends React.Component<DataPropertyInternalProps, Da
                 className="maputnik-add-stop"
                 onClick={this.props.onAddStop?.bind(this)}
               >
-                <svg style={{width:"14px", height:"14px", verticalAlign: "text-bottom"}} viewBox="0 0 24 24">
-                  <path fill="currentColor" d={mdiTableRowPlusAfter} />
-                </svg> {t("Add stop")}
+                <PiListPlusBold style={{ verticalAlign: "text-bottom" }} />
+                {t("Add stop")}
               </InputButton>
             }
             <InputButton
               className="maputnik-add-stop"
               onClick={this.props.onExpressionClick?.bind(this)}
             >
-              <svg style={{width:"14px", height:"14px", verticalAlign: "text-bottom"}} viewBox="0 0 24 24">
-                <path fill="currentColor" d={mdiFunctionVariant} />
-              </svg> {t("Convert to expression")}
+              <TbMathFunction style={{ verticalAlign: "text-bottom" }} />
+              {t("Convert to expression")}
             </InputButton>
           </div>
         </div>
       </fieldset>
-    </div>
+    </div>;
   }
 }
 

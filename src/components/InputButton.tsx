@@ -1,5 +1,5 @@
-import React from 'react'
-import classnames from 'classnames'
+import React from "react";
+import classnames from "classnames";
 
 type InputButtonProps = {
   "data-wd-key"?: string
@@ -28,6 +28,6 @@ export default class InputButton extends React.Component<InputButtonProps> {
       style={this.props.style}
     >
       {this.props.children}
-    </button>
+    </button>;
   }
 }

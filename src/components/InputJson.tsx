@@ -1,19 +1,20 @@
-import React from 'react'
-import classnames from 'classnames';
-import CodeMirror, { ModeSpec } from 'codemirror';
-import { Trans, WithTranslation, withTranslation } from 'react-i18next';
+import React from "react";
+import classnames from "classnames";
+import CodeMirror, { type ModeSpec } from "codemirror";
+import { Trans, type WithTranslation, withTranslation } from "react-i18next";
 
-import 'codemirror/mode/javascript/javascript'
-import 'codemirror/addon/lint/lint'
-import 'codemirror/addon/edit/matchbrackets'
-import 'codemirror/lib/codemirror.css'
-import 'codemirror/addon/lint/lint.css'
-import stringifyPretty from 'json-stringify-pretty-compact'
-import '../libs/codemirror-mgl';
+import "codemirror/mode/javascript/javascript";
+import "codemirror/addon/lint/lint";
+import "codemirror/addon/edit/matchbrackets";
+import "codemirror/lib/codemirror.css";
+import "codemirror/addon/lint/lint.css";
+import stringifyPretty from "json-stringify-pretty-compact";
+import "../libs/codemirror-mgl";
+import type { LayerSpecification } from "maplibre-gl";
 
 
 export type InputJsonProps = {
-  layer: any
+  layer: LayerSpecification
   maxHeight?: number
   onChange?(...args: unknown[]): unknown
   lineNumbers?: boolean
@@ -48,7 +49,7 @@ class InputJsonInternal extends React.Component<InputJsonInternalProps, InputJso
     onBlur: () => {},
     onJSONInvalid: () => {},
     onJSONValid: () => {},
-  }
+  };
   _keyEvent: string;
   _doc: CodeMirror.Editor | undefined;
   _el: HTMLDivElement | null = null;
@@ -72,7 +73,7 @@ class InputJsonInternal extends React.Component<InputJsonInternalProps, InputJso
       },
       lineWrapping: this.props.lineWrapping,
       tabSize: 2,
-      theme: 'maputnik',
+      theme: "maputnik",
       viewportMargin: Infinity,
       lineNumbers: this.props.lineNumbers,
       lint: this.props.lint || {
@@ -83,14 +84,14 @@ class InputJsonInternal extends React.Component<InputJsonInternalProps, InputJso
       scrollbarStyle: "null",
     });
 
-    this._doc.on('change', this.onChange);
-    this._doc.on('focus', this.onFocus);
-    this._doc.on('blur', this.onBlur);
+    this._doc.on("change", this.onChange);
+    this._doc.on("focus", this.onFocus);
+    this._doc.on("blur", this.onBlur);
   }
 
   onPointerDown = () => {
     this._keyEvent = "pointer";
-  }
+  };
 
   onFocus = () => {
     if (this.props.onFocus) this.props.onFocus();
@@ -98,7 +99,7 @@ class InputJsonInternal extends React.Component<InputJsonInternalProps, InputJso
       isEditing: true,
       showMessage: (this._keyEvent === "keyboard"),
     });
-  }
+  };
 
   onBlur = () => {
     this._keyEvent = "keyboard";
@@ -107,12 +108,12 @@ class InputJsonInternal extends React.Component<InputJsonInternalProps, InputJso
       isEditing: false,
       showMessage: false,
     });
-  }
+  };
 
   componentWillUnMount () {
-    this._doc!.off('change', this.onChange);
-    this._doc!.off('focus', this.onFocus);
-    this._doc!.off('blur', this.onBlur);
+    this._doc!.off("change", this.onChange);
+    this._doc!.off("focus", this.onFocus);
+    this._doc!.off("blur", this.onBlur);
   }
 
   componentDidUpdate(prevProps: InputJsonProps) {
@@ -120,7 +121,7 @@ class InputJsonInternal extends React.Component<InputJsonInternalProps, InputJso
       this._cancelNextChange = true;
       this._doc!.setValue(
         this.props.getValue!(this.props.layer),
-      )
+      );
     }
   }
 
@@ -129,7 +130,7 @@ class InputJsonInternal extends React.Component<InputJsonInternalProps, InputJso
       this._cancelNextChange = false;
       this.setState({
         prevValue: this._doc!.getValue(),
-      })
+      });
       return;
     }
     const newCode = this._doc!.getValue();
@@ -140,14 +141,14 @@ class InputJsonInternal extends React.Component<InputJsonInternalProps, InputJso
         parsedLayer = JSON.parse(newCode);
       } catch(_err) {
         err = _err;
-        console.warn(_err)
+        console.warn(_err);
       }
 
       if (err && this.props.onJSONInvalid) {
         this.props.onJSONInvalid();
       }
       else {
-        if (this.props.onChange) this.props.onChange(parsedLayer)
+        if (this.props.onChange) this.props.onChange(parsedLayer);
         if (this.props.onJSONValid) this.props.onJSONValid();
       }
     }
@@ -155,7 +156,7 @@ class InputJsonInternal extends React.Component<InputJsonInternalProps, InputJso
     this.setState({
       prevValue: newCode,
     });
-  }
+  };
 
   render() {
     const t = this.props.t;
@@ -173,10 +174,10 @@ class InputJsonInternal extends React.Component<InputJsonInternalProps, InputJso
       </div>
       <div
         className={classnames("codemirror-container", this.props.className)}
-        ref={(el) => this._el = el}
+        ref={(el) => {this._el = el;}}
         style={style}
       />
-    </div>
+    </div>;
   }
 }
 
