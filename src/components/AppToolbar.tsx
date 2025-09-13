@@ -1,6 +1,5 @@
 import classnames from "classnames";
 import { detect } from "detect-browser";
-//@ts-expect-error
 import maputnikLogo from "maputnik-design/logos/logo-color.svg?inline";
 import React from "react";
 import { type WithTranslation, withTranslation } from "react-i18next";

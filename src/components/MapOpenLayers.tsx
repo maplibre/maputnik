@@ -9,7 +9,6 @@ import type { StyleSpecification } from "maplibre-gl";
 import { Map, Overlay, View } from "ol";
 
 import { toLonLat } from "ol/proj";
-//@ts-expect-error
 import { apply } from "ol-mapbox-style";
 
 function renderCoords(coords: string[]) {
