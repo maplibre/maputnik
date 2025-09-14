@@ -79,7 +79,11 @@ jobs:
           path: ./desktop/bin/windows/
 
   e2e-tests:
-    name: "E2E tests using chrome"
+    name: "E2E tests using {{ matrix.browser }}"
+    strategy:
+      fail-fast: false
+      matrix:
+        browser: [ chrome, firefox ]
 
     runs-on: ubuntu-latest
     steps:
@@ -91,7 +95,7 @@ jobs:
         with:
           build: npm run build
           start: npm run start
-          browser: chrome
+          browser: ${{ matrix.browser }}
       - name: Upload coverage reports to Codecov
         uses: codecov/codecov-action@v5
         with:

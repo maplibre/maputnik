@@ -1,7 +1,6 @@
 import React, { type FormEvent } from "react";
 import {MdFileUpload} from "react-icons/md";
 import {MdAddCircleOutline} from "react-icons/md";
-import FileReaderInput, { type Result } from "react-file-reader-input";
 import { Trans, type WithTranslation, withTranslation } from "react-i18next";
 
 import ModalLoading from "./ModalLoading";
@@ -171,8 +170,10 @@ class ModalOpenInternal extends React.Component<ModalOpenInternalProps, ModalOpe
 
   // it is not guaranteed that the File System Access API is available on all
   // browsers. If the function is not available, a fallback behavior is used.
-  onFileChanged = async (_: any, files: Result[]) => {
-    const [, file] = files[0];
+  onFileChanged = async (files: FileList | null) => {
+    if (!files) return;
+    if (files.length === 0) return;
+    const file = files[0];
     const reader = new FileReader();
     this.clearError();
 
@@ -246,13 +247,15 @@ class ModalOpenInternal extends React.Component<ModalOpenInternalProps, ModalOpe
             <div>
               {typeof window.showOpenFilePicker === "function" ? (
                 <InputButton
+                  data-wd-key="modal:open.file.button"
                   className="maputnik-big-button"
                   onClick={this.onOpenFile}><MdFileUpload/> {t("Open Style")}
                 </InputButton>
               ) : (
-                <FileReaderInput onChange={this.onFileChanged} tabIndex={-1} aria-label={t("Open Style")}>
-                  <InputButton className="maputnik-upload-button"><MdFileUpload /> {t("Open Style")}</InputButton>
-                </FileReaderInput>
+                <label>
+                  <a className="maputnik-button maputnik-upload-button" aria-label={t("Open Style")}><MdFileUpload /> {t("Open Style")}</a>
+                  <input data-wd-key="modal:open.file.input" type="file" style={{ display: "none" }} onChange={(e) => this.onFileChanged(e.target.files)} />
+                </label>
               )}
             </div>
           </section>

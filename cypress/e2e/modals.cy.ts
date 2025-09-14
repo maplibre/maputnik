@@ -18,10 +18,9 @@ describe("modals", () => {
       then(get.elementByTestId("modal:open")).shouldNotExist();
     });
 
-    it.skip("upload", () => {
-      // HM: I was not able to make the following choose file actually to select a file and close the modal...
+    it("upload", () => {
       when.chooseExampleFile();
-      then(get.responseBody("example-style.json")).shouldEqualToStoredStyle();
+      then(get.fixture("example-style.json")).shouldEqualToStoredStyle();
     });
 
     describe("when click open url", () => {
