@@ -27,7 +27,7 @@ const ModalGlobalStateInternal: React.FC<ModalGlobalStateInternalProps> = (props
   const getGlobalStateVariables = (): GlobalStateVariable[] => {
     const style = props.mapStyle;
     const globalState = style.state || {};
-    
+
     return Object.entries(globalState).map(([key, value]) => ({
       key,
       value: value.default
@@ -36,7 +36,7 @@ const ModalGlobalStateInternal: React.FC<ModalGlobalStateInternalProps> = (props
 
   const setGlobalStateVariables = (variables: GlobalStateVariable[]) => {
     const style = { ...props.mapStyle };
-    
+
     // Create the globalState object from the variables array
     const globalState: Record<string, SchemaSpecification> = {};
     for (const variable of variables) {
@@ -48,7 +48,7 @@ const ModalGlobalStateInternal: React.FC<ModalGlobalStateInternalProps> = (props
     }
 
     style.state = Object.keys(globalState).length > 0 ? globalState : undefined;
-    
+
     props.onStyleChanged(style);
   };
 
@@ -120,8 +120,8 @@ const ModalGlobalStateInternal: React.FC<ModalGlobalStateInternalProps> = (props
       onOpenToggle={props.onOpenToggle}
       title={props.t("Global State Variables")}
     >
-      
-      {variables.length === 0 && 
+
+      {variables.length === 0 &&
             <div>
               <p>{props.t("No global state variables defined. Add variables to create reusable values in your style.")}</p>
               <div key="doc" className="maputnik-doc-inline">
@@ -129,7 +129,7 @@ const ModalGlobalStateInternal: React.FC<ModalGlobalStateInternalProps> = (props
               </div>
             </div>
       }
-      {variables.length > 0 && 
+      {variables.length > 0 &&
       <table>
         <thead>
         </thead>

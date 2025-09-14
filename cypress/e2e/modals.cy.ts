@@ -316,7 +316,7 @@ describe("modals", () => {
       });
     });
 
-    
+
     it("add multiple variables", () => {
       when.click("global-state-add-variable");
       when.click("global-state-add-variable");
@@ -325,7 +325,7 @@ describe("modals", () => {
         state: { key1: { default: "value" }, key2: { default: "value" }, key3: { default: "value" } },
       });
     });
-    
+
     it("remove variable", () => {
       when.click("global-state-add-variable");
       when.click("global-state-add-variable");
@@ -335,7 +335,7 @@ describe("modals", () => {
         state: { key2: { default: "value" }, key3: { default: "value" } },
       });
     });
-    
+
     it("edit variable key", () => {
       when.click("global-state-add-variable");
       when.setValue("global-state-variable-key:0", "mykey");
