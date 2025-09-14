@@ -300,7 +300,8 @@ class ModalSettingsInternal extends React.Component<ModalSettingsInternalProps> 
           options={[
             ["", "Undefined"],
             ["mercator", "Mercator"],
-            ["globe", "Globe"]
+            ["globe", "Globe"],
+            ["vertical-perspective", "Vertical Perspective"]
           ]}
           value={projection?.type?.toString() || ""}
           onChange={(value) => this.changeProjectionType(value)}

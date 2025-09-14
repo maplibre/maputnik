@@ -250,6 +250,15 @@ describe("modals", () => {
       ).shouldInclude({ type: "globe" });
     });
 
+
+    it("style projection vertical-perspective", () => {
+      when.select("modal:settings.projection", "vertical-perspective");
+      then(
+        get.styleFromLocalStorage().then((style) => style.projection)
+      ).shouldInclude({ type: "vertical-perspective" });
+      
+    });
+
     it("style renderer", () => {
       cy.on("uncaught:exception", () => false); // this is due to the fact that this is an invalid style for openlayers
       when.select("modal:settings.maputnik:renderer", "ol");
