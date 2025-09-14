@@ -318,6 +318,57 @@ describe("modals", () => {
     it("toggle");
   });
 
+  describe("global state", () => {
+    beforeEach(() => {
+      when.click("nav:global-state");
+    });
+
+    it("add variable", () => {
+      when.click("global-state-add-variable");
+      then(get.styleFromLocalStorage()).shouldDeepNestedInclude({
+        state: { key1: { default: "value" } },
+      });
+    });
+
+
+    it("add multiple variables", () => {
+      when.click("global-state-add-variable");
+      when.click("global-state-add-variable");
+      when.click("global-state-add-variable");
+      then(get.styleFromLocalStorage()).shouldDeepNestedInclude({
+        state: { key1: { default: "value" }, key2: { default: "value" }, key3: { default: "value" } },
+      });
+    });
+
+    it("remove variable", () => {
+      when.click("global-state-add-variable");
+      when.click("global-state-add-variable");
+      when.click("global-state-add-variable");
+      when.click("global-state-remove-variable", 0);
+      then(get.styleFromLocalStorage()).shouldDeepNestedInclude({
+        state: { key2: { default: "value" }, key3: { default: "value" } },
+      });
+    });
+
+    it("edit variable key", () => {
+      when.click("global-state-add-variable");
+      when.setValue("global-state-variable-key:0", "mykey");
+      when.typeKeys("{enter}");
+      then(get.styleFromLocalStorage()).shouldDeepNestedInclude({
+        state: { mykey: { default: "value" } },
+      });
+    });
+
+    it("edit variable value", () => {
+      when.click("global-state-add-variable");
+      when.setValue("global-state-variable-value:0", "myvalue");
+      when.typeKeys("{enter}");
+      then(get.styleFromLocalStorage()).shouldDeepNestedInclude({
+        state: { key1: { default: "myvalue" } },
+      });
+    });
+  });
+
   describe("Handle localStorage QuotaExceededError", () => {
     it("handles quota exceeded error when opening style from URL", () => {
       // Clear localStorage to start fresh
