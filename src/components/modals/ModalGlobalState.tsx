@@ -58,7 +58,7 @@ const ModalGlobalStateInternal: React.FC<ModalGlobalStateInternalProps> = (props
     while (variables.find(v => v.key === `key${index}`)) {
       index++;
     }
-    variables.push({ key: `key${index}`, value: `value` });
+    variables.push({ key: `key${index}`, value: "value" });
     setGlobalStateVariables(variables);
   };
 
