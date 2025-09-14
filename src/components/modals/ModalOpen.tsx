@@ -170,7 +170,7 @@ class ModalOpenInternal extends React.Component<ModalOpenInternalProps, ModalOpe
 
   // it is not guaranteed that the File System Access API is available on all
   // browsers. If the function is not available, a fallback behavior is used.
-  onFileChanged = async (files: FileList | null) => {
+  onFileChanged = (files: FileList | null) => {
     if (!files) return;
     if (files.length === 0) return;
     const file = files[0];
