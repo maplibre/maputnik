@@ -5,6 +5,7 @@
 - Add support for hillshade's color arrays and relief-color elevation expression
 - Change layers icons to make them a bit more distinct
 - Remove `@mdi` packages in favor of `react-icons`
+- Add ability to control the projection of the map - either globe or mercator
 - Add markdown support for doc related to the style-spec fields
 - Added global state modal to allow editing the global state
 - _...Add new stuff here..._
