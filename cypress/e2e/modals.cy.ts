@@ -256,7 +256,7 @@ describe("modals", () => {
       then(
         get.styleFromLocalStorage().then((style) => style.projection)
       ).shouldInclude({ type: "vertical-perspective" });
-      
+
     });
 
     it("style renderer", () => {
