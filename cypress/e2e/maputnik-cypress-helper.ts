@@ -30,14 +30,14 @@ export default class MaputnikCypressHelper {
       cy.window().then((win) => {
         const file = {
           text: cy.stub().resolves(cy.fixture(fixture).then(JSON.stringify)),
-        }
+        };
         const fileHandle = {
           getFile: cy.stub().resolves(file),
-        }
+        };
         if (!win.showOpenFilePicker) {
           this.helper.get.elementByTestId(inputTestId).selectFile("cypress/fixtures/" + fixture, { force: true });
         } else {
-          cy.stub(win, 'showOpenFilePicker').resolves([fileHandle])
+          cy.stub(win, "showOpenFilePicker").resolves([fileHandle]);
           this.helper.get.elementByTestId(buttonTestId).click();
         }
       });
