@@ -6,7 +6,7 @@ import latest from "@maplibre/maplibre-gl-style-spec/dist/latest.json";
 import Modal from "./Modal";
 import FieldString from "../FieldString";
 import InputButton from "../InputButton";
-import { PiPlusBold } from "react-icons/pi";
+import { PiListPlusBold } from "react-icons/pi";
 import { type StyleSpecificationWithId } from "../../libs/definitions";
 import { type SchemaSpecification } from "maplibre-gl";
 import Doc from "../Doc";
@@ -83,7 +83,7 @@ const ModalGlobalStateInternal: React.FC<ModalGlobalStateInternalProps> = (props
     <tr key={index} className="maputnik-global-state-variable">
       <td className="maputnik-global-state-variable-key">
         <FieldString
-          label={props.t("Variable Name")}
+          label={props.t("Key")}
           value={variable.key}
           onChange={(value) => onChangeVariableKey(index, value || "")}
         />
@@ -91,11 +91,11 @@ const ModalGlobalStateInternal: React.FC<ModalGlobalStateInternalProps> = (props
       <td className="maputnik-global-state-variable-value">
         <FieldString
           label={props.t("Value")}
-          value={typeof variable.value === "string" ? variable.value : JSON.stringify(variable.value)}
+          value={variable.value}
           onChange={(value) => onChangeVariableValue(index, value || "")}
         />
       </td>
-      <td className="maputnik-global-state-variable-delete">
+      <td style={{ verticalAlign: "middle"}}>
         <InputButton
           className="maputnik-delete-variable"
           onClick={() => onRemoveVariable(index)}
@@ -125,23 +125,18 @@ const ModalGlobalStateInternal: React.FC<ModalGlobalStateInternalProps> = (props
       }
       {variables.length > 0 && <table className="maputnik-global-state-table">
         <thead>
-          <tr>
-            <th>{props.t("Variable Name")}</th>
-            <th>{props.t("Value")}</th>
-            <th>{props.t("Actions")}</th>
-          </tr>
         </thead>
         <tbody>
           {variableFields}
         </tbody>
       </table>
       }
-      <div className="maputnik-global-state-add">
+      <div>
         <InputButton
-          className="maputnik-add-variable"
           onClick={onAddVariable}
+          data-wd-key="global-state-add-variable"
         >
-          <PiPlusBold />
+          <PiListPlusBold />
           {props.t("Add Variable")}
         </InputButton>
       </div>
