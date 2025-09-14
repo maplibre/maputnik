@@ -491,6 +491,20 @@ describe("layers", () => {
       when.click("field-doc-button-Offset", 0);
       then(get.elementByTestId("spec-field-doc")).shouldContainText("Offset distance");
     });
+
+    it.only("should hide spec info when clicking a second time", () => {
+      when.modal.fillLayers({
+        type: "symbol",
+        layer: "example",
+      });
+
+      when.hover("spec-field-container:text-rotate");
+      then(get.elementByTestId("field-doc-button-Rotate")).shouldBeVisible();
+      when.click("field-doc-button-Rotate", 0);
+      when.wait(200);
+      when.click("field-doc-button-Rotate", 0);
+      then(get.elementByTestId("spec-field-doc")).shouldNotBeVisible();
+    });
   });
 
   describe("raster", () => {
