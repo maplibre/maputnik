@@ -1,4 +1,5 @@
 import React from "react";
+import Markdown from "react-markdown";
 
 const headers = {
   js: "JS",
@@ -48,7 +49,11 @@ export default class Doc extends React.Component<DocProps> {
       <>
         {doc &&
           <div className="SpecDoc">
-            <div className="SpecDoc__doc" data-wd-key='spec-field-doc'>{doc}</div>
+            <div className="SpecDoc__doc" data-wd-key='spec-field-doc'>
+              <Markdown components={{
+                a: ({node: _node, href, children, ...props}) => <a href={href} target="_blank" {...props}>{children}</a>,
+              }}>{doc}</Markdown>
+            </div>
             {renderValues &&
               <ul className="SpecDoc__values">
                 {Object.entries(values).map(([key, value]) => {
