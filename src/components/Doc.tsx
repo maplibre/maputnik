@@ -44,7 +44,7 @@ export default class Doc extends React.Component<DocProps> {
           <div className="SpecDoc">
             <div className="SpecDoc__doc" data-wd-key='spec-field-doc'>
               <Markdown components={{
-                  a: ({node, href, children, ...props}) => <a href={href} target="_blank" {...props}>{children}</a>,
+                a: ({node: _node, href, children, ...props}) => <a href={href} target="_blank" {...props}>{children}</a>,
               }}>{doc}</Markdown>
             </div>
             {renderValues &&
