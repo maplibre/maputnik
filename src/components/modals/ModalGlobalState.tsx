@@ -124,7 +124,7 @@ const ModalGlobalStateInternal: React.FC<ModalGlobalStateInternalProps> = (props
       {variables.length === 0 && 
             <div>
               <p>{props.t("No global state variables defined. Add variables to create reusable values in your style.")}</p>
-              <div key="doc">
+              <div key="doc" className="maputnik-doc-inline">
                 <Doc fieldSpec={latest.$root.state} />
               </div>
             </div>
