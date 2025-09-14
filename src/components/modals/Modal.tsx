@@ -8,7 +8,7 @@ type ModalInternalProps = PropsWithChildren & {
   "data-wd-key"?: string
   isOpen: boolean
   title: string
-  onOpenToggle(value: boolean): unknown
+  onOpenToggle(): void
   underlayClickExits?: boolean
   className?: string
 } & WithTranslation;
@@ -26,7 +26,7 @@ class ModalInternal extends React.Component<ModalInternalProps> {
     }
 
     setTimeout(() => {
-      this.props.onOpenToggle(false);
+      this.props.onOpenToggle();
     }, 0);
   };
 

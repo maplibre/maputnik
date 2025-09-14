@@ -25,6 +25,7 @@ import ModalSources from "./modals/ModalSources";
 import ModalOpen from "./modals/ModalOpen";
 import ModalShortcuts from "./modals/ModalShortcuts";
 import ModalDebug from "./modals/ModalDebug";
+import ModalGlobalState from "./modals/ModalGlobalState";
 
 import {downloadGlyphsMetadata, downloadSpriteMetadata} from "../libs/metadata";
 import style from "../libs/style";
@@ -126,6 +127,7 @@ type AppState = {
     shortcuts: boolean
     export: boolean
     debug: boolean
+    globalState: boolean
   }
   fileHandle: FileSystemFileHandle | null
 };
@@ -164,6 +166,7 @@ export default class App extends React.Component<any, AppState> {
         shortcuts: false,
         export: false,
         debug: false,
+        globalState: false,
       },
       maplibreGlDebugOptions: {
         showTileBoundaries: false,
@@ -211,6 +214,12 @@ export default class App extends React.Component<any, AppState> {
         key: "s",
         handler: () => {
           this.toggleModal("settings");
+        }
+      },
+      {
+        key: "g",
+        handler: () => {
+          this.toggleModal("globalState");
         }
       },
       {
@@ -911,39 +920,45 @@ export default class App extends React.Component<any, AppState> {
         onChangeMaplibreGlDebug={this.onChangeMaplibreGlDebug}
         onChangeOpenlayersDebug={this.onChangeOpenlayersDebug}
         isOpen={this.state.isOpen.debug}
-        onOpenToggle={this.toggleModal.bind(this, "debug")}
+        onOpenToggle={() => this.toggleModal("debug")}
         mapView={this.state.mapView}
       />
       <ModalShortcuts
         isOpen={this.state.isOpen.shortcuts}
-        onOpenToggle={this.toggleModal.bind(this, "shortcuts")}
+        onOpenToggle={() => this.toggleModal("shortcuts")}
       />
       <ModalSettings
         mapStyle={this.state.mapStyle}
         onStyleChanged={this.onStyleChanged}
         onChangeMetadataProperty={this.onChangeMetadataProperty}
         isOpen={this.state.isOpen.settings}
-        onOpenToggle={this.toggleModal.bind(this, "settings")}
+        onOpenToggle={() => this.toggleModal("settings")}
       />
       <ModalExport
         mapStyle={this.state.mapStyle}
         onStyleChanged={this.onStyleChanged}
         isOpen={this.state.isOpen.export}
-        onOpenToggle={this.toggleModal.bind(this, "export")}
+        onOpenToggle={() => this.toggleModal("export")}
         fileHandle={this.state.fileHandle}
         onSetFileHandle={this.onSetFileHandle}
       />
       <ModalOpen
         isOpen={this.state.isOpen.open}
         onStyleOpen={this.openStyle}
-        onOpenToggle={this.toggleModal.bind(this, "open")}
+        onOpenToggle={() => this.toggleModal("open")}
         fileHandle={this.state.fileHandle}
       />
       <ModalSources
         mapStyle={this.state.mapStyle}
         onStyleChanged={this.onStyleChanged}
         isOpen={this.state.isOpen.sources}
-        onOpenToggle={this.toggleModal.bind(this, "sources")}
+        onOpenToggle={() => this.toggleModal("sources")}
+      />
+      <ModalGlobalState
+        mapStyle={this.state.mapStyle}
+        onStyleChanged={this.onStyleChanged}
+        isOpen={this.state.isOpen.globalState}
+        onOpenToggle={() => this.toggleModal("globalState")}
       />
     </div>;
 

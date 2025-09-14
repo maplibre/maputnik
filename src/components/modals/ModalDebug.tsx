@@ -9,7 +9,7 @@ type ModalDebugInternalProps = {
   renderer: string
   onChangeMaplibreGlDebug(key: string, checked: boolean): unknown
   onChangeOpenlayersDebug(key: string, checked: boolean): unknown
-  onOpenToggle(value: boolean): unknown
+  onOpenToggle(): void
   maplibreGlDebugOptions?: object
   openlayersDebugOptions?: object
   mapView: {

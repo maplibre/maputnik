@@ -6,6 +6,7 @@
 - Change layers icons to make them a bit more distinct
 - Remove `@mdi` packages in favor of `react-icons`
 - Add markdown support for doc related to the style-spec fields
+- Added global state modal to allow editing the global state
 - _...Add new stuff here..._
 
 ### 🐞 Bug fixes

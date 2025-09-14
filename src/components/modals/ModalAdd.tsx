@@ -14,7 +14,7 @@ type ModalAddInternalProps = {
   layers: LayerSpecification[]
   onLayersChange(layers: LayerSpecification[]): unknown
   isOpen: boolean
-  onOpenToggle(open: boolean): unknown
+  onOpenToggle(): void
   // A dict of source id's and the available source layers
   sources: Record<string, SourceSpecification & {layers: string[]}>;
 } & WithTranslation;
@@ -50,7 +50,7 @@ class ModalAddInternal extends React.Component<ModalAddInternalProps, ModalAddSt
     changedLayers.push(layer as LayerSpecification);
     this.setState({ error: null }, () => {
       this.props.onLayersChange(changedLayers);
-      this.props.onOpenToggle(false);
+      this.props.onOpenToggle();
     });
   };
 

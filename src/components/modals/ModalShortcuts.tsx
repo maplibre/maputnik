@@ -6,7 +6,7 @@ import Modal from "./Modal";
 
 type ModalShortcutsInternalProps = {
   isOpen: boolean
-  onOpenToggle(...args: unknown[]): unknown
+  onOpenToggle(): void
 } & WithTranslation;
 
 

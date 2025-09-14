@@ -4,8 +4,7 @@ import Markdown from "react-markdown";
 const headers = {
   js: "JS",
   android: "Android",
-  ios: "iOS",
-  macos: "macOS",
+  ios: "iOS"
 };
 
 type DocProps = {
@@ -37,6 +36,14 @@ export default class Doc extends React.Component<DocProps> {
       // See <https://github.com/maplibre/maputnik/blob/main/src/components/PropertyGroup.jsx#L16>
       !Array.isArray(values)
     );
+
+    const sdkSupportToJsx = (value: string) => {
+      const supportValue = value.toLowerCase();
+      if (supportValue.startsWith("https://")) {
+        return <a href={supportValue} target="_blank" rel="noreferrer">{"#" + supportValue.split("/").pop()}</a>;
+      }
+      return value;
+    };
 
     return (
       <>
@@ -79,7 +86,7 @@ export default class Doc extends React.Component<DocProps> {
                       <td>{key}</td>
                       {Object.keys(headers).map((k) => {
                         if (Object.prototype.hasOwnProperty.call(supportObj, k)) {
-                          return <td key={k}>{supportObj[k as keyof typeof headers]}</td>;
+                          return <td key={k}>{sdkSupportToJsx(supportObj[k as keyof typeof headers])}</td>;
                         }
                         else {
                           return <td key={k}>no</td>;
