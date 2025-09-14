@@ -54,7 +54,11 @@ const ModalGlobalStateInternal: React.FC<ModalGlobalStateInternalProps> = (props
 
   const onAddVariable = () => {
     const variables = getGlobalStateVariables();
-    variables.push({ key: "a", value: "1" });
+    let index = 1;
+    while (variables.find(v => v.key === `key${index}`)) {
+      index++;
+    }
+    variables.push({ key: `key${index}`, value: `value` });
     setGlobalStateVariables(variables);
   };
 
@@ -80,26 +84,28 @@ const ModalGlobalStateInternal: React.FC<ModalGlobalStateInternalProps> = (props
   const variables = getGlobalStateVariables();
 
   const variableFields = variables.map((variable, index) => (
-    <tr key={index} className="maputnik-global-state-variable">
-      <td className="maputnik-global-state-variable-key">
+    <tr key={index}>
+      <td>
         <FieldString
           label={props.t("Key")}
           value={variable.key}
           onChange={(value) => onChangeVariableKey(index, value || "")}
+          data-wd-key={"global-state-variable-key:" + index}
         />
       </td>
-      <td className="maputnik-global-state-variable-value">
+      <td>
         <FieldString
           label={props.t("Value")}
           value={variable.value}
           onChange={(value) => onChangeVariableValue(index, value || "")}
+          data-wd-key={"global-state-variable-value:" + index}
         />
       </td>
       <td style={{ verticalAlign: "middle"}}>
         <InputButton
-          className="maputnik-delete-variable"
           onClick={() => onRemoveVariable(index)}
           title={props.t("Remove variable")}
+          data-wd-key="global-state-remove-variable"
         >
           <MdDelete />
         </InputButton>
@@ -116,14 +122,15 @@ const ModalGlobalStateInternal: React.FC<ModalGlobalStateInternalProps> = (props
     >
       
       {variables.length === 0 && 
-            <div className="maputnik-global-state-empty">
+            <div>
               <p>{props.t("No global state variables defined. Add variables to create reusable values in your style.")}</p>
-              <div key="doc" className="maputnik-doc-inline">
+              <div key="doc">
                 <Doc fieldSpec={latest.$root.state} />
               </div>
             </div>
       }
-      {variables.length > 0 && <table className="maputnik-global-state-table">
+      {variables.length > 0 && 
+      <table>
         <thead>
         </thead>
         <tbody>
