@@ -4,6 +4,7 @@
 - Added translation to "Links" in debug modal
 - Add support for hillshade's color arrays and relief-color elevation expression
 - Remove `@mdi` packages in favor of `react-icons`
+- Added global state modal to allow editing the global state
 - _...Add new stuff here..._
 
 ### 🐞 Bug fixes
