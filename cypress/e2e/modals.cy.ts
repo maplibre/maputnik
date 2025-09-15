@@ -18,10 +18,9 @@ describe("modals", () => {
       then(get.elementByTestId("modal:open")).shouldNotExist();
     });
 
-    it.skip("upload", () => {
-      // HM: I was not able to make the following choose file actually to select a file and close the modal...
+    it("upload", () => {
       when.chooseExampleFile();
-      then(get.responseBody("example-style.json")).shouldEqualToStoredStyle();
+      then(get.fixture("example-style.json")).shouldEqualToStoredStyle();
     });
 
     describe("when click open url", () => {
@@ -334,6 +333,7 @@ describe("modals", () => {
 
     it("add variable", () => {
       when.click("global-state-add-variable");
+      when.wait(100);
       then(get.styleFromLocalStorage()).shouldDeepNestedInclude({
         state: { key1: { default: "value" } },
       });
@@ -344,6 +344,7 @@ describe("modals", () => {
       when.click("global-state-add-variable");
       when.click("global-state-add-variable");
       when.click("global-state-add-variable");
+      when.wait(100);
       then(get.styleFromLocalStorage()).shouldDeepNestedInclude({
         state: { key1: { default: "value" }, key2: { default: "value" }, key3: { default: "value" } },
       });
@@ -354,6 +355,7 @@ describe("modals", () => {
       when.click("global-state-add-variable");
       when.click("global-state-add-variable");
       when.click("global-state-remove-variable", 0);
+      when.wait(100);
       then(get.styleFromLocalStorage()).shouldDeepNestedInclude({
         state: { key2: { default: "value" }, key3: { default: "value" } },
       });
@@ -363,6 +365,7 @@ describe("modals", () => {
       when.click("global-state-add-variable");
       when.setValue("global-state-variable-key:0", "mykey");
       when.typeKeys("{enter}");
+      when.wait(100);
       then(get.styleFromLocalStorage()).shouldDeepNestedInclude({
         state: { mykey: { default: "value" } },
       });
@@ -372,6 +375,7 @@ describe("modals", () => {
       when.click("global-state-add-variable");
       when.setValue("global-state-variable-value:0", "myvalue");
       when.typeKeys("{enter}");
+      when.wait(100);
       then(get.styleFromLocalStorage()).shouldDeepNestedInclude({
         state: { key1: { default: "myvalue" } },
       });

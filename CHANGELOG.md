@@ -16,6 +16,7 @@
 - Fix modal close button possition
 - Fixed an issue with the generation of tranlations
 - Fix missing spec info when clicking next to a property
+- Fix Firefox open file that stopped working due to react upgrade
 - _...Add new stuff here..._
 
 ## 3.0.0
