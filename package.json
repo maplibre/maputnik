@@ -36,7 +36,7 @@
     "buffer": "^6.0.3",
     "classnames": "^2.5.1",
     "codemirror": "^5.65.20",
-    "color": "^5.0.0",
+    "color": "^5.0.2",
     "detect-browser": "^5.3.0",
     "downshift": "^9.0.10",
     "events": "^3.3.0",
