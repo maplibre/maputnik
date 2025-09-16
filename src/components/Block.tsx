@@ -11,7 +11,6 @@ type BlockProps = PropsWithChildren & {
   onChange?(...args: unknown[]): unknown
   fieldSpec?: object
   wideMode?: boolean
-  error?: {message: string}
 };
 
 type BlockState = {

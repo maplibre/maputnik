@@ -259,13 +259,9 @@ class GeoJSONSourceFieldJsonEditor extends React.Component<GeoJSONSourceFieldJso
     return <div>
       <Block label={t("GeoJSON")} fieldSpec={latest.source_geojson.data}>
         <FieldJson
-          layer={this.props.source.data}
+          value={this.props.source.data}
           maxHeight={200}
-          mode={{
-            name: "javascript",
-            json: true
-          }}
-          lint={true}
+          lintType="json"
           onChange={data => {
             this.props.onChange({
               ...this.props.source,
