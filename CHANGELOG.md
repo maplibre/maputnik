@@ -8,6 +8,8 @@
 - Add ability to control the projection of the map - either globe or mercator
 - Add markdown support for doc related to the style-spec fields
 - Added global state modal to allow editing the global state
+- Added color highlight for problematic properties
+- Upgraded codemirror from version 5 to version 6
 - _...Add new stuff here..._
 
 ### 🐞 Bug fixes
@@ -17,6 +19,7 @@
 - Fixed an issue with the generation of tranlations
 - Fix missing spec info when clicking next to a property
 - Fix Firefox open file that stopped working due to react upgrade
+- Fix issue with missing bottom error panel 
 - _...Add new stuff here..._
 
 ## 3.0.0
