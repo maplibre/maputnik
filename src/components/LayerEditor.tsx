@@ -22,7 +22,7 @@ import {formatLayerId} from "../libs/format";
 import { type WithTranslation, withTranslation } from "react-i18next";
 import { type TFunction } from "i18next";
 import { NON_SOURCE_LAYERS } from "../libs/non-source-layers";
-import { type OnMoveLayerCallback } from "../libs/definitions";
+import { type MappedError, type MappedLayerErrors, type OnMoveLayerCallback } from "../libs/definitions";
 
 type MaputnikLayoutGroup = {
   id: string;
@@ -128,7 +128,7 @@ type LayerEditorInternalProps = {
   isFirstLayer?: boolean
   isLastLayer?: boolean
   layerIndex: number
-  errors?: any[]
+  errors?: MappedError[]
 } & WithTranslation;
 
 type LayerEditorState = {
@@ -193,7 +193,7 @@ class LayerEditorInternal extends React.Component<LayerEditorInternalProps, Laye
     }
     const {errors, layerIndex} = this.props;
 
-    const errorData: {[key in LayerSpecification as string]: {message: string}} = {};
+    const errorData: MappedLayerErrors = {};
     errors!.forEach(error => {
       if (
         error.parsed &&

@@ -1,12 +1,14 @@
 import React, { type PropsWithChildren, type ReactElement } from "react";
+import classnames from "classnames";
 import FieldDocLabel from "./FieldDocLabel";
 import Doc from "./Doc";
 import generateUniqueId from "../libs/document-uid";
 
-type FieldsetProps = PropsWithChildren & {
+export type FieldsetProps = PropsWithChildren & {
   label?: string,
   fieldSpec?: { doc?: string },
   action?: ReactElement,
+  error?: {message: string}
 };
 
 
@@ -30,7 +32,10 @@ const Fieldset: React.FC<FieldsetProps> = (props) => {
         </div>
       )}
       {!props.fieldSpec && (
-        <div className="maputnik-input-block-label">
+        <div className={classnames({
+          "maputnik-input-block-label": true,
+          "maputnik-input-block--error": props.error
+        })}>
           {props.label}
         </div>
       )}

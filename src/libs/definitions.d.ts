@@ -16,3 +16,20 @@ export interface IStyleStore {
   getLatestStyle(): Promise<StyleSpecificationWithId>;
   save(mapStyle: StyleSpecificationWithId): StyleSpecificationWithId;
 }
+
+export type MappedError = {
+  message: string
+  parsed?: {
+    type: "layer"
+    data: {
+      index: number
+      key: string
+      message: string
+    }
+  }
+};
+
+export type MappedLayerErrors = {
+  [key in LayerSpecification as string]: {message: string}
+};
+
