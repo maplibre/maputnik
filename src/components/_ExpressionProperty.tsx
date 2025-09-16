@@ -7,6 +7,7 @@ import Block from "./Block";
 import InputButton from "./InputButton";
 import labelFromFieldName from "../libs/label-from-field-name";
 import FieldJson from "./FieldJson";
+import { type MappedLayerErrors } from "../libs/definitions";
 
 
 type ExpressionPropertyInternalProps = {
@@ -15,7 +16,7 @@ type ExpressionPropertyInternalProps = {
   fieldType?: string
   fieldSpec?: object
   value?: any
-  errors?: {[key: string]: {message: string}}
+  errors?: MappedLayerErrors
   onChange?(...args: unknown[]): unknown
   onUndo?(...args: unknown[]): unknown
   canUndo?(...args: unknown[]): unknown

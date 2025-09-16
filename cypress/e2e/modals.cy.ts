@@ -382,6 +382,21 @@ describe("modals", () => {
     });
   });
 
+  describe("error panel", () => {
+    it("not visible when no errors", () => {
+      then(get.element("maputnik-message-panel-error")).shouldNotExist();
+    });
+
+    it("visible on style error", () => {
+      when.modal.open();
+      when.modal.fillLayers({
+        type: "circle",
+        layer: "invalid",
+      });
+      then(get.element(".maputnik-message-panel-error")).shouldBeVisible();
+    });
+  });
+
   describe("Handle localStorage QuotaExceededError", () => {
     it("handles quota exceeded error when opening style from URL", () => {
       // Clear localStorage to start fresh

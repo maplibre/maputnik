@@ -2,9 +2,10 @@ import React from "react";
 import {formatLayerId} from "../libs/format";
 import {type LayerSpecification, type StyleSpecification} from "maplibre-gl";
 import { Trans, type WithTranslation, withTranslation } from "react-i18next";
+import { type MappedError } from "../libs/definitions";
 
 type AppMessagePanelInternalProps = {
-  errors?: unknown[]
+  errors?: MappedError[]
   infos?: string[]
   mapStyle?: StyleSpecification
   onLayerSelect?(index: number): void;
@@ -19,7 +20,7 @@ class AppMessagePanelInternal extends React.Component<AppMessagePanelInternalPro
 
   render() {
     const {t, selectedLayerIndex} = this.props;
-    const errors = this.props.errors?.map((error: any, idx) => {
+    const errors = this.props.errors?.map((error, idx) => {
       let content;
       if (error.parsed && error.parsed.type === "layer") {
         const {parsed} = error;

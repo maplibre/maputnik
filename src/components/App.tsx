@@ -36,7 +36,7 @@ import LayerWatcher from "../libs/layerwatcher";
 import tokens from "../config/tokens.json";
 import isEqual from "lodash.isequal";
 import { type MapOptions } from "maplibre-gl";
-import { type OnStyleChangedOpts, type StyleSpecificationWithId } from "../libs/definitions";
+import { type MappedError, type OnStyleChangedOpts, type StyleSpecificationWithId } from "../libs/definitions";
 
 // Buffer must be defined globally for @maplibre/maplibre-gl-style-spec validate() function to succeed.
 window.Buffer = buffer.Buffer;
@@ -82,20 +82,8 @@ function updateRootSpec(spec: any, fieldName: string, newValues: any) {
   };
 }
 
-type MappedErrors = {
-  message: string
-  parsed?: {
-    type: string
-    data: {
-      index: number
-      key: string
-      message: string
-    }
-  }
-};
-
 type AppState = {
-  errors: MappedErrors[],
+  errors: MappedError[],
   infos: string[],
   mapStyle: StyleSpecificationWithId,
   dirtyMapStyle?: StyleSpecification,
@@ -383,7 +371,7 @@ export default class App extends React.Component<any, AppState> {
       });
     }
 
-    const mappedErrors = layerErrors.concat(errors).map(error => {
+    const mappedErrors: MappedError[] = layerErrors.concat(errors).map(error => {
       // Special case: Duplicate layer id
       const dupMatch = error.message.match(/layers\[(\d+)\]: (duplicate layer id "?(.*)"?, previously used)/);
       if (dupMatch) {

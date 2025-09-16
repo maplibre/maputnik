@@ -31,7 +31,6 @@ export type InputSpecProps = {
   /** Override the style of the field */
   style?: object
   "aria-label"?: string
-  error?: unknown[]
   label?: string
   action?: ReactElement
 };
@@ -43,7 +42,6 @@ export default class InputSpec extends React.Component<InputSpecProps> {
 
   childNodes() {
     const commonProps = {
-      error: this.props.error,
       fieldSpec: this.props.fieldSpec,
       label: this.props.label,
       action: this.props.action,

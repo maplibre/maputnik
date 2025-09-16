@@ -492,7 +492,7 @@ describe("layers", () => {
       then(get.elementByTestId("spec-field-doc")).shouldContainText("Offset distance");
     });
 
-    it.only("should hide spec info when clicking a second time", () => {
+    it("should hide spec info when clicking a second time", () => {
       when.modal.fillLayers({
         type: "symbol",
         layer: "example",
@@ -698,32 +698,47 @@ describe("layers", () => {
     });
   });
 
-  describe("layereditor jsonlint should error", ()=>{
-    it("add", () => {
-      const id = when.modal.fillLayers({
-        type: "circle",
-        layer: "example",
+  describe("layers editor", () => {
+    describe("property fields", () => {
+      it("should show error", () => {
+        when.modal.fillLayers({
+          type: "circle",
+          layer: "invalid",
+        });
+
+        then(get.element(".maputnik-input-block--error .maputnik-input-block-label")).shouldHaveCss("color", "rgb(207, 74, 74)");
       });
+    });
 
-      then(get.styleFromLocalStorage()).shouldDeepNestedInclude({
-        layers: [
-          {
-            id: id,
-            type: "circle",
-            source: "example",
-          },
-        ],
+    describe("jsonlint should error", ()=>{
+      it("add", () => {
+        const id = when.modal.fillLayers({
+          type: "circle",
+          layer: "example",
+        });
+
+        then(get.styleFromLocalStorage()).shouldDeepNestedInclude({
+          layers: [
+            {
+              id: id,
+              type: "circle",
+              source: "example",
+            },
+          ],
+        });
+
+        const sourceText = get.elementByText('"source"');
+
+        sourceText.click();
+        sourceText.type("\"");
+
+        const error = get.element(".CodeMirror-lint-marker-error");
+        error.should("exist");
       });
-
-      const sourceText = get.elementByText('"source"');
-
-      sourceText.click();
-      sourceText.type("\"");
-
-      const error = get.element(".CodeMirror-lint-marker-error");
-      error.should("exist");
     });
   });
+
+
 
   describe("drag and drop", () => {
     it("move layer should update local storage", () => {

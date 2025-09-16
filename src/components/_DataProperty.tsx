@@ -16,6 +16,7 @@ import { type WithTranslation, withTranslation } from "react-i18next";
 
 import labelFromFieldName from "../libs/label-from-field-name";
 import DeleteStopButton from "./_DeleteStopButton";
+import { type MappedLayerErrors } from "../libs/definitions";
 
 
 
@@ -47,7 +48,7 @@ type DataPropertyInternalProps = {
   fieldType?: string
   fieldSpec?: object
   value?: DataPropertyValue
-  errors?: object
+  errors?: MappedLayerErrors
 } & WithTranslation;
 
 type DataPropertyState = {

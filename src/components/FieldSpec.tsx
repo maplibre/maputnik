@@ -1,6 +1,6 @@
-import Block from "./Block";
+import Block, { type BlockProps } from "./Block";
 import InputSpec, { type FieldSpecType, type InputSpecProps } from "./InputSpec";
-import Fieldset from "./Fieldset";
+import Fieldset, { type FieldsetProps } from "./Fieldset";
 
 function getElementFromType(fieldSpec: { type?: FieldSpecType, values?: unknown[] }): typeof Fieldset | typeof Block {
   switch(fieldSpec.type) {
@@ -34,15 +34,13 @@ function getElementFromType(fieldSpec: { type?: FieldSpecType, values?: unknown[
   }
 }
 
-export type FieldSpecProps = InputSpecProps & {
-  name?: string
-};
+export type FieldSpecProps = InputSpecProps & BlockProps & FieldsetProps;
 
 const FieldSpec: React.FC<FieldSpecProps> = (props) => {
   const TypeBlock = getElementFromType(props.fieldSpec!);
 
   return (
-    <TypeBlock label={props.label} action={props.action} fieldSpec={props.fieldSpec}>
+    <TypeBlock label={props.label} action={props.action} fieldSpec={props.fieldSpec} error={props.error}>
       <InputSpec {...props} />
     </TypeBlock>
   );

@@ -14,7 +14,7 @@ import InputButton from "./InputButton";
 import Doc from "./Doc";
 import ExpressionProperty from "./_ExpressionProperty";
 import { type WithTranslation, withTranslation } from "react-i18next";
-import type { StyleSpecificationWithId } from "../libs/definitions";
+import type { MappedLayerErrors, StyleSpecificationWithId } from "../libs/definitions";
 
 
 function combiningFilter(props: FilterEditorInternalProps): LegacyFilterSpecification | ExpressionSpecification {
@@ -95,7 +95,7 @@ type FilterEditorInternalProps = {
   /** Properties of the vector layer and the available fields */
   properties?: {[key:string]: any}
   filter?: any[]
-  errors?: {[key:string]: any}
+  errors?: MappedLayerErrors
   onChange(value: LegacyFilterSpecification | ExpressionSpecification): unknown
 } & WithTranslation;
 
