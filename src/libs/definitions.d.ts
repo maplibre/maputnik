@@ -32,4 +32,3 @@ export type MappedError = {
 export type MappedLayerErrors = {
   [key in LayerSpecification as string]: {message: string}
 };
-

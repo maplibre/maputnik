@@ -738,7 +738,7 @@ describe("layers", () => {
     });
   })
 
-  
+
 
   describe("drag and drop", () => {
     it("move layer should update local storage", () => {
