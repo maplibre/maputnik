@@ -6,6 +6,7 @@ import ZoomProperty from "./_ZoomProperty";
 import ExpressionProperty from "./_ExpressionProperty";
 import {function as styleFunction} from "@maplibre/maplibre-gl-style-spec";
 import {findDefaultFromSpec} from "../libs/spec-helper";
+import { type MappedLayerErrors } from "../libs/definitions";
 
 
 function isLiteralExpression(value: any) {
@@ -119,7 +120,7 @@ type FieldFunctionProps = {
   fieldName: string
   fieldType: string
   fieldSpec: any
-  errors?: {[key: string]: {message: string}}
+  errors?: MappedLayerErrors
   value?: any
 };
 

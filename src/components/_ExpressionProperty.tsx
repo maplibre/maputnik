@@ -7,13 +7,14 @@ import InputButton from "./InputButton";
 import labelFromFieldName from "../libs/label-from-field-name";
 import FieldJson from "./FieldJson";
 import type { StylePropertySpecification } from "maplibre-gl";
+import { type MappedLayerErrors } from "../libs/definitions";
 
 
 type ExpressionPropertyInternalProps = {
   fieldName: string
   fieldSpec?: StylePropertySpecification
   value?: any
-  errors?: {[key: string]: {message: string}}
+  errors?: MappedLayerErrors
   onDelete?(...args: unknown[]): unknown
   onChange(value: object): void
   onUndo?(...args: unknown[]): unknown

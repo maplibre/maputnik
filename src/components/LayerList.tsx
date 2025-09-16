@@ -22,7 +22,7 @@ import type {LayerSpecification, SourceSpecification} from "maplibre-gl";
 import generateUniqueId from "../libs/document-uid";
 import { findClosestCommonPrefix, layerPrefix } from "../libs/layer";
 import { type WithTranslation, withTranslation } from "react-i18next";
-import { type OnMoveLayerCallback } from "../libs/definitions";
+import { type MappedError, type OnMoveLayerCallback } from "../libs/definitions";
 
 type LayerListContainerProps = {
   layers: LayerSpecification[]
@@ -33,7 +33,7 @@ type LayerListContainerProps = {
   onLayerCopy(...args: unknown[]): unknown
   onLayerVisibilityToggle(...args: unknown[]): unknown
   sources: Record<string, SourceSpecification & {layers: string[]}>;
-  errors: any[]
+  errors: MappedError[]
 };
 type LayerListContainerInternalProps = LayerListContainerProps & WithTranslation;
 

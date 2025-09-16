@@ -44,7 +44,7 @@
     position: fixed;
     bottom: 0;
     right: 0;
-    z-index: 1;
+    z-index: 10;
     width: vars.$layout-map-width;
     background-color: vars.$color-black;
   }

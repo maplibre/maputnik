@@ -2,6 +2,7 @@ import React from "react";
 
 import FieldFunction from "./FieldFunction";
 import type {LayerSpecification} from "maplibre-gl";
+import { type MappedLayerErrors } from "../libs/definitions";
 
 const iconProperties = ["background-pattern", "fill-pattern", "line-pattern", "fill-extrusion-pattern", "icon-image"];
 
@@ -36,7 +37,7 @@ type PropertyGroupProps = {
   groupFields: string[]
   onChange(...args: unknown[]): unknown
   spec: any
-  errors?: {[key: string]: {message: string}}
+  errors?: MappedLayerErrors
 };
 
 export default class PropertyGroup extends React.Component<PropertyGroupProps> {

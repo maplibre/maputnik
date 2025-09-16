@@ -5,6 +5,8 @@
 - Add support for hillshade's color arrays and relief-color elevation expression
 - Change layers icons to make them a bit more distinct
 - Remove `@mdi` packages in favor of `react-icons`
+- Add ability to control the projection of the map - either globe or mercator
+- Add markdown support for doc related to the style-spec fields
 - Added global state modal to allow editing the global state
 - _...Add new stuff here..._
 
@@ -14,6 +16,7 @@
 - Fix modal close button possition
 - Fixed an issue with the generation of tranlations
 - Fix missing spec info when clicking next to a property
+- Fix Firefox open file that stopped working due to react upgrade
 - _...Add new stuff here..._
 
 ## 3.0.0

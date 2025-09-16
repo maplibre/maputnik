@@ -109,9 +109,9 @@ export class MaputnikDriver {
       this.helper.when.waitForResponse("example-style.json");
     },
     chooseExampleFile: () => {
-      this.helper.get
-        .bySelector("type", "file")
-        .selectFile("cypress/fixtures/example-style.json", { force: true });
+      this.helper.given.fixture("example-style.json", "example-style.json");
+      this.helper.when.openFileByFixture("example-style.json", "modal:open.file.button", "modal:open.file.input");
+      this.helper.when.wait(200);
     },
     setStyle: (
       styleProperties: "geojson" | "raster" | "both" | "layer" | "rectangles" | "",

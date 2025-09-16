@@ -15,6 +15,7 @@ import labelFromFieldName from "../libs/label-from-field-name";
 
 import docUid from "../libs/document-uid";
 import sortNumerically from "../libs/sort-numerically";
+import { type MappedLayerErrors } from "../libs/definitions";
 
 
 /**
@@ -59,7 +60,7 @@ type ZoomPropertyInternalProps = {
     "property-type"?: string
     "function-type"?: string
   }
-  errors?: object
+  errors?: MappedLayerErrors
   value?: ZoomWithStops
 } & WithTranslation;
 

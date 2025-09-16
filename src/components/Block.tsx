@@ -1,13 +1,13 @@
-import React, {type PropsWithChildren, type SyntheticEvent} from "react";
+import React, {type CSSProperties, type PropsWithChildren, type SyntheticEvent} from "react";
 import classnames from "classnames";
 import FieldDocLabel from "./FieldDocLabel";
 import Doc from "./Doc";
 
-type BlockProps = PropsWithChildren & {
+export type BlockProps = PropsWithChildren & {
   "data-wd-key"?: string
   label?: string
   action?: React.ReactElement
-  style?: object
+  style?: CSSProperties
   onChange?(...args: unknown[]): unknown
   fieldSpec?: object
   wideMode?: boolean
@@ -65,7 +65,8 @@ export default class Block extends React.Component<BlockProps, BlockState> {
       className={classnames({
         "maputnik-input-block": true,
         "maputnik-input-block--wide": this.props.wideMode,
-        "maputnik-action-block": this.props.action
+        "maputnik-action-block": this.props.action,
+        "maputnik-input-block--error": this.props.error
       })}
       onClick={this.onLabelClick}
     >
