@@ -736,7 +736,7 @@ describe("layers", () => {
         error.should("exist");
       });
     });
-  })
+  });
 
 
 

@@ -1,6 +1,6 @@
-import Block, { BlockProps } from "./Block";
+import Block, { type BlockProps } from "./Block";
 import InputSpec, { type FieldSpecType, type InputSpecProps } from "./InputSpec";
-import Fieldset, { FieldsetProps } from "./Fieldset";
+import Fieldset, { type FieldsetProps } from "./Fieldset";
 
 function getElementFromType(fieldSpec: { type?: FieldSpecType, values?: unknown[] }): typeof Fieldset | typeof Block {
   switch(fieldSpec.type) {
