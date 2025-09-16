@@ -182,8 +182,8 @@ export function createEditor(props: {
   return new EditorView({
     doc: props.value,
     extensions: [
-      basicSetup, 
-      json(), 
+      basicSetup,
+      json(),
       oneDark,
       new Compartment().of(EditorState.tabSize.of(2)),
       EditorView.theme({
@@ -208,7 +208,7 @@ export function createEditor(props: {
       lintGutter(),
       linter((view: EditorView) => {
         const jsonErrors = jsonParseLinter()(view);
-        if (jsonErrors.length > 0) { 
+        if (jsonErrors.length > 0) {
           return jsonErrors;
         }
         return specificLinter(view);
