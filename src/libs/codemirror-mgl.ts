@@ -1,5 +1,6 @@
 import { basicSetup } from "codemirror";
 import { EditorView } from "@codemirror/view";
+import { EditorState, Compartment } from "@codemirror/state";
 import { json, jsonParseLinter } from "@codemirror/lang-json";
 import { linter, lintGutter, type Diagnostic } from "@codemirror/lint";
 import { oneDark } from "@codemirror/theme-one-dark";
@@ -150,15 +151,17 @@ function createMaplibreExpressionLinter(spec: StylePropertySpecification) {
   };
 }
 
-export function createEditor(
+export function createEditor(props: {
   parent: HTMLElement,
   value: string,
   lintType: LintType,
   onChange: (value: string) => void,
+  onFocus: () => void,
+  onBlur: () => void,
   spec?: StylePropertySpecification,
-): EditorView {
+}): EditorView {
   let specificLinter: (view: EditorView) => Diagnostic[] = () => [];
-  switch (lintType) {
+  switch (props.lintType) {
     case "style":
       specificLinter = createMaplibreStyleLinter();
       break;
@@ -166,26 +169,40 @@ export function createEditor(
       specificLinter = createMaplibreLayerLinter();
       break;
     case "expression":
-      if (!spec) {
+      if (!props.spec) {
         throw new Error("spec is required for expression mode");
       }
-      specificLinter = createMaplibreExpressionLinter(spec);
+      specificLinter = createMaplibreExpressionLinter(props.spec);
       break;
     case "json":
       specificLinter = () => [];
       break;
   }
+
   return new EditorView({
-    doc: value,
+    doc: props.value,
     extensions: [
       basicSetup, 
       json(), 
-      oneDark, 
+      oneDark,
+      new Compartment().of(EditorState.tabSize.of(2)),
+      EditorView.theme({
+        "&": {
+          fontSize: "9pt"
+        }
+      }),
       EditorView.updateListener.of((update) => {
         if (update.docChanged) {
           const doc = update.state.doc;
           const value = doc.toString();
-          onChange(value);
+          props.onChange(value);
+        }
+        if (update.focusChanged) {
+          if (update.view.hasFocus) {
+            props.onFocus();
+          } else {
+            props.onBlur();
+          }
         }
       }),
       lintGutter(),
@@ -197,6 +214,6 @@ export function createEditor(
         return specificLinter(view);
       })
     ],
-    parent,
+    parent: props.parent,
   });
 }

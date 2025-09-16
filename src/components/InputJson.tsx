@@ -11,15 +11,10 @@ import type { StylePropertySpecification } from "maplibre-gl";
 export type InputJsonProps = {
   value: object
   maxHeight?: number
-  lineNumbers?: boolean
-  lineWrapping?: boolean
-  gutters?: string[]
   className?: string
   onChange(object: object): void
   onFocus?(...args: unknown[]): unknown
   onBlur?(...args: unknown[]): unknown
-  onJSONValid?(): void
-  onJSONInvalid?(_err: Error): void
   lintType: "layer" | "style" | "expression" | "json"
   spec?: StylePropertySpecification | undefined
 };
@@ -32,16 +27,11 @@ type InputJsonState = {
 
 class InputJsonInternal extends React.Component<InputJsonInternalProps, InputJsonState> {
   static defaultProps = {
-    lineNumbers: true,
-    lineWrapping: false,
-    gutters: ["CodeMirror-lint-markers"],
     onFocus: () => {},
     onBlur: () => {},
-    onJSONInvalid: () => {},
-    onJSONValid: () => {},
   };
   _keyEvent: string;
-  _doc: EditorView | undefined;
+  _view: EditorView | undefined;
   _el: HTMLDivElement | null = null;
   _cancelNextChange: boolean = false;
 
@@ -59,37 +49,15 @@ class InputJsonInternal extends React.Component<InputJsonInternalProps, InputJso
   }
 
   componentDidMount () {
-    this._doc = createEditor(
-      this._el!,
-      this.getPrettyJson(this.props.value),
-      this.props.lintType || "layer",
-      (value:string) => this.props.onChange(value ? JSON.parse(value) : {}),
-      this.props.spec
-    );
-    /*CodeMirror(this._el!, {
-      value: this.props.getValue!(this.props.layer),
-      mode: this.props.mode || {
-        name: "mgl",
-      },
-      lineWrapping: this.props.lineWrapping,
-      tabSize: 2,
-      theme: "maputnik",
-      viewportMargin: Infinity,
-      lineNumbers: this.props.lineNumbers,
-      lint: this.props.lint || {
-        context: "layer"
-      },
-      matchBrackets: true,
-      gutters: this.props.gutters,
-      scrollbarStyle: "null",
+    this._view = createEditor({
+      parent: this._el!,
+      value: this.getPrettyJson(this.props.value),
+      lintType: this.props.lintType || "layer",
+      onChange: (value:string) => this.onChange(value),
+      onFocus: () => this.onFocus(),
+      onBlur: () => this.onBlur(),
+      spec: this.props.spec
     });
-    
-
-    this._doc.on("change", this.onChange);
-    this._doc.on("focus", this.onFocus);
-    this._doc.on("blur", this.onBlur);
-    */
-    this._doc.dispatch();
   }
 
   onPointerDown = () => {
@@ -100,7 +68,6 @@ class InputJsonInternal extends React.Component<InputJsonInternalProps, InputJso
     if (this.props.onFocus) this.props.onFocus();
     this.setState({
       isEditing: true,
-      showMessage: (this._keyEvent === "keyboard"),
     });
   };
 
@@ -109,35 +76,31 @@ class InputJsonInternal extends React.Component<InputJsonInternalProps, InputJso
     if (this.props.onBlur) this.props.onBlur();
     this.setState({
       isEditing: false,
-      showMessage: false,
     });
   };
 
-  componentWillUnMount () {
-    //this._doc!.off("change", this.onChange);
-    //this._doc!.off("focus", this.onFocus);
-    //this._doc!.off("blur", this.onBlur);
-  }
-
-  componentDidUpdate(_prevProps: InputJsonProps) {
-    //if (!this.state.isEditing && prevProps.layer !== this.props.layer) {
-    //  this._cancelNextChange = true;
-    //  this._doc!.setValue(
-    //    this.props.getValue!(this.props.layer),
-    //  );
-    //}
+  componentDidUpdate(prevProps: InputJsonProps) {
+    if (!this.state.isEditing && prevProps.value !== this.props.value) {
+      this._cancelNextChange = true;
+      this._view!.dispatch({
+        changes: {
+          from: 0,
+          to: this._view!.state.doc.length,
+          insert: this.getPrettyJson(this.props.value)
+        }
+      });
+    }
   }
 
   onChange = (_e: unknown) => {
-    /*
     if (this._cancelNextChange) {
       this._cancelNextChange = false;
       this.setState({
-        prevValue: this._doc!.getValue(),
+        prevValue: this._view!.state.doc.toString(),
       });
       return;
     }
-    const newCode = this._doc!.getValue();
+    const newCode = this._view!.state.doc.toString();
 
     if (this.state.prevValue !== newCode) {
       let parsedLayer, err;
@@ -148,19 +111,14 @@ class InputJsonInternal extends React.Component<InputJsonInternalProps, InputJso
         console.warn(_err);
       }
 
-      if (err && this.props.onJSONInvalid) {
-        this.props.onJSONInvalid();
-      }
-      else {
+      if (!err) {
         if (this.props.onChange) this.props.onChange(parsedLayer);
-        if (this.props.onJSONValid) this.props.onJSONValid();
       }
     }
 
     this.setState({
       prevValue: newCode,
     });
-    */
   };
 
   render() {

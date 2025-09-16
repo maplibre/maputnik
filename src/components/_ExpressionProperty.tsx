@@ -12,6 +12,7 @@ import { type MappedLayerErrors } from "../libs/definitions";
 
 type ExpressionPropertyInternalProps = {
   fieldName: string
+  fieldType?: string
   fieldSpec?: StylePropertySpecification
   value?: any
   errors?: MappedLayerErrors
@@ -64,12 +65,17 @@ class ExpressionPropertyInternal extends React.Component<ExpressionPropertyInter
         </InputButton>
       </>
     );
-
+    let error = undefined;
+    if (this.props.errors) {
+      const fieldKey = this.props.fieldType ? this.props.fieldType + "." + this.props.fieldName : this.props.fieldName;
+      error = this.props.errors[fieldKey];
+    }
     return <Block
       fieldSpec={this.props.fieldSpec}
       label={t(labelFromFieldName(this.props.fieldName))}
       action={deleteStopBtn}
       wideMode={true}
+      error={error}
     >
       <FieldJson
         lintType="expression"
