@@ -294,7 +294,6 @@ class FilterEditorInternal extends React.Component<FilterEditorInternalProps, Fi
               this.props.onChange(defaultFilter);
             }}
             fieldName="filter"
-            fieldSpec={fieldSpec as any}
             value={filter}
             errors={errors}
             onChange={this.props.onChange}

@@ -137,7 +137,7 @@ function createMaplibreStyleLinter() {
   };
 }
 
-function createMaplibreExpressionLinter(spec: StylePropertySpecification) {
+function createMaplibreExpressionLinter(spec?: StylePropertySpecification) {
   return (view: EditorView) => {
     const text = view.state.doc.toString();
     const parsedJson = JSON.parse(text);
@@ -169,9 +169,6 @@ export function createEditor(props: {
       specificLinter = createMaplibreLayerLinter();
       break;
     case "expression":
-      if (!props.spec) {
-        throw new Error("spec is required for expression mode");
-      }
       specificLinter = createMaplibreExpressionLinter(props.spec);
       break;
     case "json":

@@ -127,7 +127,7 @@ class InputJsonInternal extends React.Component<InputJsonInternalProps, InputJso
       style.maxHeight = this.props.maxHeight;
     }
 
-    return <div className="JSONEditor" onPointerDown={this.onPointerDown} aria-hidden="true">
+    return <div className="JSONEditor" data-wd-key="json-editor" onPointerDown={this.onPointerDown} aria-hidden="true">
       <div
         className={classnames("codemirror-container", this.props.className)}
         ref={(el) => {this._el = el;}}
