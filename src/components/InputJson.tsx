@@ -5,7 +5,7 @@ import { type WithTranslation, withTranslation } from "react-i18next";
 import { type EditorView } from "@codemirror/view";
 import stringifyPretty from "json-stringify-pretty-compact";
 
-import {createEditor} from "../libs/codemirror-mgl";
+import {createEditor} from "../libs/codemirror-editor-factory";
 import type { StylePropertySpecification } from "maplibre-gl";
 
 export type InputJsonProps = {
