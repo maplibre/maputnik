@@ -1,7 +1,8 @@
 import {latest} from "@maplibre/maplibre-gl-style-spec";
 import { type LayerSpecification } from "maplibre-gl";
 
-export function changeType(layer: LayerSpecification, newType: string) {
+
+export function changeType(layer: LayerSpecification, newType: string): LayerSpecification {
   const changedPaintProps: LayerSpecification["paint"] = { ...layer.paint };
   Object.keys(changedPaintProps).forEach(propertyName => {
     if(!(propertyName in latest["paint_" + newType])) {
@@ -20,8 +21,8 @@ export function changeType(layer: LayerSpecification, newType: string) {
     ...layer,
     paint: changedPaintProps,
     layout: changedLayoutProps,
-    type: newType,
-  };
+    type: newType
+  } as LayerSpecification;
 }
 
 /** A {@property} in either the paint our layout {@group} has changed

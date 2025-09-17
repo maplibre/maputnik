@@ -3,7 +3,8 @@ import { TbMathFunction } from "react-icons/tb";
 import { PiListPlusBold } from "react-icons/pi";
 import {isEqual} from "lodash";
 import {type ExpressionSpecification, type LegacyFilterSpecification} from "maplibre-gl";
-import {latest, migrate, convertFilter} from "@maplibre/maplibre-gl-style-spec";
+import {migrate, convertFilter} from "@maplibre/maplibre-gl-style-spec";
+import latest from "@maplibre/maplibre-gl-style-spec/dist/latest.json";
 
 import {combiningFilterOps} from "../libs/filterops";
 import InputSelect from "./InputSelect";
@@ -96,7 +97,7 @@ type FilterEditorInternalProps = {
   properties?: {[key:string]: any}
   filter?: any[]
   errors?: MappedLayerErrors
-  onChange(value: LegacyFilterSpecification | ExpressionSpecification): unknown
+  onChange(value: LegacyFilterSpecification | ExpressionSpecification): void
 } & WithTranslation;
 
 type FilterEditorState = {
@@ -293,7 +294,6 @@ class FilterEditorInternal extends React.Component<FilterEditorInternalProps, Fi
               this.props.onChange(defaultFilter);
             }}
             fieldName="filter"
-            fieldSpec={fieldSpec}
             value={filter}
             errors={errors}
             onChange={this.props.onChange}

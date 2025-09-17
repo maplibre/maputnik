@@ -119,7 +119,7 @@ type LayerEditorInternalProps = {
   sources: {[key: string]: SourceSpecification & {layers: string[]}}
   vectorLayers: {[key: string]: any}
   spec: any
-  onLayerChanged(...args: unknown[]): unknown
+  onLayerChanged(index: number, layer: LayerSpecification): void
   onLayerIdChange(...args: unknown[]): unknown
   onMoveLayer: OnMoveLayerCallback
   onLayerDestroy(...args: unknown[]): unknown
@@ -280,8 +280,9 @@ class LayerEditorInternal extends React.Component<LayerEditorInternalProps, Laye
         />;
       case "jsoneditor":
         return <FieldJson
-          layer={this.props.layer}
-          onChange={(layer) => {
+          lintType="layer"
+          value={this.props.layer}
+          onChange={(layer: LayerSpecification) => {
             this.props.onLayerChanged(
               this.props.layerIndex,
               layer

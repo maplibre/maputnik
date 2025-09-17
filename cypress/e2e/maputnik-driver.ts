@@ -195,6 +195,10 @@ export class MaputnikDriver {
 
     collapseGroupInLayerEditor: (index = 0) => {
       this.helper.get.element(".maputnik-layer-editor-group__button").eq(index).realClick();
+    },
+
+    appendTextInJsonEditor: (text: string) => {
+      this.helper.get.element(".cm-line").first().click().type(text, { parseSpecialCharSequences: false });
     }
   };
 

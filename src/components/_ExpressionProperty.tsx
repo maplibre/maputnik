@@ -1,34 +1,30 @@
 import React from "react";
 import {MdDelete, MdUndo} from "react-icons/md";
-import stringifyPretty from "json-stringify-pretty-compact";
 import { type WithTranslation, withTranslation } from "react-i18next";
 
 import Block from "./Block";
 import InputButton from "./InputButton";
 import labelFromFieldName from "../libs/label-from-field-name";
 import FieldJson from "./FieldJson";
+import type { StylePropertySpecification } from "maplibre-gl";
 import { type MappedLayerErrors } from "../libs/definitions";
 
 
 type ExpressionPropertyInternalProps = {
-  onDelete?(...args: unknown[]): unknown
   fieldName: string
   fieldType?: string
-  fieldSpec?: object
+  fieldSpec?: StylePropertySpecification
   value?: any
   errors?: MappedLayerErrors
-  onChange?(...args: unknown[]): unknown
+  onDelete?(...args: unknown[]): unknown
+  onChange(value: object): void
   onUndo?(...args: unknown[]): unknown
   canUndo?(...args: unknown[]): unknown
   onFocus?(...args: unknown[]): unknown
   onBlur?(...args: unknown[]): unknown
 } & WithTranslation;
 
-type ExpressionPropertyState = {
-  jsonError: boolean
-};
-
-class ExpressionPropertyInternal extends React.Component<ExpressionPropertyInternalProps, ExpressionPropertyState> {
+class ExpressionPropertyInternal extends React.Component<ExpressionPropertyInternalProps> {
   static defaultProps = {
     errors: {},
     onFocus: () => {},
@@ -42,21 +38,8 @@ class ExpressionPropertyInternal extends React.Component<ExpressionPropertyInter
     };
   }
 
-  onJSONInvalid = (_err: Error) => {
-    this.setState({
-      jsonError: true,
-    });
-  };
-
-  onJSONValid = () => {
-    this.setState({
-      jsonError: false,
-    });
-  };
-
   render() {
-    const {t, errors, fieldName, fieldType, value, canUndo} = this.props;
-    const {jsonError} = this.state;
+    const {t, value, canUndo} = this.props;
     const undoDisabled = canUndo ? !canUndo() : true;
 
     const deleteStopBtn = (
@@ -82,58 +65,26 @@ class ExpressionPropertyInternal extends React.Component<ExpressionPropertyInter
         </InputButton>
       </>
     );
-
-    const fieldKey = fieldType === undefined ? fieldName : `${fieldType}.${fieldName}`;
-
-    const fieldError = errors![fieldKey];
-    const errorKeyStart = `${fieldKey}[`;
-    const foundErrors = [];
-
-    function getValue(data: any) {
-      return stringifyPretty(data, {indent: 2, maxLength: 38});
+    let error = undefined;
+    if (this.props.errors) {
+      const fieldKey = this.props.fieldType ? this.props.fieldType + "." + this.props.fieldName : this.props.fieldName;
+      error = this.props.errors[fieldKey];
     }
-
-    if (jsonError) {
-      foundErrors.push({message: "Invalid JSON"});
-    }
-    else {
-      Object.entries(errors!)
-        .filter(([key, _error]) => {
-          return key.startsWith(errorKeyStart);
-        })
-        .forEach(([_key, error]) => {
-          return foundErrors.push(error);
-        });
-
-      if (fieldError) {
-        foundErrors.push(fieldError);
-      }
-    }
-
     return <Block
-      // this feels like an incorrect type...? `foundErrors` is an array of objects, not a single object
-      error={foundErrors as any}
       fieldSpec={this.props.fieldSpec}
       label={t(labelFromFieldName(this.props.fieldName))}
       action={deleteStopBtn}
       wideMode={true}
+      error={error}
     >
       <FieldJson
-        mode={{name: "mgl"}}
-        lint={{
-          context: "expression",
-          spec: this.props.fieldSpec,
-        }}
+        lintType="expression"
+        spec={this.props.fieldSpec}
         className="maputnik-expression-editor"
         onFocus={this.props.onFocus}
         onBlur={this.props.onBlur}
-        onJSONInvalid={this.onJSONInvalid}
-        onJSONValid={this.onJSONValid}
-        layer={value}
-        lineNumbers={false}
+        value={value}
         maxHeight={200}
-        lineWrapping={true}
-        getValue={getValue}
         onChange={this.props.onChange}
       />
     </Block>;
