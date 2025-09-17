@@ -30,14 +30,12 @@ class InputJsonInternal extends React.Component<InputJsonInternalProps, InputJso
     onFocus: () => {},
     onBlur: () => {},
   };
-  _keyEvent: string;
   _view: EditorView | undefined;
   _el: HTMLDivElement | null = null;
   _cancelNextChange: boolean = false;
 
   constructor(props: InputJsonInternalProps) {
     super(props);
-    this._keyEvent = "keyboard";
     this.state = {
       isEditing: false,
       prevValue: this.getPrettyJson(this.props.value),
@@ -60,10 +58,6 @@ class InputJsonInternal extends React.Component<InputJsonInternalProps, InputJso
     });
   }
 
-  onPointerDown = () => {
-    this._keyEvent = "pointer";
-  };
-
   onFocus = () => {
     if (this.props.onFocus) this.props.onFocus();
     this.setState({
@@ -72,7 +66,6 @@ class InputJsonInternal extends React.Component<InputJsonInternalProps, InputJso
   };
 
   onBlur = () => {
-    this._keyEvent = "keyboard";
     if (this.props.onBlur) this.props.onBlur();
     this.setState({
       isEditing: false,
@@ -127,7 +120,7 @@ class InputJsonInternal extends React.Component<InputJsonInternalProps, InputJso
       style.maxHeight = this.props.maxHeight;
     }
 
-    return <div className="JSONEditor" data-wd-key="json-editor" onPointerDown={this.onPointerDown} aria-hidden="true">
+    return <div className="json-editor" data-wd-key="json-editor" aria-hidden="true" style={{cursor: "text"}}>
       <div
         className={classnames("codemirror-container", this.props.className)}
         ref={(el) => {this._el = el;}}
