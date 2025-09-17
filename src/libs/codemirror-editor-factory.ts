@@ -6,6 +6,7 @@ import { linter, lintGutter, type Diagnostic } from "@codemirror/lint";
 import { oneDark } from "@codemirror/theme-one-dark";
 import { expression, type StylePropertySpecification, validateStyleMin } from "@maplibre/maplibre-gl-style-spec";
 import jsonToAst, { type ValueNode, type PropertyNode } from "json-to-ast";
+import { jsonPathToPosition } from "./json-path-to-position";
 
 export type LintType = "layer" | "style" | "expression" | "json";
 
@@ -27,7 +28,7 @@ function getDiagnosticsFromExpressionErrors(errors: LinterError[], ast: ValueNod
       });
     } else {
       const path = key.replace(/^\[|\]$/g, "").split(/\.|[[\]]+/).filter(Boolean);
-      const node = getArrayPositionalFromAst(ast, path);
+      const node = jsonPathToPosition(path, ast);
       if (!node) {
         console.warn("Something went wrong parsing error:", error);
         continue;
@@ -43,30 +44,6 @@ function getDiagnosticsFromExpressionErrors(errors: LinterError[], ast: ValueNod
     }
   }
   return diagnostics;
-}
-
-function getArrayPositionalFromAst(node: ValueNode | PropertyNode | undefined, path: string[]) {
-  if (!node) {
-    return undefined;
-  }
-  if (path.length < 1) {
-    return node;
-  }
-  if (!("children" in node)) {
-    return undefined;
-  }
-  const key = path[0];
-  if (key.match(/^[0-9]+$/)) {
-    return getArrayPositionalFromAst(node.children[+path[0]], path.slice(1));
-  }
-  const newNode = node.children.find((childNode) => {
-    return (
-      "key" in childNode &&
-      childNode.key.type === "Identifier" &&
-      childNode.key.value === key
-    );
-  }) as PropertyNode | undefined;
-  return getArrayPositionalFromAst(newNode?.value, path.slice(1));
 }
 
 function createMaplibreLayerLinter() {
