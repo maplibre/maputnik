@@ -200,7 +200,7 @@ describe("layer editor", () => {
     });
   });
 
-      
+
 
   describe("filter", () => {
     it("expand/collapse");
