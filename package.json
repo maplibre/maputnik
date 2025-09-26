@@ -133,7 +133,7 @@
     "eslint": "^9.36.0",
     "eslint-plugin-react": "^7.37.5",
     "eslint-plugin-react-hooks": "^5.2.0",
-    "eslint-plugin-react-refresh": "^0.4.21",
+    "eslint-plugin-react-refresh": "^0.4.22",
     "i18next-parser": "^9.3.0",
     "istanbul": "^0.4.5",
     "istanbul-lib-coverage": "^3.2.2",
