@@ -35,7 +35,7 @@
     "@dnd-kit/sortable": "^10.0.0",
     "@dnd-kit/utilities": "^3.2.2",
     "@mapbox/mapbox-gl-rtl-text": "^0.3.0",
-    "@maplibre/maplibre-gl-geocoder": "^1.9.0",
+    "@maplibre/maplibre-gl-geocoder": "^1.9.1",
     "@maplibre/maplibre-gl-inspect": "^1.7.1",
     "@maplibre/maplibre-gl-style-spec": "^24.2.0",
     "array-move": "^4.0.0",
