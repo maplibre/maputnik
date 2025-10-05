@@ -862,7 +862,7 @@ export default class App extends React.Component<any, AppState> {
       onToggleModal={(modal: keyof AppState["isOpen"]) => this.toggleModal(modal)}
     />;
 
-    const codeEditor = this.state.isOpen.codeEditor ? <CodeEditor 
+    const codeEditor = this.state.isOpen.codeEditor ? <CodeEditor
       value={this.state.mapStyle}
       onChange={(style) => this.onStyleChanged(style)}
     /> : undefined;
