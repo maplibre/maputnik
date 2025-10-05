@@ -29,15 +29,17 @@
   "Layer editor": "עורך השכבות",
   "Map view": "תצוגת מפה",
   "Maputnik on GitHub": "מפוטניק בגיטהב",
-  "Code Editor": "עורך קוד",
   "Open": "פתיחה",
   "Save": "שמור",
+  "Code Editor": "עורך קוד",
   "Data Sources": "מקורות מידע",
   "Style Settings": "הגדרות הסטייל",
   "Global State": "מצב גלובלי",
   "View": "תצוגה",
   "Color accessibility": "נגישות צבעים",
   "Help": "עזרה",
+  "Close": "סגירה",
+  "Click to close the editor": "לחץ לסגירת העורך",
   "Comments for the current layer. This is non-standard and not in the spec.": "הערות על השכבה הנוכחית. זה לא חלק מהספסיפיקציות",
   "Comments": "הערות",
   "Comment...": "הערה...",
@@ -204,7 +206,5 @@
   "LocationIQ Access Token": "LocationIQ Access Token",
   "Public access token for LocationIQ services.": "Public access token for LocationIQ services.",
   "Style Renderer": "צייר הסטייל",
-  "Choose the default Maputnik renderer for this style.": "בחירת צייר ברירת המחדל של מפוטניק עבור הסטייל הזה",
-  "Press <1>ESC</1> to lose focus": "לחצו על <1>ESC</1> על מנת לאבד פוקוס",
-  "Language": "שפה"
+  "Choose the default Maputnik renderer for this style.": "בחירת צייר ברירת המחדל של מפוטניק עבור הסטייל הזה"
 }

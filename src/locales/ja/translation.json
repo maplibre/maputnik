@@ -29,15 +29,17 @@
   "Layer editor": "レイヤーエディタ",
   "Map view": "地図画面",
   "Maputnik on GitHub": "GitHubのMaputnik",
-  "Code Editor": "コードエディタ",
   "Open": "開く",
   "Save": "保存",
+  "Code Editor": "コードエディタ",
   "Data Sources": "データソース",
   "Style Settings": "スタイル設定",
   "Global State": "グローバルステート",
   "View": "表示",
   "Color accessibility": "色のアクセシビリティ",
   "Help": "ヘルプ",
+  "Close": "閉じる",
+  "Click to close the editor": "エディタを閉じるにはクリックしてください",
   "Comments for the current layer. This is non-standard and not in the spec.": "現在のレイヤーのコメント。注意：この機能は標準ではないため、他のライブラリとの互換性状況はわかりません。",
   "Comments": "コメント",
   "Comment...": "コメントを書く",
@@ -204,8 +206,5 @@
   "LocationIQ Access Token": "LocationIQ アクセストークン",
   "Public access token for LocationIQ services.": "LocationIQ サービス用のパブリックアクセストークン。",
   "Style Renderer": "スタイルレンダラ",
-  "Choose the default Maputnik renderer for this style.": "このスタイルのデフォルトの Maputnik レンダラを選択してください",
-  "Press <1>ESC</1> to lose focus": "<1>ESC</1>を押すとフォーカスが外れます",
-  "Language": "言語",
-  "Layer options": "レイヤー設定"
+  "Choose the default Maputnik renderer for this style.": "このスタイルのデフォルトの Maputnik レンダラを選択してください"
 }

@@ -29,15 +29,17 @@
   "Layer editor": "Éditeur de calque",
   "Map view": "Vue de la carte",
   "Maputnik on GitHub": "Maputnik sur GitHub",
-  "Code Editor": "Éditeur de code",
   "Open": "Ouvrir",
   "Save": "Enregistrer",
+  "Code Editor": "Éditeur de code",
   "Data Sources": "Sources de données",
   "Style Settings": "Paramètres du style",
   "Global State": "État global",
   "View": "Vue",
   "Color accessibility": "Accessibilité des couleurs",
   "Help": "Aide",
+  "Close": "Fermer",
+  "Click to close the editor": "Cliquez pour fermer l'éditeur",
   "Comments for the current layer. This is non-standard and not in the spec.": "Commentaires pour le calque actuel. Ceci n'est pas standard et n'est pas dans la spécification.",
   "Comments": "Commentaires",
   "Comment...": "Votre commentaire...",
@@ -204,8 +206,5 @@
   "LocationIQ Access Token": "Jeton d'accès LocationIQ",
   "Public access token for LocationIQ services.": "Jeton d'accès public pour les services LocationIQ.",
   "Style Renderer": "Moteur de rendu pour le style",
-  "Choose the default Maputnik renderer for this style.": "Choisissez le moteur de rendu Maputnik par défaut pour ce style.",
-  "Press <1>ESC</1> to lose focus": "Appuyez sur <1>Échap</1> pour perdre le focus",
-  "Language": "Langue",
-  "Layer options": "Options du calque"
+  "Choose the default Maputnik renderer for this style.": "Choisissez le moteur de rendu Maputnik par défaut pour ce style."
 }

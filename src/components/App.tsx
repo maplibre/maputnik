@@ -865,6 +865,7 @@ export default class App extends React.Component<any, AppState> {
     const codeEditor = this.state.isOpen.codeEditor ? <CodeEditor
       value={this.state.mapStyle}
       onChange={(style) => this.onStyleChanged(style)}
+      onClose={() => this.setModal("codeEditor", false)}
     /> : undefined;
 
     const layerList = <LayerList

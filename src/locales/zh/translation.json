@@ -29,15 +29,17 @@
   "Layer editor": "图层编辑器",
   "Map view": "地图视图",
   "Maputnik on GitHub": "GitHub上的Maputnik",
-  "Code Editor": "代码编辑器",
   "Open": "打开",
   "Save": "保存",
+  "Code Editor": "代码编辑器",
   "Data Sources": "数据源",
   "Style Settings": "样式设置",
   "Global State": "全局状态",
   "View": "视图",
   "Color accessibility": "颜色可访问性",
   "Help": "帮助",
+  "Close": "关闭",
+  "Click to close the editor": "点击关闭编辑器",
   "Comments for the current layer. This is non-standard and not in the spec.": "当前图层的注释。注意：这不是标准功能，可能与其他库不兼容。",
   "Comments": "注释",
   "Comment...": "写注释...",
@@ -204,8 +206,5 @@
   "LocationIQ Access Token": "LocationIQ 访问令牌",
   "Public access token for LocationIQ services.": "LocationIQ 服务的公共访问令牌。",
   "Style Renderer": "样式渲染器",
-  "Choose the default Maputnik renderer for this style.": "为这种样式选择默认的Maputnik渲染器。",
-  "Press <1>ESC</1> to lose focus": "按 <1>ESC</1> 键退出焦点",
-  "Language": "语言",
-  "Layer options": "图层选项"
+  "Choose the default Maputnik renderer for this style.": "为这种样式选择默认的Maputnik渲染器。"
 }
