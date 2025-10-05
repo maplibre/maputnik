@@ -7,6 +7,7 @@ type AppLayoutInternalProps = {
   toolbar: React.ReactElement
   layerList: React.ReactElement
   layerEditor?: React.ReactElement
+  codeEditor?: React.ReactElement
   map: React.ReactElement
   bottom?: React.ReactElement
   modals?: React.ReactNode
@@ -21,14 +22,22 @@ class AppLayoutInternal extends React.Component<AppLayoutInternalProps> {
       <div className="maputnik-layout">
         {this.props.toolbar}
         <div className="maputnik-layout-main">
-          <div className="maputnik-layout-list">
-            {this.props.layerList}
-          </div>
-          <div className="maputnik-layout-drawer">
+          {this.props.codeEditor && <div className="maputnik-layout-code-editor">
             <ScrollContainer>
-              {this.props.layerEditor}
+              {this.props.codeEditor}
             </ScrollContainer>
           </div>
+          }
+          {!this.props.codeEditor && <>
+            <div className="maputnik-layout-list">
+              {this.props.layerList}
+            </div>
+            <div className="maputnik-layout-drawer">
+              <ScrollContainer>
+                {this.props.layerEditor}
+              </ScrollContainer>
+            </div>
+          </>}
           {this.props.map}
         </div>
         {this.props.bottom && <div className="maputnik-layout-bottom">

@@ -13,6 +13,7 @@ import latest from "@maplibre/maplibre-gl-style-spec/dist/latest.json";
 
 import MapMaplibreGl from "./MapMaplibreGl";
 import MapOpenLayers from "./MapOpenLayers";
+import CodeEditor from "./CodeEditor";
 import LayerList from "./LayerList";
 import LayerEditor from "./LayerEditor";
 import AppToolbar, { type MapState } from "./AppToolbar";
@@ -116,6 +117,7 @@ type AppState = {
     export: boolean
     debug: boolean
     globalState: boolean
+    codeEditor: boolean
   }
   fileHandle: FileSystemFileHandle | null
 };
@@ -155,6 +157,7 @@ export default class App extends React.Component<any, AppState> {
         export: false,
         debug: false,
         globalState: false,
+        codeEditor: false
       },
       maplibreGlDebugOptions: {
         showTileBoundaries: false,
@@ -856,8 +859,13 @@ export default class App extends React.Component<any, AppState> {
       onStyleChanged={this.onStyleChanged}
       onStyleOpen={this.onStyleChanged}
       onSetMapState={this.setMapState}
-      onToggleModal={this.toggleModal.bind(this)}
+      onToggleModal={(modal: keyof AppState["isOpen"]) => this.toggleModal(modal)}
     />;
+
+    const codeEditor = this.state.isOpen.codeEditor ? <CodeEditor 
+      value={this.state.mapStyle}
+      onChange={(style) => this.onStyleChanged(style)}
+    /> : undefined;
 
     const layerList = <LayerList
       onMoveLayer={this.onMoveLayer}
@@ -954,6 +962,7 @@ export default class App extends React.Component<any, AppState> {
       toolbar={toolbar}
       layerList={layerList}
       layerEditor={layerEditor}
+      codeEditor={codeEditor}
       map={this.mapRenderer()}
       bottom={bottomPanel}
       modals={modals}

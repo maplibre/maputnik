@@ -40,6 +40,13 @@
     position: relative;
   }
 
+  &-code-editor {
+    width: 570px;
+    background-color: vars.$color-black;
+    // scroll-container is position: absolute
+    position: relative;
+  }
+
   &-bottom {
     position: fixed;
     bottom: 0;

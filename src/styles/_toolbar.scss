@@ -43,7 +43,8 @@
 .maputnik-toolbar-link {
   vertical-align: top;
   height: vars.$toolbar-height;
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
   padding: vars.$margin-3;
   font-size: vars.$font-size-5;
   cursor: pointer;
