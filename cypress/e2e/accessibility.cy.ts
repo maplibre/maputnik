@@ -18,10 +18,10 @@ describe("accessibility", () => {
       then(get.skipTargetLayerList()).shouldBeFocused();
     });
 
-    // This fails for some reason only in Chrome, but passes in firefox. Adding a skip here to allow merge and later on we'll decide if we want to fix this or not.
-    it.skip("skip link to layer editor", () => {
+    it("skip link to layer editor", () => {
       const selector = "root:skip:layer-editor";
       then(get.elementByTestId(selector)).shouldExist();
+      then(get.elementByTestId("skip-target-layer-editor")).shouldExist();
       when.tab().tab();
       then(get.elementByTestId(selector)).shouldBeFocused();
       when.click(selector);

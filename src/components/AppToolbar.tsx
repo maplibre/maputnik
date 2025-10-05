@@ -10,7 +10,8 @@ import {
   MdFindInPage,
   MdLanguage,
   MdSave,
-  MdPublic
+  MdPublic,
+  MdCode
 } from "react-icons/md";
 import pkgJson from "../../package.json";
 //@ts-ignore
@@ -23,6 +24,7 @@ import type { OnStyleChangedCallback } from "../libs/definitions";
 const browser = detect();
 const colorAccessibilityFiltersEnabled = ["chrome", "firefox"].indexOf(browser!.name) > -1;
 
+export type ModalTypes = "settings" | "sources" | "open" | "shortcuts" | "export" | "debug" | "globalState" | "codeEditor";
 
 type IconTextProps = {
   children?: React.ReactNode
@@ -39,7 +41,6 @@ type ToolbarLinkProps = {
   className?: string
   children?: React.ReactNode
   href?: string
-  onToggleModal?(...args: unknown[]): unknown
 };
 
 class ToolbarLink extends React.Component<ToolbarLinkProps> {
@@ -101,7 +102,7 @@ type AppToolbarInternalProps = {
   // A dict of source id's and the available source layers
   sources: object
   children?: React.ReactNode
-  onToggleModal(...args: unknown[]): unknown
+  onToggleModal(modal: ModalTypes): void
   onSetMapState(mapState: MapState): unknown
   mapState?: MapState
   renderer?: string
@@ -221,23 +222,27 @@ class AppToolbarInternal extends React.Component<AppToolbarInternalProps> {
           </a>
         </div>
         <div className="maputnik-toolbar__actions" role="navigation" aria-label="Toolbar">
-          <ToolbarAction wdKey="nav:open" onClick={this.props.onToggleModal.bind(this, "open")}>
+          <ToolbarAction wdKey="nav:open" onClick={() => this.props.onToggleModal("open")}>
             <MdOpenInBrowser />
             <IconText>{t("Open")}</IconText>
           </ToolbarAction>
-          <ToolbarAction wdKey="nav:export" onClick={this.props.onToggleModal.bind(this, "export")}>
+          <ToolbarAction wdKey="nav:export" onClick={() => this.props.onToggleModal("export")}>
             <MdSave />
             <IconText>{t("Save")}</IconText>
           </ToolbarAction>
-          <ToolbarAction wdKey="nav:sources" onClick={this.props.onToggleModal.bind(this, "sources")}>
+          <ToolbarAction wdKey="nav:code-editor" onClick={() => this.props.onToggleModal("codeEditor")}>
+            <MdCode />
+            <IconText>{t("Code Editor")}</IconText>
+          </ToolbarAction>
+          <ToolbarAction wdKey="nav:sources" onClick={() => this.props.onToggleModal("sources")}>
             <MdLayers />
             <IconText>{t("Data Sources")}</IconText>
           </ToolbarAction>
-          <ToolbarAction wdKey="nav:settings" onClick={this.props.onToggleModal.bind(this, "settings")}>
+          <ToolbarAction wdKey="nav:settings" onClick={() => this.props.onToggleModal("settings")}>
             <MdSettings />
             <IconText>{t("Style Settings")}</IconText>
           </ToolbarAction>
-          <ToolbarAction wdKey="nav:global-state" onClick={this.props.onToggleModal.bind(this, "globalState")}>
+          <ToolbarAction wdKey="nav:global-state" onClick={() => this.props.onToggleModal("globalState")}>
             <MdPublic />
             <IconText>{t("Global State")}</IconText>
           </ToolbarAction>

@@ -10,6 +10,7 @@
 - Added global state modal to allow editing the global state
 - Added color highlight for problematic properties
 - Upgraded codemirror from version 5 to version 6
+- Add code editor to allow editing the entire style
 - _...Add new stuff here..._
 
 ### 🐞 Bug fixes
