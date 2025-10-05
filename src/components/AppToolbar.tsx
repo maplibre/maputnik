@@ -222,10 +222,6 @@ class AppToolbarInternal extends React.Component<AppToolbarInternalProps> {
           </a>
         </div>
         <div className="maputnik-toolbar__actions" role="navigation" aria-label="Toolbar">
-          <ToolbarAction wdKey="nav:code-editor" onClick={() => this.props.onToggleModal("codeEditor")}>
-            <MdCode />
-            <IconText>{t("Code Editor")}</IconText>
-          </ToolbarAction>
           <ToolbarAction wdKey="nav:open" onClick={() => this.props.onToggleModal("open")}>
             <MdOpenInBrowser />
             <IconText>{t("Open")}</IconText>
@@ -233,6 +229,10 @@ class AppToolbarInternal extends React.Component<AppToolbarInternalProps> {
           <ToolbarAction wdKey="nav:export" onClick={() => this.props.onToggleModal("export")}>
             <MdSave />
             <IconText>{t("Save")}</IconText>
+          </ToolbarAction>
+          <ToolbarAction wdKey="nav:code-editor" onClick={() => this.props.onToggleModal("codeEditor")}>
+            <MdCode />
+            <IconText>{t("Code Editor")}</IconText>
           </ToolbarAction>
           <ToolbarAction wdKey="nav:sources" onClick={() => this.props.onToggleModal("sources")}>
             <MdLayers />
