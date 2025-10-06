@@ -31,13 +31,6 @@ updates:
     directory: "/"
     schedule:
       interval: "weekly"
-    groups:
-      all-actions-version-updates:
-        applies-to: version-updates
-        patterns: [ '*' ]
-      all-actions-security-updates:
-        applies-to: security-updates
-        patterns: [ '*' ]
     cooldown:
       default-days: 3
       # no semver support for github-actions
