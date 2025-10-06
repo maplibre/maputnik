@@ -8,10 +8,39 @@ updates:
   - package-ecosystem: "npm" # See documentation for possible values
     directory: "/" # Location of package manifests
     schedule:
-      interval: "daily"
+      interval: "weekly"
     open-pull-requests-limit: 20
     versioning-strategy: increase
+    groups:
+      all-actions-version-updates:
+        applies-to: version-updates
+        patterns: [ '*' ]
+      all-actions-security-updates:
+        applies-to: security-updates
+        patterns: [ '*' ]
+    cooldown:
+      default-days: 5
+      semver-major-days: 5
+      semver-minor-days: 3
+      semver-patch-days: 3
+      include:
+        - "*"
+      exclude:
+        - "@maplibre/*"
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:
-      interval: "daily"
+      interval: "weekly"
+    groups:
+      all-actions-version-updates:
+        applies-to: version-updates
+        patterns: [ '*' ]
+      all-actions-security-updates:
+        applies-to: security-updates
+        patterns: [ '*' ]
+    cooldown:
+      default-days: 3
+      # no semver support for github-actions
+      # => no specific configuration for this
+      include:
+        - "*"
