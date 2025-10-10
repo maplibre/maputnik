@@ -132,7 +132,7 @@
     "cypress-plugin-tab": "^1.0.5",
     "eslint": "^9.37.0",
     "eslint-plugin-react": "^7.37.5",
-    "eslint-plugin-react-hooks": "^6.1.1",
+    "eslint-plugin-react-hooks": "^7.0.0",
     "eslint-plugin-react-refresh": "^0.4.23",
     "i18next-parser": "^9.3.0",
     "istanbul": "^0.4.5",
