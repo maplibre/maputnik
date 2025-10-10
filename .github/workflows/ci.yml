@@ -11,7 +11,8 @@ jobs:
   build-node:
     name: "build on ${{ matrix.os }}"
     runs-on: ${{ matrix.os }}
-
+    permissions:
+      contents: read
     if: ${{ github.event_name == 'push' || github.event_name == 'pull_request' }}
 
     strategy:
@@ -21,6 +22,7 @@ jobs:
 
     steps:
       - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+        with: { persist-credentials: false }
       - uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444 # v5.0.0
         with:
           node-version-file: '.nvmrc'
@@ -34,10 +36,13 @@ jobs:
   build-artifacts:
     name: "build artifacts"
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
     if: ${{ github.event_name == 'push' || github.event_name == 'pull_request' }}
 
     steps:
       - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+        with: { persist-credentials: false }
       - uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444 # v5.0.0
         with:
           node-version-file: '.nvmrc'
@@ -81,9 +86,12 @@ jobs:
   unit-tests:
     name: "Unit tests"
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
     steps:
       - name: Checkout
         uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+        with: { persist-credentials: false }
       - run: npm ci
       - run: npm run test-unit-ci
       - name: Upload coverage reports to Codecov
@@ -96,9 +104,12 @@ jobs:
     name: "E2E tests using chrome"
 
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
     steps:
       - name: Checkout
         uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+        with: { persist-credentials: false }
       - run: npm ci
       - name: Cypress run
         uses: cypress-io/github-action@b8ba51a856ba5f4c15cf39007636d4ab04f23e3c # v6.10.2
@@ -119,6 +130,7 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+        with: { persist-credentials: false }
       - run: npm ci
       - name: Cypress run
         uses: cypress-io/github-action@b8ba51a856ba5f4c15cf39007636d4ab04f23e3c # v6.10.2
