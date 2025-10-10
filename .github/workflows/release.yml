@@ -12,11 +12,14 @@ jobs:
     defaults:
       run:
         shell: bash
+    permissions:
+      contents: read
     steps:
       - uses: actions/checkout@v5
         with:
           fetch-depth: 0
           ref: main
+          persist-credentials: false
 
       - name: Use Node.js from nvmrc
         uses: actions/setup-node@v5
