@@ -15,20 +15,20 @@ jobs:
     permissions:
       contents: read
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
         with:
           fetch-depth: 0
           ref: main
           persist-credentials: false
 
       - name: Use Node.js from nvmrc
-        uses: actions/setup-node@v5
+        uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444 # v5.0.0
         with:
           node-version-file: ".nvmrc"
 
       - name: Check if version has been updated
         id: check
-        uses: EndBug/version-check@v2
+        uses: EndBug/version-check@d17247dd94ca7b39d0b0691399be8d7c510622c9 # latest
 
     outputs:
       publish: ${{ steps.check.outputs.changed }}
@@ -42,19 +42,19 @@ jobs:
       run:
         shell: bash
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
         with:
           fetch-depth: 0
           ref: main
 
       - name: Use Node.js from nvmrc
-        uses: actions/setup-node@v5
+        uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444 # v5.0.0
         with:
           node-version-file: ".nvmrc"
           registry-url: "https://registry.npmjs.org"
 
       - name: Set up Go for desktop build
-        uses: actions/setup-go@v6
+        uses: actions/setup-go@44694675825211faa026b3c33043df3e48a5fa00 # v6.0.0
         with:
           go-version: ^1.23.x
           cache-dependency-path: desktop/go.sum
@@ -62,7 +62,7 @@ jobs:
 
       - name: Get version
         id: package-version
-        uses: martinbeentjes/npm-get-version-action@v1.3.1
+        uses: martinbeentjes/npm-get-version-action@3cf273023a0dda27efcd3164bdfb51908dd46a5b # v1.3.1
 
       - name: Install
         run: npm ci
@@ -73,7 +73,7 @@ jobs:
 
       - name: Tag commit and push
         id: tag_version
-        uses: mathieudutour/github-tag-action@v6.2
+        uses: mathieudutour/github-tag-action@a22cf08638b34d5badda920f9daf6e72c477b07b # v6.2
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           custom_tag: ${{ steps.package-version.outputs.current-version }}
@@ -91,7 +91,7 @@ jobs:
 
       - name: Create GitHub Release
         id: create_regular_release
-        uses: ncipollo/release-action@v1
+        uses: ncipollo/release-action@b7eabc95ff50cbeeedec83973935c8f306dfcd0b # v1.20.0
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
