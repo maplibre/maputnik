@@ -8,9 +8,12 @@ jobs:
   deploy-pages:
     name: deploy/pages
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     if: ${{ github.event_name == 'push' }}
     steps:
       - uses: actions/checkout@v5
+        with: { persist-credentials: false }
 
       - name: Use Node.js from nvmrc
         uses: actions/setup-node@v5
@@ -33,9 +36,10 @@ jobs:
   deploy-docker:
     name: deploy/docker
     runs-on: ubuntu-latest
-
     if: ${{ github.event_name == 'push' }}
-
+    permissions:
+      contents: read
+      packages: write
     strategy:
       fail-fast: false
 
