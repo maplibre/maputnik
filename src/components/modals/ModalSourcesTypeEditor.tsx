@@ -260,7 +260,6 @@ class GeoJSONSourceFieldJsonEditor extends React.Component<GeoJSONSourceFieldJso
       <Block label={t("GeoJSON")} fieldSpec={latest.source_geojson.data}>
         <FieldJson
           value={this.props.source.data}
-          maxHeight={200}
           lintType="json"
           onChange={data => {
             this.props.onChange({
