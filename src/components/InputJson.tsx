@@ -10,7 +10,6 @@ import type { StylePropertySpecification } from "maplibre-gl";
 
 export type InputJsonProps = {
   value: object
-  maxHeight?: number
   className?: string
   onChange(object: object): void
   onFocus?(...args: unknown[]): unknown
@@ -115,16 +114,10 @@ class InputJsonInternal extends React.Component<InputJsonInternalProps, InputJso
   };
 
   render() {
-    const style = {} as {maxHeight?: number};
-    if (this.props.maxHeight) {
-      style.maxHeight = this.props.maxHeight;
-    }
-
     return <div className="json-editor" data-wd-key="json-editor" aria-hidden="true" style={{cursor: "text"}}>
       <div
         className={classnames("codemirror-container", this.props.className)}
         ref={(el) => {this._el = el;}}
-        style={style}
       />
     </div>;
   }
