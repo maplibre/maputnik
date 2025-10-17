@@ -84,7 +84,6 @@ class ExpressionPropertyInternal extends React.Component<ExpressionPropertyInter
         onFocus={this.props.onFocus}
         onBlur={this.props.onBlur}
         value={value}
-        maxHeight={200}
         onChange={this.props.onChange}
       />
     </Block>;
