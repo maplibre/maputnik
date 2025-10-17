@@ -11,7 +11,8 @@ jobs:
   build-node:
     name: "build on ${{ matrix.os }}"
     runs-on: ${{ matrix.os }}
-
+    permissions:
+      contents: read
     if: ${{ github.event_name == 'push' || github.event_name == 'pull_request' }}
 
     strategy:
@@ -20,8 +21,9 @@ jobs:
         os: [ ubuntu-latest, windows-latest, macos-latest ]
 
     steps:
-      - uses: actions/checkout@v5
-      - uses: actions/setup-node@v5
+      - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+        with: { persist-credentials: false }
+      - uses: actions/setup-node@2028fbc5c25fe9cf00d9f06a71cc4710d4507903 # v6.0.0
         with:
           node-version-file: '.nvmrc'
       - run: npm ci
@@ -34,24 +36,27 @@ jobs:
   build-artifacts:
     name: "build artifacts"
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
     if: ${{ github.event_name == 'push' || github.event_name == 'pull_request' }}
 
     steps:
-      - uses: actions/checkout@v5
-      - uses: actions/setup-node@v5
+      - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+        with: { persist-credentials: false }
+      - uses: actions/setup-node@2028fbc5c25fe9cf00d9f06a71cc4710d4507903 # v6.0.0
         with:
           node-version-file: '.nvmrc'
       - run: npm ci
       - run: npm run build
       - name: artifacts/maputnik
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         with:
           name: maputnik
           path: dist
 
       # Build and upload desktop CLI artifacts
       - name: Set up Go
-        uses: actions/setup-go@v6
+        uses: actions/setup-go@44694675825211faa026b3c33043df3e48a5fa00 # v6.0.0
         with:
           go-version: ^1.23.x
           cache-dependency-path: desktop/go.sum
@@ -61,19 +66,19 @@ jobs:
         run: npm run build-desktop
 
       - name: Artifacts/linux
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         with:
           name: maputnik-linux
           path: ./desktop/bin/linux/
 
       - name: Artifacts/darwin
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         with:
           name: maputnik-darwin
           path: ./desktop/bin/darwin/
 
       - name: Artifacts/windows
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         with:
           name: maputnik-windows
           path: ./desktop/bin/windows/
@@ -81,13 +86,16 @@ jobs:
   unit-tests:
     name: "Unit tests"
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
     steps:
       - name: Checkout
-        uses: actions/checkout@v5
+        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+        with: { persist-credentials: false }
       - run: npm ci
       - run: npm run test-unit-ci
       - name: Upload coverage reports to Codecov
-        uses: codecov/codecov-action@v5
+        uses: codecov/codecov-action@5a1091511ad55cbe89839c7260b706298ca349f7 # v5.5.1
         with:
           files: ${{ github.workspace }}/coverage/coverage-final.json
           verbose: true
@@ -96,18 +104,21 @@ jobs:
     name: "E2E tests using chrome"
 
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
     steps:
       - name: Checkout
-        uses: actions/checkout@v5
+        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+        with: { persist-credentials: false }
       - run: npm ci
       - name: Cypress run
-        uses: cypress-io/github-action@v6
+        uses: cypress-io/github-action@b8ba51a856ba5f4c15cf39007636d4ab04f23e3c # v6.10.2
         with:
           build: npm run build
           start: npm run start
           browser: chrome
       - name: Upload coverage reports to Codecov
-        uses: codecov/codecov-action@v5
+        uses: codecov/codecov-action@5a1091511ad55cbe89839c7260b706298ca349f7 # v5.5.1
         with:
           files: ${{ github.workspace }}/.nyc_output/out.json
           verbose: true
@@ -118,16 +129,17 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v5
+        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+        with: { persist-credentials: false }
       - run: npm ci
       - name: Cypress run
-        uses: cypress-io/github-action@v6
+        uses: cypress-io/github-action@b8ba51a856ba5f4c15cf39007636d4ab04f23e3c # v6.10.2
         with:
           build: docker build -t maputnik .
           start: docker run --rm --network host maputnik --port=8888
           browser: chrome
       - name: Upload coverage reports to Codecov
-        uses: codecov/codecov-action@v5
+        uses: codecov/codecov-action@5a1091511ad55cbe89839c7260b706298ca349f7 # v5.5.1
         with:
           files: ${{ github.workspace }}/.nyc_output/out.json
           verbose: true
