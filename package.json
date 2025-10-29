@@ -59,7 +59,7 @@
     "lodash.get": "^4.4.2",
     "lodash.isequal": "^4.5.0",
     "lodash.throttle": "^4.1.1",
-    "maplibre-gl": "^5.9.0",
+    "maplibre-gl": "^5.10.0",
     "maputnik-design": "github:maputnik/design#172b06c",
     "ol": "^10.6.1",
     "ol-mapbox-style": "^13.1.0",
