@@ -104,7 +104,7 @@
     "@rollup/plugin-replace": "^6.0.2",
     "@shellygo/cypress-test-utils": "^6.0.4",
     "@stylistic/eslint-plugin": "^5.5.0",
-    "@types/codemirror": "^5.60.16",
+    "@types/codemirror": "^5.60.17",
     "@types/color": "^4.2.0",
     "@types/cors": "^2.8.19",
     "@types/file-saver": "^2.0.7",
