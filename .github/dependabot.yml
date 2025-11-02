@@ -11,6 +11,10 @@ updates:
       interval: "daily"
     open-pull-requests-limit: 20
     versioning-strategy: increase
+    groups:
+      vitest:
+        patterns:
+          - "*vitest*"
     cooldown:
       default-days: 5
       semver-major-days: 5
