@@ -16,6 +16,7 @@ export default defineConfig({
       return config;
     },
     baseUrl: "http://localhost:8888",
+    scrollBehavior: 'center',
     retries: {
       runMode: 2,
       openMode: 0,

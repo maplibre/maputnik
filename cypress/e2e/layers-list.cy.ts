@@ -515,4 +515,46 @@ describe("layers list", () => {
       });
     });
   });
+
+  describe("sticky header", () => {
+    it("should keep header visible when scrolling layer list", () => {
+      // Setup: Create multiple layers to enable scrolling
+      for (let i = 0; i < 20; i++) {
+        when.modal.open();
+        when.modal.fillLayers({
+          id: `layer-${i}`,
+          type: "background",
+        });
+      }
+      
+      // Wait for layers to render
+      when.wait(500);
+      
+      // Get the layer list header
+      const header = get.element(".maputnik-layer-list-header");
+      
+      // Verify header is initially visible
+      then(header).shouldBeVisible();
+      
+      // Verify header has sticky positioning and proper z-index
+      header.should("have.css", "position", "sticky");
+      header.should("have.css", "top", "0px");
+      header.should("have.css", "z-index", "2001");
+      
+      // Scroll the layer list container (use ensureScrollable: false to avoid flakiness)
+      get.element(".maputnik-layer-list").scrollTo("bottom", { ensureScrollable: false });
+      when.wait(200);
+      
+      // Header should still be visible after scrolling
+      then(header).shouldBeVisible();
+      
+      // Verify "Add Layer" button in header is still clickable
+      then(get.elementByTestId("layer-list:add-layer")).shouldBeVisible();
+    });
+
+    it("should have opaque background on header", () => {
+      const header = get.element(".maputnik-layer-list-header");
+      header.should("have.css", "background-color", "rgb(25, 27, 32)");
+    });
+  });
 });
