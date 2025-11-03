@@ -289,7 +289,7 @@ class LayerListContainerInternal extends React.Component<LayerListContainerInter
         onOpenToggle={this.toggleModal.bind(this, "add")}
         onLayersChange={this.props.onLayersChange}
       />
-      <header className="maputnik-layer-list-header">
+      <header className="maputnik-layer-list-header" data-wd-key="layer-list.header">
         <span className="maputnik-layer-list-header-title">{t("Layers")}</span>
         <span className="maputnik-space" />
         <div className="maputnik-default-property">

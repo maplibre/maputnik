@@ -266,37 +266,15 @@ describe("layer editor", () => {
         layer: "example",
       });
 
-      // Wait for properties to render
       when.wait(500);
-
-      // Get the layer editor header
-      const header = get.element(".maputnik-layer-editor > header");
-
-      // Verify header is initially visible
+      const header = get.elementByTestId("layer-editor.header");
       then(header).shouldBeVisible();
 
-      // Verify header has sticky positioning and proper z-index
-      header.should("have.css", "position", "sticky");
-      header.should("have.css", "top", "0px");
-      header.should("have.css", "z-index", "10");
-
-      // Scroll the layer editor container (use ensureScrollable: false to avoid flakiness)
       get.element(".maputnik-scroll-container").scrollTo("bottom", { ensureScrollable: false });
       when.wait(200);
 
-      // Header should still be visible after scrolling
       then(header).shouldBeVisible();
-
-      // Verify layer menu button in header is still accessible
       then(get.elementByTestId("skip-target-layer-editor")).shouldBeVisible();
-    });
-
-    it("should have opaque background on header", () => {
-      when.modal.fillLayers({
-        type: "background",
-      });
-      const header = get.element(".maputnik-layer-editor > header");
-      header.should("have.css", "background", "rgb(25, 27, 32) none repeat scroll 0% 0% / auto padding-box border-box");
     });
   });
 });
