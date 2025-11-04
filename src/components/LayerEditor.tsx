@@ -370,7 +370,7 @@ class LayerEditorInternal extends React.Component<LayerEditorInternalProps, Laye
         aria-label={t("Layer editor")}
         data-wd-key="layer-editor"
       >
-        <header>
+        <header data-wd-key="layer-editor.header">
           <div className="layer-header">
             <h2 className="layer-header__title">
               {t("Layer: {{layerId}}", { layerId: formatLayerId(this.props.layer.id) })}

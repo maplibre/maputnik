@@ -5,15 +5,20 @@
 // LAYER LIST
 .maputnik-layer-list {
   height: 100%;
-  overflow: auto;
+  overflow-y: auto;
+  overflow-x: hidden;
   display: flex;
   flex-direction: column;
 
   &-header {
     padding: vars.$margin-2 vars.$margin-2 vars.$margin-3;
+    position: sticky;
+    top: 0;
+    z-index: 2001;
+    background-color: vars.$color-black;
 
     @include mixins.flex-row;
-    flex: 0 0;
+    flex: 0 0 auto;
 
     > * {
       vertical-align: middle;
@@ -32,9 +37,9 @@
     padding: 0;
     margin: 0;
     padding-bottom: vars.$margin-5;
-    flex: 1;
+    flex: 1 1 auto;
     overflow-x: hidden;
-    overflow-y: auto;
+    overflow-y: visible;
   }
 
   &-item-handle {
@@ -324,6 +329,13 @@
   &__info {
     min-width: 28px;
   }
+}
+
+.maputnik-layer-editor > header {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background: vars.$color-black;
 }
 
 // Clone of the element which is sorted

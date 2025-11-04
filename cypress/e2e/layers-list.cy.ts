@@ -515,4 +515,27 @@ describe("layers list", () => {
       });
     });
   });
+
+  describe("sticky header", () => {
+    it("should keep header visible when scrolling layer list", () => {
+      // Setup: Create multiple layers to enable scrolling
+      for (let i = 0; i < 20; i++) {
+        when.modal.open();
+        when.modal.fillLayers({
+          id: `layer-${i}`,
+          type: "background",
+        });
+      }
+
+      when.wait(500);
+      const header = get.elementByTestId("layer-list.header");
+      then(header).shouldBeVisible();
+
+      // Scroll the layer list container (use ensureScrollable: false to avoid flakiness)
+      get.elementByTestId("layer-list").scrollTo("bottom", { ensureScrollable: false });
+      when.wait(200);
+      then(header).shouldBeVisible();
+      then(get.elementByTestId("layer-list:add-layer")).shouldBeVisible();
+    });
+  });
 });

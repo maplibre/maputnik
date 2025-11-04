@@ -257,4 +257,24 @@ describe("layer editor", () => {
       then(get.element(".cm-lint-marker-error")).shouldExist();
     });
   });
+
+  describe("sticky header", () => {
+    it("should keep layer header visible when scrolling properties", () => {
+      // Setup: Create a layer with many properties (e.g., symbol layer)
+      when.modal.fillLayers({
+        type: "symbol",
+        layer: "example",
+      });
+
+      when.wait(500);
+      const header = get.elementByTestId("layer-editor.header");
+      then(header).shouldBeVisible();
+
+      get.element(".maputnik-scroll-container").scrollTo("bottom", { ensureScrollable: false });
+      when.wait(200);
+
+      then(header).shouldBeVisible();
+      then(get.elementByTestId("skip-target-layer-editor")).shouldBeVisible();
+    });
+  });
 });
