@@ -199,6 +199,10 @@ export class MaputnikDriver {
 
     appendTextInJsonEditor: (text: string) => {
       this.helper.get.element(".cm-line").first().click().type(text, { parseSpecialCharSequences: false });
+    },
+
+    setTextInJsonEditor: (text: string) => {
+      this.helper.get.element(".cm-line").first().click().clear().type(text, { parseSpecialCharSequences: false });
     }
   };
 

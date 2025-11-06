@@ -11,6 +11,8 @@ import FieldSelect from "../FieldSelect";
 import FieldEnum from "../FieldEnum";
 import FieldColor from "../FieldColor";
 import Modal from "./Modal";
+import FieldJson from "../FieldJson";
+import Block from "../Block";
 import fieldSpecAdditional from "../../libs/field-spec-additional";
 import type {OnStyleChangedCallback, StyleSpecificationWithId} from "../../libs/definitions";
 
@@ -144,13 +146,13 @@ class ModalSettingsInternal extends React.Component<ModalSettingsInternalProps> 
           value={(this.props.mapStyle as any).owner}
           onChange={(value) => this.changeStyleProperty("owner", value)}
         />
-        <FieldUrl
-          fieldSpec={latest.$root.sprite}
-          label={t("Sprite URL")}
-          data-wd-key="modal:settings.sprite"
-          value={this.props.mapStyle.sprite as string}
-          onChange={(value) => this.changeStyleProperty("sprite", value)}
-        />
+        <Block label={t("Sprite URL")} fieldSpec={latest.$root.sprite} data-wd-key="modal:settings.sprite">
+          <FieldJson
+            lintType="json"
+            value={this.props.mapStyle.sprite as any}
+            onChange={(value) => this.changeStyleProperty("sprite", value)}
+          />
+        </Block>
 
         <FieldUrl
           label={t("Glyphs URL")}
