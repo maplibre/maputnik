@@ -87,6 +87,13 @@ export class MaputnikDriver {
       });
       this.helper.given.interceptAndMockResponse({
         method: "GET",
+        url: baseUrl + "example-style-with-fonts.json",
+        response: {
+          fixture: "example-style-with-fonts.json",
+        },
+      });
+      this.helper.given.interceptAndMockResponse({
+        method: "GET",
         url: "*example.local/*",
         response: [],
       });
@@ -94,6 +101,11 @@ export class MaputnikDriver {
         method: "GET",
         url: "*example.com/*",
         response: [],
+      });
+      this.helper.given.interceptAndMockResponse({
+        method: "GET",
+        url: "https://www.glyph-server.com/*",
+        response: ["Font 1", "Font 2", "Font 3"],
       });
     },
   };
@@ -114,7 +126,7 @@ export class MaputnikDriver {
       this.helper.when.wait(200);
     },
     setStyle: (
-      styleProperties: "geojson" | "raster" | "both" | "layer" | "rectangles" | "",
+      styleProperties: "geojson" | "raster" | "both" | "layer" | "rectangles" | "font" | "",
       zoom?: number
     ) => {
       const url = new URL(baseUrl);
@@ -133,6 +145,9 @@ export class MaputnikDriver {
           break;
         case "rectangles":
           url.searchParams.set("style", baseUrl + "rectangles-style.json");
+          break;
+        case "font":
+          url.searchParams.set("style", baseUrl + "example-style-with-fonts.json");
           break;
       }
 

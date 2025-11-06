@@ -198,7 +198,7 @@
     border: none;
     padding: 2px 0;
     margin-right: 10px;
-    position: absolute;
+    position: absolute !important;
     overflow: auto;
     max-height: 50%;
     background: vars.$color-gray;

@@ -294,13 +294,13 @@ export default class App extends React.Component<any, AppState> {
     const accessToken = metadata["maputnik:openmaptiles_access_token"] || tokens.openmaptiles;
 
     const glyphUrl = (typeof urlTemplate === "string")? urlTemplate.replace("{key}", accessToken): urlTemplate;
-    downloadGlyphsMetadata(glyphUrl, fonts => {
+    downloadGlyphsMetadata(glyphUrl).then(fonts => {
       this.setState({ spec: updateRootSpec(this.state.spec, "glyphs", fonts)});
     });
   }
 
   updateIcons(baseUrl: string) {
-    downloadSpriteMetadata(baseUrl, icons => {
+    downloadSpriteMetadata(baseUrl).then(icons => {
       this.setState({ spec: updateRootSpec(this.state.spec, "sprite", icons)});
     });
   }
