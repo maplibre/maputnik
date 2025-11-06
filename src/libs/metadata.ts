@@ -20,7 +20,7 @@ export async function downloadGlyphsMetadata(urlTemplate: string): Promise<strin
   // Special handling because Tileserver GL serves the fontstacks metadata differently
   // https://github.com/klokantech/tileserver-gl/pull/104#issuecomment-274444087
   const urlObj = new URL(urlTemplate);
-  const normPathPart = "/%7Bfontstack%7D/%7Brange%7D.pbf";
+  const normPathPart = "/" + encodeURIComponent("{fontstack}") + "/" + encodeURIComponent("{range}") + ".pbf";
   if(urlObj.pathname === normPathPart) {
     urlObj.pathname = "/fontstacks.json";
   } else {
