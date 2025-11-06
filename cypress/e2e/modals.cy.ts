@@ -179,7 +179,7 @@ describe("modals", () => {
 
     it("sprite object", () => {
       when.setTextInJsonEditor(JSON.stringify([{id: "1", url: "2"}]));
-      
+
       when.click("modal:settings.name");
       then(get.styleFromLocalStorage()).shouldDeepNestedInclude({
         sprite: [{ id: "1", url: "2"}],
