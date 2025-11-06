@@ -1,13 +1,13 @@
 async function loadJSON<T>(url: string, defaultValue: T): Promise<T> {
   try {
     const response = await fetch(url, {
-    mode: "cors",
-    credentials: "same-origin"
-  })
-  if (!response.ok) {
-    throw new Error("Failed to load metadata for " + url);
-  }
-  return await response.json();
+      mode: "cors",
+      credentials: "same-origin"
+    });
+    if (!response.ok) {
+      throw new Error("Failed to load metadata for " + url);
+    }
+    return await response.json();
   } catch {
     console.warn("Can not load metadata for " + url + ", using default value " + defaultValue);
     return defaultValue;
