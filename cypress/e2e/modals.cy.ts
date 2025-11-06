@@ -170,12 +170,22 @@ describe("modals", () => {
     });
 
     it("sprite url", () => {
-      when.setValue("modal:settings.sprite", "http://example.com");
+      when.setTextInJsonEditor("\"http://example.com\"");
       when.click("modal:settings.name");
       then(get.styleFromLocalStorage()).shouldDeepNestedInclude({
         sprite: "http://example.com",
       });
     });
+
+    it("sprite object", () => {
+      when.setTextInJsonEditor(JSON.stringify([{id: "1", url: "2"}]));
+
+      when.click("modal:settings.name");
+      then(get.styleFromLocalStorage()).shouldDeepNestedInclude({
+        sprite: [{ id: "1", url: "2"}],
+      });
+    });
+
     it("glyphs url", () => {
       const glyphsUrl = "http://example.com/{fontstack}/{range}.pbf";
       when.setValue("modal:settings.glyphs", glyphsUrl);
