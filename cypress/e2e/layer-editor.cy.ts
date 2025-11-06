@@ -207,6 +207,20 @@ describe("layer editor", () => {
     it("compound filter");
   });
 
+  describe("layout", () => {
+    it("text-font", () => {
+      when.setStyle("font");
+      when.collapseGroupInLayerEditor();
+      when.collapseGroupInLayerEditor(1);
+      when.collapseGroupInLayerEditor(2);
+      when.doWithin("spec-field:text-font", () => {
+        get.element(".maputnik-autocomplete input").first().click();
+      });
+      then(get.element(".maputnik-autocomplete-menu-item")).shouldBeVisible();
+      then(get.element(".maputnik-autocomplete-menu-item")).shouldHaveLength(3);
+    });
+  });
+
   describe("paint", () => {
     it("expand/collapse");
     it("color");
