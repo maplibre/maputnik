@@ -1,22 +1,21 @@
-@import 'vars';
-@import 'mixins';
-@import 'reset';
-@import 'base';
-@import 'components';
-@import 'scrollbar';
-@import 'picker';
-@import 'toolbar';
-@import 'modal';
-@import 'export';
-@import 'layout';
-@import 'layer';
-@import 'input';
-@import 'filtereditor';
-@import 'zoomproperty';
-@import 'popup';
-@import 'map';
-@import 'codemirror';
-@import 'react-collapse';
+@use 'vars';
+@use 'mixins';
+@use 'reset';
+@use 'base';
+@use 'components';
+@use 'scrollbar';
+@use 'picker';
+@use 'toolbar';
+@use 'modal';
+@use 'export';
+@use 'layout';
+@use 'layer';
+@use 'input';
+@use 'filtereditor';
+@use 'zoomproperty';
+@use 'popup';
+@use 'map';
+@use 'react-collapse';
 
 .maputnik-layout {
   height: 100vh;
@@ -29,14 +28,14 @@
 }
 
 .maputnik-data-fieldset-inner {
-  background: $color-black;
-  border: solid 1px $color-midgray;
+  background: vars.$color-black;
+  border: solid 1px vars.$color-midgray;
   border-radius: 2px;
   position: relative;
 
   // HACK: Overide
   .maputnik-input-block {
-    margin: $margin-2;
+    margin: vars.$margin-2;
   }
 
   .maputnik-add-stop {
@@ -49,8 +48,8 @@
   }
 
   .maputnik-toolbox {
-    margin: $margin-3;
-    margin-top: $margin-3;
+    margin: vars.$margin-3;
+    margin-top: vars.$margin-3;
     text-align: right;
   }
 
@@ -58,40 +57,40 @@
 
 .maputnik-data-spec-property {
   legend {
-    font-size: $font-size-6;
-    color: $color-lowgray;
-    margin-bottom: $margin-3;
+    font-size: vars.$font-size-6;
+    color: vars.$color-lowgray;
+    margin-bottom: vars.$margin-3;
   }
 
   .maputnik-data-spec-property-group {
-    margin-bottom: $margin-2;
+    margin-bottom: vars.$margin-2;
   }
 }
 
 .maputnik-data-spec-block {
-  margin: $margin-3;
+  margin: vars.$margin-3;
 }
 
 .maputnik-function-stop {
-  padding-left: $margin-2;
-  padding-right: $margin-2;
+  padding-left: vars.$margin-2;
+  padding-right: vars.$margin-2;
 }
 
 .maputnik-function-stop-table {
   text-align: left;
-  margin-bottom: $margin-2;
+  margin-bottom: vars.$margin-2;
   box-sizing: border-box;
   width: 100%;
 
   thead th {
-    padding: $margin-1 $margin-2;
+    padding: vars.$margin-1 vars.$margin-2;
     padding-left: 0;
-    color: $color-lowgray;
+    color: vars.$color-lowgray;
   }
 
   td, th {
-    font-size: $font-size-6;
-    color: $color-white;
+    font-size: vars.$font-size-6;
+    color: vars.$color-white;
 
     // HACK
     > * {
@@ -102,7 +101,7 @@
 
     &:not(:first-child)
     {
-      padding: $margin-1;
+      padding: vars.$margin-1;
     }
 
     &:nth-child(1) {
@@ -147,12 +146,11 @@
   }
 
   caption {
-    color: $color-lowgray;
+    color: vars.$color-lowgray;
     text-align: left;
-    border-top: solid 1px $color-black;
-    font-size: $font-size-6;
+    border-top: solid 1px vars.$color-black;
+    font-size: vars.$font-size-6;
     height: 0px;
     overflow: hidden;
   }
 }
-

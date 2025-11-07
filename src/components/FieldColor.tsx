@@ -1,6 +1,5 @@
-import React from 'react'
-import Block from './Block'
-import InputColor, {InputColorProps} from './InputColor'
+import Block from "./Block";
+import InputColor, {type InputColorProps} from "./InputColor";
 
 
 type FieldColorProps = InputColorProps & {
@@ -11,11 +10,12 @@ type FieldColorProps = InputColorProps & {
 };
 
 
-export default class FieldColor extends React.Component<FieldColorProps> {
-  render() {
-    return <Block label={this.props.label} fieldSpec={this.props.fieldSpec}>
-      <InputColor {...this.props} />
+const FieldColor: React.FC<FieldColorProps> = (props) => {
+  return (
+    <Block label={props.label} fieldSpec={props.fieldSpec}>
+      <InputColor {...props} />
     </Block>
-  }
-}
+  );
+};
 
+export default FieldColor;

@@ -1,6 +1,5 @@
-import React from 'react'
-import Block from './Block'
-import InputString, {InputStringProps} from './InputString'
+import Block from "./Block";
+import InputString, {type InputStringProps} from "./InputString";
 
 type FieldStringProps = InputStringProps & {
   name?: string
@@ -10,10 +9,12 @@ type FieldStringProps = InputStringProps & {
   }
 };
 
-export default class FieldString extends React.Component<FieldStringProps> {
-  render() {
-    return <Block label={this.props.label} fieldSpec={this.props.fieldSpec}>
-      <InputString {...this.props} />
+const FieldString: React.FC<FieldStringProps> = (props) => {
+  return (
+    <Block label={props.label} fieldSpec={props.fieldSpec}>
+      <InputString {...props} />
     </Block>
-  }
-}
+  );
+};
+
+export default FieldString;

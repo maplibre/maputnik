@@ -1,14 +1,14 @@
-import React from 'react'
-import InputSelect from './InputSelect'
-import InputMultiInput from './InputMultiInput'
+import React from "react";
+import InputSelect from "./InputSelect";
+import InputMultiInput from "./InputMultiInput";
 
 
 function optionsLabelLength(options: any[]) {
   let sum = 0;
   options.forEach(([_, label]) => {
-    sum += label.length
-  })
-  return sum
+    sum += label.length;
+  });
+  return sum;
 }
 
 
@@ -20,7 +20,7 @@ export type InputEnumProps = {
   name?: string
   onChange(...args: unknown[]): unknown
   options: any[]
-  'aria-label'?: string
+  "aria-label"?: string
   label?: string
 };
 
@@ -35,16 +35,15 @@ export default class InputEnum extends React.Component<InputEnumProps> {
         options={options}
         value={(value || this.props.default)!}
         onChange={onChange}
-        aria-label={this.props['aria-label'] || label}
-      />
+        aria-label={this.props["aria-label"] || label}
+      />;
     } else {
       return <InputSelect
         options={options}
         value={(value || this.props.default)!}
         onChange={onChange}
-        aria-label={this.props['aria-label'] || label}
-      />
+        aria-label={this.props["aria-label"] || label}
+      />;
     }
   }
 }
-

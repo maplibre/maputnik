@@ -1,8 +1,8 @@
-import React from 'react'
+import React from "react";
+import { type WithTranslation, withTranslation } from "react-i18next";
 
-import InputButton from './InputButton'
-import Modal from './Modal'
-import { WithTranslation, withTranslation } from 'react-i18next';
+import InputButton from "../InputButton";
+import Modal from "./Modal";
 
 
 type ModalLoadingInternalProps = {
@@ -14,21 +14,12 @@ type ModalLoadingInternalProps = {
 
 
 class ModalLoadingInternal extends React.Component<ModalLoadingInternalProps> {
-  underlayOnClick(e: Event) {
-    // This stops click events falling through to underlying modals.
-    e.stopPropagation();
-  }
-
   render() {
     const t = this.props.t;
     return <Modal
       data-wd-key="modal:loading"
       isOpen={this.props.isOpen}
       underlayClickExits={false}
-      underlayProps={{
-        // @ts-ignore
-        onClick: (e: Event) => underlayProps(e)  
-      }}
       title={this.props.title}
       onOpenToggle={() => this.props.onCancel()}
     >
@@ -40,7 +31,7 @@ class ModalLoadingInternal extends React.Component<ModalLoadingInternalProps> {
           {t("Cancel")}
         </InputButton>
       </p>
-    </Modal>
+    </Modal>;
   }
 }
 

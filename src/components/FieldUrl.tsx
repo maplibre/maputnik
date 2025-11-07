@@ -1,6 +1,5 @@
-import React from 'react'
-import InputUrl, {FieldUrlProps as InputUrlProps} from './InputUrl'
-import Block from './Block'
+import InputUrl, {type FieldUrlProps as InputUrlProps} from "./InputUrl";
+import Block from "./Block";
 
 
 type FieldUrlProps = InputUrlProps & {
@@ -11,13 +10,12 @@ type FieldUrlProps = InputUrlProps & {
 };
 
 
-export default class FieldUrl extends React.Component<FieldUrlProps> {
-  render () {
-    return (
-      <Block label={this.props.label} fieldSpec={this.props.fieldSpec}>
-        <InputUrl {...this.props} />
-      </Block>
-    );
-  }
-}
+const FieldUrl: React.FC<FieldUrlProps> = (props) => {
+  return (
+    <Block label={props.label} fieldSpec={props.fieldSpec}>
+      <InputUrl {...props} />
+    </Block>
+  );
+};
 
+export default FieldUrl;

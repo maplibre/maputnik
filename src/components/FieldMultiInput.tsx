@@ -1,6 +1,5 @@
-import React from 'react'
-import InputMultiInput, {InputMultiInputProps} from './InputMultiInput'
-import Fieldset from './Fieldset'
+import InputMultiInput, {type InputMultiInputProps} from "./InputMultiInput";
+import Fieldset from "./Fieldset";
 
 
 type FieldMultiInputProps = InputMultiInputProps & {
@@ -8,11 +7,12 @@ type FieldMultiInputProps = InputMultiInputProps & {
 };
 
 
-export default class FieldMultiInput extends React.Component<FieldMultiInputProps> {
-  render() {
-    return <Fieldset label={this.props.label}>
-      <InputMultiInput {...this.props} />
+const FieldMultiInput: React.FC<FieldMultiInputProps> = (props) => {
+  return (
+    <Fieldset label={props.label}>
+      <InputMultiInput {...props} />
     </Fieldset>
-  }
-}
+  );
+};
 
+export default FieldMultiInput;

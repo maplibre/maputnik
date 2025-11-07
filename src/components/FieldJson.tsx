@@ -1,13 +1,11 @@
-import React from 'react'
-import InputJson, {InputJsonProps} from './InputJson'
+import InputJson, {type InputJsonProps} from "./InputJson";
 
 
 type FieldJsonProps = InputJsonProps & {};
 
 
-export default class FieldJson extends React.Component<FieldJsonProps> {
-  render() {
-    return <InputJson {...this.props} />
-  }
-}
+const FieldJson: React.FC<FieldJsonProps> = (props) => {
+  return <InputJson {...props} />;
+};
 
+export default FieldJson;

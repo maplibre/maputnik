@@ -1,10 +1,10 @@
-import React from 'react'
+import React from "react";
+import Markdown from "react-markdown";
 
 const headers = {
   js: "JS",
   android: "Android",
-  ios: "iOS",
-  macos: "macOS",
+  ios: "iOS"
 };
 
 type DocProps = {
@@ -15,9 +15,11 @@ type DocProps = {
         doc?: string
       }
     }
-    'sdk-support'?: {
+    "sdk-support"?: {
       [key: string]: typeof headers
     }
+    docUrl?: string,
+    docUrlLinkText?: string
   }
 };
 
@@ -25,8 +27,8 @@ export default class Doc extends React.Component<DocProps> {
   render () {
     const {fieldSpec} = this.props;
 
-    const {doc, values} = fieldSpec;
-    const sdkSupport = fieldSpec['sdk-support'];
+    const {doc, values, docUrl, docUrlLinkText} = fieldSpec;
+    const sdkSupport = fieldSpec["sdk-support"];
 
     const renderValues = (
       !!values &&
@@ -35,11 +37,23 @@ export default class Doc extends React.Component<DocProps> {
       !Array.isArray(values)
     );
 
+    const sdkSupportToJsx = (value: string) => {
+      const supportValue = value.toLowerCase();
+      if (supportValue.startsWith("https://")) {
+        return <a href={supportValue} target="_blank" rel="noreferrer">{"#" + supportValue.split("/").pop()}</a>;
+      }
+      return value;
+    };
+
     return (
       <>
         {doc &&
           <div className="SpecDoc">
-            <div className="SpecDoc__doc" data-wd-key='spec-field-doc'>{doc}</div>
+            <div className="SpecDoc__doc" data-wd-key='spec-field-doc'>
+              <Markdown components={{
+                a: ({node: _node, href, children, ...props}) => <a href={href} target="_blank" {...props}>{children}</a>,
+              }}>{doc}</Markdown>
+            </div>
             {renderValues &&
               <ul className="SpecDoc__values">
                 {Object.entries(values).map(([key, value]) => {
@@ -72,7 +86,7 @@ export default class Doc extends React.Component<DocProps> {
                       <td>{key}</td>
                       {Object.keys(headers).map((k) => {
                         if (Object.prototype.hasOwnProperty.call(supportObj, k)) {
-                          return <td key={k}>{supportObj[k as keyof typeof headers]}</td>;
+                          return <td key={k}>{sdkSupportToJsx(supportObj[k as keyof typeof headers])}</td>;
                         }
                         else {
                           return <td key={k}>no</td>;
@@ -83,6 +97,11 @@ export default class Doc extends React.Component<DocProps> {
                 })}
               </tbody>
             </table>
+          </div>
+        }
+        {docUrl && docUrlLinkText &&
+          <div className="SpecDoc__learn-more">
+            <a href={docUrl}  target="_blank" rel="noreferrer">{docUrlLinkText}</a>
           </div>
         }
       </>

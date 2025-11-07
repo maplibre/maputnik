@@ -1,4 +1,4 @@
-import React from 'react'
+import React from "react";
 
 type ScrollContainerProps = {
   children?: React.ReactNode
@@ -8,7 +8,6 @@ export default class ScrollContainer extends React.Component<ScrollContainerProp
   render() {
     return <div className="maputnik-scroll-container">
       {this.props.children}
-    </div>
+    </div>;
   }
 }
-

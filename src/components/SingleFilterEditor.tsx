@@ -1,14 +1,14 @@
-import React from 'react'
+import React from "react";
 
-import {otherFilterOps} from '../libs/filterops'
-import InputString from './InputString'
-import InputAutocomplete from './InputAutocomplete'
-import InputSelect from './InputSelect'
+import {otherFilterOps} from "../libs/filterops";
+import InputString from "./InputString";
+import InputAutocomplete from "./InputAutocomplete";
+import InputSelect from "./InputSelect";
 
 function tryParseInt(v: string | number) {
-  if (v === '') return v
-  if (isNaN(v as number)) return v
-  return parseFloat(v as string)
+  if (v === "") return v;
+  if (isNaN(v as number)) return v;
+  return parseFloat(v as string);
 }
 
 function tryParseBool(v: string | boolean) {
@@ -43,23 +43,23 @@ type SingleFilterEditorProps = {
 export default class SingleFilterEditor extends React.Component<SingleFilterEditorProps> {
   static defaultProps = {
     properties: {},
-  }
+  };
 
   onFilterPartChanged(filterOp: string, propertyName: string, filterArgs: string[]) {
-    let newFilter = [filterOp, propertyName, ...filterArgs.map(parseFilter)]
-    if(filterOp === 'has' || filterOp === '!has') {
-      newFilter = [filterOp, propertyName]
+    let newFilter = [filterOp, propertyName, ...filterArgs.map(parseFilter)];
+    if(filterOp === "has" || filterOp === "!has") {
+      newFilter = [filterOp, propertyName];
     } else if(filterArgs.length === 0) {
-      newFilter = [filterOp, propertyName, '']
+      newFilter = [filterOp, propertyName, ""];
     }
-    this.props.onChange(newFilter)
+    this.props.onChange(newFilter);
   }
 
   render() {
-    const f = this.props.filter
-    const filterOp = f[0]
-    const propertyName = f[1]
-    const filterArgs = f.slice(2)
+    const f = this.props.filter;
+    const filterOp = f[0];
+    const propertyName = f[1];
+    const filterArgs = f.slice(2);
 
     return <div className="maputnik-filter-editor-single">
       <div className="maputnik-filter-editor-property">
@@ -82,12 +82,11 @@ export default class SingleFilterEditor extends React.Component<SingleFilterEdit
       <div className="maputnik-filter-editor-args">
         <InputString
           aria-label="value"
-          value={filterArgs.join(',')}
-          onChange={(v: string) => this.onFilterPartChanged(filterOp, propertyName, v.split(','))}
+          value={filterArgs.join(",")}
+          onChange={(v: string) => this.onFilterPartChanged(filterOp, propertyName, v.split(","))}
         />
       </div>
       }
-    </div>
+    </div>;
   }
 }
-

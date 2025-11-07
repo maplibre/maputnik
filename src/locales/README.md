@@ -1,6 +1,6 @@
 ## Internationalization
 
-The process of internationlization is pretty straight forward for Maputnik.
+The process of internationalization is pretty straight forward for Maputnik.
 
 ## Add a new language
 
@@ -46,15 +46,14 @@ The following users can help you with the relevant languages:
 
 | ISO Code | Language           | User                                       |
 |----------|--------------------|--------------------------------------------|
-| de       | German             | [@josxha](https://github.com/josxha)       | 
-| en       | English            | [@HarelM](https://github.com/HarelM)       | 
-| fr       | French             | [@lhapaipai](https://github.com/lhapaipai) | 
-| hr       | Hebrew             | [@HarelM](https://github.com/HarelM)       | 
-| ja       | Japanese           | [@keichan34](https://github.com/keichan34) | 
-| zh       | Simplified Chinese | [@jieme](https://github.com/jieme)         | 
+| de       | German             | [@josxha](https://github.com/josxha)       |
+| en       | English            | [@HarelM](https://github.com/HarelM)       |
+| fr       | French             | [@lhapaipai](https://github.com/lhapaipai) |
+| hr       | Hebrew             | [@HarelM](https://github.com/HarelM)       |
+| it       | Italian            | [@napo](https://github.com/napo)           |
+| ja       | Japanese           | [@keichan34](https://github.com/keichan34) |
+| zh       | Simplified Chinese | [@jieme](https://github.com/jieme)         |
 
 You can test the UI in different languages using the dropdown in the top menu
 Note that Maputnik automatically localize based on browser language settings and stores this language in local storage.
 You can use incognito mode to check a first time usage.
-
-

@@ -1,9 +1,12 @@
+@use "mixins";
+@use "vars";
+
 @use 'sass:color';
 // MAP
 .maputnik-map__container {
   background: white;
   display: flex;
-  width: $layout-map-width;
+  width: vars.$layout-map-width;
 
   &--error {
     align-items: center;
@@ -36,7 +39,7 @@
   &-wrapper {
     display: inline-block;
     box-sizing: border-box;
-    font-size: $font-size-6;
+    font-size: vars.$font-size-6;
     line-height: 2;
     user-select: none;
     position: relative;
@@ -45,9 +48,9 @@
 
   &-popup {
     display: none;
-    color: $color-lowgray;
-    background-color: $color-gray;
-    padding: $margin-2;
+    color: vars.$color-lowgray;
+    background-color: vars.$color-gray;
+    padding: vars.$margin-2;
     font-size: 10px;
     position: absolute;
     top: 20px;
@@ -60,7 +63,7 @@
   &-button {
     opacity: 0;
     pointer-events: none;
-    background: $color-black;
+    background: vars.$color-black;
     color: white;
     border: none;
     padding: 4px;
@@ -77,11 +80,11 @@
 }
 
 .maputnik-doc-inline {
-  color: $color-lowgray;
-  background-color: $color-gray;
-  padding: $margin-2;
+  color: vars.$color-lowgray;
+  background-color: vars.$color-gray;
+  padding: vars.$margin-2;
   font-size: 12px;
-  margin-top: $margin-3;
+  margin-top: vars.$margin-3;
   line-height: 1.5;
   flex: 1 0;
 }
@@ -95,10 +98,10 @@
 .maputnik-button {
   display: inline-block;
   cursor: pointer;
-  background-color: $color-midgray;
-  color: $color-lowgray;
-  font-size: $font-size-6;
-  padding: $margin-2;
+  background-color: vars.$color-midgray;
+  color: vars.$color-lowgray;
+  font-size: vars.$font-size-6;
+  padding: vars.$margin-2;
   user-select: none;
   border-width: 0;
   border-radius: 2px;
@@ -106,36 +109,36 @@
   text-decoration: none;
 
   &:hover {
-    background-color: color.adjust($color-midgray, $lightness: 12%);
-    color: $color-white;
+    background-color: color.adjust(vars.$color-midgray, $lightness: 12%);
+    color: vars.$color-white;
   }
 
   &:disabled {
-    background-color: color.adjust($color-midgray, $lightness: -5%);
-    color: $color-midgray;
+    background-color: color.adjust(vars.$color-midgray, $lightness: -5%);
+    color: vars.$color-midgray;
     cursor: not-allowed;
   }
 }
 
 .maputnik-big-button {
-  margin-top: $margin-3;
+  margin-top: vars.$margin-3;
   display: inline-block;
-  padding: $margin-3;
-  font-size: $font-size-5;
+  padding: vars.$margin-3;
+  font-size: vars.$font-size-5;
 }
 
 .maputnik-wide-button {
-  padding: $margin-2 $margin-3;
+  padding: vars.$margin-2 vars.$margin-3;
 }
 
 .maputnik-green-button {
-  background-color: $color-green;
-  color: $color-black;
+  background-color: vars.$color-green;
+  color: vars.$color-black;
 }
 
 .maputnik-white-button {
-  background-color: $color-white;
-  color: $color-black;
+  background-color: vars.$color-white;
+  color: vars.$color-black;
 }
 
 .maputnik-icon-button {
@@ -150,19 +153,19 @@
     }
 
     svg {
-      fill: $color-white;
+      fill: vars.$color-white;
     }
   }
 }
 
 // INPUT BLOCK
 .maputnik-input-block {
-  margin: $margin-3;
+  margin: vars.$margin-3;
   display: flex;
   flex-wrap: wrap;
 
   &-label {
-    color: $color-lowgray;
+    color: vars.$color-lowgray;
     user-select: none;
     width: 32%;
     vertical-align: top;
@@ -170,7 +173,7 @@
   }
 
   &-action {
-    color: $color-lowgray;
+    color: vars.$color-lowgray;
     user-select: none;
     width: 18%;
     vertical-align: top;
@@ -187,7 +190,7 @@
   .maputnik-input-block-label {
     display: inline-block;
     width: 32%;
-    margin-bottom: $margin-3;
+    margin-bottom: vars.$margin-3;
   }
 
   .maputnik-input-block-action {
@@ -211,15 +214,15 @@
 
 // SPACE HELPER
 .maputnik-space {
-  @include vendor-prefix(flex-grow, 1);
+  @include mixins.vendor-prefix(flex-grow, 1);
 }
 
 // MESSAGE PANEL
 .maputnik-message-panel {
-  padding: $margin-2;
+  padding: vars.$margin-2;
 
   &-error {
-    color: $color-red;
+    color: vars.$color-red;
   }
 
   &__switch-button {
@@ -241,7 +244,7 @@
   &__menu {
     position: absolute;
     z-index: 999999;
-    background: $color-black;
+    background: vars.$color-black;
     display: flex;
     flex-direction: column;
     align-content: stretch;
@@ -262,13 +265,13 @@
   color: #a4a4a4;
   padding: 0.4em 0.4em;
   font-size: 0.9em;
-  border: solid 1px $color-red;
+  border: solid 1px vars.$color-red;
   border-radius: 2px;
-  margin: $margin-2 0px;
+  margin: vars.$margin-2 0px;
 }
 
 .maputnik-expression-editor {
-  border: solid 1px $color-gray;
+  border: solid 1px vars.$color-gray;
 }
 
 .maputnik-input-block--wide {
@@ -287,14 +290,20 @@
   }
 }
 
+.maputnik-input-block--error {
+  .maputnik-input-block-label {
+    color: vars.$color-red;
+  }
+}
+
 .maputnik-expr-infobox {
-  font-size: $font-size-6;
-  background: $color-midgray;
-  padding: $margin-2;
+  font-size: vars.$font-size-6;
+  background: vars.$color-midgray;
+  padding: vars.$margin-2;
   border-radius: 2px;
   border-top-right-radius: 0px;
   border-top-left-radius: 0px;
-  color: $color-white;
+  color: vars.$color-white;
 }
 
 .maputnik-expr-infobox__button {
@@ -305,4 +314,3 @@
   color: currentColor;
   cursor: pointer;
 }
-

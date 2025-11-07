@@ -8,8 +8,10 @@ const baseUrl = "http://localhost:8888/";
 
 const styleFromWindow = (win: Window) => {
   const styleId = win.localStorage.getItem("maputnik:latest_style");
-  const styleItem = win.localStorage.getItem(`maputnik:style:${styleId}`);
-  const obj = JSON.parse(styleItem || "");
+  const styleItemKey = `maputnik:style:${styleId}`;
+  const styleItem = win.localStorage.getItem(styleItemKey);
+  if (!styleItem) throw new Error("Could not get styleItem from localStorage");
+  const obj = JSON.parse(styleItem);
   return obj;
 };
 
@@ -78,6 +80,20 @@ export class MaputnikDriver {
       });
       this.helper.given.interceptAndMockResponse({
         method: "GET",
+        url: baseUrl + "rectangles-style.json",
+        response: {
+          fixture: "rectangles-style.json",
+        },
+      });
+      this.helper.given.interceptAndMockResponse({
+        method: "GET",
+        url: baseUrl + "example-style-with-fonts.json",
+        response: {
+          fixture: "example-style-with-fonts.json",
+        },
+      });
+      this.helper.given.interceptAndMockResponse({
+        method: "GET",
         url: "*example.local/*",
         response: [],
       });
@@ -86,52 +102,64 @@ export class MaputnikDriver {
         url: "*example.com/*",
         response: [],
       });
+      this.helper.given.interceptAndMockResponse({
+        method: "GET",
+        url: "https://www.glyph-server.com/*",
+        response: ["Font 1", "Font 2", "Font 3"],
+      });
     },
   };
 
   public when = {
     ...this.helper.when,
     modal: this.modalDriver.when,
-    within: (selector: string, fn: () => void) => {
-      this.helper.when.within(fn, selector);
+    doWithin: (selector: string, fn: () => void) => {
+      this.helper.when.doWithin(fn, selector);
     },
     tab: () => this.helper.get.element("body").tab(),
     waitForExampleFileResponse: () => {
       this.helper.when.waitForResponse("example-style.json");
     },
     chooseExampleFile: () => {
-      this.helper.get
-        .bySelector("type", "file")
-        .selectFile("cypress/fixtures/example-style.json", { force: true });
+      this.helper.given.fixture("example-style.json", "example-style.json");
+      this.helper.when.openFileByFixture("example-style.json", "modal:open.file.button", "modal:open.file.input");
+      this.helper.when.wait(200);
     },
     setStyle: (
-      styleProperties: "geojson" | "raster" | "both" | "layer" | "",
+      styleProperties: "geojson" | "raster" | "both" | "layer" | "rectangles" | "font" | "",
       zoom?: number
     ) => {
-      let url = "?debug";
+      const url = new URL(baseUrl);
       switch (styleProperties) {
-      case "geojson":
-        url += `&style=${baseUrl}geojson-style.json`;
-        break;
-      case "raster":
-        url += `&style=${baseUrl}raster-style.json`;
-        break;
-      case "both":
-        url += `&style=${baseUrl}geojson-raster-style.json`;
-        break;
-      case "layer":
-        url += `&style=${baseUrl}/example-layer-style.json`;
-        break;
+        case "geojson":
+          url.searchParams.set("style", baseUrl + "geojson-style.json");
+          break;
+        case "raster":
+          url.searchParams.set("style", baseUrl + "raster-style.json");
+          break;
+        case "both":
+          url.searchParams.set("style", baseUrl + "geojson-raster-style.json");
+          break;
+        case "layer":
+          url.searchParams.set("style", baseUrl + "example-layer-style.json");
+          break;
+        case "rectangles":
+          url.searchParams.set("style", baseUrl + "rectangles-style.json");
+          break;
+        case "font":
+          url.searchParams.set("style", baseUrl + "example-style-with-fonts.json");
+          break;
       }
+
       if (zoom) {
-        url += `#${zoom}/41.3805/2.1635`;
+        url.hash = `${zoom}/41.3805/2.1635`;
       }
-      this.helper.when.visit(baseUrl + url);
+      this.helper.when.visit(url.toString());
       if (styleProperties) {
         this.helper.when.acceptConfirm();
       }
       // when methods should not include assertions
-      const toolbarLink = this.helper.get.elementByTestId("toolbar:link")
+      const toolbarLink = this.helper.get.elementByTestId("toolbar:link");
       toolbarLink.scrollIntoView();
       toolbarLink.should("be.visible");
     },
@@ -143,7 +171,7 @@ export class MaputnikDriver {
     },
 
     selectWithin: (selector: string, value: string) => {
-      this.when.within(selector, () => {
+      this.when.doWithin(selector, () => {
         this.helper.get.element("select").select(value);
       });
     },
@@ -162,6 +190,35 @@ export class MaputnikDriver {
         .clear()
         .type(text, { parseSpecialCharSequences: false });
     },
+
+    setValueToPropertyArray: (selector: string, value: string) => {
+      this.when.doWithin(selector, () => {
+        this.helper.get.element(".maputnik-array-block-content input").last().type("{selectall}"+value, {force: true });
+      });
+    },
+
+    addValueToPropertyArray: (selector: string, value: string) => {
+      this.when.doWithin(selector, () => {
+        this.helper.get.element(".maputnik-array-add-value").click({ force: true });
+        this.helper.get.element(".maputnik-array-block-content input").last().type("{selectall}"+value, {force: true });
+      });
+    },
+
+    closePopup: () => {
+      this.helper.get.element(".maplibregl-popup-close-button").click();
+    },
+
+    collapseGroupInLayerEditor: (index = 0) => {
+      this.helper.get.element(".maputnik-layer-editor-group__button").eq(index).realClick();
+    },
+
+    appendTextInJsonEditor: (text: string) => {
+      this.helper.get.element(".cm-line").first().click().type(text, { parseSpecialCharSequences: false });
+    },
+
+    setTextInJsonEditor: (text: string) => {
+      this.helper.get.element(".cm-line").first().click().clear().type(text, { parseSpecialCharSequences: false });
+    }
   };
 
   public get = {
@@ -181,6 +238,6 @@ export class MaputnikDriver {
     skipTargetLayerEditor: () =>
       this.helper.get.elementByTestId("skip-target-layer-editor"),
     canvas: () => this.helper.get.element("canvas"),
-    searchControl: () => this.helper.get.element('.maplibregl-ctrl-geocoder')
+    searchControl: () => this.helper.get.element(".maplibregl-ctrl-geocoder")
   };
 }

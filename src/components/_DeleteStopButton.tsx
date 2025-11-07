@@ -1,8 +1,8 @@
-import React from 'react'
+import React from "react";
 
-import InputButton from './InputButton'
-import {MdDelete} from 'react-icons/md'
-import { WithTranslation, withTranslation } from 'react-i18next';
+import InputButton from "./InputButton";
+import {MdDelete} from "react-icons/md";
+import { type WithTranslation, withTranslation } from "react-i18next";
 
 
 type DeleteStopButtonInternalProps = {
@@ -19,7 +19,7 @@ class DeleteStopButtonInternal extends React.Component<DeleteStopButtonInternalP
       title={t("Remove zoom level from stop")}
     >
       <MdDelete />
-    </InputButton>
+    </InputButton>;
   }
 }
 

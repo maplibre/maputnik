@@ -1,9 +1,8 @@
-import React from 'react'
-import InputEnum, {InputEnumProps} from './InputEnum'
-import Fieldset from './Fieldset';
+import InputEnum, {type InputEnumProps} from "./InputEnum";
+import Fieldset from "./Fieldset";
 
 
-type FieldEnumProps = InputEnumProps & { 
+type FieldEnumProps = InputEnumProps & {
   label?: string;
   fieldSpec?: {
     doc: string
@@ -11,10 +10,12 @@ type FieldEnumProps = InputEnumProps & {
 };
 
 
-export default class FieldEnum extends React.Component<FieldEnumProps> {
-  render() {
-    return <Fieldset label={this.props.label} fieldSpec={this.props.fieldSpec}>
-      <InputEnum {...this.props} />
+const FieldEnum: React.FC<FieldEnumProps> = (props) => {
+  return (
+    <Fieldset label={props.label} fieldSpec={props.fieldSpec}>
+      <InputEnum {...props} />
     </Fieldset>
-  }
-}
+  );
+};
+
+export default FieldEnum;

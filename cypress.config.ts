@@ -8,6 +8,7 @@ export default defineConfig({
       exclude: "cypress/**/*.*",
     },
   },
+
   e2e: {
     setupNodeEvents(on, config) {
       // implement node event listeners here
@@ -15,9 +16,17 @@ export default defineConfig({
       return config;
     },
     baseUrl: "http://localhost:8888",
+    scrollBehavior: "center",
     retries: {
       runMode: 2,
       openMode: 0,
+    },
+  },
+
+  component: {
+    devServer: {
+      framework: "react",
+      bundler: "vite",
     },
   },
 });

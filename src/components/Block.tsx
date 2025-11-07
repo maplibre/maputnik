@@ -1,14 +1,13 @@
-import React, {PropsWithChildren, SyntheticEvent} from 'react'
-import classnames from 'classnames'
-import FieldDocLabel from './FieldDocLabel'
-import Doc from './Doc'
+import React, {type CSSProperties, type PropsWithChildren, type SyntheticEvent} from "react";
+import classnames from "classnames";
+import FieldDocLabel from "./FieldDocLabel";
+import Doc from "./Doc";
 
-
-type BlockProps = PropsWithChildren & {
+export type BlockProps = PropsWithChildren & {
   "data-wd-key"?: string
   label?: string
   action?: React.ReactElement
-  style?: object
+  style?: CSSProperties
   onChange?(...args: unknown[]): unknown
   fieldSpec?: object
   wideMode?: boolean
@@ -27,13 +26,13 @@ export default class Block extends React.Component<BlockProps, BlockState> {
     super(props);
     this.state = {
       showDoc: false,
-    }
+    };
   }
 
   onChange(e: React.BaseSyntheticEvent<Event, HTMLInputElement, HTMLInputElement>) {
-    const value = e.target.value
+    const value = e.target.value;
     if (this.props.onChange) {
-      return this.props.onChange(value === "" ? undefined : value)
+      return this.props.onChange(value === "" ? undefined : value);
     }
   }
 
@@ -41,7 +40,7 @@ export default class Block extends React.Component<BlockProps, BlockState> {
     this.setState({
       showDoc: val
     });
-  }
+  };
 
   /**
    * Some fields for example <InputColor/> bind click events inside the element
@@ -56,8 +55,10 @@ export default class Block extends React.Component<BlockProps, BlockState> {
     if (event.nativeEvent.target.nodeName !== "INPUT" && !contains) {
       event.stopPropagation();
     }
-    event.preventDefault();
-  }
+    if (event.nativeEvent.target.nodeName !== "A") {
+      event.preventDefault();
+    }
+  };
 
   render() {
     return <label style={this.props.style}
@@ -65,7 +66,8 @@ export default class Block extends React.Component<BlockProps, BlockState> {
       className={classnames({
         "maputnik-input-block": true,
         "maputnik-input-block--wide": this.props.wideMode,
-        "maputnik-action-block": this.props.action
+        "maputnik-action-block": this.props.action,
+        "maputnik-input-block--error": this.props.error
       })}
       onClick={this.onLabelClick}
     >
@@ -86,18 +88,17 @@ export default class Block extends React.Component<BlockProps, BlockState> {
       <div className="maputnik-input-block-action">
         {this.props.action}
       </div>
-      <div className="maputnik-input-block-content" ref={el => this._blockEl = el}>
+      <div className="maputnik-input-block-content" ref={el => {this._blockEl = el;}}>
         {this.props.children}
       </div>
       {this.props.fieldSpec &&
         <div
           className="maputnik-doc-inline"
-          style={{display: this.state.showDoc ? '' : 'none'}}
+          style={{display: this.state.showDoc ? "" : "none"}}
         >
           <Doc fieldSpec={this.props.fieldSpec} />
         </div>
       }
-    </label>
+    </label>;
   }
 }
-

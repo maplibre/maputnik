@@ -1,4 +1,4 @@
-import React from 'react'
+import React from "react";
 
 export type InputSelectProps = {
   value: string
@@ -7,7 +7,7 @@ export type InputSelectProps = {
   style?: object
   onChange(value: string | [string, any]): unknown
   title?: string
-  'aria-label'?: string
+  "aria-label"?: string
 };
 
 export default class InputSelect extends React.Component<InputSelectProps> {
@@ -24,11 +24,9 @@ export default class InputSelect extends React.Component<InputSelectProps> {
       title={this.props.title}
       value={this.props.value}
       onChange={e => this.props.onChange(e.target.value)}
-      aria-label={this.props['aria-label']}
+      aria-label={this.props["aria-label"]}
     >
       { options.map(([val, label]) => <option key={val} value={val}>{label}</option>) }
-    </select>
+    </select>;
   }
 }
-
-

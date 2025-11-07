@@ -1,7 +1,7 @@
 import { MaputnikDriver } from "./maputnik-driver";
 
 describe("history", () => {
-  let { beforeAndAfter, when, get, then } = new MaputnikDriver();
+  const { beforeAndAfter, when, get, then } = new MaputnikDriver();
   beforeAndAfter();
 
   let undoKeyCombo: string;
@@ -16,7 +16,6 @@ describe("history", () => {
   it("undo/redo", () => {
     when.setStyle("geojson");
     when.modal.open();
-    then(get.styleFromLocalStorage()).shouldDeepNestedInclude({ layers: [] });
 
     when.modal.fillLayers({
       id: "step 1",

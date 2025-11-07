@@ -1,11 +1,12 @@
-import React from 'react'
+import React from "react";
 
-import SpecProperty from './_SpecProperty'
-import DataProperty, { Stop } from './_DataProperty'
-import ZoomProperty from './_ZoomProperty'
-import ExpressionProperty from './_ExpressionProperty'
-import {function as styleFunction} from '@maplibre/maplibre-gl-style-spec';
-import {findDefaultFromSpec} from '../libs/spec-helper';
+import SpecProperty from "./_SpecProperty";
+import DataProperty, { type Stop } from "./_DataProperty";
+import ZoomProperty from "./_ZoomProperty";
+import ExpressionProperty from "./_ExpressionProperty";
+import {function as styleFunction} from "@maplibre/maplibre-gl-style-spec";
+import {findDefaultFromSpec} from "../libs/spec-helper";
+import { type MappedLayerErrors } from "../libs/definitions";
 
 
 function isLiteralExpression(value: any) {
@@ -22,9 +23,9 @@ function isGetExpression(value: any) {
 
 function isZoomField(value: any) {
   return (
-    typeof(value) === 'object' &&
+    typeof(value) === "object" &&
     value.stops &&
-    typeof(value.property) === 'undefined' &&
+    typeof(value.property) === "undefined" &&
     Array.isArray(value.stops) &&
     value.stops.length > 1 &&
     value.stops.every((stop: Stop) => {
@@ -38,7 +39,7 @@ function isZoomField(value: any) {
 
 function isIdentityProperty(value: any) {
   return (
-    typeof(value) === 'object' &&
+    typeof(value) === "object" &&
     value.type === "identity" &&
     Object.prototype.hasOwnProperty.call(value, "property")
   );
@@ -46,16 +47,16 @@ function isIdentityProperty(value: any) {
 
 function isDataStopProperty(value: any) {
   return (
-    typeof(value) === 'object' &&
+    typeof(value) === "object" &&
     value.stops &&
-    typeof(value.property) !== 'undefined' &&
+    typeof(value.property) !== "undefined" &&
     value.stops.length > 1 &&
     Array.isArray(value.stops) &&
     value.stops.every((stop: Stop) => {
       return (
         Array.isArray(stop) &&
         stop.length === 2 &&
-        typeof(stop[0]) === 'object'
+        typeof(stop[0]) === "object"
       );
     })
   );
@@ -90,6 +91,18 @@ function getDataType(value: any, fieldSpec={} as any) {
   else if (fieldSpec.type === "array" && isArrayOfPrimatives(value)) {
     return "value";
   }
+  else if (fieldSpec.type === "numberArray" && isArrayOfPrimatives(value)) {
+    return "value";
+  }
+  else if (fieldSpec.type === "colorArray") {
+    return "value";
+  }
+  else if (fieldSpec.type === "padding") {
+    return "value";
+  }
+  else if (fieldSpec.type === "variableAnchorOffsetCollection") {
+    return "value";
+  }
   else if (isZoomField(value)) {
     return "zoom_function";
   }
@@ -107,301 +120,287 @@ type FieldFunctionProps = {
   fieldName: string
   fieldType: string
   fieldSpec: any
-  errors?: {[key: string]: {message: string}}
+  errors?: MappedLayerErrors
   value?: any
 };
 
-type FieldFunctionState = {
-  dataType: string
-  isEditing: boolean
-}
 
 /** Supports displaying spec field for zoom function objects
  * https://www.mapbox.com/mapbox-gl-style-spec/#types-function-zoom-property
  */
-export default class FieldFunction extends React.Component<FieldFunctionProps, FieldFunctionState> {
-  constructor (props: FieldFunctionProps) {
-    super(props);
-    this.state = {
-      dataType: getDataType(props.value, props.fieldSpec),
-      isEditing: false,
-    }
-  }
+const FieldFunction: React.FC<FieldFunctionProps> = (props) => {
+  const [dataType, setDataType] = React.useState(
+    getDataType(props.value, props.fieldSpec)
+  );
+  const [isEditing, setIsEditing] = React.useState(false);
 
-  static getDerivedStateFromProps(props: Readonly<FieldFunctionProps>, state: FieldFunctionState) {
-    // Because otherwise when editing values we end up accidentally changing field type.
-    if (state.isEditing) {
-      return {};
+  React.useEffect(() => {
+    if (!isEditing) {
+      setDataType(getDataType(props.value, props.fieldSpec));
     }
-    else {
-      return {
-        isEditing: false,
-        dataType: getDataType(props.value, props.fieldSpec)
-      };
-    }
-  }
+  }, [props.value, props.fieldSpec, isEditing]);
 
-  getFieldFunctionType(fieldSpec: any) {
+  const getFieldFunctionType = (fieldSpec: any) => {
     if (fieldSpec.expression.interpolated) {
-      return "exponential"
+      return "exponential";
     }
     if (fieldSpec.type === "number") {
-      return "interval"
+      return "interval";
     }
-    return "categorical"
-  }
+    return "categorical";
+  };
 
-  addStop = () => {
-    const stops = this.props.value.stops.slice(0)
-    const lastStop = stops[stops.length - 1]
+  const addStop = () => {
+    const stops = props.value.stops.slice(0);
+    const lastStop = stops[stops.length - 1];
     if (typeof lastStop[0] === "object") {
       stops.push([
-        {zoom: lastStop[0].zoom + 1, value: lastStop[0].value},
-        lastStop[1]
-      ])
-    }
-    else {
-      stops.push([lastStop[0] + 1, lastStop[1]])
+        { zoom: lastStop[0].zoom + 1, value: lastStop[0].value },
+        lastStop[1],
+      ]);
+    } else {
+      stops.push([lastStop[0] + 1, lastStop[1]]);
     }
 
     const changedValue = {
-      ...this.props.value,
+      ...props.value,
       stops: stops,
-    }
+    };
 
-    this.props.onChange(this.props.fieldName, changedValue)
-  }
+    props.onChange(props.fieldName, changedValue);
+  };
 
-  deleteExpression = () => {
-    const {fieldSpec, fieldName} = this.props;
-    this.props.onChange(fieldName, fieldSpec.default);
-    this.setState({
-      dataType: "value",
-    });
-  }
+  const deleteExpression = () => {
+    const { fieldSpec, fieldName } = props;
+    props.onChange(fieldName, fieldSpec.default);
+    setDataType("value");
+  };
 
-  deleteStop = (stopIdx: number) => {
-    const stops = this.props.value.stops.slice(0)
-    stops.splice(stopIdx, 1)
+  const deleteStop = (stopIdx: number) => {
+    const stops = props.value.stops.slice(0);
+    stops.splice(stopIdx, 1);
 
-    let changedValue = {
-      ...this.props.value,
+    let changedValue: any = {
+      ...props.value,
       stops: stops,
+    };
+
+    if (stops.length === 1) {
+      changedValue = stops[0][1];
     }
 
-    if(stops.length === 1) {
-      changedValue = stops[0][1]
-    }
+    props.onChange(props.fieldName, changedValue);
+  };
 
-    this.props.onChange(this.props.fieldName, changedValue)
-  }
+  const makeZoomFunction = () => {
+    const { value } = props;
 
-  makeZoomFunction = () => {
-    const {value} = this.props;
-
-    let zoomFunc;
-    if (typeof(value) === "object") {
+    let zoomFunc: any;
+    if (typeof value === "object") {
       if (value.stops) {
         zoomFunc = {
           base: value.base,
           stops: value.stops.map((stop: Stop) => {
-            return [stop[0].zoom, stop[1] || findDefaultFromSpec(this.props.fieldSpec)];
-          })
-        }
-      }
-      else {
+            return [stop[0].zoom, stop[1] || findDefaultFromSpec(props.fieldSpec)];
+          }),
+        };
+      } else {
         zoomFunc = {
           base: value.base,
           stops: [
-            [6, findDefaultFromSpec(this.props.fieldSpec)],
-            [10, findDefaultFromSpec(this.props.fieldSpec)]
-          ]
-        }
+            [6, findDefaultFromSpec(props.fieldSpec)],
+            [10, findDefaultFromSpec(props.fieldSpec)],
+          ],
+        };
       }
-    }
-    else {
+    } else {
       zoomFunc = {
         stops: [
-          [6, value || findDefaultFromSpec(this.props.fieldSpec)],
-          [10, value || findDefaultFromSpec(this.props.fieldSpec)]
-        ]
-      }
+          [6, value || findDefaultFromSpec(props.fieldSpec)],
+          [10, value || findDefaultFromSpec(props.fieldSpec)],
+        ],
+      };
     }
 
-    this.props.onChange(this.props.fieldName, zoomFunc)
-  }
+    props.onChange(props.fieldName, zoomFunc);
+  };
 
-  undoExpression = () => {
-    const {value, fieldName} = this.props;
+  const undoExpression = () => {
+    const { value, fieldName } = props;
 
     if (isGetExpression(value)) {
-      this.props.onChange(fieldName, {
-        "type": "identity",
-        "property": value[1]
+      props.onChange(fieldName, {
+        type: "identity",
+        property: value[1],
       });
-      this.setState({
-        dataType: "value",
-      });
+      setDataType("value");
+    } else if (isLiteralExpression(value)) {
+      props.onChange(fieldName, value[1]);
+      setDataType("value");
     }
-    else if (isLiteralExpression(value)) {
-      this.props.onChange(fieldName, value[1]);
-      this.setState({
-        dataType: "value",
-      });
-    }
-  }
+  };
 
-  canUndo = () => {
-    const {value, fieldSpec} = this.props;
+  const canUndo = () => {
+    const { value, fieldSpec } = props;
     return (
       isGetExpression(value) ||
       isLiteralExpression(value) ||
       isPrimative(value) ||
       (Array.isArray(value) && fieldSpec.type === "array")
     );
-  }
+  };
 
-  makeExpression = () => {
-    const {value, fieldSpec} = this.props;
+  const makeExpression = () => {
+    const { value, fieldSpec } = props;
     let expression;
 
-    if (typeof(value) === "object" && 'stops' in value) {
+    if (typeof value === "object" && "stops" in value) {
       expression = styleFunction.convertFunction(value, fieldSpec);
-    }
-    else if (isIdentityProperty(value)) {
+    } else if (isIdentityProperty(value)) {
       expression = ["get", value.property];
+    } else {
+      expression = ["literal", value || props.fieldSpec.default];
     }
-    else {
-      expression = ["literal", value || this.props.fieldSpec.default];
-    }
-    this.props.onChange(this.props.fieldName, expression);
-  }
+    props.onChange(props.fieldName, expression);
+  };
 
-  makeDataFunction = () => {
-    const functionType = this.getFieldFunctionType(this.props.fieldSpec);
-    const stopValue = functionType === 'categorical' ? '' : 0;
-    const {value} = this.props;
+  const makeDataFunction = () => {
+    const functionType = getFieldFunctionType(props.fieldSpec);
+    const stopValue = functionType === "categorical" ? "" : 0;
+    const { value } = props;
     let dataFunc;
 
-    if (typeof(value) === "object") {
+    if (typeof value === "object") {
       if (value.stops) {
         dataFunc = {
           property: "",
           type: functionType,
           base: value.base,
           stops: value.stops.map((stop: Stop) => {
-            return [{zoom: stop[0], value: stopValue}, stop[1] || findDefaultFromSpec(this.props.fieldSpec)];
-          })
-        }
-      }
-      else {
+            return [{ zoom: stop[0], value: stopValue }, stop[1] || findDefaultFromSpec(props.fieldSpec)];
+          }),
+        };
+      } else {
         dataFunc = {
           property: "",
           type: functionType,
           base: value.base,
           stops: [
-            [{zoom: 6, value: stopValue}, findDefaultFromSpec(this.props.fieldSpec)],
-            [{zoom: 10, value: stopValue}, findDefaultFromSpec(this.props.fieldSpec)]
-          ]
-        }
+            [{ zoom: 6, value: stopValue }, findDefaultFromSpec(props.fieldSpec)],
+            [{ zoom: 10, value: stopValue }, findDefaultFromSpec(props.fieldSpec)],
+          ],
+        };
       }
-    }
-    else {
+    } else {
       dataFunc = {
         property: "",
         type: functionType,
         base: value.base,
         stops: [
-          [{zoom: 6, value: stopValue}, this.props.value || findDefaultFromSpec(this.props.fieldSpec)],
-          [{zoom: 10, value: stopValue}, this.props.value || findDefaultFromSpec(this.props.fieldSpec)]
-        ]
-      }
+          [{ zoom: 6, value: stopValue }, props.value || findDefaultFromSpec(props.fieldSpec)],
+          [{ zoom: 10, value: stopValue }, props.value || findDefaultFromSpec(props.fieldSpec)],
+        ],
+      };
     }
 
-    this.props.onChange(this.props.fieldName, dataFunc)
+    props.onChange(props.fieldName, dataFunc);
+  };
+
+  const makeElevationFunction = () => {
+    const expression = [
+      "interpolate",
+      ["linear"],
+      ["elevation"],
+      0,
+      "black",
+      2000,
+      "white"
+    ];
+
+    props.onChange(props.fieldName, expression);
+  };
+
+  const onMarkEditing = () => {
+    setIsEditing(true);
+  };
+
+  const onUnmarkEditing = () => {
+    setIsEditing(false);
+  };
+
+  const propClass =
+    props.fieldSpec.default === props.value ? "maputnik-default-property" : "maputnik-modified-property";
+
+  let specField;
+
+  if (dataType === "expression") {
+    specField = (
+      <ExpressionProperty
+        errors={props.errors}
+        onChange={props.onChange.bind(null, props.fieldName)}
+        canUndo={canUndo}
+        onUndo={undoExpression}
+        onDelete={deleteExpression}
+        fieldType={props.fieldType}
+        fieldName={props.fieldName}
+        fieldSpec={props.fieldSpec}
+        value={props.value}
+        onFocus={onMarkEditing}
+        onBlur={onUnmarkEditing}
+      />
+    );
+  } else if (dataType === "zoom_function") {
+    specField = (
+      <ZoomProperty
+        errors={props.errors}
+        onChange={props.onChange.bind(null)}
+        fieldType={props.fieldType}
+        fieldName={props.fieldName}
+        fieldSpec={props.fieldSpec}
+        value={props.value}
+        onDeleteStop={deleteStop}
+        onAddStop={addStop}
+        onChangeToDataFunction={makeDataFunction}
+        onExpressionClick={makeExpression}
+      />
+    );
+  } else if (dataType === "data_function") {
+    specField = (
+      <DataProperty
+        errors={props.errors}
+        onChange={props.onChange.bind(null)}
+        fieldType={props.fieldType}
+        fieldName={props.fieldName}
+        fieldSpec={props.fieldSpec}
+        value={props.value}
+        onDeleteStop={deleteStop}
+        onAddStop={addStop}
+        onChangeToZoomFunction={makeZoomFunction}
+        onExpressionClick={makeExpression}
+      />
+    );
+  } else {
+    specField = (
+      <SpecProperty
+        errors={props.errors}
+        onChange={props.onChange.bind(null)}
+        fieldType={props.fieldType}
+        fieldName={props.fieldName}
+        fieldSpec={props.fieldSpec}
+        value={props.value}
+        onZoomClick={makeZoomFunction}
+        onDataClick={makeDataFunction}
+        onExpressionClick={makeExpression}
+        onElevationClick={makeElevationFunction}
+      />
+    );
   }
 
-  onMarkEditing = () => {
-    this.setState({isEditing: true});
-  }
-
-  onUnmarkEditing = () => {
-    this.setState({isEditing: false});
-  }
-
-  render() {
-    const {dataType} = this.state;
-    const propClass = this.props.fieldSpec.default === this.props.value ? "maputnik-default-property" : "maputnik-modified-property"
-    let specField;
-
-    if (dataType === "expression") {
-      specField = (
-        <ExpressionProperty
-          errors={this.props.errors}
-          onChange={this.props.onChange.bind(this, this.props.fieldName)}
-          canUndo={this.canUndo}
-          onUndo={this.undoExpression}
-          onDelete={this.deleteExpression}
-          fieldType={this.props.fieldType}
-          fieldName={this.props.fieldName}
-          fieldSpec={this.props.fieldSpec}
-          value={this.props.value}
-          onFocus={this.onMarkEditing}
-          onBlur={this.onUnmarkEditing}
-        />
-      );
-    }
-    else if (dataType === "zoom_function") {
-      specField = (
-        <ZoomProperty
-          errors={this.props.errors}
-          onChange={this.props.onChange.bind(this)}
-          fieldType={this.props.fieldType}
-          fieldName={this.props.fieldName}
-          fieldSpec={this.props.fieldSpec}
-          value={this.props.value}
-          onDeleteStop={this.deleteStop}
-          onAddStop={this.addStop}
-          onChangeToDataFunction={this.makeDataFunction}
-          onExpressionClick={this.makeExpression}
-        />
-      )
-    }
-    else if (dataType === "data_function") {
-      // TODO: Rename to FieldFunction **this file** shouldn't be called that
-      specField = (
-        <DataProperty
-          errors={this.props.errors}
-          onChange={this.props.onChange.bind(this)}
-          fieldType={this.props.fieldType}
-          fieldName={this.props.fieldName}
-          fieldSpec={this.props.fieldSpec}
-          value={this.props.value}
-          onDeleteStop={this.deleteStop}
-          onAddStop={this.addStop}
-          onChangeToZoomFunction={this.makeZoomFunction}
-          onExpressionClick={this.makeExpression}
-        />
-      )
-    }
-    else {
-      specField = (
-        <SpecProperty
-          errors={this.props.errors}
-          onChange={this.props.onChange.bind(this)}
-          fieldType={this.props.fieldType}
-          fieldName={this.props.fieldName}
-          fieldSpec={this.props.fieldSpec}
-          value={this.props.value}
-          onZoomClick={this.makeZoomFunction}
-          onDataClick={this.makeDataFunction}
-          onExpressionClick={this.makeExpression}
-        />
-      )
-    }
-    return <div className={propClass} data-wd-key={"spec-field-container:"+this.props.fieldName}>
+  return (
+    <div className={propClass} data-wd-key={"spec-field-container:" + props.fieldName}>
       {specField}
     </div>
-  }
-}
+  );
+};
 
+export default FieldFunction;

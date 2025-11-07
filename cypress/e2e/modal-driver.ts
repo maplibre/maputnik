@@ -8,8 +8,8 @@ export default class ModalDriver {
     fillLayers: (opts: { type: string; layer?: string; id?: string }) => {
       // Having logic in test code is an anti pattern.
       // This should be splitted to multiple single responsibility functions
-      let type = opts.type;
-      let layer = opts.layer;
+      const type = opts.type;
+      const layer = opts.layer;
       let id;
       if (opts.id) {
         id = opts.id;
@@ -20,8 +20,8 @@ export default class ModalDriver {
       this.helper.when.type("add-layer.layer-id.input", id);
 
       if (layer) {
-        this.helper.when.within(() => {
-          this.helper.get.element("input").type(layer!);
+        this.helper.when.doWithin(() => {
+          this.helper.get.element("input").clear().type(layer!);
         }, "add-layer.layer-source-block");
       }
       this.helper.when.click("add-layer");

@@ -1,6 +1,5 @@
-import React from 'react'
-import InputArray, { FieldArrayProps as InputArrayProps } from './InputArray'
-import Fieldset from './Fieldset'
+import InputArray, { type InputArrayProps } from "./InputArray";
+import Fieldset from "./Fieldset";
 
 type FieldArrayProps = InputArrayProps & {
   name?: string
@@ -9,11 +8,12 @@ type FieldArrayProps = InputArrayProps & {
   }
 };
 
-export default class FieldArray extends React.Component<FieldArrayProps> {
-  render() {
-    return <Fieldset label={this.props.label} fieldSpec={this.props.fieldSpec}>
-      <InputArray {...this.props} />
+const FieldArray: React.FC<FieldArrayProps> = (props) => {
+  return (
+    <Fieldset label={props.label} fieldSpec={props.fieldSpec}>
+      <InputArray {...props} />
     </Fieldset>
-  }
-}
+  );
+};
 
+export default FieldArray;

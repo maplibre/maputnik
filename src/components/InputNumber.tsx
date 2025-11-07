@@ -1,5 +1,5 @@
-import React, { BaseSyntheticEvent } from 'react'
-import generateUniqueId from '../libs/document-uid';
+import React, { type BaseSyntheticEvent } from "react";
+import generateUniqueId from "../libs/document-uid";
 
 export type InputNumberProps = {
   value?: number
@@ -23,22 +23,22 @@ type InputNumberState = {
    * This is the value that is currently being edited. It can be an invalid value.
    */
   dirtyValue?: number | string | undefined
-}
+};
 
 export default class InputNumber extends React.Component<InputNumberProps, InputNumberState> {
   static defaultProps = {
     rangeStep: 1
-  }
+  };
   _keyboardEvent: boolean = false;
 
   constructor(props: InputNumberProps) {
-    super(props)
+    super(props);
     this.state = {
       uuid: +generateUniqueId(),
       editing: false,
       value: props.value,
       dirtyValue: props.value,
-    }
+    };
   }
 
   static getDerivedStateFromProps(props: Readonly<InputNumberProps>, state: InputNumberState) {
@@ -57,7 +57,7 @@ export default class InputNumber extends React.Component<InputNumberProps, Input
 
     const hasChanged = this.props.value !== value;
     if(this.isValid(value) && hasChanged) {
-      if (this.props.onChange) this.props.onChange(value)
+      if (this.props.onChange) this.props.onChange(value);
       this.setState({
         value: value,
       });
@@ -70,7 +70,7 @@ export default class InputNumber extends React.Component<InputNumberProps, Input
 
     this.setState({
       dirtyValue: newValue === "" ? undefined : newValue,
-    })
+    });
   }
 
   isValid(v: number | string | undefined) {
@@ -80,18 +80,18 @@ export default class InputNumber extends React.Component<InputNumberProps, Input
 
     const value = +v;
     if(isNaN(value)) {
-      return false
+      return false;
     }
 
     if(!isNaN(this.props.min!) && value < this.props.min!) {
-      return false
+      return false;
     }
 
     if(!isNaN(this.props.max!) && value > this.props.max!) {
-      return false
+      return false;
     }
 
-    return true
+    return true;
   }
 
   resetValue = () => {
@@ -104,14 +104,14 @@ export default class InputNumber extends React.Component<InputNumberProps, Input
     // If set value is invalid fall back to the last valid value from props or at last resort the default value
     if (!this.isValid(this.state.value)) {
       if(this.isValid(this.props.value)) {
-        this.changeValue(this.props.value)
+        this.changeValue(this.props.value);
         this.setState({dirtyValue: this.props.value});
       } else {
         this.changeValue(undefined);
         this.setState({dirtyValue: undefined});
       }
     }
-  }
+  };
 
   onChangeRange = (e: BaseSyntheticEvent<Event, HTMLInputElement, HTMLInputElement>) => {
     let value = parseFloat(e.target.value);
@@ -132,7 +132,7 @@ export default class InputNumber extends React.Component<InputNumberProps, Input
           value = this.state.value! - step;
         }
         else {
-          value = this.state.value! + step
+          value = this.state.value! + step;
         }
         dirtyValue = value;
       }
@@ -153,11 +153,11 @@ export default class InputNumber extends React.Component<InputNumberProps, Input
 
     this.setState({value, dirtyValue});
     if (this.props.onChange) this.props.onChange(value);
-  }
+  };
 
   render() {
     if(
-      Object.prototype.hasOwnProperty.call(this.props, "min") && 
+      Object.prototype.hasOwnProperty.call(this.props, "min") &&
       Object.prototype.hasOwnProperty.call(this.props, "max") &&
       this.props.min !== undefined && this.props.max !== undefined &&
       this.props.allowRange
@@ -217,18 +217,18 @@ export default class InputNumber extends React.Component<InputNumberProps, Input
           }}
           onBlur={_e => {
             this.setState({editing: false});
-            this.resetValue()
+            this.resetValue();
           }}
           data-wd-key={this.props["data-wd-key"] + "-text"}
 
         />
-      </div>
+      </div>;
     }
     else {
       const value = this.state.editing ? this.state.dirtyValue : this.state.value;
 
       return <input
-        aria-label={this.props['aria-label']}
+        aria-label={this.props["aria-label"]}
         spellCheck="false"
         className="maputnik-number"
         placeholder={this.props.default?.toString()}
@@ -240,9 +240,7 @@ export default class InputNumber extends React.Component<InputNumberProps, Input
         onBlur={this.resetValue}
         required={this.props.required}
         data-wd-key={this.props["data-wd-key"]}
-      />
+      />;
     }
   }
 }
-
-
