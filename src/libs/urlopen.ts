@@ -49,7 +49,7 @@ export function validate(url: string): ErrorType {
   if (url === "") {
     return ErrorType.None;
   }
-  
+
   const { protocol, isLocal } = getProtocolSafe(url);
   const isSsl = window.location.protocol === "https:";
 
