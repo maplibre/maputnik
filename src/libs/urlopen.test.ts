@@ -101,7 +101,7 @@ describe("validate", () => {
         writable: true,
         value: "https:",
       });
-      
+
       expect(validate("https://example.com:8443")).toBe(ErrorType.None);
       expect(validate("http://example.com:8080")).toBe(ErrorType.CorsError);
       expect(validate("http://localhost:3000")).toBe(ErrorType.None);
@@ -112,7 +112,7 @@ describe("validate", () => {
         writable: true,
         value: "https:",
       });
-      
+
       expect(validate("https://example.com/path?query=value")).toBe(ErrorType.None);
       expect(validate("http://example.com/path?query=value")).toBe(ErrorType.CorsError);
     });
@@ -122,7 +122,7 @@ describe("validate", () => {
         writable: true,
         value: "https:",
       });
-      
+
       expect(validate("not a url at all")).toBe(ErrorType.EmptyHttpsProtocol);
       expect(validate("://")).toBe(ErrorType.EmptyHttpsProtocol);
     });
@@ -132,7 +132,7 @@ describe("validate", () => {
         writable: true,
         value: "https:",
       });
-      
+
       expect(validate("http://LOCALHOST")).toBe(ErrorType.None);
       expect(validate("http://LocalHost:3000")).toBe(ErrorType.None);
     });
