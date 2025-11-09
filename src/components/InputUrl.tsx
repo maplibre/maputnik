@@ -3,59 +3,31 @@ import InputString from "./InputString";
 import SmallError from "./SmallError";
 import { Trans, type WithTranslation, withTranslation } from "react-i18next";
 import { type TFunction } from "i18next";
+import { ErrorType, validate } from "../libs/urlopen";
 
-function validate(url: string, t: TFunction): JSX.Element | undefined {
-  if (url === "") {
-    return;
-  }
-
-  let error;
-  const getUrlParams = (url: string) => {
-    try {
-      const urlObj = new URL(url);
-      const { protocol, hostname } = urlObj;
-      // Basic check against localhost; 127.0.0.1/8 and IPv6 localhost [::1]
-      const isLocal = /^(localhost|\[::1\]|127(.[0-9]{1,3}){3})/i.test(hostname);
-
-      return { protocol, isLocal };
-    } catch (err) {
-      return {};
-    }
-  };
-  const { protocol, isLocal } = getUrlParams(url);
-  const isSsl = window.location.protocol === "https:";
-
-  if (!protocol) {
-    if (isSsl) {
-      error = (
+function errorTypeToJsx(errorType: ErrorType | undefined, t: TFunction): JSX.Element | undefined {
+  switch (errorType) {
+    case ErrorType.EmptyHttpsProtocol: 
+      return (
         <SmallError>
           <Trans t={t}>Must provide protocol: <code>https://</code></Trans>
         </SmallError>
       );
-    } else {
-      error = (
+    case ErrorType.EmptyHttpOrHttpsProtocol:
+      return (
         <SmallError>
           <Trans t={t}>Must provide protocol: <code>http://</code> or <code>https://</code></Trans>
         </SmallError>
       );
-    }
+    case ErrorType.CorsError:
+      return (
+        <SmallError>
+          <Trans t={t}>CORS policy won&apos;t allow fetching resources served over http from https, use a <code>https://</code> domain</Trans>
+        </SmallError>
+      );
+    default:
+      return undefined;
   }
-  else if (
-    protocol &&
-    protocol === "http:" &&
-    window.location.protocol === "https:" &&
-    !isLocal
-  ) {
-    error = (
-      <SmallError>
-        <Trans t={t}>
-          CORS policy won&apos;t allow fetching resources served over http from https, use a <code>https://</code> domain
-        </Trans>
-      </SmallError>
-    );
-  }
-
-  return error;
 }
 
 export type FieldUrlProps = {
@@ -75,7 +47,7 @@ export type FieldUrlProps = {
 type InputUrlInternalProps = FieldUrlProps & WithTranslation;
 
 type InputUrlState = {
-  error?: React.ReactNode
+  error?: ErrorType
 };
 
 class InputUrlInternal extends React.Component<InputUrlInternalProps, InputUrlState> {
@@ -86,25 +58,25 @@ class InputUrlInternal extends React.Component<InputUrlInternalProps, InputUrlSt
   constructor (props: InputUrlInternalProps) {
     super(props);
     this.state = {
-      error: validate(props.value, props.t),
+      error: validate(props.value),
     };
   }
 
   onInput = (url: string) => {
     this.setState({
-      error: validate(url, this.props.t),
+      error: validate(url),
     });
     if (this.props.onInput) this.props.onInput(url);
   };
 
   onChange = (url: string) => {
     this.setState({
-      error: validate(url, this.props.t),
+      error: validate(url),
     });
     this.props.onChange(url);
   };
 
-  render() {
+  render () {
     return (
       <div>
         <InputString
@@ -113,7 +85,7 @@ class InputUrlInternal extends React.Component<InputUrlInternalProps, InputUrlSt
           onChange={this.onChange}
           aria-label={this.props["aria-label"]}
         />
-        {this.state.error}
+        {errorTypeToJsx(this.state.error, this.props.t)}
       </div>
     );
   }
