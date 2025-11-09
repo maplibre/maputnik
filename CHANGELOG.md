@@ -24,6 +24,7 @@
 - Fix Firefox open file that stopped working due to react upgrade
 - Fix issue with missing bottom error panel
 - Fixed headers in left panes (Layers list and Layer editor) to remain visible when scrolling
+- Fix error when using a source from localhost
 - _...Add new stuff here..._
 
 ## 3.0.0

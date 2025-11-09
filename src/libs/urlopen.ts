@@ -25,3 +25,45 @@ export async function loadStyleUrl(styleUrl: string): Promise<StyleSpecification
     return style.emptyStyle;
   }
 }
+
+export const enum ErrorType {
+  None,
+  EmptyHttpsProtocol,
+  EmptyHttpOrHttpsProtocol,
+  CorsError
+}
+
+function getProtocolSafe(url: string): { protocol?: string, isLocal?: boolean } {
+  try {
+    const urlObj = new URL(url);
+    const { protocol, hostname } = urlObj;
+    const isLocal = /^(localhost|\[::1\]|127(.[0-9]{1,3}){3})/i.test(hostname);
+    return { protocol, isLocal };
+  }
+  catch (_err) {
+    return {};
+  }
+};
+
+export function validate(url: string): ErrorType {
+  if (url === "") {
+    return ErrorType.None;
+  }
+
+  const { protocol, isLocal } = getProtocolSafe(url);
+  const isSsl = window.location.protocol === "https:";
+
+  if (!protocol && isSsl) {
+    return ErrorType.EmptyHttpsProtocol;
+  }
+  if (!protocol) {
+    return ErrorType.EmptyHttpOrHttpsProtocol;
+  }
+  if (protocol &&
+    protocol === "http:" &&
+    window.location.protocol === "https:" &&
+    !isLocal) {
+    return ErrorType.CorsError;
+  }
+  return ErrorType.None;
+}
