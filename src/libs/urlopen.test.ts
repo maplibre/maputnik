@@ -1,6 +1,19 @@
 import { describe, it, expect, beforeEach, afterEach } from "vitest";
 import { validate, ErrorType } from "./urlopen";
 
+// Mock window.location if not in browser environment
+const mockLocation = {
+  protocol: "http:",
+  hostname: "localhost",
+};
+
+Object.defineProperty(global, "window", {
+  value: {
+    location: mockLocation,
+  },
+  writable: true,
+});
+
 describe("validate", () => {
   let originalProtocol: string;
 
