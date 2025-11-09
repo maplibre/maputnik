@@ -74,12 +74,15 @@ class InputJsonInternal extends React.Component<InputJsonInternalProps, InputJso
   componentDidUpdate(prevProps: InputJsonProps) {
     if (!this.state.isEditing && prevProps.value !== this.props.value) {
       this._cancelNextChange = true;
+      const currentSelection = this._view!.state.selection;
       this._view!.dispatch({
         changes: {
           from: 0,
           to: this._view!.state.doc.length,
           insert: this.getPrettyJson(this.props.value)
-        }
+        },
+        selection: currentSelection,
+        scrollIntoView: true
       });
     }
   }

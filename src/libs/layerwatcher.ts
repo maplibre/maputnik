@@ -32,11 +32,11 @@ export default class LayerWatcher {
   analyzeMap(map: Map) {
     const previousSources = { ...this._sources };
 
-    Object.keys(map.style.sourceCaches).forEach(sourceId => {
+    for (const sourceId of Object.keys(map.style.tileManagers)) {
       //NOTE: This heavily depends on the internal API of Maplibre GL
       //so this breaks between Maplibre GL JS releases
-      this._sources[sourceId] = map.style.sourceCaches[sourceId]._source.vectorLayerIds as string[];
-    });
+      this._sources[sourceId] = map.style.tileManagers[sourceId]._source.vectorLayerIds as string[];
+    };
 
     if(!isEqual(previousSources, this._sources)) {
       this.onSourcesChange(this._sources);
