@@ -7,7 +7,7 @@ import { ErrorType, validate } from "../libs/urlopen";
 
 function errorTypeToJsx(errorType: ErrorType | undefined, t: TFunction): JSX.Element | undefined {
   switch (errorType) {
-    case ErrorType.EmptyHttpsProtocol: 
+    case ErrorType.EmptyHttpsProtocol:
       return (
         <SmallError>
           <Trans t={t}>Must provide protocol: <code>https://</code></Trans>
