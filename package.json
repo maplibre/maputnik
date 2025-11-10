@@ -61,7 +61,7 @@
     "lodash.throttle": "^4.1.1",
     "maplibre-gl": "^5.11.0",
     "maputnik-design": "github:maputnik/design#172b06c",
-    "ol": "^10.6.1",
+    "ol": "^10.7.0",
     "ol-mapbox-style": "^13.1.1",
     "pmtiles": "^4.3.0",
     "prop-types": "^15.8.1",
