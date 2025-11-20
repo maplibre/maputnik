@@ -7,6 +7,7 @@ import stringifyPretty from "json-stringify-pretty-compact";
 
 import {createEditor} from "../libs/codemirror-editor-factory";
 import type { StylePropertySpecification } from "maplibre-gl";
+import { TransactionSpec } from "@codemirror/state";
 
 export type InputJsonProps = {
   value: object
@@ -59,6 +60,7 @@ class InputJsonInternal extends React.Component<InputJsonInternalProps, InputJso
 
   onFocus = () => {
     if (this.props.onFocus) this.props.onFocus();
+    console.log("focusing");
     this.setState({
       isEditing: true,
     });
@@ -69,21 +71,24 @@ class InputJsonInternal extends React.Component<InputJsonInternalProps, InputJso
     this.setState({
       isEditing: false,
     });
+    console.log("bluring");
   };
 
   componentDidUpdate(prevProps: InputJsonProps) {
     if (!this.state.isEditing && prevProps.value !== this.props.value) {
       this._cancelNextChange = true;
-      const currentSelection = this._view!.state.selection;
-      this._view!.dispatch({
+      const transactionSpec: TransactionSpec = {
         changes: {
           from: 0,
           to: this._view!.state.doc.length,
           insert: this.getPrettyJson(this.props.value)
-        },
-        selection: currentSelection,
-        scrollIntoView: true
-      });
+        }
+      };
+      if ((document.activeElement?.parentNode as HTMLDivElement)?.classList.contains("cm-search")) {
+        transactionSpec.selection = this._view!.state.selection;
+        transactionSpec.scrollIntoView = true;
+      }
+      this._view!.dispatch(transactionSpec);
     }
   }
 
