@@ -117,7 +117,7 @@
     "@types/lodash.isequal": "^4.5.8",
     "@types/lodash.throttle": "^4.1.9",
     "@types/randomcolor": "^0.5.9",
-    "@types/react": "^19.2.6",
+    "@types/react": "^19.2.7",
     "@types/react-aria-menubutton": "^6.2.14",
     "@types/react-aria-modal": "^5.0.0",
     "@types/react-collapse": "^5.0.4",
