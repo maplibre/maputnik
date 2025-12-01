@@ -36,6 +36,12 @@ describe("validate", () => {
     });
   });
 
+  describe("when URL is root relative", () => {
+    it("should return ErrorType.None", () => {
+      expect(validate("/static/style.json")).toBe(ErrorType.None);
+    });
+  });
+
   describe("when window.location.protocol is https:", () => {
     beforeEach(() => {
       Object.defineProperty(window.location, "protocol", {
