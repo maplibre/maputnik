@@ -340,8 +340,7 @@ export default class App extends React.Component<any, AppState> {
     const oldStyle = this.state.mapStyle;
     const isEmptySources = !oldStyle.sources || Object.keys(oldStyle.sources).length === 0;
     const isEmptyLayers = !oldStyle.layers || oldStyle.layers.length === 0;
-    const isEmptyName = oldStyle.name === "Empty Style";
-    const isEmptyStyle = isEmptySources && isEmptyLayers && isEmptyName;
+    const isEmptyStyle = isEmptySources && isEmptyLayers;
 
     // For the style object, find the urls that has "{key}" and insert the correct API keys
     // Without this, going from e.g. MapTiler to OpenLayers and back will lose the maptlier key.
@@ -477,6 +476,10 @@ export default class App extends React.Component<any, AppState> {
     const zoom = newStyle?.zoom; 
     const center = newStyle?.center; 
 
+    console.log(isEmptyStyle)
+    console.log(zoom)
+    console.log(center)
+
     this.setState({
       mapStyle: newStyle,
       dirtyMapStyle: dirtyMapStyle,
@@ -492,6 +495,8 @@ export default class App extends React.Component<any, AppState> {
       this.fetchSources();
       this.setStateInUrl();
     });
+
+    console.log(this.state.mapView);
   };
 
   onUndo = () => {
