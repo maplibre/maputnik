@@ -52,6 +52,14 @@ type MapMaplibreGlInternalProps = {
   onDataChange?(event: {map: Map | null}): unknown
   onLayerSelect(index: number): void
   mapStyle: StyleSpecification
+  mapView: {
+    zoom: number,
+    center: {
+      lng: number,
+      lat: number,
+    },
+    _from: "map" | "app"
+  };
   inspectModeEnabled: boolean
   highlightedLayer?: HighlightedLayer
   options?: Partial<MapOptions> & {
@@ -60,7 +68,7 @@ type MapMaplibreGlInternalProps = {
     showOverdrawInspector?: boolean
   }
   replaceAccessTokens(mapStyle: StyleSpecification): StyleSpecification
-  onChange(value: {center: LngLat, zoom: number}): unknown
+  onChange(value: {center: LngLat, zoom: number, _from: "map" | "app"}): unknown
 } & WithTranslation;
 
 type MapMaplibreGlState = {
@@ -117,6 +125,11 @@ class MapMaplibreGlInternal extends React.Component<MapMaplibreGlInternalProps, 
       map.showTileBoundaries = this.props.options?.showTileBoundaries!;
       map.showCollisionBoxes = this.props.options?.showCollisionBoxes!;
       map.showOverdrawInspector = this.props.options?.showOverdrawInspector!;
+
+      // set the map view when the prop was updated from outside
+      if (this.props.mapView._from === "app") {
+        map.jumpTo(this.props.mapView);
+      }
     }
 
     if(this.state.inspect && this.props.inspectModeEnabled !== this.state.inspect._showInspectMap) {
@@ -151,7 +164,7 @@ class MapMaplibreGlInternal extends React.Component<MapMaplibreGlInternalProps, 
     const mapViewChange = () => {
       const center = map.getCenter();
       const zoom = map.getZoom();
-      this.props.onChange({center, zoom});
+      this.props.onChange({center, zoom, _from: "map"});
     };
     mapViewChange();
 

@@ -99,6 +99,7 @@ type AppState = {
       lng: number,
       lat: number,
     },
+    _from: "map" | "app"
   },
   maplibreGlDebugOptions: Partial<MapOptions> & {
     showTileBoundaries: boolean,
@@ -148,6 +149,7 @@ export default class App extends React.Component<any, AppState> {
           lng: 0,
           lat: 0,
         },
+        _from: "app"
       },
       isOpen: {
         settings: false,
@@ -476,10 +478,6 @@ export default class App extends React.Component<any, AppState> {
     const zoom = newStyle?.zoom; 
     const center = newStyle?.center; 
 
-    console.log(isEmptyStyle)
-    console.log(zoom)
-    console.log(center)
-
     this.setState({
       mapStyle: newStyle,
       dirtyMapStyle: dirtyMapStyle,
@@ -489,14 +487,13 @@ export default class App extends React.Component<any, AppState> {
           lng: center[0],
           lat: center[1],
         },
+        _from: "app"
       } : this.state.mapView,
       errors: mappedErrors,
     }, () => {
       this.fetchSources();
       this.setStateInUrl();
     });
-
-    console.log(this.state.mapView);
   };
 
   onUndo = () => {
@@ -687,6 +684,7 @@ export default class App extends React.Component<any, AppState> {
       lng: number,
       lat: number,
     },
+    _from: "map" | "app"
   }) => {
     this.setState({
       mapView,
@@ -698,6 +696,7 @@ export default class App extends React.Component<any, AppState> {
 
     const mapProps = {
       mapStyle: (dirtyMapStyle || mapStyle),
+      mapView: this.state.mapView,
       replaceAccessTokens: (mapStyle: StyleSpecification) => {
         return style.replaceAccessTokens(mapStyle, {
           allowFallback: true
