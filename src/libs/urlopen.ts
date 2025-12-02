@@ -45,8 +45,8 @@ function getProtocolSafe(url: string): { protocol?: string, isLocal?: boolean } 
   }
 };
 
-export function validate(url: string): ErrorType {
-  if (url === "") {
+export function validate(url?: string): ErrorType {
+  if (!url) {
     return ErrorType.None;
   }
 
