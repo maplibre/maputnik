@@ -475,8 +475,8 @@ export default class App extends React.Component<any, AppState> {
       this.saveStyle(newStyle);
     }
 
-    const zoom = newStyle?.zoom; 
-    const center = newStyle?.center; 
+    const zoom = newStyle?.zoom;
+    const center = newStyle?.center;
 
     this.setState({
       mapStyle: newStyle,
