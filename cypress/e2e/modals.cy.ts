@@ -178,11 +178,11 @@ describe("modals", () => {
     });
 
     it("sprite object", () => {
-      when.setTextInJsonEditor(JSON.stringify([{id: "1", url: "2"}]));
+      when.setTextInJsonEditor(JSON.stringify([{ id: "1", url: "2" }]));
 
       when.click("modal:settings.name");
       then(get.styleFromLocalStorage()).shouldDeepNestedInclude({
-        sprite: [{ id: "1", url: "2"}],
+        sprite: [{ id: "1", url: "2" }],
       });
     });
 
@@ -342,8 +342,8 @@ describe("modals", () => {
     });
 
     it("add variable", () => {
-      when.click("global-state-add-variable");
       when.wait(100);
+      when.click("global-state-add-variable");
       then(get.styleFromLocalStorage()).shouldDeepNestedInclude({
         state: { key1: { default: "value" } },
       });
@@ -373,6 +373,7 @@ describe("modals", () => {
 
     it("edit variable key", () => {
       when.click("global-state-add-variable");
+      when.wait(100);
       when.setValue("global-state-variable-key:0", "mykey");
       when.typeKeys("{enter}");
       when.wait(100);
@@ -383,6 +384,7 @@ describe("modals", () => {
 
     it("edit variable value", () => {
       when.click("global-state-add-variable");
+      when.wait(100);
       when.setValue("global-state-variable-value:0", "myvalue");
       when.typeKeys("{enter}");
       when.wait(100);
