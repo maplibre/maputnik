@@ -26,6 +26,7 @@
 - Fix issue with missing bottom error panel
 - Fixed headers in left panes (Layers list and Layer editor) to remain visible when scrolling
 - Fix error when using a source from localhost
+- Fix an issue with scrolling when using the code editor
 - _...Add new stuff here..._
 
 ## 3.0.0
