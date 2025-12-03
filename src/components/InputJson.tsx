@@ -7,7 +7,7 @@ import stringifyPretty from "json-stringify-pretty-compact";
 
 import {createEditor} from "../libs/codemirror-editor-factory";
 import type { StylePropertySpecification } from "maplibre-gl";
-import { TransactionSpec } from "@codemirror/state";
+import type { TransactionSpec } from "@codemirror/state";
 
 export type InputJsonProps = {
   value: object
