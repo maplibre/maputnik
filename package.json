@@ -36,7 +36,7 @@
     "@dnd-kit/utilities": "^3.2.2",
     "@mapbox/mapbox-gl-rtl-text": "^0.3.0",
     "@maplibre/maplibre-gl-geocoder": "^1.9.1",
-    "@maplibre/maplibre-gl-inspect": "^1.8.0",
+    "@maplibre/maplibre-gl-inspect": "^1.8.1",
     "@maplibre/maplibre-gl-style-spec": "^24.3.1",
     "array-move": "^4.0.0",
     "buffer": "^6.0.3",
