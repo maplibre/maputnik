@@ -13,6 +13,7 @@
 - Add code editor to allow editing the entire style
 - Add support for sprite object in setting modal
 - Set the correct map view when opening a new style on an empty map
+- Allow root-relative urls in the stylefile
 - _...Add new stuff here..._
 
 ### 🐞 Bug fixes
