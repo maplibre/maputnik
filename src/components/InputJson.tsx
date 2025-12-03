@@ -7,6 +7,7 @@ import stringifyPretty from "json-stringify-pretty-compact";
 
 import {createEditor} from "../libs/codemirror-editor-factory";
 import type { StylePropertySpecification } from "maplibre-gl";
+import type { TransactionSpec } from "@codemirror/state";
 
 export type InputJsonProps = {
   value: object
@@ -16,6 +17,11 @@ export type InputJsonProps = {
   onBlur?(...args: unknown[]): unknown
   lintType: "layer" | "style" | "expression" | "json"
   spec?: StylePropertySpecification | undefined
+  /**
+   * When setting this and using search and replace, the editor will scroll to the selected text
+   * Use this only when the editor is the only element in the page.
+   */
+  withScroll?: boolean
 };
 type InputJsonInternalProps = InputJsonProps & WithTranslation;
 
@@ -28,6 +34,7 @@ class InputJsonInternal extends React.Component<InputJsonInternalProps, InputJso
   static defaultProps = {
     onFocus: () => {},
     onBlur: () => {},
+    withScroll: false
   };
   _view: EditorView | undefined;
   _el: HTMLDivElement | null = null;
@@ -74,16 +81,18 @@ class InputJsonInternal extends React.Component<InputJsonInternalProps, InputJso
   componentDidUpdate(prevProps: InputJsonProps) {
     if (!this.state.isEditing && prevProps.value !== this.props.value) {
       this._cancelNextChange = true;
-      const currentSelection = this._view!.state.selection;
-      this._view!.dispatch({
+      const transactionSpec: TransactionSpec = {
         changes: {
           from: 0,
           to: this._view!.state.doc.length,
           insert: this.getPrettyJson(this.props.value)
-        },
-        selection: currentSelection,
-        scrollIntoView: true
-      });
+        }
+      };
+      if (this.props.withScroll) {
+        transactionSpec.selection = this._view!.state.selection;
+        transactionSpec.scrollIntoView = true;
+      }
+      this._view!.dispatch(transactionSpec);
     }
   }
 

@@ -19,6 +19,7 @@ const CodeEditorInternal: React.FC<CodeEditorProps> = (props) => {
       value={props.value}
       onChange={props.onChange}
       className={"maputnik-code-editor"}
+      withScroll={true}
     />;
   </>;
 };
