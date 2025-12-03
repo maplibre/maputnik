@@ -45,8 +45,13 @@ function getProtocolSafe(url: string): { protocol?: string, isLocal?: boolean } 
   }
 };
 
-export function validate(url: string): ErrorType {
-  if (url === "") {
+export function validate(url?: string): ErrorType {
+  if (!url) {
+    return ErrorType.None;
+  }
+
+  // allow root-relative URLs ("/static/style.json") but do not allow protocol-relative URLs ("//example.com")
+  if (url.startsWith("/") && !url.startsWith("//")) {
     return ErrorType.None;
   }
 
