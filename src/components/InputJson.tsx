@@ -17,6 +17,11 @@ export type InputJsonProps = {
   onBlur?(...args: unknown[]): unknown
   lintType: "layer" | "style" | "expression" | "json"
   spec?: StylePropertySpecification | undefined
+  /**
+   * When setting this and using search and replace, the editor will scroll to the selected text
+   * Use this only when the editor is the only element in the page.
+   */
+  withScroll?: boolean
 };
 type InputJsonInternalProps = InputJsonProps & WithTranslation;
 
@@ -29,6 +34,7 @@ class InputJsonInternal extends React.Component<InputJsonInternalProps, InputJso
   static defaultProps = {
     onFocus: () => {},
     onBlur: () => {},
+    withScroll: false
   };
   _view: EditorView | undefined;
   _el: HTMLDivElement | null = null;
@@ -60,7 +66,6 @@ class InputJsonInternal extends React.Component<InputJsonInternalProps, InputJso
 
   onFocus = () => {
     if (this.props.onFocus) this.props.onFocus();
-    console.log("focusing");
     this.setState({
       isEditing: true,
     });
@@ -71,7 +76,6 @@ class InputJsonInternal extends React.Component<InputJsonInternalProps, InputJso
     this.setState({
       isEditing: false,
     });
-    console.log("bluring");
   };
 
   componentDidUpdate(prevProps: InputJsonProps) {
@@ -84,7 +88,7 @@ class InputJsonInternal extends React.Component<InputJsonInternalProps, InputJso
           insert: this.getPrettyJson(this.props.value)
         }
       };
-      if ((document.activeElement?.parentNode as HTMLDivElement)?.classList.contains("cm-search")) {
+      if (this.props.withScroll) {
         transactionSpec.selection = this._view!.state.selection;
         transactionSpec.scrollIntoView = true;
       }
