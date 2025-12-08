@@ -142,7 +142,7 @@
     "sass": "^1.94.2",
     "stylelint": "^16.26.1",
     "stylelint-config-recommended-scss": "^16.0.2",
-    "stylelint-scss": "^6.12.1",
+    "stylelint-scss": "^6.13.0",
     "typescript": "^5.9.3",
     "typescript-eslint": "^8.48.0",
     "uuid": "^13.0.0",
