@@ -65,7 +65,7 @@
     "ol-mapbox-style": "^13.1.1",
     "pmtiles": "^4.3.0",
     "prop-types": "^15.8.1",
-    "react": "^19.2.0",
+    "react": "^19.2.1",
     "react-accessible-accordion": "^5.0.1",
     "react-aria-menubutton": "^7.0.3",
     "react-aria-modal": "^5.0.2",
