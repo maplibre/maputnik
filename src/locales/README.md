@@ -52,6 +52,7 @@ The following users can help you with the relevant languages:
 | hr       | Hebrew             | [@HarelM](https://github.com/HarelM)       |
 | it       | Italian            | [@napo](https://github.com/napo)           |
 | ja       | Japanese           | [@keichan34](https://github.com/keichan34) |
+| ko       | Korean             | [@jinifor](https://github.com/jinifor)     |
 | zh       | Simplified Chinese | [@jieme](https://github.com/jieme)         |
 
 You can test the UI in different languages using the dropdown in the top menu
