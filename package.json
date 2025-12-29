@@ -63,7 +63,7 @@
     "maputnik-design": "github:maputnik/design#172b06c",
     "ol": "^10.7.0",
     "ol-mapbox-style": "^13.2.0",
-    "pmtiles": "^4.3.0",
+    "pmtiles": "^4.3.2",
     "prop-types": "^15.8.1",
     "react": "^19.2.0",
     "react-accessible-accordion": "^5.0.1",
