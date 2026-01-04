@@ -112,7 +112,7 @@ jobs:
         with: { persist-credentials: false }
       - run: npm ci
       - name: Cypress run
-        uses: cypress-io/github-action@7ef72e250a9e564efb4ed4c2433971ada4cc38b4 # v6.10.4
+        uses: cypress-io/github-action@2ad32e649e4db26c07674ebae31a297601dbcbaf # v6.10.8
         with:
           build: npm run build
           start: npm run start
@@ -133,7 +133,7 @@ jobs:
         with: { persist-credentials: false }
       - run: npm ci
       - name: Cypress run
-        uses: cypress-io/github-action@7ef72e250a9e564efb4ed4c2433971ada4cc38b4 # v6.10.4
+        uses: cypress-io/github-action@2ad32e649e4db26c07674ebae31a297601dbcbaf # v6.10.8
         with:
           build: docker build -t maputnik .
           start: docker run --rm --network host maputnik --port=8888
