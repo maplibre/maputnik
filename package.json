@@ -103,7 +103,7 @@
     "@istanbuljs/nyc-config-typescript": "^1.0.2",
     "@rollup/plugin-replace": "^6.0.2",
     "@shellygo/cypress-test-utils": "^6.0.6",
-    "@stylistic/eslint-plugin": "^5.6.1",
+    "@stylistic/eslint-plugin": "^5.7.0",
     "@types/codemirror": "^5.60.17",
     "@types/color": "^4.2.0",
     "@types/cors": "^2.8.19",
