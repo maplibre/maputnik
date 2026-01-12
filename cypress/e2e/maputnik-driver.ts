@@ -94,6 +94,20 @@ export class MaputnikDriver {
       });
       this.helper.given.interceptAndMockResponse({
         method: "GET",
+        url: baseUrl + "example-style-with-zoom-and-center.json",
+        response: {
+          fixture: "example-style-with-zoom-and-center.json",
+        },
+      });
+      this.helper.given.interceptAndMockResponse({
+        method: "GET",
+        url: baseUrl + "example-style-with-zoom-and-center2.json",
+        response: {
+          fixture: "example-style-with-zoom-and-center2.json",
+        },
+      });
+      this.helper.given.interceptAndMockResponse({
+        method: "GET",
         url: "*example.local/*",
         response: [],
       });
@@ -126,7 +140,7 @@ export class MaputnikDriver {
       this.helper.when.wait(200);
     },
     setStyle: (
-      styleProperties: "geojson" | "raster" | "both" | "layer" | "rectangles" | "font" | "",
+      styleProperties: "geojson" | "raster" | "both" | "layer" | "rectangles" | "font" | "zoom_center" | "zoom_center2"| "",
       zoom?: number
     ) => {
       const url = new URL(baseUrl);
@@ -148,6 +162,12 @@ export class MaputnikDriver {
           break;
         case "font":
           url.searchParams.set("style", baseUrl + "example-style-with-fonts.json");
+          break;
+        case "zoom_center":
+          url.searchParams.set("style", baseUrl + "example-style-with-zoom-and-center.json");
+          break;
+        case "zoom_center2":
+          url.searchParams.set("style", baseUrl + "example-style-with-zoom-and-center2.json");
           break;
       }
 

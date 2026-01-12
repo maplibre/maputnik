@@ -22,6 +22,25 @@ describe("map", () => {
         "Zoom: " + (zoomLevel + 1)
       );
     });
+
+    it("via style file definition", () => {
+      when.setStyle("zoom_center");
+      then(get.elementByTestId("maplibre:ctrl-zoom")).shouldBeVisible();
+      then(get.elementByTestId("maplibre:ctrl-zoom")).shouldContainText(
+        "Zoom: " + (7)
+      );
+      // TODO the url is only updated in the AFTER EACH section, how could I access this?
+      // then(get.currentLocation().then((text) => {
+      //   expect(text).to.contain("#7/0/51.5");
+      // }));
+
+      // TODO a second setStyle resets the map as if no stylefile was added before so this does not work
+      // don't update the map view if it was already set by another style
+      // when.setStyle("zoom_center2");
+      // then(get.elementByTestId("maplibre:ctrl-zoom")).shouldContainText(
+      //   "Zoom: " + (7)
+      // );
+    });
   });
 
   describe("search", () => {
