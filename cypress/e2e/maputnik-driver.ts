@@ -140,7 +140,7 @@ export class MaputnikDriver {
       this.helper.when.wait(200);
     },
     setStyle: (
-      styleProperties: "geojson" | "raster" | "both" | "layer" | "rectangles" | "font" | "zoom_center" | "zoom_center2"| "",
+      styleProperties: "geojson" | "raster" | "both" | "layer" | "rectangles" | "font" | "zoom_center" | "",
       zoom?: number
     ) => {
       const url = new URL(baseUrl);
@@ -165,9 +165,6 @@ export class MaputnikDriver {
           break;
         case "zoom_center":
           url.searchParams.set("style", baseUrl + "example-style-with-zoom-and-center.json");
-          break;
-        case "zoom_center2":
-          url.searchParams.set("style", baseUrl + "example-style-with-zoom-and-center2.json");
           break;
       }
 
