@@ -31,6 +31,8 @@ describe("map", () => {
       );
       cy.location("hash").should("contain", "#7/51.5/0");
 
+      // opening another stylefile does not update the map view again
+      // as discussed in https://github.com/maplibre/maputnik/issues/1546
       cy.contains("button", "Open").click();
 
       cy.get('[data-wd-key="modal:open.url.input"]')
