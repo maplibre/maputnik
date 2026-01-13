@@ -29,17 +29,17 @@ describe("map", () => {
       then(get.elementByTestId("maplibre:ctrl-zoom")).shouldContainText(
         "Zoom: " + (7)
       );
-      // TODO the url is only updated in the AFTER EACH section, how could I access this?
-      // then(get.currentLocation().then((text) => {
-      //   expect(text).to.contain("#7/0/51.5");
-      // }));
+      cy.location("hash").should("contain", "#7/51.5/0");
 
-      // TODO a second setStyle resets the map as if no stylefile was added before so this does not work
-      // don't update the map view if it was already set by another style
-      // when.setStyle("zoom_center2");
-      // then(get.elementByTestId("maplibre:ctrl-zoom")).shouldContainText(
-      //   "Zoom: " + (7)
-      // );
+      cy.contains("button", "Open").click();
+
+      cy.get('[data-wd-key="modal:open.url.input"]')
+        .should("be.enabled")
+        .clear()
+        .type("http://localhost:8888/example-style-with-zoom-and-center2.json{enter}");
+
+      cy.location("hash").should("contain", "#7/51.5/0");
+
     });
   });
 
@@ -52,6 +52,7 @@ describe("map", () => {
   describe("popup", () => {
     beforeEach(() => {
       when.setStyle("rectangles");
+      cy.location("hash").should("exist");
     });
     it("should open on feature click", () => {
       when.clickCenter("maplibre:map");
