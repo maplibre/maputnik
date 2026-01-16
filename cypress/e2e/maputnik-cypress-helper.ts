@@ -10,6 +10,7 @@ export default class MaputnikCypressHelper {
   };
 
   public get = {
+    locationHash: (): Cypress.Chainable<string> => cy.location('hash'),
     ...this.helper.get,
   };
 

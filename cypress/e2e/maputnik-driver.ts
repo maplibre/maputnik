@@ -23,7 +23,14 @@ export class MaputnikAssertable<T> extends Assertable<T> {
         then(this.chainable).shouldDeepNestedInclude(style);
       })
     );
-}
+  
+  shouldHaveUrlHashContaining = (expectedHash: string) =>
+    then(
+      new MaputnikCypressHelper().get.locationHash().then((hash: string) => {
+        expect(hash).to.contain(expectedHash);
+      })
+    );
+  }
 
 export class MaputnikDriver {
   private helper = new MaputnikCypressHelper();
@@ -133,6 +140,13 @@ export class MaputnikDriver {
     tab: () => this.helper.get.element("body").tab(),
     waitForExampleFileResponse: () => {
       this.helper.when.waitForResponse("example-style.json");
+    },
+    openASecondStyleWithDifferentZoomAndCenter: () => {
+      cy.contains("button", "Open").click();
+      cy.get('[data-wd-key="modal:open.url.input"]')
+        .should("be.enabled")
+        .clear()
+        .type("http://localhost:8888/example-style-with-zoom-and-center2.json{enter}");
     },
     chooseExampleFile: () => {
       this.helper.given.fixture("example-style.json", "example-style.json");

@@ -29,18 +29,12 @@ describe("map", () => {
       then(get.elementByTestId("maplibre:ctrl-zoom")).shouldContainText(
         "Zoom: " + (7)
       );
-      cy.location("hash").should("contain", "#7/51.5/0");
+      then(get.locationHash().should("contain", "#7/51.5/0"));
 
       // opening another stylefile does not update the map view again
       // as discussed in https://github.com/maplibre/maputnik/issues/1546
-      cy.contains("button", "Open").click();
-
-      cy.get('[data-wd-key="modal:open.url.input"]')
-        .should("be.enabled")
-        .clear()
-        .type("http://localhost:8888/example-style-with-zoom-and-center2.json{enter}");
-
-      cy.location("hash").should("contain", "#7/51.5/0");
+      when.openASecondStyleWithDifferentZoomAndCenter();
+      then(get.locationHash().should("contain", "#7/51.5/0"));
 
     });
   });
@@ -54,7 +48,7 @@ describe("map", () => {
   describe("popup", () => {
     beforeEach(() => {
       when.setStyle("rectangles");
-      cy.location("hash").should("exist");
+      then(get.locationHash().should("exist"));
     });
     it("should open on feature click", () => {
       when.clickCenter("maplibre:map");
