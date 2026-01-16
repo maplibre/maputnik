@@ -23,7 +23,7 @@ export class MaputnikAssertable<T> extends Assertable<T> {
         then(this.chainable).shouldDeepNestedInclude(style);
       })
     );
-  
+
   shouldHaveUrlHashContaining = (expectedHash: string) =>
     then(
       new MaputnikCypressHelper().get.locationHash().then((hash: string) => {
