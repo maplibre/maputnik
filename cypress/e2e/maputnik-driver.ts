@@ -30,7 +30,7 @@ export class MaputnikAssertable<T> extends Assertable<T> {
         expect(hash).to.contain(expectedHash);
       })
     );
-  }
+}
 
 export class MaputnikDriver {
   private helper = new MaputnikCypressHelper();
