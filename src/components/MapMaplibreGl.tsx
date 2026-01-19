@@ -143,7 +143,7 @@ class MapMaplibreGlInternal extends React.Component<MapMaplibreGlInternalProps, 
       // not support this for everything:
       // https://github.com/maplibre/maplibre-gl-js/issues/6818
       transformRequest: (url) => {
-        if (url.startsWith('/')) {
+        if (url.startsWith("/")) {
           url = `${window.location.origin}${url}`;
         }
         return { url };
