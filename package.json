@@ -141,7 +141,7 @@
     "react-hot-loader": "^4.13.1",
     "sass": "^1.97.2",
     "stylelint": "^17.0.0",
-    "stylelint-config-recommended-scss": "^16.0.2",
+    "stylelint-config-recommended-scss": "^17.0.0",
     "stylelint-scss": "^7.0.0",
     "typescript": "^5.9.3",
     "typescript-eslint": "^8.53.0",
