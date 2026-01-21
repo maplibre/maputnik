@@ -152,6 +152,15 @@ class MapMaplibreGlInternal extends React.Component<MapMaplibreGlInternalProps, 
       style: this.props.mapStyle,
       hash: true,
       maxZoom: 24,
+      // make root relative urls in stylefiles work as maplibre gl js does
+      // not support this for everything:
+      // https://github.com/maplibre/maplibre-gl-js/issues/6818
+      transformRequest: (url) => {
+        if (url.startsWith("/")) {
+          url = `${window.location.origin}${url}`;
+        }
+        return { url };
+      },
       // setting to always load glyphs of CJK fonts from server
       // https://maplibre.org/maplibre-gl-js/docs/examples/local-ideographs/
       localIdeographFontFamily: false
