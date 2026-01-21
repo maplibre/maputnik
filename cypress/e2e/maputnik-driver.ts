@@ -94,6 +94,20 @@ export class MaputnikDriver {
       });
       this.helper.given.interceptAndMockResponse({
         method: "GET",
+        url: baseUrl + "example-style-with-zoom-7-and-center-0-51.json",
+        response: {
+          fixture: "example-style-with-zoom-7-and-center-0-51.json",
+        },
+      });
+      this.helper.given.interceptAndMockResponse({
+        method: "GET",
+        url: baseUrl + "example-style-with-zoom-5-and-center-50-50.json",
+        response: {
+          fixture: "example-style-with-zoom-5-and-center-50-50.json",
+        },
+      });
+      this.helper.given.interceptAndMockResponse({
+        method: "GET",
         url: "*example.local/*",
         response: [],
       });
@@ -120,13 +134,20 @@ export class MaputnikDriver {
     waitForExampleFileResponse: () => {
       this.helper.when.waitForResponse("example-style.json");
     },
+    openASecondStyleWithDifferentZoomAndCenter: () => {
+      cy.contains("button", "Open").click();
+      cy.get('[data-wd-key="modal:open.url.input"]')
+        .should("be.enabled")
+        .clear()
+        .type("http://localhost:8888/example-style-with-zoom-5-and-center-50-50.json{enter}");
+    },
     chooseExampleFile: () => {
       this.helper.given.fixture("example-style.json", "example-style.json");
       this.helper.when.openFileByFixture("example-style.json", "modal:open.file.button", "modal:open.file.input");
       this.helper.when.wait(200);
     },
     setStyle: (
-      styleProperties: "geojson" | "raster" | "both" | "layer" | "rectangles" | "font" | "",
+      styleProperties: "geojson" | "raster" | "both" | "layer" | "rectangles" | "font" | "zoom_7_center_0_51" | "",
       zoom?: number
     ) => {
       const url = new URL(baseUrl);
@@ -148,6 +169,9 @@ export class MaputnikDriver {
           break;
         case "font":
           url.searchParams.set("style", baseUrl + "example-style-with-fonts.json");
+          break;
+        case "zoom_7_center_0_51":
+          url.searchParams.set("style", baseUrl + "example-style-with-zoom-7-and-center-0-51.json");
           break;
       }
 

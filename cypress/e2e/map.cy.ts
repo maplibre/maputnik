@@ -22,6 +22,21 @@ describe("map", () => {
         "Zoom: " + (zoomLevel + 1)
       );
     });
+
+    it("via style file definition", () => {
+      when.setStyle("zoom_7_center_0_51");
+      then(get.elementByTestId("maplibre:ctrl-zoom")).shouldBeVisible();
+      then(get.elementByTestId("maplibre:ctrl-zoom")).shouldContainText(
+        "Zoom: " + (7)
+      );
+      then(get.locationHash().should("contain", "#7/51/0"));
+
+      // opening another stylefile does not update the map view again
+      // as discussed in https://github.com/maplibre/maputnik/issues/1546
+      when.openASecondStyleWithDifferentZoomAndCenter();
+      then(get.locationHash().should("contain", "#7/51/0"));
+
+    });
   });
 
   describe("search", () => {
@@ -33,6 +48,7 @@ describe("map", () => {
   describe("popup", () => {
     beforeEach(() => {
       when.setStyle("rectangles");
+      then(get.locationHash().should("exist"));
     });
     it("should open on feature click", () => {
       when.clickCenter("maplibre:map");

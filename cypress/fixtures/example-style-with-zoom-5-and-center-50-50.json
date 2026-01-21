@@ -1,0 +1,19 @@
+{
+    "id": "test-style",
+    "center": [50,50],
+    "zoom": 5,
+    "version": 8,
+    "name": "Test Style",
+    "sources": {
+        "rectangles": {
+        "type": "geojson",
+        "data": {
+            "type": "FeatureCollection",
+            "features": []
+        }
+      }
+    },
+    "glyphs": "https://example.local/fonts/{fontstack}/{range}.pbf",
+    "sprites": "https://example.local/fonts/{fontstack}/{range}.pbf",
+    "layers": []
+}

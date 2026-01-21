@@ -99,6 +99,7 @@ type AppState = {
       lng: number,
       lat: number,
     },
+    _from: "map" | "app"
   },
   maplibreGlDebugOptions: Partial<MapOptions> & {
     showTileBoundaries: boolean,
@@ -148,6 +149,7 @@ export default class App extends React.Component<any, AppState> {
           lng: 0,
           lat: 0,
         },
+        _from: "app"
       },
       isOpen: {
         settings: false,
@@ -335,6 +337,13 @@ export default class App extends React.Component<any, AppState> {
       ...opts,
     };
 
+
+    // Detect empty style
+    const oldStyle = this.state.mapStyle;
+    const isEmptySources = !oldStyle.sources || Object.keys(oldStyle.sources).length === 0;
+    const isEmptyLayers = !oldStyle.layers || oldStyle.layers.length === 0;
+    const isEmptyStyle = isEmptySources && isEmptyLayers;
+
     // For the style object, find the urls that has "{key}" and insert the correct API keys
     // Without this, going from e.g. MapTiler to OpenLayers and back will lose the maptlier key.
 
@@ -466,15 +475,25 @@ export default class App extends React.Component<any, AppState> {
       this.saveStyle(newStyle);
     }
 
+    const zoom = newStyle?.zoom;
+    const center = newStyle?.center;
+
     this.setState({
       mapStyle: newStyle,
       dirtyMapStyle: dirtyMapStyle,
+      mapView: isEmptyStyle && zoom && center ? {
+        zoom: zoom,
+        center: {
+          lng: center[0],
+          lat: center[1],
+        },
+        _from: "app"
+      } : this.state.mapView,
       errors: mappedErrors,
     }, () => {
       this.fetchSources();
       this.setStateInUrl();
     });
-
   };
 
   onUndo = () => {
@@ -665,6 +684,7 @@ export default class App extends React.Component<any, AppState> {
       lng: number,
       lat: number,
     },
+    _from: "map" | "app"
   }) => {
     this.setState({
       mapView,
@@ -676,6 +696,7 @@ export default class App extends React.Component<any, AppState> {
 
     const mapProps = {
       mapStyle: (dirtyMapStyle || mapStyle),
+      mapView: this.state.mapView,
       replaceAccessTokens: (mapStyle: StyleSpecification) => {
         return style.replaceAccessTokens(mapStyle, {
           allowFallback: true
