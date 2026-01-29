@@ -67,7 +67,7 @@
     "prop-types": "^15.8.1",
     "react": "^19.2.0",
     "react-accessible-accordion": "^5.0.1",
-    "react-aria-menubutton": "^7.0.3",
+    "react-aria-menubutton": "^8.0.0",
     "react-aria-modal": "^5.0.2",
     "react-collapse": "^5.1.1",
     "react-color": "^2.19.3",
