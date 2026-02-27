@@ -1,0 +1,21 @@
+@mixin vendor-prefix($name, $argument) {
+  -webkit-#{$name}: #{$argument};
+  -ms-#{$name}: #{$argument};
+  -moz-#{$name}: #{$argument};
+  -o-#{$name}: #{$argument};
+  #{$name}: #{$argument};
+}
+
+@mixin flex-row {
+  display: flex;
+  display: -ms-flexbox;
+
+  @include vendor-prefix(flex-direction, row);
+}
+
+@mixin flex-column {
+  display: flex;
+  display: -ms-flexbox;
+
+  @include vendor-prefix(flex-direction, column);
+}

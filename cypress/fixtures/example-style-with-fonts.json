@@ -1,0 +1,38 @@
+{
+  "id": "test-style",
+  "version": 8,
+  "name": "Test Style",
+  "metadata": {
+    "maputnik:renderer": "mlgljs"
+  },
+  "sources": {
+    "example": {
+        "type": "geojson",
+        "data": {
+            "type": "FeatureCollection",
+            "features":[{
+                "type": "Feature",
+                "properties": {
+                    "name": "Dinagat Islands"
+                },
+                "geometry":{
+                    "type": "Point",
+                    "coordinates": [125.6, 10.1]
+                }
+            }]
+        }
+    }
+  },
+  "glyphs": "https://www.glyph-server.com/fonts/{fontstack}/{range}.pbf",
+  "sprites": "https://example.local/fonts/{fontstack}/{range}.pbf",
+  "layers": [
+    {
+      "id": "label",
+      "type": "symbol",
+      "source": "example",
+      "layout": {
+        "text-font": ["Font"]
+      }
+    }
+  ]
+}

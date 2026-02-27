@@ -1,0 +1,17 @@
+{
+    "id": "test-style",
+    "center": [0,51],
+    "zoom": 7,
+    "version": 8,
+    "name": "Test Style",
+    "sources": {
+        "rectangles": {
+        "type": "geojson",
+        "data": {
+            "type": "FeatureCollection",
+            "features": []
+        }
+      }
+    },
+    "layers": []
+}

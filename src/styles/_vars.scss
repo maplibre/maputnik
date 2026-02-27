@@ -1,0 +1,30 @@
+$color-black: #191b20;
+$color-gray: #222429;
+$color-midgray: #303237;
+$color-lowgray: #a4a4a4;
+$color-white: #f0f0f0;
+$color-red: #cf4a4a;
+$color-green: #53b972;
+$margin-1: 3px;
+$margin-2: 5px;
+$margin-3: 10px;
+$margin-4: 30px;
+$margin-5: 40px;
+$font-size-1: 24px;
+$font-size-2: 20px;
+$font-size-3: 18px;
+$font-size-4: 16px;
+$font-size-5: 14px;
+$font-size-6: 12px;
+$font-family: Roboto, sans-serif;
+
+$toolbar-height: 40px;
+$toolbar-offset: 0;
+
+$layout-list-width: 200px;
+$layout-editor-width: 370px;
+$layout-map-width: calc(100% - #{$layout-list-width + $layout-editor-width});
+
+// 'menu-down' from 'https://materialdesignicons.com/'
+// See <https://github.com/Templarian/MaterialDesign/blob/master/LICENSE>
+$icon-down-arrow: "data:image/svg+xml;charset=utf-8,<svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24'><path fill='white' d='M7,10L12,15L17,10H7Z' /></svg>"

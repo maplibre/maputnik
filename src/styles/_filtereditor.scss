@@ -1,0 +1,77 @@
+@use "vars";
+
+.maputnik-filter-editor-wrapper {
+  padding: vars.$margin-3;
+  overflow: hidden;
+
+  .maputnik-input-block {
+    margin: 0;
+  }
+}
+
+.maputnik-filter-editor {
+  @extend .clearfix !optional; /* stylelint-disable-line */
+  color: vars.$color-lowgray;
+}
+
+.maputnik-filter-editor-single {
+  display: flex;
+  column-gap: 6px;
+}
+
+.maputnik-filter-editor-operator {
+  .maputnik-select {
+    width: 100%;
+  }
+}
+
+.maputnik-filter-editor-args {
+  .maputnik-string,
+  .maputnik-number {
+    width: 100%;
+  }
+}
+
+.maputnik-filter-editor-compound-select {
+  margin-bottom: vars.$margin-2;
+
+  .maputnik-doc-wrapper {
+    width: 50%;
+  }
+
+  .maputnik-select {
+    display: inline-block;
+    width: 50%;
+  }
+}
+
+.maputnik-filter-editor-unsupported {
+  color: vars.$color-midgray;
+}
+
+.maputnik-add-filter {
+  display: inline-block;
+  float: right;
+  margin-top: vars.$margin-3;
+}
+
+.maputnik-filter-editor-block {
+  display: flex;
+  column-gap: 6px;
+  margin-bottom: 2px;
+}
+
+.maputnik-radio-as-button {
+  border: solid 1px transparent;
+
+  &:focus-within {
+    border: solid 1px vars.$color-white;
+  }
+
+  input {
+    width: 0;
+    overflow: hidden;
+    opacity: 0;
+    margin: 0;
+  }
+}

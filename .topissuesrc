@@ -1,0 +1,15 @@
+{
+    "labels": {
+        "bug": 5,
+        "maintenance": 3,
+        "mentioned in the 1st survey": 2
+    },
+    "reactions": {
+        "+1": 2,
+        "-1": -1,
+        "laugh": 1,
+        "hooray": 2,
+        "confused": 1,
+        "heart": 2
+    }
+}

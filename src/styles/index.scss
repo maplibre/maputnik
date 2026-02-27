@@ -1,0 +1,156 @@
+@use 'vars';
+@use 'mixins';
+@use 'reset';
+@use 'base';
+@use 'components';
+@use 'scrollbar';
+@use 'picker';
+@use 'toolbar';
+@use 'modal';
+@use 'export';
+@use 'layout';
+@use 'layer';
+@use 'input';
+@use 'filtereditor';
+@use 'zoomproperty';
+@use 'popup';
+@use 'map';
+@use 'react-collapse';
+
+.maputnik-layout {
+  height: 100vh;
+}
+
+.react-icons {
+  vertical-align: middle;
+  width: 14px;
+  height: 14px;
+}
+
+.maputnik-data-fieldset-inner {
+  background: vars.$color-black;
+  border: solid 1px vars.$color-midgray;
+  border-radius: 2px;
+  position: relative;
+
+  // HACK: Overide
+  .maputnik-input-block {
+    margin: vars.$margin-2;
+  }
+
+  .maputnik-add-stop {
+    display: inline-block;
+    float: none;
+
+    &:last-child {
+      margin-right: 0;
+    }
+  }
+
+  .maputnik-toolbox {
+    margin: vars.$margin-3;
+    margin-top: vars.$margin-3;
+    text-align: right;
+  }
+
+}
+
+.maputnik-data-spec-property {
+  legend {
+    font-size: vars.$font-size-6;
+    color: vars.$color-lowgray;
+    margin-bottom: vars.$margin-3;
+  }
+
+  .maputnik-data-spec-property-group {
+    margin-bottom: vars.$margin-2;
+  }
+}
+
+.maputnik-data-spec-block {
+  margin: vars.$margin-3;
+}
+
+.maputnik-function-stop {
+  padding-left: vars.$margin-2;
+  padding-right: vars.$margin-2;
+}
+
+.maputnik-function-stop-table {
+  text-align: left;
+  margin-bottom: vars.$margin-2;
+  box-sizing: border-box;
+  width: 100%;
+
+  thead th {
+    padding: vars.$margin-1 vars.$margin-2;
+    padding-left: 0;
+    color: vars.$color-lowgray;
+  }
+
+  td, th {
+    font-size: vars.$font-size-6;
+    color: vars.$color-white;
+
+    // HACK
+    > * {
+      display: inline-block;
+      width: 100%;
+      vertical-align: text-top;
+    }
+
+    &:not(:first-child)
+    {
+      padding: vars.$margin-1;
+    }
+
+    &:nth-child(1) {
+      width: 2em;
+    }
+
+    &:nth-child(2) {
+      width: 6em;
+    }
+
+    &:nth-child(3) {
+      width: auto;
+    }
+
+    &:nth-child(4) {
+      // HACK
+      width: 1.8em;
+
+      .maputnik-delete-stop {
+        padding: 0;
+        width: 1em;
+      }
+    }
+  }
+
+  &--zoom {
+    td, th {
+      &:nth-child(2) {
+        width: auto;
+      }
+
+      &:nth-child(3) {
+        // HACK
+        width: 1.8em;
+
+        .maputnik-delete-stop {
+          padding: 0;
+          width: 1em;
+        }
+      }
+    }
+  }
+
+  caption {
+    color: vars.$color-lowgray;
+    text-align: left;
+    border-top: solid 1px vars.$color-black;
+    font-size: vars.$font-size-6;
+    height: 0px;
+    overflow: hidden;
+  }
+}

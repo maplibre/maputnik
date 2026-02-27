@@ -1,0 +1,346 @@
+@use "mixins";
+@use "vars";
+
+@use 'sass:color';
+// LAYER LIST
+.maputnik-layer-list {
+  height: 100%;
+  overflow-y: auto;
+  overflow-x: hidden;
+  display: flex;
+  flex-direction: column;
+
+  &-header {
+    padding: vars.$margin-2 vars.$margin-2 vars.$margin-3;
+    position: sticky;
+    top: 0;
+    z-index: 2001;
+    background-color: vars.$color-black;
+
+    @include mixins.flex-row;
+    flex: 0 0 auto;
+
+    > * {
+      vertical-align: middle;
+      margin-bottom: 0;
+    }
+  }
+
+  &-header-title {
+    font-size: vars.$font-size-5;
+    color: vars.$color-white;
+    font-weight: bold;
+    line-height: 1.3;
+  }
+
+  &-container {
+    padding: 0;
+    margin: 0;
+    padding-bottom: vars.$margin-5;
+    flex: 1 1 auto;
+    overflow-x: hidden;
+    overflow-y: visible;
+  }
+
+  &-item-handle {
+    flex: 1;
+    display: flex;
+    cursor: grab;
+    align-items: center;
+    svg {
+      margin-right: 4px;
+    }
+  }
+
+  [dir="rtl"] &-item-handle {
+    svg {
+      margin-right: 0;
+      margin-left: 4px;
+    }
+  }
+
+  &-item {
+    border: solid 1px transparent;
+    font-weight: 400;
+    color: vars.$color-lowgray;
+    font-size: vars.$font-size-6;
+    border-bottom-color: color.adjust(vars.$color-black, $lightness: 0.1%);
+    user-select: none;
+    list-style: none;
+    z-index: 2000;
+    cursor: pointer;
+    position: relative;
+    padding: 5px;
+    line-height: 1.3;
+    max-height: 50px;
+    opacity: 1;
+    -webkit-transition: opacity 600ms, visibility 600ms;
+    transition: opacity 600ms, visibility 600ms;
+
+    &:focus-within {
+      border: solid 1px vars.$color-lowgray;
+    }
+
+    @include mixins.flex-row;
+
+    @media screen and (prefers-reduced-motion: reduce) {
+      transition-duration: 0;
+    }
+
+  }
+
+  &-icon-action {
+    display: none;
+
+    svg {
+      fill: vars.$color-black;
+    }
+  }
+
+  .maputnik-layer-list-icon-action {
+    background: initial;
+    border: none;
+    padding: 0 2px;
+    height: 15px;
+
+    svg {
+      fill: color.adjust(vars.$color-lowgray, $lightness: -20%);
+
+      &:hover {
+        fill: vars.$color-white;
+      }
+    }
+  }
+
+  .maputnik-layer-list-icon-action__visibility--hide {
+    display: block;
+  }
+
+  .maputnik-layer-list-item:hover,
+  .maputnik-layer-list-item-selected {
+    background-color: color.adjust(vars.$color-black, $lightness: 2%);
+
+    .maputnik-layer-list-icon-action {
+      display: block;
+
+      svg {
+        fill: color.adjust(vars.$color-lowgray, $lightness: -0.5%);
+      }
+    }
+  }
+
+
+  .maputnik-layer-list-item--error {
+    color: vars.$color-red;
+  }
+
+  &-item-selected {
+    color: vars.$color-white;
+  }
+
+  &-item-collapsed {
+    position: absolute;
+    max-height: 0;
+    overflow: hidden;
+    padding: 0;
+    opacity: 0;
+    visibility: hidden;
+  }
+
+  &-item-group-last {
+    border-bottom: 2px solid vars.$color-gray;
+  }
+
+  &-item-id {
+    all: inherit;
+    width: 115px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    color: inherit;
+    text-decoration: none;
+    cursor: pointer;
+    // HACK: Remove important
+    outline: none !important;
+  }
+
+  &-group-header {
+    border: solid 1px transparent;
+    font-size: vars.$font-size-6;
+    color: vars.$color-lowgray;
+    background-color: color.adjust(vars.$color-black, $lightness: 2%);
+    user-select: none;
+    padding: vars.$margin-2;
+
+    &:focus-within {
+      border: solid 1px vars.$color-lowgray;
+    }
+
+    button {
+      all: unset;
+      cursor: pointer;
+    }
+
+    @include mixins.flex-row;
+
+    svg {
+      width: 14px;
+      height: 14px;
+    }
+  }
+
+  &-group-title {
+    vertical-align: middle;
+  }
+
+  &-group-content {
+    margin: 0 vars.$margin-3;
+  }
+}
+
+// FILTER EDITOR
+.maputnik-layer-editor-group {
+  font-weight: bold;
+  font-size: vars.$font-size-5;
+  background-color: color.adjust(vars.$color-black, $lightness: 2%);
+  color: vars.$color-white;
+  cursor: pointer;
+  user-select: none;
+  line-height: 20px;
+  border-top: solid 1px #36383e;
+
+  @include mixins.flex-row;
+
+  &__button {
+    flex: 1;
+    display: flex;
+    padding: vars.$margin-2;
+
+    &__icon {
+      fill: white;
+    }
+
+    &__icon--up {
+      display: block;
+    }
+
+    &__icon--down {
+      display: none;
+    }
+
+  }
+
+  &__button[aria-expanded="true"] {
+    .maputnik-layer-editor-group__button__icon--up {
+      display: none;
+    }
+
+    .maputnik-layer-editor-group__button__icon--down {
+      display: block;
+    }
+  }
+
+
+
+
+  &:hover {
+    background-color: vars.$color-gray;
+  }
+}
+
+// PROPERTY
+.maputnik-default-property {
+  .maputnik-input-block-label {
+    color: color.adjust(vars.$color-lowgray, $lightness: -20%);
+  }
+
+  .maputnik-string,
+  .maputnik-number,
+  .maputnik-color,
+  .maputnik-select,
+  .maputnik-checkbox-wrapper {
+    background-color: color.adjust(vars.$color-gray, $lightness: -2%);
+    color: color.adjust(vars.$color-lowgray, $lightness: -20%);
+  }
+
+  .maputnik-make-zoom-function svg {
+    opacity: 0.4;
+  }
+
+  .maputnik-multibutton .maputnik-button {
+    background-color: color.adjust(vars.$color-midgray, $lightness: -10%);
+    color: color.adjust(vars.$color-lowgray, $lightness: -20%);
+
+    &:hover {
+      background-color: color.adjust(vars.$color-midgray, $lightness: 12%);
+      color: vars.$color-white;
+    }
+  }
+
+  .maputnik-multibutton .maputnik-button-selected {
+    background-color: color.adjust(vars.$color-midgray, $lightness: -2%);
+    color: vars.$color-lowgray;
+  }
+}
+
+.more-menu {
+  position: relative;
+
+  svg {
+    width: 22px;
+    height: 22px;
+  }
+
+  &__menu {
+    position: absolute;
+    z-index: 9999;
+    background: vars.$color-black;
+    border: solid 1px vars.$color-midgray;
+    right: 0;
+    min-width: 120px;
+  }
+
+  [dir="rtl"] &__menu {
+    left: 0;
+    right: auto;
+  }
+
+  &__button__svg {
+    width: 24px;
+    height: 24px;
+  }
+
+  &__menu__item {
+    padding: 4px;
+  }
+}
+
+.layer-header {
+  display: flex;
+  padding: 6px;
+  background: vars.$color-black;
+
+  &__title {
+    flex: 1;
+    margin: 0;
+    line-height: 24px;
+  }
+
+  &__info {
+    min-width: 28px;
+  }
+}
+
+.maputnik-layer-editor > header {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background: vars.$color-black;
+}
+
+// Clone of the element which is sorted
+.sortableHelper {
+  font-family: vars.$font-family;
+  z-index: 9999;
+  border: none;
+}
