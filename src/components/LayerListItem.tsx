@@ -13,11 +13,19 @@ type DraggableLabelProps = {
   layerType: string
   dragAttributes?: React.HTMLAttributes<HTMLElement>
   dragListeners?: React.HTMLAttributes<HTMLElement>
+  onSelect?: () => void
 };
 
 const DraggableLabel: React.FC<DraggableLabelProps> = (props) => {
   const {dragAttributes, dragListeners} = props;
-  return <div className="maputnik-layer-list-item-handle" {...dragAttributes} {...dragListeners}>
+
+  const handleClick = (e: React.MouseEvent) => {
+    // Ensure layer selection fires even when dnd-kit captures the pointer
+    e.stopPropagation();
+    props.onSelect?.();
+  };
+
+  return <div className="maputnik-layer-list-item-handle" {...dragAttributes} {...dragListeners} onClick={handleClick}>
     <IconLayer
       className="layer-handle__icon"
       type={props.layerType}
@@ -137,6 +145,7 @@ const LayerListItem = React.forwardRef<HTMLLIElement, LayerListItemProps>((props
         layerType={props.layerType}
         dragAttributes={attributes}
         dragListeners={listeners}
+        onSelect={() => props.onLayerSelect(props.layerIndex)}
       />
       <span style={{flexGrow: 1}} />
       <IconAction
