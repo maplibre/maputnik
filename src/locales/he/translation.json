@@ -206,5 +206,7 @@
   "LocationIQ Access Token": "LocationIQ Access Token",
   "Public access token for LocationIQ services.": "Public access token for LocationIQ services.",
   "Style Renderer": "צייר הסטייל",
-  "Choose the default Maputnik renderer for this style.": "בחירת צייר ברירת המחדל של מפוטניק עבור הסטייל הזה"
+  "Choose the default Maputnik renderer for this style.": "בחירת צייר ברירת המחדל של מפוטניק עבור הסטייל הזה",
+  "Drag to resize sidebar": "__STRING_NOT_TRANSLATED__",
+  "Drag to resize list / editor split": "__STRING_NOT_TRANSLATED__"
 }

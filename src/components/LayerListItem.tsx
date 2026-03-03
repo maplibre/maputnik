@@ -13,7 +13,7 @@ type DraggableLabelProps = {
   layerType: string
   dragAttributes?: React.HTMLAttributes<HTMLElement>
   dragListeners?: React.HTMLAttributes<HTMLElement>
-  onSelect?: () => void
+  onSelect: () => void
 };
 
 const DraggableLabel: React.FC<DraggableLabelProps> = (props) => {
@@ -22,7 +22,7 @@ const DraggableLabel: React.FC<DraggableLabelProps> = (props) => {
   const handleClick = (e: React.MouseEvent) => {
     // Ensure layer selection fires even when dnd-kit captures the pointer
     e.stopPropagation();
-    props.onSelect?.();
+    props.onSelect();
   };
 
   return <div className="maputnik-layer-list-item-handle" {...dragAttributes} {...dragListeners} onClick={handleClick}>

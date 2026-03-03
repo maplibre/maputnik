@@ -25,7 +25,7 @@ type AppLayoutProps = {
 };
 
 export default function AppLayout(props: AppLayoutProps) {
-  const {i18n} = useTranslation();
+  const {t, i18n} = useTranslation();
 
   useEffect(() => {
     document.body.dir = i18n.dir();
@@ -128,14 +128,12 @@ export default function AppLayout(props: AppLayoutProps) {
     };
   }, []);
 
-  const layoutStyle = {
-    "--sidebar-list-width": `${listWidth}px`,
-    "--sidebar-drawer-width": `${drawerWidth}px`,
-    "--sidebar-total-width": `${sidebarWidth}px`,
-  } as React.CSSProperties;
-
   return <IconContext.Provider value={{size: "14px"}}>
-    <div className="maputnik-layout" style={layoutStyle}>
+    <div className="maputnik-layout" style={{
+      "--sidebar-list-width": `${listWidth}px`,
+      "--sidebar-drawer-width": `${drawerWidth}px`,
+      "--sidebar-total-width": `${sidebarWidth}px`,
+    } as React.CSSProperties}>
       {props.toolbar}
       <div className="maputnik-layout-main">
         {props.codeEditor && <div className="maputnik-layout-code-editor">
@@ -150,9 +148,9 @@ export default function AppLayout(props: AppLayoutProps) {
           </div>
           <div
             className="maputnik-layout-resize-handle maputnik-layout-resize-handle--inner"
-            data-testid="inner-resize-handle"
+            data-wd-key="inner-resize-handle"
             onMouseDown={handleInnerMouseDown}
-            title="Drag to resize list / editor split"
+            title={t("Drag to resize list / editor split")}
             tabIndex={-1}
             aria-hidden="true"
           />
@@ -163,9 +161,9 @@ export default function AppLayout(props: AppLayoutProps) {
           </div>
           <div
             className="maputnik-layout-resize-handle"
-            data-testid="sidebar-resize-handle"
+            data-wd-key="sidebar-resize-handle"
             onMouseDown={handleMouseDown}
-            title="Drag to resize sidebar"
+            title={t("Drag to resize sidebar")}
             tabIndex={-1}
             aria-hidden="true"
           />

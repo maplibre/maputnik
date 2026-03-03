@@ -206,5 +206,7 @@
   "LocationIQ Access Token": "LocationIQ 액세스 토큰",
   "Public access token for LocationIQ services.": "LocationIQ 서비스용 공개 액세스 토큰입니다.",
   "Style Renderer": "스타일 렌더러",
-  "Choose the default Maputnik renderer for this style.": "이 스타일의 기본 Maputnik 렌더러를 선택하세요."
+  "Choose the default Maputnik renderer for this style.": "이 스타일의 기본 Maputnik 렌더러를 선택하세요.",
+  "Drag to resize sidebar": "__STRING_NOT_TRANSLATED__",
+  "Drag to resize list / editor split": "__STRING_NOT_TRANSLATED__"
 }

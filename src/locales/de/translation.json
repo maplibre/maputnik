@@ -214,5 +214,7 @@
   "Width": "Breite",
   "Height": "Höhe",
   "Field": "Feld",
-  "Size": "Größe"
+  "Size": "Größe",
+  "Drag to resize sidebar": "__STRING_NOT_TRANSLATED__",
+  "Drag to resize list / editor split": "__STRING_NOT_TRANSLATED__"
 }
