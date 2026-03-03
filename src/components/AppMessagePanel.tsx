@@ -1,7 +1,7 @@
 import React from "react";
 import { formatLayerId } from "../libs/format";
 import { type LayerSpecification, type StyleSpecification } from "maplibre-gl";
-import { Trans, type WithTranslation, withTranslation } from "react-i18next";
+import { type WithTranslation, withTranslation } from "react-i18next";
 import { type MappedError } from "../libs/definitions";
 
 type AppMessagePanelInternalProps = {
