@@ -1,6 +1,6 @@
 import React from "react";
-import {formatLayerId} from "../libs/format";
-import {type LayerSpecification, type StyleSpecification} from "maplibre-gl";
+import { formatLayerId } from "../libs/format";
+import { type LayerSpecification, type StyleSpecification } from "maplibre-gl";
 import { Trans, type WithTranslation, withTranslation } from "react-i18next";
 import { type MappedError } from "../libs/definitions";
 
@@ -15,21 +15,19 @@ type AppMessagePanelInternalProps = {
 
 class AppMessagePanelInternal extends React.Component<AppMessagePanelInternalProps> {
   static defaultProps = {
-    onLayerSelect: () => {},
+    onLayerSelect: () => { },
   };
 
   render() {
-    const {t, selectedLayerIndex} = this.props;
+    const { t, selectedLayerIndex } = this.props;
     const errors = this.props.errors?.map((error, idx) => {
       let content;
       if (error.parsed && error.parsed.type === "layer") {
-        const {parsed} = error;
+        const { parsed } = error;
         const layerId = this.props.mapStyle?.layers[parsed.data.index].id;
         content = (
           <>
-            <Trans t={t}>
-              Layer <span>{formatLayerId(layerId)}</span>: {parsed.data.message}
-            </Trans>
+            {t("Layer")} <span>{formatLayerId(layerId)}</span>: {parsed.data.message}
             {selectedLayerIndex !== parsed.data.index &&
               <>
                 &nbsp;&mdash;&nbsp;
@@ -47,13 +45,13 @@ class AppMessagePanelInternal extends React.Component<AppMessagePanelInternalPro
       else {
         content = error.message;
       }
-      return <p key={"error-"+idx} className="maputnik-message-panel-error">
+      return <p key={"error-" + idx} className="maputnik-message-panel-error">
         {content}
       </p>;
     });
 
     const infos = this.props.infos?.map((m, i) => {
-      return <p key={"info-"+i}>{m}</p>;
+      return <p key={"info-" + i}>{m}</p>;
     });
 
     return <div className="maputnik-message-panel">

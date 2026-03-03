@@ -1,6 +1,6 @@
 import React, { type FormEvent } from "react";
-import {MdFileUpload} from "react-icons/md";
-import {MdAddCircleOutline} from "react-icons/md";
+import { MdFileUpload } from "react-icons/md";
+import { MdAddCircleOutline } from "react-icons/md";
 import { Trans, type WithTranslation, withTranslation } from "react-i18next";
 
 import ModalLoading from "./ModalLoading";
@@ -72,9 +72,9 @@ class ModalOpenInternal extends React.Component<ModalOpenInternalProps, ModalOpe
 
   onCancelActiveRequest(e: Event) {
     // Else the click propagates to the underlying modal
-    if(e) e.stopPropagation();
+    if (e) e.stopPropagation();
 
-    if(this.state.activeRequest) {
+    if (this.state.activeRequest) {
       this.state.activeRequest.abort();
       this.setState({
         activeRequest: null,
@@ -92,11 +92,11 @@ class ModalOpenInternal extends React.Component<ModalOpenInternalProps, ModalOpe
       mode: "cors",
       credentials: "same-origin"
     })
-      .then(function(response) {
+      .then(function (response) {
         return response.json();
       })
       .then((body) => {
-        if(canceled) {
+        if (canceled) {
           return;
         }
 
@@ -122,7 +122,7 @@ class ModalOpenInternal extends React.Component<ModalOpenInternalProps, ModalOpe
 
     this.setState({
       activeRequest: {
-        abort: function() {
+        abort: function () {
           canceled = true;
         }
       },
@@ -183,7 +183,7 @@ class ModalOpenInternal extends React.Component<ModalOpenInternalProps, ModalOpe
       try {
         mapStyle = JSON.parse(e.target?.result as string);
       }
-      catch(err) {
+      catch (err) {
         this.setState({
           error: (err as Error).toString()
         });
@@ -223,7 +223,7 @@ class ModalOpenInternal extends React.Component<ModalOpenInternalProps, ModalOpe
     });
 
     let errorElement;
-    if(this.state.error) {
+    if (this.state.error) {
       errorElement = (
         <div className="maputnik-modal-error">
           {this.state.error}
@@ -249,7 +249,7 @@ class ModalOpenInternal extends React.Component<ModalOpenInternalProps, ModalOpe
                 <InputButton
                   data-wd-key="modal:open.file.button"
                   className="maputnik-big-button"
-                  onClick={this.onOpenFile}><MdFileUpload/> {t("Open Style")}
+                  onClick={this.onOpenFile}><MdFileUpload /> {t("Open Style")}
                 </InputButton>
               ) : (
                 <label>
@@ -304,7 +304,7 @@ class ModalOpenInternal extends React.Component<ModalOpenInternalProps, ModalOpe
           isOpen={!!this.state.activeRequest}
           title={t("Loading style")}
           onCancel={(e: Event) => this.onCancelActiveRequest(e)}
-          message={t("Loading: {{requestUrl}}", { requestUrl: this.state.activeRequestUrl })}
+          message={t("Loading") + ": " + this.state.activeRequestUrl}
         />
       </div>
     );
