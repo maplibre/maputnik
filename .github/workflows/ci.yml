@@ -49,7 +49,7 @@ jobs:
       - run: npm ci
       - run: npm run build
       - name: artifacts/maputnik
-        uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6.0.0
+        uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7.0.0
         with:
           name: maputnik
           path: dist
@@ -66,19 +66,19 @@ jobs:
         run: npm run build-desktop
 
       - name: Artifacts/linux
-        uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6.0.0
+        uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7.0.0
         with:
           name: maputnik-linux
           path: ./desktop/bin/linux/
 
       - name: Artifacts/darwin
-        uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6.0.0
+        uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7.0.0
         with:
           name: maputnik-darwin
           path: ./desktop/bin/darwin/
 
       - name: Artifacts/windows
-        uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6.0.0
+        uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7.0.0
         with:
           name: maputnik-windows
           path: ./desktop/bin/windows/
