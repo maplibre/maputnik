@@ -13,6 +13,11 @@
 
 //APP LAYOUT
 .maputnik-layout {
+  // Default CSS custom properties (overridden inline by AppLayout component)
+  --sidebar-list-width: #{vars.$layout-list-width};
+  --sidebar-drawer-width: #{vars.$layout-editor-width};
+  --sidebar-total-width: #{vars.$layout-list-width + vars.$layout-editor-width};
+
   font-family: vars.$font-family;
   color: vars.$color-white;
 
@@ -29,19 +34,59 @@
   }
 
   &-list {
-    width: 200px;
+    width: var(--sidebar-list-width);
+    min-width: 0;
+    flex-shrink: 0;
     background-color: vars.$color-black;
   }
 
   &-drawer {
-    width: 370px;
+    width: var(--sidebar-drawer-width);
+    min-width: 0;
+    flex-shrink: 0;
     background-color: vars.$color-black;
     // scroll-container is position: absolute
     position: relative;
   }
 
+  &-resize-handle {
+    width: 5px;
+    flex-shrink: 0;
+    cursor: col-resize;
+    background-color: transparent;
+    position: relative;
+    z-index: 5;
+    transition: background-color 0.15s ease;
+
+    &:hover,
+    &:active {
+      background-color: rgba(vars.$color-lowgray, 0.5);
+    }
+
+    &::after {
+      content: "";
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 3px;
+      height: 30px;
+      border-radius: 2px;
+      background-color: vars.$color-lowgray;
+      opacity: 0;
+      transition: opacity 0.15s ease;
+    }
+
+    &:hover::after,
+    &:active::after {
+      opacity: 0.7;
+    }
+  }
+
   &-code-editor {
-    width: 570px;
+    width: var(--sidebar-total-width);
+    min-width: 0;
+    flex-shrink: 0;
     background-color: vars.$color-black;
     // scroll-container is position: absolute
     position: relative;
@@ -52,7 +97,7 @@
     bottom: 0;
     right: 0;
     z-index: 10;
-    width: vars.$layout-map-width;
+    width: calc(100% - var(--sidebar-total-width));
     background-color: vars.$color-black;
   }
 }
