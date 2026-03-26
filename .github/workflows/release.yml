@@ -28,7 +28,7 @@ jobs:
 
       - name: Check if version has been updated
         id: check
-        uses: EndBug/version-check@d17247dd94ca7b39d0b0691399be8d7c510622c9 # latest
+        uses: EndBug/version-check@095362f3cd50f690c8fa0e6afeea81834bd8d320 # latest
 
     outputs:
       publish: ${{ steps.check.outputs.changed }}
