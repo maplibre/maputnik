@@ -98,7 +98,7 @@ jobs:
       - run: npm ci
       - run: npm run test-unit-ci
       - name: Upload coverage reports to Codecov
-        uses: codecov/codecov-action@1af58845a975a7985b0beb0cbe6fbbb71a41dbad # v5.5.3
+        uses: codecov/codecov-action@57e3a136b779b570ffcdbf80b3bdc90e7fab3de2 # v6.0.0
         with:
           files: ${{ github.workspace }}/coverage/coverage-final.json
           verbose: true
@@ -124,7 +124,7 @@ jobs:
           start: npm run start
           browser: chrome
       - name: Upload coverage reports to Codecov
-        uses: codecov/codecov-action@1af58845a975a7985b0beb0cbe6fbbb71a41dbad # v5.5.3
+        uses: codecov/codecov-action@57e3a136b779b570ffcdbf80b3bdc90e7fab3de2 # v6.0.0
         with:
           files: ${{ github.workspace }}/.nyc_output/out.json
           verbose: true
@@ -148,7 +148,7 @@ jobs:
           start: docker run --rm --network host maputnik --port=8888
           browser: chrome
       - name: Upload coverage reports to Codecov
-        uses: codecov/codecov-action@1af58845a975a7985b0beb0cbe6fbbb71a41dbad # v5.5.3
+        uses: codecov/codecov-action@57e3a136b779b570ffcdbf80b3bdc90e7fab3de2 # v6.0.0
         with:
           files: ${{ github.workspace }}/.nyc_output/out.json
           verbose: true
