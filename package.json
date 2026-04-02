@@ -134,7 +134,7 @@
     "eslint-plugin-react": "^7.37.5",
     "eslint-plugin-react-hooks": "^7.0.1",
     "eslint-plugin-react-refresh": "^0.5.2",
-    "i18next-cli": "^1.51.4",
+    "i18next-cli": "^1.51.5",
     "istanbul": "^0.4.5",
     "istanbul-lib-coverage": "^3.2.2",
     "postcss": "^8.5.8",
