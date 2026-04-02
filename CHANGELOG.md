@@ -20,8 +20,8 @@
 
 - Fixed the Expression editor (for long expressions) being able to be float under other components further down
 - Fixed an issue when clicking on a popup and then clicking on the map again
-- Fix modal close button possition
-- Fixed an issue with the generation of tranlations
+- Fix modal close button position
+- Fixed an issue with the generation of translations
 - Fix missing spec info when clicking next to a property
 - Fix Firefox open file that stopped working due to react upgrade
 - Fix issue with missing bottom error panel
