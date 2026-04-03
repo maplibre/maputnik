@@ -37,7 +37,7 @@
     "@mapbox/mapbox-gl-rtl-text": "^0.4.0",
     "@maplibre/maplibre-gl-geocoder": "^1.9.4",
     "@maplibre/maplibre-gl-inspect": "^1.8.2",
-    "@maplibre/maplibre-gl-style-spec": "^24.7.0",
+    "@maplibre/maplibre-gl-style-spec": "^24.8.1",
     "array-move": "^4.0.0",
     "buffer": "^6.0.3",
     "classnames": "^2.5.1",
