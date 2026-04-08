@@ -1,12 +1,12 @@
-import React from "react";
-import classnames from "classnames";
-import { MdContentCopy, MdVisibility, MdVisibilityOff, MdDelete } from "react-icons/md";
-import { IconContext } from "react-icons";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
+import classnames from "classnames";
+import React from "react";
+import { IconContext } from "react-icons";
+import { MdContentCopy, MdDelete, MdVisibility, MdVisibilityOff } from "react-icons/md";
 
-import IconLayer from "./IconLayer";
 import type { VisibilitySpecification } from "maplibre-gl";
+import IconLayer from "./IconLayer";
 
 
 type DraggableLabelProps = {
@@ -111,7 +111,7 @@ const LayerListItem = React.forwardRef<HTMLLIElement, LayerListItemProps>((props
     opacity: isDragging ? 0.5 : 1,
   };
 
-  const visibilityAction = visibility === "visible" ? "show" : "hide";
+  const visibilityAction = visibility === "visible" ? "hide" : "show";
 
   // Cast ref to MutableRefObject since we know from the codebase that's what's always passed
   const refObject = ref as React.MutableRefObject<HTMLLIElement | null> | null;
