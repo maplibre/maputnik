@@ -13,9 +13,12 @@ function getFieldSpec(spec: any, layerType: LayerSpecification["type"], fieldNam
   const group = spec[groupName + "_" + layerType];
   const fieldSpec = group[fieldName];
   if(iconProperties.indexOf(fieldName) >= 0) {
+    const rootSprite = spec.$root.sprite || {};
     return {
       ...fieldSpec,
-      values: spec.$root.sprite.values
+      values: rootSprite.values,
+      spriteBaseUrl: rootSprite.spriteBaseUrl,
+      spritePositions: rootSprite.spritePositions,
     };
   }
   if(fieldName === "text-font") {

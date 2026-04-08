@@ -28,7 +28,7 @@ import ModalShortcuts from "./modals/ModalShortcuts";
 import ModalDebug from "./modals/ModalDebug";
 import ModalGlobalState from "./modals/ModalGlobalState";
 
-import {downloadGlyphsMetadata, downloadSpriteMetadata} from "../libs/metadata";
+import {downloadGlyphsMetadata, downloadSpriteMetadata, type SpriteIconPosition} from "../libs/metadata";
 import style from "../libs/style";
 import { undoMessages, redoMessages } from "../libs/diffmessage";
 import { createStyleStore, type IStyleStore } from "../libs/store/style-store-factory";
@@ -80,6 +80,39 @@ function updateRootSpec(spec: any, fieldName: string, newValues: any) {
         values: newValues
       }
     }
+  };
+}
+
+function primarySpriteUrl(sprite: StyleSpecification["sprite"]): string {
+  if (!sprite) {
+    return "";
+  }
+  if (typeof sprite === "string") {
+    return sprite;
+  }
+  if (Array.isArray(sprite) && sprite.length > 0 && typeof sprite[0] === "string") {
+    return sprite[0];
+  }
+  return "";
+}
+
+function updateSpriteRootSpec(
+  spec: any,
+  names: string[],
+  positions: Record<string, SpriteIconPosition>,
+  spriteBaseUrl: string,
+) {
+  return {
+    ...spec,
+    $root: {
+      ...spec.$root,
+      sprite: {
+        ...spec.$root.sprite,
+        values: names,
+        spritePositions: positions,
+        spriteBaseUrl,
+      },
+    },
   };
 }
 
@@ -301,9 +334,18 @@ export default class App extends React.Component<any, AppState> {
     });
   }
 
-  updateIcons(baseUrl: string) {
-    downloadSpriteMetadata(baseUrl).then(icons => {
-      this.setState({ spec: updateRootSpec(this.state.spec, "sprite", icons)});
+  updateIcons(sprite: StyleSpecification["sprite"]) {
+    const baseUrl = primarySpriteUrl(sprite);
+    if (!baseUrl) {
+      this.setState((s) => ({
+        spec: updateSpriteRootSpec(s.spec, [], {}, ""),
+      }));
+      return;
+    }
+    downloadSpriteMetadata(baseUrl).then(({ names, positions }) => {
+      this.setState((s) => ({
+        spec: updateSpriteRootSpec(s.spec, names, positions, baseUrl),
+      }));
     });
   }
 
@@ -465,7 +507,7 @@ export default class App extends React.Component<any, AppState> {
       this.updateFonts(newStyle.glyphs as string);
     }
     if(newStyle.sprite !== this.state.mapStyle.sprite) {
-      this.updateIcons(newStyle.sprite as string);
+      this.updateIcons(newStyle.sprite);
     }
 
     if (opts.addRevision) {

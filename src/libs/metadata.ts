@@ -31,9 +31,25 @@ export async function downloadGlyphsMetadata(urlTemplate: string): Promise<strin
   return [...new Set(fonts)];
 }
 
-export async function downloadSpriteMetadata(baseUrl: string): Promise<string[]> {
-  if(!baseUrl) return [];
+export type SpriteIconPosition = {
+  width: number
+  height: number
+  x: number
+  y: number
+  pixelRatio?: number
+};
+
+export type SpriteMetadataResult = {
+  names: string[]
+  positions: Record<string, SpriteIconPosition>
+};
+
+export async function downloadSpriteMetadata(baseUrl: string): Promise<SpriteMetadataResult> {
+  if (!baseUrl) {
+    return { names: [], positions: {} };
+  }
   const url = baseUrl + ".json";
-  const glyphs = await loadJSON(url, {} as Record<string, string>);
-  return Object.keys(glyphs);
+  const json = await loadJSON(url, {} as Record<string, SpriteIconPosition>);
+  const names = Object.keys(json);
+  return { names, positions: json };
 }
