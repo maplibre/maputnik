@@ -1,0 +1,31 @@
+{
+  "id": "sprite-preview-e2e",
+  "version": 8,
+  "name": "Sprite preview e2e",
+  "metadata": {
+    "maputnik:renderer": "mlgljs"
+  },
+  "sources": {
+    "example": {
+      "type": "vector",
+      "data": {
+        "type": "FeatureCollection",
+        "features": [
+          {
+            "type": "Feature",
+            "properties": {
+              "name": "Test"
+            },
+            "geometry": {
+              "type": "Point",
+              "coordinates": [125.6, 10.1]
+            }
+          }
+        ]
+      }
+    }
+  },
+  "glyphs": "https://www.glyph-server.com/{fontstack}/{range}.pbf",
+  "sprite": "http://localhost:8888/e2e-sprite",
+  "layers": []
+}

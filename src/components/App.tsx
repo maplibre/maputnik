@@ -1,43 +1,43 @@
-import React from "react";
-import cloneDeep from "lodash.clonedeep";
-import clamp from "lodash.clamp";
-import buffer from "buffer";
-import get from "lodash.get";
-import {unset} from "lodash";
-import {arrayMoveMutable} from "array-move";
-import hash from "string-hash";
-import { PMTiles } from "pmtiles";
-import {type Map, type LayerSpecification, type StyleSpecification, type ValidationError, type SourceSpecification} from "maplibre-gl";
-import {validateStyleMin} from "@maplibre/maplibre-gl-style-spec";
+import { validateStyleMin } from "@maplibre/maplibre-gl-style-spec";
 import latest from "@maplibre/maplibre-gl-style-spec/dist/latest.json";
+import { arrayMoveMutable } from "array-move";
+import buffer from "buffer";
+import { unset } from "lodash";
+import clamp from "lodash.clamp";
+import cloneDeep from "lodash.clonedeep";
+import get from "lodash.get";
+import { type LayerSpecification, type Map, type SourceSpecification, type StyleSpecification, type ValidationError } from "maplibre-gl";
+import { PMTiles } from "pmtiles";
+import React from "react";
+import hash from "string-hash";
 
-import MapMaplibreGl from "./MapMaplibreGl";
-import MapOpenLayers from "./MapOpenLayers";
-import CodeEditor from "./CodeEditor";
-import LayerList from "./LayerList";
-import LayerEditor from "./LayerEditor";
-import AppToolbar, { type MapState } from "./AppToolbar";
 import AppLayout from "./AppLayout";
 import MessagePanel from "./AppMessagePanel";
+import AppToolbar, { type MapState } from "./AppToolbar";
+import CodeEditor from "./CodeEditor";
+import LayerEditor from "./LayerEditor";
+import LayerList from "./LayerList";
+import MapMaplibreGl from "./MapMaplibreGl";
+import MapOpenLayers from "./MapOpenLayers";
 
-import ModalSettings from "./modals/ModalSettings";
-import ModalExport from "./modals/ModalExport";
-import ModalSources from "./modals/ModalSources";
-import ModalOpen from "./modals/ModalOpen";
-import ModalShortcuts from "./modals/ModalShortcuts";
 import ModalDebug from "./modals/ModalDebug";
+import ModalExport from "./modals/ModalExport";
 import ModalGlobalState from "./modals/ModalGlobalState";
+import ModalOpen from "./modals/ModalOpen";
+import ModalSettings from "./modals/ModalSettings";
+import ModalShortcuts from "./modals/ModalShortcuts";
+import ModalSources from "./modals/ModalSources";
 
-import {downloadGlyphsMetadata, downloadSpriteMetadata} from "../libs/metadata";
-import style from "../libs/style";
-import { undoMessages, redoMessages } from "../libs/diffmessage";
-import { createStyleStore, type IStyleStore } from "../libs/store/style-store-factory";
-import { RevisionStore } from "../libs/revisions";
-import LayerWatcher from "../libs/layerwatcher";
-import tokens from "../config/tokens.json";
 import isEqual from "lodash.isequal";
 import { type MapOptions } from "maplibre-gl";
+import tokens from "../config/tokens.json";
 import { type MappedError, type OnStyleChangedOpts, type StyleSpecificationWithId } from "../libs/definitions";
+import { redoMessages, undoMessages } from "../libs/diffmessage";
+import LayerWatcher from "../libs/layerwatcher";
+import { downloadGlyphsMetadata, downloadSpriteMetadata, type SpriteIconPosition } from "../libs/metadata";
+import { RevisionStore } from "../libs/revisions";
+import { createStyleStore, type IStyleStore } from "../libs/store/style-store-factory";
+import style from "../libs/style";
 
 // Buffer must be defined globally for @maplibre/maplibre-gl-style-spec validate() function to succeed.
 window.Buffer = buffer.Buffer;
@@ -80,6 +80,39 @@ function updateRootSpec(spec: any, fieldName: string, newValues: any) {
         values: newValues
       }
     }
+  };
+}
+
+function primarySpriteUrl(sprite: StyleSpecification["sprite"]): string {
+  if (!sprite) {
+    return "";
+  }
+  if (typeof sprite === "string") {
+    return sprite;
+  }
+  if (Array.isArray(sprite) && sprite.length > 0 && typeof sprite[0] === "string") {
+    return sprite[0];
+  }
+  return "";
+}
+
+function updateSpriteRootSpec(
+  spec: any,
+  names: string[],
+  positions: Record<string, SpriteIconPosition>,
+  spriteBaseUrl: string,
+) {
+  return {
+    ...spec,
+    $root: {
+      ...spec.$root,
+      sprite: {
+        ...spec.$root.sprite,
+        values: names,
+        spritePositions: positions,
+        spriteBaseUrl,
+      },
+    },
   };
 }
 
@@ -301,9 +334,18 @@ export default class App extends React.Component<any, AppState> {
     });
   }
 
-  updateIcons(baseUrl: string) {
-    downloadSpriteMetadata(baseUrl).then(icons => {
-      this.setState({ spec: updateRootSpec(this.state.spec, "sprite", icons)});
+  updateIcons(sprite: StyleSpecification["sprite"]) {
+    const baseUrl = primarySpriteUrl(sprite);
+    if (!baseUrl) {
+      this.setState({
+        spec: updateSpriteRootSpec(this.state.spec, [], {}, ""),
+      });
+      return;
+    }
+    downloadSpriteMetadata(baseUrl).then(({ names, positions }) => {
+      this.setState({
+        spec: updateSpriteRootSpec(this.state.spec, names, positions, baseUrl),
+      });
     });
   }
 
@@ -465,7 +507,7 @@ export default class App extends React.Component<any, AppState> {
       this.updateFonts(newStyle.glyphs as string);
     }
     if(newStyle.sprite !== this.state.mapStyle.sprite) {
-      this.updateIcons(newStyle.sprite as string);
+      this.updateIcons(newStyle.sprite);
     }
 
     if (opts.addRevision) {

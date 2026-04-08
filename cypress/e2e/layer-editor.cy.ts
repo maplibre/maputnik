@@ -292,3 +292,55 @@ describe("layer editor", () => {
     });
   });
 });
+
+describe("sprite icon preview on autocomplete hover", () => {
+  const { given, get, when } = new MaputnikDriver();
+
+  beforeEach(() => {
+    given.setupMockBackedResponses();
+    // Let sprite metadata commit before glyph updates spec (avoids flaky empty autocomplete without changing App).
+    cy.intercept("GET", "https://www.glyph-server.com/*", {
+      delay: 500,
+      body: ["Font 1", "Font 2", "Font 3"],
+    });
+    when.setStyle("sprite_preview");
+    cy.wait("@e2e-sprite.json");
+    when.modal.open();
+  });
+
+  it("shows a floating preview when hovering a sprite autocomplete option", () => {
+    const bgId = uuid();
+
+    when.selectWithin("add-layer.layer-type", "background");
+    when.setValue("add-layer.layer-id.input", "background:" + bgId);
+    when.click("add-layer");
+
+    when.click(`layer-list-item:background:${bgId}`);
+
+    get.elementByTestId("spec-field:background-pattern").scrollIntoView();
+    cy.wait("@e2e-sprite.png", { timeout: 15000 });
+
+    cy.get('[data-wd-key="spec-field:background-pattern"] input')
+      .first()
+      .should("be.enabled")
+      .focus()
+      .click({ force: true });
+
+    cy.get(".maputnik-autocomplete-menu-item", { timeout: 15000 })
+      .should("have.length.at.least", 1)
+      .first()
+      .should("contain", "test-icon")
+      .realHover();
+
+    // Preview is position:fixed and can sit under the open menu item; Cypress
+    // treats that as "covered" and fails be.visible even though the feature works.
+    cy.get(".maputnik-sprite-preview").should("exist");
+    cy.get(".maputnik-sprite-preview__inner")
+      .should("have.css", "background-image")
+      .and("match", /url\(/);
+
+    cy.get(".maputnik-autocomplete-menu-item").first().trigger("mouseleave");
+    cy.get('[data-wd-key="spec-field:background-pattern"] input').first().realHover();
+    cy.get(".maputnik-sprite-preview").should("not.exist");
+  });
+});

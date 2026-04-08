@@ -108,6 +108,30 @@ export class MaputnikDriver {
       });
       this.helper.given.interceptAndMockResponse({
         method: "GET",
+        url: baseUrl + "example-style-sprite-preview.json",
+        response: {
+          fixture: "example-style-sprite-preview.json",
+        },
+        alias: "example-style-sprite-preview.json",
+      });
+      this.helper.given.interceptAndMockResponse({
+        method: "GET",
+        url: baseUrl + "e2e-sprite.json",
+        response: {
+          fixture: "e2e-sprite-metadata.json",
+        },
+        alias: "e2e-sprite.json",
+      });
+      this.helper.given.interceptAndMockResponse({
+        method: "GET",
+        url: baseUrl + "e2e-sprite.png",
+        response: {
+          fixture: "e2e-sprite.png",
+        },
+        alias: "e2e-sprite.png",
+      });
+      this.helper.given.interceptAndMockResponse({
+        method: "GET",
         url: "*example.local/*",
         response: [],
       });
@@ -147,7 +171,16 @@ export class MaputnikDriver {
       this.helper.when.wait(200);
     },
     setStyle: (
-      styleProperties: "geojson" | "raster" | "both" | "layer" | "rectangles" | "font" | "zoom_7_center_0_51" | "",
+      styleProperties:
+        | "geojson"
+        | "raster"
+        | "both"
+        | "layer"
+        | "rectangles"
+        | "font"
+        | "zoom_7_center_0_51"
+        | "sprite_preview"
+        | "",
       zoom?: number
     ) => {
       const url = new URL(baseUrl);
@@ -172,6 +205,9 @@ export class MaputnikDriver {
           break;
         case "zoom_7_center_0_51":
           url.searchParams.set("style", baseUrl + "example-style-with-zoom-7-and-center-0-51.json");
+          break;
+        case "sprite_preview":
+          url.searchParams.set("style", baseUrl + "example-style-sprite-preview.json");
           break;
       }
 

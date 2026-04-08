@@ -26,6 +26,8 @@ export type InputSpecProps = {
     values?: unknown[]
     length?: number
     value?: string
+    spriteBaseUrl?: string
+    spritePositions?: Record<string, { width: number; height: number; x: number; y: number; pixelRatio?: number }>
   }
   value?: string | number | unknown[] | boolean
   /** Override the style of the field */
@@ -77,6 +79,8 @@ export default class InputSpec extends React.Component<InputSpecProps> {
           return <InputAutocomplete
             {...commonProps as Omit<InputAutocompleteProps, "options">}
             options={options.map(f => [f, f])}
+            spriteBaseUrl={this.props.fieldSpec.spriteBaseUrl}
+            spritePositions={this.props.fieldSpec.spritePositions}
           />;
         } else {
           return <InputString
