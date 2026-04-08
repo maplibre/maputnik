@@ -20,7 +20,7 @@ import ModalAdd from "./modals/ModalAdd";
 
 import type {LayerSpecification, SourceSpecification} from "maplibre-gl";
 import generateUniqueId from "../libs/document-uid";
-import { findClosestCommonPrefix, layerPrefix } from "../libs/layer";
+import { findClosestCommonPrefix, layerPrefix, remapLayerListCollapsedGroups } from "../libs/layer";
 import { type WithTranslation, withTranslation } from "react-i18next";
 import { type MappedError, type OnMoveLayerCallback } from "../libs/definitions";
 
@@ -193,6 +193,21 @@ class LayerListContainerInternal extends React.Component<LayerListContainerInter
   }
 
   componentDidUpdate (prevProps: LayerListContainerProps) {
+    const layersIdentityChanged =
+      prevProps.layers.length !== this.props.layers.length
+      || prevProps.layers.some((l, i) => l.id !== this.props.layers[i]?.id);
+
+    if (layersIdentityChanged) {
+      const nextCollapsed = remapLayerListCollapsedGroups(
+        prevProps.layers,
+        this.props.layers,
+        this.state.collapsedGroups,
+      );
+      if (!lodash.isEqual(nextCollapsed, this.state.collapsedGroups)) {
+        this.setState({ collapsedGroups: nextCollapsed });
+      }
+    }
+
     if (prevProps.selectedLayerIndex !== this.props.selectedLayerIndex) {
       const selectedItemNode = this.selectedItemRef.current;
       if (selectedItemNode && selectedItemNode.node) {

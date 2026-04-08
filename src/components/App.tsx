@@ -545,6 +545,20 @@ export default class App extends React.Component<any, AppState> {
     const layers = this.state.mapStyle.layers;
     const remainingLayers = layers.slice(0);
     remainingLayers.splice(index, 1);
+
+    let nextSelected = this.state.selectedLayerIndex;
+    if (remainingLayers.length === 0) {
+      nextSelected = 0;
+    } else if (this.state.selectedLayerIndex === index) {
+      nextSelected = Math.min(index, remainingLayers.length - 1);
+    } else if (this.state.selectedLayerIndex > index) {
+      nextSelected = this.state.selectedLayerIndex - 1;
+    }
+
+    this.setState({
+      selectedLayerIndex: nextSelected,
+      selectedLayerOriginalId: remainingLayers.length > 0 ? remainingLayers[nextSelected].id : undefined,
+    });
     this.onLayersChange(remainingLayers);
   };
 
