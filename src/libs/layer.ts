@@ -119,14 +119,10 @@ export function isOneIdRemoved(oldIds: string[], newIds: string[]): boolean {
   if (oldIds.length !== newIds.length + 1) {
     return false;
   }
-  let i = 0;
   let j = 0;
-  while (i < oldIds.length && j < newIds.length) {
-    if (oldIds[i] === newIds[j]) {
-      i++;
+  for (let i = 0; i < oldIds.length; i++) {
+    if (j < newIds.length && oldIds[i] === newIds[j]) {
       j++;
-    } else {
-      i++;
     }
   }
   return j === newIds.length;

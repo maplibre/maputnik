@@ -516,6 +516,43 @@ describe("layers list", () => {
     });
   });
 
+  /**
+   * Regression: deleting a layer must not reset expanded prefix-groups to collapsed
+   * (layer list items would stack / hide incorrectly).
+   */
+  describe("deletion with expanded prefix groups", () => {
+    beforeEach(() => {
+      when.modal.open();
+    });
+
+    it("keeps grouped layers visible after deleting another layer while groups were expanded", () => {
+      const gg = when.modal.fillLayers({
+        id: "gg",
+        type: "line",
+        layer: "example",
+      });
+      when.modal.open();
+      const gg2 = when.modal.fillLayers({
+        id: "gg-2",
+        type: "line",
+        layer: "example",
+      });
+      when.modal.open();
+      const solo = when.modal.fillLayers({
+        id: "solo",
+        type: "line",
+        layer: "example",
+      });
+
+      when.click("skip-target-layer-list");
+      then(get.elementByTestId(`layer-list-item:${gg2}`)).shouldBeVisible();
+
+      when.click(`layer-list-item:${solo}:delete`);
+      then(get.elementByTestId(`layer-list-item:${gg}`)).shouldBeVisible();
+      then(get.elementByTestId(`layer-list-item:${gg2}`)).shouldBeVisible();
+    });
+  });
+
   describe("sticky header", () => {
     it("should keep header visible when scrolling layer list", () => {
       // Setup: Create multiple layers to enable scrolling
