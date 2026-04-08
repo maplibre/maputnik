@@ -12,8 +12,8 @@
 }
 
 .maputnik-modal {
-  min-width: 350px;
-  max-width: 600px;
+  min-width: 520px;
+  max-width: 820px;
   overflow: hidden;
   background-color: vars.$color-black;
   box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.3);
@@ -316,8 +316,24 @@
   }
 }
 
-.modal-settings {
-  width: 400px;
+/* className="modal:settings" — Style Settings form */
+.modal\:settings {
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+
+  /* Default block is 32% / 18% / 50%; shorten label column for long URL fields */
+  .maputnik-input-block-label {
+    width: 24%;
+  }
+
+  .maputnik-input-block-content {
+    width: 58%;
+  }
+
+  .maputnik-action-block .maputnik-input-block-label {
+    width: 24%;
+  }
 }
 
 .maputnik-modal-export-buttons {

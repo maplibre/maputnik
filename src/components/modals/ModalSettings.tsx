@@ -146,13 +146,23 @@ class ModalSettingsInternal extends React.Component<ModalSettingsInternalProps> 
           value={(this.props.mapStyle as any).owner}
           onChange={(value) => this.changeStyleProperty("owner", value)}
         />
-        <Block label={t("Sprite URL")} fieldSpec={latest.$root.sprite} data-wd-key="modal:settings.sprite">
-          <FieldJson
-            lintType="json"
-            value={this.props.mapStyle.sprite as any}
+        {Array.isArray(this.props.mapStyle.sprite) ? (
+          <Block label={t("Sprite URL")} fieldSpec={latest.$root.sprite} data-wd-key="modal:settings.sprite">
+            <FieldJson
+              lintType="json"
+              value={this.props.mapStyle.sprite as object}
+              onChange={(value) => this.changeStyleProperty("sprite", value)}
+            />
+          </Block>
+        ) : (
+          <FieldUrl
+            label={t("Sprite URL")}
+            fieldSpec={latest.$root.sprite}
+            data-wd-key="modal:settings.sprite"
+            value={typeof this.props.mapStyle.sprite === "string" ? this.props.mapStyle.sprite : ""}
             onChange={(value) => this.changeStyleProperty("sprite", value)}
           />
-        </Block>
+        )}
 
         <FieldUrl
           label={t("Glyphs URL")}
