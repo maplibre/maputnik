@@ -137,7 +137,7 @@
     "i18next-cli": "^1.51.7",
     "istanbul": "^0.4.5",
     "istanbul-lib-coverage": "^3.2.2",
-    "postcss": "^8.5.8",
+    "postcss": "^8.5.9",
     "react-hot-loader": "^4.13.1",
     "sass": "^1.99.0",
     "stylelint": "^17.6.0",
