@@ -118,7 +118,7 @@ jobs:
           node-version-file: '.nvmrc'
       - run: npm ci
       - name: Cypress run
-        uses: cypress-io/github-action@783cb3f07983868532cabaedaa1e6c00ff4786a8 # v7.1.9
+        uses: cypress-io/github-action@c495c3ddffba403ba11be95fffb67e25203b3799 # v7.1.10
         with:
           build: npm run build
           start: npm run start
@@ -142,7 +142,7 @@ jobs:
           node-version-file: '.nvmrc'
       - run: npm ci
       - name: Cypress run
-        uses: cypress-io/github-action@783cb3f07983868532cabaedaa1e6c00ff4786a8 # v7.1.9
+        uses: cypress-io/github-action@c495c3ddffba403ba11be95fffb67e25203b3799 # v7.1.10
         with:
           build: docker build -t maputnik .
           start: docker run --rm --network host maputnik --port=8888
