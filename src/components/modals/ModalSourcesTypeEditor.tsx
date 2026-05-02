@@ -18,6 +18,7 @@ export type EditorMode = "video" | "image" | "tilejson_vector" | "tile_raster" |
 type TileJSONSourceEditorProps = {
   source: {
     url: string
+    bounds?: [number, number, number, number]
   }
   onChange(...args: unknown[]): unknown
   children?: React.ReactNode
@@ -37,6 +38,18 @@ class TileJSONSourceEditor extends React.Component<TileJSONSourceEditorProps> {
           url: url
         })}
       />
+      <FieldArray
+        label={t("Bounds")}
+        fieldSpec={latest.source_vector.bounds}
+        length={4}
+        type="number"
+        value={this.props.source.bounds || []}
+        default={[-180, -85.051129, 180, 85.051129]}
+        onChange={(bounds: [number, number, number, number]) => this.props.onChange({
+          ...this.props.source,
+          bounds: bounds
+        })}
+      />
       {this.props.children}
     </div>;
   }
@@ -48,6 +61,7 @@ type TileURLSourceEditorProps = {
     minzoom: number
     maxzoom: number
     scheme: "xyz" | "tms"
+    bounds?: [number, number, number, number]
   }
   onChange(...args: unknown[]): unknown
   children?: React.ReactNode
@@ -106,6 +120,18 @@ class TileURLSourceEditor extends React.Component<TileURLSourceEditorProps> {
         onChange={maxzoom => this.props.onChange({
           ...this.props.source,
           maxzoom: maxzoom
+        })}
+      />
+      <FieldArray
+        label={t("Bounds")}
+        fieldSpec={latest.source_vector.bounds}
+        length={4}
+        type="number"
+        value={this.props.source.bounds || []}
+        default={[-180, -85.051129, 180, 85.051129]}
+        onChange={(bounds: [number, number, number, number]) => this.props.onChange({
+          ...this.props.source,
+          bounds: bounds
         })}
       />
       {this.props.children}
