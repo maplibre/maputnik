@@ -88,6 +88,17 @@
   @extend .maputnik-big-button !optional; /* stylelint-disable-line */
 }
 
+.maputnik-upload-dropzone {
+  border: 1px dashed transparent;
+  border-radius: 4px;
+  padding: vars.$margin-1;
+}
+
+.maputnik-upload-dropzone--active {
+  border-color: vars.$color-midgray;
+  background-color: vars.$color-gray;
+}
+
 .maputnik-style-gallery-container {
   flex-shrink: 1;
 }
