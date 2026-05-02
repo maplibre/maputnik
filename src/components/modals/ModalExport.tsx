@@ -24,6 +24,7 @@ type ModalExportInternalProps = {
   isOpen: boolean
   onOpenToggle(): void
   onSetFileHandle(fileHandle: FileSystemFileHandle | null): unknown
+  onSetCurrentFileName(fileName?: string): unknown
   fileHandle: FileSystemFileHandle | null
 } & WithTranslation;
 
@@ -92,7 +93,9 @@ class ModalExportInternal extends React.Component<ModalExportInternalProps> {
     if (!showSaveFilePickerAvailable) {
       const blob = new Blob([tokenStyle], {type: "application/json;charset=utf-8"});
       const exportName = this.exportName();
-      saveAs(blob, exportName + ".json");
+      const fileName = exportName + ".json";
+      saveAs(blob, fileName);
+      this.props.onSetCurrentFileName(fileName);
       return;
     }
 
@@ -106,6 +109,7 @@ class ModalExportInternal extends React.Component<ModalExportInternalProps> {
     const writable = await fileHandle.createWritable();
     await writable.write(tokenStyle);
     await writable.close();
+    this.props.onSetCurrentFileName(fileHandle.name);
     this.props.onOpenToggle();
   }
 
@@ -119,6 +123,7 @@ class ModalExportInternal extends React.Component<ModalExportInternalProps> {
     const writable = await fileHandle.createWritable();
     await writable.write(tokenStyle);
     await writable.close();
+    this.props.onSetCurrentFileName(fileHandle.name);
     this.props.onOpenToggle();
   }
 

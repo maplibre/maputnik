@@ -107,7 +107,7 @@ class ModalOpenInternal extends React.Component<ModalOpenInternalProps, ModalOpe
 
         const mapStyle = style.ensureStyleValidity(body);
         console.log("Loaded style ", mapStyle.id);
-        this.props.onStyleOpen(mapStyle);
+        this.props.onStyleOpen(mapStyle, null, undefined);
         this.onOpenToggle();
       })
       .catch((err) => {
@@ -163,7 +163,7 @@ class ModalOpenInternal extends React.Component<ModalOpenInternalProps, ModalOpe
     }
     mapStyle = style.ensureStyleValidity(mapStyle);
 
-    this.props.onStyleOpen(mapStyle, fileHandle);
+    this.props.onStyleOpen(mapStyle, fileHandle, file.name);
     this.onOpenToggle();
     return file;
   };
@@ -190,7 +190,7 @@ class ModalOpenInternal extends React.Component<ModalOpenInternalProps, ModalOpe
         return;
       }
       mapStyle = style.ensureStyleValidity(mapStyle);
-      this.props.onStyleOpen(mapStyle);
+      this.props.onStyleOpen(mapStyle, null, file.name);
       this.onOpenToggle();
     };
     reader.onerror = e => console.log(e.target);
