@@ -15,6 +15,7 @@
   "API key for Stadia Maps.": "Stadia Maps용 API 키 입니다.",
   "Base": "베이스",
   "Bearing": "방위각",
+  "Bounds": "경계",
   "Cancel": "취소",
   "Center": "중심 좌표",
   "Choose Public Source": "공개 소스 선택",

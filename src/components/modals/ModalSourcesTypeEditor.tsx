@@ -18,7 +18,6 @@ export type EditorMode = "video" | "image" | "tilejson_vector" | "tile_raster" |
 type TileJSONSourceEditorProps = {
   source: {
     url: string
-    bounds?: [number, number, number, number]
   }
   onChange(...args: unknown[]): unknown
   children?: React.ReactNode
@@ -37,19 +36,6 @@ class TileJSONSourceEditor extends React.Component<TileJSONSourceEditorProps> {
           ...this.props.source,
           url: url
         })}
-      />
-      <FieldArray
-        label={t("Bounds")}
-        fieldSpec={latest.source_vector.bounds}
-        length={4}
-        type="number"
-        value={this.props.source.bounds || []}
-        default={[]}
-        onChange={(bounds: [number, number, number, number]) => this.props.onChange({
-          ...this.props.source,
-          bounds: bounds
-        })}
-        data-wd-key="modal:sources.add.bounds"
       />
       {this.props.children}
     </div>;

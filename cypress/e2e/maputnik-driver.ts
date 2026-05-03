@@ -224,14 +224,36 @@ export class MaputnikDriver {
 
     setValueToPropertyArray: (selector: string, value: string) => {
       this.when.doWithin(selector, () => {
-        this.helper.get.element(".maputnik-array-block-content input").last().type("{selectall}"+value, {force: true });
+        const inputs = this.helper.get.element("input");
+        // Find the first empty input or use the first one
+        inputs.then(($inputs) => {
+          let targetIndex = 0;
+          for (let i = 0; i < $inputs.length; i++) {
+            const input = $inputs[i] as HTMLInputElement;
+            if (!input.value) {
+              targetIndex = i;
+              break;
+            }
+          }
+          cy.wrap($inputs[targetIndex]).type("{selectall}" + value, { force: true });
+        });
       });
     },
 
     addValueToPropertyArray: (selector: string, value: string) => {
       this.when.doWithin(selector, () => {
-        this.helper.get.element(".maputnik-array-add-value").click({ force: true });
-        this.helper.get.element(".maputnik-array-block-content input").last().type("{selectall}"+value, {force: true });
+        const inputs = this.helper.get.element("input");
+        inputs.then(($inputs) => {
+          let targetIndex = 0;
+          for (let i = 0; i < $inputs.length; i++) {
+            const input = $inputs[i] as HTMLInputElement;
+            if (!input.value) {
+              targetIndex = i;
+              break;
+            }
+          }
+          cy.wrap($inputs[targetIndex]).type("{selectall}" + value, { force: true });
+        });
       });
     },
 
