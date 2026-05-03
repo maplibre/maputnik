@@ -54,7 +54,7 @@ describe("bounds field feature", () => {
       when.select("modal:sources.add.scheme_type", "xyz");
       when.setValue("modal:sources.add.tile_size", "256");
       when.wait(200);
-      
+
       when.setValueToPropertyArray("modal:sources.add.bounds", "-180");
       when.addValueToPropertyArray("modal:sources.add.bounds", "-85.051129");
       when.addValueToPropertyArray("modal:sources.add.bounds", "180");
@@ -81,7 +81,7 @@ describe("bounds field feature", () => {
       when.select("modal:sources.add.source_type", "tile_vector");
       when.select("modal:sources.add.scheme_type", "xyz");
       when.wait(200);
-      
+
       when.setValueToPropertyArray("modal:sources.add.bounds", "-125.0");
       when.addValueToPropertyArray("modal:sources.add.bounds", "25.0");
       when.addValueToPropertyArray("modal:sources.add.bounds", "-66.0");
