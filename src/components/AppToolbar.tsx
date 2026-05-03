@@ -99,7 +99,6 @@ type AppToolbarInternalProps = {
   onStyleChanged: OnStyleChangedCallback
   // A new style has been uploaded
   onStyleOpen: OnStyleChangedCallback
-  currentFileName?: string
   // A dict of source id's and the available source layers
   sources: object
   children?: React.ReactNode
@@ -221,11 +220,6 @@ class AppToolbarInternal extends React.Component<AppToolbarInternalProps> {
               <span className="maputnik-toolbar-version">v{pkgJson.version}</span>
             </h1>
           </a>
-          {this.props.currentFileName && (
-            <span className="maputnik-toolbar-filename" title={this.props.currentFileName}>
-              {this.props.currentFileName}
-            </span>
-          )}
         </div>
         <div className="maputnik-toolbar__actions" role="navigation" aria-label="Toolbar">
           <ToolbarAction wdKey="nav:open" onClick={() => this.props.onToggleModal("open")}>

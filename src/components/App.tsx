@@ -121,7 +121,6 @@ type AppState = {
     codeEditor: boolean
   }
   fileHandle: FileSystemFileHandle | null
-  currentFileName?: string
 };
 
 export default class App extends React.Component<any, AppState> {
@@ -171,7 +170,6 @@ export default class App extends React.Component<any, AppState> {
         debugToolbox: false,
       },
       fileHandle: null,
-      currentFileName: undefined,
     };
 
     this.layerWatcher = new LayerWatcher({
@@ -613,8 +611,8 @@ export default class App extends React.Component<any, AppState> {
     }
   };
 
-  openStyle = (styleObj: StyleSpecificationWithId, fileHandle: FileSystemFileHandle | null, currentFileName?: string) => {
-    this.setState({fileHandle: fileHandle, currentFileName});
+  openStyle = (styleObj: StyleSpecificationWithId, fileHandle: FileSystemFileHandle | null) => {
+    this.setState({fileHandle: fileHandle});
     styleObj = this.setDefaultValues(styleObj);
     this.onStyleChanged(styleObj);
   };
@@ -851,10 +849,6 @@ export default class App extends React.Component<any, AppState> {
     this.setState({ fileHandle });
   };
 
-  onSetCurrentFileName = (currentFileName?: string) => {
-    this.setState({ currentFileName });
-  };
-
   onChangeOpenlayersDebug = (key: keyof AppState["openlayersDebugOptions"], value: boolean) => {
     this.setState({
       openlayersDebugOptions: {
@@ -883,7 +877,6 @@ export default class App extends React.Component<any, AppState> {
       mapStyle={this.state.mapStyle}
       inspectModeEnabled={this.state.mapState === "inspect"}
       sources={this.state.sources}
-      currentFileName={this.state.currentFileName}
       onStyleChanged={this.onStyleChanged}
       onStyleOpen={this.onStyleChanged}
       onSetMapState={this.setMapState}
@@ -966,7 +959,6 @@ export default class App extends React.Component<any, AppState> {
         onOpenToggle={() => this.toggleModal("export")}
         fileHandle={this.state.fileHandle}
         onSetFileHandle={this.onSetFileHandle}
-        onSetCurrentFileName={this.onSetCurrentFileName}
       />
       <ModalOpen
         isOpen={this.state.isOpen.open}

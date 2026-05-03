@@ -14,9 +14,6 @@
 
 .maputnik-toolbar-logo-container {
   position: relative;
-  display: flex;
-  align-items: center;
-  min-width: 0;
 }
 
 .maputnik-toolbar-logo {
@@ -95,21 +92,6 @@
   font-size: 10px;
   margin: 0 4px;
   white-space: nowrap;
-}
-
-.maputnik-toolbar-filename {
-  display: inline-flex;
-  align-items: center;
-  max-width: 260px;
-  margin-left: vars.$margin-2;
-  padding: 2px 8px;
-  border: 1px solid vars.$color-midgray;
-  border-radius: 4px;
-  color: vars.$color-white;
-  font-size: 11px;
-  white-space: nowrap;
-  text-overflow: ellipsis;
-  overflow: hidden;
 }
 
 .maputnik-toolbar-action {
