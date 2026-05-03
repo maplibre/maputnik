@@ -58,6 +58,8 @@ type ModalOpenState = {
 };
 
 class ModalOpenInternal extends React.Component<ModalOpenInternalProps, ModalOpenState> {
+  private fileInputRef = React.createRef<HTMLInputElement>();
+
   constructor(props: ModalOpenInternalProps) {
     super(props);
     this.state = {
@@ -207,6 +209,15 @@ class ModalOpenInternal extends React.Component<ModalOpenInternalProps, ModalOpe
     this.props.onOpenToggle();
   }
 
+  onBrowseClick = async () => {
+    if (typeof window.showOpenFilePicker === "function") {
+      await this.onOpenFile();
+      return;
+    }
+
+    this.fileInputRef.current?.click();
+  };
+
   onFileDragOver = (e: DragEvent<HTMLDivElement>) => {
     e.preventDefault();
     e.stopPropagation();
@@ -273,32 +284,32 @@ class ModalOpenInternal extends React.Component<ModalOpenInternalProps, ModalOpe
             <div
               data-wd-key="modal:open.dropzone"
               className={`maputnik-upload-dropzone${this.state.isDragOver ? " maputnik-upload-dropzone--active" : ""}`}
+              role="button"
+              tabIndex={0}
               onDragOver={this.onFileDragOver}
               onDragLeave={this.onFileDragLeave}
               onDrop={this.onFileDrop}
+              onClick={() => void this.onBrowseClick()}
+              onKeyDown={(e) => {
+                if (e.key === "Enter" || e.key === " ") {
+                  e.preventDefault();
+                  void this.onBrowseClick();
+                }
+              }}
             >
               <div className="maputnik-upload-dropzone-content">
                 <MdFileUpload className="maputnik-upload-dropzone-icon" aria-hidden="true" />
                 <p className="maputnik-upload-dropzone-text">
-                  {t("Drag and drop a style JSON file here")}
-                </p>
-                <p className="maputnik-upload-dropzone-subtext">
-                  {t("or click to browse")}
+                  {t("Drag and drop a style JSON file here or click to browse")}
                 </p>
               </div>
-
-              {typeof window.showOpenFilePicker === "function" ? (
-                <InputButton
-                  data-wd-key="modal:open.file.button"
-                  className="maputnik-big-button maputnik-upload-dropzone-browse"
-                  onClick={this.onOpenFile}><MdFileUpload /> {t("Open Style")}
-                </InputButton>
-              ) : (
-                <label>
-                  <a className="maputnik-button maputnik-upload-button maputnik-upload-dropzone-browse" aria-label={t("Open Style")}><MdFileUpload /> {t("Open Style")}</a>
-                  <input data-wd-key="modal:open.file.input" type="file" style={{ display: "none" }} onChange={(e) => this.onFileChanged(e.target.files)} />
-                </label>
-              )}
+              <input
+                ref={this.fileInputRef}
+                data-wd-key="modal:open.file.input"
+                type="file"
+                style={{ display: "none" }}
+                onChange={(e) => this.onFileChanged(e.target.files)}
+              />
             </div>
           </section>
 

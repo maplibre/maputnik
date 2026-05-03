@@ -93,6 +93,19 @@
   border-radius: 6px;
   padding: vars.$margin-4 vars.$margin-3;
   text-align: center;
+  cursor: pointer;
+  transition: border-color 120ms ease, background-color 120ms ease;
+
+  &:hover,
+  &:focus-visible {
+    border-color: vars.$color-lowgray;
+    background-color: rgba(255, 255, 255, 0.03);
+  }
+
+  &:focus-visible {
+    outline: 2px solid vars.$color-lowgray;
+    outline-offset: 2px;
+  }
 }
 
 .maputnik-upload-dropzone--active {
@@ -114,15 +127,6 @@
 .maputnik-upload-dropzone-text {
   margin: vars.$margin-2 0 0;
   color: vars.$color-lowgray;
-}
-
-.maputnik-upload-dropzone-subtext {
-  margin: vars.$margin-1 0 vars.$margin-2;
-  color: vars.$color-midgray;
-}
-
-.maputnik-upload-dropzone-browse {
-  margin-top: vars.$margin-2;
 }
 
 .maputnik-style-gallery-container {
