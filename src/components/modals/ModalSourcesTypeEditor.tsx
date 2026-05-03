@@ -49,6 +49,7 @@ class TileJSONSourceEditor extends React.Component<TileJSONSourceEditorProps> {
           ...this.props.source,
           bounds: bounds
         })}
+        data-wd-key="modal:sources.add.bounds"
       />
       {this.props.children}
     </div>;
@@ -133,6 +134,7 @@ class TileURLSourceEditor extends React.Component<TileURLSourceEditorProps> {
           ...this.props.source,
           bounds: bounds
         })}
+        data-wd-key="modal:sources.add.bounds"
       />
       {this.props.children}
     </div>;

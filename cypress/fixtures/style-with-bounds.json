@@ -1,0 +1,30 @@
+{
+  "id": "style-with-bounds",
+  "version": 8,
+  "name": "Style with Bounds",
+  "metadata": {
+    "maputnik:renderer": "mlgljs"
+  },
+  "sources": {
+    "bounded-vector": {
+      "type": "vector",
+      "tiles": ["https://example.com/{z}/{x}/{y}.pbf"],
+      "minzoom": 0,
+      "maxzoom": 14,
+      "bounds": [-180, -85.051129, 180, 85.051129]
+    },
+    "bounded-raster": {
+      "type": "raster",
+      "tiles": ["https://example.com/{z}/{x}/{y}.png"],
+      "tileSize": 256,
+      "bounds": [-122.4, 37.7, -122.3, 37.8]
+    }
+  },
+  "glyphs": "https://example.local/fonts/{fontstack}/{range}.pbf",
+  "layers": [
+    {
+      "id": "background",
+      "type": "background"
+    }
+  ]
+}

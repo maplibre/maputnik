@@ -87,6 +87,13 @@ export class MaputnikDriver {
       });
       this.helper.given.interceptAndMockResponse({
         method: "GET",
+        url: baseUrl + "style-with-bounds.json",
+        response: {
+          fixture: "style-with-bounds.json",
+        },
+      });
+      this.helper.given.interceptAndMockResponse({
+        method: "GET",
         url: baseUrl + "example-style-with-fonts.json",
         response: {
           fixture: "example-style-with-fonts.json",
