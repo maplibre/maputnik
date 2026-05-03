@@ -276,15 +276,25 @@ class ModalOpenInternal extends React.Component<ModalOpenInternalProps, ModalOpe
               onDragLeave={this.onFileDragLeave}
               onDrop={this.onFileDrop}
             >
+              <div className="maputnik-upload-dropzone-content">
+                <MdFileUpload className="maputnik-upload-dropzone-icon" aria-hidden="true" />
+                <p className="maputnik-upload-dropzone-text">
+                  {t("Drag and drop a style JSON file here")}
+                </p>
+                <p className="maputnik-upload-dropzone-subtext">
+                  {t("or click to browse")}
+                </p>
+              </div>
+
               {typeof window.showOpenFilePicker === "function" ? (
                 <InputButton
                   data-wd-key="modal:open.file.button"
-                  className="maputnik-big-button"
+                  className="maputnik-big-button maputnik-upload-dropzone-browse"
                   onClick={this.onOpenFile}><MdFileUpload /> {t("Open Style")}
                 </InputButton>
               ) : (
                 <label>
-                  <a className="maputnik-button maputnik-upload-button" aria-label={t("Open Style")}><MdFileUpload /> {t("Open Style")}</a>
+                  <a className="maputnik-button maputnik-upload-button maputnik-upload-dropzone-browse" aria-label={t("Open Style")}><MdFileUpload /> {t("Open Style")}</a>
                   <input data-wd-key="modal:open.file.input" type="file" style={{ display: "none" }} onChange={(e) => this.onFileChanged(e.target.files)} />
                 </label>
               )}

@@ -89,14 +89,40 @@
 }
 
 .maputnik-upload-dropzone {
-  border: 1px dashed transparent;
-  border-radius: 4px;
-  padding: vars.$margin-1;
+  border: 2px dashed vars.$color-midgray;
+  border-radius: 6px;
+  padding: vars.$margin-4 vars.$margin-3;
+  text-align: center;
 }
 
 .maputnik-upload-dropzone--active {
-  border-color: vars.$color-midgray;
-  background-color: vars.$color-gray;
+  border-color: vars.$color-lowgray;
+  background-color: rgba(255, 255, 255, 0.04);
+}
+
+.maputnik-upload-dropzone-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.maputnik-upload-dropzone-icon {
+  font-size: 28px;
+  color: vars.$color-midgray;
+}
+
+.maputnik-upload-dropzone-text {
+  margin: vars.$margin-2 0 0;
+  color: vars.$color-lowgray;
+}
+
+.maputnik-upload-dropzone-subtext {
+  margin: vars.$margin-1 0 vars.$margin-2;
+  color: vars.$color-midgray;
+}
+
+.maputnik-upload-dropzone-browse {
+  margin-top: vars.$margin-2;
 }
 
 .maputnik-style-gallery-container {
