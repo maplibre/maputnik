@@ -228,6 +228,13 @@ class MapMaplibreGlInternal extends React.Component<MapMaplibreGlInternalProps, 
     map.addControl(inspect);
 
     map.on("style.load", () => {
+      // Re-add the runtime-only basemap each time a new style is loaded.
+      try {
+        this.addDefaultBasemap(map);
+      } catch (e) {
+        // ignore
+      }
+
       this.setState({
         map,
         inspect,
@@ -306,6 +313,60 @@ class MapMaplibreGlInternal extends React.Component<MapMaplibreGlInternalProps, 
     });
     map.addControl(geocoder, "top-left");
     return geocoder;
+  }
+
+  // Runtime-only default basemap identifiers
+  static DEFAULT_BASEMAP_SOURCE_ID = "__maputnik_default_basemap_source__";
+  static DEFAULT_BASEMAP_LAYER_ID = "__maputnik_default_basemap_layer__";
+
+  addDefaultBasemap(map: Map) {
+    const srcId = (this.constructor as typeof MapMaplibreGlInternal).DEFAULT_BASEMAP_SOURCE_ID;
+    const layerId = (this.constructor as typeof MapMaplibreGlInternal).DEFAULT_BASEMAP_LAYER_ID;
+
+    // If source already present, nothing to do
+    if (map.getSource(srcId)) return;
+
+    // Add raster source for CartoDB Light tiles (runtime only, minimal/clean basemap)
+    try {
+      map.addSource(srcId, {
+        type: "raster",
+        tiles: ["https://cartodb-basemaps-a.global.ssl.fastly.net/light_nolabels/{z}/{x}/{y}.png"],
+        tileSize: 256,
+        attribution: "© CartoDB, © OpenStreetMap contributors"
+      } as SourceSpecification);
+
+      const layer: LayerSpecification = {
+        id: layerId,
+        type: "raster",
+        source: srcId,
+      } as LayerSpecification;
+
+      // Insert the basemap below all other user layers (as visual background)
+      const currentLayers = map.getStyle().layers || [];
+      if (currentLayers.length > 0) {
+        map.addLayer(layer, currentLayers[0].id);
+      } else {
+        map.addLayer(layer);
+      }
+    } catch (e) {
+      // fail silently; map may not be ready for style modifications yet
+    }
+  }
+
+  removeDefaultBasemap(map: Map) {
+    const srcId = (this.constructor as typeof MapMaplibreGlInternal).DEFAULT_BASEMAP_SOURCE_ID;
+    const layerId = (this.constructor as typeof MapMaplibreGlInternal).DEFAULT_BASEMAP_LAYER_ID;
+
+    try {
+      if (map.getLayer && map.getLayer(layerId)) {
+        map.removeLayer(layerId);
+      }
+      if (map.getSource && map.getSource(srcId)) {
+        map.removeSource(srcId);
+      }
+    } catch (e) {
+      // ignore
+    }
   }
 
   render() {
