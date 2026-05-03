@@ -146,6 +146,11 @@ export class MaputnikDriver {
       this.helper.when.openFileByFixture("example-style.json", "modal:open.file.button", "modal:open.file.input");
       this.helper.when.wait(200);
     },
+    dropExampleFile: () => {
+      this.helper.given.fixture("example-style.json", "example-style.json");
+      this.helper.when.dropFileByFixture("example-style.json", "modal:open.dropzone");
+      this.helper.when.wait(200);
+    },
     setStyle: (
       styleProperties: "geojson" | "raster" | "both" | "layer" | "rectangles" | "font" | "zoom_7_center_0_51" | "",
       zoom?: number

@@ -271,6 +271,7 @@ class ModalOpenInternal extends React.Component<ModalOpenInternalProps, ModalOpe
             <h1>{t("Open local Style")}</h1>
             <p>{t("Open a local JSON style from your computer.")}</p>
             <div
+              data-wd-key="modal:open.dropzone"
               className={`maputnik-upload-dropzone${this.state.isDragOver ? " maputnik-upload-dropzone--active" : ""}`}
               onDragOver={this.onFileDragOver}
               onDragLeave={this.onFileDragLeave}

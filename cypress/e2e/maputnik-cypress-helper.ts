@@ -43,6 +43,12 @@ export default class MaputnikCypressHelper {
         }
       });
     },
+    dropFileByFixture: (fixture: string, dropzoneTestId: string) => {
+      this.helper.get.elementByTestId(dropzoneTestId).selectFile("cypress/fixtures/" + fixture, {
+        action: "drag-drop",
+        force: true,
+      });
+    },
     ...this.helper.when,
   };
 

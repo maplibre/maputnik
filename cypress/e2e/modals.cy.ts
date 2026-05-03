@@ -23,6 +23,11 @@ describe("modals", () => {
       then(get.fixture("example-style.json")).shouldEqualToStoredStyle();
     });
 
+    it("upload via drag and drop", () => {
+      when.dropExampleFile();
+      then(get.fixture("example-style.json")).shouldEqualToStoredStyle();
+    });
+
     describe("when click open url", () => {
       beforeEach(() => {
         const styleFileUrl = get.exampleFileUrl();
