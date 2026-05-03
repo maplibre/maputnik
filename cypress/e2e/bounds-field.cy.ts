@@ -30,7 +30,7 @@ describe("bounds field feature", () => {
       // Navigate to see existing sources or click on a source to edit
       // First, click on one of the bounded sources if there's a way to edit them
       // Since we're loading a style with sources, we need to find a way to edit them
-      
+
       then(get.styleFromLocalStorage()).shouldDeepNestedInclude({
         sources: {
           "bounded-vector": {
@@ -57,7 +57,7 @@ describe("bounds field feature", () => {
       when.setValue("modal:sources.add.source_id", sourceId);
       when.select("modal:sources.add.source_type", "tile_vector");
       when.select("modal:sources.add.scheme_type", "xyz");
-      
+
       // The bounds should remain empty (not default to world bounds)
       then(
         get.styleFromLocalStorage().then((style) => {
@@ -81,7 +81,7 @@ describe("bounds field feature", () => {
       when.select("modal:sources.add.source_type", "tile_raster");
       when.select("modal:sources.add.scheme_type", "xyz");
       when.setValue("modal:sources.add.tile_size", "256");
-      
+
       // Add bounds values
       when.setValueToPropertyArray("modal:sources.add.bounds", "-180");
       when.wait(100);
@@ -114,7 +114,7 @@ describe("bounds field feature", () => {
       when.setValue("modal:sources.add.source_id", sourceId);
       when.select("modal:sources.add.source_type", "tile_vector");
       when.select("modal:sources.add.scheme_type", "xyz");
-      
+
       // Set custom bounds for a region (e.g., USA bbox)
       when.setValueToPropertyArray("modal:sources.add.bounds", "-125.0");
       when.wait(100);
