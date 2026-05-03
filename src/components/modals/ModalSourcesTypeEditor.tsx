@@ -44,7 +44,7 @@ class TileJSONSourceEditor extends React.Component<TileJSONSourceEditorProps> {
         length={4}
         type="number"
         value={this.props.source.bounds || []}
-        default={[-180, -85.051129, 180, 85.051129]}
+        default={[]}
         onChange={(bounds: [number, number, number, number]) => this.props.onChange({
           ...this.props.source,
           bounds: bounds
@@ -128,7 +128,7 @@ class TileURLSourceEditor extends React.Component<TileURLSourceEditorProps> {
         length={4}
         type="number"
         value={this.props.source.bounds || []}
-        default={[-180, -85.051129, 180, 85.051129]}
+        default={[]}
         onChange={(bounds: [number, number, number, number]) => this.props.onChange({
           ...this.props.source,
           bounds: bounds
