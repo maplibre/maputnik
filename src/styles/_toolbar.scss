@@ -100,7 +100,7 @@
 .maputnik-toolbar-filename {
   display: inline-flex;
   align-items: center;
-  max-width: 260px;
+  max-width: 360px;
   margin-left: vars.$margin-2;
   padding: 2px 8px;
   border: 1px solid vars.$color-midgray;
@@ -110,6 +110,18 @@
   white-space: nowrap;
   text-overflow: ellipsis;
   overflow: hidden;
+}
+
+.maputnik-toolbar-lang-file {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.maputnik-select--compact {
+  padding: 2px 6px;
+  font-size: 11px;
+  vertical-align: middle;
 }
 
 .maputnik-toolbar-action {

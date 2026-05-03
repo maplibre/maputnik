@@ -221,11 +221,6 @@ class AppToolbarInternal extends React.Component<AppToolbarInternalProps> {
               <span className="maputnik-toolbar-version">v{pkgJson.version}</span>
             </h1>
           </a>
-          {this.props.currentFileName && (
-            <span className="maputnik-toolbar-filename" title={this.props.currentFileName}>
-              {this.props.currentFileName}
-            </span>
-          )}
         </div>
         <div className="maputnik-toolbar__actions" role="navigation" aria-label="Toolbar">
           <ToolbarAction wdKey="nav:open" onClick={() => this.props.onToggleModal("open")}>
@@ -284,12 +279,13 @@ class AppToolbarInternal extends React.Component<AppToolbarInternalProps> {
 
           <ToolbarSelect wdKey="nav:language">
             <MdLanguage />
-            <IconText>Language
+            <div className="maputnik-toolbar-lang-file">
               <select
-                className="maputnik-select"
+                className="maputnik-select maputnik-select--compact"
                 data-wd-key="maputnik-lang-select"
                 onChange={(e) => this.handleLanguageChange(e.target.value)}
                 value={this.props.i18n.language}
+                aria-label={t("Language")}
               >
                 {Object.entries(supportedLanguages).map(([code, name]) => {
                   return (
@@ -299,7 +295,13 @@ class AppToolbarInternal extends React.Component<AppToolbarInternalProps> {
                   );
                 })}
               </select>
-            </IconText>
+
+              {this.props.currentFileName && (
+                <span className="maputnik-toolbar-filename" title={this.props.currentFileName}>
+                  {this.props.currentFileName}
+                </span>
+              )}
+            </div>
           </ToolbarSelect>
 
           <ToolbarLink href={"https://github.com/maplibre/maputnik/wiki"}>
