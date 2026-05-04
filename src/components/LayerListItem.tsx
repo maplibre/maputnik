@@ -32,6 +32,7 @@ const DraggableLabel: React.FC<DraggableLabelProps> = (props) => {
 
 type IconActionProps = {
   action: string
+  title?: string
   onClick(...args: unknown[]): unknown
   wdKey?: string
   classBlockName?: string
@@ -62,7 +63,7 @@ class IconAction extends React.Component<IconActionProps> {
 
     return <button
       tabIndex={-1}
-      title={this.props.action}
+      title={this.props.title || this.props.action}
       className={`maputnik-layer-list-icon-action ${classAdditions}`}
       data-wd-key={this.props.wdKey}
       onClick={this.props.onClick}
@@ -147,6 +148,7 @@ const LayerListItem = React.forwardRef<HTMLLIElement, LayerListItemProps>((props
   };
 
   const visibilityAction = visibility === "visible" ? "show" : "hide";
+  const visibilityTitle = visibility === "visible" ? "hide" : "show";
 
   // Cast ref to MutableRefObject since we know from the codebase that's what's always passed
   const refObject = ref as React.MutableRefObject<HTMLLIElement | null> | null;
@@ -191,6 +193,7 @@ const LayerListItem = React.forwardRef<HTMLLIElement, LayerListItemProps>((props
         <IconAction
           wdKey={"layer-list-item:" + props.layerId + ":toggle-visibility"}
           action={visibilityAction}
+          title={visibilityTitle}
           classBlockName="visibility"
           classBlockModifier={visibilityAction}
           onClick={_e => onLayerVisibilityToggle!(props.layerIndex)}
