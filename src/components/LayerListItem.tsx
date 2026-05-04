@@ -79,21 +79,56 @@ type LayerListItemProps = {
   layerId: string
   layerType: string
   isSelected?: boolean
+  isBulkSelected?: boolean
   visibility?: VisibilitySpecification
   className?: string
   onLayerSelect(index: number): void;
   onLayerCopy?(...args: unknown[]): unknown
   onLayerDestroy?(...args: unknown[]): unknown
   onLayerVisibilityToggle?(...args: unknown[]): unknown
+  onLayerSelectionToggle?(layerId: string, checked: boolean): void
+};
+
+type LayerSelectionCheckboxProps = {
+  checked: boolean
+  ariaLabel: string
+  wdKey?: string
+  onChange(checked: boolean): void
+};
+
+const LayerSelectionCheckbox: React.FC<LayerSelectionCheckboxProps> = (props) => {
+  return <div
+    className={classnames("maputnik-checkbox-wrapper", "maputnik-layer-list-item-select")}
+    data-wd-key={props.wdKey}
+    aria-label={props.ariaLabel}
+    onPointerDown={e => e.stopPropagation()}
+    onMouseDown={e => e.stopPropagation()}
+    onClick={e => e.stopPropagation()}
+  >
+    <input
+      className="maputnik-checkbox"
+      type="checkbox"
+      checked={props.checked}
+      onChange={(e) => props.onChange(e.currentTarget.checked)}
+      onClick={e => e.stopPropagation()}
+    />
+    <div className="maputnik-checkbox-box">
+      <svg style={{ display: props.checked ? "inline" : "none" }} className="maputnik-checkbox-icon" viewBox='0 0 32 32'>
+        <path d='M1 14 L5 10 L13 18 L27 4 L31 8 L13 26 z' />
+      </svg>
+    </div>
+  </div>;
 };
 
 const LayerListItem = React.forwardRef<HTMLLIElement, LayerListItemProps>((props, ref) => {
   const {
     isSelected = false,
+    isBulkSelected = false,
     visibility = "visible",
     onLayerCopy = () => { },
     onLayerDestroy = () => { },
     onLayerVisibilityToggle = () => { },
+    onLayerSelectionToggle = () => { },
   } = props;
 
   const {
@@ -131,34 +166,42 @@ const LayerListItem = React.forwardRef<HTMLLIElement, LayerListItemProps>((props
       className={classnames({
         "maputnik-layer-list-item": true,
         "maputnik-layer-list-item-selected": isSelected,
+        "maputnik-layer-list-item--bulk-selected": isBulkSelected,
         [props.className!]: true,
       })}>
+      <LayerSelectionCheckbox
+        wdKey={"layer-list-item:" + props.layerId + ":select"}
+        ariaLabel={`Select layer ${props.layerId}`}
+        checked={isBulkSelected}
+        onChange={(checked) => onLayerSelectionToggle(props.layerId, checked)}
+      />
       <DraggableLabel
         layerId={props.layerId}
         layerType={props.layerType}
         dragAttributes={attributes}
         dragListeners={listeners}
       />
-      <span style={{ flexGrow: 1 }} />
-      <IconAction
-        wdKey={"layer-list-item:" + props.layerId + ":delete"}
-        action={"delete"}
-        classBlockName="delete"
-        onClick={_e => onLayerDestroy!(props.layerIndex)}
-      />
-      <IconAction
-        wdKey={"layer-list-item:" + props.layerId + ":copy"}
-        action={"duplicate"}
-        classBlockName="duplicate"
-        onClick={_e => onLayerCopy!(props.layerIndex)}
-      />
-      <IconAction
-        wdKey={"layer-list-item:" + props.layerId + ":toggle-visibility"}
-        action={visibilityAction}
-        classBlockName="visibility"
-        classBlockModifier={visibilityAction}
-        onClick={_e => onLayerVisibilityToggle!(props.layerIndex)}
-      />
+      <div className="maputnik-layer-list-item-actions">
+        <IconAction
+          wdKey={"layer-list-item:" + props.layerId + ":copy"}
+          action={"duplicate"}
+          classBlockName="duplicate"
+          onClick={_e => onLayerCopy!(props.layerIndex)}
+        />
+        <IconAction
+          wdKey={"layer-list-item:" + props.layerId + ":toggle-visibility"}
+          action={visibilityAction}
+          classBlockName="visibility"
+          classBlockModifier={visibilityAction}
+          onClick={_e => onLayerVisibilityToggle!(props.layerIndex)}
+        />
+        <IconAction
+          wdKey={"layer-list-item:" + props.layerId + ":delete"}
+          action={"delete"}
+          classBlockName="delete"
+          onClick={_e => onLayerDestroy!(props.layerIndex)}
+        />
+      </div>
     </li>
   </IconContext.Provider>;
 });

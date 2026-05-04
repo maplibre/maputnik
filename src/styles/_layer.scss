@@ -26,6 +26,78 @@
     }
   }
 
+  &-bulk-actions {
+    padding: vars.$margin-2;
+    position: sticky;
+    top: 44px;
+    z-index: 2000;
+    background-color: color.adjust(vars.$color-black, $lightness: 1%);
+    border-bottom: solid 1px color.adjust(vars.$color-black, $lightness: 0.1%);
+    color: vars.$color-lowgray;
+    display: flex;
+    align-items: center;
+    gap: vars.$margin-1;
+    flex-wrap: wrap;
+  }
+
+  &-bulk-actions__count {
+    font-size: 11px;
+    color: vars.$color-white;
+    font-weight: 600;
+    white-space: nowrap;
+    padding: 3px 6px;
+    border-radius: 3px;
+    background-color: color.adjust(vars.$color-midgray, $lightness: -8%);
+    border: solid 1px color.adjust(vars.$color-midgray, $lightness: -2%);
+  }
+
+  &-bulk-actions__buttons {
+    display: flex;
+    flex-wrap: nowrap;
+    gap: 2px;
+    margin-right: 0;
+    overflow-x: auto;
+    padding-bottom: 1px;
+  }
+
+  &-bulk-actions__button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+    padding: 0;
+    border-radius: 3px;
+    white-space: nowrap;
+    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.04);
+    appearance: none;
+    border: none;
+    outline: none;
+    background: transparent;
+
+    &:active {
+      background-color: color.adjust(vars.$color-midgray, $lightness: -8%);
+    }
+
+    &:focus {
+      outline: none;
+      box-shadow: none;
+    }
+
+    &:focus-visible {
+      box-shadow: inset 0 0 0 1px color.adjust(vars.$color-lowgray, $lightness: -10%);
+      background-color: color.adjust(vars.$color-midgray, $lightness: -8%);
+    }
+  }
+
+  &-bulk-actions__button-icon {
+    width: 14px;
+    height: 14px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+
   &-header-title {
     font-size: vars.$font-size-5;
     color: vars.$color-white;
@@ -47,6 +119,7 @@
     display: flex;
     cursor: grab;
     align-items: center;
+    min-width: 0;
     svg {
       margin-right: 4px;
     }
@@ -76,10 +149,11 @@
     opacity: 1;
     -webkit-transition: opacity 600ms, visibility 600ms;
     transition: opacity 600ms, visibility 600ms;
+    gap: vars.$margin-2;
 
-    &:focus-within {
-      border: solid 1px vars.$color-lowgray;
-    }
+    // Remove the global focus-within border to avoid a harsh rectangle
+    // when clicking child controls. Individual controls handle their
+    // own focus-visible styles below.
 
     @include mixins.flex-row;
 
@@ -90,18 +164,48 @@
   }
 
   &-icon-action {
-    display: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex: 0 0 auto;
 
     svg {
       fill: vars.$color-black;
     }
   }
 
+  &-item-actions {
+    display: inline-flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 2px;
+    flex: 0 0 auto;
+    margin-left: auto;
+  }
+
+  &-item-select {
+    flex: 0 0 auto;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 120ms ease-out;
+    margin-right: 0;
+    margin-left: 0;
+
+    .maputnik-checkbox-box {
+      margin-right: 0;
+    }
+  }
+
   .maputnik-layer-list-icon-action {
+    appearance: none;
     background: initial;
     border: none;
-    padding: 0 2px;
+    padding: 0;
+    width: 15px;
     height: 15px;
+    border-radius: 2px;
+    outline: none;
+    box-shadow: none;
 
     svg {
       fill: color.adjust(vars.$color-lowgray, $lightness: -20%);
@@ -110,6 +214,15 @@
         fill: vars.$color-white;
       }
     }
+
+    &:active {
+      background-color: color.adjust(vars.$color-midgray, $lightness: -8%);
+    }
+
+    &:focus-visible {
+      background-color: color.adjust(vars.$color-midgray, $lightness: -8%);
+      box-shadow: inset 0 0 0 1px color.adjust(vars.$color-lowgray, $lightness: -10%);
+    }
   }
 
   .maputnik-layer-list-icon-action__visibility--hide {
@@ -117,16 +230,21 @@
   }
 
   .maputnik-layer-list-item:hover,
-  .maputnik-layer-list-item-selected {
+  .maputnik-layer-list-item-selected,
+  .maputnik-layer-list-item--bulk-selected {
     background-color: color.adjust(vars.$color-black, $lightness: 2%);
 
-    .maputnik-layer-list-icon-action {
-      display: block;
-
-      svg {
-        fill: color.adjust(vars.$color-lowgray, $lightness: -0.5%);
-      }
+    .maputnik-layer-list-icon-action svg {
+      fill: color.adjust(vars.$color-lowgray, $lightness: -0.5%);
     }
+  }
+
+  .maputnik-layer-list-item:hover .maputnik-layer-list-item-select,
+  .maputnik-layer-list-item-selected .maputnik-layer-list-item-select,
+  .maputnik-layer-list-item--bulk-selected .maputnik-layer-list-item-select,
+  .maputnik-layer-list-item:focus-within .maputnik-layer-list-item-select {
+    opacity: 1;
+    pointer-events: auto;
   }
 
 
@@ -153,7 +271,9 @@
 
   &-item-id {
     all: inherit;
-    width: 115px;
+    min-width: 72px;
+    max-width: 120px;
+    width: auto;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -162,6 +282,12 @@
     cursor: pointer;
     // HACK: Remove important
     outline: none !important;
+
+    &:focus-visible {
+      background-color: color.adjust(vars.$color-midgray, $lightness: -8%);
+      border-radius: 2px;
+      box-shadow: inset 0 0 0 1px color.adjust(vars.$color-lowgray, $lightness: -10%);
+    }
   }
 
   &-group-header {
