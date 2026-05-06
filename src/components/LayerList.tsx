@@ -13,6 +13,15 @@ import {
   SortableContext,
   verticalListSortingStrategy,
 } from "@dnd-kit/sortable";
+import {
+  MdContentCopy,
+  MdDelete,
+  MdGroupWork,
+  MdKeyboardArrowDown,
+  MdKeyboardArrowUp,
+  MdVisibility,
+  MdVisibilityOff,
+} from "react-icons/md";
 
 import LayerListGroup from "./LayerListGroup";
 import LayerListItem from "./LayerListItem";
@@ -42,6 +51,29 @@ type LayerListContainerState = {
   areAllGroupsExpanded: boolean
   keys: {[key: string]: number}
   isOpen: {[key: string]: boolean}
+  selectedLayerIds: string[]
+};
+
+type BulkActionButtonProps = {
+  icon: React.ReactNode
+  label: string
+  onClick(): void
+  disabled?: boolean
+  wdKey: string
+};
+
+const BulkActionButton: React.FC<BulkActionButtonProps> = (props) => {
+  return <button
+    type="button"
+    className="maputnik-button maputnik-layer-list-bulk-actions__button"
+    data-wd-key={props.wdKey}
+    onClick={props.onClick}
+    disabled={props.disabled}
+    title={props.label}
+    aria-label={props.label}
+  >
+    <span className="maputnik-layer-list-bulk-actions__button-icon">{props.icon}</span>
+  </button>;
 };
 
 // List of collapsible layer editors
@@ -64,9 +96,122 @@ class LayerListContainerInternal extends React.Component<LayerListContainerInter
       },
       isOpen: {
         add: false,
-      }
+      },
+      selectedLayerIds: []
     };
   }
+
+  getSelectedLayers() {
+    const selectedIds = new Set(this.state.selectedLayerIds);
+    return this.props.layers
+      .map((layer, index) => ({ layer, index }))
+      .filter(({ layer }) => selectedIds.has(layer.id));
+  }
+
+  setSelectedLayerIds(layerIds: string[]) {
+    const uniqueLayerIds = Array.from(new Set(layerIds));
+    this.setState({
+      selectedLayerIds: uniqueLayerIds
+    });
+  }
+
+  onLayerSelectionToggle = (layerId: string, checked: boolean) => {
+    const selectedIds = new Set(this.state.selectedLayerIds);
+    if (checked) {
+      selectedIds.add(layerId);
+    } else {
+      selectedIds.delete(layerId);
+    }
+    this.setSelectedLayerIds(Array.from(selectedIds));
+  };
+
+  clearLayerSelection = () => {
+    if (this.state.selectedLayerIds.length > 0) {
+      this.setSelectedLayerIds([]);
+    }
+  };
+
+  toggleSelectedVisibility = (visibility: "visible" | "none") => {
+    const selectedIds = new Set(this.state.selectedLayerIds);
+    const changedLayers = this.props.layers.map(layer => {
+      if (!selectedIds.has(layer.id)) {
+        return layer;
+      }
+
+      const changedLayer = { ...layer };
+      const changedLayout = "layout" in changedLayer ? { ...changedLayer.layout } : {};
+      changedLayout.visibility = visibility;
+      changedLayer.layout = changedLayout;
+      return changedLayer;
+    });
+
+    this.props.onLayersChange(changedLayers);
+  };
+
+  duplicateSelectedLayers = () => {
+    const selectedIds = new Set(this.state.selectedLayerIds);
+    const changedLayers: LayerSpecification[] = [];
+
+    this.props.layers.forEach(layer => {
+      changedLayers.push(layer);
+      if (selectedIds.has(layer.id)) {
+        const clonedLayer = lodash.cloneDeep(layer);
+        clonedLayer.id = `${clonedLayer.id}-copy-${generateUniqueId()}`;
+        changedLayers.push(clonedLayer);
+      }
+    });
+
+    this.props.onLayersChange(changedLayers);
+  };
+
+  deleteSelectedLayers = () => {
+    const selectedIds = new Set(this.state.selectedLayerIds);
+    const changedLayers = this.props.layers.filter(layer => !selectedIds.has(layer.id));
+    this.props.onLayersChange(changedLayers);
+    this.clearLayerSelection();
+  };
+
+  reorderSelectedLayers = (offset: number) => {
+    const selectedLayers = this.getSelectedLayers();
+    if (selectedLayers.length === 0) {
+      return;
+    }
+
+    const firstSelectedIndex = selectedLayers[0].index;
+    const lastSelectedIndex = selectedLayers[selectedLayers.length - 1].index;
+
+    if (offset < 0 && firstSelectedIndex === 0) {
+      return;
+    }
+    if (offset > 0 && lastSelectedIndex === this.props.layers.length - 1) {
+      return;
+    }
+
+    const selectedIds = new Set(this.state.selectedLayerIds);
+    const selectedLayerObjects: LayerSpecification[] = [];
+    const remainingLayers: LayerSpecification[] = [];
+
+    this.props.layers.forEach(layer => {
+      if (selectedIds.has(layer.id)) {
+        selectedLayerObjects.push(layer);
+      } else {
+        remainingLayers.push(layer);
+      }
+    });
+
+    const insertionIndex = Math.max(0, Math.min(remainingLayers.length, firstSelectedIndex + offset));
+    const changedLayers = [
+      ...remainingLayers.slice(0, insertionIndex),
+      ...selectedLayerObjects,
+      ...remainingLayers.slice(insertionIndex),
+    ];
+
+    this.props.onLayersChange(changedLayers);
+  };
+
+  groupSelectedLayersTogether = () => {
+    this.reorderSelectedLayers(0);
+  };
 
   toggleModal(modalName: string) {
     this.setState({
@@ -193,6 +338,17 @@ class LayerListContainerInternal extends React.Component<LayerListContainerInter
   }
 
   componentDidUpdate (prevProps: LayerListContainerProps) {
+    if (prevProps.layers !== this.props.layers) {
+      const existingIds = new Set(this.props.layers.map(layer => layer.id));
+      const selectedLayerIds = this.state.selectedLayerIds.filter(layerId => existingIds.has(layerId));
+
+      if (selectedLayerIds.length !== this.state.selectedLayerIds.length) {
+        this.setState({
+          selectedLayerIds
+        });
+      }
+    }
+
     if (prevProps.selectedLayerIndex !== this.props.selectedLayerIndex) {
       const selectedItemNode = this.selectedItemRef.current;
       if (selectedItemNode && selectedItemNode.node) {
@@ -218,6 +374,64 @@ class LayerListContainerInternal extends React.Component<LayerListContainerInter
     const listItems: JSX.Element[] = [];
     let idx = 0;
     const layersByGroup = this.groupedLayers();
+    const t = this.props.t;
+    const selectedLayers = this.getSelectedLayers();
+    const selectedCount = selectedLayers.length;
+    const canMoveUp = selectedCount > 0 && selectedLayers[0].index > 0;
+    const canMoveDown = selectedCount > 0 && selectedLayers[selectedLayers.length - 1].index < this.props.layers.length - 1;
+
+    const bulkActions = selectedCount > 0 ? <div className="maputnik-layer-list-bulk-actions" data-wd-key="layer-list.bulk-actions">
+      <span className="maputnik-layer-list-bulk-actions__count">{selectedCount} selected</span>
+      <span className="maputnik-space" />
+      <div className="maputnik-multibutton maputnik-layer-list-bulk-actions__buttons">
+        <BulkActionButton
+          wdKey="layer-list.bulk-actions.hide"
+          label={t("Hide all selected")}
+          icon={<MdVisibilityOff />}
+          onClick={() => this.toggleSelectedVisibility("none")}
+        />
+        <BulkActionButton
+          wdKey="layer-list.bulk-actions.show"
+          label={t("Show all selected")}
+          icon={<MdVisibility />}
+          onClick={() => this.toggleSelectedVisibility("visible")}
+        />
+        <BulkActionButton
+          wdKey="layer-list.bulk-actions.move-up"
+          label={t("Move selected layers up")}
+          icon={<MdKeyboardArrowUp />}
+          onClick={() => this.reorderSelectedLayers(-1)}
+          disabled={!canMoveUp}
+        />
+        <BulkActionButton
+          wdKey="layer-list.bulk-actions.move-down"
+          label={t("Move selected layers down")}
+          icon={<MdKeyboardArrowDown />}
+          onClick={() => this.reorderSelectedLayers(1)}
+          disabled={!canMoveDown}
+        />
+        <BulkActionButton
+          wdKey="layer-list.bulk-actions.group"
+          label={t("Group selected layers together")}
+          icon={<MdGroupWork />}
+          onClick={this.groupSelectedLayersTogether}
+          disabled={selectedCount < 2}
+        />
+        <BulkActionButton
+          wdKey="layer-list.bulk-actions.duplicate"
+          label={t("Duplicate selected layers")}
+          icon={<MdContentCopy />}
+          onClick={this.duplicateSelectedLayers}
+        />
+        <BulkActionButton
+          wdKey="layer-list.bulk-actions.delete"
+          label={t("Delete all selected")}
+          icon={<MdDelete />}
+          onClick={this.deleteSelectedLayers}
+        />
+      </div>
+    </div> : null;
+
     layersByGroup.forEach(layers => {
       const groupPrefix = layerPrefix(layers[0].id);
       if(layers.length > 1) {
@@ -252,7 +466,8 @@ class LayerListContainerInternal extends React.Component<LayerListContainerInter
           className={classnames({
             "maputnik-layer-list-item-collapsed": layers.length > 1 && this.isCollapsed(groupPrefix, groupIdx) && idx !== this.props.selectedLayerIndex,
             "maputnik-layer-list-item-group-last": idxInGroup == layers.length - 1 && layers.length > 1,
-            "maputnik-layer-list-item--error": !!layerError
+            "maputnik-layer-list-item--error": !!layerError,
+            "maputnik-layer-list-item--bulk-selected": selectedLayers.some(selectedLayer => selectedLayer.index === idx)
           })}
           key={layer.key}
           id={layer.key}
@@ -261,18 +476,18 @@ class LayerListContainerInternal extends React.Component<LayerListContainerInter
           layerType={layer.type}
           visibility={(layer.layout || {}).visibility}
           isSelected={idx === this.props.selectedLayerIndex}
+          isBulkSelected={selectedLayers.some(selectedLayer => selectedLayer.index === idx)}
           onLayerSelect={this.props.onLayerSelect}
           onLayerDestroy={this.props.onLayerDestroy?.bind(this)}
           onLayerCopy={this.props.onLayerCopy.bind(this)}
           onLayerVisibilityToggle={this.props.onLayerVisibilityToggle.bind(this)}
+          onLayerSelectionToggle={this.onLayerSelectionToggle}
           {...additionalProps}
         />;
         listItems.push(listItem);
         idx += 1;
       });
     });
-
-    const t = this.props.t;
 
     return <section
       className="maputnik-layer-list"
@@ -318,6 +533,7 @@ class LayerListContainerInternal extends React.Component<LayerListContainerInter
           </div>
         </div>
       </header>
+      {bulkActions}
       <div
         role="navigation"
         aria-label={t("Layers list")}

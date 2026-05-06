@@ -59,6 +59,14 @@ describe("layers list", () => {
     });
 
     describe("when clicking hide", () => {
+      it("should show the correct hover label for the visibility toggle", () => {
+        then(get.elementByTestId("layer-list-item:" + id + ":toggle-visibility")).should("have.attr", "title", "hide");
+
+        when.click("layer-list-item:" + id + ":toggle-visibility");
+
+        then(get.elementByTestId("layer-list-item:" + id + ":toggle-visibility")).should("have.attr", "title", "show");
+      });
+
       beforeEach(() => {
         when.click("layer-list-item:" + id + ":toggle-visibility");
       });

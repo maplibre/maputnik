@@ -18,6 +18,7 @@
 
 ### 🐞 Bug fixes
 
+- Fix the layer visibility toggle hover label being reversed
 - Fixed the Expression editor (for long expressions) being able to be float under other components further down
 - Fixed an issue when clicking on a popup and then clicking on the map again
 - Fix modal close button position
