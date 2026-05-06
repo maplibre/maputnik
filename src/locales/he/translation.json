@@ -199,5 +199,6 @@
   "Video URL": "כתובת וידאו",
   "View": "תצוגה",
   "You've entered an old style filter.": "הכנסתם סינון מסוג ישן,",
-  "Zoom": "זום"
+  "Zoom": "זום",
+  "Drag and drop a style JSON file here or click to browse": "גרור ושחרר כאן קובץ JSON של סגנון או לחץ כדי לעיין"
 }

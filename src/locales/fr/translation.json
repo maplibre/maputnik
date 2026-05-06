@@ -199,5 +199,6 @@
   "Video URL": "URL de la vidéo",
   "View": "Vue",
   "You've entered an old style filter.": "Vous avez entré un ancien style de filtre.",
-  "Zoom": "Zoom"
+  "Zoom": "Zoom",
+  "Drag and drop a style JSON file here or click to browse": "Faites glisser un fichier JSON de style ici ou cliquez pour parcourir"
 }
