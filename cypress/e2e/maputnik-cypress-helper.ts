@@ -43,6 +43,9 @@ export default class MaputnikCypressHelper {
         }
       });
     },
+    typeIntoWrappedInput: ($inputs: JQuery<HTMLElement>, index: number, value: string) => {
+      cy.wrap($inputs[index]).type("{selectall}" + value, { force: true });
+    },
     ...this.helper.when,
   };
 

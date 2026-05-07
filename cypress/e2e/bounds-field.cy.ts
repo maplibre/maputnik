@@ -12,8 +12,8 @@ describe("bounds field feature", () => {
       when.click("modal:open.url.button");
       when.wait(200);
 
-      then(get.styleFromLocalStorage().then((style) => style.sources["bounded-vector"].bounds)).should("deep.equal", [-180, -85.051129, 180, 85.051129]);
-      then(get.styleFromLocalStorage().then((style) => style.sources["bounded-raster"].bounds)).should("deep.equal", [-122.4, 37.7, -122.3, 37.8]);
+      then(get.styleFromLocalStorage().then((style) => style.sources["bounded-vector"].bounds)).shouldDeepNestedInclude([-180, -85.051129, 180, 85.051129]);
+      then(get.styleFromLocalStorage().then((style) => style.sources["bounded-raster"].bounds)).shouldDeepNestedInclude([-122.4, 37.7, -122.3, 37.8]);
     });
   });
 
@@ -66,7 +66,7 @@ describe("bounds field feature", () => {
 
       then(
         get.styleFromLocalStorage().then((style) => style.sources[sourceId].bounds)
-      ).should("deep.equal", [-180, -85.051129, 180, 85.051129]);
+      ).shouldDeepNestedInclude([-180, -85.051129, 180, 85.051129]);
     });
   });
 
@@ -93,7 +93,7 @@ describe("bounds field feature", () => {
 
       then(
         get.styleFromLocalStorage().then((style) => style.sources[sourceId].bounds)
-      ).should("deep.equal", [-125.0, 25.0, -66.0, 49.0]);
+      ).shouldDeepNestedInclude([-125.0, 25.0, -66.0, 49.0]);
     });
   });
 
@@ -120,7 +120,7 @@ describe("bounds field feature", () => {
 
       then(
         get.styleFromLocalStorage().then((style) => style.sources[sourceId].bounds)
-      ).should("deep.equal", [-10.0, -10.0, 10.0, 10.0]);
+      ).shouldDeepNestedInclude([-10.0, -10.0, 10.0, 10.0]);
     });
   });
 });

@@ -235,7 +235,7 @@ export class MaputnikDriver {
               break;
             }
           }
-          cy.wrap($inputs[targetIndex]).type("{selectall}" + value, { force: true });
+          this.helper.when.typeIntoWrappedInput($inputs, targetIndex, value);
         });
       });
     },
@@ -252,7 +252,7 @@ export class MaputnikDriver {
               break;
             }
           }
-          cy.wrap($inputs[targetIndex]).type("{selectall}" + value, { force: true });
+          this.helper.when.typeIntoWrappedInput($inputs, targetIndex, value);
         });
       });
     },
