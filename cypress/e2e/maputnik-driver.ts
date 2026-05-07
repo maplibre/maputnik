@@ -230,17 +230,8 @@ export class MaputnikDriver {
     setValueToPropertyArray: (selector: string, value: string) => {
       this.when.doWithin(selector, () => {
         const inputs = this.helper.get.element("input");
-        // Find the first empty input or use the first one
         inputs.then(($inputs) => {
-          let targetIndex = 0;
-          for (let i = 0; i < $inputs.length; i++) {
-            const input = $inputs[i] as HTMLInputElement;
-            if (!input.value) {
-              targetIndex = i;
-              break;
-            }
-          }
-          this.helper.when.typeIntoWrappedInput($inputs, targetIndex, value);
+          this.helper.when.typeIntoWrappedInput($inputs, 0, value);
         });
       });
     },
