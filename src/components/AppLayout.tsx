@@ -1,18 +1,27 @@
-import React, {useCallback, useEffect, useRef, useState} from "react";
+import React, {useEffect, useState} from "react";
+import {Group, Panel, Separator, useDefaultLayout} from "react-resizable-panels";
 import ScrollContainer from "./ScrollContainer";
 import {useTranslation} from "react-i18next";
 import {IconContext} from "react-icons";
-import {
-  DEFAULT_LIST_RATIO,
-  DEFAULT_SIDEBAR_WIDTH,
-  MIN_LIST_WIDTH,
-  MIN_DRAWER_WIDTH,
-  clampSidebarWidth,
-  getSavedSidebarWidth,
-  getSavedListRatio,
-  saveSidebarWidth,
-  saveListRatio,
-} from "../libs/sidebar";
+
+const DEFAULT_LIST_WIDTH = 200;
+const DEFAULT_DRAWER_WIDTH = 370;
+const DEFAULT_SIDEBAR_WIDTH = DEFAULT_LIST_WIDTH + DEFAULT_DRAWER_WIDTH;
+const DEFAULT_LIST_RATIO = DEFAULT_LIST_WIDTH / DEFAULT_SIDEBAR_WIDTH;
+
+const SIDEBAR_LAYOUT_STORAGE_ID = "maputnik:sidebar-layout";
+const SIDEBAR_INNER_LAYOUT_STORAGE_ID = "maputnik:sidebar-inner-layout";
+const SIDEBAR_PANEL_ID = "sidebar";
+const MAP_PANEL_ID = "map";
+const LIST_PANEL_ID = "list";
+const DRAWER_PANEL_ID = "drawer";
+
+const getDefaultSidebarPercent = () => {
+  const viewportWidth = window.innerWidth || DEFAULT_SIDEBAR_WIDTH;
+  return Math.min(100, (DEFAULT_SIDEBAR_WIDTH / viewportWidth) * 100);
+};
+
+const getDefaultListPercent = () => DEFAULT_LIST_RATIO * 100;
 
 type AppLayoutProps = {
   toolbar: React.ReactElement
@@ -27,148 +36,101 @@ type AppLayoutProps = {
 export default function AppLayout(props: AppLayoutProps) {
   const {t, i18n} = useTranslation();
 
+  const sidebarLayout = useDefaultLayout({
+    id: SIDEBAR_LAYOUT_STORAGE_ID,
+    panelIds: [SIDEBAR_PANEL_ID, MAP_PANEL_ID],
+  });
+  const sidebarInnerLayout = useDefaultLayout({
+    id: SIDEBAR_INNER_LAYOUT_STORAGE_ID,
+    panelIds: [LIST_PANEL_ID, DRAWER_PANEL_ID],
+  });
+
   useEffect(() => {
     document.body.dir = i18n.dir();
   }, [i18n]);
 
-  const [sidebarWidth, setSidebarWidth] = useState<number>(
-    () => getSavedSidebarWidth() ?? DEFAULT_SIDEBAR_WIDTH
+  const [sidebarSize, setSidebarSize] = useState<number>(
+    () => sidebarLayout.defaultLayout?.[SIDEBAR_PANEL_ID] ?? getDefaultSidebarPercent()
   );
-  const [listRatio, setListRatio] = useState<number>(
-    () => getSavedListRatio() ?? DEFAULT_LIST_RATIO
+  const [listSize, setListSize] = useState<number>(
+    () => sidebarInnerLayout.defaultLayout?.[LIST_PANEL_ID] ?? getDefaultListPercent()
   );
-
-  // Outer handle (sidebar <-> map) drag state
-  const isDragging = useRef(false);
-  const startX = useRef(0);
-  const startWidth = useRef(0);
-
-  // Inner handle (list <-> drawer) drag state
-  const isInnerDragging = useRef(false);
-  const innerStartX = useRef(0);
-  const innerStartListWidth = useRef(0);
-
-  // Compute sub-widths from ratio
-  const listWidth = Math.round(sidebarWidth * listRatio);
-  const drawerWidth = sidebarWidth - listWidth;
-
-  const handleMouseDown = useCallback((e: React.MouseEvent) => {
-    e.preventDefault();
-    isDragging.current = true;
-    startX.current = e.clientX;
-    startWidth.current = sidebarWidth;
-    document.body.style.cursor = "col-resize";
-    document.body.style.userSelect = "none";
-  }, [sidebarWidth]);
-
-  // Inner handle: resize list <-> drawer split
-  const handleInnerMouseDown = useCallback((e: React.MouseEvent) => {
-    e.preventDefault();
-    isInnerDragging.current = true;
-    innerStartX.current = e.clientX;
-    innerStartListWidth.current = listWidth;
-    document.body.style.cursor = "col-resize";
-    document.body.style.userSelect = "none";
-  }, [listWidth]);
-
-  useEffect(() => {
-    const handleMouseMove = (e: MouseEvent) => {
-      const isRtl = document.body.dir === "rtl";
-
-      // Outer drag
-      if (isDragging.current) {
-        const delta = isRtl
-          ? startX.current - e.clientX
-          : e.clientX - startX.current;
-        const newWidth = clampSidebarWidth(startWidth.current + delta);
-        setSidebarWidth(newWidth);
-      }
-
-      // Inner drag
-      if (isInnerDragging.current) {
-        const delta = isRtl
-          ? innerStartX.current - e.clientX
-          : e.clientX - innerStartX.current;
-        const newListWidth = innerStartListWidth.current + delta;
-        setSidebarWidth((sw) => {
-          const clampedList = Math.max(MIN_LIST_WIDTH, Math.min(sw - MIN_DRAWER_WIDTH, newListWidth));
-          const newRatio = clampedList / sw;
-          setListRatio(newRatio);
-          return sw;
-        });
-      }
-    };
-
-    const handleMouseUp = () => {
-      if (isDragging.current) {
-        isDragging.current = false;
-        document.body.style.cursor = "";
-        document.body.style.userSelect = "";
-        setSidebarWidth((w) => {
-          saveSidebarWidth(w);
-          return w;
-        });
-      }
-      if (isInnerDragging.current) {
-        isInnerDragging.current = false;
-        document.body.style.cursor = "";
-        document.body.style.userSelect = "";
-        setListRatio((r) => {
-          saveListRatio(r);
-          return r;
-        });
-      }
-    };
-
-    document.addEventListener("mousemove", handleMouseMove);
-    document.addEventListener("mouseup", handleMouseUp);
-    return () => {
-      document.removeEventListener("mousemove", handleMouseMove);
-      document.removeEventListener("mouseup", handleMouseUp);
-    };
-  }, []);
 
   return <IconContext.Provider value={{size: "14px"}}>
     <div className="maputnik-layout" style={{
-      "--sidebar-list-width": `${listWidth}px`,
-      "--sidebar-drawer-width": `${drawerWidth}px`,
-      "--sidebar-total-width": `${sidebarWidth}px`,
+      "--sidebar-list-width": `${listSize}%`,
+      "--sidebar-drawer-width": `${100 - listSize}%`,
+      "--sidebar-total-width": `${sidebarSize}%`,
     } as React.CSSProperties}>
       {props.toolbar}
       <div className="maputnik-layout-main">
-        {props.codeEditor && <div className="maputnik-layout-code-editor">
-          <ScrollContainer>
-            {props.codeEditor}
-          </ScrollContainer>
-        </div>
-        }
-        {!props.codeEditor && <>
-          <div className="maputnik-layout-list">
-            {props.layerList}
-          </div>
-          <div
-            className="maputnik-layout-resize-handle maputnik-layout-resize-handle--inner"
-            data-wd-key="inner-resize-handle"
-            onMouseDown={handleInnerMouseDown}
-            title={t("Drag to resize list / editor split")}
-            tabIndex={-1}
-            aria-hidden="true"
-          />
-          <div className="maputnik-layout-drawer">
-            <ScrollContainer>
-              {props.layerEditor}
-            </ScrollContainer>
-          </div>
-          <div
+        <Group
+          className="maputnik-layout-panels"
+          orientation="horizontal"
+          id={SIDEBAR_LAYOUT_STORAGE_ID}
+          defaultLayout={sidebarLayout.defaultLayout}
+          onLayoutChanged={(layout) => {
+            setSidebarSize(layout[SIDEBAR_PANEL_ID] ?? sidebarSize);
+            sidebarLayout.onLayoutChanged(layout);
+          }}
+        >
+          <Panel
+            id={SIDEBAR_PANEL_ID}
+            className={props.codeEditor ? "maputnik-layout-code-editor" : "maputnik-layout-sidebar"}
+            defaultSize="570px"
+            minSize="280px"
+          >
+            {props.codeEditor ? <ScrollContainer>
+              {props.codeEditor}
+            </ScrollContainer> : <Group
+              className="maputnik-layout-sidebar-panels"
+              orientation="horizontal"
+              id={SIDEBAR_INNER_LAYOUT_STORAGE_ID}
+              defaultLayout={sidebarInnerLayout.defaultLayout}
+              onLayoutChanged={(layout) => {
+                setListSize(layout[LIST_PANEL_ID] ?? listSize);
+                sidebarInnerLayout.onLayoutChanged(layout);
+              }}
+            >
+              <Panel
+                id={LIST_PANEL_ID}
+                className="maputnik-layout-list"
+                defaultSize="200px"
+                minSize="100px"
+              >
+                {props.layerList}
+              </Panel>
+              <Separator
+                className="maputnik-layout-resize-handle maputnik-layout-resize-handle--inner"
+                data-wd-key="inner-resize-handle"
+                title={t("Drag to resize list / editor split")}
+                aria-label={t("Drag to resize list / editor split")}
+              />
+              <Panel
+                id={DRAWER_PANEL_ID}
+                className="maputnik-layout-drawer"
+                minSize="150px"
+              >
+                <ScrollContainer>
+                  {props.layerEditor}
+                </ScrollContainer>
+              </Panel>
+            </Group>}
+          </Panel>
+          <Separator
             className="maputnik-layout-resize-handle"
             data-wd-key="sidebar-resize-handle"
-            onMouseDown={handleMouseDown}
             title={t("Drag to resize sidebar")}
-            tabIndex={-1}
-            aria-hidden="true"
+            aria-label={t("Drag to resize sidebar")}
           />
-        </>}
-        {props.map}
+          <Panel
+            id={MAP_PANEL_ID}
+            className="maputnik-layout-map"
+            minSize={0}
+          >
+            {props.map}
+          </Panel>
+        </Group>
       </div>
       {props.bottom && <div className="maputnik-layout-bottom">
         {props.bottom}

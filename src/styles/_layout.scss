@@ -33,20 +33,38 @@
     display: flex;
   }
 
-  &-list {
-    width: var(--sidebar-list-width);
+  &-panels {
+    flex: 1;
     min-width: 0;
-    flex-shrink: 0;
+    min-height: 0;
+    display: flex;
+    width: 100%;
+    height: 100%;
+  }
+
+  &-sidebar,
+  &-sidebar-panels,
+  &-code-editor,
+  &-list,
+  &-drawer,
+  &-map {
+    min-width: 0;
+    min-height: 0;
+    height: 100%;
+    position: relative;
     background-color: vars.$color-black;
   }
 
+  &-sidebar-panels {
+    width: 100%;
+  }
+
+  &-list {
+    overflow: hidden;
+  }
+
   &-drawer {
-    width: var(--sidebar-drawer-width);
-    min-width: 0;
-    flex-shrink: 0;
-    background-color: vars.$color-black;
-    // scroll-container is position: absolute
-    position: relative;
+    overflow: hidden;
   }
 
   &-resize-handle {
@@ -84,20 +102,16 @@
   }
 
   &-code-editor {
-    width: var(--sidebar-total-width);
-    min-width: 0;
-    flex-shrink: 0;
-    background-color: vars.$color-black;
     // scroll-container is position: absolute
-    position: relative;
+    overflow: hidden;
   }
 
   &-bottom {
     position: fixed;
     bottom: 0;
-    right: 0;
     z-index: 10;
-    width: calc(100% - var(--sidebar-total-width));
+    left: var(--sidebar-total-width);
+    right: 0;
     background-color: vars.$color-black;
   }
 }
