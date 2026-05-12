@@ -37,7 +37,7 @@ describe("bounds field feature", () => {
         return source.bounds === undefined || source.bounds.length === 0;
       });
 
-      then(hasEmptyBounds).should("be.true");
+      then(hasEmptyBounds).shouldEqual(true);
       then(get.elementByTestId("modal:sources")).shouldBeVisible();
     });
   });

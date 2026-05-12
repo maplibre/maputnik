@@ -227,6 +227,9 @@ export class MaputnikDriver {
         .type(text, { parseSpecialCharSequences: false });
     },
 
+    // Sets the first value in a property array (index 0).
+    // Use this to initialize the first element of an array field.
+    // Typically used before calling addValueToPropertyArray for subsequent values.
     setValueToPropertyArray: (selector: string, value: string) => {
       this.when.doWithin(selector, () => {
         const inputs = this.helper.get.element("input");
@@ -236,6 +239,9 @@ export class MaputnikDriver {
       });
     },
 
+    // Adds a value to the first empty input in a property array.
+    // Searches through all inputs and fills the first empty one.
+    // Use this to sequentially populate array fields after initialization.
     addValueToPropertyArray: (selector: string, value: string) => {
       this.when.doWithin(selector, () => {
         const inputs = this.helper.get.element("input");
