@@ -29,6 +29,11 @@ export class MaputnikDriver {
   private helper = new MaputnikCypressHelper();
   private modalDriver = new ModalDriver();
 
+  private resetLayoutStorage = (win: Window) => {
+    win.localStorage.removeItem("maputnik:sidebar-layout");
+    win.localStorage.removeItem("maputnik:sidebar-inner-layout");
+  };
+
   public beforeAndAfter = () => {
     beforeEach(() => {
       this.given.setupMockBackedResponses();
@@ -178,7 +183,11 @@ export class MaputnikDriver {
       if (zoom) {
         url.hash = `${zoom}/41.3805/2.1635`;
       }
-      this.helper.when.visit(url.toString());
+      cy.visit(url.toString(), {
+        onBeforeLoad: (win) => {
+          this.resetLayoutStorage(win);
+        },
+      });
       if (styleProperties) {
         this.helper.when.acceptConfirm();
       }

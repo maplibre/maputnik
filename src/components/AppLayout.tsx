@@ -95,7 +95,8 @@ export default function AppLayout(props: AppLayoutProps) {
               <Panel
                 id={LIST_PANEL_ID}
                 className="maputnik-layout-list"
-                defaultSize="200px"
+                defaultSize={`${getDefaultListPercent()}%`}
+                groupResizeBehavior="preserve-relative-size"
                 minSize="100px"
               >
                 {props.layerList}
@@ -109,6 +110,7 @@ export default function AppLayout(props: AppLayoutProps) {
               <Panel
                 id={DRAWER_PANEL_ID}
                 className="maputnik-layout-drawer"
+                defaultSize={`${100 - getDefaultListPercent()}%`}
                 minSize="150px"
               >
                 <ScrollContainer>
