@@ -188,7 +188,7 @@ export class MaputnikDriver {
       if (zoom) {
         url.hash = `${zoom}/41.3805/2.1635`;
       }
-      cy.visit(url.toString(), {
+      this.helper.when.visit(url.toString(), {
         onBeforeLoad: (win) => {
           this.resetLayoutStorage(win);
         },

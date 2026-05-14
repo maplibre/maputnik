@@ -50,6 +50,9 @@ export default class MaputnikCypressHelper {
       });
     },
     ...this.helper.when,
+    visit: (url: string, options?: Partial<Cypress.VisitOptions>) => {
+      cy.visit(url, options);
+    },
   };
 
   public beforeAndAfter = this.helper.beforeAndAfter;
