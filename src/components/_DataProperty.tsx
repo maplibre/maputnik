@@ -21,7 +21,7 @@ import { type MappedLayerErrors } from "../libs/definitions";
 
 
 function setStopRefs(props: DataPropertyInternalProps, state: DataPropertyState) {
-  // This is initialsed below only if required to improved performance.
+  // This is initialised below only if required to improved performance.
   let newRefs: {[key: number]: string} | undefined;
 
   if(props.value && props.value.stops) {

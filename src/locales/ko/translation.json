@@ -201,5 +201,6 @@
   "Video URL": "비디오 URL",
   "View": "보기",
   "You've entered an old style filter.": "이전 스타일 필터를 입력했습니다.",
-  "Zoom": "줌"
+  "Zoom": "줌",
+  "Drag and drop a style JSON file here or click to browse": "여기에 스타일 JSON 파일을 끌어다 놓거나 클릭하여 찾아보세요"
 }

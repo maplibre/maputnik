@@ -1,4 +1,4 @@
-import React, { type FormEvent } from "react";
+import React, { type DragEvent, type FormEvent } from "react";
 import { MdFileUpload } from "react-icons/md";
 import { MdAddCircleOutline } from "react-icons/md";
 import { Trans, type WithTranslation, withTranslation } from "react-i18next";
@@ -51,16 +51,20 @@ type ModalOpenInternalProps = {
 
 type ModalOpenState = {
   styleUrl: string
+  isDragOver: boolean
   error?: string | null
   activeRequest?: any
   activeRequestUrl?: string | null
 };
 
 class ModalOpenInternal extends React.Component<ModalOpenInternalProps, ModalOpenState> {
+  private fileInputRef = React.createRef<HTMLInputElement>();
+
   constructor(props: ModalOpenInternalProps) {
     super(props);
     this.state = {
-      styleUrl: ""
+      styleUrl: "",
+      isDragOver: false,
     };
   }
 
@@ -198,11 +202,44 @@ class ModalOpenInternal extends React.Component<ModalOpenInternalProps, ModalOpe
 
   onOpenToggle() {
     this.setState({
-      styleUrl: ""
+      styleUrl: "",
+      isDragOver: false,
     });
     this.clearError();
     this.props.onOpenToggle();
   }
+
+  onBrowseClick = async () => {
+    if (typeof window.showOpenFilePicker === "function") {
+      await this.onOpenFile();
+      return;
+    }
+
+    this.fileInputRef.current?.click();
+  };
+
+  onFileDragOver = (e: DragEvent<HTMLDivElement>) => {
+    e.preventDefault();
+    e.stopPropagation();
+
+    if (!this.state.isDragOver) {
+      this.setState({ isDragOver: true });
+    }
+  };
+
+  onFileDragLeave = (e: DragEvent<HTMLDivElement>) => {
+    e.preventDefault();
+    e.stopPropagation();
+    this.setState({ isDragOver: false });
+  };
+
+  onFileDrop = (e: DragEvent<HTMLDivElement>) => {
+    e.preventDefault();
+    e.stopPropagation();
+
+    this.setState({ isDragOver: false });
+    this.onFileChanged(e.dataTransfer.files);
+  };
 
   onChangeUrl = (url: string) => {
     this.setState({
@@ -244,19 +281,35 @@ class ModalOpenInternal extends React.Component<ModalOpenInternalProps, ModalOpe
           <section className="maputnik-modal-section">
             <h1>{t("Open local Style")}</h1>
             <p>{t("Open a local JSON style from your computer.")}</p>
-            <div>
-              {typeof window.showOpenFilePicker === "function" ? (
-                <InputButton
-                  data-wd-key="modal:open.file.button"
-                  className="maputnik-big-button"
-                  onClick={this.onOpenFile}><MdFileUpload /> {t("Open Style")}
-                </InputButton>
-              ) : (
-                <label>
-                  <a className="maputnik-button maputnik-upload-button" aria-label={t("Open Style")}><MdFileUpload /> {t("Open Style")}</a>
-                  <input data-wd-key="modal:open.file.input" type="file" style={{ display: "none" }} onChange={(e) => this.onFileChanged(e.target.files)} />
-                </label>
-              )}
+            <div
+              data-wd-key="modal:open.dropzone"
+              className={`maputnik-upload-dropzone${this.state.isDragOver ? " maputnik-upload-dropzone--active" : ""}`}
+              role="button"
+              tabIndex={0}
+              onDragOver={this.onFileDragOver}
+              onDragLeave={this.onFileDragLeave}
+              onDrop={this.onFileDrop}
+              onClick={() => void this.onBrowseClick()}
+              onKeyDown={(e) => {
+                if (e.key === "Enter" || e.key === " ") {
+                  e.preventDefault();
+                  void this.onBrowseClick();
+                }
+              }}
+            >
+              <div className="maputnik-upload-dropzone-content">
+                <MdFileUpload className="maputnik-upload-dropzone-icon" aria-hidden="true" />
+                <p className="maputnik-upload-dropzone-text">
+                  {t("Drag and drop a style JSON file here or click to browse")}
+                </p>
+              </div>
+              <input
+                ref={this.fileInputRef}
+                data-wd-key="modal:open.file.input"
+                type="file"
+                style={{ display: "none" }}
+                onChange={(e) => this.onFileChanged(e.target.files)}
+              />
             </div>
           </section>
 

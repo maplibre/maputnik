@@ -57,7 +57,7 @@ class FeatureLayerPopup extends React.Component<FeatureLayerPopupProps> {
       // Default color
       return "black";
     }
-    // This is quite complex, just incase there's an edgecase we're missing
+    // This is quite complex, just in case there's an edgecase we're missing
     // always return black if we get an unexpected error.
     catch (err) {
       console.warn("Unable to get feature color, error:", err);

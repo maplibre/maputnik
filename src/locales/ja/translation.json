@@ -201,5 +201,6 @@
   "Video URL": "動画URL",
   "View": "表示",
   "You've entered an old style filter.": "旧型フィルタを使用しております。",
-  "Zoom": "ズーム"
+  "Zoom": "ズーム",
+  "Drag and drop a style JSON file here or click to browse": "ここにスタイルのJSONファイルをドラッグ＆ドロップするか、クリックして参照してください"
 }

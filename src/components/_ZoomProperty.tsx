@@ -24,7 +24,7 @@ import { type MappedLayerErrors } from "../libs/definitions";
  * When the stops are reordered the references are also updated (see this.orderStops) this allows React to use the same key for the element and keep keyboard focus.
  */
 function setStopRefs(props: ZoomPropertyInternalProps, state: ZoomPropertyState) {
-  // This is initialsed below only if required to improved performance.
+  // This is initialised below only if required to improved performance.
   let newRefs: {[key: number]: string} = {};
 
   if(props.value && (props.value as ZoomWithStops).stops) {

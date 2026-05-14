@@ -22,7 +22,7 @@ jobs:
           ref: main
 
       - name: Use Node.js from nvmrc
-        uses: actions/setup-node@6044e13b5dc448c55e2357c09f80417699197238 # v6.2.0
+        uses: actions/setup-node@53b83947a5a98c8d113130e565377fae1a50d02f # v6.3.0
         with:
           node-version-file: ".nvmrc"
 
@@ -32,7 +32,7 @@ jobs:
           ./build/bump-version-changelog.js ${{ inputs.version }}
 
       - name: Create Pull Request
-        uses: peter-evans/create-pull-request@c0f553fe549906ede9cf27b5156039d195d2ece0 # v8.1.0
+        uses: peter-evans/create-pull-request@5f6978faf089d4d20b00c7766989d076bb2fc7f1 # v8.1.1
         with:
           commit-message: Bump version to ${{ inputs.version }}
           branch: bump-version-to-${{ inputs.version }}

@@ -201,5 +201,6 @@
   "Video URL": "视频URL",
   "View": "视图",
   "You've entered an old style filter.": "您输入了一个旧风格的过滤器。",
-  "Zoom": "缩放"
+  "Zoom": "缩放",
+  "Drag and drop a style JSON file here or click to browse": "将样式 JSON 文件拖放到此处或点击以浏览"
 }

@@ -148,7 +148,12 @@ export class MaputnikDriver {
     },
     chooseExampleFile: () => {
       this.helper.given.fixture("example-style.json", "example-style.json");
-      this.helper.when.openFileByFixture("example-style.json", "modal:open.file.button", "modal:open.file.input");
+      this.helper.when.openFileByFixture("example-style.json", "modal:open.dropzone", "modal:open.file.input");
+      this.helper.when.wait(200);
+    },
+    dropExampleFile: () => {
+      this.helper.given.fixture("example-style.json", "example-style.json");
+      this.helper.when.dropFileByFixture("example-style.json", "modal:open.dropzone");
       this.helper.when.wait(200);
     },
     setStyle: (

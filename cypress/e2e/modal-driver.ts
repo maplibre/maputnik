@@ -7,7 +7,7 @@ export default class ModalDriver {
   public when = {
     fillLayers: (opts: { type: string; layer?: string; id?: string }) => {
       // Having logic in test code is an anti pattern.
-      // This should be splitted to multiple single responsibility functions
+      // This should be split to multiple single responsibility functions
       const type = opts.type;
       const layer = opts.layer;
       let id;
