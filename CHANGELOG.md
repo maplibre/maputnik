@@ -2,6 +2,7 @@
 
 ### ✨ Features and improvements
 - Added translation to "Links" in debug modal
+- Added bounds field and moved its Cypress coverage into the sources modal spec.
 - Add support for hillshade's color arrays and relief-color elevation expression
 - Change layers icons to make them a bit more distinct
 - Remove `@mdi` packages in favor of `react-icons`
@@ -18,7 +19,6 @@
 
 ### 🐞 Bug fixes
 
-- Moved bounds field Cypress coverage into the sources modal spec.
 - Improved the local style open modal and local file upload.
 - Fixed the Expression editor (for long expressions) being able to be float under other components further down
 - Fixed an issue when clicking on a popup and then clicking on the map again

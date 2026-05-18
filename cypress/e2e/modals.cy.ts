@@ -202,7 +202,7 @@ describe("modals", () => {
         });
       });
 
-      describe("tilejson source with bounds", () => {
+      describe("tile url source with bounds", () => {
         it("should support bounds on TileURL sources", () => {
           const sourceId = "tileurl-bounds-test";
           when.setValue("modal:sources.add.source_id", sourceId);
