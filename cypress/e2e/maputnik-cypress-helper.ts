@@ -49,7 +49,7 @@ export default class MaputnikCypressHelper {
         force: true,
       });
     },
-    
+
     pointerDrag: (testId: string, deltaX: number) => {
       cy.get(`[data-wd-key="${testId}"]`).then(($el) => {
         const rect = $el[0].getBoundingClientRect();
