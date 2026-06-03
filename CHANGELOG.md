@@ -30,6 +30,7 @@
 - Fixed headers in left panes (Layers list and Layer editor) to remain visible when scrolling
 - Fix error when using a source from localhost
 - Fix an issue with scrolling when using the code editor
+- Fix Cypress E2E test failures caused by resizable panel sizes persisting in localStorage.
 - _...Add new stuff here..._
 
 ## 3.0.0

@@ -30,8 +30,14 @@ export class MaputnikDriver {
   private modalDriver = new ModalDriver();
 
   private resetLayoutStorage = (win: Window) => {
-    win.localStorage.removeItem("maputnik:sidebar-layout");
-    win.localStorage.removeItem("maputnik:sidebar-inner-layout");
+    const keysToRemove: string[] = [];
+    for (let i = 0; i < win.localStorage.length; i++) {
+      const key = win.localStorage.key(i);
+      if (key && (key.startsWith("react-resizable-panels:maputnik") || key.startsWith("maputnik:sidebar"))) {
+        keysToRemove.push(key);
+      }
+    }
+    keysToRemove.forEach((key) => win.localStorage.removeItem(key));
   };
 
   public beforeAndAfter = () => {
