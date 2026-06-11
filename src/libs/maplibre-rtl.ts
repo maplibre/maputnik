@@ -1,3 +1,4 @@
 import MapLibreGl from "maplibre-gl";
+import rtlTextPluginUrl from "@mapbox/mapbox-gl-rtl-text/mapbox-gl-rtl-text.min.js?url";
 
-MapLibreGl.setRTLTextPlugin("https://unpkg.com/@mapbox/mapbox-gl-rtl-text@0.2.3/mapbox-gl-rtl-text.min.js", false);
+MapLibreGl.setRTLTextPlugin(rtlTextPluginUrl, false);
