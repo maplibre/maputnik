@@ -128,7 +128,7 @@
     "@vitejs/plugin-react": "^5.1.4",
     "@vitest/coverage-v8": "^4.1.9",
     "cors": "^2.8.6",
-    "cypress": "^15.17.0",
+    "cypress": "^15.18.0",
     "cypress-plugin-tab": "^2.0.0",
     "eslint": "^10.5.0",
     "eslint-plugin-react": "^7.37.5",
