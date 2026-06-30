@@ -49,7 +49,46 @@ export default class MaputnikCypressHelper {
         force: true,
       });
     },
+
+    pointerDrag: (testId: string, deltaX: number) => {
+      cy.get(`[data-wd-key="${testId}"]`).then(($el) => {
+        const rect = $el[0].getBoundingClientRect();
+        const startX = rect.left + rect.width / 2;
+        const startY = rect.top + rect.height / 2;
+
+        cy.document().trigger("pointerdown", {
+          clientX: startX,
+          clientY: startY,
+          pointerId: 1,
+          button: 0,
+          buttons: 1,
+          pointerType: "mouse",
+          bubbles: true,
+        });
+        cy.document().trigger("pointermove", {
+          clientX: startX + deltaX,
+          clientY: startY,
+          pointerId: 1,
+          button: 0,
+          buttons: 1,
+          pointerType: "mouse",
+          bubbles: true,
+        });
+        cy.document().trigger("pointerup", {
+          clientX: startX + deltaX,
+          clientY: startY,
+          pointerId: 1,
+          button: 0,
+          buttons: 0,
+          pointerType: "mouse",
+          bubbles: true,
+        });
+      });
+    },
     ...this.helper.when,
+    visit: (url: string, options?: Partial<Cypress.VisitOptions>) => {
+      cy.visit(url, options);
+    },
   };
 
   public beforeAndAfter = this.helper.beforeAndAfter;

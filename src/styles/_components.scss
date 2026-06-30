@@ -6,7 +6,8 @@
 .maputnik-map__container {
   background: white;
   display: flex;
-  width: vars.$layout-map-width;
+  flex: 1;
+  min-width: 0;
 
   &--error {
     align-items: center;

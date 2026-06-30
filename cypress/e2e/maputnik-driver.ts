@@ -29,6 +29,17 @@ export class MaputnikDriver {
   private helper = new MaputnikCypressHelper();
   private modalDriver = new ModalDriver();
 
+  private resetLayoutStorage = (win: Window) => {
+    const keysToRemove: string[] = [];
+    for (let i = 0; i < win.localStorage.length; i++) {
+      const key = win.localStorage.key(i);
+      if (key && (key.startsWith("react-resizable-panels:maputnik") || key.startsWith("maputnik:sidebar"))) {
+        keysToRemove.push(key);
+      }
+    }
+    keysToRemove.forEach((key) => win.localStorage.removeItem(key));
+  };
+
   public beforeAndAfter = () => {
     beforeEach(() => {
       this.given.setupMockBackedResponses();
@@ -183,7 +194,11 @@ export class MaputnikDriver {
       if (zoom) {
         url.hash = `${zoom}/41.3805/2.1635`;
       }
-      this.helper.when.visit(url.toString());
+      this.helper.when.visit(url.toString(), {
+        onBeforeLoad: (win) => {
+          this.resetLayoutStorage(win);
+        },
+      });
       if (styleProperties) {
         this.helper.when.acceptConfirm();
       }
