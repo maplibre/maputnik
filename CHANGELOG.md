@@ -1,6 +1,14 @@
 ## main
 
 ### ✨ Features and improvements
+- _...Add new stuff here..._
+
+### 🐞 Bug fixes
+- _...Add new stuff here..._
+
+## 3.1.0
+
+### ✨ Features and improvements
 - Added translation to "Links" in debug modal
 - Add support for hillshade's color arrays and relief-color elevation expression
 - Change layers icons to make them a bit more distinct
@@ -14,7 +22,6 @@
 - Add support for sprite object in setting modal
 - Set the correct map view when opening a new style on an empty map
 - Allow root-relative urls in the stylefile
-- _...Add new stuff here..._
 
 ### 🐞 Bug fixes
 
@@ -29,7 +36,6 @@
 - Fixed headers in left panes (Layers list and Layer editor) to remain visible when scrolling
 - Fix error when using a source from localhost
 - Fix an issue with scrolling when using the code editor
-- _...Add new stuff here..._
 
 ## 3.0.0
 
