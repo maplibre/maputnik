@@ -1,6 +1,6 @@
 {
   "name": "maputnik",
-  "version": "3.0.0",
+  "version": "3.1.0",
   "description": "A MapLibre GL visual style editor",
   "type": "module",
   "main": "''",
