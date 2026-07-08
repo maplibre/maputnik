@@ -43,6 +43,9 @@ export default class MaputnikCypressHelper {
         }
       });
     },
+    typeIntoWrappedInput: ($inputs: JQuery<HTMLElement>, index: number, value: string) => {
+      cy.wrap($inputs[index]).type("{selectall}" + value, { force: true });
+    },
     dropFileByFixture: (fixture: string, dropzoneTestId: string) => {
       this.helper.get.elementByTestId(dropzoneTestId).selectFile("cypress/fixtures/" + fixture, {
         action: "drag-drop",

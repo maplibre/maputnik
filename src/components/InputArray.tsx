@@ -10,6 +10,7 @@ export type InputArrayProps = {
   onChange?(value: (string | number | undefined)[] | undefined): unknown
   "aria-label"?: string
   label?: string
+  "data-wd-key"?: string
 };
 
 type InputArrayState = {
@@ -109,7 +110,7 @@ export default class InputArray extends React.Component<InputArrayProps, InputAr
     });
 
     return (
-      <div className="maputnik-array">
+      <div className="maputnik-array" data-wd-key={this.props["data-wd-key"]}>
         {inputs}
       </div>
     );

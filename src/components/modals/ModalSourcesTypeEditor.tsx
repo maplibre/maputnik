@@ -48,6 +48,7 @@ type TileURLSourceEditorProps = {
     minzoom: number
     maxzoom: number
     scheme: "xyz" | "tms"
+    bounds?: [number, number, number, number]
   }
   onChange(...args: unknown[]): unknown
   children?: React.ReactNode
@@ -107,6 +108,19 @@ class TileURLSourceEditor extends React.Component<TileURLSourceEditorProps> {
           ...this.props.source,
           maxzoom: maxzoom
         })}
+      />
+      <FieldArray
+        label={t("Bounds")}
+        fieldSpec={latest.source_vector.bounds}
+        length={4}
+        type="number"
+        value={this.props.source.bounds || []}
+        default={[]}
+        onChange={(bounds: [number, number, number, number]) => this.props.onChange({
+          ...this.props.source,
+          bounds: bounds
+        })}
+        data-wd-key="modal:sources.add.bounds"
       />
       {this.props.children}
     </div>;

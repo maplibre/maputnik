@@ -87,6 +87,13 @@ export class MaputnikDriver {
       });
       this.helper.given.interceptAndMockResponse({
         method: "GET",
+        url: baseUrl + "style-with-bounds.json",
+        response: {
+          fixture: "style-with-bounds.json",
+        },
+      });
+      this.helper.given.interceptAndMockResponse({
+        method: "GET",
         url: baseUrl + "example-style-with-fonts.json",
         response: {
           fixture: "example-style-with-fonts.json",
@@ -220,16 +227,35 @@ export class MaputnikDriver {
         .type(text, { parseSpecialCharSequences: false });
     },
 
+    // Sets the first value in a property array (index 0).
+    // Use this to initialize the first element of an array field.
+    // Typically used before calling addValueToPropertyArray for subsequent values.
     setValueToPropertyArray: (selector: string, value: string) => {
       this.when.doWithin(selector, () => {
-        this.helper.get.element(".maputnik-array-block-content input").last().type("{selectall}"+value, {force: true });
+        const inputs = this.helper.get.element("input");
+        inputs.then(($inputs) => {
+          this.helper.when.typeIntoWrappedInput($inputs, 0, value);
+        });
       });
     },
 
+    // Adds a value to the first empty input in a property array.
+    // Searches through all inputs and fills the first empty one.
+    // Use this to sequentially populate array fields after initialization.
     addValueToPropertyArray: (selector: string, value: string) => {
       this.when.doWithin(selector, () => {
-        this.helper.get.element(".maputnik-array-add-value").click({ force: true });
-        this.helper.get.element(".maputnik-array-block-content input").last().type("{selectall}"+value, {force: true });
+        const inputs = this.helper.get.element("input");
+        inputs.then(($inputs) => {
+          let targetIndex = 0;
+          for (let i = 0; i < $inputs.length; i++) {
+            const input = $inputs[i] as HTMLInputElement;
+            if (!input.value) {
+              targetIndex = i;
+              break;
+            }
+          }
+          this.helper.when.typeIntoWrappedInput($inputs, targetIndex, value);
+        });
       });
     },
 

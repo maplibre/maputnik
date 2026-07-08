@@ -10,6 +10,7 @@
 
 ### ✨ Features and improvements
 - Added translation to "Links" in debug modal
+- Added bounds field and moved its Cypress coverage into the sources modal spec.
 - Add support for hillshade's color arrays and relief-color elevation expression
 - Change layers icons to make them a bit more distinct
 - Remove `@mdi` packages in favor of `react-icons`
