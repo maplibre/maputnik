@@ -1,15 +1,15 @@
 import { MaputnikDriver } from "./maputnik-driver";
 
-describe("accessibility", () => {
+test.describe("accessibility", () => {
   const { beforeAndAfter, get, when, then } = new MaputnikDriver();
   beforeAndAfter();
 
-  describe("skip links", () => {
+  test.describe("skip links", () => {
     beforeEach(() => {
       when.setStyle("layer");
     });
 
-    it("skip link to layer list", () => {
+    test("skip link to layer list", () => {
       const selector = "root:skip:layer-list";
       then(get.elementByTestId(selector)).shouldExist();
       when.tab();
@@ -18,7 +18,7 @@ describe("accessibility", () => {
       then(get.skipTargetLayerList()).shouldBeFocused();
     });
 
-    it("skip link to layer editor", () => {
+    test("skip link to layer editor", () => {
       const selector = "root:skip:layer-editor";
       then(get.elementByTestId(selector)).shouldExist();
       then(get.elementByTestId("skip-target-layer-editor")).shouldExist();
@@ -28,7 +28,7 @@ describe("accessibility", () => {
       then(get.skipTargetLayerEditor()).shouldBeFocused();
     });
 
-    it("skip link to map view", () => {
+    test("skip link to map view", () => {
       const selector = "root:skip:map-view";
       then(get.elementByTestId(selector)).shouldExist();
       when.tab().tab().tab();

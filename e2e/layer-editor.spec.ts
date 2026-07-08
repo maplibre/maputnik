@@ -1,7 +1,7 @@
 import { MaputnikDriver } from "./maputnik-driver";
 import { v1 as uuid } from "uuid";
 
-describe("layer editor", () => {
+test.describe("layer editor", () => {
   const { beforeAndAfter, get, when, then } = new MaputnikDriver();
   beforeAndAfter();
   beforeEach(() => {
@@ -28,8 +28,8 @@ describe("layer editor", () => {
     return id;
   }
 
-  it("expand/collapse");
-  it("id", () => {
+  test("expand/collapse");
+  test("id", () => {
     const bgId = createBackground();
 
     when.click("layer-list-item:background:" + bgId);
@@ -48,8 +48,8 @@ describe("layer editor", () => {
     });
   });
 
-  describe("source", () => {
-    it("should show error when the source is invalid", () => {
+  test.describe("source", () => {
+    test("should show error when the source is invalid", () => {
       when.modal.fillLayers({
         type: "circle",
         layer: "invalid",
@@ -58,7 +58,7 @@ describe("layer editor", () => {
     });
   });
 
-  describe("min-zoom", () => {
+  test.describe("min-zoom", () => {
     let bgId: string;
 
     beforeEach(() => {
@@ -68,7 +68,7 @@ describe("layer editor", () => {
       when.click("layer-editor.layer-id");
     });
 
-    it("should update min-zoom in local storage", () => {
+    test("should update min-zoom in local storage", () => {
       then(get.styleFromLocalStorage()).shouldDeepNestedInclude({
         layers: [
           {
@@ -80,7 +80,7 @@ describe("layer editor", () => {
       });
     });
 
-    it("when clicking next layer should update style on local storage", () => {
+    test("when clicking next layer should update style on local storage", () => {
       when.type("min-zoom.input-text", "{backspace}");
       when.click("max-zoom.input-text");
       then(get.styleFromLocalStorage()).shouldDeepNestedInclude({
@@ -95,7 +95,7 @@ describe("layer editor", () => {
     });
   });
 
-  describe("max-zoom", () => {
+  test.describe("max-zoom", () => {
     let bgId: string;
 
     beforeEach(() => {
@@ -105,7 +105,7 @@ describe("layer editor", () => {
       when.click("layer-editor.layer-id");
     });
 
-    it("should update style in local storage", () => {
+    test("should update style in local storage", () => {
       then(get.styleFromLocalStorage()).shouldDeepNestedInclude({
         layers: [
           {
@@ -118,7 +118,7 @@ describe("layer editor", () => {
     });
   });
 
-  describe("comments", () => {
+  test.describe("comments", () => {
     let bgId: string;
     const comment = "42";
 
@@ -129,7 +129,7 @@ describe("layer editor", () => {
       when.click("layer-editor.layer-id");
     });
 
-    it("should update style in local storage", () => {
+    test("should update style in local storage", () => {
       then(get.styleFromLocalStorage()).shouldDeepNestedInclude({
         layers: [
           {
@@ -143,13 +143,13 @@ describe("layer editor", () => {
       });
     });
 
-    describe("when unsetting", () => {
+    test.describe("when unsetting", () => {
       beforeEach(() => {
         when.clear("layer-comment.input");
         when.click("min-zoom.input-text");
       });
 
-      it("should update style in local storage", () => {
+      test("should update style in local storage", () => {
         then(get.styleFromLocalStorage()).shouldDeepNestedInclude({
           layers: [
             {
@@ -162,7 +162,7 @@ describe("layer editor", () => {
     });
   });
 
-  describe("color", () => {
+  test.describe("color", () => {
     let bgId: string;
     beforeEach(() => {
       bgId = createBackground();
@@ -170,7 +170,7 @@ describe("layer editor", () => {
       when.click("spec-field:background-color");
     });
 
-    it("should update style in local storage", () => {
+    test("should update style in local storage", () => {
       then(get.styleFromLocalStorage()).shouldDeepNestedInclude({
         layers: [
           {
@@ -182,7 +182,7 @@ describe("layer editor", () => {
     });
   });
 
-  describe("opacity", () => {
+  test.describe("opacity", () => {
     let bgId: string;
     beforeEach(() => {
       bgId = createBackground();
@@ -190,11 +190,11 @@ describe("layer editor", () => {
       when.type("spec-field-input:background-opacity", "0.");
     });
 
-    it("should keep '.' in the input field", () => {
+    test("should keep '.' in the input field", () => {
       then(get.elementByTestId("spec-field-input:background-opacity")).shouldHaveValue("0.");
     });
 
-    it("should revert to a valid value when focus out", () => {
+    test("should revert to a valid value when focus out", () => {
       when.click("layer-list-item:background:" + bgId);
       then(get.elementByTestId("spec-field-input:background-opacity")).shouldHaveValue("0");
     });
@@ -202,13 +202,13 @@ describe("layer editor", () => {
 
 
 
-  describe("filter", () => {
-    it("expand/collapse");
-    it("compound filter");
+  test.describe("filter", () => {
+    test("expand/collapse");
+    test("compound filter");
   });
 
-  describe("layout", () => {
-    it("text-font", () => {
+  test.describe("layout", () => {
+    test("text-font", () => {
       when.setStyle("font");
       when.collapseGroupInLayerEditor();
       when.collapseGroupInLayerEditor(1);
@@ -221,15 +221,15 @@ describe("layer editor", () => {
     });
   });
 
-  describe("paint", () => {
-    it("expand/collapse");
-    it("color");
-    it("pattern");
-    it("opacity");
+  test.describe("paint", () => {
+    test("expand/collapse");
+    test("color");
+    test("pattern");
+    test("opacity");
   });
 
-  describe("json-editor", () => {
-    it("add", () => {
+  test.describe("json-editor", () => {
+    test("add", () => {
       const id = when.modal.fillLayers({
         type: "circle",
         layer: "example",
@@ -254,10 +254,10 @@ describe("layer editor", () => {
     });
 
 
-    it("expand/collapse");
-    it("modify");
+    test("expand/collapse");
+    test("modify");
 
-    it("parse error", () => {
+    test("parse error", () => {
       const bgId = createBackground();
 
       when.click("layer-list-item:background:" + bgId);
@@ -272,8 +272,8 @@ describe("layer editor", () => {
     });
   });
 
-  describe("sticky header", () => {
-    it("should keep layer header visible when scrolling properties", () => {
+  test.describe("sticky header", () => {
+    test("should keep layer header visible when scrolling properties", () => {
       // Setup: Create a layer with many properties (e.g., symbol layer)
       when.modal.fillLayers({
         type: "symbol",

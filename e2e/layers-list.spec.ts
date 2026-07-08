@@ -1,6 +1,6 @@
 import { MaputnikDriver } from "./maputnik-driver";
 
-describe("layers list", () => {
+test.describe("layers list", () => {
   const { beforeAndAfter, get, when, then } = new MaputnikDriver();
   beforeAndAfter();
   beforeEach(() => {
@@ -8,7 +8,7 @@ describe("layers list", () => {
     when.modal.open();
   });
 
-  describe("ops", () => {
+  test.describe("ops", () => {
     let id: string;
     beforeEach(() => {
       id = when.modal.fillLayers({
@@ -16,7 +16,7 @@ describe("layers list", () => {
       });
     });
 
-    it("should update layers in local storage", () => {
+    test("should update layers in local storage", () => {
       then(get.styleFromLocalStorage()).shouldDeepNestedInclude({
         layers: [
           {
@@ -27,22 +27,22 @@ describe("layers list", () => {
       });
     });
 
-    describe("when clicking delete", () => {
+    test.describe("when clicking delete", () => {
       beforeEach(() => {
         when.click("layer-list-item:" + id + ":delete");
       });
-      it("should empty layers in local storage", () => {
+      test("should empty layers in local storage", () => {
         then(get.styleFromLocalStorage()).shouldDeepNestedInclude({
           layers: [],
         });
       });
     });
 
-    describe("when clicking duplicate", () => {
+    test.describe("when clicking duplicate", () => {
       beforeEach(() => {
         when.click("layer-list-item:" + id + ":copy");
       });
-      it("should add copy layer in local storage", () => {
+      test("should add copy layer in local storage", () => {
         then(get.styleFromLocalStorage()).shouldDeepNestedInclude({
           layers: [
             {
@@ -58,12 +58,12 @@ describe("layers list", () => {
       });
     });
 
-    describe("when clicking hide", () => {
+    test.describe("when clicking hide", () => {
       beforeEach(() => {
         when.click("layer-list-item:" + id + ":toggle-visibility");
       });
 
-      it("should update visibility to none in local storage", () => {
+      test("should update visibility to none in local storage", () => {
         then(get.styleFromLocalStorage()).shouldDeepNestedInclude({
           layers: [
             {
@@ -77,12 +77,12 @@ describe("layers list", () => {
         });
       });
 
-      describe("when clicking show", () => {
+      test.describe("when clicking show", () => {
         beforeEach(() => {
           when.click("layer-list-item:" + id + ":toggle-visibility");
         });
 
-        it("should update visibility to visible in local storage", () => {
+        test("should update visibility to visible in local storage", () => {
           then(get.styleFromLocalStorage()).shouldDeepNestedInclude({
             layers: [
               {
@@ -97,7 +97,7 @@ describe("layers list", () => {
         });
       });
 
-      describe("when selecting a layer", () => {
+      test.describe("when selecting a layer", () => {
         let secondId: string;
         beforeEach(() => {
           when.modal.open();
@@ -106,7 +106,7 @@ describe("layers list", () => {
             type: "background",
           });
         });
-        it("should show the selected layer in the editor", () => {
+        test("should show the selected layer in the editor", () => {
           when.realClick("layer-list-item:" + secondId);
           then(get.elementByTestId("layer-editor.layer-id.input")).shouldHaveValue(secondId);
           when.realClick("layer-list-item:" + id);
@@ -116,8 +116,8 @@ describe("layers list", () => {
     });
   });
 
-  describe("background", () => {
-    it("add", () => {
+  test.describe("background", () => {
+    test("add", () => {
       const id = when.modal.fillLayers({
         type: "background",
       });
@@ -131,11 +131,11 @@ describe("layers list", () => {
       });
     });
 
-    describe("modify", () => {});
+    test.describe("modify", () => {});
   });
 
-  describe("fill", () => {
-    it("add", () => {
+  test.describe("fill", () => {
+    test("add", () => {
       const id = when.modal.fillLayers({
         type: "fill",
         layer: "example",
@@ -153,11 +153,11 @@ describe("layers list", () => {
     });
 
     // TODO: Change source
-    it("change source");
+    test("change source");
   });
 
-  describe("line", () => {
-    it("add", () => {
+  test.describe("line", () => {
+    test("add", () => {
       const id = when.modal.fillLayers({
         type: "line",
         layer: "example",
@@ -174,7 +174,7 @@ describe("layers list", () => {
       });
     });
 
-    it("groups", () => {
+    test("groups", () => {
       when.modal.open();
       const id1 = when.modal.fillLayers({
         id: "aa",
@@ -229,8 +229,8 @@ describe("layers list", () => {
     });
   });
 
-  describe("symbol", () => {
-    it("add", () => {
+  test.describe("symbol", () => {
+    test("add", () => {
       const id = when.modal.fillLayers({
         type: "symbol",
         layer: "example",
@@ -247,7 +247,7 @@ describe("layers list", () => {
       });
     });
 
-    it("should show spec info when hovering and clicking single line property", () => {
+    test("should show spec info when hovering and clicking single line property", () => {
       when.modal.fillLayers({
         type: "symbol",
         layer: "example",
@@ -259,7 +259,7 @@ describe("layers list", () => {
       then(get.elementByTestId("spec-field-doc")).shouldContainText("Rotates the ");
     });
 
-    it("should show spec info when hovering and clicking multi line property", () => {
+    test("should show spec info when hovering and clicking multi line property", () => {
       when.modal.fillLayers({
         type: "symbol",
         layer: "example",
@@ -271,7 +271,7 @@ describe("layers list", () => {
       then(get.elementByTestId("spec-field-doc")).shouldContainText("Offset distance");
     });
 
-    it("should hide spec info when clicking a second time", () => {
+    test("should hide spec info when clicking a second time", () => {
       when.modal.fillLayers({
         type: "symbol",
         layer: "example",
@@ -286,8 +286,8 @@ describe("layers list", () => {
     });
   });
 
-  describe("raster", () => {
-    it("add", () => {
+  test.describe("raster", () => {
+    test("add", () => {
       const id = when.modal.fillLayers({
         type: "raster",
         layer: "raster",
@@ -305,8 +305,8 @@ describe("layers list", () => {
     });
   });
 
-  describe("circle", () => {
-    it("add", () => {
+  test.describe("circle", () => {
+    test("add", () => {
       const id = when.modal.fillLayers({
         type: "circle",
         layer: "example",
@@ -324,8 +324,8 @@ describe("layers list", () => {
     });
   });
 
-  describe("fill extrusion", () => {
-    it("add", () => {
+  test.describe("fill extrusion", () => {
+    test("add", () => {
       const id = when.modal.fillLayers({
         type: "fill-extrusion",
         layer: "example",
@@ -343,8 +343,8 @@ describe("layers list", () => {
     });
   });
 
-  describe("hillshade", () => {
-    it("add", () => {
+  test.describe("hillshade", () => {
+    test("add", () => {
       const id = when.modal.fillLayers({
         type: "hillshade",
         layer: "example",
@@ -361,7 +361,7 @@ describe("layers list", () => {
       });
     });
 
-    it("set hillshade illumination direction array", () => {
+    test("set hillshade illumination direction array", () => {
       const id = when.modal.fillLayers({
         type: "hillshade",
         layer: "example",
@@ -387,7 +387,7 @@ describe("layers list", () => {
       });
     });
 
-    it("set hillshade highlight color array", () => {
+    test("set hillshade highlight color array", () => {
       const id = when.modal.fillLayers({
         type: "hillshade",
         layer: "example",
@@ -412,8 +412,8 @@ describe("layers list", () => {
     });
   });
 
-  describe("color-relief", () => {
-    it("add", () => {
+  test.describe("color-relief", () => {
+    test("add", () => {
       const id = when.modal.fillLayers({
         type: "color-relief",
         layer: "example",
@@ -430,7 +430,7 @@ describe("layers list", () => {
       });
     });
 
-    it("adds elevation expression when clicking the elevation button", () => {
+    test("adds elevation expression when clicking the elevation button", () => {
       when.modal.fillLayers({
         type: "color-relief",
         layer: "example",
@@ -441,8 +441,8 @@ describe("layers list", () => {
     });
   });
 
-  describe("groups", () => {
-    it("simple", () => {
+  test.describe("groups", () => {
+    test("simple", () => {
       when.setStyle("geojson");
 
       when.modal.open();
@@ -477,8 +477,8 @@ describe("layers list", () => {
     });
   });
 
-  describe("drag and drop", () => {
-    it("move layer should update local storage", () => {
+  test.describe("drag and drop", () => {
+    test("move layer should update local storage", () => {
       when.modal.open();
       const firstId = when.modal.fillLayers({
         id: "a",
@@ -516,8 +516,8 @@ describe("layers list", () => {
     });
   });
 
-  describe("sticky header", () => {
-    it("should keep header visible when scrolling layer list", () => {
+  test.describe("sticky header", () => {
+    test("should keep header visible when scrolling layer list", () => {
       // Setup: Create multiple layers to enable scrolling
       for (let i = 0; i < 20; i++) {
         when.modal.open();

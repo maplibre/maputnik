@@ -1,6 +1,6 @@
 import { MaputnikDriver } from "./maputnik-driver";
 
-describe("history", () => {
+test.describe("history", () => {
   const { beforeAndAfter, when, get, then } = new MaputnikDriver();
   beforeAndAfter();
 
@@ -13,7 +13,7 @@ describe("history", () => {
     redoKeyCombo = isMac ? "{meta}{shift}z" : "{ctrl}y";
   });
 
-  it("undo/redo", () => {
+  test("undo/redo", () => {
     when.setStyle("geojson");
     when.modal.open();
 
@@ -87,7 +87,7 @@ describe("history", () => {
     });
   });
 
-  it("should not redo after undo and value change", () => {
+  test("should not redo after undo and value change", () => {
     when.setStyle("geojson");
     when.modal.open();
     when.modal.fillLayers({
