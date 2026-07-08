@@ -1,16 +1,20 @@
-import { test, setupMaputnik } from "./fixtures";
+import { test } from "./fixtures";
+import { MaputnikDriver } from "./maputnik-driver";
 
 test.describe("code editor", () => {
-  setupMaputnik();
+  const { given, get, when, then } = new MaputnikDriver();
 
-  test("open code editor", async ({ driver }) => {
-    const { when, get, then } = driver;
+  test.beforeEach(async () => {
+    await given.setupMockBackedResponses();
+    await when.setStyle("both");
+  });
+
+  test("open code editor", async () => {
     await when.click("nav:code-editor");
     await then(get.element(".maputnik-code-editor")).shouldExist();
   });
 
-  test("closes code editor", async ({ driver }) => {
-    const { when, get, then } = driver;
+  test("closes code editor", async () => {
     await when.click("nav:code-editor");
     await then(get.element(".maputnik-code-editor")).shouldExist();
     await when.click("nav:code-editor");

@@ -1,16 +1,17 @@
 import { v1 as uuid } from "uuid";
-import { test, setupMaputnik } from "./fixtures";
-import type { MaputnikDriver } from "./maputnik-driver";
+import { test } from "./fixtures";
+import { MaputnikDriver } from "./maputnik-driver";
 
 test.describe("layer editor", () => {
-  setupMaputnik();
-  test.beforeEach(async ({ driver }) => {
-    await driver.when.setStyle("both");
-    await driver.when.modal.open();
+  const { given, get, when, then } = new MaputnikDriver();
+
+  test.beforeEach(async () => {
+    await given.setupMockBackedResponses();
+    await when.setStyle("both");
+    await when.modal.open();
   });
 
-  async function createBackground(driver: MaputnikDriver) {
-    const { get, when, then } = driver;
+  async function createBackground() {
     const id = uuid();
 
     await when.selectWithin("add-layer.layer-type", "background");
@@ -26,9 +27,8 @@ test.describe("layer editor", () => {
 
   test.skip("expand/collapse", () => {});
 
-  test("id", async ({ driver }) => {
-    const { get, when, then } = driver;
-    const bgId = await createBackground(driver);
+  test("id", async () => {
+    const bgId = await createBackground();
 
     await when.click("layer-list-item:background:" + bgId);
 
@@ -42,8 +42,7 @@ test.describe("layer editor", () => {
   });
 
   test.describe("source", () => {
-    test("should show error when the source is invalid", async ({ driver }) => {
-      const { get, when, then } = driver;
+    test("should show error when the source is invalid", async () => {
       await when.modal.fillLayers({
         type: "circle",
         layer: "invalid",
@@ -57,22 +56,20 @@ test.describe("layer editor", () => {
   test.describe("min-zoom", () => {
     let bgId: string;
 
-    test.beforeEach(async ({ driver }) => {
-      const { when } = driver;
-      bgId = await createBackground(driver);
+    test.beforeEach(async () => {
+      bgId = await createBackground();
       await when.click("layer-list-item:background:" + bgId);
       await when.setValue("min-zoom.input-text", "1");
       await when.click("layer-editor.layer-id");
     });
 
-    test("should update min-zoom in local storage", async ({ driver }) => {
-      await driver.then(driver.get.styleFromLocalStorage()).shouldDeepNestedInclude({
+    test("should update min-zoom in local storage", async () => {
+      await then(get.styleFromLocalStorage()).shouldDeepNestedInclude({
         layers: [{ id: "background:" + bgId, type: "background", minzoom: 1 }],
       });
     });
 
-    test("when clicking next layer should update style on local storage", async ({ driver }) => {
-      const { get, when, then } = driver;
+    test("when clicking next layer should update style on local storage", async () => {
       await when.type("min-zoom.input-text", "{backspace}");
       await when.click("max-zoom.input-text");
       await then(get.styleFromLocalStorage()).shouldDeepNestedInclude({
@@ -84,16 +81,15 @@ test.describe("layer editor", () => {
   test.describe("max-zoom", () => {
     let bgId: string;
 
-    test.beforeEach(async ({ driver }) => {
-      const { when } = driver;
-      bgId = await createBackground(driver);
+    test.beforeEach(async () => {
+      bgId = await createBackground();
       await when.click("layer-list-item:background:" + bgId);
       await when.setValue("max-zoom.input-text", "1");
       await when.click("layer-editor.layer-id");
     });
 
-    test("should update style in local storage", async ({ driver }) => {
-      await driver.then(driver.get.styleFromLocalStorage()).shouldDeepNestedInclude({
+    test("should update style in local storage", async () => {
+      await then(get.styleFromLocalStorage()).shouldDeepNestedInclude({
         layers: [{ id: "background:" + bgId, type: "background", maxzoom: 1 }],
       });
     });
@@ -103,16 +99,15 @@ test.describe("layer editor", () => {
     let bgId: string;
     const comment = "42";
 
-    test.beforeEach(async ({ driver }) => {
-      const { when } = driver;
-      bgId = await createBackground(driver);
+    test.beforeEach(async () => {
+      bgId = await createBackground();
       await when.click("layer-list-item:background:" + bgId);
       await when.setValue("layer-comment.input", comment);
       await when.click("layer-editor.layer-id");
     });
 
-    test("should update style in local storage", async ({ driver }) => {
-      await driver.then(driver.get.styleFromLocalStorage()).shouldDeepNestedInclude({
+    test("should update style in local storage", async () => {
+      await then(get.styleFromLocalStorage()).shouldDeepNestedInclude({
         layers: [
           {
             id: "background:" + bgId,
@@ -124,14 +119,13 @@ test.describe("layer editor", () => {
     });
 
     test.describe("when unsetting", () => {
-      test.beforeEach(async ({ driver }) => {
-        const { when } = driver;
+      test.beforeEach(async () => {
         await when.clear("layer-comment.input");
         await when.click("min-zoom.input-text");
       });
 
-      test("should update style in local storage", async ({ driver }) => {
-        await driver.then(driver.get.styleFromLocalStorage()).shouldDeepNestedInclude({
+      test("should update style in local storage", async () => {
+        await then(get.styleFromLocalStorage()).shouldDeepNestedInclude({
           layers: [{ id: "background:" + bgId, type: "background" }],
         });
       });
@@ -140,15 +134,14 @@ test.describe("layer editor", () => {
 
   test.describe("color", () => {
     let bgId: string;
-    test.beforeEach(async ({ driver }) => {
-      const { when } = driver;
-      bgId = await createBackground(driver);
+    test.beforeEach(async () => {
+      bgId = await createBackground();
       await when.click("layer-list-item:background:" + bgId);
       await when.click("spec-field:background-color");
     });
 
-    test("should update style in local storage", async ({ driver }) => {
-      await driver.then(driver.get.styleFromLocalStorage()).shouldDeepNestedInclude({
+    test("should update style in local storage", async () => {
+      await then(get.styleFromLocalStorage()).shouldDeepNestedInclude({
         layers: [{ id: "background:" + bgId, type: "background" }],
       });
     });
@@ -156,21 +149,17 @@ test.describe("layer editor", () => {
 
   test.describe("opacity", () => {
     let bgId: string;
-    test.beforeEach(async ({ driver }) => {
-      const { when } = driver;
-      bgId = await createBackground(driver);
+    test.beforeEach(async () => {
+      bgId = await createBackground();
       await when.click("layer-list-item:background:" + bgId);
       await when.type("spec-field-input:background-opacity", "0.");
     });
 
-    test("should keep '.' in the input field", async ({ driver }) => {
-      await driver
-        .then(driver.get.elementByTestId("spec-field-input:background-opacity"))
-        .shouldHaveValue("0.");
+    test("should keep '.' in the input field", async () => {
+      await then(get.elementByTestId("spec-field-input:background-opacity")).shouldHaveValue("0.");
     });
 
-    test("should revert to a valid value when focus out", async ({ driver }) => {
-      const { get, when, then } = driver;
+    test("should revert to a valid value when focus out", async () => {
       await when.click("layer-list-item:background:" + bgId);
       await then(get.elementByTestId("spec-field-input:background-opacity")).shouldHaveValue("0");
     });
@@ -182,8 +171,7 @@ test.describe("layer editor", () => {
   });
 
   test.describe("layout", () => {
-    test("text-font", async ({ driver }) => {
-      const { get, when, then } = driver;
+    test("text-font", async () => {
       await when.setStyle("font");
       await when.collapseGroupInLayerEditor();
       await when.collapseGroupInLayerEditor(1);
@@ -204,8 +192,7 @@ test.describe("layer editor", () => {
   });
 
   test.describe("json-editor", () => {
-    test("add", async ({ driver }) => {
-      const { get, when, then } = driver;
+    test("add", async () => {
       const id = await when.modal.fillLayers({
         type: "circle",
         layer: "example",
@@ -225,25 +212,23 @@ test.describe("layer editor", () => {
     test.skip("expand/collapse", () => {});
     test.skip("modify", () => {});
 
-    test("parse error", async ({ driver }) => {
-      const { get, when, then } = driver;
-      const bgId = await createBackground(driver);
+    test("parse error", async () => {
+      const bgId = await createBackground();
 
       await when.click("layer-list-item:background:" + bgId);
       await when.collapseGroupInLayerEditor();
       await when.collapseGroupInLayerEditor(1);
       await then(get.element(".cm-lint-marker-error")).shouldNotExist();
 
-      await when.appendTextInJsonEditor(
-        " {"
-      );
+      // Inject an invalid token (CodeMirror auto-closes brackets/quotes, so a
+      // bare word reliably breaks the JSON) and expect a lint error.
+      await when.appendTextInJsonEditor("zzz");
       await then(get.element(".cm-lint-marker-error")).shouldExist();
     });
   });
 
   test.describe("sticky header", () => {
-    test("should keep layer header visible when scrolling properties", async ({ driver }) => {
-      const { get, when, then } = driver;
+    test("should keep layer header visible when scrolling properties", async () => {
       // Setup: Create a layer with many properties (e.g. symbol layer)
       await when.modal.fillLayers({
         type: "symbol",

@@ -1,19 +1,23 @@
-import { test, setupMaputnik } from "./fixtures";
+import { test } from "./fixtures";
+import { MaputnikDriver } from "./maputnik-driver";
 
 test.describe("map", () => {
-  setupMaputnik();
+  const { given, get, when, then } = new MaputnikDriver();
+
+  test.beforeEach(async () => {
+    await given.setupMockBackedResponses();
+    await when.setStyle("both");
+  });
 
   test.describe("zoom level", () => {
-    test("via url", async ({ driver }) => {
-      const { get, when, then } = driver;
+    test("via url", async () => {
       const zoomLevel = 12.37;
       await when.setStyle("geojson", zoomLevel);
       await then(get.elementByTestId("maplibre:ctrl-zoom")).shouldBeVisible();
       await then(get.elementByTestId("maplibre:ctrl-zoom")).shouldContainText("Zoom: " + zoomLevel);
     });
 
-    test("via map controls", async ({ driver }) => {
-      const { get, when, then } = driver;
+    test("via map controls", async () => {
       const zoomLevel = 12.37;
       await when.setStyle("geojson", zoomLevel);
       await then(get.elementByTestId("maplibre:ctrl-zoom")).shouldBeVisible();
@@ -21,8 +25,7 @@ test.describe("map", () => {
       await then(get.elementByTestId("maplibre:ctrl-zoom")).shouldContainText("Zoom: " + (zoomLevel + 1));
     });
 
-    test("via style file definition", async ({ driver }) => {
-      const { get, when, then } = driver;
+    test("via style file definition", async () => {
       await when.setStyle("zoom_7_center_0_51");
       await then(get.elementByTestId("maplibre:ctrl-zoom")).shouldBeVisible();
       await then(get.elementByTestId("maplibre:ctrl-zoom")).shouldContainText("Zoom: " + 7);
@@ -36,26 +39,23 @@ test.describe("map", () => {
   });
 
   test.describe("search", () => {
-    test("should exist", async ({ driver }) => {
-      const { get, then } = driver;
+    test("should exist", async () => {
       await then(get.searchControl()).shouldBeVisible();
     });
   });
 
   test.describe("popup", () => {
-    test.beforeEach(async ({ driver }) => {
-      await driver.when.setStyle("rectangles");
-      await driver.then(driver.get.locationHash()).shouldExist();
+    test.beforeEach(async () => {
+      await when.setStyle("rectangles");
+      await then(get.locationHash()).shouldExist();
     });
 
-    test("should open on feature click", async ({ driver }) => {
-      const { get, when, then } = driver;
+    test("should open on feature click", async () => {
       await when.clickCenter("maplibre:map");
       await then(get.elementByTestId("feature-layer-popup")).shouldBeVisible();
     });
 
-    test("should open a second feature after closing popup", async ({ driver }) => {
-      const { get, when, then } = driver;
+    test("should open a second feature after closing popup", async () => {
       await when.clickCenter("maplibre:map");
       await then(get.elementByTestId("feature-layer-popup")).shouldBeVisible();
       await when.closePopup();

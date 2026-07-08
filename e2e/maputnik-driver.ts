@@ -1,8 +1,9 @@
 import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
-import { expect, type Locator, type Page, type Request, type TestInfo } from "@playwright/test";
-import { readCoverage, writeCoverage } from "./coverage";
+import { expect, type Locator, type Page, type Request } from "@playwright/test";
+import { readCoverage } from "./coverage";
+import { currentPage, recordCoverageChunk } from "./fixtures";
 import { ModalDriver } from "./modal-driver";
 
 const baseUrl = "http://localhost:8888/";
@@ -205,28 +206,14 @@ async function centerOf(locator: Locator): Promise<{ x: number; y: number }> {
 export class MaputnikDriver {
   private scope: Locator | null = null;
   private readonly recordedRequests = new Map<string, Request[]>();
-  private readonly coverageChunks: unknown[] = [];
   private readonly modalDriver = new ModalDriver(this);
 
-  constructor(private readonly page: Page) {
-    // Accept confirm dialogs (e.g. the "replace current style" prompt shown when
-    // a style is loaded via the URL). Playwright dismisses dialogs by default.
-    page.on("dialog", (dialog) => dialog.accept().catch(() => undefined));
-  }
-
-  // ---- Coverage collection -------------------------------------------------
-
-  /** Snapshots the current coverage before the page is unloaded. */
-  private async captureCoverage(): Promise<void> {
-    const coverage = await readCoverage(this.page);
-    if (coverage) this.coverageChunks.push(coverage);
-  }
-
-  async flushCoverage(testInfo: TestInfo): Promise<void> {
-    await this.captureCoverage();
-    this.coverageChunks.forEach((chunk, index) => {
-      writeCoverage(chunk, `${testInfo.testId}-${index}`);
-    });
+  /**
+   * The page for the currently running test. Resolved lazily so a single driver
+   * instance can be created once per `describe` and reused across its tests.
+   */
+  private get page(): Page {
+    return currentPage();
   }
 
   // ---- Element access ------------------------------------------------------
@@ -315,7 +302,8 @@ export class MaputnikDriver {
     modal: this.modalDriver.when,
 
     visit: async (url: string) => {
-      await this.captureCoverage();
+      // Snapshot coverage before navigating, since a full page load resets it.
+      recordCoverageChunk(await readCoverage(this.page));
       const target = url.startsWith("http") ? url : new URL(url, baseUrl).toString();
       await this.page.goto(target);
     },

@@ -1,29 +1,32 @@
-import { test, setupMaputnik } from "./fixtures";
+import { test } from "./fixtures";
+import { MaputnikDriver } from "./maputnik-driver";
 
 test.describe("i18n", () => {
-  setupMaputnik();
+  const { given, get, when, then } = new MaputnikDriver();
+
+  test.beforeEach(async () => {
+    await given.setupMockBackedResponses();
+    await when.setStyle("both");
+  });
 
   test.describe("language detector", () => {
-    test("English", async ({ driver }) => {
-      const { get, when, then } = driver;
+    test("English", async () => {
       await when.visit("?lng=en");
       await then(get.elementByTestId("maputnik-lang-select")).shouldHaveValue("en");
     });
 
-    test("Japanese", async ({ driver }) => {
-      const { get, when, then } = driver;
+    test("Japanese", async () => {
       await when.visit("?lng=ja");
       await then(get.elementByTestId("maputnik-lang-select")).shouldHaveValue("ja");
     });
   });
 
   test.describe("language switcher", () => {
-    test.beforeEach(async ({ driver }) => {
-      await driver.when.setStyle("layer");
+    test.beforeEach(async () => {
+      await when.setStyle("layer");
     });
 
-    test("the language switcher switches to Japanese", async ({ driver }) => {
-      const { get, when, then } = driver;
+    test("the language switcher switches to Japanese", async () => {
       const selector = "maputnik-lang-select";
       await then(get.elementByTestId(selector)).shouldExist();
       await when.select(selector, "ja");

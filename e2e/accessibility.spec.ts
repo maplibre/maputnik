@@ -1,15 +1,20 @@
-import { test, setupMaputnik } from "./fixtures";
+import { test } from "./fixtures";
+import { MaputnikDriver } from "./maputnik-driver";
 
 test.describe("accessibility", () => {
-  setupMaputnik();
+  const { given, get, when, then } = new MaputnikDriver();
+
+  test.beforeEach(async () => {
+    await given.setupMockBackedResponses();
+    await when.setStyle("both");
+  });
 
   test.describe("skip links", () => {
-    test.beforeEach(async ({ driver }) => {
-      await driver.when.setStyle("layer");
+    test.beforeEach(async () => {
+      await when.setStyle("layer");
     });
 
-    test("skip link to layer list", async ({ driver }) => {
-      const { get, when, then } = driver;
+    test("skip link to layer list", async () => {
       const selector = "root:skip:layer-list";
       await then(get.elementByTestId(selector)).shouldExist();
       await when.tab();
@@ -18,8 +23,7 @@ test.describe("accessibility", () => {
       await then(get.skipTargetLayerList()).shouldBeFocused();
     });
 
-    test("skip link to layer editor", async ({ driver }) => {
-      const { get, when, then } = driver;
+    test("skip link to layer editor", async () => {
       const selector = "root:skip:layer-editor";
       await then(get.elementByTestId(selector)).shouldExist();
       await then(get.elementByTestId("skip-target-layer-editor")).shouldExist();
@@ -30,8 +34,7 @@ test.describe("accessibility", () => {
       await then(get.skipTargetLayerEditor()).shouldBeFocused();
     });
 
-    test("skip link to map view", async ({ driver }) => {
-      const { get, when, then } = driver;
+    test("skip link to map view", async () => {
       const selector = "root:skip:map-view";
       await then(get.elementByTestId(selector)).shouldExist();
       await when.tab();

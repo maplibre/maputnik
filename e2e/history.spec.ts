@@ -1,13 +1,18 @@
-import { test, setupMaputnik } from "./fixtures";
+import { test } from "./fixtures";
+import { MaputnikDriver } from "./maputnik-driver";
 
 test.describe("history", () => {
-  setupMaputnik();
+  const { given, get, when, then } = new MaputnikDriver();
 
   const undoKeyCombo = process.platform === "darwin" ? "{meta}z" : "{ctrl}z";
   const redoKeyCombo = process.platform === "darwin" ? "{meta}{shift}z" : "{ctrl}y";
 
-  test("undo/redo", async ({ driver }) => {
-    const { get, when, then } = driver;
+  test.beforeEach(async () => {
+    await given.setupMockBackedResponses();
+    await when.setStyle("both");
+  });
+
+  test("undo/redo", async () => {
     await when.setStyle("geojson");
     await when.modal.open();
 
@@ -53,8 +58,7 @@ test.describe("history", () => {
     });
   });
 
-  test("should not redo after undo and value change", async ({ driver }) => {
-    const { get, when, then } = driver;
+  test("should not redo after undo and value change", async () => {
     await when.setStyle("geojson");
     await when.modal.open();
     await when.modal.fillLayers({

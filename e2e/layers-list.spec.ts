@@ -1,41 +1,44 @@
-import { test, setupMaputnik } from "./fixtures";
+import { test } from "./fixtures";
+import { MaputnikDriver } from "./maputnik-driver";
 
 test.describe("layers list", () => {
-  setupMaputnik();
-  test.beforeEach(async ({ driver }) => {
-    await driver.when.setStyle("both");
-    await driver.when.modal.open();
+  const { given, get, when, then } = new MaputnikDriver();
+
+  test.beforeEach(async () => {
+    await given.setupMockBackedResponses();
+    await when.setStyle("both");
+    await when.modal.open();
   });
 
   test.describe("ops", () => {
     let id: string;
-    test.beforeEach(async ({ driver }) => {
-      id = await driver.when.modal.fillLayers({ type: "background" });
+    test.beforeEach(async () => {
+      id = await when.modal.fillLayers({ type: "background" });
     });
 
-    test("should update layers in local storage", async ({ driver }) => {
-      await driver.then(driver.get.styleFromLocalStorage()).shouldDeepNestedInclude({
+    test("should update layers in local storage", async () => {
+      await then(get.styleFromLocalStorage()).shouldDeepNestedInclude({
         layers: [{ id, type: "background" }],
       });
     });
 
     test.describe("when clicking delete", () => {
-      test.beforeEach(async ({ driver }) => {
-        await driver.when.click("layer-list-item:" + id + ":delete");
+      test.beforeEach(async () => {
+        await when.click("layer-list-item:" + id + ":delete");
       });
-      test("should empty layers in local storage", async ({ driver }) => {
-        await driver.then(driver.get.styleFromLocalStorage()).shouldDeepNestedInclude({
+      test("should empty layers in local storage", async () => {
+        await then(get.styleFromLocalStorage()).shouldDeepNestedInclude({
           layers: [],
         });
       });
     });
 
     test.describe("when clicking duplicate", () => {
-      test.beforeEach(async ({ driver }) => {
-        await driver.when.click("layer-list-item:" + id + ":copy");
+      test.beforeEach(async () => {
+        await when.click("layer-list-item:" + id + ":copy");
       });
-      test("should add copy layer in local storage", async ({ driver }) => {
-        await driver.then(driver.get.styleFromLocalStorage()).shouldDeepNestedInclude({
+      test("should add copy layer in local storage", async () => {
+        await then(get.styleFromLocalStorage()).shouldDeepNestedInclude({
           layers: [
             { id: id + "-copy", type: "background" },
             { id, type: "background" },
@@ -45,23 +48,23 @@ test.describe("layers list", () => {
     });
 
     test.describe("when clicking hide", () => {
-      test.beforeEach(async ({ driver }) => {
-        await driver.when.click("layer-list-item:" + id + ":toggle-visibility");
+      test.beforeEach(async () => {
+        await when.click("layer-list-item:" + id + ":toggle-visibility");
       });
 
-      test("should update visibility to none in local storage", async ({ driver }) => {
-        await driver.then(driver.get.styleFromLocalStorage()).shouldDeepNestedInclude({
+      test("should update visibility to none in local storage", async () => {
+        await then(get.styleFromLocalStorage()).shouldDeepNestedInclude({
           layers: [{ id, type: "background", layout: { visibility: "none" } }],
         });
       });
 
       test.describe("when clicking show", () => {
-        test.beforeEach(async ({ driver }) => {
-          await driver.when.click("layer-list-item:" + id + ":toggle-visibility");
+        test.beforeEach(async () => {
+          await when.click("layer-list-item:" + id + ":toggle-visibility");
         });
 
-        test("should update visibility to visible in local storage", async ({ driver }) => {
-          await driver.then(driver.get.styleFromLocalStorage()).shouldDeepNestedInclude({
+        test("should update visibility to visible in local storage", async () => {
+          await then(get.styleFromLocalStorage()).shouldDeepNestedInclude({
             layers: [{ id, type: "background", layout: { visibility: "visible" } }],
           });
         });
@@ -69,15 +72,14 @@ test.describe("layers list", () => {
 
       test.describe("when selecting a layer", () => {
         let secondId: string;
-        test.beforeEach(async ({ driver }) => {
-          await driver.when.modal.open();
-          secondId = await driver.when.modal.fillLayers({
+        test.beforeEach(async () => {
+          await when.modal.open();
+          secondId = await when.modal.fillLayers({
             id: "second-layer",
             type: "background",
           });
         });
-        test("should show the selected layer in the editor", async ({ driver }) => {
-          const { get, when, then } = driver;
+        test("should show the selected layer in the editor", async () => {
           await when.realClick("layer-list-item:" + secondId);
           await then(get.elementByTestId("layer-editor.layer-id.input")).shouldHaveValue(secondId);
           await when.realClick("layer-list-item:" + id);
@@ -88,8 +90,7 @@ test.describe("layers list", () => {
   });
 
   test.describe("background", () => {
-    test("add", async ({ driver }) => {
-      const { get, when, then } = driver;
+    test("add", async () => {
       const id = await when.modal.fillLayers({ type: "background" });
       await then(get.styleFromLocalStorage()).shouldDeepNestedInclude({
         layers: [{ id, type: "background" }],
@@ -100,8 +101,7 @@ test.describe("layers list", () => {
   });
 
   test.describe("fill", () => {
-    test("add", async ({ driver }) => {
-      const { get, when, then } = driver;
+    test("add", async () => {
       const id = await when.modal.fillLayers({ type: "fill", layer: "example" });
       await then(get.styleFromLocalStorage()).shouldDeepNestedInclude({
         layers: [{ id, type: "fill", source: "example" }],
@@ -113,16 +113,14 @@ test.describe("layers list", () => {
   });
 
   test.describe("line", () => {
-    test("add", async ({ driver }) => {
-      const { get, when, then } = driver;
+    test("add", async () => {
       const id = await when.modal.fillLayers({ type: "line", layer: "example" });
       await then(get.styleFromLocalStorage()).shouldDeepNestedInclude({
         layers: [{ id, type: "line", source: "example" }],
       });
     });
 
-    test("groups", async ({ driver }) => {
-      const { get, when, then } = driver;
+    test("groups", async () => {
       await when.modal.open();
       const id1 = await when.modal.fillLayers({ id: "aa", type: "line", layer: "example" });
 
@@ -154,16 +152,14 @@ test.describe("layers list", () => {
   });
 
   test.describe("symbol", () => {
-    test("add", async ({ driver }) => {
-      const { get, when, then } = driver;
+    test("add", async () => {
       const id = await when.modal.fillLayers({ type: "symbol", layer: "example" });
       await then(get.styleFromLocalStorage()).shouldDeepNestedInclude({
         layers: [{ id, type: "symbol", source: "example" }],
       });
     });
 
-    test("should show spec info when hovering and clicking single line property", async ({ driver }) => {
-      const { get, when, then } = driver;
+    test("should show spec info when hovering and clicking single line property", async () => {
       await when.modal.fillLayers({ type: "symbol", layer: "example" });
 
       await when.hover("spec-field-container:text-rotate");
@@ -172,8 +168,7 @@ test.describe("layers list", () => {
       await then(get.elementByTestId("spec-field-doc")).shouldContainText("Rotates the ");
     });
 
-    test("should show spec info when hovering and clicking multi line property", async ({ driver }) => {
-      const { get, when, then } = driver;
+    test("should show spec info when hovering and clicking multi line property", async () => {
       await when.modal.fillLayers({ type: "symbol", layer: "example" });
 
       await when.hover("spec-field-container:text-offset");
@@ -182,8 +177,7 @@ test.describe("layers list", () => {
       await then(get.elementByTestId("spec-field-doc")).shouldContainText("Offset distance");
     });
 
-    test("should hide spec info when clicking a second time", async ({ driver }) => {
-      const { get, when, then } = driver;
+    test("should hide spec info when clicking a second time", async () => {
       await when.modal.fillLayers({ type: "symbol", layer: "example" });
 
       await when.hover("spec-field-container:text-rotate");
@@ -196,8 +190,7 @@ test.describe("layers list", () => {
   });
 
   test.describe("raster", () => {
-    test("add", async ({ driver }) => {
-      const { get, when, then } = driver;
+    test("add", async () => {
       const id = await when.modal.fillLayers({ type: "raster", layer: "raster" });
       await then(get.styleFromLocalStorage()).shouldDeepNestedInclude({
         layers: [{ id, type: "raster", source: "raster" }],
@@ -206,8 +199,7 @@ test.describe("layers list", () => {
   });
 
   test.describe("circle", () => {
-    test("add", async ({ driver }) => {
-      const { get, when, then } = driver;
+    test("add", async () => {
       const id = await when.modal.fillLayers({ type: "circle", layer: "example" });
       await then(get.styleFromLocalStorage()).shouldDeepNestedInclude({
         layers: [{ id, type: "circle", source: "example" }],
@@ -216,8 +208,7 @@ test.describe("layers list", () => {
   });
 
   test.describe("fill extrusion", () => {
-    test("add", async ({ driver }) => {
-      const { get, when, then } = driver;
+    test("add", async () => {
       const id = await when.modal.fillLayers({ type: "fill-extrusion", layer: "example" });
       await then(get.styleFromLocalStorage()).shouldDeepNestedInclude({
         layers: [{ id, type: "fill-extrusion", source: "example" }],
@@ -226,16 +217,14 @@ test.describe("layers list", () => {
   });
 
   test.describe("hillshade", () => {
-    test("add", async ({ driver }) => {
-      const { get, when, then } = driver;
+    test("add", async () => {
       const id = await when.modal.fillLayers({ type: "hillshade", layer: "example" });
       await then(get.styleFromLocalStorage()).shouldDeepNestedInclude({
         layers: [{ id, type: "hillshade", source: "example" }],
       });
     });
 
-    test("set hillshade illumination direction array", async ({ driver }) => {
-      const { get, when, then } = driver;
+    test("set hillshade illumination direction array", async () => {
       const id = await when.modal.fillLayers({ type: "hillshade", layer: "example" });
       await when.collapseGroupInLayerEditor();
       await when.collapseGroupInLayerEditor(1);
@@ -256,8 +245,7 @@ test.describe("layers list", () => {
       });
     });
 
-    test("set hillshade highlight color array", async ({ driver }) => {
-      const { get, when, then } = driver;
+    test("set hillshade highlight color array", async () => {
       const id = await when.modal.fillLayers({ type: "hillshade", layer: "example" });
       await when.collapseGroupInLayerEditor();
       await when.setValueToPropertyArray("spec-field:hillshade-highlight-color", "blue");
@@ -280,16 +268,14 @@ test.describe("layers list", () => {
   });
 
   test.describe("color-relief", () => {
-    test("add", async ({ driver }) => {
-      const { get, when, then } = driver;
+    test("add", async () => {
       const id = await when.modal.fillLayers({ type: "color-relief", layer: "example" });
       await then(get.styleFromLocalStorage()).shouldDeepNestedInclude({
         layers: [{ id, type: "color-relief", source: "example" }],
       });
     });
 
-    test("adds elevation expression when clicking the elevation button", async ({ driver }) => {
-      const { get, when, then } = driver;
+    test("adds elevation expression when clicking the elevation button", async () => {
       await when.modal.fillLayers({ type: "color-relief", layer: "example" });
       await when.collapseGroupInLayerEditor();
       await when.click("make-elevation-function");
@@ -300,8 +286,7 @@ test.describe("layers list", () => {
   });
 
   test.describe("groups", () => {
-    test("simple", async ({ driver }) => {
-      const { get, when, then } = driver;
+    test("simple", async () => {
       await when.setStyle("geojson");
 
       await when.modal.open();
@@ -324,8 +309,7 @@ test.describe("layers list", () => {
   });
 
   test.describe("drag and drop", () => {
-    test("move layer should update local storage", async ({ driver }) => {
-      const { get, when, then } = driver;
+    test("move layer should update local storage", async () => {
       await when.modal.open();
       const firstId = await when.modal.fillLayers({ id: "a", type: "background" });
       await when.modal.open();
@@ -346,8 +330,7 @@ test.describe("layers list", () => {
   });
 
   test.describe("sticky header", () => {
-    test("should keep header visible when scrolling layer list", async ({ driver }) => {
-      const { get, when, then } = driver;
+    test("should keep header visible when scrolling layer list", async () => {
       // Setup: Create multiple layers to enable scrolling
       for (let i = 0; i < 20; i++) {
         await when.modal.open();
