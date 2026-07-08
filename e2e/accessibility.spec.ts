@@ -1,40 +1,45 @@
-import { MaputnikDriver } from "./maputnik-driver";
+import { test, setupMaputnik } from "./fixtures";
 
 test.describe("accessibility", () => {
-  const { beforeAndAfter, get, when, then } = new MaputnikDriver();
-  beforeAndAfter();
+  setupMaputnik();
 
   test.describe("skip links", () => {
-    beforeEach(() => {
-      when.setStyle("layer");
+    test.beforeEach(async ({ driver }) => {
+      await driver.when.setStyle("layer");
     });
 
-    test("skip link to layer list", () => {
+    test("skip link to layer list", async ({ driver }) => {
+      const { get, when, then } = driver;
       const selector = "root:skip:layer-list";
-      then(get.elementByTestId(selector)).shouldExist();
-      when.tab();
-      then(get.elementByTestId(selector)).shouldBeFocused();
-      when.click(selector);
-      then(get.skipTargetLayerList()).shouldBeFocused();
+      await then(get.elementByTestId(selector)).shouldExist();
+      await when.tab();
+      await then(get.elementByTestId(selector)).shouldBeFocused();
+      await when.click(selector);
+      await then(get.skipTargetLayerList()).shouldBeFocused();
     });
 
-    test("skip link to layer editor", () => {
+    test("skip link to layer editor", async ({ driver }) => {
+      const { get, when, then } = driver;
       const selector = "root:skip:layer-editor";
-      then(get.elementByTestId(selector)).shouldExist();
-      then(get.elementByTestId("skip-target-layer-editor")).shouldExist();
-      when.tab().tab();
-      then(get.elementByTestId(selector)).shouldBeFocused();
-      when.click(selector);
-      then(get.skipTargetLayerEditor()).shouldBeFocused();
+      await then(get.elementByTestId(selector)).shouldExist();
+      await then(get.elementByTestId("skip-target-layer-editor")).shouldExist();
+      await when.tab();
+      await when.tab();
+      await then(get.elementByTestId(selector)).shouldBeFocused();
+      await when.click(selector);
+      await then(get.skipTargetLayerEditor()).shouldBeFocused();
     });
 
-    test("skip link to map view", () => {
+    test("skip link to map view", async ({ driver }) => {
+      const { get, when, then } = driver;
       const selector = "root:skip:map-view";
-      then(get.elementByTestId(selector)).shouldExist();
-      when.tab().tab().tab();
-      then(get.elementByTestId(selector)).shouldBeFocused();
-      when.click(selector);
-      then(get.canvas()).shouldBeFocused();
+      await then(get.elementByTestId(selector)).shouldExist();
+      await when.tab();
+      await when.tab();
+      await when.tab();
+      await then(get.elementByTestId(selector)).shouldBeFocused();
+      await when.click(selector);
+      await then(get.canvas()).shouldBeFocused();
     });
   });
 });

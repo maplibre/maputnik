@@ -1,411 +1,278 @@
-import { MaputnikDriver } from "./maputnik-driver";
+import { test, setupMaputnik } from "./fixtures";
 
 test.describe("layers list", () => {
-  const { beforeAndAfter, get, when, then } = new MaputnikDriver();
-  beforeAndAfter();
-  beforeEach(() => {
-    when.setStyle("both");
-    when.modal.open();
+  setupMaputnik();
+  test.beforeEach(async ({ driver }) => {
+    await driver.when.setStyle("both");
+    await driver.when.modal.open();
   });
 
   test.describe("ops", () => {
     let id: string;
-    beforeEach(() => {
-      id = when.modal.fillLayers({
-        type: "background",
-      });
+    test.beforeEach(async ({ driver }) => {
+      id = await driver.when.modal.fillLayers({ type: "background" });
     });
 
-    test("should update layers in local storage", () => {
-      then(get.styleFromLocalStorage()).shouldDeepNestedInclude({
-        layers: [
-          {
-            id: id,
-            type: "background",
-          },
-        ],
+    test("should update layers in local storage", async ({ driver }) => {
+      await driver.then(driver.get.styleFromLocalStorage()).shouldDeepNestedInclude({
+        layers: [{ id, type: "background" }],
       });
     });
 
     test.describe("when clicking delete", () => {
-      beforeEach(() => {
-        when.click("layer-list-item:" + id + ":delete");
+      test.beforeEach(async ({ driver }) => {
+        await driver.when.click("layer-list-item:" + id + ":delete");
       });
-      test("should empty layers in local storage", () => {
-        then(get.styleFromLocalStorage()).shouldDeepNestedInclude({
+      test("should empty layers in local storage", async ({ driver }) => {
+        await driver.then(driver.get.styleFromLocalStorage()).shouldDeepNestedInclude({
           layers: [],
         });
       });
     });
 
     test.describe("when clicking duplicate", () => {
-      beforeEach(() => {
-        when.click("layer-list-item:" + id + ":copy");
+      test.beforeEach(async ({ driver }) => {
+        await driver.when.click("layer-list-item:" + id + ":copy");
       });
-      test("should add copy layer in local storage", () => {
-        then(get.styleFromLocalStorage()).shouldDeepNestedInclude({
+      test("should add copy layer in local storage", async ({ driver }) => {
+        await driver.then(driver.get.styleFromLocalStorage()).shouldDeepNestedInclude({
           layers: [
-            {
-              id: id + "-copy",
-              type: "background",
-            },
-            {
-              id: id,
-              type: "background",
-            },
+            { id: id + "-copy", type: "background" },
+            { id, type: "background" },
           ],
         });
       });
     });
 
     test.describe("when clicking hide", () => {
-      beforeEach(() => {
-        when.click("layer-list-item:" + id + ":toggle-visibility");
+      test.beforeEach(async ({ driver }) => {
+        await driver.when.click("layer-list-item:" + id + ":toggle-visibility");
       });
 
-      test("should update visibility to none in local storage", () => {
-        then(get.styleFromLocalStorage()).shouldDeepNestedInclude({
-          layers: [
-            {
-              id: id,
-              type: "background",
-              layout: {
-                visibility: "none",
-              },
-            },
-          ],
+      test("should update visibility to none in local storage", async ({ driver }) => {
+        await driver.then(driver.get.styleFromLocalStorage()).shouldDeepNestedInclude({
+          layers: [{ id, type: "background", layout: { visibility: "none" } }],
         });
       });
 
       test.describe("when clicking show", () => {
-        beforeEach(() => {
-          when.click("layer-list-item:" + id + ":toggle-visibility");
+        test.beforeEach(async ({ driver }) => {
+          await driver.when.click("layer-list-item:" + id + ":toggle-visibility");
         });
 
-        test("should update visibility to visible in local storage", () => {
-          then(get.styleFromLocalStorage()).shouldDeepNestedInclude({
-            layers: [
-              {
-                id: id,
-                type: "background",
-                layout: {
-                  visibility: "visible",
-                },
-              },
-            ],
+        test("should update visibility to visible in local storage", async ({ driver }) => {
+          await driver.then(driver.get.styleFromLocalStorage()).shouldDeepNestedInclude({
+            layers: [{ id, type: "background", layout: { visibility: "visible" } }],
           });
         });
       });
 
       test.describe("when selecting a layer", () => {
         let secondId: string;
-        beforeEach(() => {
-          when.modal.open();
-          secondId = when.modal.fillLayers({
+        test.beforeEach(async ({ driver }) => {
+          await driver.when.modal.open();
+          secondId = await driver.when.modal.fillLayers({
             id: "second-layer",
             type: "background",
           });
         });
-        test("should show the selected layer in the editor", () => {
-          when.realClick("layer-list-item:" + secondId);
-          then(get.elementByTestId("layer-editor.layer-id.input")).shouldHaveValue(secondId);
-          when.realClick("layer-list-item:" + id);
-          then(get.elementByTestId("layer-editor.layer-id.input")).shouldHaveValue(id);
+        test("should show the selected layer in the editor", async ({ driver }) => {
+          const { get, when, then } = driver;
+          await when.realClick("layer-list-item:" + secondId);
+          await then(get.elementByTestId("layer-editor.layer-id.input")).shouldHaveValue(secondId);
+          await when.realClick("layer-list-item:" + id);
+          await then(get.elementByTestId("layer-editor.layer-id.input")).shouldHaveValue(id);
         });
       });
     });
   });
 
   test.describe("background", () => {
-    test("add", () => {
-      const id = when.modal.fillLayers({
-        type: "background",
-      });
-      then(get.styleFromLocalStorage()).shouldDeepNestedInclude({
-        layers: [
-          {
-            id: id,
-            type: "background",
-          },
-        ],
+    test("add", async ({ driver }) => {
+      const { get, when, then } = driver;
+      const id = await when.modal.fillLayers({ type: "background" });
+      await then(get.styleFromLocalStorage()).shouldDeepNestedInclude({
+        layers: [{ id, type: "background" }],
       });
     });
 
-    test.describe("modify", () => {});
+    test.skip("modify", () => {});
   });
 
   test.describe("fill", () => {
-    test("add", () => {
-      const id = when.modal.fillLayers({
-        type: "fill",
-        layer: "example",
-      });
-
-      then(get.styleFromLocalStorage()).shouldDeepNestedInclude({
-        layers: [
-          {
-            id: id,
-            type: "fill",
-            source: "example",
-          },
-        ],
+    test("add", async ({ driver }) => {
+      const { get, when, then } = driver;
+      const id = await when.modal.fillLayers({ type: "fill", layer: "example" });
+      await then(get.styleFromLocalStorage()).shouldDeepNestedInclude({
+        layers: [{ id, type: "fill", source: "example" }],
       });
     });
 
     // TODO: Change source
-    test("change source");
+    test.skip("change source", () => {});
   });
 
   test.describe("line", () => {
-    test("add", () => {
-      const id = when.modal.fillLayers({
-        type: "line",
-        layer: "example",
-      });
-
-      then(get.styleFromLocalStorage()).shouldDeepNestedInclude({
-        layers: [
-          {
-            id: id,
-            type: "line",
-            source: "example",
-          },
-        ],
+    test("add", async ({ driver }) => {
+      const { get, when, then } = driver;
+      const id = await when.modal.fillLayers({ type: "line", layer: "example" });
+      await then(get.styleFromLocalStorage()).shouldDeepNestedInclude({
+        layers: [{ id, type: "line", source: "example" }],
       });
     });
 
-    test("groups", () => {
-      when.modal.open();
-      const id1 = when.modal.fillLayers({
-        id: "aa",
-        type: "line",
-        layer: "example",
-      });
+    test("groups", async ({ driver }) => {
+      const { get, when, then } = driver;
+      await when.modal.open();
+      const id1 = await when.modal.fillLayers({ id: "aa", type: "line", layer: "example" });
 
-      when.modal.open();
-      const id2 = when.modal.fillLayers({
-        id: "aa-2",
-        type: "line",
-        layer: "example",
-      });
+      await when.modal.open();
+      const id2 = await when.modal.fillLayers({ id: "aa-2", type: "line", layer: "example" });
 
-      when.modal.open();
-      const id3 = when.modal.fillLayers({
-        id: "b",
-        type: "line",
-        layer: "example",
-      });
+      await when.modal.open();
+      const id3 = await when.modal.fillLayers({ id: "b", type: "line", layer: "example" });
 
-      then(get.elementByTestId("layer-list-item:" + id1)).shouldBeVisible();
-      then(get.elementByTestId("layer-list-item:" + id2)).shouldNotBeVisible();
-      then(get.elementByTestId("layer-list-item:" + id3)).shouldBeVisible();
-      when.click("layer-list-group:aa-0");
-      then(get.elementByTestId("layer-list-item:" + id1)).shouldBeVisible();
-      then(get.elementByTestId("layer-list-item:" + id2)).shouldBeVisible();
-      then(get.elementByTestId("layer-list-item:" + id3)).shouldBeVisible();
-      when.click("layer-list-item:" + id2);
-      when.click("skip-target-layer-editor");
-      when.click("menu-move-layer-down");
-      then(get.elementByTestId("layer-list-group:aa-0")).shouldNotExist();
-      then(get.styleFromLocalStorage()).shouldDeepNestedInclude({
+      await then(get.elementByTestId("layer-list-item:" + id1)).shouldBeVisible();
+      await then(get.elementByTestId("layer-list-item:" + id2)).shouldNotBeVisible();
+      await then(get.elementByTestId("layer-list-item:" + id3)).shouldBeVisible();
+      await when.click("layer-list-group:aa-0");
+      await then(get.elementByTestId("layer-list-item:" + id1)).shouldBeVisible();
+      await then(get.elementByTestId("layer-list-item:" + id2)).shouldBeVisible();
+      await then(get.elementByTestId("layer-list-item:" + id3)).shouldBeVisible();
+      await when.click("layer-list-item:" + id2);
+      await when.click("skip-target-layer-editor");
+      await when.click("menu-move-layer-down");
+      await then(get.elementByTestId("layer-list-group:aa-0")).shouldNotExist();
+      await then(get.styleFromLocalStorage()).shouldDeepNestedInclude({
         layers: [
-          {
-            id: "aa",
-            type: "line",
-            source: "example",
-          },
-          {
-            id: "b",
-            type: "line",
-            source: "example",
-          },
-          {
-            id: "aa-2",
-            type: "line",
-            source: "example",
-          },
+          { id: "aa", type: "line", source: "example" },
+          { id: "b", type: "line", source: "example" },
+          { id: "aa-2", type: "line", source: "example" },
         ],
       });
     });
   });
 
   test.describe("symbol", () => {
-    test("add", () => {
-      const id = when.modal.fillLayers({
-        type: "symbol",
-        layer: "example",
-      });
-
-      then(get.styleFromLocalStorage()).shouldDeepNestedInclude({
-        layers: [
-          {
-            id: id,
-            type: "symbol",
-            source: "example",
-          },
-        ],
+    test("add", async ({ driver }) => {
+      const { get, when, then } = driver;
+      const id = await when.modal.fillLayers({ type: "symbol", layer: "example" });
+      await then(get.styleFromLocalStorage()).shouldDeepNestedInclude({
+        layers: [{ id, type: "symbol", source: "example" }],
       });
     });
 
-    test("should show spec info when hovering and clicking single line property", () => {
-      when.modal.fillLayers({
-        type: "symbol",
-        layer: "example",
-      });
+    test("should show spec info when hovering and clicking single line property", async ({ driver }) => {
+      const { get, when, then } = driver;
+      await when.modal.fillLayers({ type: "symbol", layer: "example" });
 
-      when.hover("spec-field-container:text-rotate");
-      then(get.elementByTestId("field-doc-button-Rotate")).shouldBeVisible();
-      when.click("field-doc-button-Rotate", 0);
-      then(get.elementByTestId("spec-field-doc")).shouldContainText("Rotates the ");
+      await when.hover("spec-field-container:text-rotate");
+      await then(get.elementByTestId("field-doc-button-Rotate")).shouldBeVisible();
+      await when.click("field-doc-button-Rotate", 0);
+      await then(get.elementByTestId("spec-field-doc")).shouldContainText("Rotates the ");
     });
 
-    test("should show spec info when hovering and clicking multi line property", () => {
-      when.modal.fillLayers({
-        type: "symbol",
-        layer: "example",
-      });
+    test("should show spec info when hovering and clicking multi line property", async ({ driver }) => {
+      const { get, when, then } = driver;
+      await when.modal.fillLayers({ type: "symbol", layer: "example" });
 
-      when.hover("spec-field-container:text-offset");
-      then(get.elementByTestId("field-doc-button-Offset")).shouldBeVisible();
-      when.click("field-doc-button-Offset", 0);
-      then(get.elementByTestId("spec-field-doc")).shouldContainText("Offset distance");
+      await when.hover("spec-field-container:text-offset");
+      await then(get.elementByTestId("field-doc-button-Offset")).shouldBeVisible();
+      await when.click("field-doc-button-Offset", 0);
+      await then(get.elementByTestId("spec-field-doc")).shouldContainText("Offset distance");
     });
 
-    test("should hide spec info when clicking a second time", () => {
-      when.modal.fillLayers({
-        type: "symbol",
-        layer: "example",
-      });
+    test("should hide spec info when clicking a second time", async ({ driver }) => {
+      const { get, when, then } = driver;
+      await when.modal.fillLayers({ type: "symbol", layer: "example" });
 
-      when.hover("spec-field-container:text-rotate");
-      then(get.elementByTestId("field-doc-button-Rotate")).shouldBeVisible();
-      when.click("field-doc-button-Rotate", 0);
-      when.wait(200);
-      when.click("field-doc-button-Rotate", 0);
-      then(get.elementByTestId("spec-field-doc")).shouldNotBeVisible();
+      await when.hover("spec-field-container:text-rotate");
+      await then(get.elementByTestId("field-doc-button-Rotate")).shouldBeVisible();
+      await when.click("field-doc-button-Rotate", 0);
+      await when.wait(200);
+      await when.click("field-doc-button-Rotate", 0);
+      await then(get.elementByTestId("spec-field-doc")).shouldNotBeVisible();
     });
   });
 
   test.describe("raster", () => {
-    test("add", () => {
-      const id = when.modal.fillLayers({
-        type: "raster",
-        layer: "raster",
-      });
-
-      then(get.styleFromLocalStorage()).shouldDeepNestedInclude({
-        layers: [
-          {
-            id: id,
-            type: "raster",
-            source: "raster",
-          },
-        ],
+    test("add", async ({ driver }) => {
+      const { get, when, then } = driver;
+      const id = await when.modal.fillLayers({ type: "raster", layer: "raster" });
+      await then(get.styleFromLocalStorage()).shouldDeepNestedInclude({
+        layers: [{ id, type: "raster", source: "raster" }],
       });
     });
   });
 
   test.describe("circle", () => {
-    test("add", () => {
-      const id = when.modal.fillLayers({
-        type: "circle",
-        layer: "example",
-      });
-
-      then(get.styleFromLocalStorage()).shouldDeepNestedInclude({
-        layers: [
-          {
-            id: id,
-            type: "circle",
-            source: "example",
-          },
-        ],
+    test("add", async ({ driver }) => {
+      const { get, when, then } = driver;
+      const id = await when.modal.fillLayers({ type: "circle", layer: "example" });
+      await then(get.styleFromLocalStorage()).shouldDeepNestedInclude({
+        layers: [{ id, type: "circle", source: "example" }],
       });
     });
   });
 
   test.describe("fill extrusion", () => {
-    test("add", () => {
-      const id = when.modal.fillLayers({
-        type: "fill-extrusion",
-        layer: "example",
-      });
-
-      then(get.styleFromLocalStorage()).shouldDeepNestedInclude({
-        layers: [
-          {
-            id: id,
-            type: "fill-extrusion",
-            source: "example",
-          },
-        ],
+    test("add", async ({ driver }) => {
+      const { get, when, then } = driver;
+      const id = await when.modal.fillLayers({ type: "fill-extrusion", layer: "example" });
+      await then(get.styleFromLocalStorage()).shouldDeepNestedInclude({
+        layers: [{ id, type: "fill-extrusion", source: "example" }],
       });
     });
   });
 
   test.describe("hillshade", () => {
-    test("add", () => {
-      const id = when.modal.fillLayers({
-        type: "hillshade",
-        layer: "example",
+    test("add", async ({ driver }) => {
+      const { get, when, then } = driver;
+      const id = await when.modal.fillLayers({ type: "hillshade", layer: "example" });
+      await then(get.styleFromLocalStorage()).shouldDeepNestedInclude({
+        layers: [{ id, type: "hillshade", source: "example" }],
       });
+    });
 
-      then(get.styleFromLocalStorage()).shouldDeepNestedInclude({
+    test("set hillshade illumination direction array", async ({ driver }) => {
+      const { get, when, then } = driver;
+      const id = await when.modal.fillLayers({ type: "hillshade", layer: "example" });
+      await when.collapseGroupInLayerEditor();
+      await when.collapseGroupInLayerEditor(1);
+      await when.setValueToPropertyArray("spec-field:hillshade-illumination-direction", "1");
+      await when.addValueToPropertyArray("spec-field:hillshade-illumination-direction", "2");
+      await when.addValueToPropertyArray("spec-field:hillshade-illumination-direction", "3");
+      await when.addValueToPropertyArray("spec-field:hillshade-illumination-direction", "4");
+
+      await then(get.styleFromLocalStorage()).shouldDeepNestedInclude({
         layers: [
           {
-            id: id,
+            id,
             type: "hillshade",
             source: "example",
+            paint: { "hillshade-illumination-direction": [1, 2, 3, 4] },
           },
         ],
       });
     });
 
-    test("set hillshade illumination direction array", () => {
-      const id = when.modal.fillLayers({
-        type: "hillshade",
-        layer: "example",
-      });
-      when.collapseGroupInLayerEditor();
-      when.collapseGroupInLayerEditor(1);
-      when.setValueToPropertyArray("spec-field:hillshade-illumination-direction", "1");
-      when.addValueToPropertyArray("spec-field:hillshade-illumination-direction", "2");
-      when.addValueToPropertyArray("spec-field:hillshade-illumination-direction", "3");
-      when.addValueToPropertyArray("spec-field:hillshade-illumination-direction", "4");
+    test("set hillshade highlight color array", async ({ driver }) => {
+      const { get, when, then } = driver;
+      const id = await when.modal.fillLayers({ type: "hillshade", layer: "example" });
+      await when.collapseGroupInLayerEditor();
+      await when.setValueToPropertyArray("spec-field:hillshade-highlight-color", "blue");
+      await when.addValueToPropertyArray("spec-field:hillshade-highlight-color", "#00ff00");
+      await when.addValueToPropertyArray("spec-field:hillshade-highlight-color", "rgba(255, 255, 0, 1)");
 
-      then(get.styleFromLocalStorage()).shouldDeepNestedInclude({
+      await then(get.styleFromLocalStorage()).shouldDeepNestedInclude({
         layers: [
           {
-            id: id,
+            id,
             type: "hillshade",
             source: "example",
             paint: {
-              "hillshade-illumination-direction": [ 1, 2, 3, 4 ]
-            }
-          },
-        ],
-      });
-    });
-
-    test("set hillshade highlight color array", () => {
-      const id = when.modal.fillLayers({
-        type: "hillshade",
-        layer: "example",
-      });
-      when.collapseGroupInLayerEditor();
-      when.setValueToPropertyArray("spec-field:hillshade-highlight-color", "blue");
-      when.addValueToPropertyArray("spec-field:hillshade-highlight-color", "#00ff00");
-      when.addValueToPropertyArray("spec-field:hillshade-highlight-color", "rgba(255, 255, 0, 1)");
-
-      then(get.styleFromLocalStorage()).shouldDeepNestedInclude({
-        layers: [
-          {
-            id: id,
-            type: "hillshade",
-            source: "example",
-            paint: {
-              "hillshade-highlight-color": [ "blue", "#00ff00", "rgba(255, 255, 0, 1)" ]
-            }
+              "hillshade-highlight-color": ["blue", "#00ff00", "rgba(255, 255, 0, 1)"],
+            },
           },
         ],
       });
@@ -413,129 +280,89 @@ test.describe("layers list", () => {
   });
 
   test.describe("color-relief", () => {
-    test("add", () => {
-      const id = when.modal.fillLayers({
-        type: "color-relief",
-        layer: "example",
-      });
-
-      then(get.styleFromLocalStorage()).shouldDeepNestedInclude({
-        layers: [
-          {
-            id: id,
-            type: "color-relief",
-            source: "example",
-          },
-        ],
+    test("add", async ({ driver }) => {
+      const { get, when, then } = driver;
+      const id = await when.modal.fillLayers({ type: "color-relief", layer: "example" });
+      await then(get.styleFromLocalStorage()).shouldDeepNestedInclude({
+        layers: [{ id, type: "color-relief", source: "example" }],
       });
     });
 
-    test("adds elevation expression when clicking the elevation button", () => {
-      when.modal.fillLayers({
-        type: "color-relief",
-        layer: "example",
-      });
-      when.collapseGroupInLayerEditor();
-      when.click("make-elevation-function");
-      then(get.element("[data-wd-key='spec-field-container:color-relief-color'] .cm-line")).shouldBeVisible();
-    });
-  });
-
-  test.describe("groups", () => {
-    test("simple", () => {
-      when.setStyle("geojson");
-
-      when.modal.open();
-      when.modal.fillLayers({
-        id: "foo",
-        type: "background",
-      });
-
-      when.modal.open();
-      when.modal.fillLayers({
-        id: "foo_bar",
-        type: "background",
-      });
-
-      when.modal.open();
-      when.modal.fillLayers({
-        id: "foo_bar_baz",
-        type: "background",
-      });
-
-      then(get.elementByTestId("layer-list-item:foo")).shouldBeVisible();
-      then(get.elementByTestId("layer-list-item:foo_bar")).shouldNotBeVisible();
-      then(
-        get.elementByTestId("layer-list-item:foo_bar_baz")
-      ).shouldNotBeVisible();
-      when.click("layer-list-group:foo-0");
-      then(get.elementByTestId("layer-list-item:foo")).shouldBeVisible();
-      then(get.elementByTestId("layer-list-item:foo_bar")).shouldBeVisible();
-      then(
-        get.elementByTestId("layer-list-item:foo_bar_baz")
+    test("adds elevation expression when clicking the elevation button", async ({ driver }) => {
+      const { get, when, then } = driver;
+      await when.modal.fillLayers({ type: "color-relief", layer: "example" });
+      await when.collapseGroupInLayerEditor();
+      await when.click("make-elevation-function");
+      await then(
+        get.element("[data-wd-key='spec-field-container:color-relief-color'] .cm-line")
       ).shouldBeVisible();
     });
   });
 
+  test.describe("groups", () => {
+    test("simple", async ({ driver }) => {
+      const { get, when, then } = driver;
+      await when.setStyle("geojson");
+
+      await when.modal.open();
+      await when.modal.fillLayers({ id: "foo", type: "background" });
+
+      await when.modal.open();
+      await when.modal.fillLayers({ id: "foo_bar", type: "background" });
+
+      await when.modal.open();
+      await when.modal.fillLayers({ id: "foo_bar_baz", type: "background" });
+
+      await then(get.elementByTestId("layer-list-item:foo")).shouldBeVisible();
+      await then(get.elementByTestId("layer-list-item:foo_bar")).shouldNotBeVisible();
+      await then(get.elementByTestId("layer-list-item:foo_bar_baz")).shouldNotBeVisible();
+      await when.click("layer-list-group:foo-0");
+      await then(get.elementByTestId("layer-list-item:foo")).shouldBeVisible();
+      await then(get.elementByTestId("layer-list-item:foo_bar")).shouldBeVisible();
+      await then(get.elementByTestId("layer-list-item:foo_bar_baz")).shouldBeVisible();
+    });
+  });
+
   test.describe("drag and drop", () => {
-    test("move layer should update local storage", () => {
-      when.modal.open();
-      const firstId = when.modal.fillLayers({
-        id: "a",
-        type: "background",
-      });
-      when.modal.open();
-      const secondId = when.modal.fillLayers({
-        id: "b",
-        type: "background",
-      });
-      when.modal.open();
-      const thirdId = when.modal.fillLayers({
-        id: "c",
-        type: "background",
-      });
+    test("move layer should update local storage", async ({ driver }) => {
+      const { get, when, then } = driver;
+      await when.modal.open();
+      const firstId = await when.modal.fillLayers({ id: "a", type: "background" });
+      await when.modal.open();
+      const secondId = await when.modal.fillLayers({ id: "b", type: "background" });
+      await when.modal.open();
+      const thirdId = await when.modal.fillLayers({ id: "c", type: "background" });
 
-      when.dragAndDropWithWait("layer-list-item:" + firstId, "layer-list-item:" + thirdId);
+      await when.dragAndDropWithWait("layer-list-item:" + firstId, "layer-list-item:" + thirdId);
 
-      then(get.styleFromLocalStorage()).shouldDeepNestedInclude({
+      await then(get.styleFromLocalStorage()).shouldDeepNestedInclude({
         layers: [
-          {
-            id: secondId,
-            type: "background",
-          },
-          {
-            id: thirdId,
-            type: "background",
-          },
-          {
-            id: firstId,
-            type: "background",
-          },
+          { id: secondId, type: "background" },
+          { id: thirdId, type: "background" },
+          { id: firstId, type: "background" },
         ],
       });
     });
   });
 
   test.describe("sticky header", () => {
-    test("should keep header visible when scrolling layer list", () => {
+    test("should keep header visible when scrolling layer list", async ({ driver }) => {
+      const { get, when, then } = driver;
       // Setup: Create multiple layers to enable scrolling
       for (let i = 0; i < 20; i++) {
-        when.modal.open();
-        when.modal.fillLayers({
-          id: `layer-${i}`,
-          type: "background",
-        });
+        await when.modal.open();
+        await when.modal.fillLayers({ id: `layer-${i}`, type: "background" });
       }
 
-      when.wait(500);
+      await when.wait(500);
       const header = get.elementByTestId("layer-list.header");
-      then(header).shouldBeVisible();
+      await then(header).shouldBeVisible();
 
-      // Scroll the layer list container (use ensureScrollable: false to avoid flakiness)
-      get.elementByTestId("layer-list").scrollTo("bottom", { ensureScrollable: false });
-      when.wait(200);
-      then(header).shouldBeVisible();
-      then(get.elementByTestId("layer-list:add-layer")).shouldBeVisible();
+      // Scroll the layer list container
+      await get.elementByTestId("layer-list").evaluate((el) => el.scrollTo(0, el.scrollHeight));
+      await when.wait(200);
+      await then(header).shouldBeVisible();
+      await then(get.elementByTestId("layer-list:add-layer")).shouldBeVisible();
     });
   });
 });

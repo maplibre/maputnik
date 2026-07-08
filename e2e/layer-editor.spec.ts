@@ -1,96 +1,82 @@
-import { MaputnikDriver } from "./maputnik-driver";
 import { v1 as uuid } from "uuid";
+import { test, setupMaputnik } from "./fixtures";
+import type { MaputnikDriver } from "./maputnik-driver";
 
 test.describe("layer editor", () => {
-  const { beforeAndAfter, get, when, then } = new MaputnikDriver();
-  beforeAndAfter();
-  beforeEach(() => {
-    when.setStyle("both");
-    when.modal.open();
+  setupMaputnik();
+  test.beforeEach(async ({ driver }) => {
+    await driver.when.setStyle("both");
+    await driver.when.modal.open();
   });
 
-  function createBackground() {
+  async function createBackground(driver: MaputnikDriver) {
+    const { get, when, then } = driver;
     const id = uuid();
 
-    when.selectWithin("add-layer.layer-type", "background");
-    when.setValue("add-layer.layer-id.input", "background:" + id);
+    await when.selectWithin("add-layer.layer-type", "background");
+    await when.setValue("add-layer.layer-id.input", "background:" + id);
 
-    when.click("add-layer");
+    await when.click("add-layer");
 
-    then(get.styleFromLocalStorage()).shouldDeepNestedInclude({
-      layers: [
-        {
-          id: "background:" + id,
-          type: "background",
-        },
-      ],
+    await then(get.styleFromLocalStorage()).shouldDeepNestedInclude({
+      layers: [{ id: "background:" + id, type: "background" }],
     });
     return id;
   }
 
-  test("expand/collapse");
-  test("id", () => {
-    const bgId = createBackground();
+  test.skip("expand/collapse", () => {});
 
-    when.click("layer-list-item:background:" + bgId);
+  test("id", async ({ driver }) => {
+    const { get, when, then } = driver;
+    const bgId = await createBackground(driver);
+
+    await when.click("layer-list-item:background:" + bgId);
 
     const id = uuid();
-    when.setValue("layer-editor.layer-id.input", "foobar:" + id);
-    when.click("min-zoom");
+    await when.setValue("layer-editor.layer-id.input", "foobar:" + id);
+    await when.click("min-zoom");
 
-    then(get.styleFromLocalStorage()).shouldDeepNestedInclude({
-      layers: [
-        {
-          id: "foobar:" + id,
-          type: "background",
-        },
-      ],
+    await then(get.styleFromLocalStorage()).shouldDeepNestedInclude({
+      layers: [{ id: "foobar:" + id, type: "background" }],
     });
   });
 
   test.describe("source", () => {
-    test("should show error when the source is invalid", () => {
-      when.modal.fillLayers({
+    test("should show error when the source is invalid", async ({ driver }) => {
+      const { get, when, then } = driver;
+      await when.modal.fillLayers({
         type: "circle",
         layer: "invalid",
       });
-      then(get.element(".maputnik-input-block--error .maputnik-input-block-label")).shouldHaveCss("color", "rgb(207, 74, 74)");
+      await then(
+        get.element(".maputnik-input-block--error .maputnik-input-block-label")
+      ).shouldHaveCss("color", "rgb(207, 74, 74)");
     });
   });
 
   test.describe("min-zoom", () => {
     let bgId: string;
 
-    beforeEach(() => {
-      bgId = createBackground();
-      when.click("layer-list-item:background:" + bgId);
-      when.setValue("min-zoom.input-text", "1");
-      when.click("layer-editor.layer-id");
+    test.beforeEach(async ({ driver }) => {
+      const { when } = driver;
+      bgId = await createBackground(driver);
+      await when.click("layer-list-item:background:" + bgId);
+      await when.setValue("min-zoom.input-text", "1");
+      await when.click("layer-editor.layer-id");
     });
 
-    test("should update min-zoom in local storage", () => {
-      then(get.styleFromLocalStorage()).shouldDeepNestedInclude({
-        layers: [
-          {
-            id: "background:" + bgId,
-            type: "background",
-            minzoom: 1,
-          },
-        ],
+    test("should update min-zoom in local storage", async ({ driver }) => {
+      await driver.then(driver.get.styleFromLocalStorage()).shouldDeepNestedInclude({
+        layers: [{ id: "background:" + bgId, type: "background", minzoom: 1 }],
       });
     });
 
-    test("when clicking next layer should update style on local storage", () => {
-      when.type("min-zoom.input-text", "{backspace}");
-      when.click("max-zoom.input-text");
-      then(get.styleFromLocalStorage()).shouldDeepNestedInclude({
-        layers: [
-          {
-            id: "background:" + bgId,
-            type: "background",
-            minzoom: 1,
-          },
-        ],
+    test("when clicking next layer should update style on local storage", async ({ driver }) => {
+      const { get, when, then } = driver;
+      await when.type("min-zoom.input-text", "{backspace}");
+      await when.click("max-zoom.input-text");
+      await then(get.styleFromLocalStorage()).shouldDeepNestedInclude({
+        layers: [{ id: "background:" + bgId, type: "background", minzoom: 1 }],
       });
     });
   });
@@ -98,22 +84,17 @@ test.describe("layer editor", () => {
   test.describe("max-zoom", () => {
     let bgId: string;
 
-    beforeEach(() => {
-      bgId = createBackground();
-      when.click("layer-list-item:background:" + bgId);
-      when.setValue("max-zoom.input-text", "1");
-      when.click("layer-editor.layer-id");
+    test.beforeEach(async ({ driver }) => {
+      const { when } = driver;
+      bgId = await createBackground(driver);
+      await when.click("layer-list-item:background:" + bgId);
+      await when.setValue("max-zoom.input-text", "1");
+      await when.click("layer-editor.layer-id");
     });
 
-    test("should update style in local storage", () => {
-      then(get.styleFromLocalStorage()).shouldDeepNestedInclude({
-        layers: [
-          {
-            id: "background:" + bgId,
-            type: "background",
-            maxzoom: 1,
-          },
-        ],
+    test("should update style in local storage", async ({ driver }) => {
+      await driver.then(driver.get.styleFromLocalStorage()).shouldDeepNestedInclude({
+        layers: [{ id: "background:" + bgId, type: "background", maxzoom: 1 }],
       });
     });
   });
@@ -122,41 +103,36 @@ test.describe("layer editor", () => {
     let bgId: string;
     const comment = "42";
 
-    beforeEach(() => {
-      bgId = createBackground();
-      when.click("layer-list-item:background:" + bgId);
-      when.setValue("layer-comment.input", comment);
-      when.click("layer-editor.layer-id");
+    test.beforeEach(async ({ driver }) => {
+      const { when } = driver;
+      bgId = await createBackground(driver);
+      await when.click("layer-list-item:background:" + bgId);
+      await when.setValue("layer-comment.input", comment);
+      await when.click("layer-editor.layer-id");
     });
 
-    test("should update style in local storage", () => {
-      then(get.styleFromLocalStorage()).shouldDeepNestedInclude({
+    test("should update style in local storage", async ({ driver }) => {
+      await driver.then(driver.get.styleFromLocalStorage()).shouldDeepNestedInclude({
         layers: [
           {
             id: "background:" + bgId,
             type: "background",
-            metadata: {
-              "maputnik:comment": comment,
-            },
+            metadata: { "maputnik:comment": comment },
           },
         ],
       });
     });
 
     test.describe("when unsetting", () => {
-      beforeEach(() => {
-        when.clear("layer-comment.input");
-        when.click("min-zoom.input-text");
+      test.beforeEach(async ({ driver }) => {
+        const { when } = driver;
+        await when.clear("layer-comment.input");
+        await when.click("min-zoom.input-text");
       });
 
-      test("should update style in local storage", () => {
-        then(get.styleFromLocalStorage()).shouldDeepNestedInclude({
-          layers: [
-            {
-              id: "background:" + bgId,
-              type: "background",
-            },
-          ],
+      test("should update style in local storage", async ({ driver }) => {
+        await driver.then(driver.get.styleFromLocalStorage()).shouldDeepNestedInclude({
+          layers: [{ id: "background:" + bgId, type: "background" }],
         });
       });
     });
@@ -164,131 +140,127 @@ test.describe("layer editor", () => {
 
   test.describe("color", () => {
     let bgId: string;
-    beforeEach(() => {
-      bgId = createBackground();
-      when.click("layer-list-item:background:" + bgId);
-      when.click("spec-field:background-color");
+    test.beforeEach(async ({ driver }) => {
+      const { when } = driver;
+      bgId = await createBackground(driver);
+      await when.click("layer-list-item:background:" + bgId);
+      await when.click("spec-field:background-color");
     });
 
-    test("should update style in local storage", () => {
-      then(get.styleFromLocalStorage()).shouldDeepNestedInclude({
-        layers: [
-          {
-            id: "background:" + bgId,
-            type: "background",
-          },
-        ],
+    test("should update style in local storage", async ({ driver }) => {
+      await driver.then(driver.get.styleFromLocalStorage()).shouldDeepNestedInclude({
+        layers: [{ id: "background:" + bgId, type: "background" }],
       });
     });
   });
 
   test.describe("opacity", () => {
     let bgId: string;
-    beforeEach(() => {
-      bgId = createBackground();
-      when.click("layer-list-item:background:" + bgId);
-      when.type("spec-field-input:background-opacity", "0.");
+    test.beforeEach(async ({ driver }) => {
+      const { when } = driver;
+      bgId = await createBackground(driver);
+      await when.click("layer-list-item:background:" + bgId);
+      await when.type("spec-field-input:background-opacity", "0.");
     });
 
-    test("should keep '.' in the input field", () => {
-      then(get.elementByTestId("spec-field-input:background-opacity")).shouldHaveValue("0.");
+    test("should keep '.' in the input field", async ({ driver }) => {
+      await driver
+        .then(driver.get.elementByTestId("spec-field-input:background-opacity"))
+        .shouldHaveValue("0.");
     });
 
-    test("should revert to a valid value when focus out", () => {
-      when.click("layer-list-item:background:" + bgId);
-      then(get.elementByTestId("spec-field-input:background-opacity")).shouldHaveValue("0");
+    test("should revert to a valid value when focus out", async ({ driver }) => {
+      const { get, when, then } = driver;
+      await when.click("layer-list-item:background:" + bgId);
+      await then(get.elementByTestId("spec-field-input:background-opacity")).shouldHaveValue("0");
     });
   });
 
-
-
   test.describe("filter", () => {
-    test("expand/collapse");
-    test("compound filter");
+    test.skip("expand/collapse", () => {});
+    test.skip("compound filter", () => {});
   });
 
   test.describe("layout", () => {
-    test("text-font", () => {
-      when.setStyle("font");
-      when.collapseGroupInLayerEditor();
-      when.collapseGroupInLayerEditor(1);
-      when.collapseGroupInLayerEditor(2);
-      when.doWithin("spec-field:text-font", () => {
-        get.element(".maputnik-autocomplete input").first().click();
+    test("text-font", async ({ driver }) => {
+      const { get, when, then } = driver;
+      await when.setStyle("font");
+      await when.collapseGroupInLayerEditor();
+      await when.collapseGroupInLayerEditor(1);
+      await when.collapseGroupInLayerEditor(2);
+      await when.doWithin("spec-field:text-font", async () => {
+        await get.element(".maputnik-autocomplete input").first().click();
       });
-      then(get.element(".maputnik-autocomplete-menu-item")).shouldBeVisible();
-      then(get.element(".maputnik-autocomplete-menu-item")).shouldHaveLength(3);
+      await then(get.element(".maputnik-autocomplete-menu-item")).shouldBeVisible();
+      await then(get.element(".maputnik-autocomplete-menu-item")).shouldHaveLength(3);
     });
   });
 
   test.describe("paint", () => {
-    test("expand/collapse");
-    test("color");
-    test("pattern");
-    test("opacity");
+    test.skip("expand/collapse", () => {});
+    test.skip("color", () => {});
+    test.skip("pattern", () => {});
+    test.skip("opacity", () => {});
   });
 
   test.describe("json-editor", () => {
-    test("add", () => {
-      const id = when.modal.fillLayers({
+    test("add", async ({ driver }) => {
+      const { get, when, then } = driver;
+      const id = await when.modal.fillLayers({
         type: "circle",
         layer: "example",
       });
 
-      then(get.styleFromLocalStorage()).shouldDeepNestedInclude({
-        layers: [
-          {
-            id: id,
-            type: "circle",
-            source: "example",
-          },
-        ],
+      await then(get.styleFromLocalStorage()).shouldDeepNestedInclude({
+        layers: [{ id, type: "circle", source: "example" }],
       });
 
       const sourceText = get.elementByText('"source"');
+      await sourceText.click();
+      await when.typeKeys('"');
 
-      sourceText.click();
-      sourceText.type("\"");
-
-      then(get.element(".cm-lint-marker-error")).shouldExist();
+      await then(get.element(".cm-lint-marker-error")).shouldExist();
     });
 
+    test.skip("expand/collapse", () => {});
+    test.skip("modify", () => {});
 
-    test("expand/collapse");
-    test("modify");
+    test("parse error", async ({ driver }) => {
+      const { get, when, then } = driver;
+      const bgId = await createBackground(driver);
 
-    test("parse error", () => {
-      const bgId = createBackground();
+      await when.click("layer-list-item:background:" + bgId);
+      await when.collapseGroupInLayerEditor();
+      await when.collapseGroupInLayerEditor(1);
+      await then(get.element(".cm-lint-marker-error")).shouldNotExist();
 
-      when.click("layer-list-item:background:" + bgId);
-      when.collapseGroupInLayerEditor();
-      when.collapseGroupInLayerEditor(1);
-      then(get.element(".cm-lint-marker-error")).shouldNotExist();
-
-      when.appendTextInJsonEditor(
-        "\uE013\uE013\uE013\uE013\uE013\uE013\uE013\uE013\uE013\uE013\uE013\uE013 {"
+      await when.appendTextInJsonEditor(
+        " {"
       );
-      then(get.element(".cm-lint-marker-error")).shouldExist();
+      await then(get.element(".cm-lint-marker-error")).shouldExist();
     });
   });
 
   test.describe("sticky header", () => {
-    test("should keep layer header visible when scrolling properties", () => {
-      // Setup: Create a layer with many properties (e.g., symbol layer)
-      when.modal.fillLayers({
+    test("should keep layer header visible when scrolling properties", async ({ driver }) => {
+      const { get, when, then } = driver;
+      // Setup: Create a layer with many properties (e.g. symbol layer)
+      await when.modal.fillLayers({
         type: "symbol",
         layer: "example",
       });
 
-      when.wait(500);
+      await when.wait(500);
       const header = get.elementByTestId("layer-editor.header");
-      then(header).shouldBeVisible();
+      await then(header).shouldBeVisible();
 
-      get.element(".maputnik-scroll-container").scrollTo("bottom", { ensureScrollable: false });
-      when.wait(200);
+      await get
+        .element(".maputnik-scroll-container")
+        .evaluate((el) => el.scrollTo(0, el.scrollHeight));
+      await when.wait(200);
 
-      then(header).shouldBeVisible();
-      then(get.elementByTestId("skip-target-layer-editor")).shouldBeVisible();
+      await then(header).shouldBeVisible();
+      await then(get.elementByTestId("skip-target-layer-editor")).shouldBeVisible();
     });
   });
 });

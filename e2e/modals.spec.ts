@@ -1,102 +1,111 @@
-import { MaputnikDriver } from "./maputnik-driver";
-import tokens from "../../src/config/tokens.json" with {type: "json"};
+import { test, expect, setupMaputnik } from "./fixtures";
+import tokens from "../src/config/tokens.json" with { type: "json" };
 
 test.describe("modals", () => {
-  const { beforeAndAfter, when, get, given, then } = new MaputnikDriver();
-  beforeAndAfter();
+  setupMaputnik();
 
-  beforeEach(() => {
-    when.setStyle("");
+  test.beforeEach(async ({ driver }) => {
+    await driver.when.setStyle("");
   });
+
   test.describe("open", () => {
-    beforeEach(() => {
-      when.click("nav:open");
+    test.beforeEach(async ({ driver }) => {
+      await driver.when.click("nav:open");
     });
 
-    test("close", () => {
-      when.modal.close("modal:open");
-      then(get.elementByTestId("modal:open")).shouldNotExist();
+    test("close", async ({ driver }) => {
+      const { get, when, then } = driver;
+      await when.modal.close("modal:open");
+      await then(get.elementByTestId("modal:open")).shouldNotExist();
     });
 
-    test("upload", () => {
-      when.chooseExampleFile();
-      then(get.fixture("example-style.json")).shouldEqualToStoredStyle();
+    test("upload", async ({ driver }) => {
+      const { get, when, then } = driver;
+      await when.chooseExampleFile();
+      await then(get.fixture("example-style.json")).shouldEqualToStoredStyle();
     });
 
-    test("upload via drag and drop", () => {
-      when.dropExampleFile();
-      then(get.fixture("example-style.json")).shouldEqualToStoredStyle();
+    test("upload via drag and drop", async ({ driver }) => {
+      const { get, when, then } = driver;
+      await when.dropExampleFile();
+      await then(get.fixture("example-style.json")).shouldEqualToStoredStyle();
     });
 
     test.describe("when click open url", () => {
-      beforeEach(() => {
+      test.beforeEach(async ({ driver }) => {
+        const { get, when } = driver;
         const styleFileUrl = get.exampleFileUrl();
 
-        when.setValue("modal:open.url.input", styleFileUrl);
-        when.click("modal:open.url.button");
-        when.wait(200);
+        await when.setValue("modal:open.url.input", styleFileUrl);
+        await when.click("modal:open.url.button");
+        await when.wait(200);
       });
-      test("load from url", () => {
-        then(get.responseBody("example-style.json")).shouldEqualToStoredStyle();
+      test("load from url", async ({ driver }) => {
+        await driver.then(driver.get.responseBody("example-style.json")).shouldEqualToStoredStyle();
       });
     });
   });
 
   test.describe("shortcuts", () => {
-    test("open/close", () => {
-      when.setStyle("");
-      when.typeKeys("?");
-      when.modal.close("modal:shortcuts");
-      then(get.elementByTestId("modal:shortcuts")).shouldNotExist();
+    test("open/close", async ({ driver }) => {
+      const { get, when, then } = driver;
+      await when.setStyle("");
+      await when.typeKeys("?");
+      await when.modal.close("modal:shortcuts");
+      await then(get.elementByTestId("modal:shortcuts")).shouldNotExist();
     });
   });
 
   test.describe("export", () => {
-    beforeEach(() => {
-      when.click("nav:export");
+    test.beforeEach(async ({ driver }) => {
+      await driver.when.click("nav:export");
     });
 
-    test("close", () => {
-      when.modal.close("modal:export");
-      then(get.elementByTestId("modal:export")).shouldNotExist();
+    test("close", async ({ driver }) => {
+      const { get, when, then } = driver;
+      await when.modal.close("modal:export");
+      await then(get.elementByTestId("modal:export")).shouldNotExist();
     });
 
     // TODO: Work out how to download a file and check the contents
-    test("download");
+    test.skip("download", () => {});
   });
 
   test.describe("sources", () => {
-    beforeEach(() => {
-      when.setStyle("layer");
-      when.click("nav:sources");
+    test.beforeEach(async ({ driver }) => {
+      await driver.when.setStyle("layer");
+      await driver.when.click("nav:sources");
     });
 
-    test("active sources");
-    test("public source");
+    test.skip("active sources", () => {});
+    test.skip("public source", () => {});
 
-    test("add new source", () => {
+    test("add new source", async ({ driver }) => {
+      const { get, when, then } = driver;
       const sourceId = "n1z2v3r";
-      when.setValue("modal:sources.add.source_id", sourceId);
-      when.select("modal:sources.add.source_type", "tile_vector");
-      when.select("modal:sources.add.scheme_type", "tms");
-      when.click("modal:sources.add.add_source");
-      when.wait(200);
-      then(
-        get.styleFromLocalStorage().then((style) => style.sources[sourceId])
-      ).shouldInclude({
+      await when.setValue("modal:sources.add.source_id", sourceId);
+      await when.select("modal:sources.add.source_type", "tile_vector");
+      await when.select("modal:sources.add.scheme_type", "tms");
+      await when.click("modal:sources.add.add_source");
+      await when.wait(200);
+      await then(get.styleFromLocalStorage().then((style) => style.sources[sourceId])).shouldInclude({
         scheme: "tms",
       });
     });
 
-    test("add new pmtiles source", () => {
+    test("add new pmtiles source", async ({ driver }) => {
+      const { get, when, then } = driver;
       const sourceId = "pmtilestest";
-      when.setValue("modal:sources.add.source_id", sourceId);
-      when.select("modal:sources.add.source_type", "pmtiles_vector");
-      when.setValue("modal:sources.add.source_url", "https://data.source.coop/protomaps/openstreetmap/v4.pmtiles");
-      when.click("modal:sources.add.add_source");
-      when.click("modal:sources.add.add_source");
-      when.wait(200);
-      then(get.styleFromLocalStorage()).shouldDeepNestedInclude({
+      await when.setValue("modal:sources.add.source_id", sourceId);
+      await when.select("modal:sources.add.source_type", "pmtiles_vector");
+      await when.setValue(
+        "modal:sources.add.source_url",
+        "https://data.source.coop/protomaps/openstreetmap/v4.pmtiles"
+      );
+      await when.click("modal:sources.add.add_source");
+      await when.click("modal:sources.add.add_source");
+      await when.wait(200);
+      await then(get.styleFromLocalStorage()).shouldDeepNestedInclude({
         sources: {
           pmtilestest: {
             type: "vector",
@@ -106,338 +115,329 @@ test.describe("modals", () => {
       });
     });
 
-    test("add new raster source", () => {
+    test("add new raster source", async ({ driver }) => {
+      const { get, when, then } = driver;
       const sourceId = "rastertest";
-      when.setValue("modal:sources.add.source_id", sourceId);
-      when.select("modal:sources.add.source_type", "tile_raster");
-      when.select("modal:sources.add.scheme_type", "xyz");
-      when.setValue("modal:sources.add.tile_size", "128");
-      when.click("modal:sources.add.add_source");
-      when.wait(200);
-      then(
-        get.styleFromLocalStorage().then((style) => style.sources[sourceId])
-      ).shouldInclude({
+      await when.setValue("modal:sources.add.source_id", sourceId);
+      await when.select("modal:sources.add.source_type", "tile_raster");
+      await when.select("modal:sources.add.scheme_type", "xyz");
+      await when.setValue("modal:sources.add.tile_size", "128");
+      await when.click("modal:sources.add.add_source");
+      await when.wait(200);
+      await then(get.styleFromLocalStorage().then((style) => style.sources[sourceId])).shouldInclude({
         tileSize: 128,
       });
     });
   });
 
   test.describe("inspect", () => {
-    test("toggle", () => {
+    test("toggle", async ({ driver }) => {
       // There is no assertion in this test
-      when.setStyle("geojson");
-      when.select("maputnik-select", "inspect");
+      await driver.when.setStyle("geojson");
+      await driver.when.select("maputnik-select", "inspect");
     });
   });
 
   test.describe("style settings", () => {
-    beforeEach(() => {
-      when.click("nav:settings");
+    test.beforeEach(async ({ driver }) => {
+      await driver.when.click("nav:settings");
     });
 
     test.describe("when click name filed spec information", () => {
-      beforeEach(() => {
-        when.click("field-doc-button-Name");
+      test.beforeEach(async ({ driver }) => {
+        await driver.when.click("field-doc-button-Name");
       });
 
-      test("should show the spec information", () => {
-        then(get.elementsText("spec-field-doc")).shouldInclude(
-          "name for the style"
-        );
+      test("should show the spec information", async ({ driver }) => {
+        await driver.then(driver.get.elementsText("spec-field-doc")).shouldInclude("name for the style");
       });
     });
 
     test.describe("when set name and click owner", () => {
-      beforeEach(() => {
-        when.setValue("modal:settings.name", "foobar");
-        when.click("modal:settings.owner");
-        when.wait(200);
+      test.beforeEach(async ({ driver }) => {
+        const { when } = driver;
+        await when.setValue("modal:settings.name", "foobar");
+        await when.click("modal:settings.owner");
+        await when.wait(200);
       });
 
-      test("show name specifications", () => {
-        then(get.styleFromLocalStorage()).shouldDeepNestedInclude({
+      test("show name specifications", async ({ driver }) => {
+        await driver.then(driver.get.styleFromLocalStorage()).shouldDeepNestedInclude({
           name: "foobar",
         });
       });
     });
 
     test.describe("when set owner and click name", () => {
-      beforeEach(() => {
-        when.setValue("modal:settings.owner", "foobar");
-        when.click("modal:settings.name");
-        when.wait(200);
+      test.beforeEach(async ({ driver }) => {
+        const { when } = driver;
+        await when.setValue("modal:settings.owner", "foobar");
+        await when.click("modal:settings.name");
+        await when.wait(200);
       });
-      test("should update owner in local storage", () => {
-        then(get.styleFromLocalStorage()).shouldDeepNestedInclude({
+      test("should update owner in local storage", async ({ driver }) => {
+        await driver.then(driver.get.styleFromLocalStorage()).shouldDeepNestedInclude({
           owner: "foobar",
         });
       });
     });
 
-    test("sprite url", () => {
-      when.setTextInJsonEditor("\"http://example.com\"");
-      when.click("modal:settings.name");
-      then(get.styleFromLocalStorage()).shouldDeepNestedInclude({
+    test("sprite url", async ({ driver }) => {
+      const { get, when, then } = driver;
+      await when.setTextInJsonEditor('"http://example.com"');
+      await when.click("modal:settings.name");
+      await then(get.styleFromLocalStorage()).shouldDeepNestedInclude({
         sprite: "http://example.com",
       });
     });
 
-    test("sprite object", () => {
-      when.setTextInJsonEditor(JSON.stringify([{ id: "1", url: "2" }]));
+    test("sprite object", async ({ driver }) => {
+      const { get, when, then } = driver;
+      await when.setTextInJsonEditor(JSON.stringify([{ id: "1", url: "2" }]));
 
-      when.click("modal:settings.name");
-      then(get.styleFromLocalStorage()).shouldDeepNestedInclude({
+      await when.click("modal:settings.name");
+      await then(get.styleFromLocalStorage()).shouldDeepNestedInclude({
         sprite: [{ id: "1", url: "2" }],
       });
     });
 
-    test("glyphs url", () => {
+    test("glyphs url", async ({ driver }) => {
+      const { get, when, then } = driver;
       const glyphsUrl = "http://example.com/{fontstack}/{range}.pbf";
-      when.setValue("modal:settings.glyphs", glyphsUrl);
-      when.click("modal:settings.name");
-      then(get.styleFromLocalStorage()).shouldDeepNestedInclude({
+      await when.setValue("modal:settings.glyphs", glyphsUrl);
+      await when.click("modal:settings.name");
+      await then(get.styleFromLocalStorage()).shouldDeepNestedInclude({
         glyphs: glyphsUrl,
       });
     });
 
-    test("maptiler access token", () => {
+    test("maptiler access token", async ({ driver }) => {
+      const { get, when, then } = driver;
       const apiKey = "testing123";
-      when.setValue(
-        "modal:settings.maputnik:openmaptiles_access_token",
-        apiKey
-      );
-      when.click("modal:settings.name");
-      then(
-        get.styleFromLocalStorage().then((style) => style.metadata)
-      ).shouldInclude({
+      await when.setValue("modal:settings.maputnik:openmaptiles_access_token", apiKey);
+      await when.click("modal:settings.name");
+      await then(get.styleFromLocalStorage().then((style) => style.metadata)).shouldInclude({
         "maputnik:openmaptiles_access_token": apiKey,
       });
     });
 
-    test("thunderforest access token", () => {
+    test("thunderforest access token", async ({ driver }) => {
+      const { get, when, then } = driver;
       const apiKey = "testing123";
-      when.setValue(
-        "modal:settings.maputnik:thunderforest_access_token",
-        apiKey
-      );
-      when.click("modal:settings.name");
-      then(
-        get.styleFromLocalStorage().then((style) => style.metadata)
-      ).shouldInclude({ "maputnik:thunderforest_access_token": apiKey });
+      await when.setValue("modal:settings.maputnik:thunderforest_access_token", apiKey);
+      await when.click("modal:settings.name");
+      await then(get.styleFromLocalStorage().then((style) => style.metadata)).shouldInclude({
+        "maputnik:thunderforest_access_token": apiKey,
+      });
     });
 
-    test("stadia access token", () => {
+    test("stadia access token", async ({ driver }) => {
+      const { get, when, then } = driver;
       const apiKey = "testing123";
-      when.setValue(
-        "modal:settings.maputnik:stadia_access_token",
-        apiKey
-      );
-      when.click("modal:settings.name");
-      then(
-        get.styleFromLocalStorage().then((style) => style.metadata)
-      ).shouldInclude({ "maputnik:stadia_access_token": apiKey });
+      await when.setValue("modal:settings.maputnik:stadia_access_token", apiKey);
+      await when.click("modal:settings.name");
+      await then(get.styleFromLocalStorage().then((style) => style.metadata)).shouldInclude({
+        "maputnik:stadia_access_token": apiKey,
+      });
     });
 
-    test("locationiq access token", () => {
+    test("locationiq access token", async ({ driver }) => {
+      const { get, when, then } = driver;
       const apiKey = "testing123";
-      when.setValue(
-        "modal:settings.maputnik:locationiq_access_token",
-        apiKey
-      );
-      when.click("modal:settings.name");
-      then(
-        get.styleFromLocalStorage().then((style) => style.metadata)
-      ).shouldInclude({ "maputnik:locationiq_access_token": apiKey });
+      await when.setValue("modal:settings.maputnik:locationiq_access_token", apiKey);
+      await when.click("modal:settings.name");
+      await then(get.styleFromLocalStorage().then((style) => style.metadata)).shouldInclude({
+        "maputnik:locationiq_access_token": apiKey,
+      });
     });
 
-    test("style projection mercator", () => {
-      when.select("modal:settings.projection", "mercator");
-      then(
-        get.styleFromLocalStorage().then((style) => style.projection)
-      ).shouldInclude({ type: "mercator" });
+    test("style projection mercator", async ({ driver }) => {
+      const { get, when, then } = driver;
+      await when.select("modal:settings.projection", "mercator");
+      await then(get.styleFromLocalStorage().then((style) => style.projection)).shouldInclude({
+        type: "mercator",
+      });
     });
 
-    test("style projection globe", () => {
-      when.select("modal:settings.projection", "globe");
-      then(
-        get.styleFromLocalStorage().then((style) => style.projection)
-      ).shouldInclude({ type: "globe" });
+    test("style projection globe", async ({ driver }) => {
+      const { get, when, then } = driver;
+      await when.select("modal:settings.projection", "globe");
+      await then(get.styleFromLocalStorage().then((style) => style.projection)).shouldInclude({
+        type: "globe",
+      });
     });
 
-
-    test("style projection vertical-perspective", () => {
-      when.select("modal:settings.projection", "vertical-perspective");
-      then(
-        get.styleFromLocalStorage().then((style) => style.projection)
-      ).shouldInclude({ type: "vertical-perspective" });
-
+    test("style projection vertical-perspective", async ({ driver }) => {
+      const { get, when, then } = driver;
+      await when.select("modal:settings.projection", "vertical-perspective");
+      await then(get.styleFromLocalStorage().then((style) => style.projection)).shouldInclude({
+        type: "vertical-perspective",
+      });
     });
 
-    test("style renderer", () => {
-      cy.on("uncaught:exception", () => false); // this is due to the fact that this is an invalid style for openlayers
-      when.select("modal:settings.maputnik:renderer", "ol");
-      then(get.inputValue("modal:settings.maputnik:renderer")).shouldEqual(
-        "ol"
-      );
+    test("style renderer", async ({ driver }) => {
+      const { get, when, then } = driver;
+      await when.select("modal:settings.maputnik:renderer", "ol");
+      await then(get.inputValue("modal:settings.maputnik:renderer")).shouldEqual("ol");
 
-      when.click("modal:settings.name");
-      then(get.styleFromLocalStorage()).shouldDeepNestedInclude({
+      await when.click("modal:settings.name");
+      await then(get.styleFromLocalStorage()).shouldDeepNestedInclude({
         metadata: { "maputnik:renderer": "ol" },
       });
     });
 
+    test("include API key when change renderer", async ({ driver }) => {
+      const { get, when, given } = driver;
 
+      await when.click("modal:settings.close-modal");
+      await when.click("nav:open");
 
-    test("include API key when change renderer", () => {
+      await get.elementByAttribute("aria-label", "MapTiler Basic").click();
+      await when.wait(1000);
+      await when.click("nav:settings");
 
-      when.click("modal:settings.close-modal");
-      when.click("nav:open");
+      await when.select("modal:settings.maputnik:renderer", "mlgljs");
+      await driver.then(get.inputValue("modal:settings.maputnik:renderer")).shouldEqual("mlgljs");
 
-      get.elementByAttribute("aria-label", "MapTiler Basic").should("exist").click();
-      when.wait(1000);
-      when.click("nav:settings");
+      await when.select("modal:settings.maputnik:renderer", "ol");
+      await driver.then(get.inputValue("modal:settings.maputnik:renderer")).shouldEqual("ol");
 
-      when.select("modal:settings.maputnik:renderer", "mlgljs");
-      then(get.inputValue("modal:settings.maputnik:renderer")).shouldEqual(
-        "mlgljs"
+      await given.intercept(
+        "https://api.maptiler.com/tiles/v3-openmaptiles/tiles.json?key=*",
+        "tileRequest",
+        "GET"
       );
 
-      when.select("modal:settings.maputnik:renderer", "ol");
-      then(get.inputValue("modal:settings.maputnik:renderer")).shouldEqual(
-        "ol"
+      await when.select("modal:settings.maputnik:renderer", "mlgljs");
+      await driver.then(get.inputValue("modal:settings.maputnik:renderer")).shouldEqual("mlgljs");
+
+      const request = await when.waitForResponse("tileRequest");
+      expect(request.url()).toContain(
+        `https://api.maptiler.com/tiles/v3-openmaptiles/tiles.json?key=${tokens.openmaptiles}`
       );
-
-      given.intercept("https://api.maptiler.com/tiles/v3-openmaptiles/tiles.json?key=*", "tileRequest", "GET");
-
-      when.select("modal:settings.maputnik:renderer", "mlgljs");
-      then(get.inputValue("modal:settings.maputnik:renderer")).shouldEqual(
-        "mlgljs"
-      );
-
-      when.waitForResponse("tileRequest").its("request").its("url").should("include", `https://api.maptiler.com/tiles/v3-openmaptiles/tiles.json?key=${tokens.openmaptiles}`);
-      when.waitForResponse("tileRequest").its("request").its("url").should("include", `https://api.maptiler.com/tiles/v3-openmaptiles/tiles.json?key=${tokens.openmaptiles}`);
-      when.waitForResponse("tileRequest").its("request").its("url").should("include", `https://api.maptiler.com/tiles/v3-openmaptiles/tiles.json?key=${tokens.openmaptiles}`);
     });
-
   });
 
   test.describe("add layer", () => {
-    beforeEach(() => {
-      when.setStyle("layer");
-      when.modal.open();
+    test.beforeEach(async ({ driver }) => {
+      await driver.when.setStyle("layer");
+      await driver.when.modal.open();
     });
 
-    test("shows duplicate id error", () => {
-      when.setValue("add-layer.layer-id.input", "background");
-      when.click("add-layer");
-      then(get.elementByTestId("modal:add-layer")).shouldExist();
-      then(get.element(".maputnik-modal-error")).shouldContainText(
-        "Layer ID already exists"
-      );
+    test("shows duplicate id error", async ({ driver }) => {
+      const { get, when, then } = driver;
+      await when.setValue("add-layer.layer-id.input", "background");
+      await when.click("add-layer");
+      await then(get.elementByTestId("modal:add-layer")).shouldExist();
+      await then(get.element(".maputnik-modal-error")).shouldContainText("Layer ID already exists");
     });
   });
 
-  test.describe("sources", () => {
-    test("toggle");
+  test.describe("sources placeholder", () => {
+    test.skip("toggle", () => {});
   });
 
   test.describe("global state", () => {
-    beforeEach(() => {
-      when.click("nav:global-state");
+    test.beforeEach(async ({ driver }) => {
+      await driver.when.click("nav:global-state");
     });
 
-    test("add variable", () => {
-      when.wait(100);
-      when.click("global-state-add-variable");
-      then(get.styleFromLocalStorage()).shouldDeepNestedInclude({
+    test("add variable", async ({ driver }) => {
+      const { get, when, then } = driver;
+      await when.wait(100);
+      await when.click("global-state-add-variable");
+      await then(get.styleFromLocalStorage()).shouldDeepNestedInclude({
         state: { key1: { default: "value" } },
       });
     });
 
-
-    test("add multiple variables", () => {
-      when.click("global-state-add-variable");
-      when.click("global-state-add-variable");
-      when.click("global-state-add-variable");
-      when.wait(100);
-      then(get.styleFromLocalStorage()).shouldDeepNestedInclude({
+    test("add multiple variables", async ({ driver }) => {
+      const { get, when, then } = driver;
+      await when.click("global-state-add-variable");
+      await when.click("global-state-add-variable");
+      await when.click("global-state-add-variable");
+      await when.wait(100);
+      await then(get.styleFromLocalStorage()).shouldDeepNestedInclude({
         state: { key1: { default: "value" }, key2: { default: "value" }, key3: { default: "value" } },
       });
     });
 
-    test("remove variable", () => {
-      when.click("global-state-add-variable");
-      when.click("global-state-add-variable");
-      when.click("global-state-add-variable");
-      when.click("global-state-remove-variable", 0);
-      when.wait(100);
-      then(get.styleFromLocalStorage()).shouldDeepNestedInclude({
+    test("remove variable", async ({ driver }) => {
+      const { get, when, then } = driver;
+      await when.click("global-state-add-variable");
+      await when.click("global-state-add-variable");
+      await when.click("global-state-add-variable");
+      await when.click("global-state-remove-variable", 0);
+      await when.wait(100);
+      await then(get.styleFromLocalStorage()).shouldDeepNestedInclude({
         state: { key2: { default: "value" }, key3: { default: "value" } },
       });
     });
 
-    test("edit variable key", () => {
-      when.click("global-state-add-variable");
-      when.wait(100);
-      when.setValue("global-state-variable-key:0", "mykey");
-      when.typeKeys("{enter}");
-      when.wait(100);
-      then(get.styleFromLocalStorage()).shouldDeepNestedInclude({
+    test("edit variable key", async ({ driver }) => {
+      const { get, when, then } = driver;
+      await when.click("global-state-add-variable");
+      await when.wait(100);
+      await when.setValue("global-state-variable-key:0", "mykey");
+      await when.typeKeys("{enter}");
+      await when.wait(100);
+      await then(get.styleFromLocalStorage()).shouldDeepNestedInclude({
         state: { mykey: { default: "value" } },
       });
     });
 
-    test("edit variable value", () => {
-      when.click("global-state-add-variable");
-      when.wait(100);
-      when.setValue("global-state-variable-value:0", "myvalue");
-      when.typeKeys("{enter}");
-      when.wait(100);
-      then(get.styleFromLocalStorage()).shouldDeepNestedInclude({
+    test("edit variable value", async ({ driver }) => {
+      const { get, when, then } = driver;
+      await when.click("global-state-add-variable");
+      await when.wait(100);
+      await when.setValue("global-state-variable-value:0", "myvalue");
+      await when.typeKeys("{enter}");
+      await when.wait(100);
+      await then(get.styleFromLocalStorage()).shouldDeepNestedInclude({
         state: { key1: { default: "myvalue" } },
       });
     });
   });
 
   test.describe("error panel", () => {
-    test("not visible when no errors", () => {
-      then(get.element("maputnik-message-panel-error")).shouldNotExist();
+    test("not visible when no errors", async ({ driver }) => {
+      await driver.then(driver.get.element("maputnik-message-panel-error")).shouldNotExist();
     });
 
-    test("visible on style error", () => {
-      when.modal.open();
-      when.modal.fillLayers({
+    test("visible on style error", async ({ driver }) => {
+      const { get, when, then } = driver;
+      await when.modal.open();
+      await when.modal.fillLayers({
         type: "circle",
         layer: "invalid",
       });
-      then(get.element(".maputnik-message-panel-error")).shouldBeVisible();
+      await then(get.element(".maputnik-message-panel-error")).shouldBeVisible();
     });
   });
 
   test.describe("Handle localStorage QuotaExceededError", () => {
-    test("handles quota exceeded error when opening style from URL", () => {
+    test("handles quota exceeded error when opening style from URL", async ({ driver, page }) => {
+      const { get, when, then } = driver;
       // Clear localStorage to start fresh
-      cy.clearLocalStorage();
+      await when.clearLocalStorage();
 
       // fill localStorage until we get a QuotaExceededError
-      cy.window().then(win => {
+      await page.evaluate(() => {
         let chunkSize = 1000;
         const chunk = new Array(chunkSize).join("x");
         let index = 0;
 
         // Keep adding until we hit the quota
-        while (true) {
+        for (;;) {
           try {
             const key = `maputnik:fill-${index++}`;
-            win.localStorage.setItem(key, chunk);
+            window.localStorage.setItem(key, chunk);
           } catch (e: any) {
             // Verify it's a quota error
             if (e.name === "QuotaExceededError") {
               if (chunkSize <= 1) return;
-              else {
-                chunkSize /= 2;
-                continue;
-              }
+              chunkSize /= 2;
+              continue;
             }
             throw e; // Unexpected error
           }
@@ -445,12 +445,12 @@ test.describe("modals", () => {
       });
 
       // Open the style via URL input
-      when.click("nav:open");
-      when.setValue("modal:open.url.input", get.exampleFileUrl());
-      when.click("modal:open.url.button");
+      await when.click("nav:open");
+      await when.setValue("modal:open.url.input", get.exampleFileUrl());
+      await when.click("modal:open.url.button");
 
-      then(get.responseBody("example-style.json")).shouldEqualToStoredStyle();
-      then(get.styleFromLocalStorage()).shouldExist();
+      await then(get.responseBody("example-style.json")).shouldEqualToStoredStyle();
+      await then(get.styleFromLocalStorage()).shouldExist();
     });
   });
 });

@@ -1,6 +1,7 @@
 ## main
 
 ### ✨ Features and improvements
+- Replace Cypress with Playwright for end-to-end tests and Vitest browser mode (Playwright provider) for component tests; drop the `@shellygo/cypress-test-utils` helper in favour of a `MaputnikDriver` page object
 - _...Add new stuff here..._
 
 ### 🐞 Bug fixes

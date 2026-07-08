@@ -1,40 +1,45 @@
 import { v1 as uuid } from "uuid";
-import MaputnikCypressHelper from "./maputnik-cypress-helper";
+import { expect } from "@playwright/test";
+import type { MaputnikDriver } from "./maputnik-driver";
 
-export default class ModalDriver {
-  private helper = new MaputnikCypressHelper();
+export class ModalDriver {
+  constructor(private readonly driver: MaputnikDriver) {}
 
   public when = {
-    fillLayers: (opts: { type: string; layer?: string; id?: string }) => {
-      // Having logic in test code is an anti pattern.
-      // This should be split to multiple single responsibility functions
-      const type = opts.type;
-      const layer = opts.layer;
-      let id;
-      if (opts.id) {
-        id = opts.id;
-      } else {
-        id = `${type}:${uuid()}`;
-      }
-      this.helper.when.selectOption("add-layer.layer-type.select", type);
-      this.helper.when.type("add-layer.layer-id.input", id);
+    fillLayers: async (opts: { type: string; layer?: string; id?: string }) => {
+      const { when, get } = this.driver;
+      const id = opts.id ?? `${opts.type}:${uuid()}`;
 
-      if (layer) {
-        this.helper.when.doWithin(() => {
-          this.helper.get.element("input").clear().type(layer!);
-        }, "add-layer.layer-source-block");
+      await when.select("add-layer.layer-type.select", opts.type);
+      await when.type("add-layer.layer-id.input", id);
+
+      if (opts.layer) {
+        await when.doWithin("add-layer.layer-source-block", async () => {
+          const input = get.element("input");
+          await input.click();
+          await input.fill(opts.layer!);
+          // The source input is a controlled downshift combobox; wait for React
+          // to settle on the typed value before submitting.
+          await expect(input).toHaveValue(opts.layer!);
+        });
+        // Close the autocomplete menu so it does not intercept the add button.
+        await get.elementByTestId("add-layer.layer-id.input").click();
       }
-      this.helper.when.click("add-layer");
+      await when.click("add-layer");
 
       return id;
     },
 
-    open: () => {
-      this.helper.when.click("layer-list:add-layer");
+    open: async () => {
+      // No-op when the add-layer modal is already open (some specs call open()
+      // both in a beforeEach and at the start of the test body).
+      const modal = this.driver.get.elementByTestId("modal:add-layer").first();
+      if (await modal.isVisible()) return;
+      await this.driver.when.click("layer-list:add-layer");
     },
 
-    close: (key: string) => {
-      this.helper.when.click(key + ".close-modal");
+    close: async (key: string) => {
+      await this.driver.when.click(key + ".close-modal");
     },
   };
 }

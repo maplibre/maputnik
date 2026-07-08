@@ -1,35 +1,35 @@
-import { MaputnikDriver } from "./maputnik-driver";
+import { test, setupMaputnik } from "./fixtures";
 
 test.describe("i18n", () => {
-  const { beforeAndAfter, get, when, then } = new MaputnikDriver();
-  beforeAndAfter();
+  setupMaputnik();
 
   test.describe("language detector", () => {
-    test("English", () => {
-      const url = "?lng=en";
-      when.visit(url);
-      then(get.elementByTestId("maputnik-lang-select")).shouldHaveValue("en");
+    test("English", async ({ driver }) => {
+      const { get, when, then } = driver;
+      await when.visit("?lng=en");
+      await then(get.elementByTestId("maputnik-lang-select")).shouldHaveValue("en");
     });
 
-    test("Japanese", () => {
-      const url = "?lng=ja";
-      when.visit(url);
-      then(get.elementByTestId("maputnik-lang-select")).shouldHaveValue("ja");
+    test("Japanese", async ({ driver }) => {
+      const { get, when, then } = driver;
+      await when.visit("?lng=ja");
+      await then(get.elementByTestId("maputnik-lang-select")).shouldHaveValue("ja");
     });
   });
 
   test.describe("language switcher", () => {
-    beforeEach(() => {
-      when.setStyle("layer");
+    test.beforeEach(async ({ driver }) => {
+      await driver.when.setStyle("layer");
     });
 
-    test("the language switcher switches to Japanese", () => {
+    test("the language switcher switches to Japanese", async ({ driver }) => {
+      const { get, when, then } = driver;
       const selector = "maputnik-lang-select";
-      then(get.elementByTestId(selector)).shouldExist();
-      when.select(selector, "ja");
-      then(get.elementByTestId(selector)).shouldHaveValue("ja");
+      await then(get.elementByTestId(selector)).shouldExist();
+      await when.select(selector, "ja");
+      await then(get.elementByTestId(selector)).shouldHaveValue("ja");
 
-      then(get.elementByTestId("nav:settings")).shouldHaveText("スタイル設定");
+      await then(get.elementByTestId("nav:settings")).shouldHaveText("スタイル設定");
     });
   });
 });
