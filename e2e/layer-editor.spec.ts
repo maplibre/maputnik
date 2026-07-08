@@ -1,7 +1,9 @@
 import { MaputnikDriver } from "./maputnik-driver";
 import { v1 as uuid } from "uuid";
 
-test.describe("layer editor", () => {
+const test = it;
+
+describe("layer editor", () => {
   const { beforeAndAfter, get, when, then } = new MaputnikDriver();
   beforeAndAfter();
   beforeEach(() => {
@@ -48,7 +50,7 @@ test.describe("layer editor", () => {
     });
   });
 
-  test.describe("source", () => {
+  describe("source", () => {
     test("should show error when the source is invalid", () => {
       when.modal.fillLayers({
         type: "circle",
@@ -58,7 +60,7 @@ test.describe("layer editor", () => {
     });
   });
 
-  test.describe("min-zoom", () => {
+  describe("min-zoom", () => {
     let bgId: string;
 
     beforeEach(() => {
@@ -80,7 +82,7 @@ test.describe("layer editor", () => {
       });
     });
 
-    test("when clicking next layer should update style on local storage", () => {
+    it("when clicking next layer should update style on local storage", () => {
       when.type("min-zoom.input-text", "{backspace}");
       when.click("max-zoom.input-text");
       then(get.styleFromLocalStorage()).shouldDeepNestedInclude({
@@ -95,7 +97,7 @@ test.describe("layer editor", () => {
     });
   });
 
-  test.describe("max-zoom", () => {
+  describe("max-zoom", () => {
     let bgId: string;
 
     beforeEach(() => {
@@ -118,7 +120,7 @@ test.describe("layer editor", () => {
     });
   });
 
-  test.describe("comments", () => {
+  describe("comments", () => {
     let bgId: string;
     const comment = "42";
 
@@ -143,7 +145,7 @@ test.describe("layer editor", () => {
       });
     });
 
-    test.describe("when unsetting", () => {
+    describe("when unsetting", () => {
       beforeEach(() => {
         when.clear("layer-comment.input");
         when.click("min-zoom.input-text");
@@ -162,7 +164,7 @@ test.describe("layer editor", () => {
     });
   });
 
-  test.describe("color", () => {
+  describe("color", () => {
     let bgId: string;
     beforeEach(() => {
       bgId = createBackground();
@@ -182,7 +184,7 @@ test.describe("layer editor", () => {
     });
   });
 
-  test.describe("opacity", () => {
+  describe("opacity", () => {
     let bgId: string;
     beforeEach(() => {
       bgId = createBackground();
@@ -202,12 +204,12 @@ test.describe("layer editor", () => {
 
 
 
-  test.describe("filter", () => {
+  describe("filter", () => {
     test("expand/collapse");
     test("compound filter");
   });
 
-  test.describe("layout", () => {
+  describe("layout", () => {
     test("text-font", () => {
       when.setStyle("font");
       when.collapseGroupInLayerEditor();
@@ -221,14 +223,14 @@ test.describe("layer editor", () => {
     });
   });
 
-  test.describe("paint", () => {
+  describe("paint", () => {
     test("expand/collapse");
     test("color");
     test("pattern");
     test("opacity");
   });
 
-  test.describe("json-editor", () => {
+  describe("json-editor", () => {
     test("add", () => {
       const id = when.modal.fillLayers({
         type: "circle",
@@ -272,7 +274,7 @@ test.describe("layer editor", () => {
     });
   });
 
-  test.describe("sticky header", () => {
+  describe("sticky header", () => {
     test("should keep layer header visible when scrolling properties", () => {
       // Setup: Create a layer with many properties (e.g., symbol layer)
       when.modal.fillLayers({

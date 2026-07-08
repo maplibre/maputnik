@@ -1,6 +1,8 @@
 import { MaputnikDriver } from "./maputnik-driver";
 
-test.describe("history", () => {
+const test = it;
+
+describe("history", () => {
   const { beforeAndAfter, when, get, then } = new MaputnikDriver();
   beforeAndAfter();
 

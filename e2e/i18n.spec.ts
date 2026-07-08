@@ -1,10 +1,12 @@
 import { MaputnikDriver } from "./maputnik-driver";
 
-test.describe("i18n", () => {
+const test = it;
+
+describe("i18n", () => {
   const { beforeAndAfter, get, when, then } = new MaputnikDriver();
   beforeAndAfter();
 
-  test.describe("language detector", () => {
+  describe("language detector", () => {
     test("English", () => {
       const url = "?lng=en";
       when.visit(url);
@@ -18,7 +20,7 @@ test.describe("i18n", () => {
     });
   });
 
-  test.describe("language switcher", () => {
+  describe("language switcher", () => {
     beforeEach(() => {
       when.setStyle("layer");
     });

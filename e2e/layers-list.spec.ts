@@ -1,6 +1,6 @@
 import { MaputnikDriver } from "./maputnik-driver";
 
-test.describe("layers list", () => {
+describe("layers list", () => {
   const { beforeAndAfter, get, when, then } = new MaputnikDriver();
   beforeAndAfter();
   beforeEach(() => {
@@ -8,7 +8,7 @@ test.describe("layers list", () => {
     when.modal.open();
   });
 
-  test.describe("ops", () => {
+  describe("ops", () => {
     let id: string;
     beforeEach(() => {
       id = when.modal.fillLayers({
@@ -27,7 +27,7 @@ test.describe("layers list", () => {
       });
     });
 
-    test.describe("when clicking delete", () => {
+    describe("when clicking delete", () => {
       beforeEach(() => {
         when.click("layer-list-item:" + id + ":delete");
       });
@@ -38,7 +38,7 @@ test.describe("layers list", () => {
       });
     });
 
-    test.describe("when clicking duplicate", () => {
+    describe("when clicking duplicate", () => {
       beforeEach(() => {
         when.click("layer-list-item:" + id + ":copy");
       });
@@ -58,7 +58,7 @@ test.describe("layers list", () => {
       });
     });
 
-    test.describe("when clicking hide", () => {
+    describe("when clicking hide", () => {
       beforeEach(() => {
         when.click("layer-list-item:" + id + ":toggle-visibility");
       });
@@ -77,7 +77,7 @@ test.describe("layers list", () => {
         });
       });
 
-      test.describe("when clicking show", () => {
+      describe("when clicking show", () => {
         beforeEach(() => {
           when.click("layer-list-item:" + id + ":toggle-visibility");
         });
@@ -97,7 +97,7 @@ test.describe("layers list", () => {
         });
       });
 
-      test.describe("when selecting a layer", () => {
+      describe("when selecting a layer", () => {
         let secondId: string;
         beforeEach(() => {
           when.modal.open();
@@ -116,7 +116,7 @@ test.describe("layers list", () => {
     });
   });
 
-  test.describe("background", () => {
+  describe("background", () => {
     test("add", () => {
       const id = when.modal.fillLayers({
         type: "background",
@@ -131,10 +131,10 @@ test.describe("layers list", () => {
       });
     });
 
-    test.describe("modify", () => {});
+    describe("modify", () => {});
   });
 
-  test.describe("fill", () => {
+  describe("fill", () => {
     test("add", () => {
       const id = when.modal.fillLayers({
         type: "fill",
@@ -156,7 +156,7 @@ test.describe("layers list", () => {
     test("change source");
   });
 
-  test.describe("line", () => {
+  describe("line", () => {
     test("add", () => {
       const id = when.modal.fillLayers({
         type: "line",
@@ -229,7 +229,7 @@ test.describe("layers list", () => {
     });
   });
 
-  test.describe("symbol", () => {
+  describe("symbol", () => {
     test("add", () => {
       const id = when.modal.fillLayers({
         type: "symbol",
@@ -286,7 +286,7 @@ test.describe("layers list", () => {
     });
   });
 
-  test.describe("raster", () => {
+  describe("raster", () => {
     test("add", () => {
       const id = when.modal.fillLayers({
         type: "raster",
@@ -305,7 +305,7 @@ test.describe("layers list", () => {
     });
   });
 
-  test.describe("circle", () => {
+  describe("circle", () => {
     test("add", () => {
       const id = when.modal.fillLayers({
         type: "circle",
@@ -324,7 +324,7 @@ test.describe("layers list", () => {
     });
   });
 
-  test.describe("fill extrusion", () => {
+  describe("fill extrusion", () => {
     test("add", () => {
       const id = when.modal.fillLayers({
         type: "fill-extrusion",
@@ -343,7 +343,7 @@ test.describe("layers list", () => {
     });
   });
 
-  test.describe("hillshade", () => {
+  describe("hillshade", () => {
     test("add", () => {
       const id = when.modal.fillLayers({
         type: "hillshade",
@@ -412,7 +412,7 @@ test.describe("layers list", () => {
     });
   });
 
-  test.describe("color-relief", () => {
+  describe("color-relief", () => {
     test("add", () => {
       const id = when.modal.fillLayers({
         type: "color-relief",
@@ -441,7 +441,7 @@ test.describe("layers list", () => {
     });
   });
 
-  test.describe("groups", () => {
+  describe("groups", () => {
     test("simple", () => {
       when.setStyle("geojson");
 
@@ -477,7 +477,7 @@ test.describe("layers list", () => {
     });
   });
 
-  test.describe("drag and drop", () => {
+  describe("drag and drop", () => {
     test("move layer should update local storage", () => {
       when.modal.open();
       const firstId = when.modal.fillLayers({
@@ -516,7 +516,7 @@ test.describe("layers list", () => {
     });
   });
 
-  test.describe("sticky header", () => {
+  describe("sticky header", () => {
     test("should keep header visible when scrolling layer list", () => {
       // Setup: Create multiple layers to enable scrolling
       for (let i = 0; i < 20; i++) {

@@ -1,14 +1,15 @@
 import { MaputnikDriver } from "./maputnik-driver";
-import tokens from "../../src/config/tokens.json" with {type: "json"};
+import tokens from "../src/config/tokens.json" with {type: "json"};
+const test = it;
 
-test.describe("modals", () => {
+describe("modals", () => {
   const { beforeAndAfter, when, get, given, then } = new MaputnikDriver();
   beforeAndAfter();
 
   beforeEach(() => {
     when.setStyle("");
   });
-  test.describe("open", () => {
+  describe("open", () => {
     beforeEach(() => {
       when.click("nav:open");
     });
@@ -28,7 +29,7 @@ test.describe("modals", () => {
       then(get.fixture("example-style.json")).shouldEqualToStoredStyle();
     });
 
-    test.describe("when click open url", () => {
+    describe("when click open url", () => {
       beforeEach(() => {
         const styleFileUrl = get.exampleFileUrl();
 
@@ -42,7 +43,7 @@ test.describe("modals", () => {
     });
   });
 
-  test.describe("shortcuts", () => {
+  describe("shortcuts", () => {
     test("open/close", () => {
       when.setStyle("");
       when.typeKeys("?");
@@ -51,7 +52,7 @@ test.describe("modals", () => {
     });
   });
 
-  test.describe("export", () => {
+  describe("export", () => {
     beforeEach(() => {
       when.click("nav:export");
     });
@@ -65,7 +66,7 @@ test.describe("modals", () => {
     test("download");
   });
 
-  test.describe("sources", () => {
+  describe("sources", () => {
     beforeEach(() => {
       when.setStyle("layer");
       when.click("nav:sources");
@@ -122,7 +123,7 @@ test.describe("modals", () => {
     });
   });
 
-  test.describe("inspect", () => {
+  describe("inspect", () => {
     test("toggle", () => {
       // There is no assertion in this test
       when.setStyle("geojson");
@@ -130,12 +131,12 @@ test.describe("modals", () => {
     });
   });
 
-  test.describe("style settings", () => {
+  describe("style settings", () => {
     beforeEach(() => {
       when.click("nav:settings");
     });
 
-    test.describe("when click name filed spec information", () => {
+    describe("when click name filed spec information", () => {
       beforeEach(() => {
         when.click("field-doc-button-Name");
       });
@@ -147,7 +148,7 @@ test.describe("modals", () => {
       });
     });
 
-    test.describe("when set name and click owner", () => {
+    describe("when set name and click owner", () => {
       beforeEach(() => {
         when.setValue("modal:settings.name", "foobar");
         when.click("modal:settings.owner");
@@ -161,7 +162,7 @@ test.describe("modals", () => {
       });
     });
 
-    test.describe("when set owner and click name", () => {
+    describe("when set owner and click name", () => {
       beforeEach(() => {
         when.setValue("modal:settings.owner", "foobar");
         when.click("modal:settings.name");
@@ -321,7 +322,7 @@ test.describe("modals", () => {
 
   });
 
-  test.describe("add layer", () => {
+  describe("add layer", () => {
     beforeEach(() => {
       when.setStyle("layer");
       when.modal.open();
@@ -337,11 +338,11 @@ test.describe("modals", () => {
     });
   });
 
-  test.describe("sources", () => {
+  describe("sources", () => {
     test("toggle");
   });
 
-  test.describe("global state", () => {
+  describe("global state", () => {
     beforeEach(() => {
       when.click("nav:global-state");
     });
@@ -399,7 +400,7 @@ test.describe("modals", () => {
     });
   });
 
-  test.describe("error panel", () => {
+  describe("error panel", () => {
     test("not visible when no errors", () => {
       then(get.element("maputnik-message-panel-error")).shouldNotExist();
     });
@@ -414,7 +415,7 @@ test.describe("modals", () => {
     });
   });
 
-  test.describe("Handle localStorage QuotaExceededError", () => {
+  describe("Handle localStorage QuotaExceededError", () => {
     test("handles quota exceeded error when opening style from URL", () => {
       // Clear localStorage to start fresh
       cy.clearLocalStorage();

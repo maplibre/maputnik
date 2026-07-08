@@ -1,9 +1,11 @@
 import { MaputnikDriver } from "./maputnik-driver";
 
-test.describe("map", () => {
+const test = it;
+
+describe("map", () => {
   const { beforeAndAfter, get, when, then } = new MaputnikDriver();
   beforeAndAfter();
-  test.describe("zoom level", () => {
+  describe("zoom level", () => {
     test("via url", () => {
       const zoomLevel = 12.37;
       when.setStyle("geojson", zoomLevel);
@@ -39,13 +41,13 @@ test.describe("map", () => {
     });
   });
 
-  test.describe("search", () => {
+  describe("search", () => {
     test("should exist", () => {
       then(get.searchControl()).shouldBeVisible();
     });
   });
 
-  test.describe("popup", () => {
+  describe("popup", () => {
     beforeEach(() => {
       when.setStyle("rectangles");
       then(get.locationHash().should("exist"));

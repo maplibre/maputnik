@@ -1,10 +1,12 @@
 import { MaputnikDriver } from "./maputnik-driver";
 
-test.describe("accessibility", () => {
+const test = it;
+
+describe("accessibility", () => {
   const { beforeAndAfter, get, when, then } = new MaputnikDriver();
   beforeAndAfter();
 
-  test.describe("skip links", () => {
+  describe("skip links", () => {
     beforeEach(() => {
       when.setStyle("layer");
     });

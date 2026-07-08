@@ -1,6 +1,8 @@
 import { MaputnikDriver } from "./maputnik-driver";
 
-test.describe("code editor", () => {
+const test = it;
+
+describe("code editor", () => {
   const { beforeAndAfter, when, get, then } = new MaputnikDriver();
   beforeAndAfter();
 

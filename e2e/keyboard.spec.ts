@@ -1,9 +1,10 @@
 import { MaputnikDriver } from "./maputnik-driver";
+const test = it;
 
-test.describe("keyboard", () => {
+describe("keyboard", () => {
   const { beforeAndAfter, given, when, get, then } = new MaputnikDriver();
   beforeAndAfter();
-  test.describe("shortcuts", () => {
+  describe("shortcuts", () => {
     beforeEach(() => {
       given.setupMockBackedResponses();
       when.setStyle("");
