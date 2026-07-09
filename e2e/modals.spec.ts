@@ -7,8 +7,6 @@ describe("modals", () => {
 
   beforeEach(async () => {
     await given.setupMockBackedResponses();
-    // Load a style first so it is persisted to localStorage, then reset the URL
-    // to the root (no style param) — several tests read the stored style.
     await when.setStyle("both");
     await when.setStyle("");
   });
