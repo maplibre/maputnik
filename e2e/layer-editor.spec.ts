@@ -1,6 +1,8 @@
 import { MaputnikDriver } from "./maputnik-driver";
 import { v1 as uuid } from "uuid";
 
+const test = it;
+
 describe("layer editor", () => {
   const { beforeAndAfter, get, when, then } = new MaputnikDriver();
   beforeAndAfter();
@@ -28,8 +30,8 @@ describe("layer editor", () => {
     return id;
   }
 
-  it("expand/collapse");
-  it("id", () => {
+  test("expand/collapse");
+  test("id", () => {
     const bgId = createBackground();
 
     when.click("layer-list-item:background:" + bgId);
@@ -49,7 +51,7 @@ describe("layer editor", () => {
   });
 
   describe("source", () => {
-    it("should show error when the source is invalid", () => {
+    test("should show error when the source is invalid", () => {
       when.modal.fillLayers({
         type: "circle",
         layer: "invalid",
@@ -68,7 +70,7 @@ describe("layer editor", () => {
       when.click("layer-editor.layer-id");
     });
 
-    it("should update min-zoom in local storage", () => {
+    test("should update min-zoom in local storage", () => {
       then(get.styleFromLocalStorage()).shouldDeepNestedInclude({
         layers: [
           {
@@ -105,7 +107,7 @@ describe("layer editor", () => {
       when.click("layer-editor.layer-id");
     });
 
-    it("should update style in local storage", () => {
+    test("should update style in local storage", () => {
       then(get.styleFromLocalStorage()).shouldDeepNestedInclude({
         layers: [
           {
@@ -129,7 +131,7 @@ describe("layer editor", () => {
       when.click("layer-editor.layer-id");
     });
 
-    it("should update style in local storage", () => {
+    test("should update style in local storage", () => {
       then(get.styleFromLocalStorage()).shouldDeepNestedInclude({
         layers: [
           {
@@ -149,7 +151,7 @@ describe("layer editor", () => {
         when.click("min-zoom.input-text");
       });
 
-      it("should update style in local storage", () => {
+      test("should update style in local storage", () => {
         then(get.styleFromLocalStorage()).shouldDeepNestedInclude({
           layers: [
             {
@@ -170,7 +172,7 @@ describe("layer editor", () => {
       when.click("spec-field:background-color");
     });
 
-    it("should update style in local storage", () => {
+    test("should update style in local storage", () => {
       then(get.styleFromLocalStorage()).shouldDeepNestedInclude({
         layers: [
           {
@@ -190,11 +192,11 @@ describe("layer editor", () => {
       when.type("spec-field-input:background-opacity", "0.");
     });
 
-    it("should keep '.' in the input field", () => {
+    test("should keep '.' in the input field", () => {
       then(get.elementByTestId("spec-field-input:background-opacity")).shouldHaveValue("0.");
     });
 
-    it("should revert to a valid value when focus out", () => {
+    test("should revert to a valid value when focus out", () => {
       when.click("layer-list-item:background:" + bgId);
       then(get.elementByTestId("spec-field-input:background-opacity")).shouldHaveValue("0");
     });
@@ -203,12 +205,12 @@ describe("layer editor", () => {
 
 
   describe("filter", () => {
-    it("expand/collapse");
-    it("compound filter");
+    test("expand/collapse");
+    test("compound filter");
   });
 
   describe("layout", () => {
-    it("text-font", () => {
+    test("text-font", () => {
       when.setStyle("font");
       when.collapseGroupInLayerEditor();
       when.collapseGroupInLayerEditor(1);
@@ -222,14 +224,14 @@ describe("layer editor", () => {
   });
 
   describe("paint", () => {
-    it("expand/collapse");
-    it("color");
-    it("pattern");
-    it("opacity");
+    test("expand/collapse");
+    test("color");
+    test("pattern");
+    test("opacity");
   });
 
   describe("json-editor", () => {
-    it("add", () => {
+    test("add", () => {
       const id = when.modal.fillLayers({
         type: "circle",
         layer: "example",
@@ -254,10 +256,10 @@ describe("layer editor", () => {
     });
 
 
-    it("expand/collapse");
-    it("modify");
+    test("expand/collapse");
+    test("modify");
 
-    it("parse error", () => {
+    test("parse error", () => {
       const bgId = createBackground();
 
       when.click("layer-list-item:background:" + bgId);
@@ -273,7 +275,7 @@ describe("layer editor", () => {
   });
 
   describe("sticky header", () => {
-    it("should keep layer header visible when scrolling properties", () => {
+    test("should keep layer header visible when scrolling properties", () => {
       // Setup: Create a layer with many properties (e.g., symbol layer)
       when.modal.fillLayers({
         type: "symbol",

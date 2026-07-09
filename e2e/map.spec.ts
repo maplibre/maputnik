@@ -1,10 +1,12 @@
 import { MaputnikDriver } from "./maputnik-driver";
 
+const test = it;
+
 describe("map", () => {
   const { beforeAndAfter, get, when, then } = new MaputnikDriver();
   beforeAndAfter();
   describe("zoom level", () => {
-    it("via url", () => {
+    test("via url", () => {
       const zoomLevel = 12.37;
       when.setStyle("geojson", zoomLevel);
       then(get.elementByTestId("maplibre:ctrl-zoom")).shouldBeVisible();
@@ -13,7 +15,7 @@ describe("map", () => {
       );
     });
 
-    it("via map controls", () => {
+    test("via map controls", () => {
       const zoomLevel = 12.37;
       when.setStyle("geojson", zoomLevel);
       then(get.elementByTestId("maplibre:ctrl-zoom")).shouldBeVisible();
@@ -23,7 +25,7 @@ describe("map", () => {
       );
     });
 
-    it("via style file definition", () => {
+    test("via style file definition", () => {
       when.setStyle("zoom_7_center_0_51");
       then(get.elementByTestId("maplibre:ctrl-zoom")).shouldBeVisible();
       then(get.elementByTestId("maplibre:ctrl-zoom")).shouldContainText(
@@ -40,7 +42,7 @@ describe("map", () => {
   });
 
   describe("search", () => {
-    it("should exist", () => {
+    test("should exist", () => {
       then(get.searchControl()).shouldBeVisible();
     });
   });
@@ -50,12 +52,12 @@ describe("map", () => {
       when.setStyle("rectangles");
       then(get.locationHash().should("exist"));
     });
-    it("should open on feature click", () => {
+    test("should open on feature click", () => {
       when.clickCenter("maplibre:map");
       then(get.elementByTestId("feature-layer-popup")).shouldBeVisible();
     });
 
-    it("should open a second feature after closing popup", () => {
+    test("should open a second feature after closing popup", () => {
       when.clickCenter("maplibre:map");
       then(get.elementByTestId("feature-layer-popup")).shouldBeVisible();
       when.closePopup();

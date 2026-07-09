@@ -1,5 +1,6 @@
 import { MaputnikDriver } from "./maputnik-driver";
-import tokens from "../../src/config/tokens.json" with {type: "json"};
+import tokens from "../src/config/tokens.json" with {type: "json"};
+const test = it;
 
 describe("modals", () => {
   const { beforeAndAfter, when, get, given, then } = new MaputnikDriver();
@@ -13,17 +14,17 @@ describe("modals", () => {
       when.click("nav:open");
     });
 
-    it("close", () => {
+    test("close", () => {
       when.modal.close("modal:open");
       then(get.elementByTestId("modal:open")).shouldNotExist();
     });
 
-    it("upload", () => {
+    test("upload", () => {
       when.chooseExampleFile();
       then(get.fixture("example-style.json")).shouldEqualToStoredStyle();
     });
 
-    it("upload via drag and drop", () => {
+    test("upload via drag and drop", () => {
       when.dropExampleFile();
       then(get.fixture("example-style.json")).shouldEqualToStoredStyle();
     });
@@ -36,14 +37,14 @@ describe("modals", () => {
         when.click("modal:open.url.button");
         when.wait(200);
       });
-      it("load from url", () => {
+      test("load from url", () => {
         then(get.responseBody("example-style.json")).shouldEqualToStoredStyle();
       });
     });
   });
 
   describe("shortcuts", () => {
-    it("open/close", () => {
+    test("open/close", () => {
       when.setStyle("");
       when.typeKeys("?");
       when.modal.close("modal:shortcuts");
@@ -56,13 +57,13 @@ describe("modals", () => {
       when.click("nav:export");
     });
 
-    it("close", () => {
+    test("close", () => {
       when.modal.close("modal:export");
       then(get.elementByTestId("modal:export")).shouldNotExist();
     });
 
     // TODO: Work out how to download a file and check the contents
-    it("download");
+    test("download");
   });
 
   describe("sources", () => {
@@ -71,10 +72,10 @@ describe("modals", () => {
       when.click("nav:sources");
     });
 
-    it("active sources");
-    it("public source");
+    test("active sources");
+    test("public source");
 
-    it("add new source", () => {
+    test("add new source", () => {
       const sourceId = "n1z2v3r";
       when.setValue("modal:sources.add.source_id", sourceId);
       when.select("modal:sources.add.source_type", "tile_vector");
@@ -88,7 +89,7 @@ describe("modals", () => {
       });
     });
 
-    it("add new pmtiles source", () => {
+    test("add new pmtiles source", () => {
       const sourceId = "pmtilestest";
       when.setValue("modal:sources.add.source_id", sourceId);
       when.select("modal:sources.add.source_type", "pmtiles_vector");
@@ -106,7 +107,7 @@ describe("modals", () => {
       });
     });
 
-    it("add new raster source", () => {
+    test("add new raster source", () => {
       const sourceId = "rastertest";
       when.setValue("modal:sources.add.source_id", sourceId);
       when.select("modal:sources.add.source_type", "tile_raster");
@@ -123,7 +124,7 @@ describe("modals", () => {
   });
 
   describe("inspect", () => {
-    it("toggle", () => {
+    test("toggle", () => {
       // There is no assertion in this test
       when.setStyle("geojson");
       when.select("maputnik-select", "inspect");
@@ -140,7 +141,7 @@ describe("modals", () => {
         when.click("field-doc-button-Name");
       });
 
-      it("should show the spec information", () => {
+      test("should show the spec information", () => {
         then(get.elementsText("spec-field-doc")).shouldInclude(
           "name for the style"
         );
@@ -154,7 +155,7 @@ describe("modals", () => {
         when.wait(200);
       });
 
-      it("show name specifications", () => {
+      test("show name specifications", () => {
         then(get.styleFromLocalStorage()).shouldDeepNestedInclude({
           name: "foobar",
         });
@@ -167,14 +168,14 @@ describe("modals", () => {
         when.click("modal:settings.name");
         when.wait(200);
       });
-      it("should update owner in local storage", () => {
+      test("should update owner in local storage", () => {
         then(get.styleFromLocalStorage()).shouldDeepNestedInclude({
           owner: "foobar",
         });
       });
     });
 
-    it("sprite url", () => {
+    test("sprite url", () => {
       when.setTextInJsonEditor("\"http://example.com\"");
       when.click("modal:settings.name");
       then(get.styleFromLocalStorage()).shouldDeepNestedInclude({
@@ -182,7 +183,7 @@ describe("modals", () => {
       });
     });
 
-    it("sprite object", () => {
+    test("sprite object", () => {
       when.setTextInJsonEditor(JSON.stringify([{ id: "1", url: "2" }]));
 
       when.click("modal:settings.name");
@@ -191,7 +192,7 @@ describe("modals", () => {
       });
     });
 
-    it("glyphs url", () => {
+    test("glyphs url", () => {
       const glyphsUrl = "http://example.com/{fontstack}/{range}.pbf";
       when.setValue("modal:settings.glyphs", glyphsUrl);
       when.click("modal:settings.name");
@@ -200,7 +201,7 @@ describe("modals", () => {
       });
     });
 
-    it("maptiler access token", () => {
+    test("maptiler access token", () => {
       const apiKey = "testing123";
       when.setValue(
         "modal:settings.maputnik:openmaptiles_access_token",
@@ -214,7 +215,7 @@ describe("modals", () => {
       });
     });
 
-    it("thunderforest access token", () => {
+    test("thunderforest access token", () => {
       const apiKey = "testing123";
       when.setValue(
         "modal:settings.maputnik:thunderforest_access_token",
@@ -226,7 +227,7 @@ describe("modals", () => {
       ).shouldInclude({ "maputnik:thunderforest_access_token": apiKey });
     });
 
-    it("stadia access token", () => {
+    test("stadia access token", () => {
       const apiKey = "testing123";
       when.setValue(
         "modal:settings.maputnik:stadia_access_token",
@@ -238,7 +239,7 @@ describe("modals", () => {
       ).shouldInclude({ "maputnik:stadia_access_token": apiKey });
     });
 
-    it("locationiq access token", () => {
+    test("locationiq access token", () => {
       const apiKey = "testing123";
       when.setValue(
         "modal:settings.maputnik:locationiq_access_token",
@@ -250,14 +251,14 @@ describe("modals", () => {
       ).shouldInclude({ "maputnik:locationiq_access_token": apiKey });
     });
 
-    it("style projection mercator", () => {
+    test("style projection mercator", () => {
       when.select("modal:settings.projection", "mercator");
       then(
         get.styleFromLocalStorage().then((style) => style.projection)
       ).shouldInclude({ type: "mercator" });
     });
 
-    it("style projection globe", () => {
+    test("style projection globe", () => {
       when.select("modal:settings.projection", "globe");
       then(
         get.styleFromLocalStorage().then((style) => style.projection)
@@ -265,7 +266,7 @@ describe("modals", () => {
     });
 
 
-    it("style projection vertical-perspective", () => {
+    test("style projection vertical-perspective", () => {
       when.select("modal:settings.projection", "vertical-perspective");
       then(
         get.styleFromLocalStorage().then((style) => style.projection)
@@ -273,7 +274,7 @@ describe("modals", () => {
 
     });
 
-    it("style renderer", () => {
+    test("style renderer", () => {
       cy.on("uncaught:exception", () => false); // this is due to the fact that this is an invalid style for openlayers
       when.select("modal:settings.maputnik:renderer", "ol");
       then(get.inputValue("modal:settings.maputnik:renderer")).shouldEqual(
@@ -288,7 +289,7 @@ describe("modals", () => {
 
 
 
-    it("include API key when change renderer", () => {
+    test("include API key when change renderer", () => {
 
       when.click("modal:settings.close-modal");
       when.click("nav:open");
@@ -327,7 +328,7 @@ describe("modals", () => {
       when.modal.open();
     });
 
-    it("shows duplicate id error", () => {
+    test("shows duplicate id error", () => {
       when.setValue("add-layer.layer-id.input", "background");
       when.click("add-layer");
       then(get.elementByTestId("modal:add-layer")).shouldExist();
@@ -338,7 +339,7 @@ describe("modals", () => {
   });
 
   describe("sources", () => {
-    it("toggle");
+    test("toggle");
   });
 
   describe("global state", () => {
@@ -346,7 +347,7 @@ describe("modals", () => {
       when.click("nav:global-state");
     });
 
-    it("add variable", () => {
+    test("add variable", () => {
       when.wait(100);
       when.click("global-state-add-variable");
       then(get.styleFromLocalStorage()).shouldDeepNestedInclude({
@@ -355,7 +356,7 @@ describe("modals", () => {
     });
 
 
-    it("add multiple variables", () => {
+    test("add multiple variables", () => {
       when.click("global-state-add-variable");
       when.click("global-state-add-variable");
       when.click("global-state-add-variable");
@@ -365,7 +366,7 @@ describe("modals", () => {
       });
     });
 
-    it("remove variable", () => {
+    test("remove variable", () => {
       when.click("global-state-add-variable");
       when.click("global-state-add-variable");
       when.click("global-state-add-variable");
@@ -376,7 +377,7 @@ describe("modals", () => {
       });
     });
 
-    it("edit variable key", () => {
+    test("edit variable key", () => {
       when.click("global-state-add-variable");
       when.wait(100);
       when.setValue("global-state-variable-key:0", "mykey");
@@ -387,7 +388,7 @@ describe("modals", () => {
       });
     });
 
-    it("edit variable value", () => {
+    test("edit variable value", () => {
       when.click("global-state-add-variable");
       when.wait(100);
       when.setValue("global-state-variable-value:0", "myvalue");
@@ -400,11 +401,11 @@ describe("modals", () => {
   });
 
   describe("error panel", () => {
-    it("not visible when no errors", () => {
+    test("not visible when no errors", () => {
       then(get.element("maputnik-message-panel-error")).shouldNotExist();
     });
 
-    it("visible on style error", () => {
+    test("visible on style error", () => {
       when.modal.open();
       when.modal.fillLayers({
         type: "circle",
@@ -415,7 +416,7 @@ describe("modals", () => {
   });
 
   describe("Handle localStorage QuotaExceededError", () => {
-    it("handles quota exceeded error when opening style from URL", () => {
+    test("handles quota exceeded error when opening style from URL", () => {
       // Clear localStorage to start fresh
       cy.clearLocalStorage();
 

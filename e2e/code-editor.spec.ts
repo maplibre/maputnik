@@ -1,15 +1,17 @@
 import { MaputnikDriver } from "./maputnik-driver";
 
+const test = it;
+
 describe("code editor", () => {
   const { beforeAndAfter, when, get, then } = new MaputnikDriver();
   beforeAndAfter();
 
-  it("open code editor", () => {
+  test("open code editor", () => {
     when.click("nav:code-editor");
     then(get.element(".maputnik-code-editor")).shouldExist();
   });
 
-  it("closes code editor", () => {
+  test("closes code editor", () => {
     when.click("nav:code-editor");
     then(get.element(".maputnik-code-editor")).shouldExist();
     when.click("nav:code-editor");
