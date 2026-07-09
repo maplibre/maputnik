@@ -330,9 +330,10 @@ describe("layers list", () => {
   describe("sticky header", () => {
     test("should keep header visible when scrolling layer list", async () => {
       // Setup: Create multiple layers to enable scrolling
-      for (let i = 0; i < 20; i++) {
-        // The modal is already open (beforeEach) for the first layer.
-        if (i > 0) await when.modal.open();
+      // The modal is already open (beforeEach) for the first layer.
+      await when.modal.fillLayers({ id: `layer-0`, type: "background" });
+      for (let i = 1; i < 20; i++) {
+        await when.modal.open();
         await when.modal.fillLayers({ id: `layer-${i}`, type: "background" });
       }
 
