@@ -1,24 +1,18 @@
-import fs from "node:fs";
-import path from "node:path";
-import { fileURLToPath } from "node:url";
-import { expect, type Locator, type Page, type Request } from "@playwright/test";
-import { currentPage, recordCoverageChunk } from "./utils/fixtures";
+import { expect, type Page } from "@playwright/test";
+import { currentPage } from "./utils/fixtures";
+import {
+  Assertable,
+  PlaywrightHelper,
+  Query,
+  assertDeepNestedInclude,
+  readFixture,
+  retry,
+  typeSequence,
+} from "./playwright-helper";
 import { ModalDriver } from "./modal-driver";
 
 const baseUrl = "http://localhost:8888/";
-const FIXTURES_DIR = path.join(path.dirname(fileURLToPath(import.meta.url)), "fixtures");
-const DATA_ATTRIBUTE = "data-wd-key";
-
 const isMac = process.platform === "darwin";
-
-function testIdSelector(testId: string): string {
-  return `[${DATA_ATTRIBUTE}="${testId}"]`;
-}
-
-export function readFixture(name: string): any {
-  const contents = fs.readFileSync(path.join(FIXTURES_DIR, name), "utf-8");
-  return JSON.parse(contents);
-}
 
 /** Reads the maputnik style currently persisted in localStorage. */
 function styleFromLocalStorage(page: Page): Promise<any> {
@@ -31,117 +25,7 @@ function styleFromLocalStorage(page: Page): Promise<any> {
   });
 }
 
-async function retry(assertion: () => Promise<void> | void, timeout = 10000, interval = 100): Promise<void> {
-  const start = Date.now();
-  let lastError: unknown;
-  for (;;) {
-    try {
-      await assertion();
-      return;
-    } catch (error) {
-      lastError = error;
-      if (Date.now() - start > timeout) throw lastError;
-      await new Promise((resolve) => setTimeout(resolve, interval));
-    }
-  }
-}
-
-/**
- * A lazily-evaluated value (e.g. the style in localStorage). Assertions on a
- * Query re-read the value until they pass, mirroring Cypress' retry-ability.
- */
-export class Query<T> {
-  readonly __maputnikQuery = true as const;
-  constructor(private readonly getter: () => Promise<T>) {}
-
-  get(): Promise<T> {
-    return this.getter();
-  }
-
-  then<U>(mapper: (value: T) => U | Promise<U>): Query<U> {
-    return new Query<U>(async () => mapper(await this.getter()));
-  }
-}
-
-function isQuery(target: unknown): target is Query<unknown> {
-  return typeof target === "object" && target !== null && (target as Query<unknown>).__maputnikQuery === true;
-}
-
-function isLocator(target: unknown): target is Locator {
-  return (
-    typeof target === "object" &&
-    target !== null &&
-    typeof (target as Locator).count === "function" &&
-    typeof (target as Locator).boundingBox === "function"
-  );
-}
-
-/** Asserts that every top-level key in `expected` deep-equals its counterpart in `actual`. */
-function assertDeepNestedInclude(actual: any, expected: Record<string, unknown>): void {
-  for (const key of Object.keys(expected)) {
-    expect(actual?.[key], `property "${key}"`).toEqual(expected[key]);
-  }
-}
-
-export class MaputnikAssertable<T> {
-  constructor(private readonly target: T, private readonly page?: Page) {}
-
-  private locator(): Locator {
-    if (!isLocator(this.target)) throw new Error("Expected a Locator target for this assertion");
-    return this.target;
-  }
-
-  private async assertValue(assertion: (value: any) => void): Promise<void> {
-    const target = this.target;
-    if (isQuery(target)) {
-      await retry(async () => assertion(await target.get()));
-    } else {
-      assertion(await (target as any));
-    }
-  }
-
-  // Element assertions (auto-retrying via Playwright web-first assertions).
-  shouldBeVisible = () => expect(this.locator().first()).toBeVisible();
-  // Some testids resolve to many elements that are always rendered but hidden
-  // (e.g. per-field documentation panels); "not visible" means none is visible.
-  shouldNotBeVisible = () => expect(this.locator().filter({ visible: true })).toHaveCount(0);
-  shouldExist = async () => {
-    if (isLocator(this.target)) {
-      await expect(this.locator().first()).toBeAttached();
-    } else {
-      await this.assertValue((value) => expect(value).toBeTruthy());
-    }
-  };
-  shouldNotExist = () => expect(this.locator()).toHaveCount(0);
-  shouldBeFocused = () => expect(this.locator().first()).toBeFocused();
-  shouldNotBeFocused = () => expect(this.locator().first()).not.toBeFocused();
-  shouldHaveValue = (value: string) => expect(this.locator().first()).toHaveValue(value);
-  shouldContainText = async (text: string) => {
-    const locator = this.locator();
-    // Prefer the visible element when a testid resolves to several (only the
-    // open documentation panel is visible; the rest are hidden in the DOM).
-    const target = (await locator.count()) > 1 ? locator.filter({ visible: true }).first() : locator.first();
-    await expect(target).toContainText(text);
-  };
-  shouldHaveText = (text: string) => expect(this.locator().first()).toHaveText(text);
-  shouldHaveLength = (length: number) => expect(this.locator()).toHaveCount(length);
-  shouldHaveCss = (property: string, value: string) => expect(this.locator().first()).toHaveCSS(property, value);
-
-  // Value assertions (auto-retrying for Query targets).
-  shouldEqual = (value: any) => this.assertValue((actual) => expect(actual).toBe(value));
-
-  shouldInclude = (value: any) =>
-    this.assertValue((actual) => {
-      if (typeof value === "object" && value !== null) {
-        expect(actual).toMatchObject(value);
-      } else {
-        expect(String(actual)).toContain(String(value));
-      }
-    });
-
-  shouldDeepNestedInclude = (value: Record<string, unknown>) =>
-    this.assertValue((actual) => assertDeepNestedInclude(actual, value));
-
+export class MaputnikAssertable<T> extends Assertable<T> {
   /**
    * Asserts that the object under test (a fixture / response body) contains every
    * top-level property of the style currently stored in localStorage.
@@ -157,67 +41,17 @@ export class MaputnikAssertable<T> {
 }
 
 /**
- * Translates a Cypress-style key sequence (e.g. "{meta}z", "{esc}", "0.") into
- * Playwright keyboard actions on the currently focused element.
+ * The maputnik-specific driver. It builds on the generic {@link PlaywrightHelper}
+ * — spreading its `given`/`when`/`get` primitives and adding domain concepts
+ * (loading a style, the add-layer modal, the JSON editor, …).
  */
-async function typeSequence(page: Page, text: string): Promise<void> {
-  const tokens = text.match(/\{[^}]+\}|[^{]+/g) ?? [];
-  const modifierMap: Record<string, string> = { meta: "Meta", ctrl: "Control", shift: "Shift", alt: "Alt" };
-  const namedKeys: Record<string, string> = {
-    esc: "Escape",
-    enter: "Enter",
-    backspace: "Backspace",
-    del: "Delete",
-    tab: "Tab",
-  };
-
-  for (let i = 0; i < tokens.length; i++) {
-    const token = tokens[i];
-    if (!token.startsWith("{") || !token.endsWith("}")) {
-      await page.keyboard.type(token);
-      continue;
-    }
-    const name = token.slice(1, -1).toLowerCase();
-    if (name === "selectall") {
-      await page.keyboard.press(isMac ? "Meta+a" : "Control+a");
-    } else if (namedKeys[name]) {
-      await page.keyboard.press(namedKeys[name]);
-    } else if (modifierMap[name]) {
-      const modifiers = [modifierMap[name]];
-      let j = i + 1;
-      while (j < tokens.length && /^\{(meta|ctrl|shift|alt)\}$/i.test(tokens[j])) {
-        modifiers.push(modifierMap[tokens[j].slice(1, -1).toLowerCase()]);
-        j++;
-      }
-      const key = tokens[j] ?? "";
-      await page.keyboard.press([...modifiers, key].join("+"));
-      i = j;
-    }
-  }
-}
-
-async function centerOf(locator: Locator): Promise<{ x: number; y: number }> {
-  const box = await locator.boundingBox();
-  if (!box) throw new Error("Element has no bounding box");
-  return { x: box.x + box.width / 2, y: box.y + box.height / 2 };
-}
-
 export class MaputnikDriver {
-  private readonly recordedRequests = new Map<string, Request[]>();
+  private readonly helper = new PlaywrightHelper();
   private readonly modalDriver = new ModalDriver(this);
 
-  /**
-   * The page for the currently running test. Resolved lazily so a single driver
-   * instance can be created once per `describe` and reused across its tests.
-   */
+  /** The page for the currently running test (resolved lazily, like Cypress' `cy`). */
   private get page(): Page {
     return currentPage();
-  }
-
-  // ---- Element access ------------------------------------------------------
-
-  private testId(testId: string): Locator {
-    return this.page.locator(testIdSelector(testId));
   }
 
   then = <T>(target: T) => new MaputnikAssertable(target, this.page);
@@ -225,35 +59,7 @@ export class MaputnikDriver {
   // ---- given ---------------------------------------------------------------
 
   public given = {
-    fixture: (_name: string, _alias?: string) => {
-      // Fixtures are read directly from disk in Playwright, no registration needed.
-    },
-
-    intercept: async (pattern: RegExp, alias: string, _method = "GET") => {
-      this.recordedRequests.set(alias, []);
-      await this.page.route(pattern, (route) => {
-        this.recordedRequests.get(alias)!.push(route.request());
-        route.continue();
-      });
-    },
-
-    interceptAndMockResponse: async (options: {
-      method?: string;
-      url: string | RegExp;
-      response: unknown | { fixture: string };
-      alias?: string;
-    }) => {
-      const { url, response, alias } = options;
-      if (alias) this.recordedRequests.set(alias, []);
-      await this.page.route(url, (route) => {
-        if (alias) this.recordedRequests.get(alias)!.push(route.request());
-        const body =
-          response && typeof response === "object" && "fixture" in (response as any)
-            ? readFixture((response as { fixture: string }).fixture)
-            : response;
-        route.fulfill({ json: body });
-      });
-    },
+    ...this.helper.given,
 
     setupMockBackedResponses: async () => {
       const styleFixtures = [
@@ -268,16 +74,16 @@ export class MaputnikDriver {
         "example-style-with-zoom-5-and-center-50-50.json",
       ];
       for (const fixture of styleFixtures) {
-        await this.given.interceptAndMockResponse({
+        await this.helper.given.interceptAndMockResponse({
           method: "GET",
           url: baseUrl + fixture,
           response: { fixture },
           alias: fixture === "example-style.json" ? "example-style.json" : undefined,
         });
       }
-      await this.given.interceptAndMockResponse({ method: "GET", url: /example\.local\//, response: [] });
-      await this.given.interceptAndMockResponse({ method: "GET", url: /example\.com\//, response: [] });
-      await this.given.interceptAndMockResponse({
+      await this.helper.given.interceptAndMockResponse({ method: "GET", url: /example\.local\//, response: [] });
+      await this.helper.given.interceptAndMockResponse({ method: "GET", url: /example\.com\//, response: [] });
+      await this.helper.given.interceptAndMockResponse({
         method: "GET",
         url: "https://www.glyph-server.com/*",
         response: ["Font 1", "Font 2", "Font 3"],
@@ -288,96 +94,9 @@ export class MaputnikDriver {
   // ---- when ----------------------------------------------------------------
 
   public when = {
+    ...this.helper.when,
+
     modal: this.modalDriver.when,
-
-    visit: async (url: string) => {
-      await recordCoverageChunk(this.page);
-      const target = url.startsWith("http") ? url : new URL(url, baseUrl).toString();
-      await this.page.goto(target);
-    },
-
-    wait: (ms: number) => this.page.waitForTimeout(ms),
-
-    tab: () => this.page.keyboard.press("Tab"),
-
-    typeKeys: (keys: string) => typeSequence(this.page, keys),
-
-    click: async (testId: string, index = 0) => {
-      // Documentation buttons are wrapped in a <label>/.maputnik-doc-target that
-      // Playwright treats as intercepting the click; bypass the check for them.
-      const force = testId.startsWith("field-doc-button-");
-      await this.testId(testId).nth(index).click({ force });
-    },
-
-    realClick: async (testId: string) => {
-      await this.testId(testId).click();
-    },
-
-    hover: async (testId: string) => {
-      await this.testId(testId).hover();
-    },
-
-    focus: async (testId: string) => {
-      await this.testId(testId).focus();
-    },
-
-    clear: async (testId: string) => {
-      await this.testId(testId).clear();
-    },
-
-    select: async (testId: string, value: string) => {
-      await this.testId(testId).selectOption(value);
-    },
-
-    selectWithin: async (selector: string, value: string) => {
-      await this.testId(selector).locator("select").selectOption(value);
-    },
-
-    clickWithin: async (parentTestId: string, selector: string) => {
-      await this.testId(parentTestId).locator(selector).first().click();
-    },
-
-    clickByText: async (text: string) => {
-      await this.page.getByText(text).click();
-    },
-
-    clickByAttribute: async (attribute: string, value: string) => {
-      await this.page.locator(`[${attribute}="${value}"]`).click();
-    },
-
-    scrollToBottom: async (element: Locator) => {
-      await element.evaluate((el) => el.scrollTo(0, el.scrollHeight));
-    },
-
-    setValue: async (testId: string, text: string) => {
-      const input = this.testId(testId);
-      await input.fill("");
-      await input.fill(text);
-    },
-
-    type: async (testId: string, text: string) => {
-      await this.testId(testId).focus();
-      // Place the caret at the start of the field (matching how the original
-      // Cypress suite typed), so a leading "{backspace}" is a no-op rather than
-      // clearing an already-committed value.
-      await this.page.keyboard.press("Home");
-      await typeSequence(this.page, text);
-    },
-
-    setValueToPropertyArray: async (selector: string, value: string) => {
-      const block = this.testId(selector);
-      const input = block.locator(".maputnik-array-block-content input").last();
-      await input.focus();
-      await typeSequence(this.page, "{selectall}" + value);
-    },
-
-    addValueToPropertyArray: async (selector: string, value: string) => {
-      const block = this.testId(selector);
-      await block.locator(".maputnik-array-add-value").click();
-      const input = block.locator(".maputnik-array-block-content input").last();
-      await input.focus();
-      await typeSequence(this.page, "{selectall}" + value);
-    },
 
     setStyle: async (
       styleProperties:
@@ -409,53 +128,45 @@ export class MaputnikDriver {
         url.hash = `${zoom}/41.3805/2.1635`;
       }
 
-      await this.when.visit(url.toString());
+      await this.helper.when.visit(url.toString());
 
-      const toolbarLink = this.testId("toolbar:link");
+      const toolbarLink = this.helper.get.elementByTestId("toolbar:link");
       await toolbarLink.scrollIntoViewIfNeeded();
       await expect(toolbarLink).toBeVisible();
     },
 
     openASecondStyleWithDifferentZoomAndCenter: async () => {
       await this.page.getByRole("button", { name: "Open" }).click();
-      const input = this.testId("modal:open.url.input");
+      const input = this.helper.get.elementByTestId("modal:open.url.input");
       await expect(input).toBeEnabled();
       await input.fill("http://localhost:8888/example-style-with-zoom-5-and-center-50-50.json");
       await input.press("Enter");
     },
 
     chooseExampleFile: async () => {
-      await this.openFileByFixture("example-style.json", "modal:open.dropzone", "modal:open.file.input");
-      await this.when.wait(200);
+      await this.helper.when.openFileByFixture("example-style.json", "modal:open.dropzone", "modal:open.file.input");
+      await this.helper.when.wait(200);
     },
 
     dropExampleFile: async () => {
-      await this.dropFileByFixture("example-style.json", "modal:open.dropzone");
-      await this.when.wait(200);
+      await this.helper.when.dropFileByFixture("example-style.json", "modal:open.dropzone");
+      await this.helper.when.wait(200);
     },
 
     clickZoomIn: async () => {
-      await this.page.locator(".maplibregl-ctrl-zoom-in").click();
+      await this.helper.get.element(".maplibregl-ctrl-zoom-in").click();
     },
 
     closePopup: async () => {
-      await this.page.locator(".maplibregl-popup-close-button").click();
-    },
-
-    clickCenter: async (testId: string) => {
-      const { x, y } = await centerOf(this.testId(testId));
-      await this.page.mouse.move(x, y);
-      await this.page.mouse.down();
-      await this.when.wait(200);
-      await this.page.mouse.up();
+      await this.helper.get.element(".maplibregl-popup-close-button").click();
     },
 
     collapseGroupInLayerEditor: async (index = 0) => {
-      await this.page.locator(".maputnik-layer-editor-group__button").nth(index).click();
+      await this.helper.get.element(".maputnik-layer-editor-group__button").nth(index).click();
     },
 
     appendTextInJsonEditor: async (text: string) => {
-      await this.page.locator(".cm-line").first().click();
+      await this.helper.get.element(".cm-line").first().click();
       // Move to the very start of the document so the inserted text breaks the
       // root JSON structure (CodeMirror auto-closes brackets otherwise).
       await this.page.keyboard.press("Home");
@@ -463,37 +174,30 @@ export class MaputnikDriver {
     },
 
     setTextInJsonEditor: async (text: string) => {
-      const firstLine = this.page.locator(".cm-line").first();
+      const firstLine = this.helper.get.element(".cm-line").first();
       await firstLine.click();
       await this.page.keyboard.press(isMac ? "Meta+a" : "Control+a");
       await this.page.keyboard.type(text);
     },
 
-    dragAndDropWithWait: async (source: string, target: string) => {
-      const from = await centerOf(this.testId(source));
-      const to = await centerOf(this.testId(target));
-      await this.page.mouse.move(from.x, from.y);
-      await this.page.mouse.down();
-      await this.page.mouse.move(from.x, from.y + 10);
-      await this.page.mouse.move(to.x, to.y, { steps: 10 });
-      await this.when.wait(100);
-      await this.page.mouse.up();
+    setValueToPropertyArray: async (selector: string, value: string) => {
+      const block = this.helper.get.elementByTestId(selector);
+      const input = block.locator(".maputnik-array-block-content input").last();
+      await input.focus();
+      await typeSequence(this.page, "{selectall}" + value);
     },
 
-    waitForResponse: async (alias: string) => {
-      const requests = this.recordedRequests.get(alias);
-      if (!requests) throw new Error(`No intercept registered for alias "${alias}"`);
-      await retry(async () => {
-        if (requests.length === 0) throw new Error(`No request recorded for alias "${alias}"`);
-      });
-      return requests[requests.length - 1];
+    addValueToPropertyArray: async (selector: string, value: string) => {
+      const block = this.helper.get.elementByTestId(selector);
+      await block.locator(".maputnik-array-add-value").click();
+      const input = block.locator(".maputnik-array-block-content input").last();
+      await input.focus();
+      await typeSequence(this.page, "{selectall}" + value);
     },
 
-    waitForExampleFileResponse: () => this.when.waitForResponse("example-style.json"),
+    waitForExampleFileResponse: () => this.helper.when.waitForResponse("example-style.json"),
 
-    clearLocalStorage: () => this.page.evaluate(() => window.localStorage.clear()),
-
-    /** fill localStorage until we get a QuotaExceededError */
+    /** Fill localStorage until we get a QuotaExceededError. */
     fillLocalStorage: async () => {
       await this.page.evaluate(() => {
         let chunkSize = 1000;
@@ -516,31 +220,23 @@ export class MaputnikDriver {
           }
         }
       });
-    }
+    },
   };
 
   // ---- get -----------------------------------------------------------------
 
   public get = {
+    ...this.helper.get,
+
     isMac: () => isMac,
-
-    element: (selector: string) => this.page.locator(selector),
-
-    elementByTestId: (testId: string) => this.testId(testId),
 
     canvas: () => this.page.locator("canvas"),
 
     searchControl: () => this.page.locator(".maplibregl-ctrl-geocoder"),
 
-    skipTargetLayerList: () => this.testId("skip-target-layer-list"),
+    skipTargetLayerList: () => this.helper.get.elementByTestId("skip-target-layer-list"),
 
-    skipTargetLayerEditor: () => this.testId("skip-target-layer-editor"),
-
-    inputValue: (testId: string) => new Query<string>(() => this.testId(testId).first().inputValue()),
-
-    elementsText: (testId: string) => new Query<string>(() => this.testId(testId).first().innerText()),
-
-    locationHash: () => new Query<string>(async () => new URL(this.page.url()).hash),
+    skipTargetLayerEditor: () => this.helper.get.elementByTestId("skip-target-layer-editor"),
 
     styleFromLocalStorage: () => new Query<any>(() => styleFromLocalStorage(this.page)),
 
@@ -554,38 +250,4 @@ export class MaputnikDriver {
 
     exampleFileUrl: () => baseUrl + "example-style.json",
   };
-
-  // ---- file open helpers ---------------------------------------------------
-
-  private async openFileByFixture(fixture: string, buttonTestId: string, inputTestId: string): Promise<void> {
-    const content = JSON.stringify(readFixture(fixture));
-    const hasPicker = await this.page.evaluate(() => "showOpenFilePicker" in window);
-    if (hasPicker) {
-      await this.page.evaluate((fileContent) => {
-        (window as any).showOpenFilePicker = async () => [
-          { getFile: async () => ({ text: async () => fileContent }) },
-        ];
-      }, content);
-      await this.testId(buttonTestId).click();
-    } else {
-      await this.testId(inputTestId).setInputFiles({
-        name: fixture,
-        mimeType: "application/json",
-        buffer: Buffer.from(content),
-      });
-    }
-  }
-
-  private async dropFileByFixture(fixture: string, dropzoneTestId: string): Promise<void> {
-    const content = JSON.stringify(readFixture(fixture));
-    const dataTransfer = await this.page.evaluateHandle((fileContent) => {
-      const dt = new DataTransfer();
-      dt.items.add(new File([fileContent], "example-style.json", { type: "application/json" }));
-      return dt;
-    }, content);
-    const dropzone = this.testId(dropzoneTestId);
-    await dropzone.dispatchEvent("dragenter", { dataTransfer });
-    await dropzone.dispatchEvent("dragover", { dataTransfer });
-    await dropzone.dispatchEvent("drop", { dataTransfer });
-  }
 }
