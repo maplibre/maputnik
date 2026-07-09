@@ -1,5 +1,5 @@
 import { v1 as uuid } from "uuid";
-import { beforeEach, describe, test } from "./fixtures";
+import { beforeEach, describe, test } from "./utils/fixtures";
 import { MaputnikDriver } from "./maputnik-driver";
 
 describe("layer editor", () => {

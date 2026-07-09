@@ -1,4 +1,4 @@
-import { test, expect, describe, beforeEach } from "./fixtures";
+import { test, expect, describe, beforeEach } from "./utils/fixtures";
 import { MaputnikDriver } from "./maputnik-driver";
 import tokens from "../src/config/tokens.json" with { type: "json" };
 

@@ -3,7 +3,7 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { expect, type Locator, type Page, type Request } from "@playwright/test";
 import { readCoverage } from "./coverage";
-import { currentPage, recordCoverageChunk } from "./fixtures";
+import { currentPage, recordCoverageChunk } from "./utils/fixtures";
 import { ModalDriver } from "./modal-driver";
 
 const baseUrl = "http://localhost:8888/";

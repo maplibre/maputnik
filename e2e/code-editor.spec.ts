@@ -1,4 +1,4 @@
-import { beforeEach, describe, test } from "./fixtures";
+import { beforeEach, describe, test } from "./utils/fixtures";
 import { MaputnikDriver } from "./maputnik-driver";
 
 describe("code editor", () => {
