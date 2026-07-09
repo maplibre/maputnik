@@ -19,7 +19,7 @@ const OUTPUT_DIR = path.resolve(process.cwd(), ".nyc_output");
  * Reads the istanbul coverage object (injected by vite-plugin-istanbul) from the
  * given page. Returns `null` when the page has not been instrumented.
  */
-export async function readCoverage(page: Page): Promise<unknown | null> {
+async function readCoverage(page: Page): Promise<unknown | null> {
   try {
     return await page.evaluate(() => (window as unknown as { __coverage__?: unknown }).__coverage__ ?? null);
   } catch {
