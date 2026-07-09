@@ -284,7 +284,7 @@ test.describe("modals", () => {
       await then(get.inputValue("modal:settings.maputnik:renderer")).shouldEqual("ol");
 
       await given.intercept(
-        "https://api.maptiler.com/tiles/v3-openmaptiles/tiles.json?key=*",
+        "https://api\\.maptiler\\.com/tiles/v3-openmaptiles/tiles\\.json\\?key=*",
         "tileRequest",
         "GET"
       );
