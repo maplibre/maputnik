@@ -20,7 +20,7 @@ async function retry(
 ): Promise<void> {
   const start = Date.now();
   let lastError: unknown;
-  for (;;) {
+  while (true) {
     try {
       await assertion();
       return;
@@ -382,7 +382,7 @@ export class PlaywrightHelper {
         let chunkSize = 1000;
         const chunk = new Array(chunkSize).join("x");
         let index = 0;
-        for (;;) {
+        while (true) {
           try {
             window.localStorage.setItem(`${prefix}${index++}`, chunk);
           } catch (e: any) {
