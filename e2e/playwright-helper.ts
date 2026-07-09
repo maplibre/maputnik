@@ -75,12 +75,7 @@ function assertDeepNestedInclude(actual: any, expected: Record<string, unknown>)
  * assertable extends.
  */
 export class Assertable<T> {
-  constructor(protected readonly target: T) {}
-
-  // Exposed to subclasses (e.g. MaputnikAssertable) so custom assertions can be
-  // built without re-importing these module-private helpers.
-  protected readonly retry = retry;
-  protected readonly assertDeepNestedInclude = assertDeepNestedInclude;
+  constructor(private readonly target: T) {}
 
   private locator(): Locator {
     if (!isLocator(this.target)) throw new Error("Expected a Locator target for this assertion");

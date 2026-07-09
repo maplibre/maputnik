@@ -4,24 +4,6 @@ import { ModalDriver } from "./modal-driver";
 const baseUrl = "http://localhost:8888/";
 const isMac = process.platform === "darwin";
 
-export class MaputnikAssertable<T> extends Assertable<T> {
-  constructor(target: T, private readonly getStoredStyle: () => Promise<any>) {
-    super(target);
-  }
-
-  /**
-   * Asserts that the object under test (a fixture / response body) contains every
-   * top-level property of the style currently stored in localStorage.
-   */
-  shouldEqualToStoredStyle = async () => {
-    const expected = await (this.target as any);
-    await this.retry(async () => {
-      const stored = await this.getStoredStyle();
-      this.assertDeepNestedInclude(expected, stored);
-    });
-  };
-}
-
 /**
  * The maputnik-specific driver. It builds on the generic {@link PlaywrightHelper}
  * — spreading its `given`/`when`/`get` primitives and adding domain concepts
@@ -32,7 +14,7 @@ export class MaputnikDriver {
   private readonly helper = new PlaywrightHelper();
   private readonly modalDriver = new ModalDriver(this);
 
-  then = <T>(target: T) => new MaputnikAssertable(target, () => this.readStoredStyle());
+  then = <T>(target: T) => new Assertable(target);
 
   /** Reads the maputnik style currently persisted in localStorage. */
   private async readStoredStyle(): Promise<any> {
@@ -197,12 +179,12 @@ export class MaputnikDriver {
 
     styleFromLocalStorage: () => this.helper.query(() => this.readStoredStyle()),
 
-    fixture: (name: string) => Promise.resolve(this.helper.readFixture(name)),
+    fixture: (name: string) => this.helper.readFixture(name),
 
     responseBody: (alias: string) => {
       // Our mocked style responses always return the matching fixture.
       const name = alias.endsWith(".json") ? alias : `${alias}.json`;
-      return Promise.resolve(this.helper.readFixture(name));
+      return this.helper.readFixture(name);
     },
 
     exampleFileUrl: () => baseUrl + "example-style.json",

@@ -23,12 +23,12 @@ describe("modals", () => {
 
     test("upload", async () => {
       await when.chooseExampleFile();
-      await then(get.fixture("example-style.json")).shouldEqualToStoredStyle();
+      await then(get.styleFromLocalStorage()).shouldDeepNestedInclude(get.fixture("example-style.json"));
     });
 
     test("upload via drag and drop", async () => {
       await when.dropExampleFile();
-      await then(get.fixture("example-style.json")).shouldEqualToStoredStyle();
+      await then(get.styleFromLocalStorage()).shouldDeepNestedInclude(get.fixture("example-style.json"));
     });
 
     describe("when click open url", () => {
@@ -40,7 +40,7 @@ describe("modals", () => {
         await when.wait(200);
       });
       test("load from url", async () => {
-        await then(get.responseBody("example-style.json")).shouldEqualToStoredStyle();
+        await then(get.styleFromLocalStorage()).shouldDeepNestedInclude(get.responseBody("example-style.json"));
       });
     });
   });
@@ -398,7 +398,7 @@ describe("modals", () => {
       await when.setValue("modal:open.url.input", get.exampleFileUrl());
       await when.click("modal:open.url.button");
 
-      await then(get.responseBody("example-style.json")).shouldEqualToStoredStyle();
+      await then(get.styleFromLocalStorage()).shouldDeepNestedInclude(get.responseBody("example-style.json"));
       await then(get.styleFromLocalStorage()).shouldExist();
     });
   });
