@@ -45,7 +45,7 @@ const extendedTest = test.extend<{ maputnikPage: void }>({
 
 const describe = extendedTest.describe;
 const beforeEach = extendedTest.beforeEach;
-export { 
+export {
   expect,
   describe,
   extendedTest as test,
