@@ -8,17 +8,12 @@ const DATA_ATTRIBUTE = "data-wd-key";
 const FIXTURES_DIR = path.join(path.dirname(fileURLToPath(import.meta.url)), "fixtures");
 const isMac = process.platform === "darwin";
 
-export function testIdSelector(testId: string): string {
+function testIdSelector(testId: string): string {
   return `[${DATA_ATTRIBUTE}="${testId}"]`;
 }
 
-export function readFixture(name: string): any {
-  const contents = fs.readFileSync(path.join(FIXTURES_DIR, name), "utf-8");
-  return JSON.parse(contents);
-}
-
 /** Retries `assertion` until it stops throwing */
-export async function retry(
+async function retry(
   assertion: () => Promise<void> | void,
   timeout = 10000,
   interval = 100
@@ -41,7 +36,7 @@ export async function retry(
  * A lazily-evaluated value (e.g. the style in localStorage). Assertions on a
  * Query re-read the value until they pass.
  */
-export class Query<T> {
+class Query<T> {
   readonly __query = true as const;
   constructor(private readonly getter: () => Promise<T>) {}
 
@@ -68,7 +63,7 @@ function isLocator(target: unknown): target is Locator {
 }
 
 /** Asserts that every top-level key in `expected` deep-equals its counterpart in `actual`. */
-export function assertDeepNestedInclude(actual: any, expected: Record<string, unknown>): void {
+function assertDeepNestedInclude(actual: any, expected: Record<string, unknown>): void {
   for (const key of Object.keys(expected)) {
     expect(actual?.[key], `property "${key}"`).toEqual(expected[key]);
   }
@@ -81,6 +76,11 @@ export function assertDeepNestedInclude(actual: any, expected: Record<string, un
  */
 export class Assertable<T> {
   constructor(protected readonly target: T) {}
+
+  // Exposed to subclasses (e.g. MaputnikAssertable) so custom assertions can be
+  // built without re-importing these module-private helpers.
+  protected readonly retry = retry;
+  protected readonly assertDeepNestedInclude = assertDeepNestedInclude;
 
   private locator(): Locator {
     if (!isLocator(this.target)) throw new Error("Expected a Locator target for this assertion");
@@ -139,7 +139,7 @@ export class Assertable<T> {
     this.assertValue((actual) => assertDeepNestedInclude(actual, value));
 }
 
-export async function typeSequence(page: Page, text: string): Promise<void> {
+async function typeSequence(page: Page, text: string): Promise<void> {
   const tokens = text.match(/\{[^}]+\}|[^{]+/g) ?? [];
   const modifierMap: Record<string, string> = { meta: "Meta", ctrl: "Control", shift: "Shift", alt: "Alt" };
   const namedKeys: Record<string, string> = {
@@ -197,6 +197,16 @@ export class PlaywrightHelper {
     return this.page.locator(testIdSelector(testId));
   }
 
+  /** Reads and parses a JSON fixture from the fixtures directory. */
+  public readFixture(name: string): any {
+    return JSON.parse(fs.readFileSync(path.join(FIXTURES_DIR, name), "utf-8"));
+  }
+
+  /** Wraps a lazily-evaluated value so assertions on it auto-retry. */
+  public query<T>(getter: () => Promise<T>): Query<T> {
+    return new Query<T>(getter);
+  }
+
   public given = {
     intercept: async (pattern: RegExp, alias: string, _method = "GET") => {
       this.recordedRequests.set(alias, []);
@@ -218,7 +228,7 @@ export class PlaywrightHelper {
         if (alias) this.recordedRequests.get(alias)!.push(route.request());
         const body =
           response && typeof response === "object" && "fixture" in (response as any)
-            ? readFixture((response as { fixture: string }).fixture)
+            ? this.readFixture((response as { fixture: string }).fixture)
             : response;
         route.fulfill({ json: body });
       });
@@ -326,7 +336,7 @@ export class PlaywrightHelper {
     },
 
     openFileByFixture: async (fixture: string, buttonTestId: string, inputTestId: string) => {
-      const content = JSON.stringify(readFixture(fixture));
+      const content = JSON.stringify(this.readFixture(fixture));
       const hasPicker = await this.page.evaluate(() => "showOpenFilePicker" in window);
       if (hasPicker) {
         await this.page.evaluate((fileContent) => {
@@ -345,7 +355,7 @@ export class PlaywrightHelper {
     },
 
     dropFileByFixture: async (fixture: string, dropzoneTestId: string) => {
-      const content = JSON.stringify(readFixture(fixture));
+      const content = JSON.stringify(this.readFixture(fixture));
       const dataTransfer = await this.page.evaluateHandle((fileContent) => {
         const dt = new DataTransfer();
         dt.items.add(new File([fileContent], "example-style.json", { type: "application/json" }));

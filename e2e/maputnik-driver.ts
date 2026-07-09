@@ -1,11 +1,4 @@
-import {
-  Assertable,
-  PlaywrightHelper,
-  Query,
-  assertDeepNestedInclude,
-  readFixture,
-  retry,
-} from "./playwright-helper";
+import { Assertable, PlaywrightHelper } from "./playwright-helper";
 import { ModalDriver } from "./modal-driver";
 
 const baseUrl = "http://localhost:8888/";
@@ -22,9 +15,9 @@ export class MaputnikAssertable<T> extends Assertable<T> {
    */
   shouldEqualToStoredStyle = async () => {
     const expected = await (this.target as any);
-    await retry(async () => {
+    await this.retry(async () => {
       const stored = await this.getStoredStyle();
-      assertDeepNestedInclude(expected, stored);
+      this.assertDeepNestedInclude(expected, stored);
     });
   };
 }
@@ -202,14 +195,14 @@ export class MaputnikDriver {
 
     skipTargetLayerEditor: () => this.helper.get.elementByTestId("skip-target-layer-editor"),
 
-    styleFromLocalStorage: () => new Query<any>(() => this.readStoredStyle()),
+    styleFromLocalStorage: () => this.helper.query(() => this.readStoredStyle()),
 
-    fixture: (name: string) => Promise.resolve(readFixture(name)),
+    fixture: (name: string) => Promise.resolve(this.helper.readFixture(name)),
 
     responseBody: (alias: string) => {
       // Our mocked style responses always return the matching fixture.
       const name = alias.endsWith(".json") ? alias : `${alias}.json`;
-      return Promise.resolve(readFixture(name));
+      return Promise.resolve(this.helper.readFixture(name));
     },
 
     exampleFileUrl: () => baseUrl + "example-style.json",
