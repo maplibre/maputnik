@@ -1,11 +1,11 @@
-import { test, expect } from "./fixtures";
+import { test, expect, describe, beforeEach } from "./fixtures";
 import { MaputnikDriver } from "./maputnik-driver";
 import tokens from "../src/config/tokens.json" with { type: "json" };
 
-test.describe("modals", () => {
+describe("modals", () => {
   const { given, get, when, then } = new MaputnikDriver();
 
-  test.beforeEach(async () => {
+  beforeEach(async () => {
     await given.setupMockBackedResponses();
     // Load a style first so it is persisted to localStorage, then reset the URL
     // to the root (no style param) — several tests read the stored style.
@@ -13,8 +13,8 @@ test.describe("modals", () => {
     await when.setStyle("");
   });
 
-  test.describe("open", () => {
-    test.beforeEach(async () => {
+  describe("open", () => {
+    beforeEach(async () => {
       await when.click("nav:open");
     });
 
@@ -33,8 +33,8 @@ test.describe("modals", () => {
       await then(get.fixture("example-style.json")).shouldEqualToStoredStyle();
     });
 
-    test.describe("when click open url", () => {
-      test.beforeEach(async () => {
+    describe("when click open url", () => {
+      beforeEach(async () => {
         const styleFileUrl = get.exampleFileUrl();
 
         await when.setValue("modal:open.url.input", styleFileUrl);
@@ -47,7 +47,7 @@ test.describe("modals", () => {
     });
   });
 
-  test.describe("shortcuts", () => {
+  describe("shortcuts", () => {
     test("open/close", async () => {
       await when.setStyle("");
       await when.typeKeys("?");
@@ -56,8 +56,8 @@ test.describe("modals", () => {
     });
   });
 
-  test.describe("export", () => {
-    test.beforeEach(async () => {
+  describe("export", () => {
+    beforeEach(async () => {
       await when.click("nav:export");
     });
 
@@ -70,8 +70,8 @@ test.describe("modals", () => {
     test.skip("download", () => {});
   });
 
-  test.describe("sources", () => {
-    test.beforeEach(async () => {
+  describe("sources", () => {
+    beforeEach(async () => {
       await when.setStyle("layer");
       await when.click("nav:sources");
     });
@@ -126,7 +126,7 @@ test.describe("modals", () => {
     });
   });
 
-  test.describe("inspect", () => {
+  describe("inspect", () => {
     test("toggle", async () => {
       // There is no assertion in this test
       await when.setStyle("geojson");
@@ -134,13 +134,13 @@ test.describe("modals", () => {
     });
   });
 
-  test.describe("style settings", () => {
-    test.beforeEach(async () => {
+  describe("style settings", () => {
+    beforeEach(async () => {
       await when.click("nav:settings");
     });
 
-    test.describe("when click name filed spec information", () => {
-      test.beforeEach(async () => {
+    describe("when click name filed spec information", () => {
+      beforeEach(async () => {
         await when.click("field-doc-button-Name");
       });
 
@@ -149,8 +149,8 @@ test.describe("modals", () => {
       });
     });
 
-    test.describe("when set name and click owner", () => {
-      test.beforeEach(async () => {
+    describe("when set name and click owner", () => {
+      beforeEach(async () => {
         await when.setValue("modal:settings.name", "foobar");
         await when.click("modal:settings.owner");
         await when.wait(200);
@@ -163,8 +163,8 @@ test.describe("modals", () => {
       });
     });
 
-    test.describe("when set owner and click name", () => {
-      test.beforeEach(async () => {
+    describe("when set owner and click name", () => {
+      beforeEach(async () => {
         await when.setValue("modal:settings.owner", "foobar");
         await when.click("modal:settings.name");
         await when.wait(200);
@@ -299,8 +299,8 @@ test.describe("modals", () => {
     });
   });
 
-  test.describe("add layer", () => {
-    test.beforeEach(async () => {
+  describe("add layer", () => {
+    beforeEach(async () => {
       await when.setStyle("layer");
       await when.modal.open();
     });
@@ -313,12 +313,12 @@ test.describe("modals", () => {
     });
   });
 
-  test.describe("sources placeholder", () => {
+  describe("sources placeholder", () => {
     test.skip("toggle", () => {});
   });
 
-  test.describe("global state", () => {
-    test.beforeEach(async () => {
+  describe("global state", () => {
+    beforeEach(async () => {
       await when.click("nav:global-state");
     });
 
@@ -374,7 +374,7 @@ test.describe("modals", () => {
     });
   });
 
-  test.describe("error panel", () => {
+  describe("error panel", () => {
     test("not visible when no errors", async () => {
       await then(get.element("maputnik-message-panel-error")).shouldNotExist();
     });
@@ -389,7 +389,7 @@ test.describe("modals", () => {
     });
   });
 
-  test.describe("Handle localStorage QuotaExceededError", () => {
+  describe("Handle localStorage QuotaExceededError", () => {
     test("handles quota exceeded error when opening style from URL", async ({ page }) => {
       // Clear localStorage to start fresh
       await when.clearLocalStorage();

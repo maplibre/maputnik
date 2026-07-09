@@ -1,18 +1,18 @@
-import { test } from "./fixtures";
+import { beforeEach, describe, test } from "./fixtures";
 import { MaputnikDriver } from "./maputnik-driver";
 
-test.describe("layers list", () => {
+describe("layers list", () => {
   const { given, get, when, then } = new MaputnikDriver();
 
-  test.beforeEach(async () => {
+  beforeEach(async () => {
     await given.setupMockBackedResponses();
     await when.setStyle("both");
     await when.modal.open();
   });
 
-  test.describe("ops", () => {
+  describe("ops", () => {
     let id: string;
-    test.beforeEach(async () => {
+    beforeEach(async () => {
       id = await when.modal.fillLayers({ type: "background" });
     });
 
@@ -22,8 +22,8 @@ test.describe("layers list", () => {
       });
     });
 
-    test.describe("when clicking delete", () => {
-      test.beforeEach(async () => {
+    describe("when clicking delete", () => {
+      beforeEach(async () => {
         await when.click("layer-list-item:" + id + ":delete");
       });
       test("should empty layers in local storage", async () => {
@@ -33,8 +33,8 @@ test.describe("layers list", () => {
       });
     });
 
-    test.describe("when clicking duplicate", () => {
-      test.beforeEach(async () => {
+    describe("when clicking duplicate", () => {
+      beforeEach(async () => {
         await when.click("layer-list-item:" + id + ":copy");
       });
       test("should add copy layer in local storage", async () => {
@@ -47,8 +47,8 @@ test.describe("layers list", () => {
       });
     });
 
-    test.describe("when clicking hide", () => {
-      test.beforeEach(async () => {
+    describe("when clicking hide", () => {
+      beforeEach(async () => {
         await when.click("layer-list-item:" + id + ":toggle-visibility");
       });
 
@@ -58,8 +58,8 @@ test.describe("layers list", () => {
         });
       });
 
-      test.describe("when clicking show", () => {
-        test.beforeEach(async () => {
+      describe("when clicking show", () => {
+        beforeEach(async () => {
           await when.click("layer-list-item:" + id + ":toggle-visibility");
         });
 
@@ -70,9 +70,9 @@ test.describe("layers list", () => {
         });
       });
 
-      test.describe("when selecting a layer", () => {
+      describe("when selecting a layer", () => {
         let secondId: string;
-        test.beforeEach(async () => {
+        beforeEach(async () => {
           await when.modal.open();
           secondId = await when.modal.fillLayers({
             id: "second-layer",
@@ -89,7 +89,7 @@ test.describe("layers list", () => {
     });
   });
 
-  test.describe("background", () => {
+  describe("background", () => {
     test("add", async () => {
       const id = await when.modal.fillLayers({ type: "background" });
       await then(get.styleFromLocalStorage()).shouldDeepNestedInclude({
@@ -100,7 +100,7 @@ test.describe("layers list", () => {
     test.skip("modify", () => {});
   });
 
-  test.describe("fill", () => {
+  describe("fill", () => {
     test("add", async () => {
       const id = await when.modal.fillLayers({ type: "fill", layer: "example" });
       await then(get.styleFromLocalStorage()).shouldDeepNestedInclude({
@@ -112,7 +112,7 @@ test.describe("layers list", () => {
     test.skip("change source", () => {});
   });
 
-  test.describe("line", () => {
+  describe("line", () => {
     test("add", async () => {
       const id = await when.modal.fillLayers({ type: "line", layer: "example" });
       await then(get.styleFromLocalStorage()).shouldDeepNestedInclude({
@@ -151,7 +151,7 @@ test.describe("layers list", () => {
     });
   });
 
-  test.describe("symbol", () => {
+  describe("symbol", () => {
     test("add", async () => {
       const id = await when.modal.fillLayers({ type: "symbol", layer: "example" });
       await then(get.styleFromLocalStorage()).shouldDeepNestedInclude({
@@ -189,7 +189,7 @@ test.describe("layers list", () => {
     });
   });
 
-  test.describe("raster", () => {
+  describe("raster", () => {
     test("add", async () => {
       const id = await when.modal.fillLayers({ type: "raster", layer: "raster" });
       await then(get.styleFromLocalStorage()).shouldDeepNestedInclude({
@@ -198,7 +198,7 @@ test.describe("layers list", () => {
     });
   });
 
-  test.describe("circle", () => {
+  describe("circle", () => {
     test("add", async () => {
       const id = await when.modal.fillLayers({ type: "circle", layer: "example" });
       await then(get.styleFromLocalStorage()).shouldDeepNestedInclude({
@@ -207,7 +207,7 @@ test.describe("layers list", () => {
     });
   });
 
-  test.describe("fill extrusion", () => {
+  describe("fill extrusion", () => {
     test("add", async () => {
       const id = await when.modal.fillLayers({ type: "fill-extrusion", layer: "example" });
       await then(get.styleFromLocalStorage()).shouldDeepNestedInclude({
@@ -216,7 +216,7 @@ test.describe("layers list", () => {
     });
   });
 
-  test.describe("hillshade", () => {
+  describe("hillshade", () => {
     test("add", async () => {
       const id = await when.modal.fillLayers({ type: "hillshade", layer: "example" });
       await then(get.styleFromLocalStorage()).shouldDeepNestedInclude({
@@ -267,7 +267,7 @@ test.describe("layers list", () => {
     });
   });
 
-  test.describe("color-relief", () => {
+  describe("color-relief", () => {
     test("add", async () => {
       const id = await when.modal.fillLayers({ type: "color-relief", layer: "example" });
       await then(get.styleFromLocalStorage()).shouldDeepNestedInclude({
@@ -285,7 +285,7 @@ test.describe("layers list", () => {
     });
   });
 
-  test.describe("groups", () => {
+  describe("groups", () => {
     test("simple", async () => {
       await when.setStyle("geojson");
 
@@ -308,7 +308,7 @@ test.describe("layers list", () => {
     });
   });
 
-  test.describe("drag and drop", () => {
+  describe("drag and drop", () => {
     test("move layer should update local storage", async () => {
       await when.modal.open();
       const firstId = await when.modal.fillLayers({ id: "a", type: "background" });
@@ -329,7 +329,7 @@ test.describe("layers list", () => {
     });
   });
 
-  test.describe("sticky header", () => {
+  describe("sticky header", () => {
     test("should keep header visible when scrolling layer list", async () => {
       // Setup: Create multiple layers to enable scrolling
       for (let i = 0; i < 20; i++) {

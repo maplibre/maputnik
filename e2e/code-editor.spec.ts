@@ -1,10 +1,10 @@
-import { test } from "./fixtures";
+import { beforeEach, describe, test } from "./fixtures";
 import { MaputnikDriver } from "./maputnik-driver";
 
-test.describe("code editor", () => {
+describe("code editor", () => {
   const { given, get, when, then } = new MaputnikDriver();
 
-  test.beforeEach(async () => {
+  beforeEach(async () => {
     await given.setupMockBackedResponses();
     await when.setStyle("both");
   });

@@ -1,13 +1,13 @@
-import { test } from "./fixtures";
+import { beforeEach, describe, test } from "./fixtures";
 import { MaputnikDriver } from "./maputnik-driver";
 
-test.describe("history", () => {
+describe("history", () => {
   const { given, get, when, then } = new MaputnikDriver();
 
   const undoKeyCombo = process.platform === "darwin" ? "{meta}z" : "{ctrl}z";
   const redoKeyCombo = process.platform === "darwin" ? "{meta}{shift}z" : "{ctrl}y";
 
-  test.beforeEach(async () => {
+  beforeEach(async () => {
     await given.setupMockBackedResponses();
     await when.setStyle("both");
   });

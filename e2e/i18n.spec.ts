@@ -1,15 +1,15 @@
-import { test } from "./fixtures";
+import { beforeEach, describe, test } from "./fixtures";
 import { MaputnikDriver } from "./maputnik-driver";
 
-test.describe("i18n", () => {
+describe("i18n", () => {
   const { given, get, when, then } = new MaputnikDriver();
 
-  test.beforeEach(async () => {
+  beforeEach(async () => {
     await given.setupMockBackedResponses();
     await when.setStyle("both");
   });
 
-  test.describe("language detector", () => {
+  describe("language detector", () => {
     test("English", async () => {
       await when.visit("?lng=en");
       await then(get.elementByTestId("maputnik-lang-select")).shouldHaveValue("en");
@@ -21,8 +21,8 @@ test.describe("i18n", () => {
     });
   });
 
-  test.describe("language switcher", () => {
-    test.beforeEach(async () => {
+  describe("language switcher", () => {
+    beforeEach(async () => {
       await when.setStyle("layer");
     });
 

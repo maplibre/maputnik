@@ -1,4 +1,4 @@
-import { test as base, expect, type Page } from "@playwright/test";
+import { test, expect, type Page } from "@playwright/test";
 import { readCoverage, writeCoverage } from "./coverage";
 
 let activePage: Page | undefined;
@@ -22,7 +22,7 @@ export function recordCoverageChunk(chunk: unknown): void {
  * MaputnikDriver, auto-accepts confirm dialogs, and writes the istanbul
  * coverage collected during the test to `.nyc_output`.
  */
-export const test = base.extend<{ maputnikPage: void }>({
+const extendedTest = test.extend<{ maputnikPage: void }>({
   maputnikPage: [
     async ({ page }, use, testInfo) => {
       activePage = page;
@@ -43,4 +43,11 @@ export const test = base.extend<{ maputnikPage: void }>({
   ],
 });
 
-export { expect };
+const describe = extendedTest.describe;
+const beforeEach = extendedTest.beforeEach;
+export { 
+  expect,
+  describe,
+  extendedTest as test,
+  beforeEach,
+};

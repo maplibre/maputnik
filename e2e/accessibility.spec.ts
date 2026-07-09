@@ -1,16 +1,16 @@
-import { test } from "./fixtures";
+import { test, describe, beforeEach } from "./fixtures";
 import { MaputnikDriver } from "./maputnik-driver";
 
-test.describe("accessibility", () => {
+describe("accessibility", () => {
   const { given, get, when, then } = new MaputnikDriver();
 
-  test.beforeEach(async () => {
+  beforeEach(async () => {
     await given.setupMockBackedResponses();
     await when.setStyle("both");
   });
 
-  test.describe("skip links", () => {
-    test.beforeEach(async () => {
+  describe("skip links", () => {
+    beforeEach(async () => {
       await when.setStyle("layer");
     });
 

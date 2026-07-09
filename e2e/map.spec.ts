@@ -1,15 +1,15 @@
-import { test } from "./fixtures";
+import { beforeEach, describe, test } from "./fixtures";
 import { MaputnikDriver } from "./maputnik-driver";
 
-test.describe("map", () => {
+describe("map", () => {
   const { given, get, when, then } = new MaputnikDriver();
 
-  test.beforeEach(async () => {
+  beforeEach(async () => {
     await given.setupMockBackedResponses();
     await when.setStyle("both");
   });
 
-  test.describe("zoom level", () => {
+  describe("zoom level", () => {
     test("via url", async () => {
       const zoomLevel = 12.37;
       await when.setStyle("geojson", zoomLevel);
@@ -38,14 +38,14 @@ test.describe("map", () => {
     });
   });
 
-  test.describe("search", () => {
+  describe("search", () => {
     test("should exist", async () => {
       await then(get.searchControl()).shouldBeVisible();
     });
   });
 
-  test.describe("popup", () => {
-    test.beforeEach(async () => {
+  describe("popup", () => {
+    beforeEach(async () => {
       await when.setStyle("rectangles");
       await then(get.locationHash()).shouldExist();
     });

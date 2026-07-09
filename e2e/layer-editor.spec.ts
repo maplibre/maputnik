@@ -1,11 +1,11 @@
 import { v1 as uuid } from "uuid";
-import { test } from "./fixtures";
+import { beforeEach, describe, test } from "./fixtures";
 import { MaputnikDriver } from "./maputnik-driver";
 
-test.describe("layer editor", () => {
+describe("layer editor", () => {
   const { given, get, when, then } = new MaputnikDriver();
 
-  test.beforeEach(async () => {
+  beforeEach(async () => {
     await given.setupMockBackedResponses();
     await when.setStyle("both");
     await when.modal.open();
@@ -41,7 +41,7 @@ test.describe("layer editor", () => {
     });
   });
 
-  test.describe("source", () => {
+  describe("source", () => {
     test("should show error when the source is invalid", async () => {
       await when.modal.fillLayers({
         type: "circle",
@@ -53,10 +53,10 @@ test.describe("layer editor", () => {
     });
   });
 
-  test.describe("min-zoom", () => {
+  describe("min-zoom", () => {
     let bgId: string;
 
-    test.beforeEach(async () => {
+    beforeEach(async () => {
       bgId = await createBackground();
       await when.click("layer-list-item:background:" + bgId);
       await when.setValue("min-zoom.input-text", "1");
@@ -78,10 +78,10 @@ test.describe("layer editor", () => {
     });
   });
 
-  test.describe("max-zoom", () => {
+  describe("max-zoom", () => {
     let bgId: string;
 
-    test.beforeEach(async () => {
+    beforeEach(async () => {
       bgId = await createBackground();
       await when.click("layer-list-item:background:" + bgId);
       await when.setValue("max-zoom.input-text", "1");
@@ -95,11 +95,11 @@ test.describe("layer editor", () => {
     });
   });
 
-  test.describe("comments", () => {
+  describe("comments", () => {
     let bgId: string;
     const comment = "42";
 
-    test.beforeEach(async () => {
+    beforeEach(async () => {
       bgId = await createBackground();
       await when.click("layer-list-item:background:" + bgId);
       await when.setValue("layer-comment.input", comment);
@@ -118,8 +118,8 @@ test.describe("layer editor", () => {
       });
     });
 
-    test.describe("when unsetting", () => {
-      test.beforeEach(async () => {
+    describe("when unsetting", () => {
+      beforeEach(async () => {
         await when.clear("layer-comment.input");
         await when.click("min-zoom.input-text");
       });
@@ -132,9 +132,9 @@ test.describe("layer editor", () => {
     });
   });
 
-  test.describe("color", () => {
+  describe("color", () => {
     let bgId: string;
-    test.beforeEach(async () => {
+    beforeEach(async () => {
       bgId = await createBackground();
       await when.click("layer-list-item:background:" + bgId);
       await when.click("spec-field:background-color");
@@ -147,9 +147,9 @@ test.describe("layer editor", () => {
     });
   });
 
-  test.describe("opacity", () => {
+  describe("opacity", () => {
     let bgId: string;
-    test.beforeEach(async () => {
+    beforeEach(async () => {
       bgId = await createBackground();
       await when.click("layer-list-item:background:" + bgId);
       await when.type("spec-field-input:background-opacity", "0.");
@@ -165,12 +165,12 @@ test.describe("layer editor", () => {
     });
   });
 
-  test.describe("filter", () => {
+  describe("filter", () => {
     test.skip("expand/collapse", () => {});
     test.skip("compound filter", () => {});
   });
 
-  test.describe("layout", () => {
+  describe("layout", () => {
     test("text-font", async () => {
       await when.setStyle("font");
       await when.collapseGroupInLayerEditor();
@@ -184,14 +184,14 @@ test.describe("layer editor", () => {
     });
   });
 
-  test.describe("paint", () => {
+  describe("paint", () => {
     test.skip("expand/collapse", () => {});
     test.skip("color", () => {});
     test.skip("pattern", () => {});
     test.skip("opacity", () => {});
   });
 
-  test.describe("json-editor", () => {
+  describe("json-editor", () => {
     test("add", async () => {
       const id = await when.modal.fillLayers({
         type: "circle",
@@ -227,7 +227,7 @@ test.describe("layer editor", () => {
     });
   });
 
-  test.describe("sticky header", () => {
+  describe("sticky header", () => {
     test("should keep layer header visible when scrolling properties", async () => {
       // Setup: Create a layer with many properties (e.g. symbol layer)
       await when.modal.fillLayers({
