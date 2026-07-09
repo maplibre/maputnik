@@ -17,7 +17,7 @@ export function readFixture(name: string): any {
   return JSON.parse(contents);
 }
 
-/** Retries `assertion` until it stops throwing, mirroring Cypress' retry-ability. */
+/** Retries `assertion` until it stops throwing */
 export async function retry(
   assertion: () => Promise<void> | void,
   timeout = 10000,
@@ -39,7 +39,7 @@ export async function retry(
 
 /**
  * A lazily-evaluated value (e.g. the style in localStorage). Assertions on a
- * Query re-read the value until they pass, mirroring Cypress' retry-ability.
+ * Query re-read the value until they pass.
  */
 export class Query<T> {
   readonly __query = true as const;
@@ -139,10 +139,6 @@ export class Assertable<T> {
     this.assertValue((actual) => assertDeepNestedInclude(actual, value));
 }
 
-/**
- * Translates a Cypress-style key sequence (e.g. "{meta}z", "{esc}", "0.") into
- * Playwright keyboard actions on the currently focused element.
- */
 export async function typeSequence(page: Page, text: string): Promise<void> {
   const tokens = text.match(/\{[^}]+\}|[^{]+/g) ?? [];
   const modifierMap: Record<string, string> = { meta: "Meta", ctrl: "Control", shift: "Shift", alt: "Alt" };
@@ -187,15 +183,12 @@ async function centerOf(locator: Locator): Promise<{ x: number; y: number }> {
 }
 
 /**
- * A thin, framework-level wrapper over Playwright — the equivalent of the
- * `CypressHelper` the suite used before, with the gaps it left (real-events
- * style drag/drop, file uploads, key sequences, …) filled in here since we own
- * this helper. Domain concepts live in `MaputnikDriver`, which builds on it.
+ * This is where all plywright-specific test helpers live. 
+ * It is used by the MaputnikDriver to implement the Maputnik-specific test helpers.
  */
 export class PlaywrightHelper {
   private readonly recordedRequests = new Map<string, Request[]>();
 
-  /** The page for the currently running test (resolved lazily, like Cypress' `cy`). */
   private get page(): Page {
     return currentPage();
   }
@@ -300,9 +293,8 @@ export class PlaywrightHelper {
 
     type: async (testId: string, text: string) => {
       await this.testId(testId).focus();
-      // Place the caret at the start of the field (matching how the original
-      // Cypress suite typed), so a leading "{backspace}" is a no-op rather than
-      // clearing an already-committed value.
+      // Place the caret at the start of the field, so a leading "{backspace}" 
+      // is a no-op rather than clearing an already-committed value.
       await this.page.keyboard.press("Home");
       await typeSequence(this.page, text);
     },

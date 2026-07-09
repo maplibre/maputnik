@@ -49,7 +49,6 @@ export class MaputnikDriver {
   private readonly helper = new PlaywrightHelper();
   private readonly modalDriver = new ModalDriver(this);
 
-  /** The page for the currently running test (resolved lazily, like Cypress' `cy`). */
   private get page(): Page {
     return currentPage();
   }
