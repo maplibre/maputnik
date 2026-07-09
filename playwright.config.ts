@@ -9,8 +9,8 @@ const baseURL = process.env.E2E_BASE_URL ?? "http://localhost:8888/";
 export default defineConfig({
   testDir: "./e2e",
   testMatch: "**/*.spec.ts",
-  globalSetup: "./e2e/e2e-setup.ts",
-  globalTeardown: "./e2e/e2e-teardown.ts",
+  globalSetup: "./e2e/utils/e2e-setup.ts",
+  globalTeardown: "./e2e/utils/e2e-teardown.ts",
   fullyParallel: true,
   forbidOnly: isCI,
   retries: isCI ? 2 : 0,
