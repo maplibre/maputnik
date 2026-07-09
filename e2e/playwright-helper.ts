@@ -183,7 +183,7 @@ async function centerOf(locator: Locator): Promise<{ x: number; y: number }> {
 }
 
 /**
- * This is where all plywright-specific test helpers live. 
+ * This is where all plywright-specific test helpers live.
  * It is used by the MaputnikDriver to implement the Maputnik-specific test helpers.
  */
 export class PlaywrightHelper {
@@ -293,7 +293,7 @@ export class PlaywrightHelper {
 
     type: async (testId: string, text: string) => {
       await this.testId(testId).focus();
-      // Place the caret at the start of the field, so a leading "{backspace}" 
+      // Place the caret at the start of the field, so a leading "{backspace}"
       // is a no-op rather than clearing an already-committed value.
       await this.page.keyboard.press("Home");
       await typeSequence(this.page, text);
