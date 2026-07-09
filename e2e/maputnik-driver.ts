@@ -235,13 +235,8 @@ export class MaputnikDriver {
       // Fixtures are read directly from disk in Playwright, no registration needed.
     },
 
-    intercept: async (url: string, alias: string, _method = "GET") => {
+    intercept: async (pattern: RegExp, alias: string, _method = "GET") => {
       this.recordedRequests.set(alias, []);
-      // Convert the Cypress-style glob (which may contain "?" in a query string)
-      // into a regex so query parameters match reliably.
-      const pattern = new RegExp(
-        "^" + url.replace(/[.+^${}()|[\]\\?]/g, "\\$&").replace(/\*/g, ".*") + "$"
-      );
       await this.page.route(pattern, (route) => {
         this.recordedRequests.get(alias)!.push(route.request());
         route.continue();
