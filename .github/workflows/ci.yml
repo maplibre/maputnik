@@ -164,8 +164,3 @@ jobs:
         run: npm run test-e2e
         env:
           E2E_NO_WEBSERVER: "1"
-      - name: Upload coverage reports to Codecov
-        uses: codecov/codecov-action@fb8b3582c8e4def4969c97caa2f19720cb33a72f # v7.0.0
-        with:
-          files: ${{ github.workspace }}/coverage/coverage-final.json
-          verbose: true
