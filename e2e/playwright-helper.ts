@@ -202,6 +202,9 @@ export class PlaywrightHelper {
     return new Query<T>(getter);
   }
 
+  /** Entry point for fluent assertions over a Locator or a value/Query. */
+  public then = <T>(target: T): Assertable<T> => new Assertable(target);
+
   public given = {
     intercept: async (pattern: RegExp, alias: string, _method = "GET") => {
       this.recordedRequests.set(alias, []);

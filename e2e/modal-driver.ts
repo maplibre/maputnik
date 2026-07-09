@@ -1,12 +1,12 @@
 import { v1 as uuid } from "uuid";
-import type { MaputnikDriver } from "./maputnik-driver";
+import { PlaywrightHelper } from "./playwright-helper";
 
 export class ModalDriver {
-  constructor(private readonly driver: MaputnikDriver) {}
+  private readonly helper = new PlaywrightHelper();
 
   public when = {
     fillLayers: async (opts: { type: string; layer?: string; id?: string }) => {
-      const { when, get, then } = this.driver;
+      const { when, get, then } = this.helper;
       const id = opts.id ?? `${opts.type}:${uuid()}`;
 
       await when.select("add-layer.layer-type.select", opts.type);
@@ -28,11 +28,11 @@ export class ModalDriver {
     },
 
     open: async () => {
-      await this.driver.when.click("layer-list:add-layer");
+      await this.helper.when.click("layer-list:add-layer");
     },
 
     close: async (key: string) => {
-      await this.driver.when.click(key + ".close-modal");
+      await this.helper.when.click(key + ".close-modal");
     },
   };
 }

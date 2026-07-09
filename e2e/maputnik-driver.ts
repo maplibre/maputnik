@@ -1,4 +1,4 @@
-import { Assertable, PlaywrightHelper } from "./playwright-helper";
+import { PlaywrightHelper } from "./playwright-helper";
 import { ModalDriver } from "./modal-driver";
 
 const baseUrl = "http://localhost:8888/";
@@ -12,9 +12,9 @@ const isMac = process.platform === "darwin";
  */
 export class MaputnikDriver {
   private readonly helper = new PlaywrightHelper();
-  private readonly modalDriver = new ModalDriver(this);
+  private readonly modalDriver = new ModalDriver();
 
-  then = <T>(target: T) => new Assertable(target);
+  then = this.helper.then;
 
   /** Reads the maputnik style currently persisted in localStorage. */
   private async readStoredStyle(): Promise<any> {
