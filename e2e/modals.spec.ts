@@ -388,7 +388,7 @@ describe("modals", () => {
   });
 
   describe("Handle localStorage QuotaExceededError", () => {
-    test("handles quota exceeded error when opening style from URL", async ({ page }) => {
+    test("handles quota exceeded error when opening style from URL", async () => {
       // Clear localStorage to start fresh
       await when.clearLocalStorage();
       await when.fillLocalStorage();
