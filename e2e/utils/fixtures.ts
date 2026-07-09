@@ -41,7 +41,8 @@ export function writeCoverage(coverage: unknown, id: string): void {
 }
 
 /** Records a coverage snapshot (called before navigations, which reset __coverage__). */
-export function recordCoverageChunk(chunk: unknown): void {
+export async function recordCoverageChunk(page: Page): Promise<void> {
+  const chunk = await readCoverage(page);
   if (chunk) coverageChunks.push(chunk);
 }
 

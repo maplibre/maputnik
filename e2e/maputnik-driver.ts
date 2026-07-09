@@ -2,7 +2,6 @@ import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { expect, type Locator, type Page, type Request } from "@playwright/test";
-import { readCoverage } from "./coverage";
 import { currentPage, recordCoverageChunk } from "./utils/fixtures";
 import { ModalDriver } from "./modal-driver";
 
@@ -297,8 +296,7 @@ export class MaputnikDriver {
     modal: this.modalDriver.when,
 
     visit: async (url: string) => {
-      // Snapshot coverage before navigating, since a full page load resets it.
-      recordCoverageChunk(await readCoverage(this.page));
+      await recordCoverageChunk(this.page);
       const target = url.startsWith("http") ? url : new URL(url, baseUrl).toString();
       await this.page.goto(target);
     },
