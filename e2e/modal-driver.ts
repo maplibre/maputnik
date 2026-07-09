@@ -31,10 +31,6 @@ export class ModalDriver {
     },
 
     open: async () => {
-      // No-op when the add-layer modal is already open (some specs call open()
-      // both in a beforeEach and at the start of the test body).
-      const modal = this.driver.get.elementByTestId("modal:add-layer").first();
-      if (await modal.isVisible()) return;
       await this.driver.when.click("layer-list:add-layer");
     },
 

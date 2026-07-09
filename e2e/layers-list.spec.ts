@@ -121,7 +121,6 @@ describe("layers list", () => {
     });
 
     test("groups", async () => {
-      await when.modal.open();
       const id1 = await when.modal.fillLayers({ id: "aa", type: "line", layer: "example" });
 
       await when.modal.open();
@@ -310,7 +309,6 @@ describe("layers list", () => {
 
   describe("drag and drop", () => {
     test("move layer should update local storage", async () => {
-      await when.modal.open();
       const firstId = await when.modal.fillLayers({ id: "a", type: "background" });
       await when.modal.open();
       const secondId = await when.modal.fillLayers({ id: "b", type: "background" });
@@ -333,7 +331,8 @@ describe("layers list", () => {
     test("should keep header visible when scrolling layer list", async () => {
       // Setup: Create multiple layers to enable scrolling
       for (let i = 0; i < 20; i++) {
-        await when.modal.open();
+        // The modal is already open (beforeEach) for the first layer.
+        if (i > 0) await when.modal.open();
         await when.modal.fillLayers({ id: `layer-${i}`, type: "background" });
       }
 
