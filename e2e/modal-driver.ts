@@ -1,5 +1,4 @@
 import { v1 as uuid } from "uuid";
-import { expect } from "@playwright/test";
 import type { MaputnikDriver } from "./maputnik-driver";
 
 export class ModalDriver {
@@ -7,7 +6,7 @@ export class ModalDriver {
 
   public when = {
     fillLayers: async (opts: { type: string; layer?: string; id?: string }) => {
-      const { when, get } = this.driver;
+      const { when, get, then } = this.driver;
       const id = opts.id ?? `${opts.type}:${uuid()}`;
 
       await when.select("add-layer.layer-type.select", opts.type);
@@ -19,7 +18,7 @@ export class ModalDriver {
         await input.fill(opts.layer);
         // The source input is a controlled downshift combobox; wait for React to
         // settle on the typed value before submitting.
-        await expect(input).toHaveValue(opts.layer);
+        await then(input).shouldHaveValue(opts.layer);
         // Close the autocomplete menu so it does not intercept the add button.
         await get.elementByTestId("add-layer.layer-id.input").click();
       }

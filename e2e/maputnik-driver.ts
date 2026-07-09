@@ -1,5 +1,3 @@
-import { expect, type Page } from "@playwright/test";
-import { currentPage } from "./utils/fixtures";
 import {
   Assertable,
   PlaywrightHelper,
@@ -7,34 +5,25 @@ import {
   assertDeepNestedInclude,
   readFixture,
   retry,
-  typeSequence,
 } from "./playwright-helper";
 import { ModalDriver } from "./modal-driver";
 
 const baseUrl = "http://localhost:8888/";
 const isMac = process.platform === "darwin";
 
-/** Reads the maputnik style currently persisted in localStorage. */
-function styleFromLocalStorage(page: Page): Promise<any> {
-  return page.evaluate(() => {
-    const styleId = window.localStorage.getItem("maputnik:latest_style");
-    const styleItemKey = `maputnik:style:${styleId}`;
-    const styleItem = window.localStorage.getItem(styleItemKey);
-    if (!styleItem) throw new Error("Could not get styleItem from localStorage");
-    return JSON.parse(styleItem);
-  });
-}
-
 export class MaputnikAssertable<T> extends Assertable<T> {
+  constructor(target: T, private readonly getStoredStyle: () => Promise<any>) {
+    super(target);
+  }
+
   /**
    * Asserts that the object under test (a fixture / response body) contains every
    * top-level property of the style currently stored in localStorage.
    */
   shouldEqualToStoredStyle = async () => {
-    if (!this.page) throw new Error("shouldEqualToStoredStyle requires a page-bound assertable");
     const expected = await (this.target as any);
     await retry(async () => {
-      const stored = await styleFromLocalStorage(this.page!);
+      const stored = await this.getStoredStyle();
       assertDeepNestedInclude(expected, stored);
     });
   };
@@ -43,17 +32,22 @@ export class MaputnikAssertable<T> extends Assertable<T> {
 /**
  * The maputnik-specific driver. It builds on the generic {@link PlaywrightHelper}
  * — spreading its `given`/`when`/`get` primitives and adding domain concepts
- * (loading a style, the add-layer modal, the JSON editor, …).
+ * (loading a style, the add-layer modal, the JSON editor, …). All Playwright
+ * access goes through the helper; the driver never touches `page` directly.
  */
 export class MaputnikDriver {
   private readonly helper = new PlaywrightHelper();
   private readonly modalDriver = new ModalDriver(this);
 
-  private get page(): Page {
-    return currentPage();
-  }
+  then = <T>(target: T) => new MaputnikAssertable(target, () => this.readStoredStyle());
 
-  then = <T>(target: T) => new MaputnikAssertable(target, this.page);
+  /** Reads the maputnik style currently persisted in localStorage. */
+  private async readStoredStyle(): Promise<any> {
+    const styleId = await this.helper.get.localStorageItem("maputnik:latest_style");
+    const styleItem = await this.helper.get.localStorageItem(`maputnik:style:${styleId}`);
+    if (!styleItem) throw new Error("Could not get styleItem from localStorage");
+    return JSON.parse(styleItem);
+  }
 
   public given = {
     ...this.helper.given,
@@ -127,13 +121,12 @@ export class MaputnikDriver {
 
       const toolbarLink = this.helper.get.elementByTestId("toolbar:link");
       await toolbarLink.scrollIntoViewIfNeeded();
-      await expect(toolbarLink).toBeVisible();
+      await this.then(toolbarLink).shouldBeVisible();
     },
 
     openASecondStyleWithDifferentZoomAndCenter: async () => {
-      await this.page.getByRole("button", { name: "Open" }).click();
+      await this.helper.when.clickButtonByName("Open");
       const input = this.helper.get.elementByTestId("modal:open.url.input");
-      await expect(input).toBeEnabled();
       await input.fill("http://localhost:8888/example-style-with-zoom-5-and-center-50-50.json");
       await input.press("Enter");
     },
@@ -164,22 +157,21 @@ export class MaputnikDriver {
       await this.helper.get.element(".cm-line").first().click();
       // Move to the very start of the document so the inserted text breaks the
       // root JSON structure (CodeMirror auto-closes brackets otherwise).
-      await this.page.keyboard.press("Home");
-      await typeSequence(this.page, text);
+      await this.helper.when.typeKeys("{home}");
+      await this.helper.when.typeText(text);
     },
 
     setTextInJsonEditor: async (text: string) => {
-      const firstLine = this.helper.get.element(".cm-line").first();
-      await firstLine.click();
-      await this.page.keyboard.press(isMac ? "Meta+a" : "Control+a");
-      await this.page.keyboard.type(text);
+      await this.helper.get.element(".cm-line").first().click();
+      await this.helper.when.typeKeys("{selectall}");
+      await this.helper.when.typeText(text);
     },
 
     setValueToPropertyArray: async (selector: string, value: string) => {
-      const block = this.helper.get.elementByTestId(selector);
-      const input = block.locator(".maputnik-array-block-content input").last();
+      const input = this.helper.get.elementByTestId(selector).locator(".maputnik-array-block-content input").last();
       await input.focus();
-      await typeSequence(this.page, "{selectall}" + value);
+      await this.helper.when.typeKeys("{selectall}");
+      await this.helper.when.typeText(value);
     },
 
     addValueToPropertyArray: async (selector: string, value: string) => {
@@ -187,35 +179,14 @@ export class MaputnikDriver {
       await block.locator(".maputnik-array-add-value").click();
       const input = block.locator(".maputnik-array-block-content input").last();
       await input.focus();
-      await typeSequence(this.page, "{selectall}" + value);
+      await this.helper.when.typeKeys("{selectall}");
+      await this.helper.when.typeText(value);
     },
 
     waitForExampleFileResponse: () => this.helper.when.waitForResponse("example-style.json"),
 
     /** Fill localStorage until we get a QuotaExceededError. */
-    fillLocalStorage: async () => {
-      await this.page.evaluate(() => {
-        let chunkSize = 1000;
-        const chunk = new Array(chunkSize).join("x");
-        let index = 0;
-
-        // Keep adding until we hit the quota
-        for (;;) {
-          try {
-            const key = `maputnik:fill-${index++}`;
-            window.localStorage.setItem(key, chunk);
-          } catch (e: any) {
-            // Verify it's a quota error
-            if (e.name === "QuotaExceededError") {
-              if (chunkSize <= 1) return;
-              chunkSize /= 2;
-              continue;
-            }
-            throw e; // Unexpected error
-          }
-        }
-      });
-    },
+    fillLocalStorage: () => this.helper.when.fillLocalStorageUntilQuota("maputnik:fill-"),
   };
 
   public get = {
@@ -223,15 +194,15 @@ export class MaputnikDriver {
 
     isMac: () => isMac,
 
-    canvas: () => this.page.locator("canvas"),
+    canvas: () => this.helper.get.element("canvas"),
 
-    searchControl: () => this.page.locator(".maplibregl-ctrl-geocoder"),
+    searchControl: () => this.helper.get.element(".maplibregl-ctrl-geocoder"),
 
     skipTargetLayerList: () => this.helper.get.elementByTestId("skip-target-layer-list"),
 
     skipTargetLayerEditor: () => this.helper.get.elementByTestId("skip-target-layer-editor"),
 
-    styleFromLocalStorage: () => new Query<any>(() => styleFromLocalStorage(this.page)),
+    styleFromLocalStorage: () => new Query<any>(() => this.readStoredStyle()),
 
     fixture: (name: string) => Promise.resolve(readFixture(name)),
 

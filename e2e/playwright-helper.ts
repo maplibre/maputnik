@@ -80,7 +80,7 @@ export function assertDeepNestedInclude(actual: any, expected: Record<string, un
  * assertable extends.
  */
 export class Assertable<T> {
-  constructor(protected readonly target: T, protected readonly page?: Page) {}
+  constructor(protected readonly target: T) {}
 
   private locator(): Locator {
     if (!isLocator(this.target)) throw new Error("Expected a Locator target for this assertion");
@@ -238,6 +238,13 @@ export class PlaywrightHelper {
 
     typeKeys: (keys: string) => typeSequence(this.page, keys),
 
+    /** Types raw text into the focused element (no "{key}" sequence parsing). */
+    typeText: (text: string) => this.page.keyboard.type(text),
+
+    clickButtonByName: async (name: string) => {
+      await this.page.getByRole("button", { name }).click();
+    },
+
     click: async (testId: string, index = 0) => {
       // Documentation buttons are wrapped in a <label>/.maputnik-doc-target that
       // Playwright treats as intercepting the click; bypass the check for them.
@@ -360,10 +367,33 @@ export class PlaywrightHelper {
     },
 
     clearLocalStorage: () => this.page.evaluate(() => window.localStorage.clear()),
+
+    /** Writes to localStorage under `keyPrefix` until a QuotaExceededError is hit. */
+    fillLocalStorageUntilQuota: (keyPrefix: string) =>
+      this.page.evaluate((prefix) => {
+        let chunkSize = 1000;
+        const chunk = new Array(chunkSize).join("x");
+        let index = 0;
+        for (;;) {
+          try {
+            window.localStorage.setItem(`${prefix}${index++}`, chunk);
+          } catch (e: any) {
+            if (e.name === "QuotaExceededError") {
+              if (chunkSize <= 1) return;
+              chunkSize /= 2;
+              continue;
+            }
+            throw e; // Unexpected error
+          }
+        }
+      }, keyPrefix),
   };
 
   public get = {
     element: (selector: string) => this.page.locator(selector),
+
+    localStorageItem: (key: string) =>
+      this.page.evaluate((k) => window.localStorage.getItem(k), key),
 
     elementByTestId: (testId: string) => this.testId(testId),
 
