@@ -176,9 +176,7 @@ describe("layer editor", () => {
       await when.collapseGroupInLayerEditor();
       await when.collapseGroupInLayerEditor(1);
       await when.collapseGroupInLayerEditor(2);
-      await when.doWithin("spec-field:text-font", async () => {
-        await get.element(".maputnik-autocomplete input").first().click();
-      });
+      await when.clickWithin("spec-field:text-font", ".maputnik-autocomplete input");
       await then(get.element(".maputnik-autocomplete-menu-item")).shouldBeVisible();
       await then(get.element(".maputnik-autocomplete-menu-item")).shouldHaveLength(3);
     });
@@ -202,8 +200,7 @@ describe("layer editor", () => {
         layers: [{ id, type: "circle", source: "example" }],
       });
 
-      const sourceText = get.elementByText('"source"');
-      await sourceText.click();
+      await when.clickByText('"source"');
       await when.typeKeys('"');
 
       await then(get.element(".cm-lint-marker-error")).shouldExist();
@@ -239,9 +236,7 @@ describe("layer editor", () => {
       const header = get.elementByTestId("layer-editor.header");
       await then(header).shouldBeVisible();
 
-      await get
-        .element(".maputnik-scroll-container")
-        .evaluate((el) => el.scrollTo(0, el.scrollHeight));
+      await when.scrollToBottom(get.element(".maputnik-scroll-container"));
       await when.wait(200);
 
       await then(header).shouldBeVisible();

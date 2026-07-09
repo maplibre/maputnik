@@ -271,7 +271,7 @@ describe("modals", () => {
       await when.click("modal:settings.close-modal");
       await when.click("nav:open");
 
-      await get.elementByAttribute("aria-label", "MapTiler Basic").click();
+      await when.clickByAttribute("aria-label", "MapTiler Basic");
       await when.wait(1000);
       await when.click("nav:settings");
 

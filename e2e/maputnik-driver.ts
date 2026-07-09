@@ -203,7 +203,6 @@ async function centerOf(locator: Locator): Promise<{ x: number; y: number }> {
 }
 
 export class MaputnikDriver {
-  private scope: Locator | null = null;
   private readonly recordedRequests = new Map<string, Request[]>();
   private readonly modalDriver = new ModalDriver(this);
 
@@ -217,12 +216,8 @@ export class MaputnikDriver {
 
   // ---- Element access ------------------------------------------------------
 
-  private root(): Page | Locator {
-    return this.scope ?? this.page;
-  }
-
   private testId(testId: string): Locator {
-    return this.root().locator(testIdSelector(testId));
+    return this.page.locator(testIdSelector(testId));
   }
 
   then = <T>(target: T) => new MaputnikAssertable(target, this.page);
@@ -307,16 +302,6 @@ export class MaputnikDriver {
 
     typeKeys: (keys: string) => typeSequence(this.page, keys),
 
-    doWithin: async (selector: string, fn: () => Promise<void> | void) => {
-      const previous = this.scope;
-      this.scope = (previous ?? this.page).locator(testIdSelector(selector));
-      try {
-        await fn();
-      } finally {
-        this.scope = previous;
-      }
-    },
-
     click: async (testId: string, index = 0) => {
       // Documentation buttons are wrapped in a <label>/.maputnik-doc-target that
       // Playwright treats as intercepting the click; bypass the check for them.
@@ -345,7 +330,23 @@ export class MaputnikDriver {
     },
 
     selectWithin: async (selector: string, value: string) => {
-      await this.root().locator(testIdSelector(selector)).locator("select").selectOption(value);
+      await this.testId(selector).locator("select").selectOption(value);
+    },
+
+    clickWithin: async (parentTestId: string, selector: string) => {
+      await this.testId(parentTestId).locator(selector).first().click();
+    },
+
+    clickByText: async (text: string) => {
+      await this.page.getByText(text).click();
+    },
+
+    clickByAttribute: async (attribute: string, value: string) => {
+      await this.page.locator(`[${attribute}="${value}"]`).click();
+    },
+
+    scrollToBottom: async (element: Locator) => {
+      await element.evaluate((el) => el.scrollTo(0, el.scrollHeight));
     },
 
     setValue: async (testId: string, text: string) => {
@@ -364,20 +365,18 @@ export class MaputnikDriver {
     },
 
     setValueToPropertyArray: async (selector: string, value: string) => {
-      await this.when.doWithin(selector, async () => {
-        const input = this.root().locator(".maputnik-array-block-content input").last();
-        await input.focus();
-        await typeSequence(this.page, "{selectall}" + value);
-      });
+      const block = this.testId(selector);
+      const input = block.locator(".maputnik-array-block-content input").last();
+      await input.focus();
+      await typeSequence(this.page, "{selectall}" + value);
     },
 
     addValueToPropertyArray: async (selector: string, value: string) => {
-      await this.when.doWithin(selector, async () => {
-        await this.root().locator(".maputnik-array-add-value").click();
-        const input = this.root().locator(".maputnik-array-block-content input").last();
-        await input.focus();
-        await typeSequence(this.page, "{selectall}" + value);
-      });
+      const block = this.testId(selector);
+      await block.locator(".maputnik-array-add-value").click();
+      const input = block.locator(".maputnik-array-block-content input").last();
+      await input.focus();
+      await typeSequence(this.page, "{selectall}" + value);
     },
 
     setStyle: async (
@@ -525,14 +524,9 @@ export class MaputnikDriver {
   public get = {
     isMac: () => isMac,
 
-    element: (selector: string) => this.root().locator(selector),
+    element: (selector: string) => this.page.locator(selector),
 
     elementByTestId: (testId: string) => this.testId(testId),
-
-    elementByText: (text: string) => this.root().getByText(text),
-
-    elementByAttribute: (attribute: string, value: string) =>
-      this.root().locator(`[${attribute}="${value}"]`),
 
     canvas: () => this.page.locator("canvas"),
 

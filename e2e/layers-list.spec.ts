@@ -342,7 +342,7 @@ describe("layers list", () => {
       await then(header).shouldBeVisible();
 
       // Scroll the layer list container
-      await get.elementByTestId("layer-list").evaluate((el) => el.scrollTo(0, el.scrollHeight));
+      await when.scrollToBottom(get.elementByTestId("layer-list"));
       await when.wait(200);
       await then(header).shouldBeVisible();
       await then(get.elementByTestId("layer-list:add-layer")).shouldBeVisible();

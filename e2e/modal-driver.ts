@@ -14,14 +14,12 @@ export class ModalDriver {
       await when.type("add-layer.layer-id.input", id);
 
       if (opts.layer) {
-        await when.doWithin("add-layer.layer-source-block", async () => {
-          const input = get.element("input");
-          await input.click();
-          await input.fill(opts.layer!);
-          // The source input is a controlled downshift combobox; wait for React
-          // to settle on the typed value before submitting.
-          await expect(input).toHaveValue(opts.layer!);
-        });
+        const input = get.elementByTestId("add-layer.layer-source-block").locator("input");
+        await input.click();
+        await input.fill(opts.layer);
+        // The source input is a controlled downshift combobox; wait for React to
+        // settle on the typed value before submitting.
+        await expect(input).toHaveValue(opts.layer);
         // Close the autocomplete menu so it does not intercept the add button.
         await get.elementByTestId("add-layer.layer-id.input").click();
       }
