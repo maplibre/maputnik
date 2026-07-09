@@ -55,8 +55,6 @@ export class MaputnikDriver {
 
   then = <T>(target: T) => new MaputnikAssertable(target, this.page);
 
-  // ---- given ---------------------------------------------------------------
-
   public given = {
     ...this.helper.given,
 
@@ -89,8 +87,6 @@ export class MaputnikDriver {
       });
     },
   };
-
-  // ---- when ----------------------------------------------------------------
 
   public when = {
     ...this.helper.when,
@@ -221,8 +217,6 @@ export class MaputnikDriver {
       });
     },
   };
-
-  // ---- get -----------------------------------------------------------------
 
   public get = {
     ...this.helper.get,
