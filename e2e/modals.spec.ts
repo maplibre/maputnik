@@ -391,29 +391,7 @@ describe("modals", () => {
     test("handles quota exceeded error when opening style from URL", async ({ page }) => {
       // Clear localStorage to start fresh
       await when.clearLocalStorage();
-
-      // fill localStorage until we get a QuotaExceededError
-      await page.evaluate(() => {
-        let chunkSize = 1000;
-        const chunk = new Array(chunkSize).join("x");
-        let index = 0;
-
-        // Keep adding until we hit the quota
-        for (;;) {
-          try {
-            const key = `maputnik:fill-${index++}`;
-            window.localStorage.setItem(key, chunk);
-          } catch (e: any) {
-            // Verify it's a quota error
-            if (e.name === "QuotaExceededError") {
-              if (chunkSize <= 1) return;
-              chunkSize /= 2;
-              continue;
-            }
-            throw e; // Unexpected error
-          }
-        }
-      });
+      await when.fillLocalStorage();
 
       // Open the style via URL input
       await when.click("nav:open");

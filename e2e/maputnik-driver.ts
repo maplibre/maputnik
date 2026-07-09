@@ -493,6 +493,31 @@ export class MaputnikDriver {
     waitForExampleFileResponse: () => this.when.waitForResponse("example-style.json"),
 
     clearLocalStorage: () => this.page.evaluate(() => window.localStorage.clear()),
+
+    /** fill localStorage until we get a QuotaExceededError */
+    fillLocalStorage: async () => {
+      await this.page.evaluate(() => {
+        let chunkSize = 1000;
+        const chunk = new Array(chunkSize).join("x");
+        let index = 0;
+
+        // Keep adding until we hit the quota
+        for (;;) {
+          try {
+            const key = `maputnik:fill-${index++}`;
+            window.localStorage.setItem(key, chunk);
+          } catch (e: any) {
+            // Verify it's a quota error
+            if (e.name === "QuotaExceededError") {
+              if (chunkSize <= 1) return;
+              chunkSize /= 2;
+              continue;
+            }
+            throw e; // Unexpected error
+          }
+        }
+      });
+    }
   };
 
   // ---- get -----------------------------------------------------------------
