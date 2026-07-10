@@ -4,12 +4,13 @@
   "check-coverage": false,
   "include": ["src/**/*.ts", "src/**/*.tsx"],
   "exclude": [
-    "cypress/**/*.*",
+    "e2e/**/*.*",
     "**/*.d.ts",
-    "**/*.cy.tsx",
-    "**/*.cy.ts",
+    "**/*.test.ts",
+    "**/*.test.tsx",
+    "**/*.browser.test.tsx",
     "./coverage/**",
-    "./cypress/**",
+    "./e2e/**",
     "./dist/**",
     "node_modules"
   ],

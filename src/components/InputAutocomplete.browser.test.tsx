@@ -1,18 +1,24 @@
+import { expect, test } from "vitest";
+import { render } from "vitest-browser-react";
+import { page } from "vitest/browser";
 import InputAutocomplete from "./InputAutocomplete";
-import { mount } from "cypress/react";
 
 const fruits = ["apple", "banana", "cherry"];
 
-describe("<InputAutocomplete />", () => {
-  it("filters options when typing", () => {
-    mount(
-      <InputAutocomplete aria-label="Fruit" options={fruits.map(f => [f, f])} />
-    );
-    cy.get("input").focus();
-    cy.get(".maputnik-autocomplete-menu-item").should("have.length", 3);
-    cy.get("input").type("ch");
-    cy.get(".maputnik-autocomplete-menu-item").should("have.length", 1).and("contain", "cherry");
-    cy.get(".maputnik-autocomplete-menu-item").click();
-    cy.get("input").should("have.value", "cherry");
-  });
+test("filters options when typing", async () => {
+  render(<InputAutocomplete aria-label="Fruit" options={fruits.map((f) => [f, f])} />);
+
+  const input = page.getByLabelText("Fruit");
+  await input.click();
+
+  const menuItems = page.getByRole("option");
+  await expect.element(menuItems.first()).toBeVisible();
+  expect(menuItems.all()).toHaveLength(3);
+
+  await input.fill("ch");
+  await expect.element(page.getByText("cherry")).toBeVisible();
+  expect(page.getByRole("option").all()).toHaveLength(1);
+
+  await page.getByText("cherry").click();
+  await expect.element(input).toHaveValue("cherry");
 });

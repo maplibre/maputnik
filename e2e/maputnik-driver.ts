@@ -1,122 +1,55 @@
-/// <reference types="cypress-plugin-tab" />
+import { PlaywrightHelper } from "./playwright-helper";
+import { ModalDriver } from "./modal-driver";
 
-import { CypressHelper } from "@shellygo/cypress-test-utils";
-import { Assertable, then } from "@shellygo/cypress-test-utils/assertable";
-import MaputnikCypressHelper from "./maputnik-cypress-helper";
-import ModalDriver from "./modal-driver";
 const baseUrl = "http://localhost:8888/";
+const isMac = process.platform === "darwin";
 
-const styleFromWindow = (win: Window) => {
-  const styleId = win.localStorage.getItem("maputnik:latest_style");
-  const styleItemKey = `maputnik:style:${styleId}`;
-  const styleItem = win.localStorage.getItem(styleItemKey);
-  if (!styleItem) throw new Error("Could not get styleItem from localStorage");
-  const obj = JSON.parse(styleItem);
-  return obj;
-};
-
-export class MaputnikAssertable<T> extends Assertable<T> {
-  shouldEqualToStoredStyle = () =>
-    then(
-      new CypressHelper().get.window().then((win: Window) => {
-        const style = styleFromWindow(win);
-        then(this.chainable).shouldDeepNestedInclude(style);
-      })
-    );
-}
-
+/**
+ * The maputnik-specific driver. It builds on the generic {@link PlaywrightHelper}
+ * — spreading its `given`/`when`/`get` primitives and adding domain concepts
+ * (loading a style, the add-layer modal, the JSON editor, …). All Playwright
+ * access goes through the helper; the driver never touches `page` directly.
+ */
 export class MaputnikDriver {
-  private helper = new MaputnikCypressHelper();
-  private modalDriver = new ModalDriver();
+  private readonly helper = new PlaywrightHelper();
+  private readonly modalDriver = new ModalDriver();
 
-  public beforeAndAfter = () => {
-    beforeEach(() => {
-      this.given.setupMockBackedResponses();
-      this.when.setStyle("both");
-    });
-  };
+  then = this.helper.then;
 
-  public then = (chainable: Cypress.Chainable<any>) =>
-    new MaputnikAssertable(chainable);
+  /** Reads the maputnik style currently persisted in localStorage. */
+  private async readStoredStyle(): Promise<any> {
+    const styleId = await this.helper.get.localStorageItem("maputnik:latest_style");
+    const styleItem = await this.helper.get.localStorageItem(`maputnik:style:${styleId}`);
+    if (!styleItem) throw new Error("Could not get styleItem from localStorage");
+    return JSON.parse(styleItem);
+  }
 
   public given = {
     ...this.helper.given,
-    setupMockBackedResponses: () => {
-      this.helper.given.interceptAndMockResponse({
-        method: "GET",
-        url: baseUrl + "example-style.json",
-        response: {
-          fixture: "example-style.json",
-        },
-        alias: "example-style.json",
-      });
-      this.helper.given.interceptAndMockResponse({
-        method: "GET",
-        url: baseUrl + "example-layer-style.json",
-        response: {
-          fixture: "example-layer-style.json",
-        },
-      });
-      this.helper.given.interceptAndMockResponse({
-        method: "GET",
-        url: baseUrl + "geojson-style.json",
-        response: {
-          fixture: "geojson-style.json",
-        },
-      });
-      this.helper.given.interceptAndMockResponse({
-        method: "GET",
-        url: baseUrl + "raster-style.json",
-        response: {
-          fixture: "raster-style.json",
-        },
-      });
-      this.helper.given.interceptAndMockResponse({
-        method: "GET",
-        url: baseUrl + "geojson-raster-style.json",
-        response: {
-          fixture: "geojson-raster-style.json",
-        },
-      });
-      this.helper.given.interceptAndMockResponse({
-        method: "GET",
-        url: baseUrl + "rectangles-style.json",
-        response: {
-          fixture: "rectangles-style.json",
-        },
-      });
-      this.helper.given.interceptAndMockResponse({
-        method: "GET",
-        url: baseUrl + "example-style-with-fonts.json",
-        response: {
-          fixture: "example-style-with-fonts.json",
-        },
-      });
-      this.helper.given.interceptAndMockResponse({
-        method: "GET",
-        url: baseUrl + "example-style-with-zoom-7-and-center-0-51.json",
-        response: {
-          fixture: "example-style-with-zoom-7-and-center-0-51.json",
-        },
-      });
-      this.helper.given.interceptAndMockResponse({
-        method: "GET",
-        url: baseUrl + "example-style-with-zoom-5-and-center-50-50.json",
-        response: {
-          fixture: "example-style-with-zoom-5-and-center-50-50.json",
-        },
-      });
-      this.helper.given.interceptAndMockResponse({
-        method: "GET",
-        url: "*example.local/*",
-        response: [],
-      });
-      this.helper.given.interceptAndMockResponse({
-        method: "GET",
-        url: "*example.com/*",
-        response: [],
-      });
-      this.helper.given.interceptAndMockResponse({
+
+    setupMockBackedResponses: async () => {
+      const styleFixtures = [
+        "example-style.json",
+        "example-layer-style.json",
+        "geojson-style.json",
+        "raster-style.json",
+        "geojson-raster-style.json",
+        "rectangles-style.json",
+        "example-style-with-fonts.json",
+        "example-style-with-zoom-7-and-center-0-51.json",
+        "example-style-with-zoom-5-and-center-50-50.json",
+      ];
+      for (const fixture of styleFixtures) {
+        await this.helper.given.interceptAndMockResponse({
+          method: "GET",
+          url: baseUrl + fixture,
+          response: { fixture },
+          alias: fixture === "example-style.json" ? "example-style.json" : undefined,
+        });
+      }
+      await this.helper.given.interceptAndMockResponse({ method: "GET", url: /example\.local\//, response: [] });
+      await this.helper.given.interceptAndMockResponse({ method: "GET", url: /example\.com\//, response: [] });
+      await this.helper.given.interceptAndMockResponse({
         method: "GET",
         url: "https://www.glyph-server.com/*",
         response: ["Font 1", "Font 2", "Font 3"],
@@ -126,147 +59,134 @@ export class MaputnikDriver {
 
   public when = {
     ...this.helper.when,
+
     modal: this.modalDriver.when,
-    doWithin: (selector: string, fn: () => void) => {
-      this.helper.when.doWithin(fn, selector);
-    },
-    tab: () => this.helper.get.element("body").tab(),
-    waitForExampleFileResponse: () => {
-      this.helper.when.waitForResponse("example-style.json");
-    },
-    openASecondStyleWithDifferentZoomAndCenter: () => {
-      cy.contains("button", "Open").click();
-      cy.get('[data-wd-key="modal:open.url.input"]')
-        .should("be.enabled")
-        .clear()
-        .type("http://localhost:8888/example-style-with-zoom-5-and-center-50-50.json{enter}");
-    },
-    chooseExampleFile: () => {
-      this.helper.given.fixture("example-style.json", "example-style.json");
-      this.helper.when.openFileByFixture("example-style.json", "modal:open.dropzone", "modal:open.file.input");
-      this.helper.when.wait(200);
-    },
-    dropExampleFile: () => {
-      this.helper.given.fixture("example-style.json", "example-style.json");
-      this.helper.when.dropFileByFixture("example-style.json", "modal:open.dropzone");
-      this.helper.when.wait(200);
-    },
-    setStyle: (
-      styleProperties: "geojson" | "raster" | "both" | "layer" | "rectangles" | "font" | "zoom_7_center_0_51" | "",
+
+    setStyle: async (
+      styleProperties:
+        | "geojson"
+        | "raster"
+        | "both"
+        | "layer"
+        | "rectangles"
+        | "font"
+        | "zoom_7_center_0_51"
+        | "",
       zoom?: number
     ) => {
-      const url = new URL(baseUrl);
-      switch (styleProperties) {
-        case "geojson":
-          url.searchParams.set("style", baseUrl + "geojson-style.json");
-          break;
-        case "raster":
-          url.searchParams.set("style", baseUrl + "raster-style.json");
-          break;
-        case "both":
-          url.searchParams.set("style", baseUrl + "geojson-raster-style.json");
-          break;
-        case "layer":
-          url.searchParams.set("style", baseUrl + "example-layer-style.json");
-          break;
-        case "rectangles":
-          url.searchParams.set("style", baseUrl + "rectangles-style.json");
-          break;
-        case "font":
-          url.searchParams.set("style", baseUrl + "example-style-with-fonts.json");
-          break;
-        case "zoom_7_center_0_51":
-          url.searchParams.set("style", baseUrl + "example-style-with-zoom-7-and-center-0-51.json");
-          break;
-      }
+      const styleFileByKey: Record<string, string> = {
+        geojson: "geojson-style.json",
+        raster: "raster-style.json",
+        both: "geojson-raster-style.json",
+        layer: "example-layer-style.json",
+        rectangles: "rectangles-style.json",
+        font: "example-style-with-fonts.json",
+        zoom_7_center_0_51: "example-style-with-zoom-7-and-center-0-51.json",
+      };
 
+      const url = new URL(baseUrl);
+      if (styleProperties && styleFileByKey[styleProperties]) {
+        url.searchParams.set("style", baseUrl + styleFileByKey[styleProperties]);
+      }
       if (zoom) {
         url.hash = `${zoom}/41.3805/2.1635`;
       }
-      this.helper.when.visit(url.toString());
-      if (styleProperties) {
-        this.helper.when.acceptConfirm();
-      }
-      // when methods should not include assertions
+
+      await this.helper.when.visit(url.toString());
+
       const toolbarLink = this.helper.get.elementByTestId("toolbar:link");
-      toolbarLink.scrollIntoView();
-      toolbarLink.should("be.visible");
+      await toolbarLink.scrollIntoViewIfNeeded();
+      await this.then(toolbarLink).shouldBeVisible();
     },
 
-    typeKeys: (keys: string) => this.helper.get.element("body").type(keys),
-
-    clickZoomIn: () => {
-      this.helper.get.element(".maplibregl-ctrl-zoom-in").click();
+    openASecondStyleWithDifferentZoomAndCenter: async () => {
+      await this.helper.when.clickButtonByName("Open");
+      const input = this.helper.get.elementByTestId("modal:open.url.input");
+      await input.fill("http://localhost:8888/example-style-with-zoom-5-and-center-50-50.json");
+      await input.press("Enter");
     },
 
-    selectWithin: (selector: string, value: string) => {
-      this.when.doWithin(selector, () => {
-        this.helper.get.element("select").select(value);
-      });
+    chooseExampleFile: async () => {
+      await this.helper.when.openFileByFixture("example-style.json", "modal:open.dropzone", "modal:open.file.input");
+      await this.helper.when.wait(200);
     },
 
-    select: (selector: string, value: string) => {
-      this.helper.get.elementByTestId(selector).select(value);
+    dropExampleFile: async () => {
+      await this.helper.when.dropFileByFixture("example-style.json", "modal:open.dropzone");
+      await this.helper.when.wait(200);
     },
 
-    focus: (selector: string) => {
-      this.helper.when.focus(selector);
+    clickZoomIn: async () => {
+      await this.helper.get.element(".maplibregl-ctrl-zoom-in").click();
     },
 
-    setValue: (selector: string, text: string) => {
-      this.helper.get
-        .elementByTestId(selector)
-        .clear()
-        .type(text, { parseSpecialCharSequences: false });
+    closePopup: async () => {
+      await this.helper.get.element(".maplibregl-popup-close-button").click();
     },
 
-    setValueToPropertyArray: (selector: string, value: string) => {
-      this.when.doWithin(selector, () => {
-        this.helper.get.element(".maputnik-array-block-content input").last().type("{selectall}"+value, {force: true });
-      });
+    collapseGroupInLayerEditor: async (index = 0) => {
+      await this.helper.get.element(".maputnik-layer-editor-group__button").nth(index).click();
     },
 
-    addValueToPropertyArray: (selector: string, value: string) => {
-      this.when.doWithin(selector, () => {
-        this.helper.get.element(".maputnik-array-add-value").click({ force: true });
-        this.helper.get.element(".maputnik-array-block-content input").last().type("{selectall}"+value, {force: true });
-      });
+    appendTextInJsonEditor: async (text: string) => {
+      await this.helper.get.element(".cm-line").first().click();
+      // Move to the very start of the document so the inserted text breaks the
+      // root JSON structure (CodeMirror auto-closes brackets otherwise).
+      await this.helper.when.typeKeys("{home}");
+      await this.helper.when.typeText(text);
     },
 
-    closePopup: () => {
-      this.helper.get.element(".maplibregl-popup-close-button").click();
+    setTextInJsonEditor: async (text: string) => {
+      await this.helper.get.element(".cm-line").first().click();
+      await this.helper.when.typeKeys("{selectall}");
+      await this.helper.when.typeText(text);
     },
 
-    collapseGroupInLayerEditor: (index = 0) => {
-      this.helper.get.element(".maputnik-layer-editor-group__button").eq(index).realClick();
+    setValueToPropertyArray: async (selector: string, value: string) => {
+      const input = this.helper.get.elementByTestId(selector).locator(".maputnik-array-block-content input").last();
+      await input.focus();
+      await this.helper.when.typeKeys("{selectall}");
+      await this.helper.when.typeText(value);
     },
 
-    appendTextInJsonEditor: (text: string) => {
-      this.helper.get.element(".cm-line").first().click().type(text, { parseSpecialCharSequences: false });
+    addValueToPropertyArray: async (selector: string, value: string) => {
+      const block = this.helper.get.elementByTestId(selector);
+      await block.locator(".maputnik-array-add-value").click();
+      const input = block.locator(".maputnik-array-block-content input").last();
+      await input.focus();
+      await this.helper.when.typeKeys("{selectall}");
+      await this.helper.when.typeText(value);
     },
 
-    setTextInJsonEditor: (text: string) => {
-      this.helper.get.element(".cm-line").first().click().clear().type(text, { parseSpecialCharSequences: false });
-    }
+    waitForExampleFileResponse: () => this.helper.when.waitForResponse("example-style.json"),
+
+    /** Fill localStorage until we get a QuotaExceededError. */
+    fillLocalStorage: () => this.helper.when.fillLocalStorageUntilQuota("maputnik:fill-"),
   };
 
   public get = {
     ...this.helper.get,
-    isMac: () => {
-      return Cypress.platform === "darwin";
-    },
 
-    styleFromLocalStorage: () =>
-      this.helper.get.window().then((win) => styleFromWindow(win)),
+    isMac: () => isMac,
 
-    exampleFileUrl: () => {
-      return baseUrl + "example-style.json";
-    },
-    skipTargetLayerList: () =>
-      this.helper.get.elementByTestId("skip-target-layer-list"),
-    skipTargetLayerEditor: () =>
-      this.helper.get.elementByTestId("skip-target-layer-editor"),
     canvas: () => this.helper.get.element("canvas"),
-    searchControl: () => this.helper.get.element(".maplibregl-ctrl-geocoder")
+
+    searchControl: () => this.helper.get.element(".maplibregl-ctrl-geocoder"),
+
+    skipTargetLayerList: () => this.helper.get.elementByTestId("skip-target-layer-list"),
+
+    skipTargetLayerEditor: () => this.helper.get.elementByTestId("skip-target-layer-editor"),
+
+    styleFromLocalStorage: () => this.helper.query(() => this.readStoredStyle()),
+
+    fixture: (name: string) => this.helper.readFixture(name),
+
+    responseBody: (alias: string) => {
+      // Our mocked style responses always return the matching fixture.
+      const name = alias.endsWith(".json") ? alias : `${alias}.json`;
+      return this.helper.readFixture(name);
+    },
+
+    exampleFileUrl: () => baseUrl + "example-style.json",
   };
 }

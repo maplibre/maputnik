@@ -79,26 +79,45 @@ npm run sort-styles
 ```
 
 ## Tests
-For E2E testing we use [Cypress](https://www.cypress.io/)
 
- [Cypress](https://www.cypress.io/) doesn't start a server so you'll need to start one manually by running `npm run start`.
+### End-to-end tests
 
-Now open a terminal and run the following using *chrome*:
+For E2E testing we use [Playwright](https://playwright.dev/). The tests live in the [`e2e`](/e2e) directory and drive the app through the `MaputnikDriver` page object.
+
+The first time you run the tests, install the browser:
+
+```
+npx playwright install chromium
+```
+
+Playwright automatically starts the dev server (`npm run start`) for you, so you can just run:
 
 ```
 npm run test
 ```
-or *firefox*:
-```
-npm run test -- --browser firefox
-```
 
-See the following docs for more info: (Launching Browsers)[https://docs.cypress.io/guides/guides/launching-browsers]
-
-You can also see the tests as they run or select which suites to run by executing:
+Some useful options:
 
 ```
-npm run cy:open
+# see the tests run in a headed browser
+npm run test -- --headed
+
+# run a single spec / filter by title
+npm run test -- e2e/map.spec.ts
+npm run test -- -g "zoom level"
+
+# open the interactive UI mode
+npx playwright test --ui
+```
+
+Running the E2E tests also produces a code-coverage report in `coverage/` (collected via istanbul instrumentation of the dev server).
+
+### Unit & component tests
+
+Unit tests and component tests run with [Vitest](https://vitest.dev/); component tests (`*.browser.test.tsx`) use Vitest's browser mode with the Playwright provider.
+
+```
+npm run test-unit
 ```
 
 ## Release process

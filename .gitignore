@@ -33,9 +33,13 @@ node_modules
 public
 /errorShots
 /old
-/cypress/screenshots
 /dist/
 /desktop/version.go
+
+# Playwright
+/test-results/
+/playwright-report/
+/playwright/.cache/
 
 # IDE
 .vscode/

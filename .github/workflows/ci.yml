@@ -96,6 +96,7 @@ jobs:
         with:
           node-version-file: '.nvmrc'
       - run: npm ci
+      - run: npx playwright install --with-deps chromium
       - run: npm run test-unit-ci
       - name: Upload coverage reports to Codecov
         uses: codecov/codecov-action@fb8b3582c8e4def4969c97caa2f19720cb33a72f # v7.0.0
@@ -117,17 +118,21 @@ jobs:
         with:
           node-version-file: '.nvmrc'
       - run: npm ci
-      - name: Cypress run
-        uses: cypress-io/github-action@fa4a118725a8f001170d49631ea89e5d66fee626 # v7.4.1
-        with:
-          build: npm run build
-          start: npm run start
-          browser: chrome
+      - run: npx playwright install --with-deps chromium
+      - name: Playwright run
+        run: npm run test-e2e
       - name: Upload coverage reports to Codecov
         uses: codecov/codecov-action@fb8b3582c8e4def4969c97caa2f19720cb33a72f # v7.0.0
         with:
-          files: ${{ github.workspace }}/.nyc_output/out.json
+          files: ${{ github.workspace }}/coverage/coverage-final.json
           verbose: true
+      - name: Upload Playwright report
+        if: ${{ !cancelled() }}
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: playwright-report
+          path: playwright-report/
+          retention-days: 7
 
   e2e-tests-docker:
     name: "E2E tests using chrome and docker"
@@ -141,14 +146,21 @@ jobs:
         with:
           node-version-file: '.nvmrc'
       - run: npm ci
-      - name: Cypress run
-        uses: cypress-io/github-action@fa4a118725a8f001170d49631ea89e5d66fee626 # v7.4.1
-        with:
-          build: docker build -t maputnik .
-          start: docker run --rm --network host maputnik --port=8888
-          browser: chrome
-      - name: Upload coverage reports to Codecov
-        uses: codecov/codecov-action@fb8b3582c8e4def4969c97caa2f19720cb33a72f # v7.0.0
-        with:
-          files: ${{ github.workspace }}/.nyc_output/out.json
-          verbose: true
+      - run: npx playwright install --with-deps chromium
+      - name: Build docker image
+        run: docker build -t maputnik .
+      - name: Start maputnik container
+        run: docker run -d --network host --name maputnik maputnik --port=8888
+      - name: Wait for maputnik to be ready
+        run: |
+          for i in $(seq 1 60); do
+            if curl -sSf http://localhost:8888/ > /dev/null; then
+              echo "maputnik is up"; exit 0
+            fi
+            sleep 1
+          done
+          echo "maputnik did not start in time"; docker logs maputnik; exit 1
+      - name: Playwright run
+        run: npm run test-e2e
+        env:
+          E2E_NO_WEBSERVER: "1"

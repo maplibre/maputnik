@@ -1,11 +1,37 @@
 import { defineConfig } from "vitest/config";
+import react from "@vitejs/plugin-react";
+import { playwright } from "@vitest/browser-playwright";
 
 export default defineConfig({
+  plugins: [react()],
   test: {
-    // Only the unit tests that live next to the source are run by Vitest. The
-    // e2e specs (*.spec.ts) are run by their own runner, and the component
-    // browser test is run separately.
-    include: ["src/**/*.test.{ts,tsx}"],
-    exclude: ["**/node_modules/**", "e2e/**", "**/*.browser.test.tsx"],
+    projects: [
+      {
+        extends: true,
+        test: {
+          name: "unit",
+          environment: "node",
+          include: ["src/**/*.test.{ts,tsx}"],
+          exclude: ["src/**/*.browser.test.{ts,tsx}"],
+        },
+      },
+      {
+        extends: true,
+        test: {
+          name: "browser",
+          include: ["src/**/*.browser.test.{ts,tsx}"],
+          browser: {
+            enabled: true,
+            provider: playwright(),
+            headless: true,
+            instances: [{ browser: "chromium" }],
+          },
+        },
+      },
+    ],
+    coverage: {
+      provider: "v8",
+      reporter: ["json", "lcov", "text-summary"],
+    },
   },
 });

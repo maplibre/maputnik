@@ -1,126 +1,90 @@
+import { beforeEach, describe, test } from "./utils/fixtures";
 import { MaputnikDriver } from "./maputnik-driver";
 
-const test = it;
-
 describe("history", () => {
-  const { beforeAndAfter, when, get, then } = new MaputnikDriver();
-  beforeAndAfter();
+  const { given, get, when, then } = new MaputnikDriver();
 
-  let undoKeyCombo: string;
-  let redoKeyCombo: string;
+  const undoKeyCombo = process.platform === "darwin" ? "{meta}z" : "{ctrl}z";
+  const redoKeyCombo = process.platform === "darwin" ? "{meta}{shift}z" : "{ctrl}y";
 
-  before(() => {
-    const isMac = get.isMac();
-    undoKeyCombo = isMac ? "{meta}z" : "{ctrl}z";
-    redoKeyCombo = isMac ? "{meta}{shift}z" : "{ctrl}y";
+  beforeEach(async () => {
+    await given.setupMockBackedResponses();
+    await when.setStyle("both");
   });
 
-  test("undo/redo", () => {
-    when.setStyle("geojson");
-    when.modal.open();
+  test("undo/redo", async () => {
+    await when.setStyle("geojson");
+    await when.modal.open();
 
-    when.modal.fillLayers({
+    await when.modal.fillLayers({
       id: "step 1",
       type: "background",
     });
-    then(get.styleFromLocalStorage()).shouldDeepNestedInclude({
-      layers: [
-        {
-          id: "step 1",
-          type: "background",
-        },
-      ],
+    await then(get.styleFromLocalStorage()).shouldDeepNestedInclude({
+      layers: [{ id: "step 1", type: "background" }],
     });
 
-    when.modal.open();
-    when.modal.fillLayers({
+    await when.modal.open();
+    await when.modal.fillLayers({
       id: "step 2",
       type: "background",
     });
-
-    then(get.styleFromLocalStorage()).shouldDeepNestedInclude({
+    await then(get.styleFromLocalStorage()).shouldDeepNestedInclude({
       layers: [
-        {
-          id: "step 1",
-          type: "background",
-        },
-        {
-          id: "step 2",
-          type: "background",
-        },
+        { id: "step 1", type: "background" },
+        { id: "step 2", type: "background" },
       ],
     });
 
-    when.typeKeys(undoKeyCombo);
-    then(get.styleFromLocalStorage()).shouldDeepNestedInclude({
-      layers: [
-        {
-          id: "step 1",
-          type: "background",
-        },
-      ],
+    await when.typeKeys(undoKeyCombo);
+    await then(get.styleFromLocalStorage()).shouldDeepNestedInclude({
+      layers: [{ id: "step 1", type: "background" }],
     });
 
-    when.typeKeys(undoKeyCombo);
-    then(get.styleFromLocalStorage()).shouldDeepNestedInclude({ layers: [] });
+    await when.typeKeys(undoKeyCombo);
+    await then(get.styleFromLocalStorage()).shouldDeepNestedInclude({ layers: [] });
 
-    when.typeKeys(redoKeyCombo);
-    then(get.styleFromLocalStorage()).shouldDeepNestedInclude({
-      layers: [
-        {
-          id: "step 1",
-          type: "background",
-        },
-      ],
+    await when.typeKeys(redoKeyCombo);
+    await then(get.styleFromLocalStorage()).shouldDeepNestedInclude({
+      layers: [{ id: "step 1", type: "background" }],
     });
 
-    when.typeKeys(redoKeyCombo);
-    then(get.styleFromLocalStorage()).shouldDeepNestedInclude({
+    await when.typeKeys(redoKeyCombo);
+    await then(get.styleFromLocalStorage()).shouldDeepNestedInclude({
       layers: [
-        {
-          id: "step 1",
-          type: "background",
-        },
-        {
-          id: "step 2",
-          type: "background",
-        },
+        { id: "step 1", type: "background" },
+        { id: "step 2", type: "background" },
       ],
     });
   });
 
-  test("should not redo after undo and value change", () => {
-    when.setStyle("geojson");
-    when.modal.open();
-    when.modal.fillLayers({
+  test("should not redo after undo and value change", async () => {
+    await when.setStyle("geojson");
+    await when.modal.open();
+    await when.modal.fillLayers({
       id: "step 1",
       type: "background",
     });
 
-    when.modal.open();
-    when.modal.fillLayers({
+    await when.modal.open();
+    await when.modal.fillLayers({
       id: "step 2",
       type: "background",
     });
 
-    when.typeKeys(undoKeyCombo);
-    when.typeKeys(undoKeyCombo);
-    then(get.styleFromLocalStorage()).shouldDeepNestedInclude({ layers: [] });
+    await when.typeKeys(undoKeyCombo);
+    await when.typeKeys(undoKeyCombo);
+    await then(get.styleFromLocalStorage()).shouldDeepNestedInclude({ layers: [] });
 
-    when.modal.open();
-    when.modal.fillLayers({
+    await when.modal.open();
+    await when.modal.fillLayers({
       id: "step 3",
       type: "background",
     });
 
-    when.typeKeys(redoKeyCombo);
-    then(get.styleFromLocalStorage()).shouldDeepNestedInclude({
-      layers: [
-        {
-          id: "step 3",
-          type: "background",
-        },
-      ],
+    await when.typeKeys(redoKeyCombo);
+    await then(get.styleFromLocalStorage()).shouldDeepNestedInclude({
+      layers: [{ id: "step 3", type: "background" }],
     });
   });
 });

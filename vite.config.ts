@@ -12,10 +12,9 @@ export default defineConfig(({ mode }) => ({
   plugins: [
     react(),
     istanbul({
-      cypress: true,
       requireEnv: false,
       nycrcPath: "./.nycrc.json",
-      forceBuildInstrument: true, //Instrument the source code for cypress runs
+      forceBuildInstrument: true, // Instrument the source so e2e runs can collect coverage
     }),
   ],
   base: mode === "desktop" ? "/" : "/maputnik/",

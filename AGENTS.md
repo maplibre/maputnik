@@ -24,22 +24,22 @@ The project type checked and built with:
 npm run build
 ```
 
-To run the tests make sure that xvfb is installed:
+Install the Playwright browser (first time only):
 
 ```
-apt install xvfb
+npx playwright install --with-deps chromium
 ```
 
-Run the development server in the background with Vite:
+Then run the end-to-end tests (Playwright starts the dev server automatically):
 
 ```
-nohup npm run start &
+npm run test
 ```
 
-Then start the Cypress tests with:
+Run the unit and component tests with Vitest:
 
 ```
-xvfb-run -a npm run test
+npm run test-unit
 ```
 
 ## Pull Requests
