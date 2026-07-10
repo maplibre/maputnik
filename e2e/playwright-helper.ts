@@ -63,9 +63,9 @@ function isLocator(target: unknown): target is Locator {
 }
 
 /** Asserts that every top-level key in `expected` deep-equals its counterpart in `actual`. */
-function assertDeepNestedInclude(actual: any, expected: Record<string, unknown>): void {
+function assertDeepNestedInclude(actual: any, expected: Record<string, unknown> | unknown[]): void {
   for (const key of Object.keys(expected)) {
-    expect(actual?.[key], `property "${key}"`).toEqual(expected[key]);
+    expect(actual?.[key], `property "${key}"`).toEqual((expected as any)[key]);
   }
 }
 
@@ -130,7 +130,7 @@ export class Assertable<T> {
       }
     });
 
-  shouldDeepNestedInclude = (value: Record<string, unknown>) =>
+  shouldDeepNestedInclude = (value: Record<string, unknown> | unknown[]) =>
     this.assertValue((actual) => assertDeepNestedInclude(actual, value));
 }
 
@@ -144,6 +144,10 @@ async function typeSequence(page: Page, text: string): Promise<void> {
     del: "Delete",
     tab: "Tab",
     home: "Home",
+    rightarrow: "ArrowRight",
+    leftarrow: "ArrowLeft",
+    uparrow: "ArrowUp",
+    downarrow: "ArrowDown",
   };
 
   for (let i = 0; i < tokens.length; i++) {
@@ -200,6 +204,15 @@ export class PlaywrightHelper {
   /** Wraps a lazily-evaluated value so assertions on it auto-retry. */
   public query<T>(getter: () => Promise<T>): Query<T> {
     return new Query<T>(getter);
+  }
+
+  /** Stubs the File System Access "save" picker so file saves complete headlessly. */
+  public stubSaveFilePicker(): Promise<void> {
+    return this.page.evaluate(() => {
+      (window as any).showSaveFilePicker = async () => ({
+        createWritable: async () => ({ write: async () => {}, close: async () => {} }),
+      });
+    });
   }
 
   /** Entry point for fluent assertions over a Locator or a value/Query. */

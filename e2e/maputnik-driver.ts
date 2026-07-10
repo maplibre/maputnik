@@ -158,6 +158,56 @@ export class MaputnikDriver {
       await this.helper.when.typeText(value);
     },
 
+    makeZoomFunction: async (fieldName: string) => {
+      const container = this.helper.get.elementByTestId("spec-field-container:" + fieldName);
+      await container.scrollIntoViewIfNeeded();
+      await container.locator(".maputnik-make-zoom-function").last().click({ force: true });
+    },
+
+    makeDataFunction: async (fieldName: string) => {
+      const container = this.helper.get.elementByTestId("spec-field-container:" + fieldName);
+      await container.scrollIntoViewIfNeeded();
+      await container.locator(".maputnik-make-data-function").click({ force: true });
+    },
+
+    addFunctionStop: async (fieldName: string) => {
+      const container = this.helper.get.elementByTestId("spec-field-container:" + fieldName);
+      await container.locator(".maputnik-add-stop").first().click({ force: true });
+    },
+
+    deleteFunctionStop: async (fieldName: string) => {
+      const container = this.helper.get.elementByTestId("spec-field-container:" + fieldName);
+      await container.locator(".maputnik-delete-stop").first().click({ force: true });
+    },
+
+    addFilter: async () => {
+      const button = this.helper.get.elementByTestId("layer-filter-button");
+      await button.scrollIntoViewIfNeeded();
+      await button.click({ force: true });
+    },
+
+    selectFilterOperator: async (value: string) => {
+      await this.helper.get.element(".maputnik-filter-editor-operator select").first().selectOption(value);
+    },
+
+    deleteFirstActiveSource: async () => {
+      await this.helper.get.element(".maputnik-active-source-type-editor-header-delete").first().click();
+    },
+
+    setColorValue: async (fieldName: string, value: string) => {
+      const input = this.helper.get.elementByTestId("spec-field:" + fieldName).locator(".maputnik-color");
+      await input.fill(value);
+    },
+
+    exportCreateHtml: async () => {
+      await this.helper.get.element(".maputnik-modal-export-buttons button").last().click();
+    },
+
+    exportSaveStyle: async () => {
+      await this.helper.stubSaveFilePicker();
+      await this.helper.get.element(".maputnik-modal-export-buttons button").first().click();
+    },
+
     waitForExampleFileResponse: () => this.helper.when.waitForResponse("example-style.json"),
 
     /** Fill localStorage until we get a QuotaExceededError. */

@@ -64,8 +64,15 @@ describe("modals", () => {
       await then(get.elementByTestId("modal:export")).shouldNotExist();
     });
 
-    // TODO: Work out how to download a file and check the contents
-    test.skip("download", () => {});
+    test("download HTML and save the style", async () => {
+      // Generate the standalone HTML export (triggers a file download).
+      await when.exportCreateHtml();
+      await then(get.elementByTestId("modal:export")).shouldExist();
+
+      // Saving the style closes the export modal.
+      await when.exportSaveStyle();
+      await then(get.elementByTestId("modal:export")).shouldNotExist();
+    });
   });
 
   describe("sources", () => {
@@ -74,7 +81,17 @@ describe("modals", () => {
       await when.click("nav:sources");
     });
 
-    test.skip("active sources", () => {});
+    test("active sources are listed and can be deleted", async () => {
+      // The "both" style ships with active sources; reopen the modal against it.
+      await when.setStyle("both");
+      await when.click("nav:sources");
+      const before = Object.keys(get.fixture("geojson-raster-style.json").sources).length;
+      await when.deleteFirstActiveSource();
+      await then(
+        get.styleFromLocalStorage().then((style) => Object.keys(style.sources).length)
+      ).shouldEqual(before - 1);
+    });
+
     test.skip("public source", () => {});
 
     test("add new source", async () => {
