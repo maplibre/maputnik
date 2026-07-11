@@ -62,11 +62,12 @@ function isLocator(target: unknown): target is Locator {
   );
 }
 
-/** Asserts that every top-level key in `expected` deep-equals its counterpart in `actual`. */
+/**
+ * Asserts that `actual` recursively contains everything in `expected`: nested
+ * objects are matched as subsets, while arrays and primitives must match exactly.
+ */
 function assertDeepNestedInclude(actual: any, expected: Record<string, unknown> | unknown[]): void {
-  for (const key of Object.keys(expected)) {
-    expect(actual?.[key], `property "${key}"`).toEqual((expected as any)[key]);
-  }
+  expect(actual).toMatchObject(expected);
 }
 
 /**
@@ -145,9 +146,6 @@ async function typeSequence(page: Page, text: string): Promise<void> {
     tab: "Tab",
     home: "Home",
     rightarrow: "ArrowRight",
-    leftarrow: "ArrowLeft",
-    uparrow: "ArrowUp",
-    downarrow: "ArrowDown",
   };
 
   for (let i = 0; i < tokens.length; i++) {

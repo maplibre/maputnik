@@ -78,13 +78,12 @@ describe("layer editor", () => {
     });
 
     test("the range slider adjusts min-zoom", async () => {
+      // The slider starts at 1 (set via the text input above); one step right lands on 2.
       await when.focus("min-zoom.input-range");
       await when.typeKeys("{rightarrow}");
-      await then(
-        get
-          .styleFromLocalStorage()
-          .then((style) => typeof style.layers.find((l: any) => l.id === "background:" + bgId).minzoom)
-      ).shouldEqual("number");
+      await then(get.styleFromLocalStorage()).shouldDeepNestedInclude({
+        layers: [{ id: "background:" + bgId, type: "background", minzoom: 2 }],
+      });
     });
   });
 
@@ -158,11 +157,9 @@ describe("layer editor", () => {
 
     test("typing a hex value updates the paint color", async () => {
       await when.setColorValue("background-color", "#ff0000");
-      await then(
-        get
-          .styleFromLocalStorage()
-          .then((style) => style.layers.find((l: any) => l.id === "background:" + bgId).paint["background-color"])
-      ).shouldEqual("#ff0000");
+      await then(get.styleFromLocalStorage()).shouldDeepNestedInclude({
+        layers: [{ id: "background:" + bgId, type: "background", paint: { "background-color": "#ff0000" } }],
+      });
     });
   });
 
@@ -188,21 +185,21 @@ describe("layer editor", () => {
     test("compound filter", async () => {
       const id = await when.modal.fillLayers({ type: "fill", layer: "example" });
       await when.addFilter();
-      await then(
-        get.styleFromLocalStorage().then((style) => style.layers.find((l: any) => l.id === id).filter)
-      ).shouldDeepNestedInclude(["all", ["==", "name", ""]]);
+      await then(get.styleFromLocalStorage()).shouldDeepNestedInclude({
+        layers: [{ id, type: "fill", source: "example", filter: ["all", ["==", "name", ""]] }],
+      });
 
       // Changing the operator updates the compound filter.
       await when.selectFilterOperator("!=");
-      await then(
-        get.styleFromLocalStorage().then((style) => style.layers.find((l: any) => l.id === id).filter)
-      ).shouldDeepNestedInclude(["all", ["!=", "name", ""]]);
+      await then(get.styleFromLocalStorage()).shouldDeepNestedInclude({
+        layers: [{ id, type: "fill", source: "example", filter: ["all", ["!=", "name", ""]] }],
+      });
 
       // A second filter item extends the compound filter.
       await when.addFilter();
-      await then(
-        get.styleFromLocalStorage().then((style) => style.layers.find((l: any) => l.id === id).filter)
-      ).shouldDeepNestedInclude(["all", ["!=", "name", ""], ["==", "name", ""]]);
+      await then(get.styleFromLocalStorage()).shouldDeepNestedInclude({
+        layers: [{ id, type: "fill", source: "example", filter: ["all", ["!=", "name", ""], ["==", "name", ""]] }],
+      });
     });
   });
 
@@ -210,21 +207,20 @@ describe("layer editor", () => {
     test("convert a property to a zoom function and add a stop", async () => {
       const id = await when.modal.fillLayers({ type: "circle", layer: "example" });
       await when.makeZoomFunction("circle-radius");
-      await then(
-        get.styleFromLocalStorage().then((style) => style.layers.find((l: any) => l.id === id).paint)
-      ).shouldDeepNestedInclude({ "circle-radius": { stops: [[6, 5], [10, 5]] } });
+      await then(get.styleFromLocalStorage()).shouldDeepNestedInclude({
+        layers: [{ id, type: "circle", source: "example", paint: { "circle-radius": { stops: [[6, 5], [10, 5]] } } }],
+      });
 
       await when.addFunctionStop("circle-radius");
-      await then(
-        get.styleFromLocalStorage().then((style) => style.layers.find((l: any) => l.id === id).paint)
-      ).shouldDeepNestedInclude({ "circle-radius": { stops: [[6, 5], [10, 5], [11, 5]] } });
+      await then(get.styleFromLocalStorage()).shouldDeepNestedInclude({
+        layers: [{ id, type: "circle", source: "example", paint: { "circle-radius": { stops: [[6, 5], [10, 5], [11, 5]] } } }],
+      });
 
+      // Deleting the first stop leaves the rest.
       await when.deleteFunctionStop("circle-radius");
-      await then(
-        get
-          .styleFromLocalStorage()
-          .then((style) => style.layers.find((l: any) => l.id === id).paint["circle-radius"].stops.length)
-      ).shouldEqual(2);
+      await then(get.styleFromLocalStorage()).shouldDeepNestedInclude({
+        layers: [{ id, type: "circle", source: "example", paint: { "circle-radius": { stops: [[10, 5], [11, 5]] } } }],
+      });
     });
 
     test("convert a property to a data function and edit stops", async () => {
@@ -232,23 +228,58 @@ describe("layer editor", () => {
       // The property needs a value before it can be turned into a data function.
       await when.setValue("spec-field-input:circle-blur", "1");
       await when.makeDataFunction("circle-blur");
-      await then(
-        get.styleFromLocalStorage().then((style) => style.layers.find((l: any) => l.id === id).paint["circle-blur"].type)
-      ).shouldEqual("exponential");
+      await then(get.styleFromLocalStorage()).shouldDeepNestedInclude({
+        layers: [
+          {
+            id,
+            type: "circle",
+            source: "example",
+            paint: {
+              "circle-blur": {
+                property: "",
+                type: "exponential",
+                stops: [[{ zoom: 6, value: 0 }, 1], [{ zoom: 10, value: 0 }, 1]],
+              },
+            },
+          },
+        ],
+      });
 
       await when.addFunctionStop("circle-blur");
-      await then(
-        get
-          .styleFromLocalStorage()
-          .then((style) => style.layers.find((l: any) => l.id === id).paint["circle-blur"].stops.length)
-      ).shouldEqual(3);
+      await then(get.styleFromLocalStorage()).shouldDeepNestedInclude({
+        layers: [
+          {
+            id,
+            type: "circle",
+            source: "example",
+            paint: {
+              "circle-blur": {
+                property: "",
+                type: "exponential",
+                stops: [[{ zoom: 6, value: 0 }, 1], [{ zoom: 10, value: 0 }, 1], [{ zoom: 11, value: 0 }, 1]],
+              },
+            },
+          },
+        ],
+      });
 
       await when.deleteFunctionStop("circle-blur");
-      await then(
-        get
-          .styleFromLocalStorage()
-          .then((style) => style.layers.find((l: any) => l.id === id).paint["circle-blur"].stops.length)
-      ).shouldEqual(2);
+      await then(get.styleFromLocalStorage()).shouldDeepNestedInclude({
+        layers: [
+          {
+            id,
+            type: "circle",
+            source: "example",
+            paint: {
+              "circle-blur": {
+                property: "",
+                type: "exponential",
+                stops: [[{ zoom: 10, value: 0 }, 1], [{ zoom: 11, value: 0 }, 1]],
+              },
+            },
+          },
+        ],
+      });
     });
   });
 

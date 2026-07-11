@@ -101,8 +101,8 @@ describe("modals", () => {
       await when.select("modal:sources.add.scheme_type", "tms");
       await when.click("modal:sources.add.add_source");
       await when.wait(200);
-      await then(get.styleFromLocalStorage().then((style) => style.sources[sourceId])).shouldInclude({
-        scheme: "tms",
+      await then(get.styleFromLocalStorage()).shouldDeepNestedInclude({
+        sources: { [sourceId]: { scheme: "tms" } },
       });
     });
 
@@ -135,8 +135,8 @@ describe("modals", () => {
       await when.setValue("modal:sources.add.tile_size", "128");
       await when.click("modal:sources.add.add_source");
       await when.wait(200);
-      await then(get.styleFromLocalStorage().then((style) => style.sources[sourceId])).shouldInclude({
-        tileSize: 128,
+      await then(get.styleFromLocalStorage()).shouldDeepNestedInclude({
+        sources: { [sourceId]: { tileSize: 128 } },
       });
     });
   });
@@ -221,8 +221,8 @@ describe("modals", () => {
       const apiKey = "testing123";
       await when.setValue("modal:settings.maputnik:openmaptiles_access_token", apiKey);
       await when.click("modal:settings.name");
-      await then(get.styleFromLocalStorage().then((style) => style.metadata)).shouldInclude({
-        "maputnik:openmaptiles_access_token": apiKey,
+      await then(get.styleFromLocalStorage()).shouldDeepNestedInclude({
+        metadata: { "maputnik:openmaptiles_access_token": apiKey },
       });
     });
 
@@ -230,8 +230,8 @@ describe("modals", () => {
       const apiKey = "testing123";
       await when.setValue("modal:settings.maputnik:thunderforest_access_token", apiKey);
       await when.click("modal:settings.name");
-      await then(get.styleFromLocalStorage().then((style) => style.metadata)).shouldInclude({
-        "maputnik:thunderforest_access_token": apiKey,
+      await then(get.styleFromLocalStorage()).shouldDeepNestedInclude({
+        metadata: { "maputnik:thunderforest_access_token": apiKey },
       });
     });
 
@@ -239,8 +239,8 @@ describe("modals", () => {
       const apiKey = "testing123";
       await when.setValue("modal:settings.maputnik:stadia_access_token", apiKey);
       await when.click("modal:settings.name");
-      await then(get.styleFromLocalStorage().then((style) => style.metadata)).shouldInclude({
-        "maputnik:stadia_access_token": apiKey,
+      await then(get.styleFromLocalStorage()).shouldDeepNestedInclude({
+        metadata: { "maputnik:stadia_access_token": apiKey },
       });
     });
 
@@ -248,29 +248,29 @@ describe("modals", () => {
       const apiKey = "testing123";
       await when.setValue("modal:settings.maputnik:locationiq_access_token", apiKey);
       await when.click("modal:settings.name");
-      await then(get.styleFromLocalStorage().then((style) => style.metadata)).shouldInclude({
-        "maputnik:locationiq_access_token": apiKey,
+      await then(get.styleFromLocalStorage()).shouldDeepNestedInclude({
+        metadata: { "maputnik:locationiq_access_token": apiKey },
       });
     });
 
     test("style projection mercator", async () => {
       await when.select("modal:settings.projection", "mercator");
-      await then(get.styleFromLocalStorage().then((style) => style.projection)).shouldInclude({
-        type: "mercator",
+      await then(get.styleFromLocalStorage()).shouldDeepNestedInclude({
+        projection: { type: "mercator" },
       });
     });
 
     test("style projection globe", async () => {
       await when.select("modal:settings.projection", "globe");
-      await then(get.styleFromLocalStorage().then((style) => style.projection)).shouldInclude({
-        type: "globe",
+      await then(get.styleFromLocalStorage()).shouldDeepNestedInclude({
+        projection: { type: "globe" },
       });
     });
 
     test("style projection vertical-perspective", async () => {
       await when.select("modal:settings.projection", "vertical-perspective");
-      await then(get.styleFromLocalStorage().then((style) => style.projection)).shouldInclude({
-        type: "vertical-perspective",
+      await then(get.styleFromLocalStorage()).shouldDeepNestedInclude({
+        projection: { type: "vertical-perspective" },
       });
     });
 
