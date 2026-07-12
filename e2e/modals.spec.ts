@@ -43,6 +43,16 @@ describe("modals", () => {
         await then(get.styleFromLocalStorage()).shouldDeepNestedInclude(get.responseBody("example-style.json"));
       });
     });
+
+    describe("without the File System Access API", () => {
+      test("upload via the file chooser", async () => {
+        await given.noFileSystemAccessApi();
+        await when.setStyle("");
+        await when.click("nav:open");
+        await when.chooseExampleFileFromPicker();
+        await then(get.styleFromLocalStorage()).shouldDeepNestedInclude(get.fixture("example-style.json"));
+      });
+    });
   });
 
   describe("shortcuts", () => {

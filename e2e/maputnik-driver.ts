@@ -114,6 +114,12 @@ export class MaputnikDriver {
       await this.helper.when.wait(200);
     },
 
+    /** Picks the example style through the browser's native file chooser. */
+    chooseExampleFileFromPicker: async () => {
+      await this.helper.when.chooseFileFromPicker("example-style.json", "modal:open.dropzone");
+      await this.helper.when.wait(200);
+    },
+
     dropExampleFile: async () => {
       await this.helper.when.dropFileByFixture("example-style.json", "modal:open.dropzone");
       await this.helper.when.wait(200);

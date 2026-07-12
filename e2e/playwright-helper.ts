@@ -218,6 +218,18 @@ export class PlaywrightHelper {
   public then = <T>(target: T): Assertable<T> => new Assertable(target);
 
   public given = {
+    /**
+     * Removes the File System Access API so the app falls back to a plain
+     * <input type="file">, the way Firefox and Safari behave. Must be called
+     * before the page under test is loaded.
+     */
+    noFileSystemAccessApi: async () => {
+      await this.page.addInitScript(() => {
+        delete (window as any).showOpenFilePicker;
+        delete (window as any).showSaveFilePicker;
+      });
+    },
+
     intercept: async (pattern: RegExp, alias: string, _method = "GET") => {
       this.recordedRequests.set(alias, []);
       await this.page.route(pattern, (route) => {
@@ -362,6 +374,25 @@ export class PlaywrightHelper {
           buffer: Buffer.from(content),
         });
       }
+    },
+
+    /**
+     * Clicks a control that opens the browser's native file chooser and answers
+     * it with a fixture. Only works on the <input type="file"> path — the File
+     * System Access API does not raise a "filechooser" event, so pair this with
+     * given.noFileSystemAccessApi().
+     */
+    chooseFileFromPicker: async (fixture: string, triggerTestId: string) => {
+      const content = JSON.stringify(this.readFixture(fixture));
+      const [fileChooser] = await Promise.all([
+        this.page.waitForEvent("filechooser"),
+        this.testId(triggerTestId).click(),
+      ]);
+      await fileChooser.setFiles({
+        name: fixture,
+        mimeType: "application/json",
+        buffer: Buffer.from(content),
+      });
     },
 
     dropFileByFixture: async (fixture: string, dropzoneTestId: string) => {
