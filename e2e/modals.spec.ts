@@ -82,7 +82,6 @@ describe("modals", () => {
     });
 
     test("active sources are listed and can be deleted", async () => {
-      // The "both" style ships with active sources; reopen the modal against it.
       await when.setStyle("both");
       await when.click("nav:sources");
       const before = Object.keys(get.fixture("geojson-raster-style.json").sources).length;
