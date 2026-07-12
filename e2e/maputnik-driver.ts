@@ -234,10 +234,15 @@ export class MaputnikDriver {
       await container.locator("[data-wd-key='function-base'] input").fill(value);
     },
 
-    /** Sets the data property a data function keys off of. */
+    /**
+     * Sets the data property a data function keys off of. This is an InputString,
+     * which only commits its value on blur, so typing alone is not enough.
+     */
     setFunctionProperty: async (fieldName: string, value: string) => {
       const container = this.helper.get.elementByTestId("spec-field-container:" + fieldName);
-      await container.locator("[data-wd-key='function-property'] input").fill(value);
+      const input = container.locator("[data-wd-key='function-property'] input");
+      await input.fill(value);
+      await input.blur();
     },
 
     /** Sets the fallback value used when a feature has no matching stop. */

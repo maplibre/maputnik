@@ -410,13 +410,17 @@ describe("layer editor", () => {
         });
       });
 
-      test("should set the property and the default", async () => {
-        // The property is only written to the style on the next change, so these
-        // two have to be set together.
+      test("should set the property", async () => {
         await when.setFunctionProperty("circle-blur", "myprop");
+        await then(get.styleFromLocalStorage()).shouldDeepNestedInclude({
+          layers: [{ id, paint: { "circle-blur": { property: "myprop" } } }],
+        });
+      });
+
+      test("should set the default", async () => {
         await when.setFunctionDefault("circle-blur", "0.5");
         await then(get.styleFromLocalStorage()).shouldDeepNestedInclude({
-          layers: [{ id, paint: { "circle-blur": { property: "myprop", default: 0.5 } } }],
+          layers: [{ id, paint: { "circle-blur": { default: 0.5 } } }],
         });
       });
 
