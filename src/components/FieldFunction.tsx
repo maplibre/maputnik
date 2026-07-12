@@ -1,9 +1,9 @@
 import React from "react";
 
-import { SpecProperty } from "./_SpecProperty";
-import { DataProperty, type Stop } from "./_DataProperty";
-import { ZoomProperty } from "./_ZoomProperty";
-import { ExpressionProperty } from "./_ExpressionProperty";
+import { SpecProperty } from "./SpecProperty";
+import { DataProperty, type Stop } from "./DataProperty";
+import { ZoomProperty } from "./ZoomProperty";
+import { ExpressionProperty } from "./ExpressionProperty";
 import {function as styleFunction} from "@maplibre/maplibre-gl-style-spec";
 import {findDefaultFromSpec} from "../libs/spec-helper";
 import { type MappedLayerErrors } from "../libs/definitions";

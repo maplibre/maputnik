@@ -15,7 +15,7 @@ import {findDefaultFromSpec} from "../libs/spec-helper";
 import { type WithTranslation, withTranslation } from "react-i18next";
 
 import { labelFromFieldName } from "../libs/label-from-field-name";
-import { DeleteStopButton } from "./_DeleteStopButton";
+import { DeleteStopButton } from "./DeleteStopButton";
 import { type MappedLayerErrors } from "../libs/definitions";
 
 

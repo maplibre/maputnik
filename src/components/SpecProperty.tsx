@@ -1,7 +1,7 @@
 import React from "react";
 
 import { FieldSpec, type FieldSpecProps } from "./FieldSpec";
-import { FunctionInputButtons as FunctionButtons } from "./_FunctionButtons";
+import { FunctionInputButtons as FunctionButtons } from "./FunctionButtons";
 
 import { labelFromFieldName } from "../libs/label-from-field-name";
 

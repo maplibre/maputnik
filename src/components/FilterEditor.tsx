@@ -13,7 +13,7 @@ import { SingleFilterEditor } from "./SingleFilterEditor";
 import { FilterEditorBlock } from "./FilterEditorBlock";
 import { InputButton } from "./InputButton";
 import { Doc } from "./Doc";
-import { ExpressionProperty } from "./_ExpressionProperty";
+import { ExpressionProperty } from "./ExpressionProperty";
 import { type WithTranslation, withTranslation } from "react-i18next";
 import type { MappedLayerErrors, StyleSpecificationWithId } from "../libs/definitions";
 

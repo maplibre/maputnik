@@ -10,7 +10,7 @@ import { InputNumber } from "./InputNumber";
 import { InputSelect } from "./InputSelect";
 import { Block } from "./Block";
 
-import { DeleteStopButton } from "./_DeleteStopButton";
+import { DeleteStopButton } from "./DeleteStopButton";
 import { labelFromFieldName } from "../libs/label-from-field-name";
 
 import { generateUniqueId as docUid } from "../libs/document-uid";
