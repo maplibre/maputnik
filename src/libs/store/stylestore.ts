@@ -1,4 +1,4 @@
-import style from "../style";
+import { ensureStyleValidity } from "../style";
 import {loadStyleUrl} from "../urlopen";
 import publicSources from "../../config/styles.json";
 import type {IStyleStore, StyleSpecificationWithId} from "../definitions";
@@ -89,7 +89,7 @@ export class StyleStore implements IStyleStore {
 
   // Save current style replacing previous version
   save(mapStyle: StyleSpecificationWithId) {
-    mapStyle = style.ensureStyleValidity(mapStyle);
+    mapStyle = ensureStyleValidity(mapStyle);
     const key = styleKey(mapStyle.id);
 
     const saveFn = () => {

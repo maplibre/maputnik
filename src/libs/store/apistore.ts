@@ -1,4 +1,4 @@
-import style from "../style";
+import {emptyStyle, ensureStyleValidity, replaceAccessTokens, stripAccessTokens} from "../style";
 import {format} from "@maplibre/maplibre-gl-style-spec";
 import ReconnectingWebSocket from "reconnecting-websocket";
 import type {IStyleStore, OnStyleChangedCallback, StyleSpecificationWithId} from "../definitions";
@@ -40,13 +40,13 @@ export class ApiStyleStore implements IStyleStore {
     connection.onmessage = e => {
       if(!e.data) return;
       console.log("Received style update from API");
-      let parsedStyle = style.emptyStyle;
+      let parsedStyle = emptyStyle;
       try {
         parsedStyle = JSON.parse(e.data);
       } catch(err) {
         console.error(err);
       }
-      const updatedStyle = style.ensureStyleValidity(parsedStyle);
+      const updatedStyle = ensureStyleValidity(parsedStyle);
       this.onLocalStyleChange(updatedStyle);
     };
   }
@@ -57,7 +57,7 @@ export class ApiStyleStore implements IStyleStore {
         mode: "cors",
       });
       const body = await response.json();
-      return style.ensureStyleValidity(body);
+      return ensureStyleValidity(body);
     } else {
       throw new Error("No latest style available. You need to init the api backend first.");
     }
@@ -66,8 +66,8 @@ export class ApiStyleStore implements IStyleStore {
   // Save current style replacing previous version
   save(mapStyle: StyleSpecificationWithId) {
     const styleJSON = format(
-      style.stripAccessTokens(
-        style.replaceAccessTokens(mapStyle)
+      stripAccessTokens(
+        replaceAccessTokens(mapStyle)
       )
     );
 
