@@ -1,6 +1,6 @@
 import React from "react";
 
-import FieldFunction from "./FieldFunction";
+import { FieldFunction } from "./FieldFunction";
 import type {LayerSpecification} from "maplibre-gl";
 import { type MappedLayerErrors } from "../libs/definitions";
 
@@ -40,7 +40,7 @@ type PropertyGroupProps = {
   errors?: MappedLayerErrors
 };
 
-export default class PropertyGroup extends React.Component<PropertyGroupProps> {
+export class PropertyGroup extends React.Component<PropertyGroupProps> {
   onPropertyChange = (property: string, newValue: any) => {
     const group = getGroupName(this.props.spec, this.props.layer.type, property);
     this.props.onChange(group ,property, newValue);

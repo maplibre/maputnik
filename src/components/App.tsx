@@ -11,29 +11,29 @@ import {type Map, type LayerSpecification, type StyleSpecification, type Validat
 import {validateStyleMin} from "@maplibre/maplibre-gl-style-spec";
 import latest from "@maplibre/maplibre-gl-style-spec/dist/latest.json";
 
-import MapMaplibreGl from "./MapMaplibreGl";
-import MapOpenLayers from "./MapOpenLayers";
-import CodeEditor from "./CodeEditor";
-import LayerList from "./LayerList";
-import LayerEditor from "./LayerEditor";
-import AppToolbar, { type MapState } from "./AppToolbar";
-import AppLayout from "./AppLayout";
-import MessagePanel from "./AppMessagePanel";
+import { MapMaplibreGl } from "./MapMaplibreGl";
+import { MapOpenLayers } from "./MapOpenLayers";
+import { CodeEditor } from "./CodeEditor";
+import { LayerList } from "./LayerList";
+import { LayerEditor } from "./LayerEditor";
+import { AppToolbar, type MapState } from "./AppToolbar";
+import { AppLayout } from "./AppLayout";
+import { AppMessagePanel as MessagePanel } from "./AppMessagePanel";
 
-import ModalSettings from "./modals/ModalSettings";
-import ModalExport from "./modals/ModalExport";
-import ModalSources from "./modals/ModalSources";
-import ModalOpen from "./modals/ModalOpen";
-import ModalShortcuts from "./modals/ModalShortcuts";
-import ModalDebug from "./modals/ModalDebug";
-import ModalGlobalState from "./modals/ModalGlobalState";
+import { ModalSettings } from "./modals/ModalSettings";
+import { ModalExport } from "./modals/ModalExport";
+import { ModalSources } from "./modals/ModalSources";
+import { ModalOpen } from "./modals/ModalOpen";
+import { ModalShortcuts } from "./modals/ModalShortcuts";
+import { ModalDebug } from "./modals/ModalDebug";
+import { ModalGlobalState } from "./modals/ModalGlobalState";
 
 import {downloadGlyphsMetadata, downloadSpriteMetadata} from "../libs/metadata";
 import { emptyStyle, getAccessToken, replaceAccessTokens } from "../libs/style";
 import { undoMessages, redoMessages } from "../libs/diffmessage";
 import { createStyleStore, type IStyleStore } from "../libs/store/style-store-factory";
 import { RevisionStore } from "../libs/revisions";
-import LayerWatcher from "../libs/layerwatcher";
+import { LayerWatcher } from "../libs/layerwatcher";
 import tokens from "../config/tokens.json";
 import isEqual from "lodash.isequal";
 import { type MapOptions } from "maplibre-gl";
@@ -123,7 +123,7 @@ type AppState = {
   fileHandle: FileSystemFileHandle | null
 };
 
-export default class App extends React.Component<any, AppState> {
+export class App extends React.Component<any, AppState> {
   revisionStore: RevisionStore;
   styleStore: IStyleStore | null = null;
   layerWatcher: LayerWatcher;

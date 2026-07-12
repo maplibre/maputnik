@@ -3,13 +3,13 @@ import capitalize from "lodash.capitalize";
 import {MdDelete} from "react-icons/md";
 import { type WithTranslation, withTranslation } from "react-i18next";
 
-import InputString from "./InputString";
-import InputNumber from "./InputNumber";
-import InputButton from "./InputButton";
-import FieldDocLabel from "./FieldDocLabel";
-import InputEnum from "./InputEnum";
-import InputUrl from "./InputUrl";
-import InputColor from "./InputColor";
+import { InputString } from "./InputString";
+import { InputNumber } from "./InputNumber";
+import { InputButton } from "./InputButton";
+import { FieldDocLabel } from "./FieldDocLabel";
+import { InputEnum } from "./InputEnum";
+import { InputUrl } from "./InputUrl";
+import { InputColor } from "./InputColor";
 
 
 export type InputDynamicArrayProps = {
@@ -141,9 +141,7 @@ class InputDynamicArrayInternal extends React.Component<InputDynamicArrayInterna
   }
 }
 
-const InputDynamicArray = withTranslation()(InputDynamicArrayInternal);
-export default InputDynamicArray;
-
+export const InputDynamicArray = withTranslation()(InputDynamicArrayInternal);
 type DeleteValueInputButtonProps = {
   onClick?(...args: unknown[]): unknown
 } & WithTranslation;

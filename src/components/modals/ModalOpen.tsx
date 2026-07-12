@@ -3,10 +3,10 @@ import { MdFileUpload } from "react-icons/md";
 import { MdAddCircleOutline } from "react-icons/md";
 import { Trans, type WithTranslation, withTranslation } from "react-i18next";
 
-import ModalLoading from "./ModalLoading";
-import Modal from "./Modal";
-import InputButton from "../InputButton";
-import InputUrl from "../InputUrl";
+import { ModalLoading } from "./ModalLoading";
+import { Modal } from "./Modal";
+import { InputButton } from "../InputButton";
+import { InputUrl } from "../InputUrl";
 
 import { ensureStyleValidity } from "../../libs/style";
 import publicStyles from "../../config/styles.json";
@@ -364,5 +364,4 @@ class ModalOpenInternal extends React.Component<ModalOpenInternalProps, ModalOpe
   }
 }
 
-const ModalOpen = withTranslation()(ModalOpenInternal);
-export default ModalOpen;
+export const ModalOpen = withTranslation()(ModalOpenInternal);

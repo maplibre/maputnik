@@ -4,11 +4,11 @@ import latest from "@maplibre/maplibre-gl-style-spec/dist/latest.json";
 import type {GeoJSONSourceSpecification, RasterDEMSourceSpecification, RasterSourceSpecification, SourceSpecification, VectorSourceSpecification} from "maplibre-gl";
 import { type WithTranslation, withTranslation } from "react-i18next";
 
-import Modal from "./Modal";
-import InputButton from "../InputButton";
-import FieldString from "../FieldString";
-import FieldSelect from "../FieldSelect";
-import ModalSourcesTypeEditor, { type EditorMode } from "./ModalSourcesTypeEditor";
+import { Modal } from "./Modal";
+import { InputButton } from "../InputButton";
+import { FieldString } from "../FieldString";
+import { FieldSelect } from "../FieldSelect";
+import { ModalSourcesTypeEditor, type EditorMode } from "./ModalSourcesTypeEditor";
 
 import { generateId } from "../../libs/style";
 import { deleteSource, addSource, changeSource } from "../../libs/source";
@@ -343,5 +343,4 @@ class ModalSourcesInternal extends React.Component<ModalSourcesInternalProps> {
   }
 }
 
-const ModalSources = withTranslation()(ModalSourcesInternal);
-export default ModalSources;
+export const ModalSources = withTranslation()(ModalSourcesInternal);

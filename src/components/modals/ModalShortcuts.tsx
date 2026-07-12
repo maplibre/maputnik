@@ -1,7 +1,7 @@
 import React from "react";
 import { Trans, type WithTranslation, withTranslation } from "react-i18next";
 
-import Modal from "./Modal";
+import { Modal } from "./Modal";
 
 
 type ModalShortcutsInternalProps = {
@@ -134,5 +134,4 @@ class ModalShortcutsInternal extends React.Component<ModalShortcutsInternalProps
   }
 }
 
-const ModalShortcuts = withTranslation()(ModalShortcutsInternal);
-export default ModalShortcuts;
+export const ModalShortcuts = withTranslation()(ModalShortcutsInternal);

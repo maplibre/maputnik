@@ -1,4 +1,4 @@
-import {emptyStyle, ensureStyleValidity, replaceAccessTokens, stripAccessTokens} from "../style";
+import { emptyStyle, ensureStyleValidity, replaceAccessTokens, stripAccessTokens } from "../style";
 import {format} from "@maplibre/maplibre-gl-style-spec";
 import ReconnectingWebSocket from "reconnecting-websocket";
 import type {IStyleStore, OnStyleChangedCallback, StyleSpecificationWithId} from "../definitions";

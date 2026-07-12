@@ -6,7 +6,7 @@ export type InputCheckboxProps = {
   onChange(...args: unknown[]): unknown
 };
 
-export default class InputCheckbox extends React.Component<InputCheckboxProps> {
+export class InputCheckbox extends React.Component<InputCheckboxProps> {
   static defaultProps = {
     value: false,
   };

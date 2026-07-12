@@ -4,17 +4,17 @@ import { TbMathFunction } from "react-icons/tb";
 import latest from "@maplibre/maplibre-gl-style-spec/dist/latest.json";
 import { type WithTranslation, withTranslation } from "react-i18next";
 
-import InputButton from "./InputButton";
-import InputSpec from "./InputSpec";
-import InputNumber from "./InputNumber";
-import InputSelect from "./InputSelect";
-import Block from "./Block";
+import { InputButton } from "./InputButton";
+import { InputSpec } from "./InputSpec";
+import { InputNumber } from "./InputNumber";
+import { InputSelect } from "./InputSelect";
+import { Block } from "./Block";
 
-import DeleteStopButton from "./_DeleteStopButton";
-import labelFromFieldName from "../libs/label-from-field-name";
+import { DeleteStopButton } from "./DeleteStopButton";
+import { labelFromFieldName } from "../libs/label-from-field-name";
 
-import docUid from "../libs/document-uid";
-import sortNumerically from "../libs/sort-numerically";
+import { generateUniqueId as docUid } from "../libs/document-uid";
+import { sortNumerically } from "../libs/sort-numerically";
 import { type MappedLayerErrors } from "../libs/definitions";
 
 
@@ -267,5 +267,4 @@ class ZoomPropertyInternal extends React.Component<ZoomPropertyInternalProps, Zo
   }
 }
 
-const ZoomProperty = withTranslation()(ZoomPropertyInternal);
-export default ZoomProperty;
+export const ZoomProperty = withTranslation()(ZoomPropertyInternal);

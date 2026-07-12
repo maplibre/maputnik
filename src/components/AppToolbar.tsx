@@ -306,5 +306,4 @@ class AppToolbarInternal extends React.Component<AppToolbarInternalProps> {
   }
 }
 
-const AppToolbar = withTranslation()(AppToolbarInternal);
-export default AppToolbar;
+export const AppToolbar = withTranslation()(AppToolbarInternal);

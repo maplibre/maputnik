@@ -9,7 +9,7 @@ type CollapseProps = {
 };
 
 
-export default class Collapse extends React.Component<CollapseProps> {
+export class Collapse extends React.Component<CollapseProps> {
   static defaultProps = {
     isActive: true
   };

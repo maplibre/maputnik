@@ -67,5 +67,4 @@ class ModalInternal extends React.Component<ModalInternalProps> {
   }
 }
 
-const Modal = withTranslation()(ModalInternal);
-export default Modal;
+export const Modal = withTranslation()(ModalInternal);

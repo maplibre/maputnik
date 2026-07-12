@@ -1,6 +1,6 @@
 import React from "react";
 
-import InputButton from "./InputButton";
+import { InputButton } from "./InputButton";
 import {MdFunctions, MdInsertChart} from "react-icons/md";
 import { TbMathFunction } from "react-icons/tb";
 import { type WithTranslation, withTranslation } from "react-i18next";
@@ -67,5 +67,4 @@ class FunctionInputButtonsInternal extends React.Component<FunctionInputButtonsI
   }
 }
 
-const FunctionInputButtons = withTranslation()(FunctionInputButtonsInternal);
-export default FunctionInputButtons;
+export const FunctionInputButtons = withTranslation()(FunctionInputButtonsInternal);

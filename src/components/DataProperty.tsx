@@ -3,19 +3,19 @@ import {PiListPlusBold} from "react-icons/pi";
 import {TbMathFunction} from "react-icons/tb";
 import latest from "@maplibre/maplibre-gl-style-spec/dist/latest.json";
 
-import InputButton from "./InputButton";
-import InputSpec from "./InputSpec";
-import InputNumber from "./InputNumber";
-import InputString from "./InputString";
-import InputSelect from "./InputSelect";
-import Block from "./Block";
-import docUid from "../libs/document-uid";
-import sortNumerically from "../libs/sort-numerically";
+import { InputButton } from "./InputButton";
+import { InputSpec } from "./InputSpec";
+import { InputNumber } from "./InputNumber";
+import { InputString } from "./InputString";
+import { InputSelect } from "./InputSelect";
+import { Block } from "./Block";
+import { generateUniqueId as docUid } from "../libs/document-uid";
+import { sortNumerically } from "../libs/sort-numerically";
 import {findDefaultFromSpec} from "../libs/spec-helper";
 import { type WithTranslation, withTranslation } from "react-i18next";
 
-import labelFromFieldName from "../libs/label-from-field-name";
-import DeleteStopButton from "./_DeleteStopButton";
+import { labelFromFieldName } from "../libs/label-from-field-name";
+import { DeleteStopButton } from "./DeleteStopButton";
 import { type MappedLayerErrors } from "../libs/definitions";
 
 
@@ -385,5 +385,4 @@ class DataPropertyInternal extends React.Component<DataPropertyInternalProps, Da
   }
 }
 
-const DataProperty = withTranslation()(DataPropertyInternal);
-export default DataProperty;
+export const DataProperty = withTranslation()(DataPropertyInternal);

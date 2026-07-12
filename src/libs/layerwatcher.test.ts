@@ -1,6 +1,6 @@
 import { describe, it, expect, vi } from "vitest";
+import { LayerWatcher } from "./layerwatcher";
 import type { Map } from "maplibre-gl";
-import LayerWatcher from "./layerwatcher";
 
 function mockMap(): Map {
   return {

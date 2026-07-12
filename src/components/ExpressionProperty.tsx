@@ -2,10 +2,10 @@ import React from "react";
 import {MdDelete, MdUndo} from "react-icons/md";
 import { type WithTranslation, withTranslation } from "react-i18next";
 
-import Block from "./Block";
-import InputButton from "./InputButton";
-import labelFromFieldName from "../libs/label-from-field-name";
-import FieldJson from "./FieldJson";
+import { Block } from "./Block";
+import { InputButton } from "./InputButton";
+import { labelFromFieldName } from "../libs/label-from-field-name";
+import { FieldJson } from "./FieldJson";
 import type { StylePropertySpecification } from "maplibre-gl";
 import { type MappedLayerErrors } from "../libs/definitions";
 
@@ -92,5 +92,4 @@ class ExpressionPropertyInternal extends React.Component<ExpressionPropertyInter
   }
 }
 
-const ExpressionProperty = withTranslation()(ExpressionPropertyInternal);
-export default ExpressionProperty;
+export const ExpressionProperty = withTranslation()(ExpressionPropertyInternal);

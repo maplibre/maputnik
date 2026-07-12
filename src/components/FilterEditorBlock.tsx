@@ -1,5 +1,5 @@
 import React, { type PropsWithChildren } from "react";
-import InputButton from "./InputButton";
+import { InputButton } from "./InputButton";
 import {MdDelete} from "react-icons/md";
 import { type WithTranslation, withTranslation } from "react-i18next";
 
@@ -27,5 +27,4 @@ class FilterEditorBlockInternal extends React.Component<FilterEditorBlockInterna
   }
 }
 
-const FilterEditorBlock = withTranslation()(FilterEditorBlockInternal);
-export default FilterEditorBlock;
+export const FilterEditorBlock = withTranslation()(FilterEditorBlockInternal);

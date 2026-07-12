@@ -1,4 +1,4 @@
-import InputJson from "./InputJson";
+import { InputJson } from "./InputJson";
 import React from "react";
 import { withTranslation, type WithTranslation } from "react-i18next";
 import { type StyleSpecification } from "maplibre-gl";
@@ -24,6 +24,4 @@ const CodeEditorInternal: React.FC<CodeEditorProps> = (props) => {
   </>;
 };
 
-const CodeEditor = withTranslation()(CodeEditorInternal);
-
-export default CodeEditor;
+export const CodeEditor = withTranslation()(CodeEditorInternal);

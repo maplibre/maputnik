@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import sortNumerically from "./sort-numerically";
+import { sortNumerically } from "./sort-numerically";
 
 describe("sortNumerically", () => {
   it("orders numbers (and numeric strings) ascending", () => {

@@ -18,7 +18,7 @@ type LayerEditorGroupProps = {
 };
 
 
-export default class LayerEditorGroup extends React.Component<LayerEditorGroupProps> {
+export class LayerEditorGroup extends React.Component<LayerEditorGroupProps> {
   render() {
     return <AccordionItem uuid={this.props.id}>
       <AccordionItemHeading className="maputnik-layer-editor-group"

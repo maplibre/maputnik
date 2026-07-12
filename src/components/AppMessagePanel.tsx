@@ -61,5 +61,4 @@ class AppMessagePanelInternal extends React.Component<AppMessagePanelInternalPro
   }
 }
 
-const AppMessagePanel = withTranslation()(AppMessagePanelInternal);
-export default AppMessagePanel;
+export const AppMessagePanel = withTranslation()(AppMessagePanelInternal);

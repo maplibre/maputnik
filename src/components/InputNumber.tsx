@@ -1,5 +1,5 @@
 import React, { type BaseSyntheticEvent } from "react";
-import generateUniqueId from "../libs/document-uid";
+import { generateUniqueId } from "../libs/document-uid";
 
 export type InputNumberProps = {
   value?: number
@@ -25,7 +25,7 @@ type InputNumberState = {
   dirtyValue?: number | string | undefined
 };
 
-export default class InputNumber extends React.Component<InputNumberProps, InputNumberState> {
+export class InputNumber extends React.Component<InputNumberProps, InputNumberState> {
   static defaultProps = {
     rangeStep: 1
   };

@@ -10,7 +10,7 @@ export type InputSelectProps = {
   "aria-label"?: string
 };
 
-export default class InputSelect extends React.Component<InputSelectProps> {
+export class InputSelect extends React.Component<InputSelectProps> {
   render() {
     let options = this.props.options;
     if(options.length > 0 && !Array.isArray(options[0])) {

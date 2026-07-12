@@ -1,4 +1,4 @@
-export default function(num1: string | number, num2: string| number) {
+export function sortNumerically(num1: string | number, num2: string| number) {
   const a = +num1;
   const b = +num2;
 
