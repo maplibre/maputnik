@@ -118,7 +118,6 @@ describe("layers list", () => {
 
     test("change source", async () => {
       const id = await when.modal.fillLayers({ type: "fill", layer: "example" });
-      // The "both" style ships with an "example" and a "raster" source.
       await when.changeLayerSource("raster");
       await then(get.styleFromLocalStorage()).shouldDeepNestedInclude({
         layers: [{ id, type: "fill", source: "raster" }],

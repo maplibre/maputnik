@@ -352,7 +352,6 @@ describe("layer editor", () => {
     describe("data function", () => {
       beforeEach(async () => {
         id = await when.modal.fillLayers({ type: "circle", layer: "example" });
-        // The property needs a value before it can be turned into a data function.
         await when.setValue("spec-field-input:circle-blur", "1");
         await when.makeDataFunction("circle-blur");
       });
@@ -562,7 +561,6 @@ describe("layer editor", () => {
       const bgId = await createBackground();
       await when.click("layer-list-item:background:" + bgId);
 
-      // Append a property to the layer's JSON; the editor writes it back to the style.
       await when.appendToJsonEditorLine('"background"', ',\n"minzoom": 5');
       await then(get.styleFromLocalStorage()).shouldDeepNestedInclude({
         layers: [{ id: "background:" + bgId, type: "background", minzoom: 5 }],
