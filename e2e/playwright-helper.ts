@@ -357,23 +357,19 @@ export class PlaywrightHelper {
       await this.page.mouse.up();
     },
 
-    openFileByFixture: async (fixture: string, buttonTestId: string, inputTestId: string) => {
+    /**
+     * Opens a fixture through the File System Access API, which raises no
+     * "filechooser" event and so has to be stubbed. For the <input type="file">
+     * fallback that browsers without the API use, see chooseFileFromPicker.
+     */
+    openFileByFixture: async (fixture: string, buttonTestId: string) => {
       const content = JSON.stringify(this.readFixture(fixture));
-      const hasPicker = await this.page.evaluate(() => "showOpenFilePicker" in window);
-      if (hasPicker) {
-        await this.page.evaluate((fileContent) => {
-          (window as any).showOpenFilePicker = async () => [
-            { getFile: async () => ({ text: async () => fileContent }) },
-          ];
-        }, content);
-        await this.testId(buttonTestId).click();
-      } else {
-        await this.testId(inputTestId).setInputFiles({
-          name: fixture,
-          mimeType: "application/json",
-          buffer: Buffer.from(content),
-        });
-      }
+      await this.page.evaluate((fileContent) => {
+        (window as any).showOpenFilePicker = async () => [
+          { getFile: async () => ({ text: async () => fileContent }) },
+        ];
+      }, content);
+      await this.testId(buttonTestId).click();
     },
 
     /**

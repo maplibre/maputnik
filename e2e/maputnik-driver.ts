@@ -110,7 +110,7 @@ export class MaputnikDriver {
     },
 
     chooseExampleFile: async () => {
-      await this.helper.when.openFileByFixture("example-style.json", "modal:open.dropzone", "modal:open.file.input");
+      await this.helper.when.openFileByFixture("example-style.json", "modal:open.dropzone");
       await this.helper.when.wait(200);
     },
 
