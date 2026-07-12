@@ -29,7 +29,7 @@ import ModalDebug from "./modals/ModalDebug";
 import ModalGlobalState from "./modals/ModalGlobalState";
 
 import {downloadGlyphsMetadata, downloadSpriteMetadata} from "../libs/metadata";
-import style from "../libs/style";
+import { emptyStyle, replaceAccessTokens } from "../libs/style";
 import { undoMessages, redoMessages } from "../libs/diffmessage";
 import { createStyleStore, type IStyleStore } from "../libs/store/style-store-factory";
 import { RevisionStore } from "../libs/revisions";
@@ -137,7 +137,7 @@ export default class App extends React.Component<any, AppState> {
     this.state = {
       errors: [],
       infos: [],
-      mapStyle: style.emptyStyle,
+      mapStyle: emptyStyle,
       selectedLayerIndex: 0,
       sources: {},
       vectorLayers: {},
@@ -698,7 +698,7 @@ export default class App extends React.Component<any, AppState> {
       mapStyle: (dirtyMapStyle || mapStyle),
       mapView: this.state.mapView,
       replaceAccessTokens: (mapStyle: StyleSpecification) => {
-        return style.replaceAccessTokens(mapStyle, {
+        return replaceAccessTokens(mapStyle, {
           allowFallback: true
         });
       },

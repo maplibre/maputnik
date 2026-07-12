@@ -10,7 +10,7 @@ import FieldString from "../FieldString";
 import FieldSelect from "../FieldSelect";
 import ModalSourcesTypeEditor, { type EditorMode } from "./ModalSourcesTypeEditor";
 
-import style from "../../libs/style";
+import { generateId } from "../../libs/style";
 import { deleteSource, addSource, changeSource } from "../../libs/source";
 import publicSources from "../../config/tilesets.json";
 import { type OnStyleChangedCallback, type StyleSpecificationWithId } from "../../libs/definitions";
@@ -121,7 +121,7 @@ class AddSource extends React.Component<AddSourceProps, AddSourceState> {
     super(props);
     this.state = {
       mode: "tilejson_vector",
-      sourceId: style.generateId(),
+      sourceId: generateId(),
       source: this.defaultSource("tilejson_vector"),
     };
   }
