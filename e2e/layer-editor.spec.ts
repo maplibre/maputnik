@@ -29,7 +29,6 @@ describe("layer editor", () => {
     const bgId = await createBackground();
     await when.click("layer-list-item:background:" + bgId);
 
-    // Groups start expanded, so the "Layer" group's fields are on screen.
     await then(get.elementByTestId("layer-editor.layer-id.input")).shouldBeVisible();
 
     await when.toggleGroupInLayerEditor("Layer");
