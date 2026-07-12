@@ -1,6 +1,6 @@
 import {type Map} from "maplibre-gl";
 
-export default class ZoomControl {
+export class ZoomControl {
   _map: Map| undefined = undefined;
   _container: HTMLDivElement | undefined = undefined;
   _textEl: HTMLSpanElement | null = null;

@@ -18,5 +18,4 @@ class SmallErrorInternal extends React.Component<SmallErrorInternalProps> {
   }
 }
 
-const SmallError = withTranslation()(SmallErrorInternal);
-export default SmallError;
+export const SmallError = withTranslation()(SmallErrorInternal);

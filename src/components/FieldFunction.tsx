@@ -1,9 +1,9 @@
 import React from "react";
 
-import SpecProperty from "./_SpecProperty";
-import DataProperty, { type Stop } from "./_DataProperty";
-import ZoomProperty from "./_ZoomProperty";
-import ExpressionProperty from "./_ExpressionProperty";
+import { SpecProperty } from "./_SpecProperty";
+import { DataProperty, type Stop } from "./_DataProperty";
+import { ZoomProperty } from "./_ZoomProperty";
+import { ExpressionProperty } from "./_ExpressionProperty";
 import {function as styleFunction} from "@maplibre/maplibre-gl-style-spec";
 import {findDefaultFromSpec} from "../libs/spec-helper";
 import { type MappedLayerErrors } from "../libs/definitions";
@@ -128,7 +128,7 @@ type FieldFunctionProps = {
 /** Supports displaying spec field for zoom function objects
  * https://www.mapbox.com/mapbox-gl-style-spec/#types-function-zoom-property
  */
-const FieldFunction: React.FC<FieldFunctionProps> = (props) => {
+export const FieldFunction: React.FC<FieldFunctionProps> = (props) => {
   const [dataType, setDataType] = React.useState(
     getDataType(props.value, props.fieldSpec)
   );
@@ -403,4 +403,3 @@ const FieldFunction: React.FC<FieldFunctionProps> = (props) => {
   );
 };
 
-export default FieldFunction;

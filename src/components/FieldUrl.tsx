@@ -1,5 +1,5 @@
-import InputUrl, {type FieldUrlProps as InputUrlProps} from "./InputUrl";
-import Block from "./Block";
+import { InputUrl, type FieldUrlProps as InputUrlProps } from "./InputUrl";
+import { Block } from "./Block";
 
 
 type FieldUrlProps = InputUrlProps & {
@@ -10,7 +10,7 @@ type FieldUrlProps = InputUrlProps & {
 };
 
 
-const FieldUrl: React.FC<FieldUrlProps> = (props) => {
+export const FieldUrl: React.FC<FieldUrlProps> = (props) => {
   return (
     <Block label={props.label} fieldSpec={props.fieldSpec}>
       <InputUrl {...props} />
@@ -18,4 +18,3 @@ const FieldUrl: React.FC<FieldUrlProps> = (props) => {
   );
 };
 
-export default FieldUrl;

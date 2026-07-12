@@ -1,7 +1,7 @@
 import { expect, test } from "vitest";
 import { render } from "vitest-browser-react";
 import { page } from "vitest/browser";
-import InputAutocomplete from "./InputAutocomplete";
+import { InputAutocomplete } from "./InputAutocomplete";
 
 const fruits = ["apple", "banana", "cherry"];
 

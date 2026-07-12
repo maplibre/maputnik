@@ -1,8 +1,8 @@
 import React from "react";
 import { type WithTranslation, withTranslation } from "react-i18next";
 
-import InputButton from "../InputButton";
-import Modal from "./Modal";
+import { InputButton } from "../InputButton";
+import { Modal } from "./Modal";
 
 
 type ModalLoadingInternalProps = {
@@ -35,5 +35,4 @@ class ModalLoadingInternal extends React.Component<ModalLoadingInternalProps> {
   }
 }
 
-const ModalLoading = withTranslation()(ModalLoadingInternal);
-export default ModalLoading;
+export const ModalLoading = withTranslation()(ModalLoadingInternal);

@@ -63,7 +63,7 @@ type FeaturePropertyPopupProps = {
   features: InspectFeature[]
 };
 
-class FeaturePropertyPopup extends React.Component<FeaturePropertyPopupProps> {
+export class FeaturePropertyPopup extends React.Component<FeaturePropertyPopupProps> {
   render() {
     const features = removeDuplicatedFeatures(this.props.features);
     return <div className="maputnik-feature-property-popup" dir="ltr" data-wd-key="feature-property-popup">
@@ -77,4 +77,3 @@ class FeaturePropertyPopup extends React.Component<FeaturePropertyPopupProps> {
 }
 
 
-export default FeaturePropertyPopup;

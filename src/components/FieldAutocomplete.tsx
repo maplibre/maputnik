@@ -1,5 +1,5 @@
-import Block from "./Block";
-import InputAutocomplete, { type InputAutocompleteProps } from "./InputAutocomplete";
+import { Block } from "./Block";
+import { InputAutocomplete, type InputAutocompleteProps } from "./InputAutocomplete";
 
 
 type FieldAutocompleteProps = InputAutocompleteProps & {
@@ -7,7 +7,7 @@ type FieldAutocompleteProps = InputAutocompleteProps & {
 };
 
 
-const FieldAutocomplete: React.FC<FieldAutocompleteProps> = (props) => {
+export const FieldAutocomplete: React.FC<FieldAutocompleteProps> = (props) => {
   return (
     <Block label={props.label}>
       <InputAutocomplete {...props} />
@@ -15,4 +15,3 @@ const FieldAutocomplete: React.FC<FieldAutocompleteProps> = (props) => {
   );
 };
 
-export default FieldAutocomplete;

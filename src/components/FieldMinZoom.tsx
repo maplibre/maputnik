@@ -1,8 +1,8 @@
 import React from "react";
 
 import latest from "@maplibre/maplibre-gl-style-spec/dist/latest.json";
-import Block from "./Block";
-import InputNumber from "./InputNumber";
+import { Block } from "./Block";
+import { InputNumber } from "./InputNumber";
 import { type WithTranslation, withTranslation } from "react-i18next";
 
 type FieldMinZoomInternalProps = {
@@ -31,5 +31,4 @@ const FieldMinZoomInternal: React.FC<FieldMinZoomInternalProps> = (props) => {
   );
 };
 
-const FieldMinZoom = withTranslation()(FieldMinZoomInternal);
-export default FieldMinZoom;
+export const FieldMinZoom = withTranslation()(FieldMinZoomInternal);

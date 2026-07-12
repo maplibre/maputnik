@@ -14,12 +14,12 @@ import {
   verticalListSortingStrategy,
 } from "@dnd-kit/sortable";
 
-import LayerListGroup from "./LayerListGroup";
-import LayerListItem from "./LayerListItem";
-import ModalAdd from "./modals/ModalAdd";
+import { LayerListGroup } from "./LayerListGroup";
+import { LayerListItem } from "./LayerListItem";
+import { ModalAdd } from "./modals/ModalAdd";
 
 import type {LayerSpecification, SourceSpecification} from "maplibre-gl";
-import generateUniqueId from "../libs/document-uid";
+import { generateUniqueId } from "../libs/document-uid";
 import { findClosestCommonPrefix, layerPrefix } from "../libs/layer";
 import { type WithTranslation, withTranslation } from "react-i18next";
 import { type MappedError, type OnMoveLayerCallback } from "../libs/definitions";
@@ -336,7 +336,7 @@ type LayerListProps = LayerListContainerProps & {
   onMoveLayer: OnMoveLayerCallback
 };
 
-const LayerList: React.FC<LayerListProps> = (props) => {
+export const LayerList: React.FC<LayerListProps> = (props) => {
   const sensors = useSensors(useSensor(PointerSensor, { activationConstraint: { distance: 5 } }));
 
   const handleDragEnd = (event: DragEndEvent) => {
@@ -362,4 +362,3 @@ const LayerList: React.FC<LayerListProps> = (props) => {
   );
 };
 
-export default LayerList;

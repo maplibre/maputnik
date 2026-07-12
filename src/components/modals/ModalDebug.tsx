@@ -1,7 +1,7 @@
 import React from "react";
 import { Trans, type WithTranslation, withTranslation } from "react-i18next";
 
-import Modal from "./Modal";
+import { Modal } from "./Modal";
 
 
 type ModalDebugInternalProps = {
@@ -79,5 +79,4 @@ class ModalDebugInternal extends React.Component<ModalDebugInternalProps> {
   }
 }
 
-const ModalDebug = withTranslation()(ModalDebugInternal);
-export default ModalDebug;
+export const ModalDebug = withTranslation()(ModalDebugInternal);

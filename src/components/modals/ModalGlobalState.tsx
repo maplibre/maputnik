@@ -3,13 +3,13 @@ import { withTranslation, type WithTranslation } from "react-i18next";
 import { MdDelete } from "react-icons/md";
 import latest from "@maplibre/maplibre-gl-style-spec/dist/latest.json";
 
-import Modal from "./Modal";
-import FieldString from "../FieldString";
-import InputButton from "../InputButton";
+import { Modal } from "./Modal";
+import { FieldString } from "../FieldString";
+import { InputButton } from "../InputButton";
 import { PiListPlusBold } from "react-icons/pi";
 import { type StyleSpecificationWithId } from "../../libs/definitions";
 import { type SchemaSpecification } from "maplibre-gl";
-import Doc from "../Doc";
+import { Doc } from "../Doc";
 
 type ModalGlobalStateInternalProps = {
   mapStyle: StyleSpecificationWithId;
@@ -151,5 +151,4 @@ const ModalGlobalStateInternal: React.FC<ModalGlobalStateInternalProps> = (props
   );
 };
 
-const ModalGlobalState = withTranslation()(ModalGlobalStateInternal);
-export default ModalGlobalState;
+export const ModalGlobalState = withTranslation()(ModalGlobalStateInternal);

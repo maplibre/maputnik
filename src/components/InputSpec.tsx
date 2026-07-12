@@ -1,14 +1,14 @@
 import React, { type ReactElement } from "react";
 
-import InputColor, { type InputColorProps } from "./InputColor";
-import InputNumber, { type InputNumberProps } from "./InputNumber";
-import InputCheckbox, { type InputCheckboxProps } from "./InputCheckbox";
-import InputString, { type InputStringProps } from "./InputString";
-import InputArray, { type InputArrayProps } from "./InputArray";
-import InputDynamicArray, { type InputDynamicArrayProps } from "./InputDynamicArray";
-import InputFont, { type InputFontProps } from "./InputFont";
-import InputAutocomplete, { type InputAutocompleteProps } from "./InputAutocomplete";
-import InputEnum, { type InputEnumProps } from "./InputEnum";
+import { InputColor, type InputColorProps } from "./InputColor";
+import { InputNumber, type InputNumberProps } from "./InputNumber";
+import { InputCheckbox, type InputCheckboxProps } from "./InputCheckbox";
+import { InputString, type InputStringProps } from "./InputString";
+import { InputArray, type InputArrayProps } from "./InputArray";
+import { InputDynamicArray, type InputDynamicArrayProps } from "./InputDynamicArray";
+import { InputFont, type InputFontProps } from "./InputFont";
+import { InputAutocomplete, type InputAutocompleteProps } from "./InputAutocomplete";
+import { InputEnum, type InputEnumProps } from "./InputEnum";
 import capitalize from "lodash.capitalize";
 
 const iconProperties = ["background-pattern", "fill-pattern", "line-pattern", "fill-extrusion-pattern", "icon-image"];
@@ -38,7 +38,7 @@ export type InputSpecProps = {
 /** Display any field from the Maplibre GL style spec and
  * choose the correct field component based on the @{fieldSpec}
  * to display @{value}. */
-export default class InputSpec extends React.Component<InputSpecProps> {
+export class InputSpec extends React.Component<InputSpecProps> {
 
   childNodes() {
     const commonProps = {

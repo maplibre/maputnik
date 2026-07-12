@@ -20,7 +20,7 @@ type InputStringState = {
   value?: string
 };
 
-export default class InputString extends React.Component<InputStringProps, InputStringState> {
+export class InputString extends React.Component<InputStringProps, InputStringState> {
   static defaultProps = {
     onInput: () => {},
   };

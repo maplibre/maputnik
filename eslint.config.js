@@ -34,7 +34,9 @@ export default defineConfig({
   rules: {
     "react-refresh/only-export-components": [
       "warn",
-      { allowConstantExport: true }
+      // Many components are exported as withTranslation()(Component); without
+      // this the rule cannot tell the HOC's result is still a component.
+      { allowConstantExport: true, extraHOCs: ["withTranslation"] }
     ],
     "@typescript-eslint/no-explicit-any": "off",
     "@typescript-eslint/no-unused-vars": [

@@ -1,5 +1,5 @@
 import React from "react";
-import Collapser from "./Collapser";
+import { Collapser } from "./Collapser";
 
 type LayerListGroupProps = {
   title: string
@@ -9,7 +9,7 @@ type LayerListGroupProps = {
   "aria-controls"?: string
 };
 
-export default class LayerListGroup extends React.Component<LayerListGroupProps> {
+export class LayerListGroup extends React.Component<LayerListGroupProps> {
   render() {
     return <li className="maputnik-layer-list-group">
       <div className="maputnik-layer-list-group-header"

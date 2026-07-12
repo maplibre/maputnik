@@ -3,10 +3,10 @@ import {createRoot} from "react-dom/client";
 import MapLibreGl, {type LayerSpecification, type LngLat, type Map, type MapOptions, type SourceSpecification, type StyleSpecification} from "maplibre-gl";
 import MaplibreInspect from "@maplibre/maplibre-gl-inspect";
 import colors from "@maplibre/maplibre-gl-inspect/lib/colors";
-import MapMaplibreGlLayerPopup from "./MapMaplibreGlLayerPopup";
-import MapMaplibreGlFeaturePropertyPopup, { type InspectFeature } from "./MapMaplibreGlFeaturePropertyPopup";
+import { FeatureLayerPopup as MapMaplibreGlLayerPopup } from "./MapMaplibreGlLayerPopup";
+import { FeaturePropertyPopup as MapMaplibreGlFeaturePropertyPopup, type InspectFeature } from "./MapMaplibreGlFeaturePropertyPopup";
 import Color from "color";
-import ZoomControl from "../libs/zoomcontrol";
+import { ZoomControl } from "../libs/zoomcontrol";
 import { type HighlightedLayer, colorHighlightedLayer } from "../libs/highlight";
 import "maplibre-gl/dist/maplibre-gl.css";
 import "../maplibregl.css";
@@ -322,5 +322,4 @@ class MapMaplibreGlInternal extends React.Component<MapMaplibreGlInternalProps, 
   }
 }
 
-const MapMaplibreGl = withTranslation()(MapMaplibreGlInternal);
-export default MapMaplibreGl;
+export const MapMaplibreGl = withTranslation()(MapMaplibreGlInternal);

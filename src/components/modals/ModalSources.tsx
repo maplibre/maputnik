@@ -4,13 +4,13 @@ import latest from "@maplibre/maplibre-gl-style-spec/dist/latest.json";
 import type {GeoJSONSourceSpecification, RasterDEMSourceSpecification, RasterSourceSpecification, SourceSpecification, VectorSourceSpecification} from "maplibre-gl";
 import { type WithTranslation, withTranslation } from "react-i18next";
 
-import Modal from "./Modal";
-import InputButton from "../InputButton";
-import FieldString from "../FieldString";
-import FieldSelect from "../FieldSelect";
-import ModalSourcesTypeEditor, { type EditorMode } from "./ModalSourcesTypeEditor";
+import { Modal } from "./Modal";
+import { InputButton } from "../InputButton";
+import { FieldString } from "../FieldString";
+import { FieldSelect } from "../FieldSelect";
+import { ModalSourcesTypeEditor, type EditorMode } from "./ModalSourcesTypeEditor";
 
-import style from "../../libs/style";
+import { generateId } from "../../libs/style";
 import { deleteSource, addSource, changeSource } from "../../libs/source";
 import publicSources from "../../config/tilesets.json";
 import { type OnStyleChangedCallback, type StyleSpecificationWithId } from "../../libs/definitions";
@@ -121,7 +121,7 @@ class AddSource extends React.Component<AddSourceProps, AddSourceState> {
     super(props);
     this.state = {
       mode: "tilejson_vector",
-      sourceId: style.generateId(),
+      sourceId: generateId(),
       source: this.defaultSource("tilejson_vector"),
     };
   }
@@ -343,5 +343,4 @@ class ModalSourcesInternal extends React.Component<ModalSourcesInternalProps> {
   }
 }
 
-const ModalSources = withTranslation()(ModalSourcesInternal);
-export default ModalSources;
+export const ModalSources = withTranslation()(ModalSourcesInternal);

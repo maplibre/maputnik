@@ -1,6 +1,6 @@
 import { type TFunction } from "i18next";
 
-const spec = (t: TFunction) => ({
+export const spec = (t: TFunction) => ({
   maputnik: {
     maptiler_access_token: {
       label: t("MapTiler Access Token"),
@@ -33,4 +33,3 @@ const spec = (t: TFunction) => ({
   }
 });
 
-export default spec;

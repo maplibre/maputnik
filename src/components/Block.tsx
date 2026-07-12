@@ -1,7 +1,7 @@
 import React, {type CSSProperties, type PropsWithChildren, type SyntheticEvent} from "react";
 import classnames from "classnames";
-import FieldDocLabel from "./FieldDocLabel";
-import Doc from "./Doc";
+import { FieldDocLabel } from "./FieldDocLabel";
+import { Doc } from "./Doc";
 
 export type BlockProps = PropsWithChildren & {
   "data-wd-key"?: string
@@ -19,7 +19,7 @@ type BlockState = {
 };
 
 /** Wrap a component with a label */
-export default class Block extends React.Component<BlockProps, BlockState> {
+export class Block extends React.Component<BlockProps, BlockState> {
   _blockEl: HTMLDivElement | null = null;
 
   constructor (props: BlockProps) {

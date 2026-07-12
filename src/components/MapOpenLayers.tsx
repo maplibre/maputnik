@@ -2,7 +2,7 @@ import React from "react";
 import {throttle} from "lodash";
 import { type WithTranslation, withTranslation } from "react-i18next";
 
-import MapMaplibreGlLayerPopup from "./MapMaplibreGlLayerPopup";
+import { FeatureLayerPopup as MapMaplibreGlLayerPopup } from "./MapMaplibreGlLayerPopup";
 
 import "ol/ol.css";
 //@ts-ignore
@@ -204,5 +204,4 @@ class MapOpenLayersInternal extends React.Component<MapOpenLayersInternalProps, 
   }
 }
 
-const MapOpenLayers = withTranslation()(MapOpenLayersInternal);
-export default MapOpenLayers;
+export const MapOpenLayers = withTranslation()(MapOpenLayersInternal);

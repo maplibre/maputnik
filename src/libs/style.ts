@@ -148,7 +148,7 @@ function stripAccessTokens(mapStyle: StyleSpecification) {
   };
 }
 
-export default {
+export {
   ensureStyleValidity,
   emptyStyle,
   indexOfLayer,

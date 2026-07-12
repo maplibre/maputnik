@@ -13,7 +13,7 @@ type IconLayerProps = {
   className?: string
 };
 
-const IconLayer: React.FC<IconLayerProps> = (props) => {
+export const IconLayer: React.FC<IconLayerProps> = (props) => {
   const iconProps = { style: props.style };
   switch(props.type) {
     case "fill-extrusion": return <IoMdCube {...iconProps} />;
@@ -30,4 +30,3 @@ const IconLayer: React.FC<IconLayerProps> = (props) => {
   }
 };
 
-export default IconLayer;

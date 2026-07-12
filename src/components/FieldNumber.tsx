@@ -1,5 +1,5 @@
-import InputNumber, {type InputNumberProps} from "./InputNumber";
-import Block from "./Block";
+import { InputNumber, type InputNumberProps } from "./InputNumber";
+import { Block } from "./Block";
 
 
 type FieldNumberProps = InputNumberProps & {
@@ -10,7 +10,7 @@ type FieldNumberProps = InputNumberProps & {
 };
 
 
-const FieldNumber: React.FC<FieldNumberProps> = (props) => {
+export const FieldNumber: React.FC<FieldNumberProps> = (props) => {
   return (
     <Block label={props.label} fieldSpec={props.fieldSpec}>
       <InputNumber {...props} />
@@ -18,4 +18,3 @@ const FieldNumber: React.FC<FieldNumberProps> = (props) => {
   );
 };
 
-export default FieldNumber;

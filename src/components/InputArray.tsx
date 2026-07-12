@@ -1,6 +1,6 @@
 import React from "react";
-import InputString from "./InputString";
-import InputNumber from "./InputNumber";
+import { InputString } from "./InputString";
+import { InputNumber } from "./InputNumber";
 
 export type InputArrayProps = {
   value: (string | number | undefined)[]
@@ -17,7 +17,7 @@ type InputArrayState = {
   initialPropsValue: unknown[]
 };
 
-export default class InputArray extends React.Component<InputArrayProps, InputArrayState> {
+export class InputArray extends React.Component<InputArrayProps, InputArrayState> {
   static defaultProps = {
     value: [],
     default: [],
