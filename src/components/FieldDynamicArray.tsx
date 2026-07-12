@@ -12,4 +12,3 @@ export const FieldDynamicArray: React.FC<FieldDynamicArrayProps> = (props) => {
     </Fieldset>
   );
 };
-

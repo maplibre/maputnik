@@ -7,4 +7,3 @@ type FieldJsonProps = InputJsonProps & {};
 export const FieldJson: React.FC<FieldJsonProps> = (props) => {
   return <InputJson {...props} />;
 };
-

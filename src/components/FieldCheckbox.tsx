@@ -14,4 +14,3 @@ export const FieldCheckbox: React.FC<FieldCheckboxProps> = (props) => {
     </Block>
   );
 };
-

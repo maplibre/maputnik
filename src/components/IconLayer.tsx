@@ -29,4 +29,3 @@ export const IconLayer: React.FC<IconLayerProps> = (props) => {
     default: return <MdPriorityHigh {...iconProps} />;
   }
 };
-

@@ -162,4 +162,3 @@ export const LayerListItem = React.forwardRef<HTMLLIElement, LayerListItemProps>
     </li>
   </IconContext.Provider>;
 });
-

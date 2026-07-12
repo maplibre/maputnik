@@ -17,4 +17,3 @@ export const FieldColor: React.FC<FieldColorProps> = (props) => {
     </Block>
   );
 };
-

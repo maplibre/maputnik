@@ -17,4 +17,3 @@ export const FieldEnum: React.FC<FieldEnumProps> = (props) => {
     </Fieldset>
   );
 };
-

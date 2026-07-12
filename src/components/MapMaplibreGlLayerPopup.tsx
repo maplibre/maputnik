@@ -109,5 +109,3 @@ export class FeatureLayerPopup extends React.Component<FeatureLayerPopupProps> {
     </div>;
   }
 }
-
-

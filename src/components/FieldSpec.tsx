@@ -45,4 +45,3 @@ export const FieldSpec: React.FC<FieldSpecProps> = (props) => {
     </TypeBlock>
   );
 };
-

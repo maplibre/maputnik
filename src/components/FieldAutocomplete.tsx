@@ -14,4 +14,3 @@ export const FieldAutocomplete: React.FC<FieldAutocompleteProps> = (props) => {
     </Block>
   );
 };
-

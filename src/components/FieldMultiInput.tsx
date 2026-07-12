@@ -14,4 +14,3 @@ export const FieldMultiInput: React.FC<FieldMultiInputProps> = (props) => {
     </Fieldset>
   );
 };
-

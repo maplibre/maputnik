@@ -25,4 +25,3 @@ const CodeEditorInternal: React.FC<CodeEditorProps> = (props) => {
 };
 
 export const CodeEditor = withTranslation()(CodeEditorInternal);
-

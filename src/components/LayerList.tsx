@@ -361,4 +361,3 @@ export const LayerList: React.FC<LayerListProps> = (props) => {
     </DndContext>
   );
 };
-

@@ -402,4 +402,3 @@ export const FieldFunction: React.FC<FieldFunctionProps> = (props) => {
     </div>
   );
 };
-

@@ -75,5 +75,3 @@ export class FeaturePropertyPopup extends React.Component<FeaturePropertyPopupPr
     </div>;
   }
 }
-
-

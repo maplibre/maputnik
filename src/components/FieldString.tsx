@@ -16,4 +16,3 @@ export const FieldString: React.FC<FieldStringProps> = (props) => {
     </Block>
   );
 };
-
