@@ -9,7 +9,7 @@ import {type WithTranslation, withTranslation} from "react-i18next";
 import FieldString from "../FieldString";
 import InputButton from "../InputButton";
 import Modal from "./Modal";
-import { replaceAccessTokens, stripAccessTokens } from "../../libs/style";
+import {replaceAccessTokens, stripAccessTokens} from "../../libs/style";
 import fieldSpecAdditional from "../../libs/field-spec-additional";
 import type {OnStyleChangedCallback, StyleSpecificationWithId} from "../../libs/definitions";
 
