@@ -1,5 +1,5 @@
 import React from "react";
-import ScrollContainer from "./ScrollContainer";
+import { ScrollContainer } from "./ScrollContainer";
 import { type WithTranslation, withTranslation } from "react-i18next";
 import { IconContext } from "react-icons";
 
@@ -50,5 +50,4 @@ class AppLayoutInternal extends React.Component<AppLayoutInternalProps> {
   }
 }
 
-const AppLayout = withTranslation()(AppLayoutInternal);
-export default AppLayout;
+export const AppLayout = withTranslation()(AppLayoutInternal);

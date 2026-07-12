@@ -1,5 +1,5 @@
 import React from "react";
-import InputAutocomplete from "./InputAutocomplete";
+import { InputAutocomplete } from "./InputAutocomplete";
 
 export type InputFontProps = {
   name: string
@@ -11,7 +11,7 @@ export type InputFontProps = {
   "aria-label"?: string
 };
 
-export default class InputFont extends React.Component<InputFontProps> {
+export class InputFont extends React.Component<InputFontProps> {
   static defaultProps = {
     fonts: []
   };

@@ -1,6 +1,6 @@
 import React, { type JSX } from "react";
-import InputString from "./InputString";
-import SmallError from "./SmallError";
+import { InputString } from "./InputString";
+import { SmallError } from "./SmallError";
 import { Trans, type WithTranslation, withTranslation } from "react-i18next";
 import { type TFunction } from "i18next";
 import { ErrorType, validate } from "../libs/urlopen";
@@ -91,5 +91,4 @@ class InputUrlInternal extends React.Component<InputUrlInternalProps, InputUrlSt
   }
 }
 
-const InputUrl = withTranslation()(InputUrlInternal);
-export default InputUrl;
+export const InputUrl = withTranslation()(InputUrlInternal);

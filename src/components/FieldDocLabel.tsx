@@ -10,7 +10,7 @@ type FieldDocLabelProps = {
 };
 
 
-const FieldDocLabel: React.FC<FieldDocLabelProps> = (props) => {
+export const FieldDocLabel: React.FC<FieldDocLabelProps> = (props) => {
   const [open, setOpen] = React.useState(false);
 
   const onToggleDoc = (state: boolean) => {
@@ -49,5 +49,3 @@ const FieldDocLabel: React.FC<FieldDocLabelProps> = (props) => {
   }
   return <div />;
 };
-
-export default FieldDocLabel;

@@ -1,8 +1,8 @@
 import React, { type PropsWithChildren, type ReactElement } from "react";
 import classnames from "classnames";
-import FieldDocLabel from "./FieldDocLabel";
-import Doc from "./Doc";
-import generateUniqueId from "../libs/document-uid";
+import { FieldDocLabel } from "./FieldDocLabel";
+import { Doc } from "./Doc";
+import { generateUniqueId } from "../libs/document-uid";
 
 export type FieldsetProps = PropsWithChildren & {
   label?: string,
@@ -12,7 +12,7 @@ export type FieldsetProps = PropsWithChildren & {
 };
 
 
-const Fieldset: React.FC<FieldsetProps> = (props) => {
+export const Fieldset: React.FC<FieldsetProps> = (props) => {
   const [showDoc, setShowDoc] = React.useState(false);
   const labelId = React.useRef(generateUniqueId("fieldset_label_"));
 
@@ -49,5 +49,3 @@ const Fieldset: React.FC<FieldsetProps> = (props) => {
     </div>
   );
 };
-
-export default Fieldset;

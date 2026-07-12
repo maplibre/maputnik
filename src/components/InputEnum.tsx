@@ -1,6 +1,6 @@
 import React from "react";
-import InputSelect from "./InputSelect";
-import InputMultiInput from "./InputMultiInput";
+import { InputSelect } from "./InputSelect";
+import { InputMultiInput } from "./InputMultiInput";
 
 
 function optionsLabelLength(options: any[]) {
@@ -25,7 +25,7 @@ export type InputEnumProps = {
 };
 
 
-export default class InputEnum extends React.Component<InputEnumProps> {
+export class InputEnum extends React.Component<InputEnumProps> {
   render() {
     const {options, value, onChange, name, label} = this.props;
 

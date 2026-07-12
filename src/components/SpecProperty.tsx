@@ -1,9 +1,9 @@
 import React from "react";
 
-import FieldSpec, {type FieldSpecProps} from "./FieldSpec";
-import FunctionButtons from "./_FunctionButtons";
+import { FieldSpec, type FieldSpecProps } from "./FieldSpec";
+import { FunctionInputButtons as FunctionButtons } from "./FunctionButtons";
 
-import labelFromFieldName from "../libs/label-from-field-name";
+import { labelFromFieldName } from "../libs/label-from-field-name";
 
 
 type SpecPropertyProps = FieldSpecProps & {
@@ -19,7 +19,7 @@ type SpecPropertyProps = FieldSpecProps & {
 };
 
 
-export default class SpecProperty extends React.Component<SpecPropertyProps> {
+export class SpecProperty extends React.Component<SpecPropertyProps> {
   static defaultProps = {
     errors: {},
   };

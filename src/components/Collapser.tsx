@@ -6,7 +6,7 @@ type CollapserProps = {
   style?: object
 };
 
-export default class Collapser extends React.Component<CollapserProps> {
+export class Collapser extends React.Component<CollapserProps> {
   render() {
     const iconStyle = {
       width: 20,

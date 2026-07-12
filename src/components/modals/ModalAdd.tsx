@@ -2,12 +2,12 @@ import React from "react";
 import { type WithTranslation, withTranslation } from "react-i18next";
 import type {LayerSpecification, SourceSpecification} from "maplibre-gl";
 
-import InputButton from "../InputButton";
-import Modal from "./Modal";
-import FieldType from "../FieldType";
-import FieldId from "../FieldId";
-import FieldSource from "../FieldSource";
-import FieldSourceLayer from "../FieldSourceLayer";
+import { InputButton } from "../InputButton";
+import { Modal } from "./Modal";
+import { FieldType } from "../FieldType";
+import { FieldId } from "../FieldId";
+import { FieldSource } from "../FieldSource";
+import { FieldSourceLayer } from "../FieldSourceLayer";
 import { NON_SOURCE_LAYERS } from "../../libs/non-source-layers";
 
 type ModalAddInternalProps = {
@@ -192,5 +192,4 @@ class ModalAddInternal extends React.Component<ModalAddInternalProps, ModalAddSt
   }
 }
 
-const ModalAdd = withTranslation()(ModalAddInternal);
-export default ModalAdd;
+export const ModalAdd = withTranslation()(ModalAddInternal);

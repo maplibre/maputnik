@@ -5,7 +5,7 @@ import { IconContext } from "react-icons";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 
-import IconLayer from "./IconLayer";
+import { IconLayer } from "./IconLayer";
 import type { VisibilitySpecification } from "maplibre-gl";
 
 
@@ -87,7 +87,7 @@ type LayerListItemProps = {
   onLayerVisibilityToggle?(...args: unknown[]): unknown
 };
 
-const LayerListItem = React.forwardRef<HTMLLIElement, LayerListItemProps>((props, ref) => {
+export const LayerListItem = React.forwardRef<HTMLLIElement, LayerListItemProps>((props, ref) => {
   const {
     isSelected = false,
     visibility = "visible",
@@ -162,5 +162,3 @@ const LayerListItem = React.forwardRef<HTMLLIElement, LayerListItemProps>((props
     </li>
   </IconContext.Provider>;
 });
-
-export default LayerListItem;

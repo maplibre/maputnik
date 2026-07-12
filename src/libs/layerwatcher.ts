@@ -9,7 +9,7 @@ export type LayerWatcherOptions = {
 
 /** Listens to map events to build up a store of available vector
  * layers contained in the tiles */
-export default class LayerWatcher {
+export class LayerWatcher {
   onSourcesChange: (sources: { [sourceId: string]: string[] }) => void;
   onVectorLayersChange: (vectorLayers: { [vectorLayerId: string]: { [propertyName: string]: { [propertyValue: string]: {} } } }) => void;
   throttledAnalyzeVectorLayerFields: (map: any) => void;

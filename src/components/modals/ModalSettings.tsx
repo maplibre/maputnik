@@ -3,17 +3,17 @@ import latest from "@maplibre/maplibre-gl-style-spec/dist/latest.json";
 import type {LightSpecification, ProjectionSpecification, StyleSpecification, TerrainSpecification, TransitionSpecification} from "maplibre-gl";
 import { type WithTranslation, withTranslation } from "react-i18next";
 
-import FieldArray from "../FieldArray";
-import FieldNumber from "../FieldNumber";
-import FieldString from "../FieldString";
-import FieldUrl from "../FieldUrl";
-import FieldSelect from "../FieldSelect";
-import FieldEnum from "../FieldEnum";
-import FieldColor from "../FieldColor";
-import Modal from "./Modal";
-import FieldJson from "../FieldJson";
-import Block from "../Block";
-import fieldSpecAdditional from "../../libs/field-spec-additional";
+import { FieldArray } from "../FieldArray";
+import { FieldNumber } from "../FieldNumber";
+import { FieldString } from "../FieldString";
+import { FieldUrl } from "../FieldUrl";
+import { FieldSelect } from "../FieldSelect";
+import { FieldEnum } from "../FieldEnum";
+import { FieldColor } from "../FieldColor";
+import { Modal } from "./Modal";
+import { FieldJson } from "../FieldJson";
+import { Block } from "../Block";
+import { spec as fieldSpecAdditional } from "../../libs/field-spec-additional";
 import type {OnStyleChangedCallback, StyleSpecificationWithId} from "../../libs/definitions";
 
 type ModalSettingsInternalProps = {
@@ -325,5 +325,4 @@ class ModalSettingsInternal extends React.Component<ModalSettingsInternalProps> 
   }
 }
 
-const ModalSettings = withTranslation()(ModalSettingsInternal);
-export default ModalSettings;
+export const ModalSettings = withTranslation()(ModalSettingsInternal);

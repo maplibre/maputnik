@@ -6,17 +6,17 @@ import { IconContext } from "react-icons";
 import { type BackgroundLayerSpecification, type LayerSpecification, type SourceSpecification } from "maplibre-gl";
 import { v8 } from "@maplibre/maplibre-gl-style-spec";
 
-import FieldJson from "./FieldJson";
-import FilterEditor from "./FilterEditor";
-import PropertyGroup from "./PropertyGroup";
-import LayerEditorGroup from "./LayerEditorGroup";
-import FieldType from "./FieldType";
-import FieldId from "./FieldId";
-import FieldMinZoom from "./FieldMinZoom";
-import FieldMaxZoom from "./FieldMaxZoom";
-import FieldComment from "./FieldComment";
-import FieldSource from "./FieldSource";
-import FieldSourceLayer from "./FieldSourceLayer";
+import { FieldJson } from "./FieldJson";
+import { FilterEditor } from "./FilterEditor";
+import { PropertyGroup } from "./PropertyGroup";
+import { LayerEditorGroup } from "./LayerEditorGroup";
+import { FieldType } from "./FieldType";
+import { FieldId } from "./FieldId";
+import { FieldMinZoom } from "./FieldMinZoom";
+import { FieldMaxZoom } from "./FieldMaxZoom";
+import { FieldComment } from "./FieldComment";
+import { FieldSource } from "./FieldSource";
+import { FieldSourceLayer } from "./FieldSourceLayer";
 import { changeType, changeProperty } from "../libs/layer";
 import { formatLayerId } from "../libs/format";
 import { type WithTranslation, withTranslation } from "react-i18next";
@@ -419,5 +419,4 @@ class LayerEditorInternal extends React.Component<LayerEditorInternalProps, Laye
   }
 }
 
-const LayerEditor = withTranslation()(LayerEditorInternal);
-export default LayerEditor;
+export const LayerEditor = withTranslation()(LayerEditorInternal);

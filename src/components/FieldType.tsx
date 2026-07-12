@@ -1,8 +1,8 @@
 import React from "react";
 import {v8} from "@maplibre/maplibre-gl-style-spec";
-import Block from "./Block";
-import InputSelect from "./InputSelect";
-import InputString from "./InputString";
+import { Block } from "./Block";
+import { InputSelect } from "./InputSelect";
+import { InputString } from "./InputString";
 import { type WithTranslation, withTranslation } from "react-i18next";
 import { startCase } from "lodash";
 
@@ -43,5 +43,4 @@ const FieldTypeInternal: React.FC<FieldTypeInternalProps> = ({
   );
 };
 
-const FieldType = withTranslation()(FieldTypeInternal);
-export default FieldType;
+export const FieldType = withTranslation()(FieldTypeInternal);

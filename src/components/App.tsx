@@ -11,29 +11,29 @@ import {type Map, type LayerSpecification, type StyleSpecification, type Validat
 import {validateStyleMin} from "@maplibre/maplibre-gl-style-spec";
 import latest from "@maplibre/maplibre-gl-style-spec/dist/latest.json";
 
-import MapMaplibreGl from "./MapMaplibreGl";
-import MapOpenLayers from "./MapOpenLayers";
-import CodeEditor from "./CodeEditor";
-import LayerList from "./LayerList";
-import LayerEditor from "./LayerEditor";
-import AppToolbar, { type MapState } from "./AppToolbar";
-import AppLayout from "./AppLayout";
-import MessagePanel from "./AppMessagePanel";
+import { MapMaplibreGl } from "./MapMaplibreGl";
+import { MapOpenLayers } from "./MapOpenLayers";
+import { CodeEditor } from "./CodeEditor";
+import { LayerList } from "./LayerList";
+import { LayerEditor } from "./LayerEditor";
+import { AppToolbar, type MapState } from "./AppToolbar";
+import { AppLayout } from "./AppLayout";
+import { AppMessagePanel as MessagePanel } from "./AppMessagePanel";
 
-import ModalSettings from "./modals/ModalSettings";
-import ModalExport from "./modals/ModalExport";
-import ModalSources from "./modals/ModalSources";
-import ModalOpen from "./modals/ModalOpen";
-import ModalShortcuts from "./modals/ModalShortcuts";
-import ModalDebug from "./modals/ModalDebug";
-import ModalGlobalState from "./modals/ModalGlobalState";
+import { ModalSettings } from "./modals/ModalSettings";
+import { ModalExport } from "./modals/ModalExport";
+import { ModalSources } from "./modals/ModalSources";
+import { ModalOpen } from "./modals/ModalOpen";
+import { ModalShortcuts } from "./modals/ModalShortcuts";
+import { ModalDebug } from "./modals/ModalDebug";
+import { ModalGlobalState } from "./modals/ModalGlobalState";
 
 import {downloadGlyphsMetadata, downloadSpriteMetadata} from "../libs/metadata";
-import style from "../libs/style";
+import { emptyStyle, getAccessToken, replaceAccessTokens } from "../libs/style";
 import { undoMessages, redoMessages } from "../libs/diffmessage";
 import { createStyleStore, type IStyleStore } from "../libs/store/style-store-factory";
 import { RevisionStore } from "../libs/revisions";
-import LayerWatcher from "../libs/layerwatcher";
+import { LayerWatcher } from "../libs/layerwatcher";
 import tokens from "../config/tokens.json";
 import isEqual from "lodash.isequal";
 import { type MapOptions } from "maplibre-gl";
@@ -48,19 +48,19 @@ function setFetchAccessToken(url: string, mapStyle: StyleSpecification) {
   const matchesThunderforest = url.match(/\.thunderforest\.com/);
   const matchesLocationIQ = url.match(/\.locationiq\.com/);
   if (matchesTilehosting || matchesMaptiler) {
-    const accessToken = style.getAccessToken("openmaptiles", mapStyle, {allowFallback: true});
+    const accessToken = getAccessToken("openmaptiles", mapStyle, {allowFallback: true});
     if (accessToken) {
       return url.replace("{key}", accessToken);
     }
   }
   else if (matchesThunderforest) {
-    const accessToken = style.getAccessToken("thunderforest", mapStyle, {allowFallback: true});
+    const accessToken = getAccessToken("thunderforest", mapStyle, {allowFallback: true});
     if (accessToken) {
       return url.replace("{key}", accessToken);
     }
   }
   else if (matchesLocationIQ) {
-    const accessToken = style.getAccessToken("locationiq", mapStyle, {allowFallback: true});
+    const accessToken = getAccessToken("locationiq", mapStyle, {allowFallback: true});
     if (accessToken) {
       return url.replace("{key}", accessToken);
     }
@@ -123,7 +123,7 @@ type AppState = {
   fileHandle: FileSystemFileHandle | null
 };
 
-export default class App extends React.Component<any, AppState> {
+export class App extends React.Component<any, AppState> {
   revisionStore: RevisionStore;
   styleStore: IStyleStore | null = null;
   layerWatcher: LayerWatcher;
@@ -137,7 +137,7 @@ export default class App extends React.Component<any, AppState> {
     this.state = {
       errors: [],
       infos: [],
-      mapStyle: style.emptyStyle,
+      mapStyle: emptyStyle,
       selectedLayerIndex: 0,
       sources: {},
       vectorLayers: {},
@@ -698,7 +698,7 @@ export default class App extends React.Component<any, AppState> {
       mapStyle: (dirtyMapStyle || mapStyle),
       mapView: this.state.mapView,
       replaceAccessTokens: (mapStyle: StyleSpecification) => {
-        return style.replaceAccessTokens(mapStyle, {
+        return replaceAccessTokens(mapStyle, {
           allowFallback: true
         });
       },

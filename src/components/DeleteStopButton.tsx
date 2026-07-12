@@ -1,6 +1,6 @@
 import React from "react";
 
-import InputButton from "./InputButton";
+import { InputButton } from "./InputButton";
 import {MdDelete} from "react-icons/md";
 import { type WithTranslation, withTranslation } from "react-i18next";
 
@@ -23,5 +23,4 @@ class DeleteStopButtonInternal extends React.Component<DeleteStopButtonInternalP
   }
 }
 
-const DeleteStopButton = withTranslation()(DeleteStopButtonInternal);
-export default DeleteStopButton;
+export const DeleteStopButton = withTranslation()(DeleteStopButtonInternal);

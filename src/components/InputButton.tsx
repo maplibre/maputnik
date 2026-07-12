@@ -14,7 +14,7 @@ type InputButtonProps = {
   title?: string
 };
 
-export default class InputButton extends React.Component<InputButtonProps> {
+export class InputButton extends React.Component<InputButtonProps> {
   render() {
     return <button
       id={this.props.id}

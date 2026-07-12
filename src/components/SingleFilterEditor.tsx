@@ -1,9 +1,9 @@
 import React from "react";
 
 import {otherFilterOps} from "../libs/filterops";
-import InputString from "./InputString";
-import InputAutocomplete from "./InputAutocomplete";
-import InputSelect from "./InputSelect";
+import { InputString } from "./InputString";
+import { InputAutocomplete } from "./InputAutocomplete";
+import { InputSelect } from "./InputSelect";
 
 function tryParseInt(v: string | number) {
   if (v === "") return v;
@@ -40,7 +40,7 @@ type SingleFilterEditorProps = {
   properties?: {[key: string]: string}
 };
 
-export default class SingleFilterEditor extends React.Component<SingleFilterEditorProps> {
+export class SingleFilterEditor extends React.Component<SingleFilterEditorProps> {
   static defaultProps = {
     properties: {},
   };

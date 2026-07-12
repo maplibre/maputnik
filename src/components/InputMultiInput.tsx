@@ -9,7 +9,7 @@ export type InputMultiInputProps = {
   "aria-label"?: string
 };
 
-export default class InputMultiInput extends React.Component<InputMultiInputProps> {
+export class InputMultiInput extends React.Component<InputMultiInputProps> {
   render() {
     let options = this.props.options;
     if(options.length > 0 && !Array.isArray(options[0])) {

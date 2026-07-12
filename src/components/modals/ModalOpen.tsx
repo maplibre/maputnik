@@ -3,12 +3,12 @@ import { MdFileUpload } from "react-icons/md";
 import { MdAddCircleOutline } from "react-icons/md";
 import { Trans, type WithTranslation, withTranslation } from "react-i18next";
 
-import ModalLoading from "./ModalLoading";
-import Modal from "./Modal";
-import InputButton from "../InputButton";
-import InputUrl from "../InputUrl";
+import { ModalLoading } from "./ModalLoading";
+import { Modal } from "./Modal";
+import { InputButton } from "../InputButton";
+import { InputUrl } from "../InputUrl";
 
-import style from "../../libs/style";
+import { ensureStyleValidity } from "../../libs/style";
 import publicStyles from "../../config/styles.json";
 
 type PublicStyleProps = {
@@ -109,7 +109,7 @@ class ModalOpenInternal extends React.Component<ModalOpenInternalProps, ModalOpe
           activeRequestUrl: null
         });
 
-        const mapStyle = style.ensureStyleValidity(body);
+        const mapStyle = ensureStyleValidity(body);
         console.log("Loaded style ", mapStyle.id);
         this.props.onStyleOpen(mapStyle);
         this.onOpenToggle();
@@ -165,7 +165,7 @@ class ModalOpenInternal extends React.Component<ModalOpenInternalProps, ModalOpe
       });
       return;
     }
-    mapStyle = style.ensureStyleValidity(mapStyle);
+    mapStyle = ensureStyleValidity(mapStyle);
 
     this.props.onStyleOpen(mapStyle, fileHandle);
     this.onOpenToggle();
@@ -193,7 +193,7 @@ class ModalOpenInternal extends React.Component<ModalOpenInternalProps, ModalOpe
         });
         return;
       }
-      mapStyle = style.ensureStyleValidity(mapStyle);
+      mapStyle = ensureStyleValidity(mapStyle);
       this.props.onStyleOpen(mapStyle);
       this.onOpenToggle();
     };
@@ -364,5 +364,4 @@ class ModalOpenInternal extends React.Component<ModalOpenInternalProps, ModalOpe
   }
 }
 
-const ModalOpen = withTranslation()(ModalOpenInternal);
-export default ModalOpen;
+export const ModalOpen = withTranslation()(ModalOpenInternal);

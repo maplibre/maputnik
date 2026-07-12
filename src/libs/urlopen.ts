@@ -1,4 +1,4 @@
-import style from "./style";
+import { emptyStyle, ensureStyleValidity } from "./style";
 import { type StyleSpecificationWithId } from "./definitions";
 
 export function getStyleUrlFromAddressbarAndRemoveItIfNeeded(): string | null {
@@ -19,10 +19,10 @@ export async function loadStyleUrl(styleUrl: string): Promise<StyleSpecification
       credentials: "same-origin"
     });
     const body = await response.json();
-    return style.ensureStyleValidity(body);
+    return ensureStyleValidity(body);
   } catch {
     console.warn("Could not fetch default style: " + styleUrl);
-    return style.emptyStyle;
+    return emptyStyle;
   }
 }
 

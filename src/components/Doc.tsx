@@ -23,7 +23,7 @@ type DocProps = {
   }
 };
 
-export default class Doc extends React.Component<DocProps> {
+export class Doc extends React.Component<DocProps> {
   render () {
     const {fieldSpec} = this.props;
 

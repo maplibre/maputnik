@@ -1,7 +1,7 @@
 import React from "react";
 
-import Block from "./Block";
-import InputString from "./InputString";
+import { Block } from "./Block";
+import { InputString } from "./InputString";
 import { type WithTranslation, withTranslation } from "react-i18next";
 
 type FieldCommentInternalProps = {
@@ -36,5 +36,4 @@ const FieldCommentInternal: React.FC<FieldCommentInternalProps> = (props) => {
   );
 };
 
-const FieldComment = withTranslation()(FieldCommentInternal);
-export default FieldComment;
+export const FieldComment = withTranslation()(FieldCommentInternal);

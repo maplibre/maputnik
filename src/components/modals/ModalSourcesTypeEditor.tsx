@@ -3,14 +3,14 @@ import {latest} from "@maplibre/maplibre-gl-style-spec";
 import { type WithTranslation, withTranslation } from "react-i18next";
 import { type TFunction } from "i18next";
 
-import Block from "../Block";
-import FieldUrl from "../FieldUrl";
-import FieldNumber from "../FieldNumber";
-import FieldSelect from "../FieldSelect";
-import FieldDynamicArray from "../FieldDynamicArray";
-import FieldArray from "../FieldArray";
-import FieldJson from "../FieldJson";
-import FieldCheckbox from "../FieldCheckbox";
+import { Block } from "../Block";
+import { FieldUrl } from "../FieldUrl";
+import { FieldNumber } from "../FieldNumber";
+import { FieldSelect } from "../FieldSelect";
+import { FieldDynamicArray } from "../FieldDynamicArray";
+import { FieldArray } from "../FieldArray";
+import { FieldJson } from "../FieldJson";
+import { FieldCheckbox } from "../FieldCheckbox";
 
 
 export type EditorMode = "video" | "image" | "tilejson_vector" | "tile_raster" | "tilejson_raster" | "tilexyz_raster-dem" | "tilejson_raster-dem" | "pmtiles_vector" | "tile_vector" | "geojson_url" | "geojson_json" | null;
@@ -375,5 +375,4 @@ class ModalSourcesTypeEditorInternal extends React.Component<ModalSourcesTypeEdi
   }
 }
 
-const ModalSourcesTypeEditor = withTranslation()(ModalSourcesTypeEditorInternal);
-export default ModalSourcesTypeEditor;
+export const ModalSourcesTypeEditor = withTranslation()(ModalSourcesTypeEditorInternal);

@@ -135,5 +135,4 @@ class InputJsonInternal extends React.Component<InputJsonInternalProps, InputJso
   }
 }
 
-const InputJson = withTranslation()(InputJsonInternal);
-export default InputJson;
+export const InputJson = withTranslation()(InputJsonInternal);

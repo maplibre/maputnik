@@ -11,7 +11,7 @@ export type InputAutocompleteProps = {
   "aria-label"?: string
 };
 
-export default function InputAutocomplete({
+export function InputAutocomplete({
   value,
   options = [],
   onChange = () => {},

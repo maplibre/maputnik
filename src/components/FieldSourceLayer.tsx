@@ -1,8 +1,8 @@
 import React from "react";
 
 import {latest} from "@maplibre/maplibre-gl-style-spec";
-import Block from "./Block";
-import InputAutocomplete from "./InputAutocomplete";
+import { Block } from "./Block";
+import { InputAutocomplete } from "./InputAutocomplete";
 import { type WithTranslation, withTranslation } from "react-i18next";
 
 type FieldSourceLayerInternalProps = {
@@ -35,5 +35,4 @@ const FieldSourceLayerInternal: React.FC<FieldSourceLayerInternalProps> = ({
   );
 };
 
-const FieldSourceLayer = withTranslation()(FieldSourceLayerInternal);
-export default FieldSourceLayer;
+export const FieldSourceLayer = withTranslation()(FieldSourceLayerInternal);
