@@ -78,7 +78,6 @@ describe("layer editor", () => {
     });
 
     test("the range slider adjusts min-zoom", async () => {
-      // The slider starts at 1 (set via the text input above); one step right lands on 2.
       await when.focus("min-zoom.input-range");
       await when.typeKeys("{rightarrow}");
       await then(get.styleFromLocalStorage()).shouldDeepNestedInclude({
