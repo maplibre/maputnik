@@ -145,6 +145,7 @@ async function typeSequence(page: Page, text: string): Promise<void> {
     del: "Delete",
     tab: "Tab",
     home: "Home",
+    end: "End",
     rightarrow: "ArrowRight",
   };
 

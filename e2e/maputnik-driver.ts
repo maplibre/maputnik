@@ -128,6 +128,27 @@ export class MaputnikDriver {
       await this.helper.get.element(".maputnik-layer-editor-group__button").nth(index).click();
     },
 
+    /** Expands/collapses a layer-editor group by its title, e.g. "Paint properties". */
+    toggleGroupInLayerEditor: async (title: string) => {
+      await this.helper.when.click("layer-editor-group:" + title);
+    },
+
+    /** Adds one of the predefined public sources listed in the sources modal. */
+    addPublicSource: async (index = 0) => {
+      await this.helper.get.element(".maputnik-public-source-select").nth(index).click();
+    },
+
+    /**
+     * Picks a source for the selected layer from the source autocomplete.
+     * The autocomplete is a controlled (downshift) input, so the value has to be
+     * filled rather than typed key by key, then chosen from the filtered menu.
+     */
+    changeLayerSource: async (sourceId: string) => {
+      const input = this.helper.get.elementByTestId("layer-editor.layer-source").locator("input");
+      await input.fill(sourceId);
+      await this.helper.get.element(".maputnik-autocomplete-menu-item").first().click();
+    },
+
     appendTextInJsonEditor: async (text: string) => {
       await this.helper.get.element(".cm-line").first().click();
       // Move to the very start of the document so the inserted text breaks the
@@ -197,6 +218,24 @@ export class MaputnikDriver {
     setColorValue: async (fieldName: string, value: string) => {
       const input = this.helper.get.elementByTestId("spec-field:" + fieldName).locator(".maputnik-color");
       await input.fill(value);
+    },
+
+    /** Sets a plain string spec field (e.g. a pattern), which has no dedicated input test id. */
+    setStringValue: async (fieldName: string, value: string) => {
+      const input = this.helper.get.elementByTestId("spec-field:" + fieldName).locator("input.maputnik-string");
+      await input.fill(value);
+      await input.blur();
+    },
+
+    /**
+     * Appends text to the end of the JSON editor line holding `lineText`.
+     * CodeMirror types over its own auto-inserted closing quotes/brackets, so a
+     * well-formed fragment stays well-formed.
+     */
+    appendToJsonEditorLine: async (lineText: string, text: string) => {
+      await this.helper.when.clickByText(lineText);
+      await this.helper.when.typeKeys("{end}");
+      await this.helper.when.typeText(text);
     },
 
     exportCreateHtml: async () => {

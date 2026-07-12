@@ -25,7 +25,19 @@ describe("layer editor", () => {
     return id;
   }
 
-  test.skip("expand/collapse", () => {});
+  test("expand/collapse", async () => {
+    const bgId = await createBackground();
+    await when.click("layer-list-item:background:" + bgId);
+
+    // Groups start expanded, so the "Layer" group's fields are on screen.
+    await then(get.elementByTestId("layer-editor.layer-id.input")).shouldBeVisible();
+
+    await when.toggleGroupInLayerEditor("Layer");
+    await then(get.elementByTestId("layer-editor.layer-id.input")).shouldNotBeVisible();
+
+    await when.toggleGroupInLayerEditor("Layer");
+    await then(get.elementByTestId("layer-editor.layer-id.input")).shouldBeVisible();
+  });
 
   test("id", async () => {
     const bgId = await createBackground();
@@ -295,10 +307,43 @@ describe("layer editor", () => {
   });
 
   describe("paint", () => {
-    test.skip("expand/collapse", () => {});
-    test.skip("color", () => {});
-    test.skip("pattern", () => {});
-    test.skip("opacity", () => {});
+    let id: string;
+
+    beforeEach(async () => {
+      id = await when.modal.fillLayers({ type: "fill", layer: "example" });
+    });
+
+    test("expand/collapse", async () => {
+      await then(get.elementByTestId("spec-field:fill-color")).shouldBeVisible();
+
+      await when.toggleGroupInLayerEditor("Paint properties");
+      await then(get.elementByTestId("spec-field:fill-color")).shouldNotBeVisible();
+
+      await when.toggleGroupInLayerEditor("Paint properties");
+      await then(get.elementByTestId("spec-field:fill-color")).shouldBeVisible();
+    });
+
+    test("color", async () => {
+      await when.setColorValue("fill-color", "#ff0000");
+      await then(get.styleFromLocalStorage()).shouldDeepNestedInclude({
+        layers: [{ id, type: "fill", source: "example", paint: { "fill-color": "#ff0000" } }],
+      });
+    });
+
+    test("pattern", async () => {
+      await when.setStringValue("fill-pattern", "some-pattern");
+      await then(get.styleFromLocalStorage()).shouldDeepNestedInclude({
+        layers: [{ id, type: "fill", source: "example", paint: { "fill-pattern": "some-pattern" } }],
+      });
+    });
+
+    test("opacity", async () => {
+      await when.setValue("spec-field-input:fill-opacity", "0.4");
+      await when.click("layer-editor.layer-id");
+      await then(get.styleFromLocalStorage()).shouldDeepNestedInclude({
+        layers: [{ id, type: "fill", source: "example", paint: { "fill-opacity": 0.4 } }],
+      });
+    });
   });
 
   describe("json-editor", () => {
@@ -318,8 +363,29 @@ describe("layer editor", () => {
       await then(get.element(".cm-lint-marker-error")).shouldExist();
     });
 
-    test.skip("expand/collapse", () => {});
-    test.skip("modify", () => {});
+    test("expand/collapse", async () => {
+      const bgId = await createBackground();
+      await when.click("layer-list-item:background:" + bgId);
+
+      await then(get.element(".cm-content")).shouldBeVisible();
+
+      await when.toggleGroupInLayerEditor("JSON Editor");
+      await then(get.element(".cm-content")).shouldNotBeVisible();
+
+      await when.toggleGroupInLayerEditor("JSON Editor");
+      await then(get.element(".cm-content")).shouldBeVisible();
+    });
+
+    test("modify", async () => {
+      const bgId = await createBackground();
+      await when.click("layer-list-item:background:" + bgId);
+
+      // Append a property to the layer's JSON; the editor writes it back to the style.
+      await when.appendToJsonEditorLine('"background"', ',\n"minzoom": 5');
+      await then(get.styleFromLocalStorage()).shouldDeepNestedInclude({
+        layers: [{ id: "background:" + bgId, type: "background", minzoom: 5 }],
+      });
+    });
 
     test("parse error", async () => {
       const bgId = await createBackground();

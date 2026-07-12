@@ -230,6 +230,7 @@ class LayerEditorInternal extends React.Component<LayerEditorInternalProps, Laye
           )}
         />
         {this.props.layer.type !== "background" && <FieldSource
+          wdKey="layer-editor.layer-source"
           error={errorData.source}
           sourceIds={Object.keys(this.props.sources!)}
           value={this.props.layer.source}

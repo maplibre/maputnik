@@ -91,7 +91,17 @@ describe("modals", () => {
       ).shouldEqual(before - 1);
     });
 
-    test.skip("public source", () => {});
+    test("public source", async () => {
+      await when.addPublicSource();
+      await then(get.styleFromLocalStorage()).shouldDeepNestedInclude({
+        sources: {
+          openmaptiles: {
+            type: "vector",
+            url: `https://api.maptiler.com/tiles/v3-openmaptiles/tiles.json?key=${tokens.openmaptiles}`,
+          },
+        },
+      });
+    });
 
     test("add new source", async () => {
       const sourceId = "n1z2v3r";
@@ -325,10 +335,6 @@ describe("modals", () => {
       await then(get.elementByTestId("modal:add-layer")).shouldExist();
       await then(get.element(".maputnik-modal-error")).shouldContainText("Layer ID already exists");
     });
-  });
-
-  describe("sources placeholder", () => {
-    test.skip("toggle", () => {});
   });
 
   describe("global state", () => {
