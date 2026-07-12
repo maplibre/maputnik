@@ -29,7 +29,7 @@ import ModalDebug from "./modals/ModalDebug";
 import ModalGlobalState from "./modals/ModalGlobalState";
 
 import {downloadGlyphsMetadata, downloadSpriteMetadata} from "../libs/metadata";
-import { emptyStyle, replaceAccessTokens } from "../libs/style";
+import { emptyStyle, getAccessToken, replaceAccessTokens } from "../libs/style";
 import { undoMessages, redoMessages } from "../libs/diffmessage";
 import { createStyleStore, type IStyleStore } from "../libs/store/style-store-factory";
 import { RevisionStore } from "../libs/revisions";
@@ -48,19 +48,19 @@ function setFetchAccessToken(url: string, mapStyle: StyleSpecification) {
   const matchesThunderforest = url.match(/\.thunderforest\.com/);
   const matchesLocationIQ = url.match(/\.locationiq\.com/);
   if (matchesTilehosting || matchesMaptiler) {
-    const accessToken = style.getAccessToken("openmaptiles", mapStyle, {allowFallback: true});
+    const accessToken = getAccessToken("openmaptiles", mapStyle, {allowFallback: true});
     if (accessToken) {
       return url.replace("{key}", accessToken);
     }
   }
   else if (matchesThunderforest) {
-    const accessToken = style.getAccessToken("thunderforest", mapStyle, {allowFallback: true});
+    const accessToken = getAccessToken("thunderforest", mapStyle, {allowFallback: true});
     if (accessToken) {
       return url.replace("{key}", accessToken);
     }
   }
   else if (matchesLocationIQ) {
-    const accessToken = style.getAccessToken("locationiq", mapStyle, {allowFallback: true});
+    const accessToken = getAccessToken("locationiq", mapStyle, {allowFallback: true});
     if (accessToken) {
       return url.replace("{key}", accessToken);
     }
