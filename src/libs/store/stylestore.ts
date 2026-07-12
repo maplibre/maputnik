@@ -1,4 +1,4 @@
-import { ensureStyleValidity } from "../style";
+import {ensureStyleValidity} from "../style";
 import {loadStyleUrl} from "../urlopen";
 import publicSources from "../../config/styles.json";
 import type {IStyleStore, StyleSpecificationWithId} from "../definitions";
