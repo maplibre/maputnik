@@ -53,7 +53,7 @@ describe("access tokens", () => {
     });
 
     await when.setStyle("access_tokens");
-    
+
     const request = await when.waitForResponse("stadia");
     expect(request.url()).toContain("?api_key=stadia-test-token");
   });
