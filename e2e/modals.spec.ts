@@ -43,6 +43,16 @@ describe("modals", () => {
         await then(get.styleFromLocalStorage()).shouldDeepNestedInclude(get.responseBody("example-style.json"));
       });
     });
+
+    describe("without the File System Access API", () => {
+      test("upload via the file chooser", async () => {
+        await given.noFileSystemAccessApi();
+        await when.setStyle("");
+        await when.click("nav:open");
+        await when.chooseExampleFileFromPicker();
+        await then(get.styleFromLocalStorage()).shouldDeepNestedInclude(get.fixture("example-style.json"));
+      });
+    });
   });
 
   describe("shortcuts", () => {
@@ -64,8 +74,15 @@ describe("modals", () => {
       await then(get.elementByTestId("modal:export")).shouldNotExist();
     });
 
-    // TODO: Work out how to download a file and check the contents
-    test.skip("download", () => {});
+    test("download HTML and save the style", async () => {
+      // Generate the standalone HTML export (triggers a file download).
+      await when.modal.exportCreateHtml();
+      await then(get.elementByTestId("modal:export")).shouldExist();
+
+      // Saving the style closes the export modal.
+      await when.modal.exportSaveStyle();
+      await then(get.elementByTestId("modal:export")).shouldNotExist();
+    });
   });
 
   describe("sources", () => {
@@ -74,8 +91,27 @@ describe("modals", () => {
       await when.click("nav:sources");
     });
 
-    test.skip("active sources", () => {});
-    test.skip("public source", () => {});
+    test("active sources are listed and can be deleted", async () => {
+      await when.setStyle("both");
+      await when.click("nav:sources");
+      const before = Object.keys(get.fixture("geojson-raster-style.json").sources).length;
+      await when.modal.deleteFirstActiveSource();
+      await then(
+        get.styleFromLocalStorage().then((style) => Object.keys(style.sources).length)
+      ).shouldEqual(before - 1);
+    });
+
+    test("public source", async () => {
+      await when.modal.addPublicSource();
+      await then(get.styleFromLocalStorage()).shouldDeepNestedInclude({
+        sources: {
+          openmaptiles: {
+            type: "vector",
+            url: `https://api.maptiler.com/tiles/v3-openmaptiles/tiles.json?key=${tokens.openmaptiles}`,
+          },
+        },
+      });
+    });
 
     test("add new source", async () => {
       const sourceId = "n1z2v3r";
@@ -84,8 +120,8 @@ describe("modals", () => {
       await when.select("modal:sources.add.scheme_type", "tms");
       await when.click("modal:sources.add.add_source");
       await when.wait(200);
-      await then(get.styleFromLocalStorage().then((style) => style.sources[sourceId])).shouldInclude({
-        scheme: "tms",
+      await then(get.styleFromLocalStorage()).shouldDeepNestedInclude({
+        sources: { [sourceId]: { scheme: "tms" } },
       });
     });
 
@@ -118,8 +154,110 @@ describe("modals", () => {
       await when.setValue("modal:sources.add.tile_size", "128");
       await when.click("modal:sources.add.add_source");
       await when.wait(200);
-      await then(get.styleFromLocalStorage().then((style) => style.sources[sourceId])).shouldInclude({
-        tileSize: 128,
+      await then(get.styleFromLocalStorage()).shouldDeepNestedInclude({
+        sources: { [sourceId]: { tileSize: 128 } },
+      });
+    });
+
+    test("add new geojson url source", async () => {
+      await when.modal.addSource("geojsonurl", "geojson_url");
+      await then(get.styleFromLocalStorage()).shouldDeepNestedInclude({
+        sources: {
+          geojsonurl: { type: "geojson", data: "http://localhost:3000/geojson.json" },
+        },
+      });
+    });
+
+    test("add new geojson json source", async () => {
+      await when.modal.addSource("geojsonjson", "geojson_json");
+      await then(get.styleFromLocalStorage()).shouldDeepNestedInclude({
+        sources: {
+          geojsonjson: { type: "geojson", cluster: false, data: "" },
+        },
+      });
+    });
+
+    test("add new tilejson vector source", async () => {
+      await when.modal.addSource("tilejsonvector", "tilejson_vector");
+      await then(get.styleFromLocalStorage()).shouldDeepNestedInclude({
+        sources: {
+          tilejsonvector: { type: "vector", url: "http://localhost:3000/tilejson.json" },
+        },
+      });
+    });
+
+    test("add new tilejson raster source", async () => {
+      await when.modal.addSource("tilejsonraster", "tilejson_raster");
+      await then(get.styleFromLocalStorage()).shouldDeepNestedInclude({
+        sources: {
+          tilejsonraster: { type: "raster", url: "http://localhost:3000/tilejson.json" },
+        },
+      });
+    });
+
+    test("add new tilejson raster-dem source", async () => {
+      await when.modal.addSource("tilejsonrasterdem", "tilejson_raster-dem");
+      await then(get.styleFromLocalStorage()).shouldDeepNestedInclude({
+        sources: {
+          tilejsonrasterdem: { type: "raster-dem", url: "http://localhost:3000/tilejson.json" },
+        },
+      });
+    });
+
+    test("add new tile xyz raster-dem source", async () => {
+      await when.modal.addSource("tilexyzrasterdem", "tilexyz_raster-dem");
+      await then(get.styleFromLocalStorage()).shouldDeepNestedInclude({
+        sources: {
+          tilexyzrasterdem: {
+            type: "raster-dem",
+            tiles: ["http://localhost:3000/{x}/{y}/{z}.png"],
+            minzoom: 0,
+            maxzoom: 14,
+            tileSize: 512,
+          },
+        },
+      });
+    });
+
+    test("add new image source", async () => {
+      await when.modal.addSource("imagesource", "image");
+      await then(get.styleFromLocalStorage()).shouldDeepNestedInclude({
+        sources: {
+          imagesource: {
+            type: "image",
+            url: "http://localhost:3000/image.png",
+            coordinates: [[0, 0], [0, 0], [0, 0], [0, 0]],
+          },
+        },
+      });
+    });
+
+    test("add new video source", async () => {
+      await when.modal.addSource("videosource", "video");
+      await then(get.styleFromLocalStorage()).shouldDeepNestedInclude({
+        sources: {
+          videosource: {
+            type: "video",
+            urls: ["http://localhost:3000/movie.mp4"],
+            coordinates: [[0, 0], [0, 0], [0, 0], [0, 0]],
+          },
+        },
+      });
+    });
+
+    test("edit the corner coordinates of an image source", async () => {
+      const sourceId = "imagecoords";
+      await when.setValue("modal:sources.add.source_id", sourceId);
+      await when.select("modal:sources.add.source_type", "image");
+      // The first corner is the first two number boxes of the coordinate arrays.
+      await when.modal.setCoordinateValue(0, "1");
+      await when.modal.setCoordinateValue(1, "2");
+      await when.click("modal:sources.add.add_source");
+      await when.wait(200);
+      await then(get.styleFromLocalStorage()).shouldDeepNestedInclude({
+        sources: {
+          [sourceId]: { type: "image", coordinates: [[1, 2], [0, 0], [0, 0], [0, 0]] },
+        },
       });
     });
   });
@@ -204,8 +342,8 @@ describe("modals", () => {
       const apiKey = "testing123";
       await when.setValue("modal:settings.maputnik:openmaptiles_access_token", apiKey);
       await when.click("modal:settings.name");
-      await then(get.styleFromLocalStorage().then((style) => style.metadata)).shouldInclude({
-        "maputnik:openmaptiles_access_token": apiKey,
+      await then(get.styleFromLocalStorage()).shouldDeepNestedInclude({
+        metadata: { "maputnik:openmaptiles_access_token": apiKey },
       });
     });
 
@@ -213,8 +351,8 @@ describe("modals", () => {
       const apiKey = "testing123";
       await when.setValue("modal:settings.maputnik:thunderforest_access_token", apiKey);
       await when.click("modal:settings.name");
-      await then(get.styleFromLocalStorage().then((style) => style.metadata)).shouldInclude({
-        "maputnik:thunderforest_access_token": apiKey,
+      await then(get.styleFromLocalStorage()).shouldDeepNestedInclude({
+        metadata: { "maputnik:thunderforest_access_token": apiKey },
       });
     });
 
@@ -222,8 +360,8 @@ describe("modals", () => {
       const apiKey = "testing123";
       await when.setValue("modal:settings.maputnik:stadia_access_token", apiKey);
       await when.click("modal:settings.name");
-      await then(get.styleFromLocalStorage().then((style) => style.metadata)).shouldInclude({
-        "maputnik:stadia_access_token": apiKey,
+      await then(get.styleFromLocalStorage()).shouldDeepNestedInclude({
+        metadata: { "maputnik:stadia_access_token": apiKey },
       });
     });
 
@@ -231,29 +369,67 @@ describe("modals", () => {
       const apiKey = "testing123";
       await when.setValue("modal:settings.maputnik:locationiq_access_token", apiKey);
       await when.click("modal:settings.name");
-      await then(get.styleFromLocalStorage().then((style) => style.metadata)).shouldInclude({
-        "maputnik:locationiq_access_token": apiKey,
+      await then(get.styleFromLocalStorage()).shouldDeepNestedInclude({
+        metadata: { "maputnik:locationiq_access_token": apiKey },
+      });
+    });
+
+    test("map view defaults", async () => {
+      await when.setValue("modal:settings.zoom", "4");
+      await when.setValue("modal:settings.bearing", "12");
+      await when.setValue("modal:settings.pitch", "30");
+      await when.click("modal:settings.name");
+      await then(get.styleFromLocalStorage()).shouldDeepNestedInclude({
+        zoom: 4,
+        bearing: 12,
+        pitch: 30,
+      });
+    });
+
+    test("light intensity", async () => {
+      await when.setValue("modal:settings.light-intensity", "0.7");
+      await when.click("modal:settings.name");
+      await then(get.styleFromLocalStorage()).shouldDeepNestedInclude({
+        light: { intensity: 0.7 },
+      });
+    });
+
+    test("terrain source and exaggeration", async () => {
+      await when.setValue("modal:settings.maputnik:terrain_source", "terrain");
+      await when.setValue("modal:settings.terrain-exaggeration", "1.5");
+      await when.click("modal:settings.name");
+      await then(get.styleFromLocalStorage()).shouldDeepNestedInclude({
+        terrain: { source: "terrain", exaggeration: 1.5 },
+      });
+    });
+
+    test("transition delay and duration", async () => {
+      await when.setValue("modal:settings.transition-delay", "100");
+      await when.setValue("modal:settings.transition-duration", "500");
+      await when.click("modal:settings.name");
+      await then(get.styleFromLocalStorage()).shouldDeepNestedInclude({
+        transition: { delay: 100, duration: 500 },
       });
     });
 
     test("style projection mercator", async () => {
       await when.select("modal:settings.projection", "mercator");
-      await then(get.styleFromLocalStorage().then((style) => style.projection)).shouldInclude({
-        type: "mercator",
+      await then(get.styleFromLocalStorage()).shouldDeepNestedInclude({
+        projection: { type: "mercator" },
       });
     });
 
     test("style projection globe", async () => {
       await when.select("modal:settings.projection", "globe");
-      await then(get.styleFromLocalStorage().then((style) => style.projection)).shouldInclude({
-        type: "globe",
+      await then(get.styleFromLocalStorage()).shouldDeepNestedInclude({
+        projection: { type: "globe" },
       });
     });
 
     test("style projection vertical-perspective", async () => {
       await when.select("modal:settings.projection", "vertical-perspective");
-      await then(get.styleFromLocalStorage().then((style) => style.projection)).shouldInclude({
-        type: "vertical-perspective",
+      await then(get.styleFromLocalStorage()).shouldDeepNestedInclude({
+        projection: { type: "vertical-perspective" },
       });
     });
 
@@ -309,10 +485,6 @@ describe("modals", () => {
       await then(get.elementByTestId("modal:add-layer")).shouldExist();
       await then(get.element(".maputnik-modal-error")).shouldContainText("Layer ID already exists");
     });
-  });
-
-  describe("sources placeholder", () => {
-    test.skip("toggle", () => {});
   });
 
   describe("global state", () => {

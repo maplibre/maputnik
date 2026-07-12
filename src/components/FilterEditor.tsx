@@ -215,6 +215,7 @@ class FilterEditorInternal extends React.Component<FilterEditorInternalProps, Fi
             onClick={this.makeExpression}
             title={t("Convert to expression")}
             className="maputnik-make-zoom-function"
+            data-wd-key="filter-convert-to-expression"
           >
             <TbMathFunction />
           </InputButton>
@@ -248,6 +249,7 @@ class FilterEditorInternal extends React.Component<FilterEditorInternalProps, Fi
             fieldSpec={fieldSpec}
             label={t("Filter")}
             action={actions}
+            data-wd-key="filter-combining-operator"
           >
             <InputSelect
               value={combiningOp}

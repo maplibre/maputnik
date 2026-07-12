@@ -97,7 +97,15 @@ describe("layers list", () => {
       });
     });
 
-    test.skip("modify", () => {});
+    test("modify", async () => {
+      const id = await when.modal.fillLayers({ type: "background" });
+      await when.click("layer-list-item:" + id);
+      await when.setValue("spec-field-input:background-opacity", "0.4");
+      await when.click("layer-editor.layer-id");
+      await then(get.styleFromLocalStorage()).shouldDeepNestedInclude({
+        layers: [{ id, type: "background", paint: { "background-opacity": 0.4 } }],
+      });
+    });
   });
 
   describe("fill", () => {
@@ -108,8 +116,13 @@ describe("layers list", () => {
       });
     });
 
-    // TODO: Change source
-    test.skip("change source", () => {});
+    test("change source", async () => {
+      const id = await when.modal.fillLayers({ type: "fill", layer: "example" });
+      await when.changeLayerSource("raster");
+      await then(get.styleFromLocalStorage()).shouldDeepNestedInclude({
+        layers: [{ id, type: "fill", source: "raster" }],
+      });
+    });
   });
 
   describe("line", () => {

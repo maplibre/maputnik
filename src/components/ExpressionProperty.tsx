@@ -50,6 +50,7 @@ class ExpressionPropertyInternal extends React.Component<ExpressionPropertyInter
             onClick={this.props.onUndo}
             disabled={undoDisabled}
             className="maputnik-delete-stop"
+            data-wd-key="undo-expression"
             title={t("Revert from expression")}
           >
             <MdUndo />
@@ -59,6 +60,7 @@ class ExpressionPropertyInternal extends React.Component<ExpressionPropertyInter
           key="delete_action"
           onClick={this.props.onDelete}
           className="maputnik-delete-stop"
+          data-wd-key="delete-expression"
           title={t("Delete expression")}
         >
           <MdDelete />

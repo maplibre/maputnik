@@ -25,7 +25,18 @@ describe("layer editor", () => {
     return id;
   }
 
-  test.skip("expand/collapse", () => {});
+  test("expand/collapse", async () => {
+    const bgId = await createBackground();
+    await when.click("layer-list-item:background:" + bgId);
+
+    await then(get.elementByTestId("layer-editor.layer-id.input")).shouldBeVisible();
+
+    await when.toggleGroupInLayerEditor("Layer");
+    await then(get.elementByTestId("layer-editor.layer-id.input")).shouldNotBeVisible();
+
+    await when.toggleGroupInLayerEditor("Layer");
+    await then(get.elementByTestId("layer-editor.layer-id.input")).shouldBeVisible();
+  });
 
   test("id", async () => {
     const bgId = await createBackground();
@@ -74,6 +85,14 @@ describe("layer editor", () => {
       await when.click("max-zoom.input-text");
       await then(get.styleFromLocalStorage()).shouldDeepNestedInclude({
         layers: [{ id: "background:" + bgId, type: "background", minzoom: 1 }],
+      });
+    });
+
+    test("the range slider adjusts min-zoom", async () => {
+      await when.focus("min-zoom.input-range");
+      await when.typeKeys("{rightarrow}");
+      await then(get.styleFromLocalStorage()).shouldDeepNestedInclude({
+        layers: [{ id: "background:" + bgId, type: "background", minzoom: 2 }],
       });
     });
   });
@@ -145,6 +164,13 @@ describe("layer editor", () => {
         layers: [{ id: "background:" + bgId, type: "background" }],
       });
     });
+
+    test("typing a hex value updates the paint color", async () => {
+      await when.setColorValue("background-color", "#ff0000");
+      await then(get.styleFromLocalStorage()).shouldDeepNestedInclude({
+        layers: [{ id: "background:" + bgId, type: "background", paint: { "background-color": "#ff0000" } }],
+      });
+    });
   });
 
   describe("opacity", () => {
@@ -166,8 +192,287 @@ describe("layer editor", () => {
   });
 
   describe("filter", () => {
-    test.skip("expand/collapse", () => {});
-    test.skip("compound filter", () => {});
+    let id: string;
+
+    beforeEach(async () => {
+      id = await when.modal.fillLayers({ type: "fill", layer: "example" });
+      await when.addFilter();
+    });
+
+    test("should add a filter item", async () => {
+      await then(get.styleFromLocalStorage()).shouldDeepNestedInclude({
+        layers: [{ id, type: "fill", source: "example", filter: ["all", ["==", "name", ""]] }],
+      });
+    });
+
+    test("should change the filter operator", async () => {
+      await when.selectFilterOperator("!=");
+      await then(get.styleFromLocalStorage()).shouldDeepNestedInclude({
+        layers: [{ id, filter: ["all", ["!=", "name", ""]] }],
+      });
+    });
+
+    test("should extend the compound filter with a second item", async () => {
+      await when.addFilter();
+      await then(get.styleFromLocalStorage()).shouldDeepNestedInclude({
+        layers: [{ id, filter: ["all", ["==", "name", ""], ["==", "name", ""]] }],
+      });
+    });
+
+    test("should change the combining operator", async () => {
+      await when.selectFilterCombiningOperator("any");
+      await then(get.styleFromLocalStorage()).shouldDeepNestedInclude({
+        layers: [{ id, filter: ["any", ["==", "name", ""]] }],
+      });
+    });
+
+    test("should delete a filter item", async () => {
+      await when.addFilter();
+      await when.deleteFilterItem();
+      await then(get.styleFromLocalStorage()).shouldDeepNestedInclude({
+        layers: [{ id, filter: ["all", ["==", "name", ""]] }],
+      });
+    });
+
+    describe("when converted to an expression", () => {
+      beforeEach(async () => {
+        await when.convertFilterToExpression();
+      });
+
+      test("should migrate the filter to an expression", async () => {
+        // A single-item "all" collapses to the bare comparison when migrated.
+        await then(get.styleFromLocalStorage()).shouldDeepNestedInclude({
+          layers: [{ id, filter: ["==", ["get", "name"], ""] }],
+        });
+      });
+
+      test("should restore the default filter when the expression is deleted", async () => {
+        await when.deleteFilterExpression();
+        await then(get.styleFromLocalStorage()).shouldDeepNestedInclude({
+          layers: [{ id, filter: ["all"] }],
+        });
+      });
+    });
+  });
+
+  describe("functions", () => {
+    let id: string;
+
+    describe("zoom function", () => {
+      beforeEach(async () => {
+        id = await when.modal.fillLayers({ type: "circle", layer: "example" });
+        await when.makeZoomFunction("circle-radius");
+      });
+
+      test("should convert the property to a zoom function", async () => {
+        await then(get.styleFromLocalStorage()).shouldDeepNestedInclude({
+          layers: [
+            { id, type: "circle", source: "example", paint: { "circle-radius": { stops: [[6, 5], [10, 5]] } } },
+          ],
+        });
+      });
+
+      test("should add a stop", async () => {
+        await when.addFunctionStop("circle-radius");
+        await then(get.styleFromLocalStorage()).shouldDeepNestedInclude({
+          layers: [{ id, paint: { "circle-radius": { stops: [[6, 5], [10, 5], [11, 5]] } } }],
+        });
+      });
+
+      test("should delete the first stop", async () => {
+        // A function needs more than two stops, otherwise deleting one collapses
+        // it back into a plain value.
+        await when.addFunctionStop("circle-radius");
+        await when.deleteFunctionStop("circle-radius");
+        await then(get.styleFromLocalStorage()).shouldDeepNestedInclude({
+          layers: [{ id, paint: { "circle-radius": { stops: [[10, 5], [11, 5]] } } }],
+        });
+      });
+
+      test("should set the base", async () => {
+        await when.setFunctionBase("circle-radius", "2");
+        await then(get.styleFromLocalStorage()).shouldDeepNestedInclude({
+          layers: [{ id, paint: { "circle-radius": { base: 2, stops: [[6, 5], [10, 5]] } } }],
+        });
+      });
+
+      test("should edit the zoom of a stop", async () => {
+        await when.setFunctionStopValue("circle-radius", "Zoom", 0, "3");
+        await then(get.styleFromLocalStorage()).shouldDeepNestedInclude({
+          layers: [{ id, paint: { "circle-radius": { stops: [[3, 5], [10, 5]] } } }],
+        });
+      });
+
+      test("should edit the output value of a stop", async () => {
+        await when.setFunctionStopValue("circle-radius", "Output value", 0, "9");
+        await then(get.styleFromLocalStorage()).shouldDeepNestedInclude({
+          layers: [{ id, paint: { "circle-radius": { stops: [[6, 9], [10, 5]] } } }],
+        });
+      });
+
+      test("should convert to an expression", async () => {
+        await when.makeExpression("circle-radius");
+        await then(get.styleFromLocalStorage()).shouldDeepNestedInclude({
+          layers: [{ id, paint: { "circle-radius": ["interpolate", ["linear"], ["zoom"], 6, 5, 10, 5] } }],
+        });
+      });
+
+      describe("when converted to a data function", () => {
+        beforeEach(async () => {
+          // Any non-interpolate scale turns the zoom function into a data one.
+          await when.selectFunctionType("circle-radius", "categorical");
+        });
+
+        test("should carry the stops over as zoom/value pairs", async () => {
+          await then(get.styleFromLocalStorage()).shouldDeepNestedInclude({
+            layers: [
+              {
+                id,
+                paint: {
+                  "circle-radius": {
+                    property: "",
+                    type: "exponential",
+                    stops: [[{ zoom: 6, value: 0 }, 5], [{ zoom: 10, value: 0 }, 5]],
+                  },
+                },
+              },
+            ],
+          });
+        });
+
+        test("should convert back to a zoom function", async () => {
+          await when.selectFunctionType("circle-radius", "interpolate");
+          await then(get.styleFromLocalStorage()).shouldDeepNestedInclude({
+            layers: [{ id, paint: { "circle-radius": { stops: [[6, 5], [10, 5]] } } }],
+          });
+        });
+      });
+    });
+
+    describe("data function", () => {
+      beforeEach(async () => {
+        id = await when.modal.fillLayers({ type: "circle", layer: "example" });
+        await when.setValue("spec-field-input:circle-blur", "1");
+        await when.makeDataFunction("circle-blur");
+      });
+
+      test("should convert the property to a data function", async () => {
+        await then(get.styleFromLocalStorage()).shouldDeepNestedInclude({
+          layers: [
+            {
+              id,
+              type: "circle",
+              source: "example",
+              paint: {
+                "circle-blur": {
+                  property: "",
+                  type: "exponential",
+                  stops: [[{ zoom: 6, value: 0 }, 1], [{ zoom: 10, value: 0 }, 1]],
+                },
+              },
+            },
+          ],
+        });
+      });
+
+      test("should add a stop", async () => {
+        await when.addFunctionStop("circle-blur");
+        await then(get.styleFromLocalStorage()).shouldDeepNestedInclude({
+          layers: [
+            {
+              id,
+              paint: {
+                "circle-blur": {
+                  stops: [[{ zoom: 6, value: 0 }, 1], [{ zoom: 10, value: 0 }, 1], [{ zoom: 11, value: 0 }, 1]],
+                },
+              },
+            },
+          ],
+        });
+      });
+
+      test("should delete the first stop", async () => {
+        await when.addFunctionStop("circle-blur");
+        await when.deleteFunctionStop("circle-blur");
+        await then(get.styleFromLocalStorage()).shouldDeepNestedInclude({
+          layers: [
+            {
+              id,
+              paint: {
+                "circle-blur": {
+                  stops: [[{ zoom: 10, value: 0 }, 1], [{ zoom: 11, value: 0 }, 1]],
+                },
+              },
+            },
+          ],
+        });
+      });
+
+      test("should set the property", async () => {
+        await when.setFunctionProperty("circle-blur", "myprop");
+        await then(get.styleFromLocalStorage()).shouldDeepNestedInclude({
+          layers: [{ id, paint: { "circle-blur": { property: "myprop" } } }],
+        });
+      });
+
+      test("should set the default", async () => {
+        await when.setFunctionDefault("circle-blur", "0.5");
+        await then(get.styleFromLocalStorage()).shouldDeepNestedInclude({
+          layers: [{ id, paint: { "circle-blur": { default: 0.5 } } }],
+        });
+      });
+
+      test("should edit the input value of a stop", async () => {
+        await when.setFunctionStopValue("circle-blur", "Input value", 0, "7");
+        await then(get.styleFromLocalStorage()).shouldDeepNestedInclude({
+          layers: [
+            {
+              id,
+              paint: {
+                "circle-blur": {
+                  stops: [[{ zoom: 6, value: 7 }, 1], [{ zoom: 10, value: 0 }, 1]],
+                },
+              },
+            },
+          ],
+        });
+      });
+
+      test("should change the function type", async () => {
+        await when.selectFunctionType("circle-blur", "categorical");
+        await then(get.styleFromLocalStorage()).shouldDeepNestedInclude({
+          layers: [{ id, paint: { "circle-blur": { type: "categorical" } } }],
+        });
+      });
+    });
+
+    describe("expression", () => {
+      beforeEach(async () => {
+        id = await when.modal.fillLayers({ type: "circle", layer: "example" });
+        await when.setValue("spec-field-input:circle-blur", "1");
+        await when.makeExpression("circle-blur");
+      });
+
+      test("should wrap the property value in a literal expression", async () => {
+        await then(get.styleFromLocalStorage()).shouldDeepNestedInclude({
+          layers: [{ id, paint: { "circle-blur": ["literal", 1] } }],
+        });
+      });
+
+      test("should restore the plain value when reverted", async () => {
+        await when.undoExpression("circle-blur");
+        await then(get.styleFromLocalStorage()).shouldDeepNestedInclude({
+          layers: [{ id, paint: { "circle-blur": 1 } }],
+        });
+      });
+
+      test("should fall back to the spec default when deleted", async () => {
+        await when.deleteExpression("circle-blur");
+        await then(get.styleFromLocalStorage()).shouldDeepNestedInclude({
+          layers: [{ id, paint: { "circle-blur": 0 } }],
+        });
+      });
+    });
   });
 
   describe("layout", () => {
@@ -183,10 +488,43 @@ describe("layer editor", () => {
   });
 
   describe("paint", () => {
-    test.skip("expand/collapse", () => {});
-    test.skip("color", () => {});
-    test.skip("pattern", () => {});
-    test.skip("opacity", () => {});
+    let id: string;
+
+    beforeEach(async () => {
+      id = await when.modal.fillLayers({ type: "fill", layer: "example" });
+    });
+
+    test("expand/collapse", async () => {
+      await then(get.elementByTestId("spec-field:fill-color")).shouldBeVisible();
+
+      await when.toggleGroupInLayerEditor("Paint properties");
+      await then(get.elementByTestId("spec-field:fill-color")).shouldNotBeVisible();
+
+      await when.toggleGroupInLayerEditor("Paint properties");
+      await then(get.elementByTestId("spec-field:fill-color")).shouldBeVisible();
+    });
+
+    test("color", async () => {
+      await when.setColorValue("fill-color", "#ff0000");
+      await then(get.styleFromLocalStorage()).shouldDeepNestedInclude({
+        layers: [{ id, type: "fill", source: "example", paint: { "fill-color": "#ff0000" } }],
+      });
+    });
+
+    test("pattern", async () => {
+      await when.setStringValue("fill-pattern", "some-pattern");
+      await then(get.styleFromLocalStorage()).shouldDeepNestedInclude({
+        layers: [{ id, type: "fill", source: "example", paint: { "fill-pattern": "some-pattern" } }],
+      });
+    });
+
+    test("opacity", async () => {
+      await when.setValue("spec-field-input:fill-opacity", "0.4");
+      await when.click("layer-editor.layer-id");
+      await then(get.styleFromLocalStorage()).shouldDeepNestedInclude({
+        layers: [{ id, type: "fill", source: "example", paint: { "fill-opacity": 0.4 } }],
+      });
+    });
   });
 
   describe("json-editor", () => {
@@ -206,8 +544,28 @@ describe("layer editor", () => {
       await then(get.element(".cm-lint-marker-error")).shouldExist();
     });
 
-    test.skip("expand/collapse", () => {});
-    test.skip("modify", () => {});
+    test("expand/collapse", async () => {
+      const bgId = await createBackground();
+      await when.click("layer-list-item:background:" + bgId);
+
+      await then(get.element(".cm-content")).shouldBeVisible();
+
+      await when.toggleGroupInLayerEditor("JSON Editor");
+      await then(get.element(".cm-content")).shouldNotBeVisible();
+
+      await when.toggleGroupInLayerEditor("JSON Editor");
+      await then(get.element(".cm-content")).shouldBeVisible();
+    });
+
+    test("modify", async () => {
+      const bgId = await createBackground();
+      await when.click("layer-list-item:background:" + bgId);
+
+      await when.appendToJsonEditorLine('"background"', ',\n"minzoom": 5');
+      await then(get.styleFromLocalStorage()).shouldDeepNestedInclude({
+        layers: [{ id: "background:" + bgId, type: "background", minzoom: 5 }],
+      });
+    });
 
     test("parse error", async () => {
       const bgId = await createBackground();

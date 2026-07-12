@@ -62,11 +62,12 @@ function isLocator(target: unknown): target is Locator {
   );
 }
 
-/** Asserts that every top-level key in `expected` deep-equals its counterpart in `actual`. */
-function assertDeepNestedInclude(actual: any, expected: Record<string, unknown>): void {
-  for (const key of Object.keys(expected)) {
-    expect(actual?.[key], `property "${key}"`).toEqual(expected[key]);
-  }
+/**
+ * Asserts that `actual` recursively contains everything in `expected`: nested
+ * objects are matched as subsets, while arrays and primitives must match exactly.
+ */
+function assertDeepNestedInclude(actual: any, expected: Record<string, unknown> | unknown[]): void {
+  expect(actual).toMatchObject(expected);
 }
 
 /**
@@ -130,7 +131,7 @@ export class Assertable<T> {
       }
     });
 
-  shouldDeepNestedInclude = (value: Record<string, unknown>) =>
+  shouldDeepNestedInclude = (value: Record<string, unknown> | unknown[]) =>
     this.assertValue((actual) => assertDeepNestedInclude(actual, value));
 }
 
@@ -144,6 +145,8 @@ async function typeSequence(page: Page, text: string): Promise<void> {
     del: "Delete",
     tab: "Tab",
     home: "Home",
+    end: "End",
+    rightarrow: "ArrowRight",
   };
 
   for (let i = 0; i < tokens.length; i++) {
@@ -202,10 +205,31 @@ export class PlaywrightHelper {
     return new Query<T>(getter);
   }
 
+  /** Stubs the File System Access "save" picker so file saves complete headlessly. */
+  public stubSaveFilePicker(): Promise<void> {
+    return this.page.evaluate(() => {
+      (window as any).showSaveFilePicker = async () => ({
+        createWritable: async () => ({ write: async () => {}, close: async () => {} }),
+      });
+    });
+  }
+
   /** Entry point for fluent assertions over a Locator or a value/Query. */
   public then = <T>(target: T): Assertable<T> => new Assertable(target);
 
   public given = {
+    /**
+     * Removes the File System Access API so the app falls back to a plain
+     * <input type="file">, the way Firefox and Safari behave. Must be called
+     * before the page under test is loaded.
+     */
+    noFileSystemAccessApi: async () => {
+      await this.page.addInitScript(() => {
+        delete (window as any).showOpenFilePicker;
+        delete (window as any).showSaveFilePicker;
+      });
+    },
+
     intercept: async (pattern: RegExp, alias: string, _method = "GET") => {
       this.recordedRequests.set(alias, []);
       await this.page.route(pattern, (route) => {
@@ -333,23 +357,38 @@ export class PlaywrightHelper {
       await this.page.mouse.up();
     },
 
-    openFileByFixture: async (fixture: string, buttonTestId: string, inputTestId: string) => {
+    /**
+     * Opens a fixture through the File System Access API, which raises no
+     * "filechooser" event and so has to be stubbed. For the <input type="file">
+     * fallback that browsers without the API use, see chooseFileFromPicker.
+     */
+    openFileByFixture: async (fixture: string, buttonTestId: string) => {
       const content = JSON.stringify(this.readFixture(fixture));
-      const hasPicker = await this.page.evaluate(() => "showOpenFilePicker" in window);
-      if (hasPicker) {
-        await this.page.evaluate((fileContent) => {
-          (window as any).showOpenFilePicker = async () => [
-            { getFile: async () => ({ text: async () => fileContent }) },
-          ];
-        }, content);
-        await this.testId(buttonTestId).click();
-      } else {
-        await this.testId(inputTestId).setInputFiles({
-          name: fixture,
-          mimeType: "application/json",
-          buffer: Buffer.from(content),
-        });
-      }
+      await this.page.evaluate((fileContent) => {
+        (window as any).showOpenFilePicker = async () => [
+          { getFile: async () => ({ text: async () => fileContent }) },
+        ];
+      }, content);
+      await this.testId(buttonTestId).click();
+    },
+
+    /**
+     * Clicks a control that opens the browser's native file chooser and answers
+     * it with a fixture. Only works on the <input type="file"> path — the File
+     * System Access API does not raise a "filechooser" event, so pair this with
+     * given.noFileSystemAccessApi().
+     */
+    chooseFileFromPicker: async (fixture: string, triggerTestId: string) => {
+      const content = JSON.stringify(this.readFixture(fixture));
+      const [fileChooser] = await Promise.all([
+        this.page.waitForEvent("filechooser"),
+        this.testId(triggerTestId).click(),
+      ]);
+      await fileChooser.setFiles({
+        name: fixture,
+        mimeType: "application/json",
+        buffer: Buffer.from(content),
+      });
     },
 
     dropFileByFixture: async (fixture: string, dropzoneTestId: string) => {

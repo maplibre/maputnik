@@ -45,15 +45,6 @@ function ensureStyleValidity(style: StyleSpecification): StyleSpecificationWithI
   return ensureHasNoInteractive(ensureHasNoRefs(ensureHasId(style)));
 }
 
-function indexOfLayer(layers: LayerSpecification[], layerId: string) {
-  for (let i = 0; i < layers.length; i++) {
-    if(layers[i].id === layerId) {
-      return i;
-    }
-  }
-  return null;
-}
-
 function getAccessToken(sourceName: string, mapStyle: StyleSpecification, opts: {allowFallback?: boolean}) {
   const metadata = mapStyle.metadata || {} as any;
   let accessToken = metadata[`maputnik:${sourceName}_access_token`];
@@ -151,7 +142,6 @@ function stripAccessTokens(mapStyle: StyleSpecification) {
 export {
   ensureStyleValidity,
   emptyStyle,
-  indexOfLayer,
   generateId,
   getAccessToken,
   replaceAccessTokens,
