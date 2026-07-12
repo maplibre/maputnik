@@ -289,6 +289,7 @@ class DataPropertyInternal extends React.Component<DataPropertyInternalProps, Da
           <Block
             label={t("Function")}
             key="function"
+            data-wd-key="function-type"
           >
             <div className="maputnik-data-spec-property-input">
               <InputSelect
@@ -303,6 +304,7 @@ class DataPropertyInternal extends React.Component<DataPropertyInternalProps, Da
             <Block
               label={t("Base")}
               key="base"
+              data-wd-key="function-base"
             >
               <div className="maputnik-data-spec-property-input">
                 <InputSpec
@@ -317,6 +319,7 @@ class DataPropertyInternal extends React.Component<DataPropertyInternalProps, Da
           <Block
             label={"Property"}
             key="property"
+            data-wd-key="function-property"
           >
             <div className="maputnik-data-spec-property-input">
               <InputString
@@ -330,6 +333,7 @@ class DataPropertyInternal extends React.Component<DataPropertyInternalProps, Da
             <Block
               label={t("Default")}
               key="default"
+              data-wd-key="function-default"
             >
               <InputSpec
                 fieldName={this.props.fieldName}
@@ -368,6 +372,7 @@ class DataPropertyInternal extends React.Component<DataPropertyInternalProps, Da
             }
             <InputButton
               className="maputnik-add-stop"
+              data-wd-key="convert-to-expression"
               onClick={this.props.onExpressionClick?.bind(this)}
             >
               <TbMathFunction style={{ verticalAlign: "text-bottom" }} />

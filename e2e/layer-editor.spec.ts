@@ -212,6 +212,39 @@ describe("layer editor", () => {
         layers: [{ id, type: "fill", source: "example", filter: ["all", ["!=", "name", ""], ["==", "name", ""]] }],
       });
     });
+
+    test("change the combining operator and delete a filter item", async () => {
+      const id = await when.modal.fillLayers({ type: "fill", layer: "example" });
+      await when.addFilter();
+      await when.addFilter();
+
+      await when.selectFilterCombiningOperator("any");
+      await then(get.styleFromLocalStorage()).shouldDeepNestedInclude({
+        layers: [{ id, filter: ["any", ["==", "name", ""], ["==", "name", ""]] }],
+      });
+
+      await when.deleteFilterItem();
+      await then(get.styleFromLocalStorage()).shouldDeepNestedInclude({
+        layers: [{ id, filter: ["any", ["==", "name", ""]] }],
+      });
+    });
+
+    test("convert a filter to an expression and delete it", async () => {
+      const id = await when.modal.fillLayers({ type: "fill", layer: "example" });
+      await when.addFilter();
+
+      // A single-item "all" collapses to the bare comparison when migrated.
+      await when.convertFilterToExpression();
+      await then(get.styleFromLocalStorage()).shouldDeepNestedInclude({
+        layers: [{ id, filter: ["==", ["get", "name"], ""] }],
+      });
+
+      // Deleting the expression restores the default (empty) filter.
+      await when.deleteFilterExpression();
+      await then(get.styleFromLocalStorage()).shouldDeepNestedInclude({
+        layers: [{ id, filter: ["all"] }],
+      });
+    });
   });
 
   describe("functions", () => {
@@ -290,6 +323,119 @@ describe("layer editor", () => {
             },
           },
         ],
+      });
+    });
+
+    test("edit the base and the stops of a zoom function", async () => {
+      await when.modal.fillLayers({ type: "circle", layer: "example" });
+      await when.makeZoomFunction("circle-radius");
+
+      await when.setFunctionBase("circle-radius", "2");
+      await then(get.styleFromLocalStorage()).shouldDeepNestedInclude({
+        layers: [{ paint: { "circle-radius": { base: 2, stops: [[6, 5], [10, 5]] } } }],
+      });
+
+      // Editing a stop's zoom re-sorts the stops by zoom.
+      await when.setFunctionStopValue("circle-radius", "Zoom", 0, "3");
+      await then(get.styleFromLocalStorage()).shouldDeepNestedInclude({
+        layers: [{ paint: { "circle-radius": { base: 2, stops: [[3, 5], [10, 5]] } } }],
+      });
+
+      await when.setFunctionStopValue("circle-radius", "Output value", 0, "9");
+      await then(get.styleFromLocalStorage()).shouldDeepNestedInclude({
+        layers: [{ paint: { "circle-radius": { base: 2, stops: [[3, 9], [10, 5]] } } }],
+      });
+    });
+
+    test("convert a zoom function to a data function and back", async () => {
+      await when.modal.fillLayers({ type: "circle", layer: "example" });
+      await when.makeZoomFunction("circle-radius");
+
+      // Picking a non-interpolate scale turns the zoom function into a data one,
+      // carrying the existing stops over as zoom/value pairs.
+      await when.selectFunctionType("circle-radius", "categorical");
+      await then(get.styleFromLocalStorage()).shouldDeepNestedInclude({
+        layers: [
+          {
+            paint: {
+              "circle-radius": {
+                property: "",
+                type: "exponential",
+                stops: [[{ zoom: 6, value: 0 }, 5], [{ zoom: 10, value: 0 }, 5]],
+              },
+            },
+          },
+        ],
+      });
+
+      // Picking "interpolate" converts it back to a plain zoom function.
+      await when.selectFunctionType("circle-radius", "interpolate");
+      await then(get.styleFromLocalStorage()).shouldDeepNestedInclude({
+        layers: [{ paint: { "circle-radius": { stops: [[6, 5], [10, 5]] } } }],
+      });
+    });
+
+    test("edit the property, default and stops of a data function", async () => {
+      await when.modal.fillLayers({ type: "circle", layer: "example" });
+      await when.setValue("spec-field-input:circle-blur", "1");
+      await when.makeDataFunction("circle-blur");
+
+      await when.setFunctionProperty("circle-blur", "myprop");
+      await when.setFunctionDefault("circle-blur", "0.5");
+      await then(get.styleFromLocalStorage()).shouldDeepNestedInclude({
+        layers: [{ paint: { "circle-blur": { property: "myprop", default: 0.5 } } }],
+      });
+
+      await when.setFunctionStopValue("circle-blur", "Input value", 0, "7");
+      await then(get.styleFromLocalStorage()).shouldDeepNestedInclude({
+        layers: [
+          {
+            paint: {
+              "circle-blur": {
+                property: "myprop",
+                stops: [[{ zoom: 6, value: 7 }, 1], [{ zoom: 10, value: 0 }, 1]],
+              },
+            },
+          },
+        ],
+      });
+
+      await when.selectFunctionType("circle-blur", "categorical");
+      await then(get.styleFromLocalStorage()).shouldDeepNestedInclude({
+        layers: [{ paint: { "circle-blur": { property: "myprop", type: "categorical" } } }],
+      });
+    });
+
+    test("convert a property to an expression, revert it and delete it", async () => {
+      await when.modal.fillLayers({ type: "circle", layer: "example" });
+      await when.setValue("spec-field-input:circle-blur", "1");
+
+      await when.makeExpression("circle-blur");
+      await then(get.styleFromLocalStorage()).shouldDeepNestedInclude({
+        layers: [{ paint: { "circle-blur": ["literal", 1] } }],
+      });
+
+      // Reverting an expression restores the plain value it wrapped.
+      await when.undoExpression("circle-blur");
+      await then(get.styleFromLocalStorage()).shouldDeepNestedInclude({
+        layers: [{ paint: { "circle-blur": 1 } }],
+      });
+
+      // Deleting an expression falls back to the property's spec default.
+      await when.makeExpression("circle-blur");
+      await when.deleteExpression("circle-blur");
+      await then(get.styleFromLocalStorage()).shouldDeepNestedInclude({
+        layers: [{ paint: { "circle-blur": 0 } }],
+      });
+    });
+
+    test("convert a zoom function to an expression", async () => {
+      await when.modal.fillLayers({ type: "circle", layer: "example" });
+      await when.makeZoomFunction("circle-radius");
+
+      await when.makeExpression("circle-radius");
+      await then(get.styleFromLocalStorage()).shouldDeepNestedInclude({
+        layers: [{ paint: { "circle-radius": ["interpolate", ["linear"], ["zoom"], 6, 5, 10, 5] } }],
       });
     });
   });

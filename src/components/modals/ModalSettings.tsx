@@ -206,6 +206,7 @@ class ModalSettingsInternal extends React.Component<ModalSettingsInternalProps> 
 
         <FieldNumber
           label={t("Zoom")}
+          data-wd-key="modal:settings.zoom"
           fieldSpec={latest.$root.zoom}
           value={mapStyle.zoom}
           default={0}
@@ -214,6 +215,7 @@ class ModalSettingsInternal extends React.Component<ModalSettingsInternalProps> 
 
         <FieldNumber
           label={t("Bearing")}
+          data-wd-key="modal:settings.bearing"
           fieldSpec={latest.$root.bearing}
           value={mapStyle.bearing}
           default={latest.$root.bearing.default}
@@ -222,6 +224,7 @@ class ModalSettingsInternal extends React.Component<ModalSettingsInternalProps> 
 
         <FieldNumber
           label={t("Pitch")}
+          data-wd-key="modal:settings.pitch"
           fieldSpec={latest.$root.pitch}
           value={mapStyle.pitch}
           default={latest.$root.pitch.default}
@@ -248,6 +251,7 @@ class ModalSettingsInternal extends React.Component<ModalSettingsInternalProps> 
 
         <FieldNumber
           label={t("Light intensity")}
+          data-wd-key="modal:settings.light-intensity"
           fieldSpec={latest.light.intensity}
           value={light.intensity as number}
           default={latest.light.intensity.default}
@@ -274,6 +278,7 @@ class ModalSettingsInternal extends React.Component<ModalSettingsInternalProps> 
 
         <FieldNumber
           label={t("Terrain exaggeration")}
+          data-wd-key="modal:settings.terrain-exaggeration"
           fieldSpec={latest.terrain.exaggeration}
           value={terrain.exaggeration}
           default={latest.terrain.exaggeration.default}
@@ -282,6 +287,7 @@ class ModalSettingsInternal extends React.Component<ModalSettingsInternalProps> 
 
         <FieldNumber
           label={t("Transition delay")}
+          data-wd-key="modal:settings.transition-delay"
           fieldSpec={latest.transition.delay}
           value={transition.delay}
           default={latest.transition.delay.default}
@@ -290,6 +296,7 @@ class ModalSettingsInternal extends React.Component<ModalSettingsInternalProps> 
 
         <FieldNumber
           label={t("Transition duration")}
+          data-wd-key="modal:settings.transition-duration"
           fieldSpec={latest.transition.duration}
           value={transition.duration}
           default={latest.transition.duration.default}

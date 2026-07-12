@@ -194,6 +194,7 @@ class ZoomPropertyInternal extends React.Component<ZoomPropertyInternalProps, Zo
         <div className="maputnik-data-fieldset-inner">
           <Block
             label={t("Function")}
+            data-wd-key="function-type"
           >
             <div className="maputnik-data-spec-property-input">
               <InputSelect
@@ -206,6 +207,7 @@ class ZoomPropertyInternal extends React.Component<ZoomPropertyInternalProps, Zo
           </Block>
           <Block
             label={t("Base")}
+            data-wd-key="function-base"
           >
             <div className="maputnik-data-spec-property-input">
               <InputSpec
@@ -240,6 +242,7 @@ class ZoomPropertyInternal extends React.Component<ZoomPropertyInternalProps, Zo
             </InputButton>
             <InputButton
               className="maputnik-add-stop"
+              data-wd-key="convert-to-expression"
               onClick={this.props.onExpressionClick?.bind(this)}
             >
               <TbMathFunction style={{ verticalAlign: "text-bottom" }} />

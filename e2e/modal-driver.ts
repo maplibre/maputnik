@@ -34,5 +34,45 @@ export class ModalDriver {
     close: async (key: string) => {
       await this.helper.when.click(key + ".close-modal");
     },
+
+    /**
+     * Adds a source of the given type from the sources modal, keeping whatever
+     * defaults that type's editor prefills.
+     */
+    addSource: async (sourceId: string, sourceType: string) => {
+      const { when } = this.helper;
+      await when.setValue("modal:sources.add.source_id", sourceId);
+      await when.select("modal:sources.add.source_type", sourceType);
+      await when.click("modal:sources.add.add_source");
+      await when.wait(200);
+    },
+
+    /** Adds one of the predefined public sources listed in the sources modal. */
+    addPublicSource: async (index = 0) => {
+      await this.helper.get.element(".maputnik-public-source-select").nth(index).click();
+    },
+
+    deleteFirstActiveSource: async () => {
+      await this.helper.get.element(".maputnik-active-source-type-editor-header-delete").first().click();
+    },
+
+    /** Fills one number box of a coordinate pair in the image/video source editor. */
+    setCoordinateValue: async (index: number, value: string) => {
+      const input = this.helper.get
+        .elementByTestId("modal:sources")
+        .locator(".maputnik-array input")
+        .nth(index);
+      await input.fill(value);
+      await input.blur();
+    },
+
+    exportCreateHtml: async () => {
+      await this.helper.get.element(".maputnik-modal-export-buttons button").last().click();
+    },
+
+    exportSaveStyle: async () => {
+      await this.helper.stubSaveFilePicker();
+      await this.helper.get.element(".maputnik-modal-export-buttons button").first().click();
+    },
   };
 }

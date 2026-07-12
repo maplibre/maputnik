@@ -133,11 +133,6 @@ export class MaputnikDriver {
       await this.helper.when.click("layer-editor-group:" + title);
     },
 
-    /** Adds one of the predefined public sources listed in the sources modal. */
-    addPublicSource: async (index = 0) => {
-      await this.helper.get.element(".maputnik-public-source-select").nth(index).click();
-    },
-
     /**
      * Picks a source for the selected layer from the source autocomplete.
      * The autocomplete is a controlled (downshift) input, so the value has to be
@@ -201,6 +196,62 @@ export class MaputnikDriver {
       await container.locator(".maputnik-delete-stop").first().click({ force: true });
     },
 
+    /** Turns the property into a raw style expression. */
+    makeExpression: async (fieldName: string) => {
+      const container = this.helper.get.elementByTestId("spec-field-container:" + fieldName);
+      await container.scrollIntoViewIfNeeded();
+      // In the plain spec field the expression button shares the zoom-function
+      // class and comes first; inside a function editor it has its own test id.
+      const inFunctionEditor = container.locator("[data-wd-key='convert-to-expression']");
+      const button =
+        (await inFunctionEditor.count()) > 0
+          ? inFunctionEditor
+          : container.locator(".maputnik-make-zoom-function").first();
+      await button.click({ force: true });
+    },
+
+    /** Reverts an expression back to a plain value. */
+    undoExpression: async (fieldName: string) => {
+      const container = this.helper.get.elementByTestId("spec-field-container:" + fieldName);
+      await container.locator("[data-wd-key='undo-expression']").click({ force: true });
+    },
+
+    /** Removes an expression, restoring the property's spec default. */
+    deleteExpression: async (fieldName: string) => {
+      const container = this.helper.get.elementByTestId("spec-field-container:" + fieldName);
+      await container.locator("[data-wd-key='delete-expression']").click({ force: true });
+    },
+
+    /** Picks the function scale (categorical/interval/exponential/identity/interpolate). */
+    selectFunctionType: async (fieldName: string, type: string) => {
+      const container = this.helper.get.elementByTestId("spec-field-container:" + fieldName);
+      await container.locator("[data-wd-key='function-type'] select").selectOption(type);
+    },
+
+    /** Sets the "Base" input of a zoom/data function. */
+    setFunctionBase: async (fieldName: string, value: string) => {
+      const container = this.helper.get.elementByTestId("spec-field-container:" + fieldName);
+      await container.locator("[data-wd-key='function-base'] input").fill(value);
+    },
+
+    /** Sets the data property a data function keys off of. */
+    setFunctionProperty: async (fieldName: string, value: string) => {
+      const container = this.helper.get.elementByTestId("spec-field-container:" + fieldName);
+      await container.locator("[data-wd-key='function-property'] input").fill(value);
+    },
+
+    /** Sets the fallback value used when a feature has no matching stop. */
+    setFunctionDefault: async (fieldName: string, value: string) => {
+      const container = this.helper.get.elementByTestId("spec-field-container:" + fieldName);
+      await container.locator("[data-wd-key='function-default'] input").fill(value);
+    },
+
+    /** Edits one cell of a function's stop table ("Zoom", "Input value" or "Output value"). */
+    setFunctionStopValue: async (fieldName: string, column: string, index: number, value: string) => {
+      const container = this.helper.get.elementByTestId("spec-field-container:" + fieldName);
+      await container.locator(`[aria-label="${column}"]`).nth(index).fill(value);
+    },
+
     addFilter: async () => {
       const button = this.helper.get.elementByTestId("layer-filter-button");
       await button.scrollIntoViewIfNeeded();
@@ -211,8 +262,29 @@ export class MaputnikDriver {
       await this.helper.get.element(".maputnik-filter-editor-operator select").first().selectOption(value);
     },
 
-    deleteFirstActiveSource: async () => {
-      await this.helper.get.element(".maputnik-active-source-type-editor-header-delete").first().click();
+    /** Chooses how the filter items combine: all / none / any. */
+    selectFilterCombiningOperator: async (value: string) => {
+      await this.helper.when.selectWithin("filter-combining-operator", value);
+    },
+
+    deleteFilterItem: async (index = 0) => {
+      await this.helper.get
+        .element(".maputnik-filter-editor-block-action .maputnik-icon-button")
+        .nth(index)
+        .click();
+    },
+
+    /** Converts the simple filter editor into a raw expression editor. */
+    convertFilterToExpression: async () => {
+      await this.helper.when.click("filter-convert-to-expression");
+    },
+
+    /**
+     * Deletes the filter expression, restoring the simple filter editor.
+     * The filter group precedes the paint group, so its button comes first.
+     */
+    deleteFilterExpression: async () => {
+      await this.helper.get.element("[data-wd-key='delete-expression']").first().click();
     },
 
     setColorValue: async (fieldName: string, value: string) => {
@@ -236,15 +308,6 @@ export class MaputnikDriver {
       await this.helper.when.clickByText(lineText);
       await this.helper.when.typeKeys("{end}");
       await this.helper.when.typeText(text);
-    },
-
-    exportCreateHtml: async () => {
-      await this.helper.get.element(".maputnik-modal-export-buttons button").last().click();
-    },
-
-    exportSaveStyle: async () => {
-      await this.helper.stubSaveFilePicker();
-      await this.helper.get.element(".maputnik-modal-export-buttons button").first().click();
     },
 
     waitForExampleFileResponse: () => this.helper.when.waitForResponse("example-style.json"),
