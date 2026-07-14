@@ -38,9 +38,9 @@ type IconActionProps = {
   classBlockModifier?: string
 };
 
-class IconAction extends React.Component<IconActionProps> {
-  renderIcon() {
-    switch (this.props.action) {
+const IconAction: React.FC<IconActionProps> = (props) => {
+  function renderIcon() {
+    switch (props.action) {
       case "duplicate": return <MdContentCopy />;
       case "show": return <MdVisibility />;
       case "hide": return <MdVisibilityOff />;
@@ -48,30 +48,28 @@ class IconAction extends React.Component<IconActionProps> {
     }
   }
 
-  render() {
-    const { classBlockName, classBlockModifier } = this.props;
+  const { classBlockName, classBlockModifier } = props;
 
-    let classAdditions = "";
-    if (classBlockName) {
-      classAdditions = `maputnik-layer-list-icon-action__${classBlockName}`;
+  let classAdditions = "";
+  if (classBlockName) {
+    classAdditions = `maputnik-layer-list-icon-action__${classBlockName}`;
 
-      if (classBlockModifier) {
-        classAdditions += ` maputnik-layer-list-icon-action__${classBlockName}--${classBlockModifier}`;
-      }
+    if (classBlockModifier) {
+      classAdditions += ` maputnik-layer-list-icon-action__${classBlockName}--${classBlockModifier}`;
     }
-
-    return <button
-      tabIndex={-1}
-      title={this.props.action}
-      className={`maputnik-layer-list-icon-action ${classAdditions}`}
-      data-wd-key={this.props.wdKey}
-      onClick={this.props.onClick}
-      aria-hidden="true"
-    >
-      {this.renderIcon()}
-    </button>;
   }
-}
+
+  return <button
+    tabIndex={-1}
+    title={props.action}
+    className={`maputnik-layer-list-icon-action ${classAdditions}`}
+    data-wd-key={props.wdKey}
+    onClick={props.onClick}
+    aria-hidden="true"
+  >
+    {renderIcon()}
+  </button>;
+};
 
 type LayerListItemProps = {
   id?: string

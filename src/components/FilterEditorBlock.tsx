@@ -7,24 +7,22 @@ type FilterEditorBlockInternalProps = PropsWithChildren & {
   onDelete(...args: unknown[]): unknown
 } & WithTranslation;
 
-class FilterEditorBlockInternal extends React.Component<FilterEditorBlockInternalProps> {
-  render() {
-    const t = this.props.t;
-    return <div className="maputnik-filter-editor-block">
-      <div className="maputnik-filter-editor-block-content">
-        {this.props.children}
-      </div>
-      <div className="maputnik-filter-editor-block-action">
-        <InputButton
-          className="maputnik-icon-button"
-          onClick={this.props.onDelete}
-          title={t("Delete filter block")}
-        >
-          <MdDelete />
-        </InputButton>
-      </div>
-    </div>;
-  }
-}
+const FilterEditorBlockInternal: React.FC<FilterEditorBlockInternalProps> = (props) => {
+  const t = props.t;
+  return <div className="maputnik-filter-editor-block">
+    <div className="maputnik-filter-editor-block-content">
+      {props.children}
+    </div>
+    <div className="maputnik-filter-editor-block-action">
+      <InputButton
+        className="maputnik-icon-button"
+        onClick={props.onDelete}
+        title={t("Delete filter block")}
+      >
+        <MdDelete />
+      </InputButton>
+    </div>
+  </div>;
+};
 
 export const FilterEditorBlock = withTranslation()(FilterEditorBlockInternal);

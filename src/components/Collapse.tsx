@@ -9,25 +9,19 @@ type CollapseProps = {
 };
 
 
-export class Collapse extends React.Component<CollapseProps> {
-  static defaultProps = {
-    isActive: true
-  };
-
-  render() {
-    if (reducedMotionEnabled()) {
-      return (
-        <div style={{display: this.props.isActive ? "block" : "none"}}>
-          {this.props.children}
-        </div>
-      );
-    }
-    else {
-      return (
-        <ReactCollapse isOpened={this.props.isActive}>
-          {this.props.children}
-        </ReactCollapse>
-      );
-    }
+export const Collapse: React.FC<CollapseProps> = ({isActive = true, children}) => {
+  if (reducedMotionEnabled()) {
+    return (
+      <div style={{display: isActive ? "block" : "none"}}>
+        {children}
+      </div>
+    );
   }
-}
+  else {
+    return (
+      <ReactCollapse isOpened={isActive}>
+        {children}
+      </ReactCollapse>
+    );
+  }
+};

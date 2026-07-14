@@ -13,41 +13,38 @@ type AppLayoutInternalProps = {
   modals?: React.ReactNode
 } & WithTranslation;
 
-class AppLayoutInternal extends React.Component<AppLayoutInternalProps> {
+const AppLayoutInternal: React.FC<AppLayoutInternalProps> = (props) => {
+  document.body.dir = props.i18n.dir();
 
-  render() {
-    document.body.dir = this.props.i18n.dir();
-
-    return <IconContext.Provider value={{size: "14px"}}>
-      <div className="maputnik-layout">
-        {this.props.toolbar}
-        <div className="maputnik-layout-main">
-          {this.props.codeEditor && <div className="maputnik-layout-code-editor">
-            <ScrollContainer>
-              {this.props.codeEditor}
-            </ScrollContainer>
-          </div>
-          }
-          {!this.props.codeEditor && <>
-            <div className="maputnik-layout-list">
-              {this.props.layerList}
-            </div>
-            <div className="maputnik-layout-drawer">
-              <ScrollContainer>
-                {this.props.layerEditor}
-              </ScrollContainer>
-            </div>
-          </>}
-          {this.props.map}
-        </div>
-        {this.props.bottom && <div className="maputnik-layout-bottom">
-          {this.props.bottom}
+  return <IconContext.Provider value={{size: "14px"}}>
+    <div className="maputnik-layout">
+      {props.toolbar}
+      <div className="maputnik-layout-main">
+        {props.codeEditor && <div className="maputnik-layout-code-editor">
+          <ScrollContainer>
+            {props.codeEditor}
+          </ScrollContainer>
         </div>
         }
-        {this.props.modals}
+        {!props.codeEditor && <>
+          <div className="maputnik-layout-list">
+            {props.layerList}
+          </div>
+          <div className="maputnik-layout-drawer">
+            <ScrollContainer>
+              {props.layerEditor}
+            </ScrollContainer>
+          </div>
+        </>}
+        {props.map}
       </div>
-    </IconContext.Provider>;
-  }
-}
+      {props.bottom && <div className="maputnik-layout-bottom">
+        {props.bottom}
+      </div>
+      }
+      {props.modals}
+    </div>
+  </IconContext.Provider>;
+};
 
 export const AppLayout = withTranslation()(AppLayoutInternal);

@@ -1,4 +1,4 @@
-import React, { type JSX } from "react";
+import React, { type JSX, useState } from "react";
 import { InputString } from "./InputString";
 import { SmallError } from "./SmallError";
 import { Trans, type WithTranslation, withTranslation } from "react-i18next";
@@ -46,49 +46,30 @@ export type FieldUrlProps = {
 
 type InputUrlInternalProps = FieldUrlProps & WithTranslation;
 
-type InputUrlState = {
-  error?: ErrorType
+const InputUrlInternal: React.FC<InputUrlInternalProps> = ({onInput = () => {}, ...props}) => {
+  const [error, setError] = useState<ErrorType | undefined>(() => validate(props.value));
+
+  const handleInput = (url: string) => {
+    setError(validate(url));
+    onInput(url);
+  };
+
+  const handleChange = (url: string) => {
+    setError(validate(url));
+    props.onChange(url);
+  };
+
+  return (
+    <div>
+      <InputString
+        {...props}
+        onInput={handleInput}
+        onChange={handleChange}
+        aria-label={props["aria-label"]}
+      />
+      {errorTypeToJsx(error, props.t)}
+    </div>
+  );
 };
-
-class InputUrlInternal extends React.Component<InputUrlInternalProps, InputUrlState> {
-  static defaultProps = {
-    onInput: () => {},
-  };
-
-  constructor (props: InputUrlInternalProps) {
-    super(props);
-    this.state = {
-      error: validate(props.value),
-    };
-  }
-
-  onInput = (url: string) => {
-    this.setState({
-      error: validate(url),
-    });
-    if (this.props.onInput) this.props.onInput(url);
-  };
-
-  onChange = (url: string) => {
-    this.setState({
-      error: validate(url),
-    });
-    this.props.onChange(url);
-  };
-
-  render () {
-    return (
-      <div>
-        <InputString
-          {...this.props}
-          onInput={this.onInput}
-          onChange={this.onChange}
-          aria-label={this.props["aria-label"]}
-        />
-        {errorTypeToJsx(this.state.error, this.props.t)}
-      </div>
-    );
-  }
-}
 
 export const InputUrl = withTranslation()(InputUrlInternal);

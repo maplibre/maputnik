@@ -10,23 +10,21 @@ export type InputSelectProps = {
   "aria-label"?: string
 };
 
-export class InputSelect extends React.Component<InputSelectProps> {
-  render() {
-    let options = this.props.options;
-    if(options.length > 0 && !Array.isArray(options[0])) {
-      options = options.map((v) => [v, v]) as [string, any][];
-    }
-
-    return <select
-      className="maputnik-select"
-      data-wd-key={this.props["data-wd-key"]}
-      style={this.props.style}
-      title={this.props.title}
-      value={this.props.value}
-      onChange={e => this.props.onChange(e.target.value)}
-      aria-label={this.props["aria-label"]}
-    >
-      { options.map(([val, label]) => <option key={val} value={val}>{label}</option>) }
-    </select>;
+export const InputSelect: React.FC<InputSelectProps> = (props) => {
+  let options = props.options;
+  if(options.length > 0 && !Array.isArray(options[0])) {
+    options = options.map((v) => [v, v]) as [string, any][];
   }
-}
+
+  return <select
+    className="maputnik-select"
+    data-wd-key={props["data-wd-key"]}
+    style={props.style}
+    title={props.title}
+    value={props.value}
+    onChange={e => props.onChange(e.target.value)}
+    aria-label={props["aria-label"]}
+  >
+    { options.map(([val, label]) => <option key={val} value={val}>{label}</option>) }
+  </select>;
+};

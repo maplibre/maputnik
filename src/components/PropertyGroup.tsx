@@ -40,37 +40,35 @@ type PropertyGroupProps = {
   errors?: MappedLayerErrors
 };
 
-export class PropertyGroup extends React.Component<PropertyGroupProps> {
-  onPropertyChange = (property: string, newValue: any) => {
-    const group = getGroupName(this.props.spec, this.props.layer.type, property);
-    this.props.onChange(group ,property, newValue);
+export const PropertyGroup: React.FC<PropertyGroupProps> = (props) => {
+  const onPropertyChange = (property: string, newValue: any) => {
+    const group = getGroupName(props.spec, props.layer.type, property);
+    props.onChange(group ,property, newValue);
   };
 
-  render() {
-    const {errors} = this.props;
-    const fields = this.props.groupFields.map(fieldName => {
-      const fieldSpec = getFieldSpec(this.props.spec, this.props.layer.type, fieldName);
+  const {errors} = props;
+  const fields = props.groupFields.map(fieldName => {
+    const fieldSpec = getFieldSpec(props.spec, props.layer.type, fieldName);
 
-      const paint = this.props.layer.paint || {};
-      const layout = this.props.layer.layout || {};
-      const fieldValue = fieldName in paint
-        ? paint[fieldName as keyof typeof paint]
-        : layout[fieldName as keyof typeof layout];
-      const fieldType = fieldName in paint ? "paint" : "layout";
+    const paint = props.layer.paint || {};
+    const layout = props.layer.layout || {};
+    const fieldValue = fieldName in paint
+      ? paint[fieldName as keyof typeof paint]
+      : layout[fieldName as keyof typeof layout];
+    const fieldType = fieldName in paint ? "paint" : "layout";
 
-      return <FieldFunction
-        errors={errors}
-        onChange={this.onPropertyChange}
-        key={fieldName}
-        fieldName={fieldName}
-        value={fieldValue}
-        fieldType={fieldType}
-        fieldSpec={fieldSpec}
-      />;
-    });
+    return <FieldFunction
+      errors={errors}
+      onChange={onPropertyChange}
+      key={fieldName}
+      fieldName={fieldName}
+      value={fieldValue}
+      fieldType={fieldType}
+      fieldSpec={fieldSpec}
+    />;
+  });
 
-    return <div className="maputnik-property-group">
-      {fields}
-    </div>;
-  }
-}
+  return <div className="maputnik-property-group">
+    {fields}
+  </div>;
+};

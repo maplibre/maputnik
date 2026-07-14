@@ -13,26 +13,24 @@ type ModalLoadingInternalProps = {
 } & WithTranslation;
 
 
-class ModalLoadingInternal extends React.Component<ModalLoadingInternalProps> {
-  render() {
-    const t = this.props.t;
-    return <Modal
-      data-wd-key="modal:loading"
-      isOpen={this.props.isOpen}
-      underlayClickExits={false}
-      title={this.props.title}
-      onOpenToggle={() => this.props.onCancel()}
-    >
-      <p>
-        {this.props.message}
-      </p>
-      <p className="maputnik-dialog__buttons">
-        <InputButton onClick={(e) => this.props.onCancel(e)}>
-          {t("Cancel")}
-        </InputButton>
-      </p>
-    </Modal>;
-  }
-}
+const ModalLoadingInternal: React.FC<ModalLoadingInternalProps> = (props) => {
+  const t = props.t;
+  return <Modal
+    data-wd-key="modal:loading"
+    isOpen={props.isOpen}
+    underlayClickExits={false}
+    title={props.title}
+    onOpenToggle={() => props.onCancel()}
+  >
+    <p>
+      {props.message}
+    </p>
+    <p className="maputnik-dialog__buttons">
+      <InputButton onClick={(e) => props.onCancel(e)}>
+        {t("Cancel")}
+      </InputButton>
+    </p>
+  </Modal>;
+};
 
 export const ModalLoading = withTranslation()(ModalLoadingInternal);

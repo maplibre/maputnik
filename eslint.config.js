@@ -32,10 +32,10 @@ export default defineConfig({
     "@stylistic": stylisticTs
   },
   rules: {
+    "react-hooks/rules-of-hooks": "error",
+    "react-hooks/exhaustive-deps": "warn",
     "react-refresh/only-export-components": [
       "warn",
-      // Many components are exported as withTranslation()(Component); without
-      // this the rule cannot tell the HOC's result is still a component.
       { allowConstantExport: true, extraHOCs: ["withTranslation"] }
     ],
     "@typescript-eslint/no-explicit-any": "off",

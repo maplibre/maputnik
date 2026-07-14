@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useRef } from "react";
 import classnames from "classnames";
 import { type WithTranslation, withTranslation } from "react-i18next";
 
@@ -25,88 +25,49 @@ export type InputJsonProps = {
 };
 type InputJsonInternalProps = InputJsonProps & WithTranslation;
 
-type InputJsonState = {
-  isEditing: boolean
-  prevValue: string
-};
+function getPrettyJson(data: any) {
+  return stringifyPretty(data, {indent: 2, maxLength: 40});
+}
 
-class InputJsonInternal extends React.Component<InputJsonInternalProps, InputJsonState> {
-  static defaultProps = {
-    onFocus: () => {},
-    onBlur: () => {},
-    withScroll: false
-  };
-  _view: EditorView | undefined;
-  _el: HTMLDivElement | null = null;
-  _cancelNextChange: boolean = false;
+const InputJsonInternal: React.FC<InputJsonInternalProps> = ({
+  value,
+  className,
+  onChange,
+  onFocus = () => {},
+  onBlur = () => {},
+  lintType,
+  spec,
+  withScroll = false,
+}) => {
+  const el = useRef<HTMLDivElement | null>(null);
+  const view = useRef<EditorView | undefined>(undefined);
+  const cancelNextChange = useRef<boolean>(false);
+  // `isEditing` and `prevValue` are never rendered, they are only read from the
+  // CodeMirror callbacks, so refs keep them up to date without re-rendering.
+  const isEditing = useRef<boolean>(false);
+  const prevValue = useRef<string>(getPrettyJson(value));
+  // Mirrors `prevProps.value` from the previous `componentDidUpdate`.
+  const prevValueProp = useRef<object>(value);
 
-  constructor(props: InputJsonInternalProps) {
-    super(props);
-    this.state = {
-      isEditing: false,
-      prevValue: this.getPrettyJson(this.props.value),
-    };
-  }
-
-  getPrettyJson(data: any) {
-    return stringifyPretty(data, {indent: 2, maxLength: 40});
-  }
-
-  componentDidMount () {
-    this._view = createEditor({
-      parent: this._el!,
-      value: this.getPrettyJson(this.props.value),
-      lintType: this.props.lintType || "layer",
-      onChange: (value:string) => this.onChange(value),
-      onFocus: () => this.onFocus(),
-      onBlur: () => this.onBlur(),
-      spec: this.props.spec
-    });
-  }
-
-  onFocus = () => {
-    if (this.props.onFocus) this.props.onFocus();
-    this.setState({
-      isEditing: true,
-    });
+  const handleFocus = () => {
+    if (onFocus) onFocus();
+    isEditing.current = true;
   };
 
-  onBlur = () => {
-    if (this.props.onBlur) this.props.onBlur();
-    this.setState({
-      isEditing: false,
-    });
+  const handleBlur = () => {
+    if (onBlur) onBlur();
+    isEditing.current = false;
   };
 
-  componentDidUpdate(prevProps: InputJsonProps) {
-    if (!this.state.isEditing && prevProps.value !== this.props.value) {
-      this._cancelNextChange = true;
-      const transactionSpec: TransactionSpec = {
-        changes: {
-          from: 0,
-          to: this._view!.state.doc.length,
-          insert: this.getPrettyJson(this.props.value)
-        }
-      };
-      if (this.props.withScroll) {
-        transactionSpec.selection = this._view!.state.selection;
-        transactionSpec.scrollIntoView = true;
-      }
-      this._view!.dispatch(transactionSpec);
-    }
-  }
-
-  onChange = (_e: unknown) => {
-    if (this._cancelNextChange) {
-      this._cancelNextChange = false;
-      this.setState({
-        prevValue: this._view!.state.doc.toString(),
-      });
+  const handleChange = () => {
+    if (cancelNextChange.current) {
+      cancelNextChange.current = false;
+      prevValue.current = view.current!.state.doc.toString();
       return;
     }
-    const newCode = this._view!.state.doc.toString();
+    const newCode = view.current!.state.doc.toString();
 
-    if (this.state.prevValue !== newCode) {
+    if (prevValue.current !== newCode) {
       let parsedLayer, err;
       try {
         parsedLayer = JSON.parse(newCode);
@@ -116,23 +77,63 @@ class InputJsonInternal extends React.Component<InputJsonInternalProps, InputJso
       }
 
       if (!err) {
-        if (this.props.onChange) this.props.onChange(parsedLayer);
+        if (onChange) onChange(parsedLayer);
       }
     }
 
-    this.setState({
-      prevValue: newCode,
-    });
+    prevValue.current = newCode;
   };
 
-  render() {
-    return <div className="json-editor" data-wd-key="json-editor" aria-hidden="true" style={{cursor: "text"}}>
-      <div
-        className={classnames("codemirror-container", this.props.className)}
-        ref={(el) => {this._el = el;}}
-      />
-    </div>;
-  }
-}
+  // The editor is created once on mount, so its callbacks have to go through a
+  // ref to always see the latest props.
+  const handlers = useRef({handleChange, handleFocus, handleBlur});
+  useEffect(() => {
+    handlers.current = {handleChange, handleFocus, handleBlur};
+  });
+
+  useEffect(() => {
+    view.current = createEditor({
+      parent: el.current!,
+      value: getPrettyJson(value),
+      lintType: lintType || "layer",
+      onChange: () => handlers.current.handleChange(),
+      onFocus: () => handlers.current.handleFocus(),
+      onBlur: () => handlers.current.handleBlur(),
+      spec: spec
+    });
+    // Runs once on mount, mirroring the previous componentDidMount.
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- mount-only: adding deps would rebuild the editor on every change
+  }, []);
+
+  useEffect(() => {
+    // Only react to an actual change of the `value` prop, which also skips the
+    // initial mount (the editor is created with the value already).
+    if (prevValueProp.current === value) return;
+    prevValueProp.current = value;
+
+    if (isEditing.current) return;
+
+    cancelNextChange.current = true;
+    const transactionSpec: TransactionSpec = {
+      changes: {
+        from: 0,
+        to: view.current!.state.doc.length,
+        insert: getPrettyJson(value)
+      }
+    };
+    if (withScroll) {
+      transactionSpec.selection = view.current!.state.selection;
+      transactionSpec.scrollIntoView = true;
+    }
+    view.current!.dispatch(transactionSpec);
+  }, [value, withScroll]);
+
+  return <div className="json-editor" data-wd-key="json-editor" aria-hidden="true" style={{cursor: "text"}}>
+    <div
+      className={classnames("codemirror-container", className)}
+      ref={el}
+    />
+  </div>;
+};
 
 export const InputJson = withTranslation()(InputJsonInternal);

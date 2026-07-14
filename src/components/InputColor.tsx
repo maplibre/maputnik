@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import Color from "color";
 import ChromePicker from "react-color/lib/components/chrome/Chrome";
 import {type ColorResult} from "react-color";
@@ -20,26 +20,27 @@ export type InputColorProps = {
 };
 
 /*** Number fields with support for min, max and units and documentation*/
-export class InputColor extends React.Component<InputColorProps> {
-  state = {
-    pickerOpened: false
-  };
-  colorInput: HTMLInputElement | null = null;
+export const InputColor: React.FC<InputColorProps> = (props) => {
+  const [pickerOpened, setPickerOpened] = useState(false);
+  const colorInput = useRef<HTMLInputElement | null>(null);
 
-  constructor (props: InputColorProps) {
-    super(props);
-    this.onChangeNoCheck = lodash.throttle(this.onChangeNoCheck, 1000/30);
-  }
+  // Keep the latest `onChange` available to the throttled callback, which is
+  // created only once so that throttling actually takes effect.
+  const onChangeProp = useRef(props.onChange);
+  useEffect(() => {
+    onChangeProp.current = props.onChange;
+  });
 
-  onChangeNoCheck(v: string) {
-    this.props.onChange(v);
-  }
+  const onChangeNoCheck = useMemo(
+    () => lodash.throttle((v: string) => onChangeProp.current(v), 1000/30),
+    []
+  );
 
   //TODO: I much rather would do this with absolute positioning
   //but I am too stupid to get it to work together with fixed position
   //and scrollbars so I have to fallback to JavaScript
-  calcPickerOffset = () => {
-    const elem = this.colorInput;
+  const calcPickerOffset = () => {
+    const elem = colorInput.current;
     if(elem) {
       const pos = elem.getBoundingClientRect();
       return {
@@ -54,82 +55,80 @@ export class InputColor extends React.Component<InputColorProps> {
     }
   };
 
-  togglePicker = () => {
-    this.setState({ pickerOpened: !this.state.pickerOpened });
+  const togglePicker = () => {
+    setPickerOpened(opened => !opened);
   };
 
-  get color() {
+  const getColor = () => {
     // Catch invalid color.
     try {
-      return Color(this.props.value).rgb();
+      return Color(props.value).rgb();
     }
     catch(err) {
       console.warn("Error parsing color: ", err);
       return Color("rgb(255,255,255)");
     }
-  }
+  };
 
-  onChange (v: string) {
-    this.props.onChange(v === "" ? undefined : v);
-  }
+  const onChange = (v: string) => {
+    props.onChange(v === "" ? undefined : v);
+  };
 
-  render() {
-    const offset = this.calcPickerOffset();
-    const currentColor = this.color.object();
-    const currentChromeColor = {
-      r: currentColor.r,
-      g: currentColor.g,
-      b: currentColor.b,
-      // Rename alpha -> a for ChromePicker
-      a: currentColor.alpha!
-    };
+  const offset = calcPickerOffset();
+  const currentColor = getColor().object();
+  const currentChromeColor = {
+    r: currentColor.r,
+    g: currentColor.g,
+    b: currentColor.b,
+    // Rename alpha -> a for ChromePicker
+    a: currentColor.alpha!
+  };
 
-    const picker = <div
+  const picker = <div
+    className="maputnik-color-picker-offset"
+    style={{
+      position: "fixed",
+      zIndex: 1,
+      left: offset.left,
+      top: offset.top,
+    }}>
+    <ChromePicker
+      color={currentChromeColor}
+      onChange={c => onChangeNoCheck(formatColor(c))}
+    />
+    <div
       className="maputnik-color-picker-offset"
+      onClick={togglePicker}
       style={{
+        zIndex: -1,
         position: "fixed",
-        zIndex: 1,
-        left: offset.left,
-        top: offset.top,
-      }}>
-      <ChromePicker
-        color={currentChromeColor}
-        onChange={c => this.onChangeNoCheck(formatColor(c))}
-      />
-      <div
-        className="maputnik-color-picker-offset"
-        onClick={this.togglePicker}
-        style={{
-          zIndex: -1,
-          position: "fixed",
-          top: "0px",
-          right: "0px",
-          bottom: "0px",
-          left: "0px",
-        }}
-      />
-    </div>;
+        top: "0px",
+        right: "0px",
+        bottom: "0px",
+        left: "0px",
+      }}
+    />
+  </div>;
 
-    const swatchStyle = {
-      backgroundColor: this.props.value
-    };
+  const swatchStyle = {
+    backgroundColor: props.value
+  };
 
-    return <div className="maputnik-color-wrapper">
-      {this.state.pickerOpened && picker}
-      <div className="maputnik-color-swatch" style={swatchStyle}></div>
-      <input
-        aria-label={this.props["aria-label"]}
-        spellCheck="false"
-        autoComplete="off"
-        className="maputnik-color"
-        ref={(input) => {this.colorInput = input;}}
-        onClick={this.togglePicker}
-        style={this.props.style}
-        name={this.props.name}
-        placeholder={this.props.default}
-        value={this.props.value ? this.props.value : ""}
-        onChange={(e) => this.onChange(e.target.value)}
-      />
-    </div>;
-  }
-}
+  return <div className="maputnik-color-wrapper">
+    {pickerOpened && picker}
+    <div className="maputnik-color-swatch" style={swatchStyle}></div>
+    <input
+      aria-label={props["aria-label"]}
+      spellCheck="false"
+      autoComplete="off"
+      className="maputnik-color"
+      ref={colorInput}
+      onClick={togglePicker}
+      style={props.style}
+      name={props.name}
+      placeholder={props.default}
+      value={props.value ? props.value : ""}
+      onChange={(e) => onChange(e.target.value)}
+    />
+  </div>;
+};

@@ -7,15 +7,13 @@ type SmallErrorInternalProps = {
   children?: React.ReactNode
 } & WithTranslation;
 
-class SmallErrorInternal extends React.Component<SmallErrorInternalProps> {
-  render () {
-    const t = this.props.t;
-    return (
-      <div className="SmallError">
-        {t("Error:")} {this.props.children}
-      </div>
-    );
-  }
-}
+const SmallErrorInternal: React.FC<SmallErrorInternalProps> = (props) => {
+  const t = props.t;
+  return (
+    <div className="SmallError">
+      {t("Error:")} {props.children}
+    </div>
+  );
+};
 
 export const SmallError = withTranslation()(SmallErrorInternal);

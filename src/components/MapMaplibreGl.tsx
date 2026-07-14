@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useCallback, useEffect, useReducer, useRef} from "react";
 import {createRoot} from "react-dom/client";
 import MapLibreGl, {type LayerSpecification, type LngLat, type Map, type MapOptions, type SourceSpecification, type StyleSpecification} from "maplibre-gl";
 import MaplibreInspect from "@maplibre/maplibre-gl-inspect";
@@ -71,199 +71,65 @@ type MapMaplibreGlInternalProps = {
   onChange(value: {center: LngLat, zoom: number, _from: "map" | "app"}): unknown
 } & WithTranslation;
 
-type MapMaplibreGlState = {
-  map: Map | null;
-  inspect: MaplibreInspect | null;
-  geocoder: MaplibreGeocoder | null;
-  zoomControl: ZoomControl | null;
-  zoom?: number;
-};
-
-class MapMaplibreGlInternal extends React.Component<MapMaplibreGlInternalProps, MapMaplibreGlState> {
-  static defaultProps = {
-    onMapLoaded: () => {},
-    onDataChange: () => {},
-    onLayerSelect: () => {},
-    onChange: () => {},
-    options: {} as MapOptions,
-  };
-  container: HTMLDivElement | null = null;
-
-  constructor(props: MapMaplibreGlInternalProps) {
-    super(props);
-    this.state = {
-      map: null,
-      inspect: null,
-      geocoder: null,
-      zoomControl: null,
-    };
-    i18next.on("languageChanged", () => {
-      this.forceUpdate();
-    });
+/**
+ * Replacement for the previous `shouldComponentUpdate`. `React.memo` expects the
+ * inverse: `true` means "props are equal, skip the render", whereas
+ * `shouldComponentUpdate` returned `true` when it *should* re-render.
+ * As before, if the props cannot be serialized we treat them as equal and skip
+ * the render ("no biggie, carry on").
+ */
+function arePropsEqual(prevProps: MapMaplibreGlInternalProps, nextProps: MapMaplibreGlInternalProps) {
+  let should = false;
+  try {
+    should = JSON.stringify(prevProps) !== JSON.stringify(nextProps);
+  } catch(_e) {
+    // no biggie, carry on
   }
+  return !should;
+}
 
+const MapMaplibreGlInternal = ({
+  onDataChange = () => {},
+  onLayerSelect = () => {},
+  onChange = () => {},
+  options = {},
+  mapStyle,
+  mapView,
+  inspectModeEnabled,
+  highlightedLayer,
+  replaceAccessTokens,
+  t,
+}: MapMaplibreGlInternalProps) => {
+  const container = useRef<HTMLDivElement | null>(null);
 
-  shouldComponentUpdate(nextProps: MapMaplibreGlInternalProps, nextState: MapMaplibreGlState) {
-    let should = false;
-    try {
-      should = JSON.stringify(this.props) !== JSON.stringify(nextProps) || JSON.stringify(this.state) !== JSON.stringify(nextState);
-    } catch(_e) {
-      // no biggie, carry on
-    }
-    return should;
-  }
+  // These used to live in `this.state`, but were never able to trigger a
+  // re-render: `shouldComponentUpdate` stringified the state, which throws for
+  // the (circular) maplibre `Map`, so the comparison was swallowed and the
+  // component only ever re-rendered on prop changes. They are imperative
+  // handles, so they are refs here and mutating them does not re-render.
+  const map = useRef<Map | null>(null);
+  const inspect = useRef<MaplibreInspect | null>(null);
+  const geocoder = useRef<MaplibreGeocoder | null>(null);
+  const zoomControl = useRef<ZoomControl | null>(null);
+  const zoom = useRef<number | undefined>(undefined);
 
-  componentDidUpdate() {
-    const map = this.state.map;
+  // `componentDidUpdate` did not run on mount, so neither may the effect below.
+  const hasMounted = useRef(false);
 
-    const styleWithTokens = this.props.replaceAccessTokens(this.props.mapStyle);
-    if (map) {
-      // Maplibre GL now does diffing natively so we don't need to calculate
-      // the necessary operations ourselves!
-      // We also need to update the style for inspect to work properly
-      map.setStyle(styleWithTokens, {diff: true});
-      map.showTileBoundaries = this.props.options?.showTileBoundaries!;
-      map.showCollisionBoxes = this.props.options?.showCollisionBoxes!;
-      map.showOverdrawInspector = this.props.options?.showOverdrawInspector!;
+  const [, forceUpdate] = useReducer((tick: number) => tick + 1, 0);
 
-      // set the map view when the prop was updated from outside
-      if (this.props.mapView._from === "app") {
-        map.jumpTo(this.props.mapView);
-      }
-    }
+  // The maplibre event handlers/callbacks below are registered once (on mount)
+  // but read `this.props` at call time in the class version, so they must not
+  // close over the props of the first render.
+  const latestProps = useRef({onDataChange, onLayerSelect, onChange, mapStyle, inspectModeEnabled, highlightedLayer, t});
+  latestProps.current = {onDataChange, onLayerSelect, onChange, mapStyle, inspectModeEnabled, highlightedLayer, t};
 
-    if(this.state.inspect && this.props.inspectModeEnabled !== this.state.inspect._showInspectMap) {
-      this.state.inspect.toggleInspector();
-    }
-    if (this.state.inspect && this.props.inspectModeEnabled) {
-      this.state.inspect.setOriginalStyle(styleWithTokens);
-      // In case the sources are the same, there's a need to refresh the style
-      setTimeout(() => {
-        this.state.inspect!.render();
-      }, 500);
-    }
+  const onLayerSelectById = useCallback((id: string) => {
+    const index = latestProps.current.mapStyle.layers.findIndex(layer => layer.id === id);
+    latestProps.current.onLayerSelect(index);
+  }, []);
 
-  }
-
-  componentDidMount() {
-    const mapOpts = {
-      ...this.props.options,
-      container: this.container!,
-      style: this.props.mapStyle,
-      hash: true,
-      maxZoom: 24,
-      // make root relative urls in stylefiles work as maplibre gl js does
-      // not support this for everything:
-      // https://github.com/maplibre/maplibre-gl-js/issues/6818
-      transformRequest: (url) => {
-        if (url.startsWith("/")) {
-          url = `${window.location.origin}${url}`;
-        }
-        return { url };
-      },
-      // setting to always load glyphs of CJK fonts from server
-      // https://maplibre.org/maplibre-gl-js/docs/examples/local-ideographs/
-      localIdeographFontFamily: false
-    } satisfies MapOptions;
-
-    const protocol = new Protocol({metadata: true});
-    MapLibreGl.addProtocol("pmtiles",protocol.tile);
-    const map = new MapLibreGl.Map(mapOpts);
-
-    const mapViewChange = () => {
-      const center = map.getCenter();
-      const zoom = map.getZoom();
-      this.props.onChange({center, zoom, _from: "map"});
-    };
-    mapViewChange();
-
-    map.showTileBoundaries = mapOpts.showTileBoundaries!;
-    map.showCollisionBoxes = mapOpts.showCollisionBoxes!;
-    map.showOverdrawInspector = mapOpts.showOverdrawInspector!;
-
-    const geocoder = this.initGeocoder(map);
-
-    const zoomControl = new ZoomControl();
-    map.addControl(zoomControl, "top-right");
-
-    const nav = new MapLibreGl.NavigationControl({visualizePitch:true});
-    map.addControl(nav, "top-right");
-
-    const tmpNode = document.createElement("div");
-    const root = createRoot(tmpNode);
-
-    const inspectPopup = new MapLibreGl.Popup({
-      closeOnClick: false
-    });
-
-    const inspect = new MaplibreInspect({
-      popup: inspectPopup,
-      showMapPopup: true,
-      showMapPopupOnHover: false,
-      showInspectMapPopupOnHover: true,
-      showInspectButton: false,
-      blockHoverPopupOnClick: true,
-      assignLayerColor: (layerId: string, alpha: number) => {
-        return Color(colors.brightColor(layerId, alpha)).desaturate(0.5).string();
-      },
-      buildInspectStyle: (originalMapStyle: StyleSpecification, coloredLayers: HighlightedLayer[]) => buildInspectStyle(originalMapStyle, coloredLayers, this.props.highlightedLayer),
-      renderPopup: (features: InspectFeature[]) => {
-        if(this.props.inspectModeEnabled) {
-          inspectPopup.once("open", () => {
-            root.render(<MapMaplibreGlFeaturePropertyPopup features={features} />);
-          });
-          return tmpNode;
-        } else {
-          inspectPopup.once("open", () => {
-            root.render(<MapMaplibreGlLayerPopup
-              features={features}
-              onLayerSelect={this.onLayerSelectById}
-              zoom={this.state.zoom}
-            />,);
-          });
-          return tmpNode;
-        }
-      }
-    });
-    map.addControl(inspect);
-
-    map.on("style.load", () => {
-      this.setState({
-        map,
-        inspect,
-        geocoder,
-        zoomControl,
-        zoom: map.getZoom()
-      });
-    });
-
-    map.on("data", e => {
-      if(e.dataType !== "tile") return;
-      this.props.onDataChange!({
-        map: this.state.map
-      });
-    });
-
-    map.on("error", e => {
-      console.log("ERROR", e);
-    });
-
-    map.on("zoom", _e => {
-      this.setState({
-        zoom: map.getZoom()
-      });
-    });
-
-    map.on("dragend", mapViewChange);
-    map.on("zoomend", mapViewChange);
-  }
-
-  onLayerSelectById = (id: string) => {
-    const index = this.props.mapStyle.layers.findIndex(layer => layer.id === id);
-    this.props.onLayerSelect(index);
-  };
-
-  initGeocoder(map: Map) {
+  const initGeocoder = useCallback((mapInstance: Map) => {
     const geocoderConfig = {
       forwardGeocode: async (config: MaplibreGeocoderApiConfig) => {
         const features = [];
@@ -300,26 +166,190 @@ class MapMaplibreGlInternal extends React.Component<MapMaplibreGlInternalProps, 
         };
       },
     } as unknown as MaplibreGeocoderApi;
-    const geocoder = new MaplibreGeocoder(geocoderConfig, {
-      placeholder: this.props.t("Search"),
+    const geocoderInstance = new MaplibreGeocoder(geocoderConfig, {
+      placeholder: latestProps.current.t("Search"),
       maplibregl: MapLibreGl,
     });
-    map.addControl(geocoder, "top-left");
-    return geocoder;
-  }
+    mapInstance.addControl(geocoderInstance, "top-left");
+    return geocoderInstance;
+  }, []);
 
-  render() {
-    const t = this.props.t;
-    this.state.geocoder?.setPlaceholder(t("Search"));
-    this.state.zoomControl?.setLabel(t("Zoom:"));
-    return <div
-      className="maputnik-map__map"
-      role="region"
-      aria-label={t("Map view")}
-      ref={x => {this.container = x;}}
-      data-wd-key="maplibre:map"
-    ></div>;
-  }
-}
+  // Was the `i18next.on("languageChanged", () => this.forceUpdate())` in the
+  // constructor. `forceUpdate` bypassed `shouldComponentUpdate`; a state update
+  // likewise bypasses `React.memo`.
+  useEffect(() => {
+    const onLanguageChanged = () => {
+      forceUpdate();
+    };
+    i18next.on("languageChanged", onLanguageChanged);
+    return () => {
+      i18next.off("languageChanged", onLanguageChanged);
+    };
+  }, []);
 
-export const MapMaplibreGl = withTranslation()(MapMaplibreGlInternal);
+  // componentDidMount
+  useEffect(() => {
+    const mapOpts = {
+      ...options,
+      container: container.current!,
+      style: mapStyle,
+      hash: true,
+      maxZoom: 24,
+      // make root relative urls in stylefiles work as maplibre gl js does
+      // not support this for everything:
+      // https://github.com/maplibre/maplibre-gl-js/issues/6818
+      transformRequest: (url) => {
+        if (url.startsWith("/")) {
+          url = `${window.location.origin}${url}`;
+        }
+        return { url };
+      },
+      // setting to always load glyphs of CJK fonts from server
+      // https://maplibre.org/maplibre-gl-js/docs/examples/local-ideographs/
+      localIdeographFontFamily: false
+    } satisfies MapOptions;
+
+    const protocol = new Protocol({metadata: true});
+    MapLibreGl.addProtocol("pmtiles",protocol.tile);
+    const mapInstance = new MapLibreGl.Map(mapOpts);
+
+    const mapViewChange = () => {
+      const center = mapInstance.getCenter();
+      const currentZoom = mapInstance.getZoom();
+      latestProps.current.onChange({center, zoom: currentZoom, _from: "map"});
+    };
+    mapViewChange();
+
+    mapInstance.showTileBoundaries = mapOpts.showTileBoundaries!;
+    mapInstance.showCollisionBoxes = mapOpts.showCollisionBoxes!;
+    mapInstance.showOverdrawInspector = mapOpts.showOverdrawInspector!;
+
+    const geocoderInstance = initGeocoder(mapInstance);
+
+    const zoomControlInstance = new ZoomControl();
+    mapInstance.addControl(zoomControlInstance, "top-right");
+
+    const nav = new MapLibreGl.NavigationControl({visualizePitch:true});
+    mapInstance.addControl(nav, "top-right");
+
+    const tmpNode = document.createElement("div");
+    const root = createRoot(tmpNode);
+
+    const inspectPopup = new MapLibreGl.Popup({
+      closeOnClick: false
+    });
+
+    const inspectInstance = new MaplibreInspect({
+      popup: inspectPopup,
+      showMapPopup: true,
+      showMapPopupOnHover: false,
+      showInspectMapPopupOnHover: true,
+      showInspectButton: false,
+      blockHoverPopupOnClick: true,
+      assignLayerColor: (layerId: string, alpha: number) => {
+        return Color(colors.brightColor(layerId, alpha)).desaturate(0.5).string();
+      },
+      buildInspectStyle: (originalMapStyle: StyleSpecification, coloredLayers: HighlightedLayer[]) => buildInspectStyle(originalMapStyle, coloredLayers, latestProps.current.highlightedLayer),
+      renderPopup: (features: InspectFeature[]) => {
+        if(latestProps.current.inspectModeEnabled) {
+          inspectPopup.once("open", () => {
+            root.render(<MapMaplibreGlFeaturePropertyPopup features={features} />);
+          });
+          return tmpNode;
+        } else {
+          inspectPopup.once("open", () => {
+            root.render(<MapMaplibreGlLayerPopup
+              features={features}
+              onLayerSelect={onLayerSelectById}
+              zoom={zoom.current}
+            />,);
+          });
+          return tmpNode;
+        }
+      }
+    });
+    mapInstance.addControl(inspectInstance);
+
+    mapInstance.on("style.load", () => {
+      map.current = mapInstance;
+      inspect.current = inspectInstance;
+      geocoder.current = geocoderInstance;
+      zoomControl.current = zoomControlInstance;
+      zoom.current = mapInstance.getZoom();
+    });
+
+    mapInstance.on("data", e => {
+      if(e.dataType !== "tile") return;
+      latestProps.current.onDataChange!({
+        map: map.current
+      });
+    });
+
+    mapInstance.on("error", e => {
+      console.log("ERROR", e);
+    });
+
+    mapInstance.on("zoom", _e => {
+      zoom.current = mapInstance.getZoom();
+    });
+
+    mapInstance.on("dragend", mapViewChange);
+    mapInstance.on("zoomend", mapViewChange);
+    // Mount only, exactly like componentDidMount: the map is created from the
+    // props of the first render and kept up to date imperatively below (the
+    // handlers read `latestProps`, so no prop belongs in the dependencies). The
+    // class had no componentWillUnmount, so there is no teardown here either.
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- mount-only: adding mapStyle/options would re-create the map
+  }, [initGeocoder, onLayerSelectById]);
+
+  // componentDidUpdate. It had no `prevProps` guards, so it ran after *every*
+  // re-render; the equivalent is an effect without a dependency array. Since the
+  // component only re-renders when `arePropsEqual` reports a prop change (or on
+  // a language change, as before), this runs exactly as often as it used to.
+  useEffect(() => {
+    if (!hasMounted.current) {
+      // componentDidUpdate does not run on mount.
+      hasMounted.current = true;
+      return;
+    }
+
+    const styleWithTokens = replaceAccessTokens(mapStyle);
+    if (map.current) {
+      // Maplibre GL now does diffing natively so we don't need to calculate
+      // the necessary operations ourselves!
+      // We also need to update the style for inspect to work properly
+      map.current.setStyle(styleWithTokens, {diff: true});
+      map.current.showTileBoundaries = options?.showTileBoundaries!;
+      map.current.showCollisionBoxes = options?.showCollisionBoxes!;
+      map.current.showOverdrawInspector = options?.showOverdrawInspector!;
+
+      // set the map view when the prop was updated from outside
+      if (mapView._from === "app") {
+        map.current.jumpTo(mapView);
+      }
+    }
+
+    if(inspect.current && inspectModeEnabled !== inspect.current._showInspectMap) {
+      inspect.current.toggleInspector();
+    }
+    if (inspect.current && inspectModeEnabled) {
+      inspect.current.setOriginalStyle(styleWithTokens);
+      // In case the sources are the same, there's a need to refresh the style
+      setTimeout(() => {
+        inspect.current!.render();
+      }, 500);
+    }
+  });
+
+  geocoder.current?.setPlaceholder(t("Search"));
+  zoomControl.current?.setLabel(t("Zoom:"));
+  return <div
+    className="maputnik-map__map"
+    role="region"
+    aria-label={t("Map view")}
+    ref={container}
+    data-wd-key="maplibre:map"
+  ></div>;
+};
+
+export const MapMaplibreGl = withTranslation()(React.memo(MapMaplibreGlInternal, arePropsEqual));

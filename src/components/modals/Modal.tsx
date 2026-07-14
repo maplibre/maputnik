@@ -14,57 +14,51 @@ type ModalInternalProps = PropsWithChildren & {
 } & WithTranslation;
 
 
-class ModalInternal extends React.Component<ModalInternalProps> {
-  static defaultProps = {
-    underlayClickExits: true
-  };
-
+const ModalInternal: React.FC<ModalInternalProps> = ({underlayClickExits = true, ...props}) => {
   // See <https://github.com/maplibre/maputnik/issues/416>
-  onClose = () => {
+  const onClose = () => {
     if (document.activeElement) {
       (document.activeElement as HTMLElement).blur();
     }
 
     setTimeout(() => {
-      this.props.onOpenToggle();
+      props.onOpenToggle();
     }, 0);
   };
 
-  render() {
-    const t = this.props.t;
-    if(this.props.isOpen) {
-      return <AriaModal
-        titleText={this.props.title}
-        underlayClickExits={this.props.underlayClickExits}
-        data-wd-key={this.props["data-wd-key"]}
-        verticallyCenter={true}
-        onExit={this.onClose}
-        dialogClass='maputnik-modal-container'
+  const t = props.t;
+  if(props.isOpen) {
+    return <AriaModal
+      titleText={props.title}
+      underlayClickExits={underlayClickExits}
+      data-wd-key={props["data-wd-key"]}
+      verticallyCenter={true}
+      onExit={onClose}
+      dialogClass='maputnik-modal-container'
+    >
+      <div className={classnames("maputnik-modal", props.className)}
+        data-wd-key={props["data-wd-key"]}
       >
-        <div className={classnames("maputnik-modal", this.props.className)}
-          data-wd-key={this.props["data-wd-key"]}
-        >
-          <header className="maputnik-modal-header">
-            <h1 className="maputnik-modal-header-title">{this.props.title}</h1>
-            <span className="maputnik-space"></span>
-            <button className="maputnik-modal-header-toggle"
-              title={t("Close modal")}
-              onClick={this.onClose}
-              data-wd-key={this.props["data-wd-key"]+".close-modal"}
-            >
-              <MdClose />
-            </button>
-          </header>
-          <div className="maputnik-modal-scroller">
-            <div className="maputnik-modal-content">{this.props.children}</div>
-          </div>
+        <header className="maputnik-modal-header">
+          <h1 className="maputnik-modal-header-title">{props.title}</h1>
+          <span className="maputnik-space"></span>
+          <button className="maputnik-modal-header-toggle"
+            title={t("Close modal")}
+            onClick={onClose}
+            data-wd-key={props["data-wd-key"]+".close-modal"}
+          >
+            <MdClose />
+          </button>
+        </header>
+        <div className="maputnik-modal-scroller">
+          <div className="maputnik-modal-content">{props.children}</div>
         </div>
-      </AriaModal>;
-    }
-    else {
-      return false;
-    }
+      </div>
+    </AriaModal>;
   }
-}
+  else {
+    return false;
+  }
+};
 
 export const Modal = withTranslation()(ModalInternal);

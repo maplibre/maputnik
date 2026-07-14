@@ -14,20 +14,18 @@ type InputButtonProps = {
   title?: string
 };
 
-export class InputButton extends React.Component<InputButtonProps> {
-  render() {
-    return <button
-      id={this.props.id}
-      title={this.props.title}
-      type={this.props.type}
-      onClick={this.props.onClick}
-      disabled={this.props.disabled}
-      aria-label={this.props["aria-label"]}
-      className={classnames("maputnik-button", this.props.className)}
-      data-wd-key={this.props["data-wd-key"]}
-      style={this.props.style}
-    >
-      {this.props.children}
-    </button>;
-  }
-}
+export const InputButton: React.FC<InputButtonProps> = (props) => {
+  return <button
+    id={props.id}
+    title={props.title}
+    type={props.type}
+    onClick={props.onClick}
+    disabled={props.disabled}
+    aria-label={props["aria-label"]}
+    className={classnames("maputnik-button", props.className)}
+    data-wd-key={props["data-wd-key"]}
+    style={props.style}
+  >
+    {props.children}
+  </button>;
+};

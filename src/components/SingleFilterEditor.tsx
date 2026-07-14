@@ -40,53 +40,50 @@ type SingleFilterEditorProps = {
   properties?: {[key: string]: string}
 };
 
-export class SingleFilterEditor extends React.Component<SingleFilterEditorProps> {
-  static defaultProps = {
-    properties: {},
-  };
-
-  onFilterPartChanged(filterOp: string, propertyName: string, filterArgs: string[]) {
+export const SingleFilterEditor: React.FC<SingleFilterEditorProps> = ({
+  properties = {},
+  ...props
+}) => {
+  function onFilterPartChanged(filterOp: string, propertyName: string, filterArgs: string[]) {
     let newFilter = [filterOp, propertyName, ...filterArgs.map(parseFilter)];
     if(filterOp === "has" || filterOp === "!has") {
       newFilter = [filterOp, propertyName];
     } else if(filterArgs.length === 0) {
       newFilter = [filterOp, propertyName, ""];
     }
-    this.props.onChange(newFilter);
+    props.onChange(newFilter);
   }
 
-  render() {
-    const f = this.props.filter;
-    const filterOp = f[0];
-    const propertyName = f[1];
-    const filterArgs = f.slice(2);
+  const f = props.filter;
+  const filterOp = f[0];
+  const propertyName = f[1];
+  const filterArgs = f.slice(2);
 
-    return <div className="maputnik-filter-editor-single">
-      <div className="maputnik-filter-editor-property">
-        <InputAutocomplete
-          aria-label="key"
-          value={propertyName}
-          options={Object.keys(this.props.properties!).map(propName => [propName, propName])}
-          onChange={(newPropertyName: string) => this.onFilterPartChanged(filterOp, newPropertyName, filterArgs)}
-        />
-      </div>
-      <div className="maputnik-filter-editor-operator">
-        <InputSelect
-          aria-label="function"
-          value={filterOp}
-          onChange={(newFilterOp: string) => this.onFilterPartChanged(newFilterOp, propertyName, filterArgs)}
-          options={otherFilterOps}
-        />
-      </div>
-      {filterArgs.length > 0 &&
-      <div className="maputnik-filter-editor-args">
-        <InputString
-          aria-label="value"
-          value={filterArgs.join(",")}
-          onChange={(v: string) => this.onFilterPartChanged(filterOp, propertyName, v.split(","))}
-        />
-      </div>
-      }
-    </div>;
-  }
-}
+  return <div className="maputnik-filter-editor-single">
+    <div className="maputnik-filter-editor-property">
+      <InputAutocomplete
+        aria-label="key"
+        value={propertyName}
+        options={Object.keys(properties).map(propName => [propName, propName])}
+        onChange={(newPropertyName: string) => onFilterPartChanged(filterOp, newPropertyName, filterArgs)}
+      />
+    </div>
+    <div className="maputnik-filter-editor-operator">
+      <InputSelect
+        aria-label="function"
+        value={filterOp}
+        onChange={(newFilterOp: string) => onFilterPartChanged(newFilterOp, propertyName, filterArgs)}
+        options={otherFilterOps}
+      />
+    </div>
+    {filterArgs.length > 0 &&
+    <div className="maputnik-filter-editor-args">
+      <InputString
+        aria-label="value"
+        value={filterArgs.join(",")}
+        onChange={(v: string) => onFilterPartChanged(filterOp, propertyName, v.split(","))}
+      />
+    </div>
+    }
+  </div>;
+};

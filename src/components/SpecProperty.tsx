@@ -19,30 +19,26 @@ type SpecPropertyProps = FieldSpecProps & {
 };
 
 
-export class SpecProperty extends React.Component<SpecPropertyProps> {
-  static defaultProps = {
-    errors: {},
-  };
+export const SpecProperty: React.FC<SpecPropertyProps> = (props) => {
+  const {errors = {}, fieldName, fieldType} = props;
 
-  render() {
-    const {errors, fieldName, fieldType} = this.props;
+  const functionBtn = <FunctionButtons
+    fieldSpec={props.fieldSpec}
+    onZoomClick={props.onZoomClick}
+    onDataClick={props.onDataClick}
+    onExpressionClick={props.onExpressionClick}
+    onElevationClick={props.onElevationClick}
+  />;
 
-    const functionBtn = <FunctionButtons
-      fieldSpec={this.props.fieldSpec}
-      onZoomClick={this.props.onZoomClick}
-      onDataClick={this.props.onDataClick}
-      onExpressionClick={this.props.onExpressionClick}
-      onElevationClick={this.props.onElevationClick}
-    />;
+  const error = errors[fieldType+"."+fieldName as any] as any;
 
-    const error = errors![fieldType+"."+fieldName as any] as any;
+  const propsWithDefaults = {...props, errors};
 
-    return <FieldSpec
-      {...this.props}
-      error={error}
-      fieldSpec={this.props.fieldSpec}
-      label={labelFromFieldName(this.props.fieldName || "")}
-      action={functionBtn}
-    />;
-  }
-}
+  return <FieldSpec
+    {...propsWithDefaults}
+    error={error}
+    fieldSpec={props.fieldSpec}
+    label={labelFromFieldName(props.fieldName || "")}
+    action={functionBtn}
+  />;
+};

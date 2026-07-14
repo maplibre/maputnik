@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { InputString } from "./InputString";
 import { InputNumber } from "./InputNumber";
 
@@ -12,106 +12,72 @@ export type InputArrayProps = {
   label?: string
 };
 
-type InputArrayState = {
-  value: (string | number | undefined)[]
-  initialPropsValue: unknown[]
+export const InputArray: React.FC<InputArrayProps> = ({
+  value: propsValue = [],
+  default: propsDefault = [],
+  ...rest
+}) => {
+  const props = { value: propsValue, default: propsDefault, ...rest };
+
+  // The original seeded this from props and then never let props overwrite it
+  // again (its getDerivedStateFromProps assigned the existing state back in
+  // both branches), so the value is owned by this component after mount.
+  const [value, setValue] = useState<(string | number | undefined)[]>(() => propsValue.slice(0));
+
+  function isComplete(val: unknown[]) {
+    return Array(props.length).fill(null).every((_, i) => {
+      const v = val[i];
+      return !(v === undefined || v === "");
+    });
+  }
+
+  function changeValue(idx: number, newValue: string | number | undefined) {
+    const nextValue = value.slice(0);
+    nextValue[idx] = newValue;
+
+    setValue(nextValue);
+
+    if (isComplete(nextValue) && props.onChange) {
+      props.onChange(nextValue);
+    }
+    else if (props.onChange) {
+      // Unset until complete
+      props.onChange(undefined);
+    }
+  }
+
+  const containsValues = (
+    value.length > 0 &&
+    !value.every(val => {
+      return (val === "" || val === undefined);
+    })
+  );
+
+  const inputs = Array(props.length).fill(null).map((_, i) => {
+    if(props.type === "number") {
+      return <InputNumber
+        key={i}
+        default={containsValues || !props.default ? undefined : props.default[i] as number}
+        value={value[i] as number}
+        required={containsValues ? true : false}
+        onChange={(v) => changeValue(i, v)}
+        aria-label={props["aria-label"] || props.label}
+      />;
+    } else {
+      return <InputString
+        key={i}
+        default={containsValues || !props.default ? undefined : props.default[i] as string}
+        value={value[i] as string}
+        required={containsValues ? true : false}
+        onChange={(v) => changeValue(i, v)}
+        aria-label={props["aria-label"] || props.label}
+      />;
+    }
+  });
+
+  return (
+    <div className="maputnik-array">
+      {inputs}
+    </div>
+  );
 };
-
-export class InputArray extends React.Component<InputArrayProps, InputArrayState> {
-  static defaultProps = {
-    value: [],
-    default: [],
-  };
-
-  constructor (props: InputArrayProps) {
-    super(props);
-    this.state = {
-      value: this.props.value.slice(0),
-      // This is so we can compare changes in getDerivedStateFromProps
-      initialPropsValue: this.props.value.slice(0),
-    };
-  }
-
-  static getDerivedStateFromProps(props: Readonly<InputArrayProps>, state: InputArrayState) {
-    const value: any[] = [];
-    const initialPropsValue = state.initialPropsValue.slice(0);
-
-    Array(props.length).fill(null).map((_, i) => {
-      if (props.value[i] === state.initialPropsValue[i]) {
-        value[i] = state.value[i];
-      }
-      else {
-        value[i] = state.value[i];
-        initialPropsValue[i] = state.value[i];
-      }
-    });
-
-    return {
-      value,
-      initialPropsValue,
-    };
-  }
-
-  isComplete(value: unknown[]) {
-    return Array(this.props.length).fill(null).every((_, i) => {
-      const val = value[i];
-      return !(val === undefined || val === "");
-    });
-  }
-
-  changeValue(idx: number, newValue: string | number | undefined) {
-    const value = this.state.value.slice(0);
-    value[idx] = newValue;
-
-    this.setState({
-      value,
-    }, () => {
-      if (this.isComplete(value) && this.props.onChange) {
-        this.props.onChange(value);
-      }
-      else if (this.props.onChange){
-        // Unset until complete
-        this.props.onChange(undefined);
-      }
-    });
-  }
-
-  render() {
-    const {value} = this.state;
-
-    const containsValues = (
-      value.length > 0 &&
-      !value.every(val => {
-        return (val === "" || val === undefined);
-      })
-    );
-
-    const inputs = Array(this.props.length).fill(null).map((_, i) => {
-      if(this.props.type === "number") {
-        return <InputNumber
-          key={i}
-          default={containsValues || !this.props.default ? undefined : this.props.default[i] as number}
-          value={value[i] as number}
-          required={containsValues ? true : false}
-          onChange={(v) => this.changeValue(i, v)}
-          aria-label={this.props["aria-label"] || this.props.label}
-        />;
-      } else {
-        return <InputString
-          key={i}
-          default={containsValues || !this.props.default ? undefined : this.props.default[i] as string}
-          value={value[i] as string}
-          required={containsValues ? true : false}
-          onChange={this.changeValue.bind(this, i)}
-          aria-label={this.props["aria-label"] || this.props.label}
-        />;
-      }
-    });
-
-    return (
-      <div className="maputnik-array">
-        {inputs}
-      </div>
-    );
-  }
-}

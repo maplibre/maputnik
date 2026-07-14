@@ -1,5 +1,4 @@
-import React, { type BaseSyntheticEvent } from "react";
-import { generateUniqueId } from "../libs/document-uid";
+import React, { type BaseSyntheticEvent, useRef, useState } from "react";
 
 export type InputNumberProps = {
   value?: number
@@ -14,233 +13,206 @@ export type InputNumberProps = {
   "aria-label"?: string
 };
 
-type InputNumberState = {
-  uuid: number
-  editing: boolean
-  editingRange?: boolean
-  value?: number
-  /**
-   * This is the value that is currently being edited. It can be an invalid value.
-   */
-  dirtyValue?: number | string | undefined
-};
+export const InputNumber: React.FC<InputNumberProps> = (props) => {
+  const { rangeStep = 1 } = props;
 
-export class InputNumber extends React.Component<InputNumberProps, InputNumberState> {
-  static defaultProps = {
-    rangeStep: 1
-  };
-  _keyboardEvent: boolean = false;
+  const [editing, setEditing] = useState(false);
+  const [editingRange, setEditingRange] = useState(false);
+  const [value, setValue] = useState<number | undefined>(props.value);
+  /** The value currently being edited. It can be an invalid value. */
+  const [dirtyValue, setDirtyValue] = useState<number | string | undefined>(props.value);
 
-  constructor(props: InputNumberProps) {
-    super(props);
-    this.state = {
-      uuid: +generateUniqueId(),
-      editing: false,
-      value: props.value,
-      dirtyValue: props.value,
-    };
+  const keyboardEvent = useRef(false);
+
+  // Replaces getDerivedStateFromProps: while not editing, track the prop.
+  if (!editing && props.value !== value) {
+    setValue(props.value);
+    setDirtyValue(props.value);
   }
 
-  static getDerivedStateFromProps(props: Readonly<InputNumberProps>, state: InputNumberState) {
-    if (!state.editing && props.value !== state.value) {
-      return {
-        value: props.value,
-        dirtyValue: props.value,
-      };
-    }
-    return null;
-  }
-
-  changeValue(newValue: number | string | undefined) {
-    const value = (newValue === "" || newValue === undefined) ?
-      undefined : +newValue;
-
-    const hasChanged = this.props.value !== value;
-    if(this.isValid(value) && hasChanged) {
-      if (this.props.onChange) this.props.onChange(value);
-      this.setState({
-        value: value,
-      });
-    }
-    else if (!this.isValid(value) && hasChanged) {
-      this.setState({
-        value: undefined,
-      });
-    }
-
-    this.setState({
-      dirtyValue: newValue === "" ? undefined : newValue,
-    });
-  }
-
-  isValid(v: number | string | undefined) {
+  function isValid(v: number | string | undefined) {
     if (v === undefined) {
       return true;
     }
 
-    const value = +v;
-    if(isNaN(value)) {
+    const val = +v;
+    if(isNaN(val)) {
       return false;
     }
 
-    if(!isNaN(this.props.min!) && value < this.props.min!) {
+    if(!isNaN(props.min!) && val < props.min!) {
       return false;
     }
 
-    if(!isNaN(this.props.max!) && value > this.props.max!) {
+    if(!isNaN(props.max!) && val > props.max!) {
       return false;
     }
 
     return true;
   }
 
-  resetValue = () => {
-    this.setState({editing: false});
+  function changeValue(newValue: number | string | undefined) {
+    const val = (newValue === "" || newValue === undefined) ?
+      undefined : +newValue;
+
+    const hasChanged = props.value !== val;
+    if(isValid(val) && hasChanged) {
+      if (props.onChange) props.onChange(val);
+      setValue(val);
+    }
+    else if (!isValid(val) && hasChanged) {
+      setValue(undefined);
+    }
+
+    setDirtyValue(newValue === "" ? undefined : newValue);
+  }
+
+  const resetValue = () => {
+    setEditing(false);
     // Reset explicitly to default value if value has been cleared
-    if(!this.state.value) {
+    if(!value) {
       return;
     }
 
     // If set value is invalid fall back to the last valid value from props or at last resort the default value
-    if (!this.isValid(this.state.value)) {
-      if(this.isValid(this.props.value)) {
-        this.changeValue(this.props.value);
-        this.setState({dirtyValue: this.props.value});
+    if (!isValid(value)) {
+      if(isValid(props.value)) {
+        changeValue(props.value);
+        setDirtyValue(props.value);
       } else {
-        this.changeValue(undefined);
-        this.setState({dirtyValue: undefined});
+        changeValue(undefined);
+        setDirtyValue(undefined);
       }
     }
   };
 
-  onChangeRange = (e: BaseSyntheticEvent<Event, HTMLInputElement, HTMLInputElement>) => {
-    let value = parseFloat(e.target.value);
-    const step = this.props.rangeStep;
-    let dirtyValue = value;
+  const onChangeRange = (e: BaseSyntheticEvent<Event, HTMLInputElement, HTMLInputElement>) => {
+    let newValue = parseFloat(e.target.value);
+    const step = rangeStep;
+    let newDirtyValue = newValue;
 
     if(step) {
       // Can't do this with the <input/> range step attribute else we won't be able to set a high precision value via the text input.
-      const snap = value % step;
+      const snap = newValue % step;
 
       // Round up/down to step
-      if (this._keyboardEvent) {
+      if (keyboardEvent.current) {
         // If it's keyboard event we might get a low positive/negative value,
         // for example we might go from 13 to 13.23, however because we know
         // that came from a keyboard event we always want to increase by a
         // single step value.
-        if (value < +this.state.dirtyValue!) {
-          value = this.state.value! - step;
+        if (newValue < +dirtyValue!) {
+          newValue = value! - step;
         }
         else {
-          value = this.state.value! + step;
+          newValue = value! + step;
         }
-        dirtyValue = value;
+        newDirtyValue = newValue;
       }
       else {
         if (snap < step/2) {
-          value = value - snap;
+          newValue = newValue - snap;
         }
         else {
-          value = value + (step - snap);
+          newValue = newValue + (step - snap);
         }
       }
     }
 
-    this._keyboardEvent = false;
+    keyboardEvent.current = false;
 
     // Clamp between min/max
-    value = Math.max(this.props.min!, Math.min(this.props.max!, value));
+    newValue = Math.max(props.min!, Math.min(props.max!, newValue));
 
-    this.setState({value, dirtyValue});
-    if (this.props.onChange) this.props.onChange(value);
+    setValue(newValue);
+    setDirtyValue(newDirtyValue);
+    if (props.onChange) props.onChange(newValue);
   };
 
-  render() {
-    if(
-      Object.prototype.hasOwnProperty.call(this.props, "min") &&
-      Object.prototype.hasOwnProperty.call(this.props, "max") &&
-      this.props.min !== undefined && this.props.max !== undefined &&
-      this.props.allowRange
-    ) {
-      const value = this.state.editing ? this.state.dirtyValue : this.state.value;
-      const defaultValue = this.props.default === undefined ? "" : this.props.default;
-      let inputValue;
-      if (this.state.editingRange) {
-        inputValue = this.state.value;
-      }
-      else {
-        inputValue = value;
-      }
-
-      return <div className="maputnik-number-container">
-        <input
-          className="maputnik-number-range"
-          key="range"
-          type="range"
-          max={this.props.max}
-          min={this.props.min}
-          step="any"
-          spellCheck="false"
-          value={value === undefined ? defaultValue : value}
-          onChange={this.onChangeRange}
-          onKeyDown={() => {
-            this._keyboardEvent = true;
-          }}
-          onPointerDown={() => {
-            this.setState({editing: true, editingRange: true});
-          }}
-          onPointerUp={() => {
-            // Safari doesn't get onBlur event
-            this.setState({editing: false, editingRange: false});
-          }}
-          onBlur={() => {
-            this.setState({
-              editing: false,
-              editingRange: false,
-              dirtyValue: this.state.value,
-            });
-          }}
-          data-wd-key={this.props["data-wd-key"] + "-range"}
-        />
-        <input
-          key="text"
-          type="text"
-          spellCheck="false"
-          className="maputnik-number"
-          placeholder={this.props.default?.toString()}
-          value={inputValue === undefined ? "" : inputValue}
-          onFocus={_e => {
-            this.setState({editing: true});
-          }}
-          onChange={e => {
-            this.changeValue(e.target.value);
-          }}
-          onBlur={_e => {
-            this.setState({editing: false});
-            this.resetValue();
-          }}
-          data-wd-key={this.props["data-wd-key"] + "-text"}
-
-        />
-      </div>;
+  if(
+    Object.prototype.hasOwnProperty.call(props, "min") &&
+    Object.prototype.hasOwnProperty.call(props, "max") &&
+    props.min !== undefined && props.max !== undefined &&
+    props.allowRange
+  ) {
+    const currentValue = editing ? dirtyValue : value;
+    const defaultValue = props.default === undefined ? "" : props.default;
+    let inputValue;
+    if (editingRange) {
+      inputValue = value;
     }
     else {
-      const value = this.state.editing ? this.state.dirtyValue : this.state.value;
+      inputValue = currentValue;
+    }
 
-      return <input
-        aria-label={this.props["aria-label"]}
+    return <div className="maputnik-number-container">
+      <input
+        className="maputnik-number-range"
+        key="range"
+        type="range"
+        max={props.max}
+        min={props.min}
+        step="any"
+        spellCheck="false"
+        value={currentValue === undefined ? defaultValue : currentValue}
+        onChange={onChangeRange}
+        onKeyDown={() => {
+          keyboardEvent.current = true;
+        }}
+        onPointerDown={() => {
+          setEditing(true);
+          setEditingRange(true);
+        }}
+        onPointerUp={() => {
+          // Safari doesn't get onBlur event
+          setEditing(false);
+          setEditingRange(false);
+        }}
+        onBlur={() => {
+          setEditing(false);
+          setEditingRange(false);
+          setDirtyValue(value);
+        }}
+        data-wd-key={props["data-wd-key"] + "-range"}
+      />
+      <input
+        key="text"
+        type="text"
         spellCheck="false"
         className="maputnik-number"
-        placeholder={this.props.default?.toString()}
-        value={value === undefined ? "" : value}
-        onChange={e => this.changeValue(e.target.value)}
-        onFocus={() => {
-          this.setState({editing: true});
+        placeholder={props.default?.toString()}
+        value={inputValue === undefined ? "" : inputValue}
+        onFocus={_e => {
+          setEditing(true);
         }}
-        onBlur={this.resetValue}
-        required={this.props.required}
-        data-wd-key={this.props["data-wd-key"]}
-      />;
-    }
+        onChange={e => {
+          changeValue(e.target.value);
+        }}
+        onBlur={_e => {
+          setEditing(false);
+          resetValue();
+        }}
+        data-wd-key={props["data-wd-key"] + "-text"}
+
+      />
+    </div>;
   }
-}
+  else {
+    const currentValue = editing ? dirtyValue : value;
+
+    return <input
+      aria-label={props["aria-label"]}
+      spellCheck="false"
+      className="maputnik-number"
+      placeholder={props.default?.toString()}
+      value={currentValue === undefined ? "" : currentValue}
+      onChange={e => changeValue(e.target.value)}
+      onFocus={() => {
+        setEditing(true);
+      }}
+      onBlur={resetValue}
+      required={props.required}
+      data-wd-key={props["data-wd-key"]}
+    />;
+  }
+};

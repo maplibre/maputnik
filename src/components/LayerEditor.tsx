@@ -1,4 +1,4 @@
-import React, { type JSX } from "react";
+import React, { type JSX, useState } from "react";
 import { Wrapper, Button, Menu, MenuItem } from "react-aria-menubutton";
 import { Accordion } from "react-accessible-accordion";
 import { MdMoreVert } from "react-icons/md";
@@ -17,7 +17,9 @@ import { FieldMaxZoom } from "./FieldMaxZoom";
 import { FieldComment } from "./FieldComment";
 import { FieldSource } from "./FieldSource";
 import { FieldSourceLayer } from "./FieldSourceLayer";
-import { changeType, changeProperty } from "../libs/layer";
+// Aliased: the component defines its own changeProperty, which would otherwise
+// shadow this import (as a class method there was no collision).
+import { changeType, changeProperty as changeLayerProperty } from "../libs/layer";
 import { formatLayerId } from "../libs/format";
 import { type WithTranslation, withTranslation } from "react-i18next";
 import { type TFunction } from "i18next";
@@ -131,67 +133,56 @@ type LayerEditorInternalProps = {
   errors?: MappedError[]
 } & WithTranslation;
 
-type LayerEditorState = {
-  editorGroups: { [keys: string]: boolean }
-};
-
 /** Layer editor supporting multiple types of layers. */
-class LayerEditorInternal extends React.Component<LayerEditorInternalProps, LayerEditorState> {
-  static defaultProps = {
-    onLayerChanged: () => { },
-    onLayerIdChange: () => { },
-    onLayerDestroyed: () => { },
-  };
+const LayerEditorInternal: React.FC<LayerEditorInternalProps> = ({
+  onLayerChanged = () => { },
+  onLayerIdChange = () => { },
+  ...rest
+}) => {
+  const props = { onLayerChanged, onLayerIdChange, ...rest } as LayerEditorInternalProps;
 
-  constructor(props: LayerEditorInternalProps) {
-    super(props);
-
-    const editorGroups: { [keys: string]: boolean } = {};
-    for (const group of layoutGroups(this.props.layer.type, props.t)) {
-      editorGroups[group.title] = true;
+  const [editorGroups, setEditorGroups] = useState<{ [keys: string]: boolean }>(() => {
+    const groups: { [keys: string]: boolean } = {};
+    for (const group of layoutGroups(props.layer.type, props.t)) {
+      groups[group.title] = true;
     }
+    return groups;
+  });
 
-    this.state = { editorGroups };
+  // Replaces getDerivedStateFromProps: groups that appear after mount (because
+  // the layer type changed) start out expanded. Guarded so it only sets state
+  // when a group is genuinely new, otherwise this would loop every render.
+  const newGroups = getLayoutForType(props.layer.type, props.t)
+    .filter(group => !(group.title in editorGroups));
+  if (newGroups.length > 0) {
+    const additionalGroups = { ...editorGroups };
+    for (const group of newGroups) {
+      additionalGroups[group.title] = true;
+    }
+    setEditorGroups(additionalGroups);
   }
 
-  static getDerivedStateFromProps(props: Readonly<LayerEditorInternalProps>, state: LayerEditorState) {
-    const additionalGroups = { ...state.editorGroups };
-
-    for (const group of getLayoutForType(props.layer.type, props.t)) {
-      if (!(group.title in additionalGroups)) {
-        additionalGroups[group.title] = true;
-      }
-    }
-
-    return {
-      editorGroups: additionalGroups
-    };
-  }
-
-
-  changeProperty(group: keyof LayerSpecification | null, property: string, newValue: any) {
-    this.props.onLayerChanged(
-      this.props.layerIndex,
-      changeProperty(this.props.layer, group, property, newValue)
+  function changeProperty(group: keyof LayerSpecification | null, property: string, newValue: any) {
+    props.onLayerChanged(
+      props.layerIndex,
+      changeLayerProperty(props.layer, group, property, newValue)
     );
   }
 
-  onGroupToggle(groupTitle: string, active: boolean) {
+  function onGroupToggle(groupTitle: string, active: boolean) {
     const changedActiveGroups = {
-      ...this.state.editorGroups,
+      ...editorGroups,
       [groupTitle]: active,
     };
-    this.setState({
-      editorGroups: changedActiveGroups
-    });
+    setEditorGroups(changedActiveGroups);
   }
 
-  renderGroupType(type: string, fields?: string[]): JSX.Element {
+  function renderGroupType(type: string, fields?: string[]): JSX.Element {
     let comment = "";
-    if (this.props.layer.metadata) {
-      comment = (this.props.layer.metadata as any)["maputnik:comment"];
+    if (props.layer.metadata) {
+      comment = (props.layer.metadata as any)["maputnik:comment"];
     }
-    const { errors, layerIndex } = this.props;
+    const { errors, layerIndex } = props;
 
     const errorData: MappedLayerErrors = {};
     errors!.forEach(error => {
@@ -207,85 +198,85 @@ class LayerEditorInternal extends React.Component<LayerEditorInternalProps, Laye
     });
 
     let sourceLayerIds;
-    const layer = this.props.layer as Exclude<LayerSpecification, BackgroundLayerSpecification>;
-    if (Object.prototype.hasOwnProperty.call(this.props.sources, layer.source)) {
-      sourceLayerIds = this.props.sources[layer.source].layers;
+    const layer = props.layer as Exclude<LayerSpecification, BackgroundLayerSpecification>;
+    if (Object.prototype.hasOwnProperty.call(props.sources, layer.source)) {
+      sourceLayerIds = props.sources[layer.source].layers;
     }
 
     switch (type) {
       case "layer": return <div>
         <FieldId
-          value={this.props.layer.id}
+          value={props.layer.id}
           wdKey="layer-editor.layer-id"
           error={errorData.id}
-          onChange={newId => this.props.onLayerIdChange(this.props.layerIndex, this.props.layer.id, newId)}
+          onChange={newId => props.onLayerIdChange(props.layerIndex, props.layer.id, newId)}
         />
         <FieldType
           disabled={true}
           error={errorData.type}
-          value={this.props.layer.type}
-          onChange={newType => this.props.onLayerChanged(
-            this.props.layerIndex,
-            changeType(this.props.layer, newType)
+          value={props.layer.type}
+          onChange={newType => props.onLayerChanged(
+            props.layerIndex,
+            changeType(props.layer, newType)
           )}
         />
-        {this.props.layer.type !== "background" && <FieldSource
+        {props.layer.type !== "background" && <FieldSource
           wdKey="layer-editor.layer-source"
           error={errorData.source}
-          sourceIds={Object.keys(this.props.sources!)}
-          value={this.props.layer.source}
-          onChange={v => this.changeProperty(null, "source", v)}
+          sourceIds={Object.keys(props.sources!)}
+          value={props.layer.source}
+          onChange={v => changeProperty(null, "source", v)}
         />
         }
-        {!NON_SOURCE_LAYERS.includes(this.props.layer.type) &&
+        {!NON_SOURCE_LAYERS.includes(props.layer.type) &&
           <FieldSourceLayer
             error={errorData["source-layer"]}
             sourceLayerIds={sourceLayerIds}
-            value={(this.props.layer as any)["source-layer"]}
-            onChange={v => this.changeProperty(null, "source-layer", v)}
+            value={(props.layer as any)["source-layer"]}
+            onChange={v => changeProperty(null, "source-layer", v)}
           />
         }
         <FieldMinZoom
           error={errorData.minzoom}
-          value={this.props.layer.minzoom}
-          onChange={v => this.changeProperty(null, "minzoom", v)}
+          value={props.layer.minzoom}
+          onChange={v => changeProperty(null, "minzoom", v)}
         />
         <FieldMaxZoom
           error={errorData.maxzoom}
-          value={this.props.layer.maxzoom}
-          onChange={v => this.changeProperty(null, "maxzoom", v)}
+          value={props.layer.maxzoom}
+          onChange={v => changeProperty(null, "maxzoom", v)}
         />
         <FieldComment
           error={errorData.comment}
           value={comment}
-          onChange={v => this.changeProperty("metadata", "maputnik:comment", v == "" ? undefined : v)}
+          onChange={v => changeProperty("metadata", "maputnik:comment", v == "" ? undefined : v)}
         />
       </div>;
       case "filter": return <div>
         <div className="maputnik-filter-editor-wrapper">
           <FilterEditor
             errors={errorData}
-            filter={(this.props.layer as any).filter}
-            properties={this.props.vectorLayers[(this.props.layer as any)["source-layer"]]}
-            onChange={f => this.changeProperty(null, "filter", f)}
+            filter={(props.layer as any).filter}
+            properties={props.vectorLayers[(props.layer as any)["source-layer"]]}
+            onChange={f => changeProperty(null, "filter", f)}
           />
         </div>
       </div>;
       case "properties":
         return <PropertyGroup
           errors={errorData}
-          layer={this.props.layer}
+          layer={props.layer}
           groupFields={fields!}
-          spec={this.props.spec}
-          onChange={this.changeProperty.bind(this)}
+          spec={props.spec}
+          onChange={changeProperty.bind(null)}
         />;
       case "jsoneditor":
         return <FieldJson
           lintType="layer"
-          value={this.props.layer}
+          value={props.layer}
           onChange={(layer: LayerSpecification) => {
-            this.props.onLayerChanged(
-              this.props.layerIndex,
+            props.onLayerChanged(
+              props.layerIndex,
               layer
             );
           }}
@@ -294,130 +285,128 @@ class LayerEditorInternal extends React.Component<LayerEditorInternalProps, Laye
     }
   }
 
-  moveLayer(offset: number) {
-    this.props.onMoveLayer({
-      oldIndex: this.props.layerIndex,
-      newIndex: this.props.layerIndex + offset
+  function moveLayer(offset: number) {
+    props.onMoveLayer({
+      oldIndex: props.layerIndex,
+      newIndex: props.layerIndex + offset
     });
   }
 
-  render() {
-    const t = this.props.t;
+  const t = props.t;
 
-    const groupIds: string[] = [];
-    const layerType = this.props.layer.type;
-    const groups = layoutGroups(layerType, t).filter(group => {
-      return !(layerType === "background" && group.type === "source");
-    }).map(group => {
-      const groupId = group.id;
-      groupIds.push(groupId);
-      return <LayerEditorGroup
-        data-wd-key={group.title}
-        id={groupId}
-        key={groupId}
-        title={group.title}
-        isActive={this.state.editorGroups[group.title]}
-        onActiveToggle={this.onGroupToggle.bind(this, group.title)}
-      >
-        {this.renderGroupType(group.type, group.fields)}
-      </LayerEditorGroup>;
-    });
+  const groupIds: string[] = [];
+  const layerType = props.layer.type;
+  const groups = layoutGroups(layerType, t).filter(group => {
+    return !(layerType === "background" && group.type === "source");
+  }).map(group => {
+    const groupId = group.id;
+    groupIds.push(groupId);
+    return <LayerEditorGroup
+      data-wd-key={group.title}
+      id={groupId}
+      key={groupId}
+      title={group.title}
+      isActive={editorGroups[group.title]}
+      onActiveToggle={onGroupToggle.bind(null, group.title)}
+    >
+      {renderGroupType(group.type, group.fields)}
+    </LayerEditorGroup>;
+  });
 
-    const layout = this.props.layer.layout || {};
+  const layout = props.layer.layout || {};
 
-    const items: {
-      [key: string]: {
-        text: string,
-        handler: () => void,
-        disabled?: boolean,
-        wdKey?: string
-      }
-    } = {
-      delete: {
-        text: t("Delete"),
-        handler: () => this.props.onLayerDestroy(this.props.layerIndex),
-        wdKey: "menu-delete-layer"
-      },
-      duplicate: {
-        text: t("Duplicate"),
-        handler: () => this.props.onLayerCopy(this.props.layerIndex),
-        wdKey: "menu-duplicate-layer"
-      },
-      hide: {
-        text: (layout.visibility === "none") ? t("Show") : t("Hide"),
-        handler: () => this.props.onLayerVisibilityToggle(this.props.layerIndex),
-        wdKey: "menu-hide-layer"
-      },
-      moveLayerUp: {
-        text: t("Move layer up"),
-        disabled: this.props.isFirstLayer,
-        handler: () => this.moveLayer(-1),
-        wdKey: "menu-move-layer-up"
-      },
-      moveLayerDown: {
-        text: t("Move layer down"),
-        disabled: this.props.isLastLayer,
-        handler: () => this.moveLayer(+1),
-        wdKey: "menu-move-layer-down"
-      }
-    };
-
-    function handleSelection(id: string, event: React.SyntheticEvent) {
-      event.stopPropagation();
-      items[id].handler();
+  const items: {
+    [key: string]: {
+      text: string,
+      handler: () => void,
+      disabled?: boolean,
+      wdKey?: string
     }
+  } = {
+    delete: {
+      text: t("Delete"),
+      handler: () => props.onLayerDestroy(props.layerIndex),
+      wdKey: "menu-delete-layer"
+    },
+    duplicate: {
+      text: t("Duplicate"),
+      handler: () => props.onLayerCopy(props.layerIndex),
+      wdKey: "menu-duplicate-layer"
+    },
+    hide: {
+      text: (layout.visibility === "none") ? t("Show") : t("Hide"),
+      handler: () => props.onLayerVisibilityToggle(props.layerIndex),
+      wdKey: "menu-hide-layer"
+    },
+    moveLayerUp: {
+      text: t("Move layer up"),
+      disabled: props.isFirstLayer,
+      handler: () => moveLayer(-1),
+      wdKey: "menu-move-layer-up"
+    },
+    moveLayerDown: {
+      text: t("Move layer down"),
+      disabled: props.isLastLayer,
+      handler: () => moveLayer(+1),
+      wdKey: "menu-move-layer-down"
+    }
+  };
 
-    return <IconContext.Provider value={{ size: "14px", color: "#8e8e8e" }}>
-      <section className="maputnik-layer-editor"
-        role="main"
-        aria-label={t("Layer editor")}
-        data-wd-key="layer-editor"
-      >
-        <header data-wd-key="layer-editor.header">
-          <div className="layer-header">
-            <h2 className="layer-header__title">
-              {t("Layer")}: {formatLayerId(this.props.layer.id)}
-            </h2>
-            <div className="layer-header__info">
-              <Wrapper
-                className='more-menu'
-                onSelection={(id, event) => handleSelection(id as string, event)}
-                closeOnSelection={false}
-              >
-                <Button
-                  id="skip-target-layer-editor"
-                  data-wd-key="skip-target-layer-editor"
-                  className='more-menu__button'
-                  title={"Layer options"}>
-                  <MdMoreVert className="more-menu__button__svg" />
-                </Button>
-                <Menu>
-                  <ul className="more-menu__menu">
-                    {Object.keys(items).map((id) => {
-                      const item = items[id];
-                      return <li key={id}>
-                        <MenuItem value={id} className='more-menu__menu__item' data-wd-key={item.wdKey}>
-                          {item.text}
-                        </MenuItem>
-                      </li>;
-                    })}
-                  </ul>
-                </Menu>
-              </Wrapper>
-            </div>
-          </div>
-
-        </header>
-        <Accordion
-          allowMultipleExpanded={true}
-          allowZeroExpanded={true}
-          preExpanded={groupIds}
-        >
-          {groups}
-        </Accordion>
-      </section>
-    </IconContext.Provider>;
+  function handleSelection(id: string, event: React.SyntheticEvent) {
+    event.stopPropagation();
+    items[id].handler();
   }
-}
+
+  return <IconContext.Provider value={{ size: "14px", color: "#8e8e8e" }}>
+    <section className="maputnik-layer-editor"
+      role="main"
+      aria-label={t("Layer editor")}
+      data-wd-key="layer-editor"
+    >
+      <header data-wd-key="layer-editor.header">
+        <div className="layer-header">
+          <h2 className="layer-header__title">
+            {t("Layer")}: {formatLayerId(props.layer.id)}
+          </h2>
+          <div className="layer-header__info">
+            <Wrapper
+              className='more-menu'
+              onSelection={(id, event) => handleSelection(id as string, event)}
+              closeOnSelection={false}
+            >
+              <Button
+                id="skip-target-layer-editor"
+                data-wd-key="skip-target-layer-editor"
+                className='more-menu__button'
+                title={"Layer options"}>
+                <MdMoreVert className="more-menu__button__svg" />
+              </Button>
+              <Menu>
+                <ul className="more-menu__menu">
+                  {Object.keys(items).map((id) => {
+                    const item = items[id];
+                    return <li key={id}>
+                      <MenuItem value={id} className='more-menu__menu__item' data-wd-key={item.wdKey}>
+                        {item.text}
+                      </MenuItem>
+                    </li>;
+                  })}
+                </ul>
+              </Menu>
+            </Wrapper>
+          </div>
+        </div>
+
+      </header>
+      <Accordion
+        allowMultipleExpanded={true}
+        allowZeroExpanded={true}
+        preExpanded={groupIds}
+      >
+        {groups}
+      </Accordion>
+    </section>
+  </IconContext.Provider>;
+};
 
 export const LayerEditor = withTranslation()(LayerEditorInternal);

@@ -1,4 +1,4 @@
-import React, {type CSSProperties, type PropsWithChildren, type SyntheticEvent} from "react";
+import React, {type CSSProperties, type PropsWithChildren, type SyntheticEvent, useRef, useState} from "react";
 import classnames from "classnames";
 import { FieldDocLabel } from "./FieldDocLabel";
 import { Doc } from "./Doc";
@@ -14,32 +14,13 @@ export type BlockProps = PropsWithChildren & {
   error?: {message: string}
 };
 
-type BlockState = {
-  showDoc: boolean
-};
-
 /** Wrap a component with a label */
-export class Block extends React.Component<BlockProps, BlockState> {
-  _blockEl: HTMLDivElement | null = null;
+export const Block: React.FC<BlockProps> = (props) => {
+  const [showDoc, setShowDoc] = useState(false);
+  const blockEl = useRef<HTMLDivElement | null>(null);
 
-  constructor (props: BlockProps) {
-    super(props);
-    this.state = {
-      showDoc: false,
-    };
-  }
-
-  onChange(e: React.BaseSyntheticEvent<Event, HTMLInputElement, HTMLInputElement>) {
-    const value = e.target.value;
-    if (this.props.onChange) {
-      return this.props.onChange(value === "" ? undefined : value);
-    }
-  }
-
-  onToggleDoc = (val: boolean) => {
-    this.setState({
-      showDoc: val
-    });
+  const onToggleDoc = (val: boolean) => {
+    setShowDoc(val);
   };
 
   /**
@@ -48,9 +29,9 @@ export class Block extends React.Component<BlockProps, BlockState> {
    * causing the picker to reopen. This causes a scenario where the picker can
    * never be closed once open.
    */
-  onLabelClick = (event: SyntheticEvent<any, any>) => {
+  const onLabelClick = (event: SyntheticEvent<any, any>) => {
     const el = event.nativeEvent.target;
-    const contains = this._blockEl?.contains(el);
+    const contains = blockEl.current?.contains(el);
 
     if (event.nativeEvent.target.nodeName !== "INPUT" && !contains) {
       event.stopPropagation();
@@ -60,45 +41,43 @@ export class Block extends React.Component<BlockProps, BlockState> {
     }
   };
 
-  render() {
-    return <label style={this.props.style}
-      data-wd-key={this.props["data-wd-key"]}
-      className={classnames({
-        "maputnik-input-block": true,
-        "maputnik-input-block--wide": this.props.wideMode,
-        "maputnik-action-block": this.props.action,
-        "maputnik-input-block--error": this.props.error
-      })}
-      onClick={this.onLabelClick}
-    >
-      {this.props.fieldSpec &&
-        <div className="maputnik-input-block-label">
-          <FieldDocLabel
-            label={this.props.label}
-            onToggleDoc={this.onToggleDoc}
-            fieldSpec={this.props.fieldSpec}
-          />
-        </div>
-      }
-      {!this.props.fieldSpec &&
-        <div className="maputnik-input-block-label">
-          {this.props.label}
-        </div>
-      }
-      <div className="maputnik-input-block-action">
-        {this.props.action}
+  return <label style={props.style}
+    data-wd-key={props["data-wd-key"]}
+    className={classnames({
+      "maputnik-input-block": true,
+      "maputnik-input-block--wide": props.wideMode,
+      "maputnik-action-block": props.action,
+      "maputnik-input-block--error": props.error
+    })}
+    onClick={onLabelClick}
+  >
+    {props.fieldSpec &&
+      <div className="maputnik-input-block-label">
+        <FieldDocLabel
+          label={props.label}
+          onToggleDoc={onToggleDoc}
+          fieldSpec={props.fieldSpec}
+        />
       </div>
-      <div className="maputnik-input-block-content" ref={el => {this._blockEl = el;}}>
-        {this.props.children}
+    }
+    {!props.fieldSpec &&
+      <div className="maputnik-input-block-label">
+        {props.label}
       </div>
-      {this.props.fieldSpec &&
-        <div
-          className="maputnik-doc-inline"
-          style={{display: this.state.showDoc ? "" : "none"}}
-        >
-          <Doc fieldSpec={this.props.fieldSpec} />
-        </div>
-      }
-    </label>;
-  }
-}
+    }
+    <div className="maputnik-input-block-action">
+      {props.action}
+    </div>
+    <div className="maputnik-input-block-content" ref={blockEl}>
+      {props.children}
+    </div>
+    {props.fieldSpec &&
+      <div
+        className="maputnik-doc-inline"
+        style={{display: showDoc ? "" : "none"}}
+      >
+        <Doc fieldSpec={props.fieldSpec} />
+      </div>
+    }
+  </label>;
+};

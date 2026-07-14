@@ -18,22 +18,20 @@ type LayerEditorGroupProps = {
 };
 
 
-export class LayerEditorGroup extends React.Component<LayerEditorGroupProps> {
-  render() {
-    return <AccordionItem uuid={this.props.id}>
-      <AccordionItemHeading className="maputnik-layer-editor-group"
-        data-wd-key={"layer-editor-group:"+this.props["data-wd-key"]}
-        onClick={_e => this.props.onActiveToggle(!this.props.isActive)}
-      >
-        <AccordionItemButton className="maputnik-layer-editor-group__button">
-          <span style={{flexGrow: 1, alignContent: "center"}}>{this.props.title}</span>
-          <MdArrowDropUp size={"2em"} className="maputnik-layer-editor-group__button__icon maputnik-layer-editor-group__button__icon--up"></MdArrowDropUp>
-          <MdArrowDropDown size={"2em"} className="maputnik-layer-editor-group__button__icon maputnik-layer-editor-group__button__icon--down"></MdArrowDropDown>
-        </AccordionItemButton>
-      </AccordionItemHeading>
-      <AccordionItemPanel>
-        {this.props.children}
-      </AccordionItemPanel>
-    </AccordionItem>;
-  }
-}
+export const LayerEditorGroup: React.FC<LayerEditorGroupProps> = (props) => {
+  return <AccordionItem uuid={props.id}>
+    <AccordionItemHeading className="maputnik-layer-editor-group"
+      data-wd-key={"layer-editor-group:"+props["data-wd-key"]}
+      onClick={_e => props.onActiveToggle(!props.isActive)}
+    >
+      <AccordionItemButton className="maputnik-layer-editor-group__button">
+        <span style={{flexGrow: 1, alignContent: "center"}}>{props.title}</span>
+        <MdArrowDropUp size={"2em"} className="maputnik-layer-editor-group__button__icon maputnik-layer-editor-group__button__icon--up"></MdArrowDropUp>
+        <MdArrowDropDown size={"2em"} className="maputnik-layer-editor-group__button__icon maputnik-layer-editor-group__button__icon--down"></MdArrowDropDown>
+      </AccordionItemButton>
+    </AccordionItemHeading>
+    <AccordionItemPanel>
+      {props.children}
+    </AccordionItemPanel>
+  </AccordionItem>;
+};

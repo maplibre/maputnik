@@ -4,10 +4,8 @@ type ScrollContainerProps = {
   children?: React.ReactNode
 };
 
-export class ScrollContainer extends React.Component<ScrollContainerProps> {
-  render() {
-    return <div className="maputnik-scroll-container">
-      {this.props.children}
-    </div>;
-  }
-}
+export const ScrollContainer: React.FC<ScrollContainerProps> = (props) => {
+  return <div className="maputnik-scroll-container">
+    {props.children}
+  </div>;
+};

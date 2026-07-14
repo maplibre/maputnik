@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef } from "react";
 import {PiListPlusBold} from "react-icons/pi";
 import {TbMathFunction} from "react-icons/tb";
 import latest from "@maplibre/maplibre-gl-style-spec/dist/latest.json";
@@ -68,32 +68,19 @@ export type Stop = [{
   value: number
 }, number];
 
-class DataPropertyInternal extends React.Component<DataPropertyInternalProps, DataPropertyState> {
-  state = {
-    refs: {} as {[key: number]: string}
-  };
-
-  componentDidMount() {
-    const newRefs = setStopRefs(this.props, this.state);
-
-    if(newRefs) {
-      this.setState({
-        refs: newRefs
-      });
-    }
+const DataPropertyInternal: React.FC<DataPropertyInternalProps> = (props) => {
+  // Kept in a ref rather than state: the original recomputed these on every
+  // render via getDerivedStateFromProps, which as state would mean setting
+  // state during render on every pass.
+  const refs = useRef<{[key: number]: string}>({});
+  // setStopRefs returns undefined when no new stop needs a ref; as in the
+  // original, only replace the map when it actually produced one.
+  const newStopRefs = setStopRefs(props, { refs: refs.current });
+  if (newStopRefs) {
+    refs.current = newStopRefs;
   }
 
-  static getDerivedStateFromProps(props: Readonly<DataPropertyInternalProps>, state: DataPropertyState) {
-    const newRefs = setStopRefs(props, state);
-    if(newRefs) {
-      return {
-        refs: newRefs
-      };
-    }
-    return null;
-  }
-
-  getFieldFunctionType(fieldSpec: any) {
+  function getFieldFunctionType(fieldSpec: any) {
     if (fieldSpec.expression.interpolated) {
       return "exponential";
     }
@@ -103,7 +90,7 @@ class DataPropertyInternal extends React.Component<DataPropertyInternalProps, Da
     return "categorical";
   }
 
-  getDataFunctionTypes(fieldSpec: any) {
+  function getDataFunctionTypes(fieldSpec: any) {
     if (fieldSpec.expression.interpolated) {
       return ["interpolate", "categorical", "interval", "exponential", "identity"];
     }
@@ -113,11 +100,11 @@ class DataPropertyInternal extends React.Component<DataPropertyInternalProps, Da
   }
 
   // Order the stops altering the refs to reflect their new position.
-  orderStopsByZoom(stops: Stop[]) {
+  function orderStopsByZoom(stops: Stop[]) {
     const mappedWithRef = stops
       .map((stop, idx) => {
         return {
-          ref: this.state.refs[idx],
+          ref: refs.current[idx],
           data: stop
         };
       })
@@ -131,14 +118,12 @@ class DataPropertyInternal extends React.Component<DataPropertyInternalProps, Da
         newRefs[idx] = stop.ref;
       });
 
-    this.setState({
-      refs: newRefs
-    });
+    refs.current = newRefs;
 
     return mappedWithRef.map((item) => item.data);
   }
 
-  onChange = (fieldName: string, value: any) => {
+  const onChange = (fieldName: string, value: any) => {
     if (value.type === "identity") {
       value = {
         type: value.type,
@@ -152,17 +137,17 @@ class DataPropertyInternal extends React.Component<DataPropertyInternalProps, Da
         type: value.type,
         // Default props if they don't already exist.
         stops: [
-          [{zoom: 6, value: stopValue}, findDefaultFromSpec(this.props.fieldSpec as any)],
-          [{zoom: 10, value: stopValue}, findDefaultFromSpec(this.props.fieldSpec as any)]
+          [{zoom: 6, value: stopValue}, findDefaultFromSpec(props.fieldSpec as any)],
+          [{zoom: 10, value: stopValue}, findDefaultFromSpec(props.fieldSpec as any)]
         ],
         ...value,
       };
     }
-    this.props.onChange!(fieldName, value);
+    props.onChange!(fieldName, value);
   };
 
-  changeStop(changeIdx: number, stopData: { zoom: number | undefined, value: number }, value: number) {
-    const stops = this.props.value?.stops.slice(0) || [];
+  function changeStop(changeIdx: number, stopData: { zoom: number | undefined, value: number }, value: number) {
+    const stops = props.value?.stops.slice(0) || [];
     // const changedStop = stopData.zoom === undefined ? stopData.value : stopData
     stops[changeIdx] = [
       {
@@ -172,135 +157,134 @@ class DataPropertyInternal extends React.Component<DataPropertyInternalProps, Da
       value
     ];
 
-    const orderedStops = this.orderStopsByZoom(stops);
+    const orderedStops = orderStopsByZoom(stops);
 
     const changedValue = {
-      ...this.props.value,
+      ...props.value,
       stops: orderedStops,
     };
-    this.onChange(this.props.fieldName, changedValue);
+    onChange(props.fieldName, changedValue);
   }
 
-  changeBase(newValue: number | undefined) {
+  function changeBase(newValue: number | undefined) {
     const changedValue = {
-      ...this.props.value,
+      ...props.value,
       base: newValue
     };
 
     if (changedValue.base === undefined) {
       delete changedValue["base"];
     }
-    this.props.onChange!(this.props.fieldName, changedValue);
+    props.onChange!(props.fieldName, changedValue);
   }
 
-  changeDataType(propVal: string) {
-    if (propVal === "interpolate" && this.props.onChangeToZoomFunction) {
-      this.props.onChangeToZoomFunction();
+  function changeDataType(propVal: string) {
+    if (propVal === "interpolate" && props.onChangeToZoomFunction) {
+      props.onChangeToZoomFunction();
     }
     else {
-      this.onChange(this.props.fieldName, {
-        ...this.props.value,
+      onChange(props.fieldName, {
+        ...props.value,
         type: propVal,
       });
     }
   }
 
-  changeDataProperty(propName: "property" | "default", propVal: any) {
+  function changeDataProperty(propName: "property" | "default", propVal: any) {
     if (propVal) {
-      this.props.value![propName] = propVal;
+      props.value![propName] = propVal;
     }
     else {
-      delete this.props.value![propName];
+      delete props.value![propName];
     }
-    this.onChange(this.props.fieldName, this.props.value);
+    onChange(props.fieldName, props.value);
   }
 
-  render() {
-    const t = this.props.t;
+  const t = props.t;
 
-    if (typeof this.props.value?.type === "undefined") {
-      this.props.value!.type = this.getFieldFunctionType(this.props.fieldSpec);
-    }
+  if (typeof props.value?.type === "undefined") {
+    props.value!.type = getFieldFunctionType(props.fieldSpec);
+  }
 
-    let dataFields;
-    if (this.props.value?.stops) {
-      dataFields = this.props.value.stops.map((stop, idx) => {
-        const zoomLevel = typeof stop[0] === "object" ? stop[0].zoom : undefined;
-        const key  = this.state.refs[idx];
-        const dataLevel = typeof stop[0] === "object" ? stop[0].value : stop[0];
-        const value = stop[1];
-        const deleteStopBtn = <DeleteStopButton onClick={this.props.onDeleteStop?.bind(this, idx)} />;
+  let dataFields;
+  if (props.value?.stops) {
+    dataFields = props.value.stops.map((stop, idx) => {
+      const zoomLevel = typeof stop[0] === "object" ? stop[0].zoom : undefined;
+      const key  = refs.current[idx];
+      const dataLevel = typeof stop[0] === "object" ? stop[0].value : stop[0];
+      const value = stop[1];
+      const deleteStopBtn = <DeleteStopButton onClick={props.onDeleteStop?.bind(null, idx)} />;
 
-        const dataProps = {
-          "aria-label": t("Input value"),
-          label: t("Data value"),
-          value: dataLevel as any,
-          onChange: (newData: string | number | undefined) => this.changeStop(idx, { zoom: zoomLevel, value: newData as number }, value)
-        };
+      const dataProps = {
+        "aria-label": t("Input value"),
+        label: t("Data value"),
+        value: dataLevel as any,
+        onChange: (newData: string | number | undefined) => changeStop(idx, { zoom: zoomLevel, value: newData as number }, value)
+      };
 
-        let dataInput;
-        if(this.props.value?.type === "categorical") {
-          dataInput = <InputString {...dataProps} />;
-        }
-        else {
-          dataInput = <InputNumber {...dataProps} />;
-        }
+      let dataInput;
+      if(props.value?.type === "categorical") {
+        dataInput = <InputString {...dataProps} />;
+      }
+      else {
+        dataInput = <InputNumber {...dataProps} />;
+      }
 
-        let zoomInput = null;
-        if(zoomLevel !== undefined) {
-          zoomInput = <div>
-            <InputNumber
-              aria-label="Zoom"
-              value={zoomLevel}
-              onChange={newZoom => this.changeStop(idx, {zoom: newZoom, value: dataLevel}, value)}
-              min={0}
-              max={22}
+      let zoomInput = null;
+      if(zoomLevel !== undefined) {
+        zoomInput = <div>
+          <InputNumber
+            aria-label="Zoom"
+            value={zoomLevel}
+            onChange={newZoom => changeStop(idx, {zoom: newZoom, value: dataLevel}, value)}
+            min={0}
+            max={22}
+          />
+        </div>;
+      }
+
+      return <tr key={key}>
+        <td>
+          {zoomInput}
+        </td>
+        <td>
+          {dataInput}
+        </td>
+        <td>
+          <InputSpec
+            aria-label={t("Output value")}
+            fieldName={props.fieldName}
+            fieldSpec={props.fieldSpec}
+            value={value}
+            onChange={(_, newValue) => changeStop(idx, {zoom: zoomLevel, value: dataLevel}, newValue as number)}
+          />
+        </td>
+        <td>
+          {deleteStopBtn}
+        </td>
+      </tr>;
+    });
+  }
+
+  return <div className="maputnik-data-spec-block">
+    <fieldset className="maputnik-data-spec-property">
+      <legend>{labelFromFieldName(props.fieldName)}</legend>
+      <div className="maputnik-data-fieldset-inner">
+        <Block
+          label={t("Function")}
+          key="function"
+          data-wd-key="function-type"
+        >
+          <div className="maputnik-data-spec-property-input">
+            <InputSelect
+              value={props.value!.type}
+              onChange={(propVal: string) => changeDataType(propVal)}
+              title={t("Select a type of data scale (default is 'categorical').")}
+              options={getDataFunctionTypes(props.fieldSpec)}
             />
-          </div>;
-        }
-
-        return <tr key={key}>
-          <td>
-            {zoomInput}
-          </td>
-          <td>
-            {dataInput}
-          </td>
-          <td>
-            <InputSpec
-              aria-label={t("Output value")}
-              fieldName={this.props.fieldName}
-              fieldSpec={this.props.fieldSpec}
-              value={value}
-              onChange={(_, newValue) => this.changeStop(idx, {zoom: zoomLevel, value: dataLevel}, newValue as number)}
-            />
-          </td>
-          <td>
-            {deleteStopBtn}
-          </td>
-        </tr>;
-      });
-    }
-
-    return <div className="maputnik-data-spec-block">
-      <fieldset className="maputnik-data-spec-property">
-        <legend>{labelFromFieldName(this.props.fieldName)}</legend>
-        <div className="maputnik-data-fieldset-inner">
-          <Block
-            label={t("Function")}
-            key="function"
-            data-wd-key="function-type"
-          >
-            <div className="maputnik-data-spec-property-input">
-              <InputSelect
-                value={this.props.value!.type}
-                onChange={(propVal: string) => this.changeDataType(propVal)}
-                title={t("Select a type of data scale (default is 'categorical').")}
-                options={this.getDataFunctionTypes(this.props.fieldSpec)}
-              />
-            </div>
-          </Block>
-          {this.props.value?.type !== "identity" &&
+          </div>
+        </Block>
+        {props.value?.type !== "identity" &&
             <Block
               label={t("Base")}
               key="base"
@@ -310,40 +294,40 @@ class DataPropertyInternal extends React.Component<DataPropertyInternalProps, Da
                 <InputSpec
                   fieldName={"base"}
                   fieldSpec={latest.function.base as typeof latest.function.base & { type: "number" }}
-                  value={this.props.value?.base}
-                  onChange={(_, newValue) => this.changeBase(newValue as number)}
+                  value={props.value?.base}
+                  onChange={(_, newValue) => changeBase(newValue as number)}
                 />
               </div>
             </Block>
-          }
-          <Block
-            label={"Property"}
-            key="property"
-            data-wd-key="function-property"
-          >
-            <div className="maputnik-data-spec-property-input">
-              <InputString
-                value={this.props.value?.property}
-                title={t("Input a data property to base styles off of.")}
-                onChange={propVal => this.changeDataProperty("property", propVal)}
-              />
-            </div>
-          </Block>
-          {dataFields &&
+        }
+        <Block
+          label={"Property"}
+          key="property"
+          data-wd-key="function-property"
+        >
+          <div className="maputnik-data-spec-property-input">
+            <InputString
+              value={props.value?.property}
+              title={t("Input a data property to base styles off of.")}
+              onChange={propVal => changeDataProperty("property", propVal)}
+            />
+          </div>
+        </Block>
+        {dataFields &&
             <Block
               label={t("Default")}
               key="default"
               data-wd-key="function-default"
             >
               <InputSpec
-                fieldName={this.props.fieldName}
-                fieldSpec={this.props.fieldSpec}
-                value={this.props.value?.default}
-                onChange={(_, propVal) => this.changeDataProperty("default", propVal)}
+                fieldName={props.fieldName}
+                fieldSpec={props.fieldSpec}
+                value={props.value?.default}
+                onChange={(_, propVal) => changeDataProperty("default", propVal)}
               />
             </Block>
-          }
-          {dataFields &&
+        }
+        {dataFields &&
             <div className="maputnik-function-stop">
               <table className="maputnik-function-stop-table">
                 <caption>{t("Stops")}</caption>
@@ -359,30 +343,29 @@ class DataPropertyInternal extends React.Component<DataPropertyInternalProps, Da
                 </tbody>
               </table>
             </div>
-          }
-          <div className="maputnik-toolbox">
-            {dataFields &&
+        }
+        <div className="maputnik-toolbox">
+          {dataFields &&
               <InputButton
                 className="maputnik-add-stop"
-                onClick={this.props.onAddStop?.bind(this)}
+                onClick={props.onAddStop?.bind(null)}
               >
                 <PiListPlusBold style={{ verticalAlign: "text-bottom" }} />
                 {t("Add stop")}
               </InputButton>
-            }
-            <InputButton
-              className="maputnik-add-stop"
-              data-wd-key="convert-to-expression"
-              onClick={this.props.onExpressionClick?.bind(this)}
-            >
-              <TbMathFunction style={{ verticalAlign: "text-bottom" }} />
-              {t("Convert to expression")}
-            </InputButton>
-          </div>
+          }
+          <InputButton
+            className="maputnik-add-stop"
+            data-wd-key="convert-to-expression"
+            onClick={props.onExpressionClick?.bind(null)}
+          >
+            <TbMathFunction style={{ verticalAlign: "text-bottom" }} />
+            {t("Convert to expression")}
+          </InputButton>
         </div>
-      </fieldset>
-    </div>;
-  }
-}
+      </div>
+    </fieldset>
+  </div>;
+};
 
 export const DataProperty = withTranslation()(DataPropertyInternal);

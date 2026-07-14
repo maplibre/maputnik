@@ -24,72 +24,62 @@ type ExpressionPropertyInternalProps = {
   onBlur?(...args: unknown[]): unknown
 } & WithTranslation;
 
-class ExpressionPropertyInternal extends React.Component<ExpressionPropertyInternalProps> {
-  static defaultProps = {
-    errors: {},
-    onFocus: () => {},
-    onBlur: () => {},
-  };
+const ExpressionPropertyInternal: React.FC<ExpressionPropertyInternalProps> = ({
+  errors = {},
+  onFocus = () => {},
+  onBlur = () => {},
+  ...props
+}) => {
+  const {t, value, canUndo} = props;
+  const undoDisabled = canUndo ? !canUndo() : true;
 
-  constructor(props: ExpressionPropertyInternalProps) {
-    super(props);
-    this.state = {
-      jsonError: false,
-    };
-  }
-
-  render() {
-    const {t, value, canUndo} = this.props;
-    const undoDisabled = canUndo ? !canUndo() : true;
-
-    const deleteStopBtn = (
-      <>
-        {this.props.onUndo &&
-          <InputButton
-            key="undo_action"
-            onClick={this.props.onUndo}
-            disabled={undoDisabled}
-            className="maputnik-delete-stop"
-            data-wd-key="undo-expression"
-            title={t("Revert from expression")}
-          >
-            <MdUndo />
-          </InputButton>
-        }
+  const deleteStopBtn = (
+    <>
+      {props.onUndo &&
         <InputButton
-          key="delete_action"
-          onClick={this.props.onDelete}
+          key="undo_action"
+          onClick={props.onUndo}
+          disabled={undoDisabled}
           className="maputnik-delete-stop"
-          data-wd-key="delete-expression"
-          title={t("Delete expression")}
+          data-wd-key="undo-expression"
+          title={t("Revert from expression")}
         >
-          <MdDelete />
+          <MdUndo />
         </InputButton>
-      </>
-    );
-    let error = undefined;
-    if (this.props.errors) {
-      const fieldKey = this.props.fieldType ? this.props.fieldType + "." + this.props.fieldName : this.props.fieldName;
-      error = this.props.errors[fieldKey];
-    }
-    return <Block
-      fieldSpec={this.props.fieldSpec}
-      label={t(labelFromFieldName(this.props.fieldName))}
-      action={deleteStopBtn}
-      wideMode={true}
-      error={error}
-    >
-      <FieldJson
-        lintType="expression"
-        spec={this.props.fieldSpec}
-        className="maputnik-expression-editor"
-        onFocus={this.props.onFocus}
-        onBlur={this.props.onBlur}
-        value={value}
-        onChange={this.props.onChange}
-      />
-    </Block>;
+      }
+      <InputButton
+        key="delete_action"
+        onClick={props.onDelete}
+        className="maputnik-delete-stop"
+        data-wd-key="delete-expression"
+        title={t("Delete expression")}
+      >
+        <MdDelete />
+      </InputButton>
+    </>
+  );
+  let error = undefined;
+  if (errors) {
+    const fieldKey = props.fieldType ? props.fieldType + "." + props.fieldName : props.fieldName;
+    error = errors[fieldKey];
   }
-}
+  return <Block
+    fieldSpec={props.fieldSpec}
+    label={t(labelFromFieldName(props.fieldName))}
+    action={deleteStopBtn}
+    wideMode={true}
+    error={error}
+  >
+    <FieldJson
+      lintType="expression"
+      spec={props.fieldSpec}
+      className="maputnik-expression-editor"
+      onFocus={onFocus}
+      onBlur={onBlur}
+      value={value}
+      onChange={props.onChange}
+    />
+  </Block>;
+};
 
 export const ExpressionProperty = withTranslation()(ExpressionPropertyInternal);

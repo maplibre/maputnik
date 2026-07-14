@@ -25,25 +25,23 @@ export type InputEnumProps = {
 };
 
 
-export class InputEnum extends React.Component<InputEnumProps> {
-  render() {
-    const {options, value, onChange, name, label} = this.props;
+export const InputEnum: React.FC<InputEnumProps> = (props) => {
+  const {options, value, onChange, name, label} = props;
 
-    if(options.length <= 3 && optionsLabelLength(options) <= 20) {
-      return <InputMultiInput
-        name={name}
-        options={options}
-        value={(value || this.props.default)!}
-        onChange={onChange}
-        aria-label={this.props["aria-label"] || label}
-      />;
-    } else {
-      return <InputSelect
-        options={options}
-        value={(value || this.props.default)!}
-        onChange={onChange}
-        aria-label={this.props["aria-label"] || label}
-      />;
-    }
+  if(options.length <= 3 && optionsLabelLength(options) <= 20) {
+    return <InputMultiInput
+      name={name}
+      options={options}
+      value={(value || props.default)!}
+      onChange={onChange}
+      aria-label={props["aria-label"] || label}
+    />;
+  } else {
+    return <InputSelect
+      options={options}
+      value={(value || props.default)!}
+      onChange={onChange}
+      aria-label={props["aria-label"] || label}
+    />;
   }
-}
+};

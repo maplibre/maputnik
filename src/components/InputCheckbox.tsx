@@ -6,32 +6,26 @@ export type InputCheckboxProps = {
   onChange(...args: unknown[]): unknown
 };
 
-export class InputCheckbox extends React.Component<InputCheckboxProps> {
-  static defaultProps = {
-    value: false,
+export const InputCheckbox: React.FC<InputCheckboxProps> = ({value = false, ...props}) => {
+  const onChange = () => {
+    props.onChange(!value);
   };
 
-  onChange = () => {
-    this.props.onChange(!this.props.value);
-  };
-
-  render() {
-    return <div className="maputnik-checkbox-wrapper">
-      <input
-        className="maputnik-checkbox"
-        type="checkbox"
-        style={this.props.style}
-        onChange={this.onChange}
-        onClick={this.onChange}
-        checked={this.props.value}
-      />
-      <div className="maputnik-checkbox-box">
-        <svg style={{
-          display: this.props.value ? "inline" : "none"
-        }} className="maputnik-checkbox-icon" viewBox='0 0 32 32'>
-          <path d='M1 14 L5 10 L13 18 L27 4 L31 8 L13 26 z' />
-        </svg>
-      </div>
-    </div>;
-  }
-}
+  return <div className="maputnik-checkbox-wrapper">
+    <input
+      className="maputnik-checkbox"
+      type="checkbox"
+      style={props.style}
+      onChange={onChange}
+      onClick={onChange}
+      checked={value}
+    />
+    <div className="maputnik-checkbox-box">
+      <svg style={{
+        display: value ? "inline" : "none"
+      }} className="maputnik-checkbox-icon" viewBox='0 0 32 32'>
+        <path d='M1 14 L5 10 L13 18 L27 4 L31 8 L13 26 z' />
+      </svg>
+    </div>
+  </div>;
+};

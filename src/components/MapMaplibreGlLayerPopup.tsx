@@ -32,8 +32,8 @@ type FeatureLayerPopupProps = {
   zoom?: number
 };
 
-export class FeatureLayerPopup extends React.Component<FeatureLayerPopupProps> {
-  _getFeatureColor(feature: InspectFeature, _zoom?: number) {
+export const FeatureLayerPopup: React.FC<FeatureLayerPopupProps> = (props) => {
+  function _getFeatureColor(feature: InspectFeature, _zoom?: number) {
     // Guard because openlayers won't have this
     if (!feature.layer.paint) {
       return;
@@ -65,47 +65,45 @@ export class FeatureLayerPopup extends React.Component<FeatureLayerPopupProps> {
     }
   }
 
-  render() {
-    const sources = groupFeaturesBySourceLayer(this.props.features);
+  const sources = groupFeaturesBySourceLayer(props.features);
 
-    const items = Object.keys(sources).map(vectorLayerId => {
-      const layers = sources[vectorLayerId].map((feature: InspectFeature, idx: number) => {
-        const featureColor = this._getFeatureColor(feature, this.props.zoom);
+  const items = Object.keys(sources).map(vectorLayerId => {
+    const layers = sources[vectorLayerId].map((feature: InspectFeature, idx: number) => {
+      const featureColor = _getFeatureColor(feature, props.zoom);
 
-        return <div
-          key={idx}
-          className="maputnik-popup-layer"
+      return <div
+        key={idx}
+        className="maputnik-popup-layer"
+      >
+        <div
+          className="maputnik-popup-layer__swatch"
+          style={{background: featureColor}}
+        ></div>
+        <label
+          className="maputnik-popup-layer__label"
+          onClick={() => {
+            props.onLayerSelect(feature.layer.id);
+          }}
         >
-          <div
-            className="maputnik-popup-layer__swatch"
-            style={{background: featureColor}}
-          ></div>
-          <label
-            className="maputnik-popup-layer__label"
-            onClick={() => {
-              this.props.onLayerSelect(feature.layer.id);
-            }}
-          >
-            {feature.layer.type &&
-              <IconLayer type={feature.layer.type} style={{
-                width: 14,
-                height: 14,
-                paddingRight: 3
-              }}/>
-            }
-            {feature.layer.id}
-            {feature.counter && <span> × {feature.counter}</span>}
-          </label>
-        </div>;
-      });
-      return <div key={vectorLayerId}>
-        <div className="maputnik-popup-layer-id">{vectorLayerId}</div>
-        {layers}
+          {feature.layer.type &&
+            <IconLayer type={feature.layer.type} style={{
+              width: 14,
+              height: 14,
+              paddingRight: 3
+            }}/>
+          }
+          {feature.layer.id}
+          {feature.counter && <span> × {feature.counter}</span>}
+        </label>
       </div>;
     });
-
-    return <div className="maputnik-feature-layer-popup" data-wd-key="feature-layer-popup" dir="ltr">
-      {items}
+    return <div key={vectorLayerId}>
+      <div className="maputnik-popup-layer-id">{vectorLayerId}</div>
+      {layers}
     </div>;
-  }
-}
+  });
+
+  return <div className="maputnik-feature-layer-popup" data-wd-key="feature-layer-popup" dir="ltr">
+    {items}
+  </div>;
+};

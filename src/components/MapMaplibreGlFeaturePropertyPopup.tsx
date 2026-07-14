@@ -63,15 +63,13 @@ type FeaturePropertyPopupProps = {
   features: InspectFeature[]
 };
 
-export class FeaturePropertyPopup extends React.Component<FeaturePropertyPopupProps> {
-  render() {
-    const features = removeDuplicatedFeatures(this.props.features);
-    return <div className="maputnik-feature-property-popup" dir="ltr" data-wd-key="feature-property-popup">
-      <table className="maputnik-popup-table">
-        <tbody>
-          {features.map(renderFeature)}
-        </tbody>
-      </table>
-    </div>;
-  }
-}
+export const FeaturePropertyPopup: React.FC<FeaturePropertyPopupProps> = (props) => {
+  const features = removeDuplicatedFeatures(props.features);
+  return <div className="maputnik-feature-property-popup" dir="ltr" data-wd-key="feature-property-popup">
+    <table className="maputnik-popup-table">
+      <tbody>
+        {features.map(renderFeature)}
+      </tbody>
+    </table>
+  </div>;
+};

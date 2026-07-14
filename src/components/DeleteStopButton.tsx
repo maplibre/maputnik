@@ -10,17 +10,15 @@ type DeleteStopButtonInternalProps = {
 } & WithTranslation;
 
 
-class DeleteStopButtonInternal extends React.Component<DeleteStopButtonInternalProps> {
-  render() {
-    const t = this.props.t;
-    return <InputButton
-      className="maputnik-delete-stop"
-      onClick={this.props.onClick}
-      title={t("Remove zoom level from stop")}
-    >
-      <MdDelete />
-    </InputButton>;
-  }
-}
+const DeleteStopButtonInternal: React.FC<DeleteStopButtonInternalProps> = (props) => {
+  const t = props.t;
+  return <InputButton
+    className="maputnik-delete-stop"
+    onClick={props.onClick}
+    title={t("Remove zoom level from stop")}
+  >
+    <MdDelete />
+  </InputButton>;
+};
 
 export const DeleteStopButton = withTranslation()(DeleteStopButtonInternal);

@@ -11,13 +11,9 @@ export type InputFontProps = {
   "aria-label"?: string
 };
 
-export class InputFont extends React.Component<InputFontProps> {
-  static defaultProps = {
-    fonts: []
-  };
-
-  get values() {
-    const out = this.props.value || this.props.default || [];
+export const InputFont: React.FC<InputFontProps> = ({fonts = [], ...props}) => {
+  const getValues = () => {
+    const out = props.value || props.default || [];
 
     // Always put a "" in the last field to you can keep adding entries
     if (out[out.length-1] !== ""){
@@ -26,36 +22,36 @@ export class InputFont extends React.Component<InputFontProps> {
     else {
       return out;
     }
-  }
+  };
 
-  changeFont(idx: number, newValue: string) {
-    const changedValues = this.values.slice(0);
+  const values = getValues();
+
+  const changeFont = (idx: number, newValue: string) => {
+    const changedValues = values.slice(0);
     changedValues[idx] = newValue;
     const filteredValues = changedValues
       .filter(v => v !== undefined)
       .filter(v => v !== "");
 
-    this.props.onChange(filteredValues);
-  }
+    props.onChange(filteredValues);
+  };
 
-  render() {
-    const inputs = this.values.map((value, i) => {
-      return <li
-        key={i}
-      >
-        <InputAutocomplete
-          aria-label={this.props["aria-label"] || this.props.name}
-          value={value}
-          options={this.props.fonts?.map(f => [f, f])}
-          onChange={this.changeFont.bind(this, i)}
-        />
-      </li>;
-    });
+  const inputs = values.map((value, i) => {
+    return <li
+      key={i}
+    >
+      <InputAutocomplete
+        aria-label={props["aria-label"] || props.name}
+        value={value}
+        options={fonts.map(f => [f, f])}
+        onChange={changeFont.bind(null, i)}
+      />
+    </li>;
+  });
 
-    return (
-      <ul className="maputnik-font">
-        {inputs}
-      </ul>
-    );
-  }
-}
+  return (
+    <ul className="maputnik-font">
+      {inputs}
+    </ul>
+  );
+};

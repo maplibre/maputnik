@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { TbMathFunction } from "react-icons/tb";
 import { PiListPlusBold } from "react-icons/pi";
 import {isEqual} from "lodash";
@@ -100,222 +100,190 @@ type FilterEditorInternalProps = {
   onChange(value: LegacyFilterSpecification | ExpressionSpecification): void
 } & WithTranslation;
 
-type FilterEditorState = {
-  showDoc: boolean
-  displaySimpleFilter: boolean
-  valueIsSimpleFilter?: boolean
-};
+const FilterEditorInternal: React.FC<FilterEditorInternalProps> = ({ filter = ["all"], ...rest }) => {
+  const props = { filter, ...rest } as FilterEditorInternalProps;
 
-class FilterEditorInternal extends React.Component<FilterEditorInternalProps, FilterEditorState> {
-  static defaultProps = {
-    filter: ["all"],
-  };
+  // Nothing ever toggles this: the Block below renders its own documentation
+  // toggle, so this component's inline doc panel stays hidden (as it did before).
+  const [showDoc] = useState(false);
+  const [displaySimpleFilter, setDisplaySimpleFilter] = useState(() =>
+    checkIfSimpleFilter(combiningFilter(props))
+  );
 
-  constructor (props: FilterEditorInternalProps) {
-    super(props);
-    this.state = {
-      showDoc: false,
-      displaySimpleFilter: checkIfSimpleFilter(combiningFilter(props)),
-    };
+  // Replaces getDerivedStateFromProps. "Upgrade but never downgrade": once the
+  // filter stops being expressible in the simple editor, switch to the
+  // expression editor and stay there.
+  const isSimpleFilter = checkIfSimpleFilter(combiningFilter(props));
+  if (!isSimpleFilter && displaySimpleFilter) {
+    setDisplaySimpleFilter(false);
   }
+  // In the original this was state, but every branch derived it from these two
+  // values alone.
+  const valueIsSimpleFilter = isSimpleFilter && !displaySimpleFilter;
 
   // Convert filter to combining filter
-  onFilterPartChanged(filterIdx: number, newPart: any[]) {
-    const newFilter = combiningFilter(this.props).slice(0) as LegacyFilterSpecification | ExpressionSpecification;
+  function onFilterPartChanged(filterIdx: number, newPart: any[]) {
+    const newFilter = combiningFilter(props).slice(0) as LegacyFilterSpecification | ExpressionSpecification;
     newFilter[filterIdx] = newPart;
-    this.props.onChange(newFilter);
+    props.onChange(newFilter);
   }
 
-  deleteFilterItem(filterIdx: number) {
-    const newFilter = combiningFilter(this.props).slice(0) as LegacyFilterSpecification | ExpressionSpecification;
+  function deleteFilterItem(filterIdx: number) {
+    const newFilter = combiningFilter(props).slice(0) as LegacyFilterSpecification | ExpressionSpecification;
     newFilter.splice(filterIdx + 1, 1);
-    this.props.onChange(newFilter);
+    props.onChange(newFilter);
   }
 
-  addFilterItem = () => {
-    const newFilterItem = combiningFilter(this.props).slice(0) as LegacyFilterSpecification | ExpressionSpecification;
+  const addFilterItem = () => {
+    const newFilterItem = combiningFilter(props).slice(0) as LegacyFilterSpecification | ExpressionSpecification;
     (newFilterItem as any[]).push(["==", "name", ""]);
-    this.props.onChange(newFilterItem);
+    props.onChange(newFilterItem);
   };
 
-  onToggleDoc = (val: boolean) => {
-    this.setState({
-      showDoc: val
-    });
+  const makeFilter = () => {
+    setDisplaySimpleFilter(true);
   };
 
-  makeFilter = () => {
-    this.setState({
-      displaySimpleFilter: true,
-    });
+  const makeExpression = () => {
+    const currentFilter = combiningFilter(props);
+    props.onChange(migrateFilter(currentFilter));
+    setDisplaySimpleFilter(false);
   };
 
-  makeExpression = () => {
-    const filter = combiningFilter(this.props);
-    this.props.onChange(migrateFilter(filter));
-    this.setState({
-      displaySimpleFilter: false,
-    });
+
+  const {errors, t} = props;
+  const fieldSpec={
+    doc: latest.layer.filter.doc + " Combine multiple filters together by using a compound filter."
   };
+  const defaultFilter = ["all"] as LegacyFilterSpecification | ExpressionSpecification;
 
-  static getDerivedStateFromProps(props: Readonly<FilterEditorInternalProps>, state: FilterEditorState) {
-    const displaySimpleFilter = checkIfSimpleFilter(combiningFilter(props));
+  const isNestedCombiningFilter = displaySimpleFilter && hasNestedCombiningFilter(combiningFilter(props));
 
-    // Upgrade but never downgrade
-    if (!displaySimpleFilter && state.displaySimpleFilter === true) {
-      return {
-        displaySimpleFilter: false,
-        valueIsSimpleFilter: false,
-      };
-    }
-    else if (displaySimpleFilter && state.displaySimpleFilter === false) {
-      return {
-        valueIsSimpleFilter: true,
-      };
-    }
-    else {
-      return {
-        valueIsSimpleFilter: false,
-      };
-    }
+  if (isNestedCombiningFilter) {
+    return <div className="maputnik-filter-editor-unsupported">
+      <p>
+        {t("Nested filters are not supported.")}
+      </p>
+      <InputButton
+        onClick={makeExpression}
+        title={t("Convert to expression")}
+      >
+        <TbMathFunction />
+        {t("Upgrade to expression")}
+      </InputButton>
+    </div>;
   }
+  else if (displaySimpleFilter) {
+    const filter = combiningFilter(props);
+    const combiningOp = filter[0];
+    const filters = filter.slice(1) as (LegacyFilterSpecification | ExpressionSpecification)[];
 
-  render() {
-    const {errors, t} = this.props;
-    const {displaySimpleFilter} = this.state;
-    const fieldSpec={
-      doc: latest.layer.filter.doc + " Combine multiple filters together by using a compound filter."
-    };
-    const defaultFilter = ["all"] as LegacyFilterSpecification | ExpressionSpecification;
-
-    const isNestedCombiningFilter = displaySimpleFilter && hasNestedCombiningFilter(combiningFilter(this.props));
-
-    if (isNestedCombiningFilter) {
-      return <div className="maputnik-filter-editor-unsupported">
-        <p>
-          {t("Nested filters are not supported.")}
-        </p>
+    const actions = (
+      <div>
         <InputButton
-          onClick={this.makeExpression}
+          onClick={makeExpression}
           title={t("Convert to expression")}
+          className="maputnik-make-zoom-function"
+          data-wd-key="filter-convert-to-expression"
         >
           <TbMathFunction />
-          {t("Upgrade to expression")}
         </InputButton>
-      </div>;
-    }
-    else if (displaySimpleFilter) {
-      const filter = combiningFilter(this.props);
-      const combiningOp = filter[0];
-      const filters = filter.slice(1) as (LegacyFilterSpecification | ExpressionSpecification)[];
+      </div>
+    );
 
-      const actions = (
-        <div>
-          <InputButton
-            onClick={this.makeExpression}
-            title={t("Convert to expression")}
-            className="maputnik-make-zoom-function"
-            data-wd-key="filter-convert-to-expression"
-          >
-            <TbMathFunction />
-          </InputButton>
+    const editorBlocks = filters.map((f, idx) => {
+      const error = errors![`filter[${idx+1}]`];
+
+      return (
+        <div key={`block-${idx}`}>
+          <FilterEditorBlock key={idx} onDelete={deleteFilterItem.bind(null, idx)}>
+            <SingleFilterEditor
+              properties={props.properties}
+              filter={f}
+              onChange={onFilterPartChanged.bind(null, idx + 1)}
+            />
+          </FilterEditorBlock>
+          {error &&
+              <div key="error" className="maputnik-inline-error">{error.message}</div>
+          }
         </div>
       );
-
-      const editorBlocks = filters.map((f, idx) => {
-        const error = errors![`filter[${idx+1}]`];
-
-        return (
-          <div key={`block-${idx}`}>
-            <FilterEditorBlock key={idx} onDelete={this.deleteFilterItem.bind(this, idx)}>
-              <SingleFilterEditor
-                properties={this.props.properties}
-                filter={f}
-                onChange={this.onFilterPartChanged.bind(this, idx + 1)}
-              />
-            </FilterEditorBlock>
-            {error &&
-              <div key="error" className="maputnik-inline-error">{error.message}</div>
-            }
-          </div>
-        );
-      });
+    });
 
 
-      return (
-        <>
-          <Block
-            key="top"
-            fieldSpec={fieldSpec}
-            label={t("Filter")}
-            action={actions}
-            data-wd-key="filter-combining-operator"
-          >
-            <InputSelect
-              value={combiningOp}
-              onChange={(v: [string, any]) => this.onFilterPartChanged(0, v)}
-              options={[
-                ["all", t("every filter matches")],
-                ["none", t("no filter matches")],
-                ["any", t("any filter matches")]
-              ]}
-            />
-          </Block>
-          {editorBlocks}
-          <div
-            key="buttons"
-            className="maputnik-filter-editor-add-wrapper"
-          >
-            <InputButton
-              data-wd-key="layer-filter-button"
-              className="maputnik-add-filter"
-              onClick={this.addFilterItem}
-            >
-              <PiListPlusBold style={{ verticalAlign: "text-bottom" }} />
-              {t("Add filter")}
-            </InputButton>
-          </div>
-          <div
-            key="doc"
-            className="maputnik-doc-inline"
-            style={{display: this.state.showDoc ? "" : "none"}}
-          >
-            <Doc fieldSpec={fieldSpec} />
-          </div>
-        </>
-      );
-    }
-    else {
-      const {filter} = this.props;
-
-      return (
-        <>
-          <ExpressionProperty
-            onDelete={() => {
-              this.setState({displaySimpleFilter: true});
-              this.props.onChange(defaultFilter);
-            }}
-            fieldName="filter"
-            value={filter}
-            errors={errors}
-            onChange={this.props.onChange}
+    return (
+      <>
+        <Block
+          key="top"
+          fieldSpec={fieldSpec}
+          label={t("Filter")}
+          action={actions}
+          data-wd-key="filter-combining-operator"
+        >
+          <InputSelect
+            value={combiningOp}
+            onChange={(v: [string, any]) => onFilterPartChanged(0, v)}
+            options={[
+              ["all", t("every filter matches")],
+              ["none", t("no filter matches")],
+              ["any", t("any filter matches")]
+            ]}
           />
-          {this.state.valueIsSimpleFilter &&
+        </Block>
+        {editorBlocks}
+        <div
+          key="buttons"
+          className="maputnik-filter-editor-add-wrapper"
+        >
+          <InputButton
+            data-wd-key="layer-filter-button"
+            className="maputnik-add-filter"
+            onClick={addFilterItem}
+          >
+            <PiListPlusBold style={{ verticalAlign: "text-bottom" }} />
+            {t("Add filter")}
+          </InputButton>
+        </div>
+        <div
+          key="doc"
+          className="maputnik-doc-inline"
+          style={{display: showDoc ? "" : "none"}}
+        >
+          <Doc fieldSpec={fieldSpec} />
+        </div>
+      </>
+    );
+  }
+  else {
+    const {filter} = props;
+
+    return (
+      <>
+        <ExpressionProperty
+          onDelete={() => {
+            setDisplaySimpleFilter(true);
+            props.onChange(defaultFilter);
+          }}
+          fieldName="filter"
+          value={filter}
+          errors={errors}
+          onChange={props.onChange}
+        />
+        {valueIsSimpleFilter &&
             <div className="maputnik-expr-infobox">
               {t("You've entered an old style filter.")}
               {" "}
               <button
-                onClick={this.makeFilter}
+                onClick={makeFilter}
                 className="maputnik-expr-infobox__button"
               >
                 {t("Switch to filter editor.")}
               </button>
             </div>
-          }
-        </>
-      );
-    }
+        }
+      </>
+    );
   }
-}
+};
 
 export const FilterEditor = withTranslation()(FilterEditorInternal);
