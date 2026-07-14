@@ -119,7 +119,7 @@ function createMaplibreExpressionLinter(spec?: StylePropertySpecification) {
     const text = view.state.doc.toString();
     const parsedJson = JSON.parse(text);
     const ast = jsonToAst(text);
-    const out = expression.createExpression(parsedJson, spec);
+    const out = expression.createExpression(parsedJson, "expression", spec);
     if (out?.result !== "error") {
       return [];
     }

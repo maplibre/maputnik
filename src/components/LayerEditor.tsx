@@ -74,20 +74,20 @@ function getLayoutForType(type: LayerSpecification["type"], t: TFunction): Maput
     return getLayoutForSymbolType(t);
   }
   const groups: MaputnikLayoutGroup[] = [];
-  if (Object.keys(v8["paint_" + type]).length > 0) {
+  if (Object.keys(v8["paint_" + type as keyof typeof v8]).length > 0) {
     groups.push({
       title: t("Paint properties"),
       id: "Paint_properties",
       type: "properties",
-      fields: Object.keys(v8["paint_" + type]),
+      fields: Object.keys(v8["paint_" + type as keyof typeof v8]),
     });
   }
-  if (Object.keys(v8["layout_" + type]).length > 0) {
+  if (Object.keys(v8["layout_" + type as keyof typeof v8]).length > 0) {
     groups.push({
       title: t("Layout properties"),
       id: "Layout_properties",
       type: "properties",
-      fields: Object.keys(v8["layout_" + type])
+      fields: Object.keys(v8["layout_" + type as keyof typeof v8])
     });
   }
   return groups;

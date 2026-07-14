@@ -2,7 +2,10 @@ import { InputDynamicArray, type InputDynamicArrayProps } from "./InputDynamicAr
 import { Fieldset } from "./Fieldset";
 
 type FieldDynamicArrayProps = InputDynamicArrayProps & {
-  name?: string
+  name?: string;
+  fieldSpec?: {
+    value?: string;
+  }
 };
 
 export const FieldDynamicArray: React.FC<FieldDynamicArrayProps> = (props) => {
