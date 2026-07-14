@@ -5,14 +5,14 @@ import { type LayerSpecification } from "maplibre-gl";
 export function changeType(layer: LayerSpecification, newType: string): LayerSpecification {
   const changedPaintProps: LayerSpecification["paint"] = { ...layer.paint };
   Object.keys(changedPaintProps).forEach(propertyName => {
-    if(!(propertyName in latest["paint_" + newType])) {
+    if(!(propertyName in ((latest["paint_" + newType as keyof typeof latest]) as string[]))) {
       delete changedPaintProps[propertyName as keyof LayerSpecification["paint"]];
     }
   });
 
   const changedLayoutProps: LayerSpecification["layout"] = { ...layer.layout };
   Object.keys(changedLayoutProps).forEach(propertyName => {
-    if(!(propertyName in latest["layout_" + newType])) {
+    if(!(propertyName in ((latest["layout_" + newType as keyof typeof latest]) as string[]))) {
       delete changedLayoutProps[propertyName as keyof LayerSpecification["layout"]];
     }
   });
