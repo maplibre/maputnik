@@ -5,6 +5,7 @@
 - _...Add new stuff here..._
 
 ### 🐞 Bug fixes
+- Fix blank map when a style reaches the map component before `style.load` fires — the style was silently dropped and the map kept rendering the empty default style
 - _...Add new stuff here..._
 
 ## 3.1.0
