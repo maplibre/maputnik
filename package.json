@@ -130,7 +130,7 @@
     "eslint-plugin-react": "^7.37.5",
     "eslint-plugin-react-hooks": "^7.1.1",
     "eslint-plugin-react-refresh": "^0.5.3",
-    "i18next-cli": "^1.65.0",
+    "i18next-cli": "^1.66.2",
     "istanbul": "^0.4.5",
     "istanbul-lib-coverage": "^3.2.2",
     "nyc": "^18.0.0",
