@@ -88,6 +88,9 @@ class MapMaplibreGlInternal extends React.Component<MapMaplibreGlInternalProps, 
     options: {} as MapOptions,
   };
   container: HTMLDivElement | null = null;
+  // Held from map creation, unlike state.map which is only set once "style.load"
+  // fires. A style arriving before that event must still reach the map.
+  map: Map | null = null;
 
   constructor(props: MapMaplibreGlInternalProps) {
     super(props);
@@ -114,7 +117,7 @@ class MapMaplibreGlInternal extends React.Component<MapMaplibreGlInternalProps, 
   }
 
   componentDidUpdate() {
-    const map = this.state.map;
+    const map = this.map;
 
     const styleWithTokens = this.props.replaceAccessTokens(this.props.mapStyle);
     if (map) {
@@ -169,6 +172,7 @@ class MapMaplibreGlInternal extends React.Component<MapMaplibreGlInternalProps, 
     const protocol = new Protocol({metadata: true});
     MapLibreGl.addProtocol("pmtiles",protocol.tile);
     const map = new MapLibreGl.Map(mapOpts);
+    this.map = map;
 
     const mapViewChange = () => {
       const center = map.getCenter();
