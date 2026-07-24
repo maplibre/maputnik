@@ -141,7 +141,7 @@
     "stylelint-config-recommended-scss": "^17.0.1",
     "stylelint-scss": "^7.2.0",
     "typescript": "^6.0.3",
-    "typescript-eslint": "^8.64.0",
+    "typescript-eslint": "^8.65.0",
     "uuid": "^14.0.1",
     "vite": "^7.3.2",
     "vite-plugin-istanbul": "^9.0.1",
