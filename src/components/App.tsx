@@ -927,6 +927,7 @@ export class App extends React.Component<any, AppState> {
       mapStyle={this.state.mapStyle}
       errors={this.state.errors}
       infos={this.state.infos}
+      onClearInfos={() => this.setState({ infos: [] })}
     /> : undefined;
 
 

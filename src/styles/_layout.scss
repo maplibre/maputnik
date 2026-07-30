@@ -28,9 +28,42 @@
     display: flex;
   }
 
+  &-sidebar {
+    display: flex;
+    overflow-x: auto;
+    overflow-y: hidden;
+    width: 200px;
+    flex-shrink: 0;
+    position: relative;
+    background-color: vars.$color-black;
+  }
+
+  &-resizer {
+    width: 6px;
+    background-color: vars.$color-midgray;
+    cursor: col-resize;
+    position: relative;
+    z-index: 100;
+    flex-shrink: 0;
+    transition: background-color 0.2s;
+
+    &:hover {
+      background-color: vars.$color-lowgray;
+    }
+  }
+
+  &--is-resizing {
+    user-select: none;
+
+    iframe, canvas, .maputnik-map__container {
+      pointer-events: none !important;
+    }
+  }
+
   &-list {
     width: 200px;
     background-color: vars.$color-black;
+    flex-shrink: 0;
   }
 
   &-drawer {
@@ -38,6 +71,7 @@
     background-color: vars.$color-black;
     // scroll-container is position: absolute
     position: relative;
+    flex-shrink: 0;
   }
 
   &-code-editor {
@@ -45,14 +79,15 @@
     background-color: vars.$color-black;
     // scroll-container is position: absolute
     position: relative;
+    flex-shrink: 0;
   }
 
   &-bottom {
     position: fixed;
     bottom: 0;
+    left: 200px;
     right: 0;
     z-index: 10;
-    width: vars.$layout-map-width;
     background-color: vars.$color-black;
   }
 }

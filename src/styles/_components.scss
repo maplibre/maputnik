@@ -6,7 +6,8 @@
 .maputnik-map__container {
   background: white;
   display: flex;
-  width: vars.$layout-map-width;
+  flex: 1;
+  min-width: 0;
 
   &--error {
     align-items: center;
@@ -219,7 +220,8 @@
 
 // MESSAGE PANEL
 .maputnik-message-panel {
-  padding: vars.$margin-2;
+  padding: vars.$margin-2 vars.$margin-5 vars.$margin-2 vars.$margin-2;
+  position: relative;
 
   &-error {
     color: vars.$color-red;
@@ -229,6 +231,29 @@
     all: unset;
     text-decoration: underline;
     cursor: pointer;
+  }
+
+  &__close {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    right: vars.$margin-3;
+    background: transparent;
+    border: none;
+    color: vars.$color-lowgray;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: vars.$margin-1;
+    border-radius: 50%;
+    line-height: 1;
+    transition: color 0.2s, background-color 0.2s;
+
+    &:hover {
+      color: vars.$color-white;
+      background-color: rgba(255, 255, 255, 0.1);
+    }
   }
 }
 
