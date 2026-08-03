@@ -100,7 +100,7 @@
   "devDependencies": {
     "@eslint/js": "^10.0.1",
     "@istanbuljs/nyc-config-typescript": "^1.0.2",
-    "@playwright/test": "^1.62.0",
+    "@playwright/test": "^1.62.1",
     "@stylistic/eslint-plugin": "^5.10.0",
     "@types/codemirror": "^5.60.17",
     "@types/color": "^4.2.1",
