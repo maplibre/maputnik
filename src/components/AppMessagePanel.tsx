@@ -3,6 +3,7 @@ import { formatLayerId } from "../libs/format";
 import { type LayerSpecification, type StyleSpecification } from "maplibre-gl";
 import { type WithTranslation, withTranslation } from "react-i18next";
 import { type MappedError } from "../libs/definitions";
+import { MdClose } from "react-icons/md";
 
 type AppMessagePanelInternalProps = {
   errors?: MappedError[]
@@ -11,6 +12,7 @@ type AppMessagePanelInternalProps = {
   onLayerSelect?(index: number): void;
   currentLayer?: LayerSpecification
   selectedLayerIndex?: number
+  onClearInfos?(): void;
 } & WithTranslation;
 
 class AppMessagePanelInternal extends React.Component<AppMessagePanelInternalProps> {
@@ -54,9 +56,21 @@ class AppMessagePanelInternal extends React.Component<AppMessagePanelInternalPro
       return <p key={"info-" + i}>{m}</p>;
     });
 
+    const hasInfos = this.props.infos && this.props.infos.length > 0;
+
     return <div className="maputnik-message-panel">
       {errors}
       {infos}
+      {hasInfos && this.props.onClearInfos && (
+        <button
+          className="maputnik-message-panel__close"
+          onClick={this.props.onClearInfos}
+          title="Clear messages"
+          aria-label="Clear messages"
+        >
+          <MdClose size="16px" />
+        </button>
+      )}
     </div>;
   }
 }

@@ -42,9 +42,10 @@ export class InputColor extends React.Component<InputColorProps> {
     const elem = this.colorInput;
     if(elem) {
       const pos = elem.getBoundingClientRect();
+      const left = pos.left > 300 ? pos.left - 235 : pos.left + pos.width + 10;
       return {
-        top: pos.top,
-        left: pos.left + 196,
+        top: Math.min(pos.top, window.innerHeight - 250),
+        left: left,
       };
     } else {
       return {
@@ -116,7 +117,14 @@ export class InputColor extends React.Component<InputColorProps> {
 
     return <div className="maputnik-color-wrapper">
       {this.state.pickerOpened && picker}
-      <div className="maputnik-color-swatch" style={swatchStyle}></div>
+      <input
+        type="color"
+        className="maputnik-color-swatch"
+        style={swatchStyle}
+        value={this.color.hex()}
+        onChange={(e) => this.onChange(e.target.value)}
+        title="Open color wheel"
+      />
       <input
         aria-label={this.props["aria-label"]}
         spellCheck="false"
