@@ -34,6 +34,7 @@ import { undoMessages, redoMessages } from "../libs/diffmessage";
 import { createStyleStore, type IStyleStore } from "../libs/store/style-store-factory";
 import { RevisionStore } from "../libs/revisions";
 import { LayerWatcher } from "../libs/layerwatcher";
+import { vectorLayerFieldsFromTileJSON, mergeVectorLayerFields, type VectorLayerFields } from "../libs/vectorlayerfields";
 import tokens from "../config/tokens.json";
 import isEqual from "lodash.isequal";
 import { type MapOptions } from "maplibre-gl";
@@ -91,7 +92,7 @@ type AppState = {
   selectedLayerIndex: number,
   selectedLayerOriginalId?: string,
   sources: {[key: string]: SourceSpecification & {layers: string[]} },
-  vectorLayers: {[layerId: string]: {[propertyName: string]: any}},
+  vectorLayers: VectorLayerFields,
   spec: any,
   mapView: {
     zoom: number,
@@ -173,25 +174,14 @@ export class App extends React.Component<any, AppState> {
     };
 
     this.layerWatcher = new LayerWatcher({
-      onVectorLayersChange: v => this.mergeVectorLayerFields(v)
+      onVectorLayersChange: v => this.mergeVectorLayerFieldsIntoState(v)
     });
   }
 
-  /** Merge newly discovered vector layer fields into state without discarding
-   * fields already known from other sources (e.g. the TileJSON schema vs.
-   * fields observed on already-rendered tiles). */
-  mergeVectorLayerFields(newFields: {[layerId: string]: {[propertyName: string]: any}}) {
+  mergeVectorLayerFieldsIntoState(newFields: VectorLayerFields) {
     this.setState(prevState => {
-      const merged: {[layerId: string]: {[propertyName: string]: any}} = {...prevState.vectorLayers};
-      let changed = false;
-      for (const layerId of Object.keys(newFields)) {
-        const mergedLayer = {...merged[layerId], ...newFields[layerId]};
-        if (!isEqual(mergedLayer, merged[layerId])) {
-          merged[layerId] = mergedLayer;
-          changed = true;
-        }
-      }
-      return changed ? {vectorLayers: merged} : null;
+      const merged = mergeVectorLayerFields(prevState.vectorLayers, newFields);
+      return merged === prevState.vectorLayers ? null : {vectorLayers: merged};
     });
   }
 
@@ -637,7 +627,7 @@ export class App extends React.Component<any, AppState> {
 
   async fetchSources() {
     const sourceList: {[key: string]: SourceSpecification & {layers: string[]}} = {};
-    const vectorLayerFields: {[layerId: string]: {[propertyName: string]: any}} = {};
+    let vectorLayerFields: VectorLayerFields = {};
     for(const key of Object.keys(this.state.mapStyle.sources)) {
       const source = this.state.mapStyle.sources[key];
       if(source.type !== "vector" || !("url" in source)) {
@@ -660,21 +650,14 @@ export class App extends React.Component<any, AppState> {
         }
 
         const setVectorLayers = (json:any) => {
+          vectorLayerFields = mergeVectorLayerFields(vectorLayerFields, vectorLayerFieldsFromTileJSON(json));
+
           if(!Object.prototype.hasOwnProperty.call(json, "vector_layers")) {
             return;
           }
 
           for(const layer of json.vector_layers) {
             sourceList[key].layers.push(layer.id);
-            if (layer.fields) {
-              vectorLayerFields[layer.id] = {
-                ...vectorLayerFields[layer.id],
-                ...Object.keys(layer.fields).reduce((acc: {[key: string]: {}}, field: string) => {
-                  acc[field] = {};
-                  return acc;
-                }, {}),
-              };
-            }
           }
         };
 
@@ -701,7 +684,7 @@ export class App extends React.Component<any, AppState> {
     }
 
     if(Object.keys(vectorLayerFields).length > 0) {
-      this.mergeVectorLayerFields(vectorLayerFields);
+      this.mergeVectorLayerFieldsIntoState(vectorLayerFields);
     }
   }
 
