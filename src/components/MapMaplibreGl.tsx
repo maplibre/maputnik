@@ -1,6 +1,7 @@
 import React from "react";
 import {createRoot} from "react-dom/client";
-import MapLibreGl, {type LayerSpecification, type LngLat, type Map, type MapOptions, type SourceSpecification, type StyleSpecification} from "maplibre-gl";
+import * as MapLibreGl from "maplibre-gl";
+import {type LayerSpecification, type LngLat, type Map, type MapOptions, type SourceSpecification, type StyleSpecification} from "maplibre-gl";
 import MaplibreInspect from "@maplibre/maplibre-gl-inspect";
 import colors from "@maplibre/maplibre-gl-inspect/lib/colors";
 import { FeatureLayerPopup as MapMaplibreGlLayerPopup } from "./MapMaplibreGlLayerPopup";
@@ -10,7 +11,7 @@ import { ZoomControl } from "../libs/zoomcontrol";
 import { type HighlightedLayer, colorHighlightedLayer } from "../libs/highlight";
 import "maplibre-gl/dist/maplibre-gl.css";
 import "../maplibregl.css";
-import "../libs/maplibre-rtl";
+import "../libs/maplibre-init";
 import MaplibreGeocoder, { type MaplibreGeocoderApi, type MaplibreGeocoderApiConfig } from "@maplibre/maplibre-gl-geocoder";
 import "@maplibre/maplibre-gl-geocoder/dist/maplibre-gl-geocoder.css";
 import { withTranslation, type WithTranslation } from "react-i18next";
@@ -238,7 +239,7 @@ class MapMaplibreGlInternal extends React.Component<MapMaplibreGlInternalProps, 
     });
 
     map.on("data", e => {
-      if(e.dataType !== "tile") return;
+      if(e.dataType !== "source" || !e.tile) return;
       this.props.onDataChange!({
         map: this.state.map
       });

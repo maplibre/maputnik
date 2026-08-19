@@ -14,6 +14,7 @@ export default defineConfig({
   files: ["**/*.{js,jsx,ts,tsx}"],
   ignores: [
     "dist/**/*",
+    "public/**/*",
   ],
   languageOptions: {
     ecmaVersion: 2024,

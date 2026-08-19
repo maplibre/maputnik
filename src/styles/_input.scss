@@ -101,8 +101,7 @@
 .maputnik-select {
   @extend .maputnik-input !optional; /* stylelint-disable-line */
 
-  -moz-appearance: none;
-  -webkit-appearance: none;
+  appearance: none;
   background: vars.$color-gray url("#{vars.$icon-down-arrow}") right center no-repeat;
   color: vars.$color-white;
   background-position: calc(100% - 2px) center;

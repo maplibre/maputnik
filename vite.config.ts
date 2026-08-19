@@ -7,7 +7,10 @@ export default defineConfig(({ mode }) => ({
     port: 8888,
   },
   build: {
-    sourcemap: true
+    sourcemap: true,
+    rolldownOptions: {
+      checks: { invalidAnnotation: false },
+    },
   },
   plugins: [
     react(),
@@ -17,8 +20,11 @@ export default defineConfig(({ mode }) => ({
       forceBuildInstrument: true, // Instrument the source so e2e runs can collect coverage
     }),
   ],
+  optimizeDeps: {
+    exclude: ["maplibre-gl/dist/maplibre-gl-worker.mjs"],
+  },
   base: mode === "desktop" ? "/" : "/maputnik/",
   define: {
-    global: "window"
+    global: "globalThis"
   },
 }));
