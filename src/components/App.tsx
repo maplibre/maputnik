@@ -34,6 +34,7 @@ import { undoMessages, redoMessages } from "../libs/diffmessage";
 import { createStyleStore, type IStyleStore } from "../libs/store/style-store-factory";
 import { RevisionStore } from "../libs/revisions";
 import { LayerWatcher } from "../libs/layerwatcher";
+import { vectorLayerFieldsFromTileJSON, mergeVectorLayerFields, type VectorLayerFields } from "../libs/vectorlayerfields";
 import tokens from "../config/tokens.json";
 import isEqual from "lodash.isequal";
 import { type MapOptions } from "maplibre-gl";
@@ -91,7 +92,7 @@ type AppState = {
   selectedLayerIndex: number,
   selectedLayerOriginalId?: string,
   sources: {[key: string]: SourceSpecification & {layers: string[]} },
-  vectorLayers: {},
+  vectorLayers: VectorLayerFields,
   spec: any,
   mapView: {
     zoom: number,
@@ -173,7 +174,14 @@ export class App extends React.Component<any, AppState> {
     };
 
     this.layerWatcher = new LayerWatcher({
-      onVectorLayersChange: v => this.setState({ vectorLayers: v })
+      onVectorLayersChange: v => this.mergeVectorLayerFieldsIntoState(v)
+    });
+  }
+
+  mergeVectorLayerFieldsIntoState(newFields: VectorLayerFields) {
+    this.setState(prevState => {
+      const merged = mergeVectorLayerFields(prevState.vectorLayers, newFields);
+      return merged === prevState.vectorLayers ? null : {vectorLayers: merged};
     });
   }
 
@@ -619,6 +627,7 @@ export class App extends React.Component<any, AppState> {
 
   async fetchSources() {
     const sourceList: {[key: string]: SourceSpecification & {layers: string[]}} = {};
+    let vectorLayerFields: VectorLayerFields = {};
     for(const key of Object.keys(this.state.mapStyle.sources)) {
       const source = this.state.mapStyle.sources[key];
       if(source.type !== "vector" || !("url" in source)) {
@@ -641,6 +650,8 @@ export class App extends React.Component<any, AppState> {
         }
 
         const setVectorLayers = (json:any) => {
+          vectorLayerFields = mergeVectorLayerFields(vectorLayerFields, vectorLayerFieldsFromTileJSON(json));
+
           if(!Object.prototype.hasOwnProperty.call(json, "vector_layers")) {
             return;
           }
@@ -670,6 +681,10 @@ export class App extends React.Component<any, AppState> {
       this.setState({
         sources: sourceList
       });
+    }
+
+    if(Object.keys(vectorLayerFields).length > 0) {
+      this.mergeVectorLayerFieldsIntoState(vectorLayerFields);
     }
   }
 
