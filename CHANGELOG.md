@@ -6,6 +6,7 @@
 
 ### 🐞 Bug fixes
 - Fixed the key suggestions in the filter based on [this issue](https://github.com/maplibre/maputnik/issues/2091)
+- _...Add new stuff here..._
 
 ## 3.1.0
 
