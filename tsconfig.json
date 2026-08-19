@@ -3,7 +3,7 @@
       "target": "ES2020",
       "useDefineForClassFields": true,
       "lib": ["ES2020", "DOM", "DOM.Iterable"],
-      "types": ["geojson", "@types/wicg-file-system-access", "node"],
+      "types": ["geojson", "@types/wicg-file-system-access", "node", "vite/client"],
       "module": "ESNext",
       "skipLibCheck": true,
 

@@ -2,9 +2,13 @@
 
 ### ✨ Features and improvements
 - Replace Cypress with Playwright for end-to-end tests and Vitest browser mode (Playwright provider) for component tests; drop the `@shellygo/cypress-test-utils` helper in favour of a `MaputnikDriver` page object
+- Upgrade to MapLibre GL JS 6 and Vite 8, and update the remaining dependencies
+- Serve the RTL text plugin from `@mapbox/mapbox-gl-rtl-text` instead of a pinned CDN URL, so its version is tracked in `package.json`
+- Exported HTML now loads MapLibre GL JS as an ES module, since v6 no longer ships a UMD bundle
 - _...Add new stuff here..._
 
 ### 🐞 Bug fixes
+- The map's data listener now fires on tile loads again, so source and vector layer field autocompletion is populated
 - _...Add new stuff here..._
 
 ## 3.1.0

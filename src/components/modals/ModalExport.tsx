@@ -59,7 +59,6 @@ class ModalExportInternal extends React.Component<ModalExportInternalProps> {
   <meta charset="utf-8" />
   <title>${htmlTitle}</title>
   <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no" />
-  <script src="https://unpkg.com/maplibre-gl@${MAPLIBRE_GL_VERSION}/dist/maplibre-gl.js"></script>
   <link href="https://unpkg.com/maplibre-gl@${MAPLIBRE_GL_VERSION}/dist/maplibre-gl.css" rel="stylesheet" />
   <style>
     body { margin: 0; padding: 0; }
@@ -68,8 +67,9 @@ class ModalExportInternal extends React.Component<ModalExportInternalProps> {
 </head>
 <body>
   <div id="map"></div>
-  <script>
-      const map = new maplibregl.Map({
+  <script type="module">
+      import {Map} from 'https://unpkg.com/maplibre-gl@${MAPLIBRE_GL_VERSION}/dist/maplibre-gl.mjs';
+      const map = new Map({
          container: 'map',
          style: ${tokenStyle},
       });

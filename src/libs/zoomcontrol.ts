@@ -32,8 +32,6 @@ export class ZoomControl {
 
   addEventListeners (){
     this._map!.on("render", () => this.updateZoomLevel());
-    this._map!.on("zoomIn", () => this.updateZoomLevel());
-    this._map!.on("zoomOut", () => this.updateZoomLevel());
   }
 
   onRemove() {
