@@ -5,6 +5,7 @@
 - Upgrade to MapLibre GL JS 6 and Vite 8, and update the remaining dependencies
 - Serve the RTL text plugin from `@mapbox/mapbox-gl-rtl-text` instead of a pinned CDN URL, so its version is tracked in `package.json`
 - Exported HTML now loads MapLibre GL JS as an ES module, since v6 no longer ships a UMD bundle
+- Add resizable sidebar width and resizable split between layer list and properties drawer (#1870)
 - _...Add new stuff here..._
 
 ### 🐞 Bug fixes
