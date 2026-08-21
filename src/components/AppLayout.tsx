@@ -8,6 +8,7 @@ import { IconContext } from "react-icons";
 const DEFAULT_LIST_WIDTH = 200;
 const DEFAULT_DRAWER_WIDTH = 370;
 const DEFAULT_SIDEBAR_WIDTH = DEFAULT_LIST_WIDTH + DEFAULT_DRAWER_WIDTH;
+const PANEL_STYLE: React.CSSProperties = { overflow: "hidden" };
 
 const SIDEBAR_LAYOUT_ID = "maputnik:sidebar-layout";
 const SIDEBAR_INNER_LAYOUT_ID = "maputnik:sidebar-inner-layout";
@@ -64,6 +65,7 @@ export const AppLayout: React.FC<AppLayoutProps> = (props) => {
             id={SIDEBAR_PANEL_ID}
             data-wd-key="sidebar-panel"
             className={props.codeEditor ? "maputnik-layout-code-editor" : "maputnik-layout-sidebar"}
+            style={PANEL_STYLE}
             defaultSize={`${DEFAULT_SIDEBAR_WIDTH}px`}
             minSize="280px"
             onResize={({inPixels}) => setSidebarWidth(inPixels)}
@@ -83,6 +85,7 @@ export const AppLayout: React.FC<AppLayoutProps> = (props) => {
                 id={LIST_PANEL_ID}
                 data-wd-key="layer-list-panel"
                 className="maputnik-layout-list"
+                style={PANEL_STYLE}
                 defaultSize={`${DEFAULT_LIST_WIDTH}px`}
                 minSize="100px"
               >
@@ -97,6 +100,7 @@ export const AppLayout: React.FC<AppLayoutProps> = (props) => {
               <Panel
                 id={DRAWER_PANEL_ID}
                 className="maputnik-layout-drawer"
+                style={PANEL_STYLE}
                 defaultSize={`${DEFAULT_DRAWER_WIDTH}px`}
                 minSize="150px"
               >
@@ -113,7 +117,7 @@ export const AppLayout: React.FC<AppLayoutProps> = (props) => {
             title={t("Drag to resize the sidebar")}
             aria-label={t("Drag to resize the sidebar")}
           />
-          <Panel id={MAP_PANEL_ID} className="maputnik-layout-map" minSize="200px">
+          <Panel id={MAP_PANEL_ID} className="maputnik-layout-map" style={PANEL_STYLE} minSize="200px">
             {props.map}
           </Panel>
         </Group>
