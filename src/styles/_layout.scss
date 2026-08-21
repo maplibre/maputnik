@@ -99,8 +99,6 @@
     position: fixed;
     bottom: 0;
     z-index: 10;
-    // Logical properties so the panel sits over the map in RTL too, where the
-    // sidebar is flipped to the other side.
     inset-inline-start: var(--sidebar-width);
     inset-inline-end: 0;
     background-color: vars.$color-black;
