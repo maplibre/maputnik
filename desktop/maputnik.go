@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"net"
 	"net/http"
 	"os"
 	"path/filepath"
@@ -35,6 +36,10 @@ func main() {
 		&cli.StringFlag{
 			Name:  "static",
 			Usage: "Serve directory under /static/",
+		},
+		&cli.BoolFlag{
+			Name:  "no-browser",
+			Usage: "Do not automatically open the default browser",
 		},
 	}
 
@@ -71,8 +76,20 @@ func main() {
 		loggedRouter := handlers.LoggingHandler(os.Stdout, router)
 		corsRouter := handlers.CORS(handlers.AllowedHeaders([]string{"Content-Type"}), handlers.AllowedMethods([]string{"GET", "PUT"}), handlers.AllowedOrigins([]string{"*"}), handlers.AllowCredentials())(loggedRouter)
 
-		fmt.Printf("Exposing Maputnik on http://localhost:%d\n", c.Int("port"))
-		return http.ListenAndServe(fmt.Sprintf(":%d", c.Int("port")), corsRouter)
+		listener, err := net.Listen("tcp", fmt.Sprintf(":%d", c.Int("port")))
+		if err != nil {
+			return err
+		}
+
+		url := fmt.Sprintf("http://localhost:%d", c.Int("port"))
+		fmt.Printf("Exposing Maputnik on %s\n", url)
+
+		// Listener is already accepting connections, so this can't race http.Serve below.
+		if !c.Bool("no-browser") {
+			openBrowser(url)
+		}
+
+		return http.Serve(listener, corsRouter)
 	}
 
 	app.Run(os.Args)
