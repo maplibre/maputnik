@@ -84,12 +84,9 @@ func main() {
 		url := fmt.Sprintf("http://localhost:%d", c.Int("port"))
 		fmt.Printf("Exposing Maputnik on %s\n", url)
 
-		// The listener above is already accepting connections at the OS level,
-		// so opening the browser here can't race ahead of http.Serve below.
+		// Listener is already accepting connections, so this can't race http.Serve below.
 		if !c.Bool("no-browser") {
-			if err := openBrowser(url); err != nil {
-				fmt.Printf("Could not open browser automatically: %s\nPlease open %s manually.\n", err, url)
-			}
+			openBrowser(url)
 		}
 
 		return http.Serve(listener, corsRouter)
