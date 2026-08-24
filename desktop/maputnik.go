@@ -10,6 +10,7 @@ import (
 	"github.com/gorilla/handlers"
 	"github.com/gorilla/mux"
 	"github.com/maputnik/desktop/filewatch"
+	"github.com/pkg/browser"
 	"github.com/urfave/cli"
 )
 
@@ -85,8 +86,14 @@ func main() {
 		fmt.Printf("Exposing Maputnik on %s\n", url)
 
 		// Listener is already accepting connections, so this can't race http.Serve below.
+		// xdg-open is known to hang on some headless Linux setups, so this runs in its own
+		// goroutine to keep a stuck opener from stalling server startup.
 		if !c.Bool("no-browser") {
-			openBrowser(url)
+			go func() {
+				if err := browser.OpenURL(url); err != nil {
+					fmt.Printf("Could not open browser automatically: %s\nPlease open %s manually.\n", err, url)
+				}
+			}()
 		}
 
 		return http.Serve(listener, corsRouter)
