@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"net"
 	"net/http"
 	"os"
 	"path/filepath"
@@ -9,6 +10,7 @@ import (
 	"github.com/gorilla/handlers"
 	"github.com/gorilla/mux"
 	"github.com/maputnik/desktop/filewatch"
+	"github.com/pkg/browser"
 	"github.com/urfave/cli"
 )
 
@@ -35,6 +37,10 @@ func main() {
 		&cli.StringFlag{
 			Name:  "static",
 			Usage: "Serve directory under /static/",
+		},
+		&cli.BoolFlag{
+			Name:  "no-browser",
+			Usage: "Do not automatically open the default browser",
 		},
 	}
 
@@ -71,8 +77,26 @@ func main() {
 		loggedRouter := handlers.LoggingHandler(os.Stdout, router)
 		corsRouter := handlers.CORS(handlers.AllowedHeaders([]string{"Content-Type"}), handlers.AllowedMethods([]string{"GET", "PUT"}), handlers.AllowedOrigins([]string{"*"}), handlers.AllowCredentials())(loggedRouter)
 
-		fmt.Printf("Exposing Maputnik on http://localhost:%d\n", c.Int("port"))
-		return http.ListenAndServe(fmt.Sprintf(":%d", c.Int("port")), corsRouter)
+		listener, err := net.Listen("tcp", fmt.Sprintf(":%d", c.Int("port")))
+		if err != nil {
+			return err
+		}
+
+		url := fmt.Sprintf("http://localhost:%d", c.Int("port"))
+		fmt.Printf("Exposing Maputnik on %s\n", url)
+
+		// Listener is already accepting connections, so this can't race http.Serve below.
+		// xdg-open is known to hang on some headless Linux setups, so this runs in its own
+		// goroutine to keep a stuck opener from stalling server startup.
+		if !c.Bool("no-browser") {
+			go func() {
+				if err := browser.OpenURL(url); err != nil {
+					fmt.Printf("Could not open browser automatically: %s\nPlease open %s manually.\n", err, url)
+				}
+			}()
+		}
+
+		return http.Serve(listener, corsRouter)
 	}
 
 	app.Run(os.Args)
