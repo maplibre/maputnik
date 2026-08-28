@@ -10,6 +10,7 @@
 
 ### 🐞 Bug fixes
 - The map's data listener now fires on tile loads again, so source and vector layer field autocompletion is populated
+- The `maputnik` desktop binary now opens the default browser automatically on startup (opt out with `--no-browser`)
 - _...Add new stuff here..._
 
 ## 3.1.0
