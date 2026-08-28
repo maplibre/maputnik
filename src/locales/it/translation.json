@@ -121,7 +121,7 @@
   "No global state variables defined. Add variables to create reusable values in your style.": "Nessuna variabile di stato globale definita. Aggiungi variabili per creare valori riutilizzabili nel tuo stile.",
   "Open": "Apri",
   "Open a local JSON style from your computer.": "Apri uno stile JSON dal tuo computer.",
-  "Open Layers (experimental)": "Apri livelli (sperimentale)",
+  "OpenLayers (experimental)": "OpenLayers (sperimentale)",
   "Open local Style": "Apri stile locale",
   "Open modal": "Apri finestra modale",
   "Open one of the publicly available styles to start from.": "Apro uno degli stili pubblici a partire da.",
