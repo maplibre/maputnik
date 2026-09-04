@@ -122,7 +122,7 @@
   "No global state variables defined. Add variables to create reusable values in your style.": "Genel durum değişkeni tanımlanmadı. Stilinizde yeniden kullanılabilir değerler oluşturmak için değişken ekleyin.",
   "Open": "Aç",
   "Open a local JSON style from your computer.": "Bilgisayarınızdan yerel bir JSON stili açın.",
-  "Open Layers (experimental)": "Open Layers (deneysel)",
+  "OpenLayers (experimental)": "OpenLayers (deneysel)",
   "Open local Style": "Yerel Stili Aç",
   "Open modal": "Modalı aç",
   "Open one of the publicly available styles to start from.": "Başlamak için herkese açık stillerden birini açın.",

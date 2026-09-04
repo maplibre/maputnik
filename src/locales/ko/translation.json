@@ -121,7 +121,7 @@
   "No global state variables defined. Add variables to create reusable values in your style.": "전역 상태 변수가 정의되지 않았습니다. 스타일에서 재사용 가능한 값을 생성하려면 변수를 추가하세요.",
   "Open": "열기",
   "Open a local JSON style from your computer.": "컴퓨터에서 로컬 JSON 스타일을 엽니다.",
-  "Open Layers (experimental)": "레이어 열기 (실험적)",
+  "OpenLayers (experimental)": "OpenLayers (실험적)",
   "Open local Style": "로컬 스타일 열기",
   "Open modal": "모달 열기",
   "Open one of the publicly available styles to start from.": "공개 스타일 중 하나를 선택하여 시작하세요.",
