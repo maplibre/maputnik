@@ -73,7 +73,7 @@
     "react-collapse": "^5.1.1",
     "react-color": "^2.19.3",
     "react-dom": "^19.2.8",
-    "react-i18next": "^17.0.12",
+    "react-i18next": "^17.0.13",
     "react-icons": "^5.7.0",
     "react-markdown": "^10.1.0",
     "reconnecting-websocket": "^4.4.0",
