@@ -1,4 +1,4 @@
-import { beforeEach, describe, test } from "./utils/fixtures";
+import { beforeEach, describe, expect, test } from "./utils/fixtures";
 import { MaputnikDriver } from "./maputnik-driver";
 
 describe("layers list", () => {
@@ -45,6 +45,14 @@ describe("layers list", () => {
           ],
         });
       });
+    });
+
+    test("should title the visibility button with the action it performs", async () => {
+      const key = "layer-list-item:" + id + ":toggle-visibility";
+      // A visible layer is about to be hidden, and a hidden one to be shown.
+      await expect(get.elementByTestId(key)).toHaveAttribute("title", "hide");
+      await when.click(key);
+      await expect(get.elementByTestId(key)).toHaveAttribute("title", "show");
     });
 
     describe("when clicking hide", () => {
