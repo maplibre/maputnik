@@ -46,6 +46,7 @@ The following users can help you with the relevant languages:
 
 | ISO Code | Language           | User                                       |
 |----------|--------------------|--------------------------------------------|
+| az       | Azerbaijani        | [@jamalkamaladdin](https://github.com/jamalkamaladdin) |
 | de       | German             | [@josxha](https://github.com/josxha)       |
 | en       | English            | [@HarelM](https://github.com/HarelM)       |
 | fr       | French             | [@lhapaipai](https://github.com/lhapaipai) |
