@@ -4,6 +4,7 @@ import resourcesToBackend from "i18next-resources-to-backend";
 import { initReactI18next } from "react-i18next";
 
 export const supportedLanguages = {
+  "az": "Azərbaycan",
   "de": "Deutsch",
   "en": "English",
   "fr": "Français",
