@@ -106,13 +106,13 @@ class LayerListContainerInternal extends React.Component<LayerListContainerInter
     });
   };
 
-  groupedLayers(): (LayerSpecification & {key: string})[][] {
+  groupedLayers(layers = this.props.layers): (LayerSpecification & {key: string})[][] {
     const groups = [];
     const layerIdCount = new Map();
 
-    for (let i = 0; i < this.props.layers.length; i++) {
-      const origLayer = this.props.layers[i];
-      const previousLayer = this.props.layers[i-1];
+    for (let i = 0; i < layers.length; i++) {
+      const origLayer = layers[i];
+      const previousLayer = layers[i-1];
       layerIdCount.set(origLayer.id,
         layerIdCount.has(origLayer.id) ? layerIdCount.get(origLayer.id) + 1 : 0
       );
@@ -193,6 +193,31 @@ class LayerListContainerInternal extends React.Component<LayerListContainerInter
   }
 
   componentDidUpdate (prevProps: LayerListContainerProps) {
+    if (prevProps.layers !== this.props.layers) {
+      // Group indices move when layers are deleted or reordered. Carry each
+      // group's state through its surviving layers, including its new first layer.
+      const collapsedByLayer = new Map<string, boolean>();
+      let idx = 0;
+      this.groupedLayers(prevProps.layers).forEach(layers => {
+        const collapsed = this.isCollapsed(layerPrefix(layers[0].id), idx);
+        layers.forEach(layer => collapsedByLayer.set(layer.id, collapsed));
+        idx += layers.length;
+      });
+
+      const collapsedGroups: {[key: string]: boolean} = {};
+      idx = 0;
+      this.groupedLayers().forEach(layers => {
+        const lookupKey = [layerPrefix(layers[0].id), idx].join("-");
+        // If deletion joins two groups, keep the result expanded when either was.
+        collapsedGroups[lookupKey] = layers.every(layer => collapsedByLayer.get(layer.id) !== false);
+        idx += layers.length;
+      });
+
+      if (!lodash.isEqual(collapsedGroups, this.state.collapsedGroups)) {
+        this.setState({ collapsedGroups });
+      }
+    }
+
     if (prevProps.selectedLayerIndex !== this.props.selectedLayerIndex) {
       const selectedItemNode = this.selectedItemRef.current;
       if (selectedItemNode && selectedItemNode.node) {

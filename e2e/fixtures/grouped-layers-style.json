@@ -1,0 +1,16 @@
+{
+  "version": 8,
+  "name": "Grouped layers",
+  "sources": {},
+  "layers": [
+    { "id": "background", "type": "background" },
+    { "id": "park-a", "type": "background" },
+    { "id": "park-b", "type": "background" },
+    { "id": "park-c", "type": "background" },
+    { "id": "road", "type": "background" },
+    { "id": "park-d", "type": "background" },
+    { "id": "park-e", "type": "background" },
+    { "id": "water-a", "type": "background" },
+    { "id": "water-b", "type": "background" }
+  ]
+}
