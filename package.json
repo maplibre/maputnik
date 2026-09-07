@@ -135,7 +135,7 @@
     "istanbul": "^0.4.5",
     "istanbul-lib-coverage": "^3.2.2",
     "nyc": "^18.0.0",
-    "postcss": "^8.5.26",
+    "postcss": "^8.5.28",
     "react-hot-loader": "^4.13.1",
     "sass": "^1.103.1",
     "stylelint": "^17.14.1",
