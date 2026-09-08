@@ -64,7 +64,13 @@ export class MaputnikDriver {
 
     modal: this.modalDriver.when,
 
-    deleteLayer: async (id: string) => {
+    deleteLayer: async (id: string, control: "menu" | "trash" = "menu") => {
+      if (control === "trash") {
+        await this.helper.when.hover("layer-list-item:" + id);
+        await this.helper.when.click("layer-list-item:" + id + ":delete");
+        return;
+      }
+
       await this.helper.when.click("layer-list-item:" + id);
       await this.helper.when.click("skip-target-layer-editor");
       await this.helper.when.click("menu-delete-layer");

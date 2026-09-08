@@ -192,33 +192,38 @@ class LayerListContainerInternal extends React.Component<LayerListContainerInter
     return propsChanged;
   }
 
-  componentDidUpdate (prevProps: LayerListContainerProps) {
-    if (prevProps.layers !== this.props.layers) {
-      // Group indices move when layers are deleted or reordered. Carry each
-      // group's state through its surviving layers, including its new first layer.
-      const collapsedByLayer = new Map<string, boolean>();
-      let idx = 0;
-      for (const layers of this.groupedLayers(prevProps.layers)) {
-        const collapsed = this.isCollapsed(layerPrefix(layers[0].id), idx);
-        for (const layer of layers) {
-          collapsedByLayer.set(layer.id, collapsed);
-        }
-        idx += layers.length;
-      }
+  /**
+   * Preserves group state through surviving layer IDs when group indices change.
+   * If deletion joins groups, the result stays expanded when either group was.
+   */
+  private preserveLayerGroupState(previousLayers: LayerSpecification[]) {
+    if (previousLayers === this.props.layers) return;
 
-      const collapsedGroups: {[key: string]: boolean} = {};
-      idx = 0;
-      for (const layers of this.groupedLayers()) {
-        const lookupKey = [layerPrefix(layers[0].id), idx].join("-");
-        // If deletion joins two groups, keep the result expanded when either was.
-        collapsedGroups[lookupKey] = layers.every(layer => collapsedByLayer.get(layer.id) !== false);
-        idx += layers.length;
+    const collapsedByLayer = new Map<string, boolean>();
+    let idx = 0;
+    for (const layers of this.groupedLayers(previousLayers)) {
+      const collapsed = this.isCollapsed(layerPrefix(layers[0].id), idx);
+      for (const layer of layers) {
+        collapsedByLayer.set(layer.id, collapsed);
       }
-
-      if (!lodash.isEqual(collapsedGroups, this.state.collapsedGroups)) {
-        this.setState({ collapsedGroups });
-      }
+      idx += layers.length;
     }
+
+    const collapsedGroups: {[key: string]: boolean} = {};
+    idx = 0;
+    for (const layers of this.groupedLayers()) {
+      const lookupKey = [layerPrefix(layers[0].id), idx].join("-");
+      collapsedGroups[lookupKey] = layers.every(layer => collapsedByLayer.get(layer.id) !== false);
+      idx += layers.length;
+    }
+
+    if (!lodash.isEqual(collapsedGroups, this.state.collapsedGroups)) {
+      this.setState({ collapsedGroups });
+    }
+  }
+
+  componentDidUpdate (prevProps: LayerListContainerProps) {
+    this.preserveLayerGroupState(prevProps.layers);
 
     if (prevProps.selectedLayerIndex !== this.props.selectedLayerIndex) {
       const selectedItemNode = this.selectedItemRef.current;
