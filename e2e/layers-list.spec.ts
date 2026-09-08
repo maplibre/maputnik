@@ -306,6 +306,75 @@ describe("layers list", () => {
   });
 
   describe("groups", () => {
+    for (const control of ["menu", "trash"] as const) {
+      describe(`after deletion using ${control}`, () => {
+        beforeEach(async () => {
+          await when.setStyle("grouped_layers");
+        });
+
+        test("keeps all groups expanded when an earlier layer is deleted", async () => {
+          await when.click("skip-target-layer-list");
+          await then(get.elementByTestId("layer-list-item:park-b")).shouldBeVisible();
+          await when.deleteLayer("background", control);
+          await then(get.elementByTestId("layer-list-item:background")).shouldNotExist();
+          await then(get.elementByTestId("layer-list-group:park-0")).shouldExist();
+          await expect(get.elementByTestId("layer-list-group:water-6").getByRole("button")).toHaveAttribute("aria-expanded", "true");
+          await then(get.elementByTestId("layer-list-item:park-b")).shouldBeVisible();
+          await then(get.elementByTestId("layer-list-item:park-e")).shouldBeVisible();
+          await then(get.elementByTestId("layer-list-item:water-b")).shouldBeVisible();
+        });
+
+        test("preserves separate states for groups with the same prefix", async () => {
+          await when.click("layer-list-group:park-1");
+          await when.deleteLayer("background", control);
+          await then(get.elementByTestId("layer-list-group:park-0")).shouldExist();
+          await when.click("layer-list-item:road");
+          await expect(get.elementByTestId("layer-list-group:park-0").getByRole("button")).toHaveAttribute("aria-expanded", "true");
+          await expect(get.elementByTestId("layer-list-group:park-4").getByRole("button")).toHaveAttribute("aria-expanded", "false");
+          await then(get.elementByTestId("layer-list-item:park-b")).shouldBeVisible();
+          await then(get.elementByTestId("layer-list-item:park-e")).shouldNotBeVisible();
+        });
+
+        test("keeps a group expanded when its first layer is deleted", async () => {
+          await when.click("layer-list-group:park-1");
+          await when.deleteLayer("park-a", control);
+          await then(get.elementByTestId("layer-list-item:park-a")).shouldNotExist();
+          await when.click("layer-list-item:road");
+          await expect(get.elementByTestId("layer-list-group:park-1").getByRole("button")).toHaveAttribute("aria-expanded", "true");
+          await then(get.elementByTestId("layer-list-item:park-c")).shouldBeVisible();
+        });
+
+        for (const expandedGroup of ["park-1", "park-5"]) {
+          test(`keeps a merged group expanded when ${expandedGroup} was expanded`, async () => {
+            await when.click("layer-list-group:" + expandedGroup);
+            await when.deleteLayer("road", control);
+            await then(get.elementByTestId("layer-list-item:road")).shouldNotExist();
+            await expect(get.elementByTestId("layer-list-group:park-1").getByRole("button")).toHaveAttribute("aria-expanded", "true");
+            await then(get.elementByTestId("layer-list-item:park-b")).shouldBeVisible();
+            await then(get.elementByTestId("layer-list-item:park-e")).shouldBeVisible();
+          });
+        }
+
+        test("keeps a merged group collapsed when both groups were collapsed", async () => {
+          await when.deleteLayer("road", control);
+          await then(get.elementByTestId("layer-list-item:road")).shouldNotExist();
+          await when.click("layer-list-item:background");
+          await expect(get.elementByTestId("layer-list-group:park-1").getByRole("button")).toHaveAttribute("aria-expanded", "false");
+          await then(get.elementByTestId("layer-list-item:park-b")).shouldNotBeVisible();
+          await then(get.elementByTestId("layer-list-item:park-e")).shouldNotBeVisible();
+        });
+
+        test("preserves later groups after deleting an entire group", async () => {
+          await when.click("skip-target-layer-list");
+          await when.deleteLayer("park-a", control);
+          await when.deleteLayer("park-b", control);
+          await when.deleteLayer("park-c", control);
+          await expect(get.elementByTestId("layer-list-group:water-4").getByRole("button")).toHaveAttribute("aria-expanded", "true");
+          await then(get.elementByTestId("layer-list-item:water-b")).shouldBeVisible();
+        });
+      });
+    }
+
     test("simple", async () => {
       await when.setStyle("geojson");
 
