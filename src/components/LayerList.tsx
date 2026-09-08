@@ -198,20 +198,22 @@ class LayerListContainerInternal extends React.Component<LayerListContainerInter
       // group's state through its surviving layers, including its new first layer.
       const collapsedByLayer = new Map<string, boolean>();
       let idx = 0;
-      this.groupedLayers(prevProps.layers).forEach(layers => {
+      for (const layers of this.groupedLayers(prevProps.layers)) {
         const collapsed = this.isCollapsed(layerPrefix(layers[0].id), idx);
-        layers.forEach(layer => collapsedByLayer.set(layer.id, collapsed));
+        for (const layer of layers) {
+          collapsedByLayer.set(layer.id, collapsed);
+        }
         idx += layers.length;
-      });
+      }
 
       const collapsedGroups: {[key: string]: boolean} = {};
       idx = 0;
-      this.groupedLayers().forEach(layers => {
+      for (const layers of this.groupedLayers()) {
         const lookupKey = [layerPrefix(layers[0].id), idx].join("-");
         // If deletion joins two groups, keep the result expanded when either was.
         collapsedGroups[lookupKey] = layers.every(layer => collapsedByLayer.get(layer.id) !== false);
         idx += layers.length;
-      });
+      }
 
       if (!lodash.isEqual(collapsedGroups, this.state.collapsedGroups)) {
         this.setState({ collapsedGroups });
