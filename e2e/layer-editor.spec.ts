@@ -289,6 +289,20 @@ describe("layer editor", () => {
         });
       });
 
+      test("should leave a plain editable value after deleting a stop", async () => {
+        await when.setFunctionStopValue("circle-radius", "Output value", 1, "0");
+        await when.deleteFunctionStop("circle-radius");
+        await then(get.elementByTestId("spec-field:circle-radius")).shouldBeVisible();
+        await then(get.styleFromLocalStorage()).shouldDeepNestedInclude({
+          layers: [{ id, paint: { "circle-radius": 0 } }],
+        });
+
+        await when.setValue("spec-field-input:circle-radius", "7");
+        await then(get.styleFromLocalStorage()).shouldDeepNestedInclude({
+          layers: [{ id, paint: { "circle-radius": 7 } }],
+        });
+      });
+
       test("should set the base", async () => {
         await when.setFunctionBase("circle-radius", "2");
         await then(get.styleFromLocalStorage()).shouldDeepNestedInclude({
@@ -409,6 +423,20 @@ describe("layer editor", () => {
         });
       });
 
+      test("should leave a plain editable value after deleting a stop", async () => {
+        await when.setFunctionStopValue("circle-blur", "Output value", 1, "0");
+        await when.deleteFunctionStop("circle-blur");
+        await then(get.elementByTestId("spec-field:circle-blur")).shouldBeVisible();
+        await then(get.styleFromLocalStorage()).shouldDeepNestedInclude({
+          layers: [{ id, paint: { "circle-blur": 0 } }],
+        });
+
+        await when.setValue("spec-field-input:circle-blur", "0.7");
+        await then(get.styleFromLocalStorage()).shouldDeepNestedInclude({
+          layers: [{ id, paint: { "circle-blur": 0.7 } }],
+        });
+      });
+
       test("should set the property", async () => {
         await when.setFunctionProperty("circle-blur", "myprop");
         await then(get.styleFromLocalStorage()).shouldDeepNestedInclude({
@@ -446,38 +474,6 @@ describe("layer editor", () => {
         });
       });
     });
-
-    for (const functionVariant of ["zoom", "data"] as const) {
-      describe(functionVariant === "zoom" ? "delete stop from zoom function" : "delete stop from data function", () => {
-        const fieldName = "circle-opacity";
-        const initialValue = 0.4;
-        const editedValue = 0.7;
-
-        beforeEach(async () => {
-          id = await when.modal.fillLayers({ type: "circle", layer: "example" });
-          await when.setValue("spec-field-input:" + fieldName, String(initialValue));
-          if (functionVariant === "zoom") {
-            await when.makeZoomFunction(fieldName);
-          } else {
-            await when.makeDataFunction(fieldName);
-          }
-          await when.setFunctionStopValue(fieldName, "Output value", 1, "0");
-        });
-
-        test("should restore an editable value after deleting a stop", async () => {
-          await when.deleteFunctionStop(fieldName);
-          await then(get.elementByTestId("spec-field:" + fieldName)).shouldBeVisible();
-          await then(get.styleFromLocalStorage()).shouldDeepNestedInclude({
-            layers: [{ id, paint: { [fieldName]: 0 } }],
-          });
-
-          await when.setValue("spec-field-input:" + fieldName, String(editedValue));
-          await then(get.styleFromLocalStorage()).shouldDeepNestedInclude({
-            layers: [{ id, paint: { [fieldName]: editedValue } }],
-          });
-        });
-      });
-    }
 
     describe("expression", () => {
       beforeEach(async () => {
