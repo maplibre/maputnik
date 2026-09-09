@@ -129,16 +129,10 @@ type FieldFunctionProps = {
  * https://www.mapbox.com/mapbox-gl-style-spec/#types-function-zoom-property
  */
 export const FieldFunction: React.FC<FieldFunctionProps> = (props) => {
-  const [dataType, setDataType] = React.useState(
-    getDataType(props.value, props.fieldSpec)
-  );
   const [isEditing, setIsEditing] = React.useState(false);
-
-  React.useEffect(() => {
-    if (!isEditing) {
-      setDataType(getDataType(props.value, props.fieldSpec));
-    }
-  }, [props.value, props.fieldSpec, isEditing]);
+  // Keep the expression editor mounted while typing, but otherwise select the
+  // editor from the current value so a collapsed function never renders as stops.
+  const dataType = isEditing ? "expression" : getDataType(props.value, props.fieldSpec);
 
   const getFieldFunctionType = (fieldSpec: any) => {
     if (fieldSpec.expression.interpolated) {
@@ -173,7 +167,7 @@ export const FieldFunction: React.FC<FieldFunctionProps> = (props) => {
   const deleteExpression = () => {
     const { fieldSpec, fieldName } = props;
     props.onChange(fieldName, fieldSpec.default);
-    setDataType("value");
+    setIsEditing(false);
   };
 
   const deleteStop = (stopIdx: number) => {
@@ -233,10 +227,10 @@ export const FieldFunction: React.FC<FieldFunctionProps> = (props) => {
         type: "identity",
         property: value[1],
       });
-      setDataType("value");
+      setIsEditing(false);
     } else if (isLiteralExpression(value)) {
       props.onChange(fieldName, value[1]);
-      setDataType("value");
+      setIsEditing(false);
     }
   };
 

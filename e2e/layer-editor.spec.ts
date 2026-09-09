@@ -289,6 +289,20 @@ describe("layer editor", () => {
         });
       });
 
+      test("should leave a plain editable value after deleting a stop", async () => {
+        await when.setFunctionStopValue("circle-radius", "Output value", 1, "0");
+        await when.deleteFunctionStop("circle-radius");
+        await then(get.elementByTestId("spec-field:circle-radius")).shouldBeVisible();
+        await then(get.styleFromLocalStorage()).shouldDeepNestedInclude({
+          layers: [{ id, paint: { "circle-radius": 0 } }],
+        });
+
+        await when.setValue("spec-field-input:circle-radius", "7");
+        await then(get.styleFromLocalStorage()).shouldDeepNestedInclude({
+          layers: [{ id, paint: { "circle-radius": 7 } }],
+        });
+      });
+
       test("should set the base", async () => {
         await when.setFunctionBase("circle-radius", "2");
         await then(get.styleFromLocalStorage()).shouldDeepNestedInclude({
@@ -310,8 +324,9 @@ describe("layer editor", () => {
         });
       });
 
-      test("should convert to an expression", async () => {
+      test("should convert to an expression without crashing", async () => {
         await when.makeExpression("circle-radius");
+        await then(get.element("[data-wd-key='spec-field-container:circle-radius'] .maputnik-expression-editor")).shouldBeVisible();
         await then(get.styleFromLocalStorage()).shouldDeepNestedInclude({
           layers: [{ id, paint: { "circle-radius": ["interpolate", ["linear"], ["zoom"], 6, 5, 10, 5] } }],
         });
