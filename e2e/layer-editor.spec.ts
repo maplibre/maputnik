@@ -310,8 +310,9 @@ describe("layer editor", () => {
         });
       });
 
-      test("should convert to an expression", async () => {
+      test("should convert to an expression without crashing", async () => {
         await when.makeExpression("circle-radius");
+        await then(get.element("[data-wd-key='spec-field-container:circle-radius'] .maputnik-expression-editor")).shouldBeVisible();
         await then(get.styleFromLocalStorage()).shouldDeepNestedInclude({
           layers: [{ id, paint: { "circle-radius": ["interpolate", ["linear"], ["zoom"], 6, 5, 10, 5] } }],
         });
@@ -445,6 +446,38 @@ describe("layer editor", () => {
         });
       });
     });
+
+    for (const functionVariant of ["zoom", "data"] as const) {
+      describe(functionVariant === "zoom" ? "delete stop from zoom function" : "delete stop from data function", () => {
+        const fieldName = "circle-opacity";
+        const initialValue = 0.4;
+        const editedValue = 0.7;
+
+        beforeEach(async () => {
+          id = await when.modal.fillLayers({ type: "circle", layer: "example" });
+          await when.setValue("spec-field-input:" + fieldName, String(initialValue));
+          if (functionVariant === "zoom") {
+            await when.makeZoomFunction(fieldName);
+          } else {
+            await when.makeDataFunction(fieldName);
+          }
+          await when.setFunctionStopValue(fieldName, "Output value", 1, "0");
+        });
+
+        test("should restore an editable value after deleting a stop", async () => {
+          await when.deleteFunctionStop(fieldName);
+          await then(get.elementByTestId("spec-field:" + fieldName)).shouldBeVisible();
+          await then(get.styleFromLocalStorage()).shouldDeepNestedInclude({
+            layers: [{ id, paint: { [fieldName]: 0 } }],
+          });
+
+          await when.setValue("spec-field-input:" + fieldName, String(editedValue));
+          await then(get.styleFromLocalStorage()).shouldDeepNestedInclude({
+            layers: [{ id, paint: { [fieldName]: editedValue } }],
+          });
+        });
+      });
+    }
 
     describe("expression", () => {
       beforeEach(async () => {
