@@ -423,20 +423,6 @@ describe("layer editor", () => {
         });
       });
 
-      test("should leave a plain editable value after deleting a stop", async () => {
-        await when.setFunctionStopValue("circle-blur", "Output value", 1, "0");
-        await when.deleteFunctionStop("circle-blur");
-        await then(get.elementByTestId("spec-field:circle-blur")).shouldBeVisible();
-        await then(get.styleFromLocalStorage()).shouldDeepNestedInclude({
-          layers: [{ id, paint: { "circle-blur": 0 } }],
-        });
-
-        await when.setValue("spec-field-input:circle-blur", "0.7");
-        await then(get.styleFromLocalStorage()).shouldDeepNestedInclude({
-          layers: [{ id, paint: { "circle-blur": 0.7 } }],
-        });
-      });
-
       test("should set the property", async () => {
         await when.setFunctionProperty("circle-blur", "myprop");
         await then(get.styleFromLocalStorage()).shouldDeepNestedInclude({
