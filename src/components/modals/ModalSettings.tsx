@@ -322,7 +322,7 @@ class ModalSettingsInternal extends React.Component<ModalSettingsInternalProps> 
           data-wd-key="modal:settings.maputnik:renderer"
           options={[
             ["mlgljs", "MapLibreGL JS"],
-            ["ol", t("Open Layers (experimental)")],
+            ["ol", t("OpenLayers (experimental)")],
           ]}
           value={metadata["maputnik:renderer"] || "mlgljs"}
           onChange={(value) => onChangeMetadataProperty("maputnik:renderer", value)}

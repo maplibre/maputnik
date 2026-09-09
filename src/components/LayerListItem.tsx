@@ -32,6 +32,8 @@ const DraggableLabel: React.FC<DraggableLabelProps> = (props) => {
 
 type IconActionProps = {
   action: string
+  /** Tooltip text, for buttons whose action reads differently from their icon. */
+  title?: string
   onClick(...args: unknown[]): unknown
   wdKey?: string
   classBlockName?: string
@@ -62,7 +64,7 @@ class IconAction extends React.Component<IconActionProps> {
 
     return <button
       tabIndex={-1}
-      title={this.props.action}
+      title={this.props.title ?? this.props.action}
       className={`maputnik-layer-list-icon-action ${classAdditions}`}
       data-wd-key={this.props.wdKey}
       onClick={this.props.onClick}
@@ -111,7 +113,12 @@ export const LayerListItem = React.forwardRef<HTMLLIElement, LayerListItemProps>
     opacity: isDragging ? 0.5 : 1,
   };
 
-  const visibilityAction = visibility === "visible" ? "show" : "hide";
+  // The icon and the CSS modifier describe the layer's current visibility,
+  // while the tooltip has to describe what clicking the button does, which is
+  // the opposite of it.
+  const isVisible = visibility === "visible";
+  const visibilityAction = isVisible ? "show" : "hide";
+  const visibilityTitle = isVisible ? "hide" : "show";
 
   // Cast ref to MutableRefObject since we know from the codebase that's what's always passed
   const refObject = ref as React.MutableRefObject<HTMLLIElement | null> | null;
@@ -155,6 +162,7 @@ export const LayerListItem = React.forwardRef<HTMLLIElement, LayerListItemProps>
       <IconAction
         wdKey={"layer-list-item:" + props.layerId + ":toggle-visibility"}
         action={visibilityAction}
+        title={visibilityTitle}
         classBlockName="visibility"
         classBlockModifier={visibilityAction}
         onClick={_e => onLayerVisibilityToggle!(props.layerIndex)}

@@ -9,6 +9,9 @@
 - _...Add new stuff here..._
 
 ### 🐞 Bug fixes
+- Prevent a crash when converting a function to an expression
+- Prevent a crash when deleting either stop from a function with two stops
+- Preserve expanded layer groups when deleting layers, including the first layer of a group
 - The map's data listener now fires on tile loads again, so source and vector layer field autocompletion is populated
 - The `maputnik` desktop binary now opens the default browser automatically on startup (opt out with `--no-browser`)
 - _...Add new stuff here..._
