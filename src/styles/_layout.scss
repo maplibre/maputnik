@@ -13,6 +13,9 @@
 
 //APP LAYOUT
 .maputnik-layout {
+  // Kept up to date by AppLayout as the sidebar is resized.
+  --sidebar-width: #{vars.$layout-list-width + vars.$layout-editor-width};
+
   font-family: vars.$font-family;
   color: vars.$color-white;
 
@@ -28,31 +31,76 @@
     display: flex;
   }
 
-  &-list {
-    width: 200px;
-    background-color: vars.$color-black;
+  // The resizable panel group filling the main area.
+  &-panels {
+    flex: 1;
+    min-width: 0;
+    height: 100%;
   }
 
+  &-sidebar-panels,
+  &-sidebar,
+  &-code-editor,
+  &-list,
+  &-drawer,
+  &-map {
+    height: 100%;
+    // scroll-container is position: absolute
+    position: relative;
+  }
+
+  &-sidebar,
+  &-code-editor,
+  &-list,
   &-drawer {
-    width: 370px;
     background-color: vars.$color-black;
-    // scroll-container is position: absolute
-    position: relative;
   }
 
-  &-code-editor {
-    width: 570px;
-    background-color: vars.$color-black;
-    // scroll-container is position: absolute
+  &-resize-handle {
+    width: 5px;
+    background-color: transparent;
     position: relative;
+    z-index: 5;
+    transition: background-color 0.15s ease;
+
+    &:hover,
+    &:active,
+    &:focus-visible {
+      background-color: rgba(vars.$color-lowgray, 0.5);
+    }
+
+    // The separator is keyboard resizable, so it needs a visible focus ring.
+    &:focus-visible {
+      outline: #8e8e8e auto 1px;
+    }
+
+    &::after {
+      content: "";
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 3px;
+      height: 30px;
+      border-radius: 2px;
+      background-color: vars.$color-lowgray;
+      opacity: 0;
+      transition: opacity 0.15s ease;
+    }
+
+    &:hover::after,
+    &:active::after,
+    &:focus-visible::after {
+      opacity: 0.7;
+    }
   }
 
   &-bottom {
     position: fixed;
     bottom: 0;
-    right: 0;
     z-index: 10;
-    width: vars.$layout-map-width;
+    inset-inline-start: var(--sidebar-width);
+    inset-inline-end: 0;
     background-color: vars.$color-black;
   }
 }
