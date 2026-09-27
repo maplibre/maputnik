@@ -10,12 +10,14 @@ import type { StylePropertySpecification } from "maplibre-gl";
 import type { TransactionSpec } from "@codemirror/state";
 
 export type InputJsonProps = {
-  value: object
+  value: object | undefined
   className?: string
-  onChange(object: object): void
+  onChange(object: object | undefined): void
   onFocus?(...args: unknown[]): unknown
   onBlur?(...args: unknown[]): unknown
   lintType: "layer" | "style" | "expression" | "json"
+  /** When set, an empty editor is valid and means the value is unset */
+  optional?: boolean
   spec?: StylePropertySpecification | undefined
   /**
    * When setting this and using search and replace, the editor will scroll to the selected text
@@ -49,6 +51,10 @@ class InputJsonInternal extends React.Component<InputJsonInternalProps, InputJso
   }
 
   getPrettyJson(data: any) {
+    // An unset value is shown as an empty editor
+    if (data === undefined) {
+      return "";
+    }
     return stringifyPretty(data, {indent: 2, maxLength: 40});
   }
 
@@ -57,10 +63,11 @@ class InputJsonInternal extends React.Component<InputJsonInternalProps, InputJso
       parent: this._el!,
       value: this.getPrettyJson(this.props.value),
       lintType: this.props.lintType || "layer",
-      onChange: (value:string) => this.onChange(value),
+      onChange: (value: string) => this.onChange(value),
       onFocus: () => this.onFocus(),
       onBlur: () => this.onBlur(),
-      spec: this.props.spec
+      spec: this.props.spec,
+      optional: this.props.optional
     });
   }
 
@@ -107,6 +114,13 @@ class InputJsonInternal extends React.Component<InputJsonInternalProps, InputJso
     const newCode = this._view!.state.doc.toString();
 
     if (this.state.prevValue !== newCode) {
+      if (this.props.optional && newCode.trim() === "") {
+        this.props.onChange(undefined);
+        this.setState({
+          prevValue: newCode,
+        });
+        return;
+      }
       let parsedLayer, err;
       try {
         parsedLayer = JSON.parse(newCode);

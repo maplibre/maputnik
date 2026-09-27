@@ -15,6 +15,21 @@ type LinterError = {
   message: string;
 };
 
+
+type EditorProps = {
+  parent: HTMLElement,
+  value: string,
+  lintType: LintType,
+  onChange: (value: string) => void,
+  onFocus: () => void,
+  onBlur: () => void,
+  spec?: StylePropertySpecification,
+  /**
+   * An empty optional editor means the value is unset, which is valid
+   */
+  optional?: boolean,
+};
+
 function getDiagnosticsFromExpressionErrors(errors: LinterError[], ast: ValueNode | PropertyNode) {
   const diagnostics: Diagnostic[] = [];
   for (const error of errors) {
@@ -128,15 +143,7 @@ function createMaplibreExpressionLinter(spec?: StylePropertySpecification) {
   };
 }
 
-export function createEditor(props: {
-  parent: HTMLElement,
-  value: string,
-  lintType: LintType,
-  onChange: (value: string) => void,
-  onFocus: () => void,
-  onBlur: () => void,
-  spec?: StylePropertySpecification,
-}): EditorView {
+export function createEditor(props: EditorProps): EditorView {
   let specificLinter: (view: EditorView) => Diagnostic[] = () => [];
   switch (props.lintType) {
     case "style":
@@ -181,6 +188,9 @@ export function createEditor(props: {
       }),
       lintGutter(),
       linter((view: EditorView) => {
+        if (props.optional && view.state.doc.toString().trim() === "") {
+          return [];
+        }
         const jsonErrors = jsonParseLinter()(view);
         if (jsonErrors.length > 0) {
           return jsonErrors;

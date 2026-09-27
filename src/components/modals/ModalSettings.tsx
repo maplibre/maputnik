@@ -1,6 +1,6 @@
 import React from "react";
 import latest from "@maplibre/maplibre-gl-style-spec/dist/latest.json";
-import type {LightSpecification, ProjectionSpecification, StyleSpecification, TerrainSpecification, TransitionSpecification} from "maplibre-gl";
+import type {LightSpecification, ProjectionSpecification, SkySpecification, StyleSpecification, TerrainSpecification, TransitionSpecification} from "maplibre-gl";
 import { type WithTranslation, withTranslation } from "react-i18next";
 
 import { FieldArray } from "../FieldArray";
@@ -81,6 +81,24 @@ class ModalSettingsInternal extends React.Component<ModalSettingsInternalProps> 
     });
   }
 
+  changeSkyProperty(property: keyof SkySpecification, value: any) {
+    const sky = {
+      ...this.props.mapStyle.sky,
+    };
+
+    if (value === undefined) {
+      delete sky[property];
+    }
+    else {
+      sky[property] = value;
+    }
+
+    this.props.onStyleChanged({
+      ...this.props.mapStyle,
+      sky,
+    });
+  }
+
   changeProjectionType(value: any) {
     const projection = {
       ...this.props.mapStyle.projection,
@@ -124,6 +142,7 @@ class ModalSettingsInternal extends React.Component<ModalSettingsInternalProps> 
     const transition = this.props.mapStyle.transition || {};
     const terrain = this.props.mapStyle.terrain || {} as TerrainSpecification;
     const projection = this.props.mapStyle.projection || {} as ProjectionSpecification;
+    const sky = this.props.mapStyle.sky || {};
 
     return <Modal
       data-wd-key="modal:settings"
@@ -149,6 +168,7 @@ class ModalSettingsInternal extends React.Component<ModalSettingsInternalProps> 
         <Block label={t("Sprite URL")} fieldSpec={latest.$root.sprite} data-wd-key="modal:settings.sprite">
           <FieldJson
             lintType="json"
+            optional
             value={this.props.mapStyle.sprite as any}
             onChange={(value) => this.changeStyleProperty("sprite", value)}
           />
@@ -161,6 +181,15 @@ class ModalSettingsInternal extends React.Component<ModalSettingsInternalProps> 
           value={this.props.mapStyle.glyphs as string}
           onChange={(value) => this.changeStyleProperty("glyphs", value)}
         />
+
+        <Block label={t("Font faces")} fieldSpec={latest.$root["font-faces"]} data-wd-key="modal:settings.font-faces">
+          <FieldJson
+            lintType="json"
+            optional
+            value={this.props.mapStyle["font-faces"] as any}
+            onChange={(value) => this.changeStyleProperty("font-faces", value)}
+          />
+        </Block>
 
         <FieldString
           label={fsa.maputnik.maptiler_access_token.label}
@@ -231,6 +260,23 @@ class ModalSettingsInternal extends React.Component<ModalSettingsInternalProps> 
           onChange={(value) => this.changeStyleProperty("pitch", value)}
         />
 
+        <FieldNumber
+          label={t("Roll")}
+          data-wd-key="modal:settings.roll"
+          fieldSpec={latest.$root.roll}
+          value={mapStyle.roll}
+          default={latest.$root.roll.default}
+          onChange={(value) => this.changeStyleProperty("roll", value)}
+        />
+
+        <FieldNumber
+          label={t("Center altitude")}
+          data-wd-key="modal:settings.center-altitude"
+          fieldSpec={latest.$root.centerAltitude}
+          value={mapStyle.centerAltitude}
+          onChange={(value) => this.changeStyleProperty("centerAltitude", value)}
+        />
+
         <FieldEnum
           label={t("Light anchor")}
           fieldSpec={latest.light.anchor}
@@ -283,6 +329,66 @@ class ModalSettingsInternal extends React.Component<ModalSettingsInternalProps> 
           value={terrain.exaggeration}
           default={latest.terrain.exaggeration.default}
           onChange={(value) => this.changeTerrainProperty("exaggeration", value)}
+        />
+
+        <FieldColor
+          label={t("Sky color")}
+          fieldSpec={latest.sky["sky-color"]}
+          value={sky["sky-color"] as string}
+          default={latest.sky["sky-color"].default}
+          onChange={(value) => this.changeSkyProperty("sky-color", value)}
+        />
+
+        <FieldColor
+          label={t("Horizon color")}
+          fieldSpec={latest.sky["horizon-color"]}
+          value={sky["horizon-color"] as string}
+          default={latest.sky["horizon-color"].default}
+          onChange={(value) => this.changeSkyProperty("horizon-color", value)}
+        />
+
+        <FieldColor
+          label={t("Fog color")}
+          fieldSpec={latest.sky["fog-color"]}
+          value={sky["fog-color"] as string}
+          default={latest.sky["fog-color"].default}
+          onChange={(value) => this.changeSkyProperty("fog-color", value)}
+        />
+
+        <FieldNumber
+          label={t("Sky horizon blend")}
+          data-wd-key="modal:settings.sky-horizon-blend"
+          fieldSpec={latest.sky["sky-horizon-blend"]}
+          value={sky["sky-horizon-blend"] as number}
+          default={latest.sky["sky-horizon-blend"].default}
+          onChange={(value) => this.changeSkyProperty("sky-horizon-blend", value)}
+        />
+
+        <FieldNumber
+          label={t("Horizon fog blend")}
+          data-wd-key="modal:settings.horizon-fog-blend"
+          fieldSpec={latest.sky["horizon-fog-blend"]}
+          value={sky["horizon-fog-blend"] as number}
+          default={latest.sky["horizon-fog-blend"].default}
+          onChange={(value) => this.changeSkyProperty("horizon-fog-blend", value)}
+        />
+
+        <FieldNumber
+          label={t("Fog ground blend")}
+          data-wd-key="modal:settings.fog-ground-blend"
+          fieldSpec={latest.sky["fog-ground-blend"]}
+          value={sky["fog-ground-blend"] as number}
+          default={latest.sky["fog-ground-blend"].default}
+          onChange={(value) => this.changeSkyProperty("fog-ground-blend", value)}
+        />
+
+        <FieldNumber
+          label={t("Atmosphere blend")}
+          data-wd-key="modal:settings.atmosphere-blend"
+          fieldSpec={latest.sky["atmosphere-blend"]}
+          value={sky["atmosphere-blend"] as number}
+          default={latest.sky["atmosphere-blend"].default}
+          onChange={(value) => this.changeSkyProperty("atmosphere-blend", value)}
         />
 
         <FieldNumber

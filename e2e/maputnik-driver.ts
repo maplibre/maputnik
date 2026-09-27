@@ -182,8 +182,9 @@ export class MaputnikDriver {
       await this.helper.when.typeText(text);
     },
 
-    setTextInJsonEditor: async (text: string) => {
-      await this.helper.get.element(".cm-line").first().click();
+    setTextInJsonEditor: async (text: string, selector?: string) => {
+      const scope = selector ? this.helper.get.elementByTestId(selector).locator(".cm-line") : this.helper.get.element(".cm-line");
+      await scope.first().click();
       await this.helper.when.typeKeys("{selectall}");
       await this.helper.when.typeText(text);
     },
@@ -363,6 +364,8 @@ export class MaputnikDriver {
     skipTargetLayerList: () => this.helper.get.elementByTestId("skip-target-layer-list"),
 
     skipTargetLayerEditor: () => this.helper.get.elementByTestId("skip-target-layer-editor"),
+
+    jsonEditorErrors: (selector: string) => this.helper.get.elementByTestId(selector).locator(".cm-lint-marker-error"),
 
     styleFromLocalStorage: () => this.helper.query(() => this.readStoredStyle()),
 
