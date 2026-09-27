@@ -4,7 +4,6 @@ import { ScrollContainer } from "./ScrollContainer";
 import { useTranslation } from "react-i18next";
 import { IconContext } from "react-icons";
 
-// Keep these in sync with $layout-list-width/$layout-editor-width in _vars.scss
 const DEFAULT_LIST_WIDTH = 200;
 const DEFAULT_DRAWER_WIDTH = 370;
 const DEFAULT_SIDEBAR_WIDTH = DEFAULT_LIST_WIDTH + DEFAULT_DRAWER_WIDTH;

@@ -13,9 +13,6 @@
 
 //APP LAYOUT
 .maputnik-layout {
-  // Kept up to date by AppLayout as the sidebar is resized.
-  --sidebar-width: #{vars.$layout-list-width + vars.$layout-editor-width};
-
   font-family: vars.$font-family;
   color: vars.$color-white;
 
