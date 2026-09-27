@@ -1,6 +1,10 @@
+import { cpus } from "node:os";
 import { defineConfig, devices } from "@playwright/test";
 
 const isCI = !!process.env.CI;
+// Playwright defaults to CPU / 2 workers,
+// capping the number of workers to 4 to avoid overloading browsers.
+const workers = Math.min(4, Math.max(1, Math.floor(cpus().length / 2)));
 // When the app is already served elsewhere (e.g. the docker e2e job) set
 // E2E_NO_WEBSERVER=1 so Playwright does not start its own dev server.
 const useExternalServer = !!process.env.E2E_NO_WEBSERVER;
@@ -13,6 +17,7 @@ export default defineConfig({
   globalTeardown: "./e2e/utils/e2e-teardown.ts",
   fullyParallel: true,
   forbidOnly: isCI,
+  workers,
   retries: isCI ? 2 : 0,
   reporter: isCI ? [["list"], ["html", { open: "never" }]] : "list",
   use: {

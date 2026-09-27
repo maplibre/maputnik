@@ -62,5 +62,22 @@ describe("keyboard", () => {
       await when.typeKeys("!");
       await then(get.elementByTestId("modal:debug")).shouldBeVisible();
     });
+
+    describe("while the map has focus", () => {
+      beforeEach(async () => {
+        await when.typeKeys("m");
+        await then(get.canvas()).shouldBeFocused();
+      });
+
+      test("'!' should show debug modal", async () => {
+        await when.typeKeys("!");
+        await then(get.elementByTestId("modal:debug")).shouldBeVisible();
+      });
+
+      test("'s' should show settings modal", async () => {
+        await when.typeKeys("s");
+        await then(get.elementByTestId("modal:settings")).shouldBeVisible();
+      });
+    });
   });
 });

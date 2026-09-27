@@ -83,6 +83,22 @@ function updateRootSpec(spec: any, fieldName: string, newValues: any) {
   };
 }
 
+/**
+ * Whether the given element consumes keystrokes as text.
+ *
+ * Shortcuts have to stay out of the way while the user is typing, but asking
+ * whether the focus is on `document.body` answers a different question: the map
+ * canvas is not a text field, yet focusing it used to disable every shortcut.
+ */
+function isTextEntryElement(element: Element | null): boolean {
+  if (!element) return false;
+  const node = element as HTMLElement;
+  return node.isContentEditable ||
+    node.tagName === "INPUT" ||
+    node.tagName === "TEXTAREA" ||
+    node.tagName === "SELECT";
+}
+
 type AppState = {
   errors: MappedError[],
   infos: string[],
@@ -242,7 +258,7 @@ export class App extends React.Component<any, AppState> {
         (e.target as HTMLElement).blur();
         document.body.focus();
       }
-      else if(this.state.isOpen.shortcuts || document.activeElement === document.body) {
+      else if(this.state.isOpen.shortcuts || !isTextEntryElement(document.activeElement)) {
         const shortcut = shortcuts.find((shortcut) => {
           return (shortcut.key === e.key);
         });

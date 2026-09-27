@@ -1,5 +1,6 @@
 import { PlaywrightHelper } from "./playwright-helper";
 import { ModalDriver } from "./modal-driver";
+import emptyStyle from "../src/config/empty-style.json" with { type: "json" };
 
 const baseUrl = "http://localhost:8888/";
 const isMac = process.platform === "darwin";
@@ -55,6 +56,11 @@ export class MaputnikDriver {
         method: "GET",
         url: "https://www.glyph-server.com/*",
         response: ["Font 1", "Font 2", "Font 3"],
+      });
+      await this.helper.given.interceptAndMockResponse({
+        method: "GET",
+        url: /cdn\.jsdelivr\.net\/.*\/empty-style\.json$/,
+        response: emptyStyle,
       });
     },
   };
