@@ -133,6 +133,9 @@ export class Assertable<T> {
 
   shouldDeepNestedInclude = (value: Record<string, unknown> | unknown[]) =>
     this.assertValue((actual) => assertDeepNestedInclude(actual, value));
+
+  shouldNotHaveProperty = (property: string) =>
+    this.assertValue((actual) => expect(actual).not.toHaveProperty([property]));
 }
 
 async function typeSequence(page: Page, text: string): Promise<void> {

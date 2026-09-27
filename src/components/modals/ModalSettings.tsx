@@ -168,6 +168,7 @@ class ModalSettingsInternal extends React.Component<ModalSettingsInternalProps> 
         <Block label={t("Sprite URL")} fieldSpec={latest.$root.sprite} data-wd-key="modal:settings.sprite">
           <FieldJson
             lintType="json"
+            optional
             value={this.props.mapStyle.sprite as any}
             onChange={(value) => this.changeStyleProperty("sprite", value)}
           />
@@ -184,6 +185,7 @@ class ModalSettingsInternal extends React.Component<ModalSettingsInternalProps> 
         <Block label={t("Font faces")} fieldSpec={latest.$root["font-faces"]} data-wd-key="modal:settings.font-faces">
           <FieldJson
             lintType="json"
+            optional
             value={this.props.mapStyle["font-faces"] as any}
             onChange={(value) => this.changeStyleProperty("font-faces", value)}
           />

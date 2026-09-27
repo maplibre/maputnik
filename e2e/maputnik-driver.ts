@@ -365,6 +365,8 @@ export class MaputnikDriver {
 
     skipTargetLayerEditor: () => this.helper.get.elementByTestId("skip-target-layer-editor"),
 
+    jsonEditorErrors: (selector: string) => this.helper.get.elementByTestId(selector).locator(".cm-lint-marker-error"),
+
     styleFromLocalStorage: () => this.helper.query(() => this.readStoredStyle()),
 
     fixture: (name: string) => this.helper.readFixture(name),

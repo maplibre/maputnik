@@ -347,6 +347,20 @@ describe("modals", () => {
       });
     });
 
+    test("unset font faces show an empty editor without errors", async () => {
+      await when.wait(1000);
+      await then(get.jsonEditorErrors("modal:settings.font-faces")).shouldNotExist();
+
+      await when.setTextInJsonEditor(JSON.stringify({ Font: "http://example.com/font.ttf" }), "modal:settings.font-faces");
+      await when.click("modal:settings.name");
+      await when.setTextInJsonEditor("", "modal:settings.font-faces");
+      await when.typeKeys("{backspace}");
+      await when.click("modal:settings.name");
+      await when.wait(1000);
+      await then(get.jsonEditorErrors("modal:settings.font-faces")).shouldNotExist();
+      await then(get.styleFromLocalStorage()).shouldNotHaveProperty("font-faces");
+    });
+
     test("maptiler access token", async () => {
       const apiKey = "testing123";
       await when.setValue("modal:settings.maputnik:openmaptiles_access_token", apiKey);
