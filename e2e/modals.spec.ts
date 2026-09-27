@@ -338,6 +338,15 @@ describe("modals", () => {
       });
     });
 
+    test("font faces", async () => {
+      const fontFaces = { "Noto Sans Regular": [{ url: "http://example.com/font.ttf", "unicode-range": ["U+1780-17FF"] }] };
+      await when.setTextInJsonEditor(JSON.stringify(fontFaces), "modal:settings.font-faces");
+      await when.click("modal:settings.name");
+      await then(get.styleFromLocalStorage()).shouldDeepNestedInclude({
+        "font-faces": fontFaces,
+      });
+    });
+
     test("maptiler access token", async () => {
       const apiKey = "testing123";
       await when.setValue("modal:settings.maputnik:openmaptiles_access_token", apiKey);
@@ -378,11 +387,24 @@ describe("modals", () => {
       await when.setValue("modal:settings.zoom", "4");
       await when.setValue("modal:settings.bearing", "12");
       await when.setValue("modal:settings.pitch", "30");
+      await when.setValue("modal:settings.roll", "15");
+      await when.setValue("modal:settings.center-altitude", "100");
       await when.click("modal:settings.name");
       await then(get.styleFromLocalStorage()).shouldDeepNestedInclude({
         zoom: 4,
         bearing: 12,
         pitch: 30,
+        roll: 15,
+        centerAltitude: 100,
+      });
+    });
+
+    test("sky and fog blends", async () => {
+      await when.setValue("modal:settings.sky-horizon-blend", "0.3");
+      await when.setValue("modal:settings.fog-ground-blend", "0.2");
+      await when.click("modal:settings.name");
+      await then(get.styleFromLocalStorage()).shouldDeepNestedInclude({
+        sky: { "sky-horizon-blend": 0.3, "fog-ground-blend": 0.2 },
       });
     });
 
