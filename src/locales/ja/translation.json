@@ -57,6 +57,8 @@
   "Delete filter block": "フィルタブロックを削除",
   "Deuteranopia filter": "緑色盲フィルタ",
   "Drag and drop a style JSON file here or click to browse": "ここにスタイルのJSONファイルをドラッグ＆ドロップするか、クリックして参照してください",
+  "Drag to resize the layer list": "ドラッグしてレイヤーリストのサイズを変更",
+  "Drag to resize the sidebar": "ドラッグしてサイドバーのサイズを変更",
   "Duplicate": "複製",
   "Encoding": "エンコーディング",
   "Enter URL...": "URLを入力",

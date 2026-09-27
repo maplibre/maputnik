@@ -28,7 +28,7 @@ type EditorProps = {
    * An empty optional editor means the value is unset, which is valid
    */
   optional?: boolean,
-}
+};
 
 function getDiagnosticsFromExpressionErrors(errors: LinterError[], ast: ValueNode | PropertyNode) {
   const diagnostics: Diagnostic[] = [];
