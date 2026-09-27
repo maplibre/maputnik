@@ -122,6 +122,8 @@ export class Assertable<T> {
   // Value assertions (auto-retrying for Query targets).
   shouldEqual = (value: any) => this.assertValue((actual) => expect(actual).toBe(value));
 
+  shouldBeGreaterThan = (value: number) => this.assertValue((actual) => expect(actual).toBeGreaterThan(value));
+
   shouldInclude = (value: any) =>
     this.assertValue((actual) => {
       if (typeof value === "object" && value !== null) {
@@ -349,6 +351,15 @@ export class PlaywrightHelper {
       await this.page.mouse.up();
     },
 
+    /** Presses at the centre of an element and drags it by the given offset. */
+    dragBy: async (testId: string, deltaX: number, deltaY = 0) => {
+      const { x, y } = await centerOf(this.testId(testId));
+      await this.page.mouse.move(x, y);
+      await this.page.mouse.down();
+      await this.page.mouse.move(x + deltaX, y + deltaY, { steps: 10 });
+      await this.page.mouse.up();
+    },
+
     clickCenter: async (testId: string) => {
       const { x, y } = await centerOf(this.testId(testId));
       await this.page.mouse.move(x, y);
@@ -445,6 +456,13 @@ export class PlaywrightHelper {
     elementByTestId: (testId: string) => this.testId(testId),
 
     inputValue: (testId: string) => new Query<string>(() => this.testId(testId).first().inputValue()),
+
+    elementWidth: (testId: string) =>
+      new Query<number>(async () => {
+        const box = await this.testId(testId).first().boundingBox();
+        if (!box) throw new Error(`Element "${testId}" has no bounding box`);
+        return box.width;
+      }),
 
     elementsText: (testId: string) => new Query<string>(() => this.testId(testId).first().innerText()),
 
