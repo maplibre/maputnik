@@ -71,8 +71,8 @@ describe("modals", () => {
       await when.typeKeys("!");
     });
 
-    test("shows the map's max zoom", async () => {
-      await then(get.elementByTestId("modal:debug.max-zoom")).shouldHaveValue("24");
+    test("max zoom is empty until the user sets it", async () => {
+      await then(get.elementByTestId("modal:debug.max-zoom")).shouldHaveValue("");
     });
 
     test("lowering the max zoom zooms the map out to it", async () => {
