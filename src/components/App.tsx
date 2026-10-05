@@ -181,6 +181,7 @@ export class App extends React.Component<any, AppState> {
         showTileBoundaries: false,
         showCollisionBoxes: false,
         showOverdrawInspector: false,
+        maxZoom: undefined,
       },
       openlayersDebugOptions: {
         debugToolbox: false,

@@ -126,6 +126,7 @@ class MapMaplibreGlInternal extends React.Component<MapMaplibreGlInternalProps, 
       map.showTileBoundaries = this.props.options?.showTileBoundaries!;
       map.showCollisionBoxes = this.props.options?.showCollisionBoxes!;
       map.showOverdrawInspector = this.props.options?.showOverdrawInspector!;
+      map.setMaxZoom(this.props.options?.maxZoom);
 
       // set the map view when the prop was updated from outside
       if (this.props.mapView._from === "app") {
@@ -152,7 +153,6 @@ class MapMaplibreGlInternal extends React.Component<MapMaplibreGlInternalProps, 
       container: this.container!,
       style: this.props.mapStyle,
       hash: true,
-      maxZoom: 24,
       // make root relative urls in stylefiles work as maplibre gl js does
       // not support this for everything:
       // https://github.com/maplibre/maplibre-gl-js/issues/6818
