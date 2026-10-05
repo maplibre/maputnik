@@ -64,6 +64,30 @@ describe("modals", () => {
     });
   });
 
+  describe("debug", () => {
+    beforeEach(async () => {
+      await when.setStyle("zoom_7_center_0_51");
+      await then(get.locationHash()).shouldInclude("#7/51/0");
+      await when.typeKeys("!");
+    });
+
+    test("shows the map's max zoom", async () => {
+      await then(get.elementByTestId("modal:debug.max-zoom")).shouldHaveValue("24");
+    });
+
+    test("lowering the max zoom zooms the map out to it", async () => {
+      await when.setValue("modal:debug.max-zoom", "3");
+      await then(get.locationHash()).shouldInclude("#3/51/0");
+    });
+
+    test("typing a multi-digit max zoom keeps the map in place", async () => {
+      await when.type("modal:debug.max-zoom", "{selectall}{backspace}22");
+      // Let the debounced update reach the map
+      await when.wait(1000);
+      await then(get.locationHash()).shouldInclude("#7/51/0");
+    });
+  });
+
   describe("export", () => {
     beforeEach(async () => {
       await when.click("nav:export");

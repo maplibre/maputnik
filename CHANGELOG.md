@@ -7,6 +7,7 @@
 - Exported HTML now loads MapLibre GL JS as an ES module, since v6 no longer ships a UMD bundle
 - Add `font-faces`, `sky`, `roll` and `centerAltitude` to the style settings modal
 - The sidebar can now be resized, both as a whole and in the split between the layer list and the layer editor
+- Allow viewing and changing the map's max zoom in the debug modal
 - _...Add new stuff here..._
 
 ### 🐞 Bug fixes

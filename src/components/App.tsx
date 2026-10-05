@@ -121,6 +121,7 @@ type AppState = {
     showTileBoundaries: boolean,
     showCollisionBoxes: boolean,
     showOverdrawInspector: boolean,
+    maxZoom: number,
   },
   openlayersDebugOptions: {
     debugToolbox: boolean,
@@ -181,6 +182,7 @@ export class App extends React.Component<any, AppState> {
         showTileBoundaries: false,
         showCollisionBoxes: false,
         showOverdrawInspector: false,
+        maxZoom: 24,
       },
       openlayersDebugOptions: {
         debugToolbox: false,

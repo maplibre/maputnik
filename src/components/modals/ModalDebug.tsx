@@ -1,16 +1,19 @@
 import React from "react";
+import { debounce } from "lodash";
 import { Trans, type WithTranslation, withTranslation } from "react-i18next";
+import type { MapOptions } from "maplibre-gl";
 
 import { Modal } from "./Modal";
+import { FieldNumber } from "../FieldNumber";
 
 
 type ModalDebugInternalProps = {
   isOpen: boolean
   renderer: string
-  onChangeMaplibreGlDebug(key: string, checked: boolean): unknown
+  onChangeMaplibreGlDebug(key: string, value: boolean | number | undefined): unknown
   onChangeOpenlayersDebug(key: string, checked: boolean): unknown
   onOpenToggle(): void
-  maplibreGlDebugOptions?: object
+  maplibreGlDebugOptions?: Partial<MapOptions>
   openlayersDebugOptions?: object
   mapView: {
     zoom: number
@@ -23,6 +26,15 @@ type ModalDebugInternalProps = {
 
 
 class ModalDebugInternal extends React.Component<ModalDebugInternalProps> {
+  // Typing "22" would otherwise apply 2 first and zoom the map out of the current view
+  onChangeMaxZoom = debounce((value: number | undefined) => {
+    this.props.onChangeMaplibreGlDebug("maxZoom", value);
+  }, 500);
+
+  componentWillUnmount() {
+    this.onChangeMaxZoom.cancel();
+  }
+
   render() {
     const {t, mapView} = this.props;
 
@@ -39,15 +51,24 @@ class ModalDebugInternal extends React.Component<ModalDebugInternalProps> {
       <section className="maputnik-modal-section maputnik-modal-shortcuts">
         <h1>{t("Options")}</h1>
         {this.props.renderer === "mlgljs" &&
-          <ul>
-            {Object.entries(this.props.maplibreGlDebugOptions!).map(([key, val]) => {
-              return <li key={key}>
-                <label>
-                  <input type="checkbox" checked={val} onChange={(e) => this.props.onChangeMaplibreGlDebug(key, e.target.checked)} /> {key}
-                </label>
-              </li>;
-            })}
-          </ul>
+          <>
+            <ul>
+              {Object.entries(this.props.maplibreGlDebugOptions!).filter((entry): entry is [string, boolean] => typeof entry[1] === "boolean").map(([key, val]) => {
+                return <li key={key}>
+                  <label>
+                    <input type="checkbox" checked={val} onChange={(e) => this.props.onChangeMaplibreGlDebug(key, e.target.checked)} /> {key}
+                  </label>
+                </li>;
+              })}
+            </ul>
+            <FieldNumber
+              label={t("Max Zoom")}
+              data-wd-key="modal:debug.max-zoom"
+              value={this.props.maplibreGlDebugOptions!.maxZoom ?? undefined}
+              min={0}
+              onChange={this.onChangeMaxZoom}
+            />
+          </>
         }
         {this.props.renderer === "ol" &&
           <ul>
