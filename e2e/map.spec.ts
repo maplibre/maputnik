@@ -64,4 +64,18 @@ describe("map", () => {
       await then(get.elementByTestId("feature-layer-popup")).shouldBeVisible();
     });
   });
+
+  describe("style loaded while animation frames are paused", () => {
+    beforeEach(async () => {
+      await given.pausedAnimationFrames();
+      await when.setStyle("rectangles", 5);
+      await then(get.elementByTestId("layer-list-item:rectangles")).shouldBeVisible();
+      await when.resumeAnimationFrames();
+    });
+
+    test("should render without moving the map", async () => {
+      await when.clickCenter("maplibre:map");
+      await then(get.elementByTestId("feature-layer-popup")).shouldBeVisible();
+    });
+  });
 });
