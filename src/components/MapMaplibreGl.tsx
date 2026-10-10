@@ -236,6 +236,7 @@ class MapMaplibreGlInternal extends React.Component<MapMaplibreGlInternalProps, 
         zoomControl,
         zoom: map.getZoom()
       });
+      map.setStyle(this.props.replaceAccessTokens(this.props.mapStyle), {diff: true});
     });
 
     map.on("data", e => {
