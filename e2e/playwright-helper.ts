@@ -235,26 +235,6 @@ export class PlaywrightHelper {
       });
     },
 
-    /**
-     * Holds back requestAnimationFrame callbacks until
-     * when.resumeAnimationFrames(), the way a background tab does. Must be
-     * called before the page under test is loaded.
-     */
-    pausedAnimationFrames: async () => {
-      await this.page.addInitScript(() => {
-        const requestAnimationFrame = window.requestAnimationFrame.bind(window);
-        const paused: FrameRequestCallback[] = [];
-        window.requestAnimationFrame = (callback) => {
-          paused.push(callback);
-          return 0;
-        };
-        (window as any).resumeAnimationFrames = () => {
-          window.requestAnimationFrame = requestAnimationFrame;
-          paused.forEach((callback) => requestAnimationFrame(callback));
-        };
-      });
-    },
-
     intercept: async (pattern: RegExp, alias: string, _method = "GET") => {
       this.recordedRequests.set(alias, []);
       await this.page.route(pattern, (route) => {
@@ -290,9 +270,6 @@ export class PlaywrightHelper {
     },
 
     wait: (ms: number) => this.page.waitForTimeout(ms),
-
-    /** Releases the frames held back by given.pausedAnimationFrames(). */
-    resumeAnimationFrames: () => this.page.evaluate(() => (window as any).resumeAnimationFrames()),
 
     tab: () => this.page.keyboard.press("Tab"),
 
