@@ -107,7 +107,7 @@ class MapMaplibreGlInternal extends React.Component<MapMaplibreGlInternalProps, 
   shouldComponentUpdate(nextProps: MapMaplibreGlInternalProps, nextState: MapMaplibreGlState) {
     let should = false;
     try {
-      should = JSON.stringify(this.props) !== JSON.stringify(nextProps) || JSON.stringify(this.state) !== JSON.stringify(nextState);
+      should = JSON.stringify(this.props) !== JSON.stringify(nextProps) || (Object.keys(nextState) as (keyof MapMaplibreGlState)[]).some(key => key !== "zoom" && this.state[key] !== nextState[key]);
     } catch(_e) {
       // no biggie, carry on
     }
@@ -236,7 +236,6 @@ class MapMaplibreGlInternal extends React.Component<MapMaplibreGlInternalProps, 
         zoomControl,
         zoom: map.getZoom()
       });
-      map.setStyle(this.props.replaceAccessTokens(this.props.mapStyle), {diff: true});
     });
 
     map.on("data", e => {
