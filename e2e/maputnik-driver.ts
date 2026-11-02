@@ -41,6 +41,7 @@ export class MaputnikDriver {
         "example-style-with-zoom-5-and-center-50-50.json",
         "access-token-style.json",
         "grouped-layers-style.json",
+        "example-style-with-mbgljs-renderer.json",
       ];
       for (const fixture of styleFixtures) {
         await this.helper.given.interceptAndMockResponse({
@@ -93,6 +94,7 @@ export class MaputnikDriver {
         | "zoom_7_center_0_51"
         | "access_tokens"
         | "grouped_layers"
+        | "mbgljs_renderer"
         | "",
       zoom?: number
     ) => {
@@ -106,6 +108,7 @@ export class MaputnikDriver {
         zoom_7_center_0_51: "example-style-with-zoom-7-and-center-0-51.json",
         access_tokens: "access-token-style.json",
         grouped_layers: "grouped-layers-style.json",
+        mbgljs_renderer: "example-style-with-mbgljs-renderer.json",
       };
 
       const url = new URL(baseUrl);
