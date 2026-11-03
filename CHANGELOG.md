@@ -2,6 +2,7 @@
 
 ### ✨ Features and improvements
 - Replace Cypress with Playwright for end-to-end tests and Vitest browser mode (Playwright provider) for component tests; drop the `@shellygo/cypress-test-utils` helper in favour of a `MaputnikDriver` page object
+- Upgrade to TypeScript 7 and replace ESLint/typescript-eslint with oxlint (type-aware via `oxlint-tsgolint`), keeping the same lint rules
 - _...Add new stuff here..._
 
 ### 🐞 Bug fixes
