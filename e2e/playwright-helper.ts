@@ -108,6 +108,7 @@ export class Assertable<T> {
   shouldBeFocused = () => expect(this.locator().first()).toBeFocused();
   shouldNotBeFocused = () => expect(this.locator().first()).not.toBeFocused();
   shouldHaveValue = (value: string) => expect(this.locator().first()).toHaveValue(value);
+  shouldBeChecked = () => expect(this.locator().first()).toBeChecked();
   shouldContainText = async (text: string) => {
     const locator = this.locator();
     // Prefer the visible element when a testid resolves to several (only the
