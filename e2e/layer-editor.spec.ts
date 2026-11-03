@@ -540,6 +540,17 @@ describe("layer editor", () => {
         layers: [{ id, type: "fill", source: "example", paint: { "fill-opacity": 0.4 } }],
       });
     });
+
+    test("antialias is checked when unset, as it defaults to true", async () => {
+      await then(get.element("[data-wd-key='spec-field:fill-antialias'] input")).shouldBeChecked();
+    });
+
+    test("unchecking antialias sets it to false", async () => {
+      await when.clickWithin("spec-field:fill-antialias", "input");
+      await then(get.styleFromLocalStorage()).shouldDeepNestedInclude({
+        layers: [{ id, type: "fill", source: "example", paint: { "fill-antialias": false } }],
+      });
+    });
   });
 
   describe("json-editor", () => {
