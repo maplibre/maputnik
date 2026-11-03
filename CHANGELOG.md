@@ -3,7 +3,7 @@
 ### ✨ Features and improvements
 - Replace Cypress with Playwright for end-to-end tests and Vitest browser mode (Playwright provider) for component tests; drop the `@shellygo/cypress-test-utils` helper in favour of a `MaputnikDriver` page object
 - Upgrade to MapLibre GL JS 6 and Vite 8, and update the remaining dependencies
-- Serve the RTL text plugin from `@mapbox/mapbox-gl-rtl-text` instead of a pinned CDN URL, so its version is tracked in `package.json`
+- Remove the RTL text plugin, since MapLibre GL JS now renders right-to-left text natively
 - Exported HTML now loads MapLibre GL JS as an ES module, since v6 no longer ships a UMD bundle
 - Add `font-faces`, `sky`, `roll` and `centerAltitude` to the style settings modal
 - The sidebar can now be resized, both as a whole and in the split between the layer list and the layer editor
