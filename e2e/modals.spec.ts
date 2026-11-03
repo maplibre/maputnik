@@ -88,6 +88,14 @@ describe("modals", () => {
     });
   });
 
+  describe("debug with a renderer other than mlgljs or ol", () => {
+    test("shows the map options", async () => {
+      await when.setStyle("mbgljs_renderer");
+      await when.typeKeys("!");
+      await then(get.elementByTestId("modal:debug.max-zoom")).shouldBeVisible();
+    });
+  });
+
   describe("export", () => {
     beforeEach(async () => {
       await when.click("nav:export");

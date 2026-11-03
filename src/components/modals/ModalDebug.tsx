@@ -50,7 +50,7 @@ class ModalDebugInternal extends React.Component<ModalDebugInternalProps> {
     >
       <section className="maputnik-modal-section maputnik-modal-shortcuts">
         <h1>{t("Options")}</h1>
-        {this.props.renderer === "mlgljs" &&
+        {this.props.renderer !== "ol" &&
           <>
             <ul>
               {Object.entries(this.props.maplibreGlDebugOptions!).filter((entry): entry is [string, boolean] => typeof entry[1] === "boolean").map(([key, val]) => {

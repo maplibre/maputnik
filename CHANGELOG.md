@@ -18,6 +18,7 @@
 - The `maputnik` desktop binary now opens the default browser automatically on startup (opt out with `--no-browser`)
 - Keyboard shortcuts now keep working while the map has focus, instead of going dead until the map is blurred
 - The map no longer stays blank on load until it is moved, when the style loads before the map is ready
+- The debug modal now shows the MapLibre options for any renderer other than OpenLayers (e.g. `mbgljs`)
 - _...Add new stuff here..._
 
 ## 3.1.0
