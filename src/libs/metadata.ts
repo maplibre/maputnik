@@ -1,3 +1,6 @@
+import type { SpriteSpecification } from "@maplibre/maplibre-gl-style-spec";
+import { spriteSources, spriteURL, type Sprite } from "./sprites";
+
 async function loadJSON<T>(url: string, defaultValue: T): Promise<T> {
   try {
     const response = await fetch(url, {
@@ -31,9 +34,18 @@ export async function downloadGlyphsMetadata(urlTemplate: string): Promise<strin
   return [...new Set(fonts)];
 }
 
-export async function downloadSpriteMetadata(baseUrl: string): Promise<string[]> {
-  if(!baseUrl) return [];
-  const url = baseUrl + ".json";
-  const glyphs = await loadJSON(url, {} as Record<string, string>);
-  return Object.keys(glyphs);
+export async function downloadSpriteMetadata(sprite: SpriteSpecification | undefined): Promise<Sprite[]> {
+  const catalogs = await Promise.all(spriteSources(sprite).map(async ({ id, url }) => {
+    if (!url) return [];
+    try {
+      const metadata = await loadJSON<Record<string, Omit<Sprite, "id" | "imageUrl">>>(spriteURL(url, ".json"), {});
+      return Object.entries(metadata).filter(([, item]) => item &&
+        [item.x, item.y, item.width, item.height, item.pixelRatio].every(Number.isFinite) &&
+        item.x >= 0 && item.y >= 0 && item.width > 0 && item.height > 0 && item.pixelRatio > 0
+      ).map(([name, item]) => ({ ...item, id: id === "default" ? name : `${id}:${name}`, imageUrl: spriteURL(url, ".png") }));
+    } catch {
+      return [];
+    }
+  }));
+  return catalogs.flat();
 }

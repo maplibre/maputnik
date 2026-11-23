@@ -105,6 +105,7 @@ export class Assertable<T> {
     }
   };
   shouldNotExist = () => expect(this.locator()).toHaveCount(0);
+  shouldBeInViewport = () => expect(this.locator().first()).toBeInViewport();
   shouldBeFocused = () => expect(this.locator().first()).toBeFocused();
   shouldNotBeFocused = () => expect(this.locator().first()).not.toBeFocused();
   shouldHaveValue = (value: string) => expect(this.locator().first()).toHaveValue(value);
@@ -191,6 +192,7 @@ async function centerOf(locator: Locator): Promise<{ x: number; y: number }> {
  * It is used by the MaputnikDriver to implement the Maputnik-specific test helpers.
  */
 export class PlaywrightHelper {
+  private readonly heldResponses = new Map<string, { release(): void; done: Promise<void> }>();
   private readonly recordedRequests = new Map<string, Request[]>();
 
   private get page(): Page {
@@ -236,6 +238,21 @@ export class PlaywrightHelper {
       });
     },
 
+    holdResponse: async (url: RegExp, fixture: string, alias: string) => {
+      let release!: () => void;
+      let finish!: () => void;
+      const gate = new Promise<void>(resolve => { release = resolve; });
+      const done = new Promise<void>(resolve => { finish = resolve; });
+      this.heldResponses.set(alias, { release, done });
+      this.recordedRequests.set(alias, []);
+      await this.page.route(url, async route => {
+        this.recordedRequests.get(alias)!.push(route.request());
+        await gate;
+        await route.fulfill({ path: path.join(FIXTURES_DIR, fixture) });
+        finish();
+      });
+    },
+
     intercept: async (pattern: RegExp, alias: string, _method = "GET") => {
       this.recordedRequests.set(alias, []);
       await this.page.route(pattern, (route) => {
@@ -254,11 +271,10 @@ export class PlaywrightHelper {
       if (alias) this.recordedRequests.set(alias, []);
       await this.page.route(url, (route) => {
         if (alias) this.recordedRequests.get(alias)!.push(route.request());
-        const body =
-          response && typeof response === "object" && "fixture" in (response as any)
-            ? this.readFixture((response as { fixture: string }).fixture)
-            : response;
-        route.fulfill({ json: body });
+        if (response && typeof response === "object" && "fixture" in response) {
+          return route.fulfill({ path: path.join(FIXTURES_DIR, (response as { fixture: string }).fixture) });
+        }
+        route.fulfill({ json: response });
       });
     },
   };
@@ -269,6 +285,21 @@ export class PlaywrightHelper {
       await recordCoverageChunk(this.page);
       await this.page.goto(url);
     },
+
+    releaseResponse: async (alias: string) => {
+      const response = this.heldResponses.get(alias)!;
+      response.release();
+      await response.done;
+      // Give fetch consumers a rendering turn after the response has been delivered.
+      await this.page.evaluate(() => new Promise<void>(resolve => {
+        requestAnimationFrame(() => requestAnimationFrame(() => resolve()));
+      }));
+    },
+
+    scrollIntoView: (testId: string, block: "center" | "end" = "center") =>
+      this.testId(testId).evaluate((element, block) => element.scrollIntoView({ block }), block),
+
+    screenshot: (filename: string) => this.page.screenshot({ path: filename }),
 
     wait: (ms: number) => this.page.waitForTimeout(ms),
 
@@ -452,6 +483,12 @@ export class PlaywrightHelper {
   };
 
   public get = {
+    canvasPixel: (testId: string, x: number, y: number) => this.query(async () =>
+      this.testId(testId).evaluate((element, point) => Array.from(
+        (element as HTMLCanvasElement).getContext("2d")!.getImageData(point.x, point.y, 1, 1).data
+      ), { x, y })
+    ),
+
     element: (selector: string) => this.page.locator(selector),
 
     localStorageItem: (key: string) =>

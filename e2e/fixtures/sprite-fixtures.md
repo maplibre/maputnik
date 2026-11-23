@@ -1,0 +1,1 @@
+Sprite fixtures authored for this test suite and distributed under the repository MIT license. The 96×32 atlas has red/green squares, an analytic circle distance field (alpha=0.75+signedDistance/8), and a blue 2× square. No third-party assets.

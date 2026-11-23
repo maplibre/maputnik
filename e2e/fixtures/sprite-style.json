@@ -1,0 +1,41 @@
+{
+  "version": 8,
+  "name": "Sprite preview test",
+  "center": [
+    0,
+    0
+  ],
+  "zoom": 0,
+  "sources": {
+    "points": {
+      "type": "geojson",
+      "data": {
+        "type": "FeatureCollection",
+        "features": [
+          {
+            "type": "Feature",
+            "properties": {},
+            "geometry": {
+              "type": "Point",
+              "coordinates": [
+                0,
+                0
+              ]
+            }
+          }
+        ]
+      }
+    }
+  },
+  "sprite": "http://localhost:8888/sprite-atlas?key=test",
+  "layers": [
+    {
+      "id": "symbols",
+      "type": "symbol",
+      "source": "points",
+      "layout": {
+        "icon-image": "red"
+      }
+    }
+  ]
+}

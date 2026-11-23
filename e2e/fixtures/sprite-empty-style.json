@@ -1,0 +1,40 @@
+{
+  "version": 8,
+  "name": "Sprite preview test",
+  "center": [
+    0,
+    0
+  ],
+  "zoom": 0,
+  "sources": {
+    "points": {
+      "type": "geojson",
+      "data": {
+        "type": "FeatureCollection",
+        "features": [
+          {
+            "type": "Feature",
+            "properties": {},
+            "geometry": {
+              "type": "Point",
+              "coordinates": [
+                0,
+                0
+              ]
+            }
+          }
+        ]
+      }
+    }
+  },
+  "layers": [
+    {
+      "id": "symbols",
+      "type": "symbol",
+      "source": "points",
+      "layout": {
+        "icon-image": "red"
+      }
+    }
+  ]
+}
