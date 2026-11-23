@@ -124,7 +124,7 @@
     "@types/string-hash": "^1.1.3",
     "@types/wicg-file-system-access": "^2023.10.7",
     "@vitejs/plugin-react": "^6.3.0",
-    "@vitest/coverage-v8": "^5.1.0",
+    "@vitest/coverage-v8": "^5.1.1",
     "cors": "^2.8.6",
     "eslint": "^10.15.0",
     "eslint-plugin-react": "^7.37.5",
@@ -145,6 +145,6 @@
     "uuid": "^14.0.3",
     "vite": "^8.3.8",
     "vite-plugin-istanbul": "^9.0.1",
-    "vitest": "^5.1.0"
+    "vitest": "^5.1.1"
   }
 }
