@@ -137,7 +137,7 @@
     "postcss": "^8.5.33",
     "react-hot-loader": "^4.13.1",
     "sass": "^1.108.2",
-    "stylelint": "^18.0.0",
+    "stylelint": "^18.1.0",
     "stylelint-config-recommended-scss": "^18.0.0",
     "stylelint-scss": "^7.5.0",
     "typescript": "^6.0.3",
