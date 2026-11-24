@@ -219,6 +219,36 @@
   }
 }
 
+.maputnik-sprite-autocomplete {
+  position: relative;
+
+  .maputnik-autocomplete-menu {
+    width: 100%;
+    box-sizing: border-box;
+  }
+}
+
+.maputnik-sprite-option {
+  display: flex;
+  align-items: center;
+  gap: vars.$margin-2;
+}
+
+.maputnik-sprite-preview {
+  flex: 0 0 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: repeating-conic-gradient(vars.$color-white 0% 25%, vars.$color-lowgray 0% 50%) 0 0 / 8px 8px;
+}
+
+.maputnik-sprite-name {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
 // FONT
 .maputnik-font {
   .maputnik-autocomplete:not(:last-child) {

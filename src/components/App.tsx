@@ -28,6 +28,9 @@ import { ModalShortcuts } from "./modals/ModalShortcuts";
 import { ModalDebug } from "./modals/ModalDebug";
 import { ModalGlobalState } from "./modals/ModalGlobalState";
 
+import { SpriteCatalogContext } from "./SpriteCatalogContext";
+import type { Sprite } from "../libs/sprites";
+
 import {downloadGlyphsMetadata, downloadSpriteMetadata} from "../libs/metadata";
 import { emptyStyle, getAccessToken, replaceAccessTokens } from "../libs/style";
 import { undoMessages, redoMessages } from "../libs/diffmessage";
@@ -109,6 +112,7 @@ type AppState = {
   sources: {[key: string]: SourceSpecification & {layers: string[]} },
   vectorLayers: {},
   spec: any,
+  sprites: Sprite[],
   mapView: {
     zoom: number,
     center: {
@@ -143,6 +147,7 @@ export class App extends React.Component<any, AppState> {
   revisionStore: RevisionStore;
   styleStore: IStyleStore | null = null;
   layerWatcher: LayerWatcher;
+  private spriteRequest = 0;
 
   constructor(props: any) {
     super(props);
@@ -159,6 +164,7 @@ export class App extends React.Component<any, AppState> {
       vectorLayers: {},
       mapState: "map",
       spec: latest,
+      sprites: [],
       mapView: {
         zoom: 0,
         center: {
@@ -301,6 +307,7 @@ export class App extends React.Component<any, AppState> {
   }
 
   componentWillUnmount() {
+    this.spriteRequest++;
     window.removeEventListener("keydown", this.handleKeyPress);
   }
 
@@ -318,10 +325,12 @@ export class App extends React.Component<any, AppState> {
     });
   }
 
-  updateIcons(baseUrl: string) {
-    downloadSpriteMetadata(baseUrl).then(icons => {
-      this.setState({ spec: updateRootSpec(this.state.spec, "sprite", icons)});
-    });
+  async updateIcons(sprite: StyleSpecification["sprite"]) {
+    const request = ++this.spriteRequest;
+    this.setState(state => ({ sprites: [], spec: updateRootSpec(state.spec, "sprite", []) }));
+    const sprites = await downloadSpriteMetadata(sprite);
+    if (request !== this.spriteRequest) return;
+    this.setState(state => ({ sprites, spec: updateRootSpec(state.spec, "sprite", sprites.map(sprite => sprite.id)) }));
   }
 
   onChangeMetadataProperty = (property: string, value: any) => {
@@ -481,8 +490,8 @@ export class App extends React.Component<any, AppState> {
     if(newStyle.glyphs !== this.state.mapStyle.glyphs) {
       this.updateFonts(newStyle.glyphs as string);
     }
-    if(newStyle.sprite !== this.state.mapStyle.sprite) {
-      this.updateIcons(newStyle.sprite as string);
+    if(!isEqual(newStyle.sprite, this.state.mapStyle.sprite)) {
+      this.updateIcons(newStyle.sprite);
     }
 
     if (opts.addRevision) {
@@ -919,7 +928,7 @@ export class App extends React.Component<any, AppState> {
       errors={this.state.errors}
     />;
 
-    const layerEditor = selectedLayer ? <LayerEditor
+    const layerEditor = selectedLayer ? <SpriteCatalogContext.Provider value={this.state.sprites}><LayerEditor
       key={this.state.selectedLayerOriginalId}
       layer={selectedLayer}
       layerIndex={this.state.selectedLayerIndex}
@@ -935,7 +944,7 @@ export class App extends React.Component<any, AppState> {
       onLayerVisibilityToggle={this.onLayerVisibilityToggle}
       onLayerIdChange={this.onLayerIdChange}
       errors={this.state.errors}
-    /> : undefined;
+    /></SpriteCatalogContext.Provider> : undefined;
 
     const bottomPanel = (this.state.errors.length + this.state.infos.length) > 0 ? <MessagePanel
       currentLayer={selectedLayer}

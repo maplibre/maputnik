@@ -30,6 +30,10 @@ export class MaputnikDriver {
 
     setupMockBackedResponses: async () => {
       const styleFixtures = [
+        "sprite-style.json",
+        "sprite-alternate-style.json",
+        "sprite-namespaced-style.json",
+        "sprite-empty-style.json",
         "example-style.json",
         "example-layer-style.json",
         "geojson-style.json",
@@ -51,6 +55,10 @@ export class MaputnikDriver {
           alias: fixture === "example-style.json" ? "example-style.json" : undefined,
         });
       }
+      for (const atlas of ["sprite-atlas", "sprite-alternate"]) {
+        await this.helper.given.interceptAndMockResponse({ method: "GET", url: new RegExp(`/${atlas}\\.json(?:\\?|$)`), response: { fixture: `${atlas}.json` } });
+        await this.helper.given.interceptAndMockResponse({ method: "GET", url: new RegExp(`/${atlas}\\.png(?:\\?|$)`), response: { fixture: "sprite-atlas.png" } });
+      }
       await this.helper.given.interceptAndMockResponse({ method: "GET", url: /example\.local\//, response: [] });
       await this.helper.given.interceptAndMockResponse({ method: "GET", url: /example\.com\//, response: [] });
       await this.helper.given.interceptAndMockResponse({
@@ -71,6 +79,33 @@ export class MaputnikDriver {
 
     modal: this.modalDriver.when,
 
+    openSpritePicker: async () => {
+      await this.helper.when.click("layer-list-item:symbols");
+      await this.helper.when.scrollIntoView("spec-field:icon-image");
+      await this.helper.get.elementByTestId("spec-field:icon-image").locator("input").fill("");
+    },
+
+    scrollSpritePickerToBottom: () => this.helper.when.scrollIntoView("spec-field:icon-image", "end"),
+
+    searchSprites: (text: string) => this.helper.get.elementByTestId("spec-field-input:icon-image").fill(text),
+
+    chooseSprite: (id: string) => this.helper.when.click(`sprite-option:${id}`),
+
+    chooseSpriteWithKeyboard: async () => {
+      const input = this.helper.get.elementByTestId("spec-field-input:icon-image");
+      await input.press("ArrowDown");
+      await input.press("Enter");
+    },
+
+    closeSpritePicker: () => this.helper.get.elementByTestId("spec-field-input:icon-image").press("Escape"),
+
+    openSpriteStyle: async (name: "sprite-alternate-style" | "sprite-empty-style") => {
+      await this.helper.when.click("nav:open");
+      const input = this.helper.get.elementByTestId("modal:open.url.input");
+      await input.fill(baseUrl + name + ".json");
+      await input.press("Enter");
+    },
+
     deleteLayer: async (id: string, control: "menu" | "trash" = "menu") => {
       if (control === "trash") {
         await this.helper.when.hover("layer-list-item:" + id);
@@ -85,6 +120,8 @@ export class MaputnikDriver {
 
     setStyle: async (
       styleProperties:
+        | "sprite"
+        | "sprite_namespaced"
         | "geojson"
         | "raster"
         | "both"
@@ -99,6 +136,8 @@ export class MaputnikDriver {
       zoom?: number
     ) => {
       const styleFileByKey: Record<string, string> = {
+        sprite: "sprite-style.json",
+        sprite_namespaced: "sprite-namespaced-style.json",
         geojson: "geojson-style.json",
         raster: "raster-style.json",
         both: "geojson-raster-style.json",
@@ -359,6 +398,10 @@ export class MaputnikDriver {
     ...this.helper.get,
 
     isMac: () => isMac,
+
+    spriteOptions: () => this.helper.get.element(".maputnik-sprite-option"),
+
+    spritePixel: (id: string, x: number, y: number) => this.helper.get.canvasPixel(`sprite-preview:${id}`, x, y),
 
     canvas: () => this.helper.get.element("canvas"),
 
