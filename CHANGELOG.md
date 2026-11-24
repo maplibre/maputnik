@@ -21,6 +21,7 @@
 - The map no longer stays blank on load until it is moved, when the style loads before the map is ready
 - The debug modal now shows the MapLibre options for any renderer other than OpenLayers (e.g. `mbgljs`)
 - Checkboxes for properties that default to `true` (e.g. `fill-antialias`, `text-keep-upright`) are now shown checked when the property is unset
+- Global state values are now saved as JSON (numbers, booleans, arrays, objects) instead of always as strings
 - _...Add new stuff here..._
 
 ## 3.1.0
