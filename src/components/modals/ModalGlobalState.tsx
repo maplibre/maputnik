@@ -23,6 +23,25 @@ type GlobalStateVariable = {
   value: any;
 };
 
+const formatValue = (value: any): string => {
+  if (typeof value === "string") {
+    try {
+      JSON.parse(value);
+    } catch {
+      return value;
+    }
+  }
+  return JSON.stringify(value);
+};
+
+const parseValue = (text: string): any => {
+  try {
+    return JSON.parse(text);
+  } catch {
+    return text;
+  }
+};
+
 const ModalGlobalStateInternal: React.FC<ModalGlobalStateInternalProps> = (props) => {
   const getGlobalStateVariables = (): GlobalStateVariable[] => {
     const style = props.mapStyle;
@@ -77,7 +96,7 @@ const ModalGlobalStateInternal: React.FC<ModalGlobalStateInternalProps> = (props
   const onChangeVariableValue = (index: number, newValue: string) => {
     const variables = getGlobalStateVariables();
 
-    variables[index].value = newValue || "";
+    variables[index].value = parseValue(newValue || "");
     setGlobalStateVariables(variables);
   };
 
@@ -96,7 +115,7 @@ const ModalGlobalStateInternal: React.FC<ModalGlobalStateInternalProps> = (props
       <td>
         <FieldString
           label={props.t("Value")}
-          value={variable.value}
+          value={formatValue(variable.value)}
           onChange={(value) => onChangeVariableValue(index, value || "")}
           data-wd-key={"global-state-variable-value:" + index}
         />

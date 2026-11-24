@@ -610,6 +610,39 @@ describe("modals", () => {
         state: { key1: { default: "myvalue" } },
       });
     });
+
+    test("edit variable value as number", async () => {
+      await when.click("global-state-add-variable");
+      await when.wait(100);
+      await when.setValue("global-state-variable-value:0", "9");
+      await when.typeKeys("{enter}");
+      await when.wait(100);
+      await then(get.styleFromLocalStorage()).shouldDeepNestedInclude({
+        state: { key1: { default: 9 } },
+      });
+    });
+
+    test("edit variable value as array", async () => {
+      await when.click("global-state-add-variable");
+      await when.wait(100);
+      await when.setValue("global-state-variable-value:0", "[\"CCS\",\"Type2\"]");
+      await when.typeKeys("{enter}");
+      await when.wait(100);
+      await then(get.styleFromLocalStorage()).shouldDeepNestedInclude({
+        state: { key1: { default: ["CCS", "Type2"] } },
+      });
+    });
+
+    test("edit variable value as quoted string", async () => {
+      await when.click("global-state-add-variable");
+      await when.wait(100);
+      await when.setValue("global-state-variable-value:0", "\"9\"");
+      await when.typeKeys("{enter}");
+      await when.wait(100);
+      await then(get.styleFromLocalStorage()).shouldDeepNestedInclude({
+        state: { key1: { default: "9" } },
+      });
+    });
   });
 
   describe("error panel", () => {
