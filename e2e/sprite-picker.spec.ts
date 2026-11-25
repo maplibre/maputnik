@@ -83,6 +83,40 @@ describe("sprite picker", () => {
   });
 });
 
+describe("sprite-backed properties", () => {
+  const { given, when, get, then } = new MaputnikDriver();
+  const spriteProperties = [
+    { layerType: "background", source: undefined, layerId: "background-pattern", property: "background-pattern" },
+    { layerType: "fill", source: "points", layerId: "fill-pattern", property: "fill-pattern" },
+    { layerType: "line", source: "points", layerId: "line-pattern", property: "line-pattern" },
+    { layerType: "fill-extrusion", source: "points", layerId: "fill-extrusion-pattern", property: "fill-extrusion-pattern" },
+  ] as const;
+
+  beforeEach(async () => {
+    await given.setupMockBackedResponses();
+    await when.setStyle("sprite");
+  });
+
+  for (const { layerType, source, layerId, property } of spriteProperties) {
+    test(`${property} uses the sprite preview picker`, async () => {
+      await when.modal.open();
+      await when.modal.fillLayers({ type: layerType, layer: source, id: layerId });
+      await when.openSpritePicker(layerId, property);
+
+      await then(get.spriteOptions()).shouldHaveLength(4);
+      await then(get.spritePixel("red", 8, 8)).shouldDeepNestedInclude([255, 0, 0, 255]);
+
+      await when.chooseSprite("green");
+      await then(get.styleFromLocalStorage()).shouldDeepNestedInclude({
+        layers: [
+          { id: "symbols", layout: { "icon-image": "red" } },
+          { id: layerId, paint: { [property]: "green" } },
+        ],
+      });
+    });
+  }
+});
+
 describe("namespaced sprite picker", () => {
   const { given, when, get, then } = new MaputnikDriver();
   beforeEach(async () => {
