@@ -96,6 +96,22 @@ describe("modals", () => {
     });
   });
 
+  describe("maplibre settings button", () => {
+    beforeEach(async () => {
+      await when.setStyle("zoom_7_center_0_51");
+    });
+
+    test("opens the modal without the keyboard shortcut", async () => {
+      await when.click("nav:maplibre-settings");
+      await then(get.elementByTestId("modal:debug")).shouldExist();
+    });
+
+    test("the modal is titled Maplibre Settings", async () => {
+      await when.click("nav:maplibre-settings");
+      await then(get.element(".maputnik-modal-header-title")).shouldHaveText("Maplibre Settings");
+    });
+  });
+
   describe("export", () => {
     beforeEach(async () => {
       await when.click("nav:export");
