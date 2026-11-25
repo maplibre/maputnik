@@ -7,7 +7,6 @@ import { InputString, type InputStringProps } from "./InputString";
 import { InputArray, type InputArrayProps } from "./InputArray";
 import { InputDynamicArray, type InputDynamicArrayProps } from "./InputDynamicArray";
 import { InputFont, type InputFontProps } from "./InputFont";
-import { InputAutocomplete, type InputAutocompleteProps } from "./InputAutocomplete";
 import { InputEnum, type InputEnumProps } from "./InputEnum";
 import { InputSprite } from "./InputSprite";
 import capitalize from "lodash.capitalize";
@@ -73,15 +72,8 @@ export class InputSpec extends React.Component<InputSpecProps> {
       case "resolvedImage":
       case "formatted":
       case "string":
-        if (this.props.fieldName === "icon-image") {
-          return <InputSprite {...commonProps as React.ComponentProps<typeof InputSprite>} />;
-        }
         if (iconProperties.indexOf(this.props.fieldName!) >= 0) {
-          const options = this.props.fieldSpec.values || [];
-          return <InputAutocomplete
-            {...commonProps as Omit<InputAutocompleteProps, "options">}
-            options={options.map(f => [f, f])}
-          />;
+          return <InputSprite {...commonProps as React.ComponentProps<typeof InputSprite>} />;
         } else {
           return <InputString
             {...commonProps as InputStringProps}

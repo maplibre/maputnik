@@ -79,25 +79,25 @@ export class MaputnikDriver {
 
     modal: this.modalDriver.when,
 
-    openSpritePicker: async () => {
-      await this.helper.when.click("layer-list-item:symbols");
-      await this.helper.when.scrollIntoView("spec-field:icon-image");
-      await this.helper.get.elementByTestId("spec-field:icon-image").locator("input").fill("");
+    openSpritePicker: async (layerId = "symbols", fieldName = "icon-image") => {
+      await this.helper.when.click(`layer-list-item:${layerId}`);
+      await this.helper.when.scrollIntoView(`spec-field:${fieldName}`);
+      await this.helper.get.elementByTestId(`spec-field:${fieldName}`).locator("input").fill("");
     },
 
-    scrollSpritePickerToBottom: () => this.helper.when.scrollIntoView("spec-field:icon-image", "end"),
+    scrollSpritePickerToBottom: (fieldName = "icon-image") => this.helper.when.scrollIntoView(`spec-field:${fieldName}`, "end"),
 
-    searchSprites: (text: string) => this.helper.get.elementByTestId("spec-field-input:icon-image").fill(text),
+    searchSprites: (text: string, fieldName = "icon-image") => this.helper.get.elementByTestId(`spec-field-input:${fieldName}`).fill(text),
 
     chooseSprite: (id: string) => this.helper.when.click(`sprite-option:${id}`),
 
-    chooseSpriteWithKeyboard: async () => {
-      const input = this.helper.get.elementByTestId("spec-field-input:icon-image");
+    chooseSpriteWithKeyboard: async (fieldName = "icon-image") => {
+      const input = this.helper.get.elementByTestId(`spec-field-input:${fieldName}`);
       await input.press("ArrowDown");
       await input.press("Enter");
     },
 
-    closeSpritePicker: () => this.helper.get.elementByTestId("spec-field-input:icon-image").press("Escape"),
+    closeSpritePicker: (fieldName = "icon-image") => this.helper.get.elementByTestId(`spec-field-input:${fieldName}`).press("Escape"),
 
     openSpriteStyle: async (name: "sprite-alternate-style" | "sprite-empty-style") => {
       await this.helper.when.click("nav:open");
