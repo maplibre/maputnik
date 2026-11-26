@@ -2,7 +2,7 @@ import React from "react";
 import classnames from "classnames";
 import { useCombobox } from "downshift";
 import { SpriteCatalogContext } from "./SpriteCatalogContext";
-import { drawSprite, type Sprite } from "../libs/sprites";
+import { drawSprite, SPRITE_PREVIEW_SIZE, type Sprite } from "../libs/sprites";
 
 function SpritePreview({ sprite, atlas }: { sprite: Sprite; atlas?: HTMLImageElement }) {
   const canvas = React.useRef<HTMLCanvasElement>(null);
@@ -15,10 +15,9 @@ function SpritePreview({ sprite, atlas }: { sprite: Sprite; atlas?: HTMLImageEle
       canvas.current.width = 0;
     }
   }, [atlas, sprite]);
-  const scale = Math.min(1 / sprite.pixelRatio, 32 / Math.max(sprite.width, sprite.height));
   return <span className="maputnik-sprite-preview" aria-hidden="true">
     {atlas && <canvas ref={canvas} data-wd-key={`sprite-preview:${sprite.id}`}
-      style={{ width: sprite.width * scale, height: sprite.height * scale }} />}
+      style={{ width: SPRITE_PREVIEW_SIZE, height: SPRITE_PREVIEW_SIZE }} />}
   </span>;
 }
 

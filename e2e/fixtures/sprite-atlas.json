@@ -2,8 +2,8 @@
   "red": {
     "x": 0,
     "y": 0,
-    "width": 16,
-    "height": 16,
+    "width": 4,
+    "height": 2,
     "pixelRatio": 1
   },
   "green": {
