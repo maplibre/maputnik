@@ -1,4 +1,4 @@
-import { describe, beforeEach, test } from "./utils/fixtures";
+import { describe, beforeEach, test, expect } from "./utils/fixtures";
 import { MaputnikDriver } from "./maputnik-driver";
 
 describe("sprite picker", () => {
@@ -9,9 +9,9 @@ describe("sprite picker", () => {
     await when.openSpritePicker();
   });
 
-  test("shows the catalog names and atlas crops in the option rows", async () => {
+  test("shows the catalog names and @2x atlas crops in the option rows", async () => {
     await then(get.spriteOptions()).shouldHaveLength(4);
-    await then(get.spritePixel("red", 8, 8)).shouldDeepNestedInclude([255, 0, 0, 255]);
+    await then(get.spritePixel("red", 8, 18)).shouldDeepNestedInclude([255, 0, 0, 255]);
     await then(get.spritePixel("green", 8, 8)).shouldDeepNestedInclude([0, 128, 0, 255]);
   });
 
@@ -44,9 +44,25 @@ describe("sprite picker", () => {
     await then(get.spritePixel("sdf-circle", 0, 0)).shouldDeepNestedInclude([0, 0, 0, 0]);
   });
 
-  test("respects the sprite pixel ratio", async () => {
-    await then(get.elementByTestId("sprite-preview:retina-square")).shouldHaveCss("width", "16px");
-    await then(get.spritePixel("retina-square", 16, 16)).shouldDeepNestedInclude([0, 0, 255, 255]);
+  test("enlarges and centers a small sprite without stretching it", async () => {
+    await then(get.elementByTestId("sprite-preview:red")).shouldHaveCss("width", "36px");
+    await then(get.elementByTestId("sprite-preview:red")).shouldHaveCss("height", "36px");
+    await then(get.spritePixel("red", 30, 18)).shouldDeepNestedInclude([255, 0, 0, 255]);
+    await then(get.spritePixel("red", 18, 5)).shouldDeepNestedInclude([0, 0, 0, 0]);
+    await then(get.spritePixel("red", 18, 30)).shouldDeepNestedInclude([0, 0, 0, 0]);
+  });
+
+  describe("on a high-density display", () => {
+    test.use({ deviceScaleFactor: 2 });
+
+    test("draws a high-resolution thumbnail at the same display size", async () => {
+      const preview = get.elementByTestId("sprite-preview:retina-square");
+      await then(preview).shouldHaveCss("width", "36px");
+      await then(preview).shouldHaveCss("height", "36px");
+      await expect(preview).toHaveAttribute("width", "72");
+      await expect(preview).toHaveAttribute("height", "72");
+      await then(get.spritePixel("retina-square", 60, 60)).shouldDeepNestedInclude([0, 0, 255, 255]);
+    });
   });
 
   test("keeps free-form sprite names", async () => {
@@ -74,6 +90,12 @@ describe("sprite picker", () => {
     await when.openSpritePicker();
     await then(get.spriteOptions()).shouldHaveLength(1);
     await then(get.spriteOptions()).shouldHaveText("blue");
+  });
+
+  test("renders the base atlas when @2x metadata is unavailable", async () => {
+    await when.openSpriteStyle("sprite-alternate-style");
+    await when.openSpritePicker();
+    await then(get.spritePixel("blue", 18, 18)).shouldDeepNestedInclude([0, 0, 255, 255]);
   });
 
   test("clears the catalog when the next style has no sprite", async () => {
@@ -104,7 +126,7 @@ describe("sprite-backed properties", () => {
       await when.openSpritePicker(layerId, property);
 
       await then(get.spriteOptions()).shouldHaveLength(4);
-      await then(get.spritePixel("red", 8, 8)).shouldDeepNestedInclude([255, 0, 0, 255]);
+      await then(get.spritePixel("red", 8, 18)).shouldDeepNestedInclude([255, 0, 0, 255]);
 
       await when.chooseSprite("green");
       await then(get.styleFromLocalStorage()).shouldDeepNestedInclude({
@@ -135,12 +157,14 @@ describe("sprite image failures", () => {
   const { given, when, get, then } = new MaputnikDriver();
   beforeEach(async () => {
     await given.setupMockBackedResponses();
-    await given.interceptAndMockResponse({ url: /sprite-atlas\.png/, response: {} });
+    await given.interceptAndMockResponse({ url: /sprite-atlas@2x\.png/, response: {} });
     await when.setStyle("sprite");
     await when.openSpritePicker();
   });
 
   test("can still select a name when the atlas fails to load", async () => {
+    await then(get.spriteOptions()).shouldHaveLength(4);
+    await then(get.elementByTestId("sprite-preview:green")).shouldNotExist();
     await when.chooseSprite("green");
     await then(get.styleFromLocalStorage()).shouldDeepNestedInclude({ layers: [{ id: "symbols", layout: { "icon-image": "green" } }] });
   });
@@ -150,7 +174,7 @@ describe("late sprite metadata", () => {
   const { given, when, get, then } = new MaputnikDriver();
   beforeEach(async () => {
     await given.setupMockBackedResponses();
-    await given.holdResponse(/sprite-atlas\.json/, "sprite-atlas.json", "old-sprite");
+    await given.holdResponse(/sprite-atlas@2x\.json/, "sprite-atlas@2x.json", "old-sprite");
     await when.setStyle("sprite");
     await when.waitForResponse("old-sprite");
     await when.openSpriteStyle("sprite-alternate-style");

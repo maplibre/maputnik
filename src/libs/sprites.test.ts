@@ -7,8 +7,8 @@ afterEach(() => vi.unstubAllGlobals());
 describe("sprite metadata", () => {
   it("keeps tokens after the extension and resolves root-relative URLs", () => {
     vi.stubGlobal("document", { baseURI: "https://editor.test/maputnik/" });
-    expect(spriteURL("https://sprites.test/icons?key=secret#section", ".json")).toBe("https://sprites.test/icons.json?key=secret#section");
-    expect(spriteURL("/icons?key=secret", ".png")).toBe("https://editor.test/icons.png?key=secret");
+    expect(spriteURL("https://sprites.test/icons?key=secret#section", "@2x.json")).toBe("https://sprites.test/icons@2x.json?key=secret#section");
+    expect(spriteURL("/icons?key=secret", "@2x.png")).toBe("https://editor.test/icons@2x.png?key=secret");
   });
 
   it("keeps atlas bounds and SDF/pixel ratio metadata with MapLibre namespace IDs", async () => {
@@ -20,8 +20,8 @@ describe("sprite metadata", () => {
       { id: "extra", url: "https://sprites.test/b" },
     ]);
     expect(sprites).toEqual([
-      { id: "circle", imageUrl: "https://sprites.test/a.png", x: 5, y: 7, width: 32, height: 24, pixelRatio: 2, sdf: true },
-      { id: "extra:circle", imageUrl: "https://sprites.test/b.png", x: 5, y: 7, width: 32, height: 24, pixelRatio: 2, sdf: true },
+      { id: "circle", imageUrl: "https://sprites.test/a@2x.png", x: 5, y: 7, width: 32, height: 24, pixelRatio: 2, sdf: true },
+      { id: "extra:circle", imageUrl: "https://sprites.test/b@2x.png", x: 5, y: 7, width: 32, height: 24, pixelRatio: 2, sdf: true },
     ]);
   });
 

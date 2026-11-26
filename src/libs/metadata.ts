@@ -38,14 +38,23 @@ export async function downloadSpriteMetadata(sprite: SpriteSpecification | undef
   const catalogs = await Promise.all(spriteSources(sprite).map(async ({ id, url }) => {
     if (!url) return [];
     try {
-      const metadata = await loadJSON<Record<string, Omit<Sprite, "id" | "imageUrl">>>(spriteURL(url, ".json"), {});
-      return Object.entries(metadata).filter(([, item]) => item &&
-        [item.x, item.y, item.width, item.height, item.pixelRatio].every(Number.isFinite) &&
-        item.x >= 0 && item.y >= 0 && item.width > 0 && item.height > 0 && item.pixelRatio > 0
-      ).map(([name, item]) => ({ ...item, id: id === "default" ? name : `${id}:${name}`, imageUrl: spriteURL(url, ".png") }));
+      for (const [metadataExtension, imageExtension] of [["@2x.json", "@2x.png"], [".json", ".png"]] as const) {
+        const metadata = await loadJSON<Record<string, Omit<Sprite, "id" | "imageUrl">> | null>(
+          spriteURL(url, metadataExtension), null,
+        );
+        const entries = Object.entries(metadata ?? {}).filter(([, item]) => item &&
+          [item.x, item.y, item.width, item.height, item.pixelRatio].every(Number.isFinite) &&
+          item.x >= 0 && item.y >= 0 && item.width > 0 && item.height > 0 && item.pixelRatio > 0
+        );
+        if (entries.length) {
+          const imageUrl = spriteURL(url, imageExtension);
+          return entries.map(([name, item]) => ({ ...item, id: id === "default" ? name : `${id}:${name}`, imageUrl }));
+        }
+      }
     } catch {
       return [];
     }
+    return [];
   }));
   return catalogs.flat();
 }

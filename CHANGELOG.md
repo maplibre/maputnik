@@ -12,6 +12,7 @@
 - _...Add new stuff here..._
 
 ### 🐞 Bug fixes
+- Make small sprites easier to recognize in the sprite picker with fixed-size previews and high-resolution sprite assets
 - Prevent a crash when converting a function to an expression
 - Prevent a crash when deleting either stop from a function with two stops
 - Preserve expanded layer groups when deleting layers, including the first layer of a group

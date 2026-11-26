@@ -15,7 +15,7 @@ export function spriteSources(sprite: SpriteSpecification | undefined) {
   return typeof sprite === "string" ? [{ id: "default", url: sprite }] : sprite || [];
 }
 
-export function spriteURL(baseUrl: string, extension: ".json" | ".png"): string {
+export function spriteURL(baseUrl: string, extension: ".json" | ".png" | "@2x.json" | "@2x.png"): string {
   const url = new URL(baseUrl, globalThis.document?.baseURI);
   url.pathname += extension;
   return url.toString();
@@ -31,14 +31,28 @@ export function decodeSdf(data: Uint8ClampedArray): void {
   }
 }
 
-export function drawSprite(canvas: HTMLCanvasElement, atlas: HTMLImageElement, sprite: Sprite): void {
-  canvas.width = sprite.width;
-  canvas.height = sprite.height;
+export const SPRITE_PREVIEW_SIZE = 36;
+
+export function drawSprite(canvas: HTMLCanvasElement, atlas: HTMLImageElement, sprite: Sprite, size = SPRITE_PREVIEW_SIZE): void {
+  const pixelRatio = window.devicePixelRatio || 1;
+  canvas.width = Math.max(1, Math.round(size * pixelRatio));
+  canvas.height = Math.max(1, Math.round(size * pixelRatio));
   const context = canvas.getContext("2d");
   if (!context) return;
-  context.drawImage(atlas, sprite.x, sprite.y, sprite.width, sprite.height, 0, 0, sprite.width, sprite.height);
+
+  context.setTransform(pixelRatio, 0, 0, pixelRatio, 0, 0);
+  context.clearRect(0, 0, size, size);
+  const scale = Math.min(size / sprite.width, size / sprite.height);
+  const width = sprite.width * scale;
+  const height = sprite.height * scale;
+  const x = (size - width) / 2;
+  const y = (size - height) / 2;
+
+  context.imageSmoothingEnabled = true;
+  context.imageSmoothingQuality = "high";
+  context.drawImage(atlas, sprite.x, sprite.y, sprite.width, sprite.height, x, y, width, height);
   if (sprite.sdf) {
-    const image = context.getImageData(0, 0, sprite.width, sprite.height);
+    const image = context.getImageData(0, 0, canvas.width, canvas.height);
     decodeSdf(image.data);
     context.putImageData(image, 0, 0);
   }

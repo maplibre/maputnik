@@ -59,6 +59,9 @@ export class MaputnikDriver {
         await this.helper.given.interceptAndMockResponse({ method: "GET", url: new RegExp(`/${atlas}\\.json(?:\\?|$)`), response: { fixture: `${atlas}.json` } });
         await this.helper.given.interceptAndMockResponse({ method: "GET", url: new RegExp(`/${atlas}\\.png(?:\\?|$)`), response: { fixture: "sprite-atlas.png" } });
       }
+      await this.helper.given.interceptAndMockResponse({ url: /\/sprite-atlas@2x\.json\?key=test$/, response: { fixture: "sprite-atlas@2x.json" } });
+      await this.helper.given.interceptAndMockResponse({ url: /\/sprite-atlas@2x\.png\?key=test$/, response: { fixture: "sprite-atlas@2x.png" } });
+      await this.helper.given.interceptAndMockResponse({ url: /\/sprite-alternate@2x\.json$/, response: null });
       await this.helper.given.interceptAndMockResponse({ method: "GET", url: /example\.local\//, response: [] });
       await this.helper.given.interceptAndMockResponse({ method: "GET", url: /example\.com\//, response: [] });
       await this.helper.given.interceptAndMockResponse({
