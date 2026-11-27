@@ -9,6 +9,7 @@
 - Add `font-faces`, `sky`, `roll` and `centerAltitude` to the style settings modal
 - The sidebar can now be resized, both as a whole and in the split between the layer list and the layer editor
 - Allow viewing and changing the map's max zoom in the debug modal
+- The debug modal is now called "Maplibre Settings" and has a toolbar button, so it no longer requires knowing the `!` shortcut
 - _...Add new stuff here..._
 
 ### 🐞 Bug fixes

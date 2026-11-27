@@ -46,7 +46,7 @@ class ModalDebugInternal extends React.Component<ModalDebugInternalProps> {
       data-wd-key="modal:debug"
       isOpen={this.props.isOpen}
       onOpenToggle={this.props.onOpenToggle}
-      title={t("Debug")}
+      title={t("Maplibre Settings")}
     >
       <section className="maputnik-modal-section maputnik-modal-shortcuts">
         <h1>{t("Options")}</h1>

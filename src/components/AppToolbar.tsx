@@ -11,7 +11,8 @@ import {
   MdLanguage,
   MdSave,
   MdPublic,
-  MdCode
+  MdCode,
+  MdTune
 } from "react-icons/md";
 import pkgJson from "../../package.json";
 //@ts-ignore
@@ -245,6 +246,10 @@ class AppToolbarInternal extends React.Component<AppToolbarInternalProps> {
           <ToolbarAction wdKey="nav:global-state" onClick={() => this.props.onToggleModal("globalState")}>
             <MdPublic />
             <IconText>{t("Global State")}</IconText>
+          </ToolbarAction>
+          <ToolbarAction wdKey="nav:maplibre-settings" onClick={() => this.props.onToggleModal("debug")}>
+            <MdTune />
+            <IconText>{t("Maplibre Settings")}</IconText>
           </ToolbarAction>
 
           <ToolbarSelect wdKey="nav:inspect">
